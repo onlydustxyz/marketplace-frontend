@@ -1,9 +1,27 @@
+import process from "process";
+
 interface Props {
   login: string;
   title: string;
   image: string;
 }
 export function ContentUser({ login, title, image }: Props) {
+  const isRemoteImage = (() => {
+    if (process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX && image) {
+      return !image?.includes(process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX);
+    }
+
+    return false;
+  })();
+
+  const optimizeSrc = (() => {
+    if (isRemoteImage) {
+      return `${process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX}format=png/${image}`;
+    }
+
+    return image;
+  })();
+
   return (
     <div
       style={{
@@ -15,7 +33,7 @@ export function ContentUser({ login, title, image }: Props) {
       }}
     >
       <img
-        src={image}
+        src={optimizeSrc}
         alt="user-image"
         width="108"
         height="108"
