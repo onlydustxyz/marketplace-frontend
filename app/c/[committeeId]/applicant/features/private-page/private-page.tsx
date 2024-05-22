@@ -106,6 +106,59 @@ export function CommitteeApplicantPrivatePage() {
     });
   }
 
+  const renderMainTitle = useMemo(() => {
+    if (data?.status === "OPEN_TO_APPLICATIONS") {
+      return (
+        <div className="grid gap-2">
+          <Typography variant={"title-m"} translate={{ token: "v2.pages.committees.applicant.private.create.title" }} />
+          <Typography
+            variant={"body-s"}
+            translate={{ token: "v2.pages.committees.applicant.private.create.description" }}
+            className={"text-spaceBlue-200"}
+          />
+        </div>
+      );
+    }
+    return (
+      <div className="grid gap-2">
+        <Typography variant={"title-m"} translate={{ token: "v2.pages.committees.applicant.private.update.title" }} />
+        <Typography
+          variant={"body-s"}
+          translate={{ token: "v2.pages.committees.applicant.private.update.description" }}
+          className={"text-spaceBlue-200"}
+        />
+      </div>
+    );
+  }, [data]);
+
+  const renderProjectSelection = useMemo(() => {
+    if (data?.status === "OPEN_TO_APPLICATIONS") {
+      return <ProjectSelection projectId={projectId} onChange={handleProjectChange} isLoading={isLoading} />;
+    }
+    return null;
+  }, [data]);
+
+  const renderTitleQuestionSection = useMemo(() => {
+    if (data?.status === "OPEN_TO_APPLICATIONS") {
+      return (
+        <div className="grid gap-2">
+          <Typography
+            variant={"title-m"}
+            translate={{ token: "v2.pages.committees.applicant.private.questions.title" }}
+          />
+          <Typography
+            variant={"body-s"}
+            translate={{ token: "v2.pages.committees.applicant.private.questions.description" }}
+            className={"text-spaceBlue-200"}
+          />
+        </div>
+      );
+    }
+    return (
+      <Typography variant={"title-m"} translate={{ token: "v2.pages.committees.applicant.private.answers.title" }} />
+    );
+  }, [data]);
+
   const renderQuestionSection = useMemo(() => {
     if (data?.status === "OPEN_TO_APPLICATIONS") {
       return (
@@ -169,20 +222,10 @@ export function CommitteeApplicantPrivatePage() {
             <Steps status={statusRef.current} />
           )}
 
-          <div className="grid gap-2">
-            <Typography
-              variant={"title-m"}
-              translate={{ token: "v2.pages.committees.applicant.private.create.title" }}
-            />
-            <Typography
-              variant={"body-s"}
-              translate={{ token: "v2.pages.committees.applicant.private.create.description" }}
-              className={"text-spaceBlue-200"}
-            />
-          </div>
+          {renderMainTitle}
 
           <div className={"grid gap-4"}>
-            <ProjectSelection projectId={projectId} onChange={handleProjectChange} isLoading={isLoading} />
+            {renderProjectSelection}
 
             {data?.projectInfos ? (
               <Card className={"grid gap-4 shadow-medium"}>
@@ -237,17 +280,7 @@ export function CommitteeApplicantPrivatePage() {
           </div>
 
           <div className={"grid gap-8"}>
-            <div className="grid gap-2">
-              <Typography
-                variant={"title-m"}
-                translate={{ token: "v2.pages.committees.applicant.private.questions.title" }}
-              />
-              <Typography
-                variant={"body-s"}
-                translate={{ token: "v2.pages.committees.applicant.private.questions.description" }}
-                className={"text-spaceBlue-200"}
-              />
-            </div>
+            {renderTitleQuestionSection}
 
             {renderQuestionSection}
           </div>
