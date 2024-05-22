@@ -23,6 +23,7 @@ import { SkeletonEl } from "components/ds/skeleton/skeleton";
 import { Tag } from "components/ds/tag/tag";
 import { Contributor } from "components/features/contributor/contributor";
 import { Icon } from "components/layout/icon/icon";
+import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 import { useIntl } from "hooks/translate/use-translate";
@@ -70,6 +71,8 @@ export function CommitteeApplicantPrivatePage() {
     name: "answers",
   });
 
+  const canSubmit = useMemo(() => data?.status === "OPEN_TO_APPLICATIONS", [data]);
+
   useEffect(() => {
     if (data) {
       isInitialLoadingRef.current = false;
@@ -96,6 +99,8 @@ export function CommitteeApplicantPrivatePage() {
   }
 
   function handleFormSubmit(values: TPrivatePage.form) {
+    if (!canSubmit) return;
+
     mutate({
       answers: values.answers.map(a => ({
         questionId: a.questionId,
@@ -105,7 +110,7 @@ export function CommitteeApplicantPrivatePage() {
   }
 
   const renderMainTitle = useMemo(() => {
-    if (data?.status === "OPEN_TO_APPLICATIONS") {
+    if (canSubmit && !data?.hasStartedApplication) {
       return (
         <div className="grid gap-2">
           <Typography variant={"title-m"} translate={{ token: "v2.pages.committees.applicant.private.create.title" }} />
@@ -117,6 +122,7 @@ export function CommitteeApplicantPrivatePage() {
         </div>
       );
     }
+
     return (
       <div className="grid gap-2">
         <Typography variant={"title-m"} translate={{ token: "v2.pages.committees.applicant.private.update.title" }} />
@@ -127,17 +133,10 @@ export function CommitteeApplicantPrivatePage() {
         />
       </div>
     );
-  }, [data]);
-
-  const renderProjectSelection = useMemo(() => {
-    if (data?.status === "OPEN_TO_APPLICATIONS") {
-      return <ProjectSelection projectId={projectId} onChange={handleProjectChange} isLoading={isLoading} />;
-    }
-    return null;
-  }, [data]);
+  }, [canSubmit, data]);
 
   const renderTitleQuestionSection = useMemo(() => {
-    if (data?.status === "OPEN_TO_APPLICATIONS") {
+    if (canSubmit) {
       return (
         <div className="grid gap-2">
           <Typography
@@ -152,13 +151,14 @@ export function CommitteeApplicantPrivatePage() {
         </div>
       );
     }
+
     return (
       <Typography variant={"title-m"} translate={{ token: "v2.pages.committees.applicant.private.answers.title" }} />
     );
-  }, [data]);
+  }, [canSubmit]);
 
   const renderQuestionSection = useMemo(() => {
-    if (data?.status === "OPEN_TO_APPLICATIONS") {
+    if (canSubmit) {
       return (
         <ul className={"grid gap-6"}>
           {isInitialLoadingRef.current ? (
@@ -198,8 +198,9 @@ export function CommitteeApplicantPrivatePage() {
         </ul>
       );
     }
+
     return <ReadOnlySection questions={data?.projectQuestions || []} />;
-  }, [data, fields, isInitialLoadingRef.current]);
+  }, [canSubmit, data, fields, isInitialLoadingRef.current]);
 
   if (isError) {
     return <PrivatePageError />;
@@ -223,10 +224,10 @@ export function CommitteeApplicantPrivatePage() {
           {renderMainTitle}
 
           <div className={"grid gap-4"}>
-            {renderProjectSelection}
+            <ProjectSelection projectId={projectId} onChange={handleProjectChange} isLoading={isLoading} />
 
             {data?.projectInfos ? (
-              <Card className={"grid gap-4 shadow-medium"}>
+              <Card className={"grid gap-4 shadow-light"}>
                 <header className={"flex gap-4"}>
                   <Avatar src={data.projectInfos.logoUrl} size={"2xl"} shape={"square"} isBordered={false} />
 
@@ -277,26 +278,29 @@ export function CommitteeApplicantPrivatePage() {
             ) : null}
           </div>
 
-          <div className={"grid gap-8"}>
-            {renderTitleQuestionSection}
-
-            {renderQuestionSection}
-          </div>
+          {data?.projectInfos?.id ? (
+            <div className={"grid gap-8"}>
+              {renderTitleQuestionSection}
+              {renderQuestionSection}
+            </div>
+          ) : null}
         </div>
       </div>
 
-      <footer className="flex w-full justify-end border-t border-card-border-light bg-card-background-base p-6">
-        <Button
-          type={"submit"}
-          size={"l"}
-          backgroundColor={"blue"}
-          className="w-full md:w-auto"
-          disabled={isLoading || !formState.isValid || isPending}
-        >
-          {isPending ? <Spinner className="h-4 w-4" /> : <Icon remixName={"ri-check-line"} size={24} />}{" "}
-          {T("v2.commons.form.submit")}
-        </Button>
-      </footer>
+      {canSubmit && data?.projectInfos ? (
+        <footer className="flex w-full justify-end border-t border-card-border-light bg-card-background-base p-6">
+          <Button
+            type={"submit"}
+            size={"l"}
+            backgroundColor={"blue"}
+            className="w-full md:w-auto"
+            disabled={isLoading || !formState.isValid || isPending}
+          >
+            {isPending ? <Spinner className="h-4 w-4" /> : <Icon remixName={"ri-check-line"} size={24} />}{" "}
+            <Translate token={data?.hasStartedApplication ? "v2.commons.form.update" : "v2.commons.form.submit"} />
+          </Button>
+        </footer>
+      ) : null}
     </form>
   );
 }
