@@ -54,6 +54,8 @@ const nextConfig = {
         hostname: "onlydust-app-images.s3.eu-west-1.amazonaws.com",
       },
     ],
+    // ordered list of acceptable optimized image formats (mime types)
+    formats: ['image/webp','image/avif'],
   },
 };
 
