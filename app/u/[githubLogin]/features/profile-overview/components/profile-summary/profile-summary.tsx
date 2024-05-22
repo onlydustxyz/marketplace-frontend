@@ -23,6 +23,7 @@ export function ProfileSummary(props: TProfileSummary.Props) {
   };
 
   function getArgs(channel: PublicProfileChannelsUnion, contacts: string) {
+    if (!contacts) return {};
     switch (channel) {
       case "TELEGRAM":
       case "TWITTER":

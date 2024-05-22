@@ -13,6 +13,8 @@ export function SocialLink({ link, copyableValue, copyableValueName, children }:
   const showToaster = useShowToaster();
   const { T } = useIntl();
 
+  if (!link && !copyableValue) return null;
+
   const Component = link ? "a" : "button";
 
   const linkProps = { href: link, target: "_blank", rel: "noreferrer" };
