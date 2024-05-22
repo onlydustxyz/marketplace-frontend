@@ -63,5 +63,8 @@
         "success": "Your application was submitted successfully."
       }
     }
+  },
+  "jury": {
+    "notStarted": "Not started"
   }
 }

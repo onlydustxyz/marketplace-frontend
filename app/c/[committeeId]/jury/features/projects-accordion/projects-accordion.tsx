@@ -1,5 +1,6 @@
 import { Accordion, AccordionItem } from "@nextui-org/react";
 
+import { ProjectStatus } from "app/c/[committeeId]/jury/components/project-status/project-status";
 import { TProjectAccordion } from "app/c/[committeeId]/jury/features/projects-accordion/projects-accordion.types";
 
 import { cn } from "src/utils/cn";
@@ -33,7 +34,8 @@ export function ProjectsAccordion({ projects }: TProjectAccordion.Props) {
           }}
           indicator={({ isOpen }) => (
             <div className={"flex items-center gap-3"}>
-              <div>STATUS</div>
+              {/* TODO */}
+              <ProjectStatus rating={1.23} />
               <Icon
                 remixName="ri-arrow-down-s-line"
                 className={cn("transition-transform", { "rotate-180": isOpen })}
