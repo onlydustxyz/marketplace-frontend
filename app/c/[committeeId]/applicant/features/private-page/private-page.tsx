@@ -57,7 +57,7 @@ export function CommitteeApplicantPrivatePage() {
     },
   });
 
-  const { handleSubmit, setValue, control, formState, watch } = useForm<TPrivatePage.form>({
+  const { handleSubmit, setValue, control, formState } = useForm<TPrivatePage.form>({
     mode: "all",
     resolver: zodResolver(TPrivatePage.validation),
     defaultValues: {
@@ -70,8 +70,6 @@ export function CommitteeApplicantPrivatePage() {
     name: "answers",
   });
 
-  const answers = watch("answers");
-
   useEffect(() => {
     if (data) {
       isInitialLoadingRef.current = false;
@@ -80,7 +78,7 @@ export function CommitteeApplicantPrivatePage() {
   }, [data]);
 
   useEffect(() => {
-    if (data && !answers?.length) {
+    if (data) {
       replace(
         data.projectQuestions.map(q => ({
           questionId: q.id,
@@ -90,7 +88,7 @@ export function CommitteeApplicantPrivatePage() {
         }))
       );
     }
-  }, [data, answers]);
+  }, [data]);
 
   function handleProjectChange(projectId: string) {
     setProjectId(projectId);
@@ -172,10 +170,11 @@ export function CommitteeApplicantPrivatePage() {
             <li key={f.questionId}>
               <Controller
                 render={({ field, fieldState }) => {
+                  console.log("field", f, field.value);
                   return (
                     <Textarea
                       {...field}
-                      value={field.value.answer}
+                      value={field.value.answer || f.answer}
                       label={f.question}
                       isRequired={f.required}
                       isInvalid={!!fieldState.error?.message && fieldState.isDirty}
