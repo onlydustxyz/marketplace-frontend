@@ -17,18 +17,16 @@ export function Tag({
   ...props
 }: TTag.Props) {
   function renderContent() {
+    const { base, container } = tagVariants({ ...props });
+
     return (
       <Component
         data-testid={testId}
         id={id}
-        className={cn(
-          "relative isolate w-fit shrink-0 overflow-hidden p-px",
-          { "cursor-pointer": onClick },
-          containerClassName
-        )}
+        className={cn(container(), { "cursor-pointer": onClick }, containerClassName)}
         onClick={onClick}
       >
-        <div className={cn(tagVariants({ ...props }), className)}>{children}</div>
+        <div className={cn(base(), className)}>{children}</div>
       </Component>
     );
   }
