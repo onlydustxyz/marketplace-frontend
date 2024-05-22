@@ -43,7 +43,7 @@ export function ProfileCardPopover({
 
   return (
     <Popover
-      placement={"bottom-start"}
+      placement={"right-start"}
       content={renderContent}
       isOpen={isOpen}
       classNames={{ content: "p-0" }}

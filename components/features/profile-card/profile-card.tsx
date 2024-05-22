@@ -49,7 +49,7 @@ export function ProfileCard(props: TProfileCard.Props) {
         className="absolute inset-0 -z-[1] h-full w-full object-cover object-center opacity-50"
         priority={true}
       />
-      <div className="relative z-[1] flex gap-4">
+      <div className="relative z-[1] flex gap-4 max-[400px]:flex-wrap">
         <Avatar src={avatarUrl} alt={login} size="3xl" />
         <div className="flex w-full flex-col gap-1">
           <div className="flex justify-between gap-2">

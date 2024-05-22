@@ -23,7 +23,6 @@ export function ProjectSelection({ projectId, onChange, isLoading }: TProjectSel
     [projectsLead]
   );
 
-  // TODO @hayden may refactor this once the project info is fetched in parent
   const selectedProject = useMemo(() => projects.find(p => p.value === projectId), [projects, projectId]);
 
   function handleProjectChange(keys: Selection) {
@@ -43,9 +42,10 @@ export function ProjectSelection({ projectId, onChange, isLoading }: TProjectSel
       items={projects}
       onSelectionChange={handleProjectChange}
       size={"lg"}
-      variant={"grey"} // TODO @hayden on hover the background flashes
+      variant={"grey"}
       isLoading={isLoading || isProjectsLeadLoading}
       placeholder={T("v2.pages.committees.applicant.private.project.select")}
+      isRequired
     />
   );
 }
