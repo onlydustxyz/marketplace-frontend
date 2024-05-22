@@ -1,7 +1,8 @@
-import { ImageMetadataContent } from "../commons/content/content";
-import { THackathonImageMetadataProps } from "./image-metadata.types";
+import { TCommitteeImageMetadataProps } from "components/features/seo/image-metadata/committee/image-metadata.types";
 
-export function HackathonImageMetadata({ name, dates, location }: THackathonImageMetadataProps.Props) {
+import { ImageMetadataContent } from "../commons/content/content";
+
+export function CommitteeImageMetadata({ name, dates }: TCommitteeImageMetadataProps.Props) {
   const backgroundUrl = `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/hackathon-opengraph.jpg`;
   return (
     <div
@@ -44,7 +45,7 @@ export function HackathonImageMetadata({ name, dates, location }: THackathonImag
           paddingLeft: 72,
         }}
       >
-        <ImageMetadataContent title={name} subtitle={location} description={dates} />
+        <ImageMetadataContent title={name} description={dates} />
       </div>
     </div>
   );

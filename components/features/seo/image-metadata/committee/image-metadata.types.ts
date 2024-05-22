@@ -1,7 +1,6 @@
-export namespace THackathonImageMetadataProps {
+export namespace TCommitteeImageMetadataProps {
   export interface Props {
     name: string;
     dates: string;
-    location: string;
   }
 }

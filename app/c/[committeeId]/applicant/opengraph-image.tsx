@@ -1,9 +1,9 @@
 import { committeeApiClient } from "api-client/resources/committees";
 import { format } from "date-fns";
 
+import { CommitteeImageMetadata } from "components/features/seo/image-metadata/committee/image-metadata";
 import { Generator } from "components/features/seo/image-metadata/commons/generator/generator";
 import { GenericImageMetadata } from "components/features/seo/image-metadata/generic/image-metadata";
-import { CommitteeImageMetadata } from "components/features/seo/image-metadata/hackathons/image-metadata";
 
 export default async function Image(props: { params: { committeeId: string } }) {
   try {
