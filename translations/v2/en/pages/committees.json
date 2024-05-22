@@ -81,6 +81,7 @@
     }
   },
   "jury": {
-    "notStarted": "Not started"
+    "notStarted": "Not started",
+    "votingTitle": "Vote for this project"
   }
 }

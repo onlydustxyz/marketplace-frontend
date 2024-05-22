@@ -1,6 +1,7 @@
 import { Accordion, AccordionItem } from "@nextui-org/react";
 
 import { ProjectStatus } from "app/c/[committeeId]/jury/components/project-status/project-status";
+import { ProjectVote } from "app/c/[committeeId]/jury/features/project-vote/project-vote";
 import { TProjectAccordion } from "app/c/[committeeId]/jury/features/projects-accordion/projects-accordion.types";
 
 import { cn } from "src/utils/cn";
@@ -35,7 +36,7 @@ export function ProjectsAccordion({ projects }: TProjectAccordion.Props) {
           indicator={({ isOpen }) => (
             <div className={"flex items-center gap-3"}>
               {/* TODO */}
-              <ProjectStatus rating={1.23} />
+              <ProjectStatus score={1.23} />
               <Icon
                 remixName="ri-arrow-down-s-line"
                 className={cn("transition-transform", { "rotate-180": isOpen })}
@@ -47,7 +48,20 @@ export function ProjectsAccordion({ projects }: TProjectAccordion.Props) {
         >
           <div>project</div>
           <div>questions</div>
-          <div>vote</div>
+
+          <ProjectVote
+            criteria={[
+              {
+                message: "Criteria 1",
+                score: 1,
+              },
+              {
+                message:
+                  "Criteria 2 hqsdfh qsdklfhqs klfqshfkl qshfkqs fqsklhf klsdhf qsklfhql kjhqsdfkqhsfklqs fklqs kflqsh fkjlqsdhfkqshfkqsjh fkqsh fqsfklqsh fkjlqsh dhkqsdh fkjqsdhfk qsd",
+                score: 3,
+              },
+            ]}
+          />
         </AccordionItem>
       ))}
     </Accordion>
