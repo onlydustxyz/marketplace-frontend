@@ -170,7 +170,6 @@ export function CommitteeApplicantPrivatePage() {
             <li key={f.questionId}>
               <Controller
                 render={({ field, fieldState }) => {
-                  console.log("field", f, field.value);
                   return (
                     <Textarea
                       {...field}
