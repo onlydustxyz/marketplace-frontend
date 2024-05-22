@@ -101,7 +101,6 @@ export function CommitteeApplicantPrivatePage() {
     mutate({
       answers: values.answers.map(a => ({
         questionId: a.questionId,
-        required: a.required,
         answer: a.answer,
       })),
     });

@@ -60,7 +60,7 @@
         "description": "Please try again or _contact us_ if the problem persists."
       },
       "form": {
-        "success": "Your application has been successfully submitted."
+        "success": "Your application was submitted successfully."
       }
     }
   }
