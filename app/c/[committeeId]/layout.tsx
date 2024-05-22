@@ -10,15 +10,18 @@ export async function generateMetadata(props: { params: { committeeId: string } 
     return {
       ...sharedMetadata,
       title: `${committee.name}`,
-      description: "description",
+      description:
+        "Apply for a grant to boost your open-source project. Selected projects will receive funding to further their innovation. Don’t miss out!",
       openGraph: {
         ...sharedMetadata.openGraph,
         title: `${committee.name}`,
-        description: "description",
+        description:
+          "Apply for a grant to boost your open-source project. Selected projects will receive funding to further their innovation. Don’t miss out!",
       },
       twitter: {
         title: `${committee.name}`,
-        description: "description",
+        description:
+          "Apply for a grant to boost your open-source project. Selected projects will receive funding to further their innovation. Don’t miss out!",
         ...sharedMetadata.twitter,
       },
     };
