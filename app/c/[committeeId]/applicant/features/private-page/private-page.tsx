@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { committeeApiClient } from "api-client/resources/committees";
 import { GetCommitteeProjectApplicationResponse } from "api-client/resources/committees/types";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
@@ -28,9 +28,11 @@ import { Typography } from "components/layout/typography/typography";
 import { useIntl } from "hooks/translate/use-translate";
 
 export function CommitteeApplicantPrivatePage() {
-  const { committeeId } = useParams();
   const { T } = useIntl();
-  const [projectId, setProjectId] = useState("");
+  const { committeeId } = useParams();
+  const searchParams = useSearchParams();
+  const initialProjectId = searchParams.get("p") ?? "";
+  const [projectId, setProjectId] = useState(initialProjectId);
 
   const isInitialLoadingRef = useRef(true);
   const statusRef = useRef<GetCommitteeProjectApplicationResponse["status"]>();
