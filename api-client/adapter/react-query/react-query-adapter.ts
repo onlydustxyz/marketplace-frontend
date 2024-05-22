@@ -13,7 +13,7 @@ interface IuseReactQueryAdapter<T> {
     queryFn: () => Promise<T>;
   };
   mutation: {
-    mutationFn: (variables: Record<string, unknown>) => Promise<T>;
+    mutationFn: (variables?: Record<string, unknown>) => Promise<T>;
   };
 }
 export const useReactQueryAdapter = <T>(
@@ -30,8 +30,10 @@ export const useReactQueryAdapter = <T>(
   };
 
   const mutation = {
-    mutationFn: (body: Record<string, unknown>) => {
-      fetcher.setBody(JSON.stringify(body));
+    mutationFn: (body?: Record<string, unknown>) => {
+      if (body) {
+        fetcher.setBody(JSON.stringify(body));
+      }
       return fetcher.request();
     },
   };
