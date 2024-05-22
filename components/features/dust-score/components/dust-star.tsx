@@ -48,7 +48,7 @@ export function DustStar({ score, scoreKey, onClick, onHover, hoveredKey, isSmal
   };
 
   return (
-    <button onClick={onStarClick} className="cursor-pointer p-1 outline-none">
+    <button type={"button"} onClick={onStarClick} className="cursor-pointer p-1 outline-none">
       <motion.img
         src={star.src}
         alt="star"
