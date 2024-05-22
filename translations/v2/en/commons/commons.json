@@ -63,7 +63,8 @@
         "visible": "Visible on public profile"
       }
     },
-    "submit": "Submit"
+    "submit": "Submit",
+    "update": "Update"
   },
   "currency": "Currency",
   "pendingInvite": "Pending invite",
