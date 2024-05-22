@@ -50,6 +50,7 @@ export function ProjectsAccordion({ projects }: TProjectAccordion.Props) {
           <div>questions</div>
 
           <ProjectVote
+            projectId={p.id}
             criteria={[
               {
                 message: "Criteria 1",
