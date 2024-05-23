@@ -47,6 +47,15 @@ export function CommitteeApplicantPrivatePage() {
     projectId,
   });
 
+  useEffect(() => {
+    if (isError && initialProjectId) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete("p");
+      router.push(pathname + "?" + params.toString());
+      setProjectId("");
+    }
+  }, [isError, initialProjectId]);
+
   const { mutate, isPending, ...restMutation } = committeeApiClient.mutations.useUpdateCommitteeProjectApplication({
     committeeId: typeof committeeId === "string" ? committeeId : "",
     projectId,
