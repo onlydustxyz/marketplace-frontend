@@ -1,6 +1,7 @@
 import { Accordion, AccordionItem } from "@nextui-org/react";
 
 import { ProjectStatus } from "app/c/[committeeId]/jury/components/project-status/project-status";
+import { ProjectVote } from "app/c/[committeeId]/jury/features/project-vote/project-vote";
 import { TProjectAccordion } from "app/c/[committeeId]/jury/features/projects-accordion/projects-accordion.types";
 
 import { cn } from "src/utils/cn";
@@ -9,19 +10,24 @@ import { Avatar } from "components/ds/avatar/avatar";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
-export function ProjectsAccordion({ projects }: TProjectAccordion.Props) {
+export function ProjectsAccordion({ projectAssignments }: TProjectAccordion.Props) {
   return (
     <Accordion variant="splitted" className="!p-0">
-      {projects?.map(p => (
+      {projectAssignments.map(({ project, score }) => (
         <AccordionItem
-          key={p.id}
-          startContent={<Avatar src={p.logoUrl} alt={p.name} shape={"square"} size={"xl"} isBordered={false} />}
-          aria-label={p.name}
-          title={<Typography variant="body-m-bold">{p.name}</Typography>}
+          key={project.id}
+          startContent={
+            <Avatar src={project.logoUrl} alt={project.name} shape={"square"} size={"xl"} isBordered={false} />
+          }
+          aria-label={project.name}
+          title={<Typography variant="body-m-bold">{project.name}</Typography>}
           subtitle={
-            <Typography variant="body-s" className="text-spaceBlue-200">
-              {p.description}
-            </Typography>
+            // project.shortDescription ? (
+            //   <Typography variant="body-s" className="text-spaceBlue-200">
+            //     {project.shortDescription}
+            //   </Typography>
+            // ) : null
+            null
           }
           classNames={{
             base: "!rounded-2xl !border !border-card-border-medium !bg-card-background-base !px-0 !shadow-medium",
@@ -34,8 +40,7 @@ export function ProjectsAccordion({ projects }: TProjectAccordion.Props) {
           }}
           indicator={({ isOpen }) => (
             <div className={"flex items-center gap-3"}>
-              {/* TODO */}
-              <ProjectStatus rating={1.23} />
+              <ProjectStatus score={score} />
               <Icon
                 remixName="ri-arrow-down-s-line"
                 className={cn("transition-transform", { "rotate-180": isOpen })}
@@ -47,7 +52,21 @@ export function ProjectsAccordion({ projects }: TProjectAccordion.Props) {
         >
           <div>project</div>
           <div>questions</div>
-          <div>vote</div>
+
+          <ProjectVote
+            projectId={project.id}
+            criteria={[
+              {
+                message: "Criteria 1",
+                score: 0,
+              },
+              {
+                message:
+                  "Criteria 2 hqsdfh qsdklfhqs klfqshfkl qshfkqs fqsklhf klsdhf qsklfhql kjhqsdfkqhsfklqs fklqs kflqsh fkjlqsdhfkqshfkqsjh fkqsh fqsfklqsh fkjlqsh dhkqsdh fkjqsdhfk qsd",
+                score: 3,
+              },
+            ]}
+          />
         </AccordionItem>
       ))}
     </Accordion>

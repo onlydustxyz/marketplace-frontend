@@ -2,12 +2,17 @@ import { FetchAdapaterConstructor } from "api-client/adapter/fetch/fetch-adapter
 
 enum Paths {
   hackathonRegistrations = "hackathonRegistrations",
+  getMyCommitteeAssignments = "getMyCommitteeAssignments",
 }
 
 const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
   hackathonRegistrations: {
     url: "me/hackathons/:hackathonId/registrations",
     method: "PUT",
+  },
+  getMyCommitteeAssignments: {
+    url: "me/committees/:committeeId",
+    method: "GET",
   },
 };
 
