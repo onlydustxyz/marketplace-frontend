@@ -38,6 +38,8 @@ export function ProjectVote({ projectId, criteria }: TProjectVote.Props) {
   function handleFormSubmit(values: TProjectVote.form) {
     // TODO
     console.log({ values });
+
+    // TODO invalidate/refetch
   }
 
   return (
