@@ -55,13 +55,23 @@
         "title": "Answer the following questions",
         "description": "This will help our jury to allocate budget for this committee."
       },
+      "answers": {
+        "title": "Your answers"
+      },
       "error": {
         "title": "We can't find your application",
         "description": "Please try again or _contact us_ if the problem persists."
       },
       "form": {
         "success": "Your application was submitted successfully."
+      },
+      "empty": {
+        "title": "Project not applied",
+        "description": "This project didn't apply for the committee in time."
       }
     }
+  },
+  "jury": {
+    "notStarted": "Not started"
   }
 }
