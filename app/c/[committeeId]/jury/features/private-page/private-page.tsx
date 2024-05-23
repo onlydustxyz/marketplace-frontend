@@ -2,6 +2,7 @@ import { meApiClient } from "api-client/resources/me";
 import { useParams } from "next/navigation";
 
 import { Steps } from "app/c/[committeeId]/applicant/features/steps/steps";
+import { CommitteeErrorPage } from "app/c/[committeeId]/features/error-page/error-page";
 import { ProjectsAccordion } from "app/c/[committeeId]/jury/features/projects-accordion/projects-accordion";
 
 import { BaseLink } from "components/layout/base-link/base-link";
@@ -20,8 +21,7 @@ export function CommitteeJuryPrivatePage() {
   );
 
   if (isError) {
-    // TODO
-    return "Error";
+    return <CommitteeErrorPage />;
   }
 
   if (isLoading) {

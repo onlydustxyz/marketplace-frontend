@@ -6,11 +6,11 @@ import { useParams, usePathname, useRouter, useSearchParams } from "next/navigat
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
-import { PrivatePageError } from "app/c/[committeeId]/applicant/features/private-page/private-page.error";
 import { TPrivatePage } from "app/c/[committeeId]/applicant/features/private-page/private-page.types";
 import { ProjectSelection } from "app/c/[committeeId]/applicant/features/project-selection/project-selection";
 import { ReadOnlySection } from "app/c/[committeeId]/applicant/features/read-only-section/read-only-section";
 import { Steps } from "app/c/[committeeId]/applicant/features/steps/steps";
+import { CommitteeErrorPage } from "app/c/[committeeId]/features/error-page/error-page";
 
 import useMutationAlert from "src/api/useMutationAlert";
 import { IMAGES } from "src/assets/img";
@@ -260,7 +260,7 @@ export function CommitteeApplicantPrivatePage() {
   }, [canSubmit, data, fields, isInitialLoadingRef.current]);
 
   if (isError) {
-    return <PrivatePageError />;
+    return <CommitteeErrorPage />;
   }
 
   return (

@@ -4,7 +4,7 @@ import { Typography } from "components/layout/typography/typography";
 
 import { useIntl } from "hooks/translate/use-translate";
 
-export function PrivatePageError() {
+export function CommitteeErrorPage() {
   const { T } = useIntl();
   const [descStart, descLink, descEnd] = T("v2.pages.committees.applicant.private.error.description").split("_");
 
