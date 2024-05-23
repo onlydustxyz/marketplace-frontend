@@ -17,7 +17,15 @@
       },
       "update": {
         "title": "Your application",
-        "description": "You can edit your application as long as the registration period is still open."
+        "description": "You can edit your application until __date__."
+      },
+      "voting": {
+        "title": "Your application",
+        "description": "Voting has begun. Your application can no longer be edited."
+      },
+      "closed": {
+        "title": "Your application",
+        "description": "This committee is now closed for applications."
       },
       "project": {
         "select": "Select a project",
@@ -66,7 +74,7 @@
         "success": "Your application was submitted successfully."
       },
       "empty": {
-        "title": "Project not applied",
+        "title": "Project has not applied",
         "description": "This project didn't apply for the committee in time."
       }
     }
