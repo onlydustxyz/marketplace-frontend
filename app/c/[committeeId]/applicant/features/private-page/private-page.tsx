@@ -225,7 +225,7 @@ export function CommitteeApplicantPrivatePage() {
 
           {renderMainTitle}
 
-          {data?.projectInfos && data?.status !== "OPEN_TO_APPLICATIONS" && !data?.hasStartedApplication ? (
+          {data?.projectInfos && !data?.hasStartedApplication && !canSubmit ? (
             <>
               <ProjectSelection projectId={projectId} onChange={handleProjectChange} isLoading={isFetching} />
               <EmptyState

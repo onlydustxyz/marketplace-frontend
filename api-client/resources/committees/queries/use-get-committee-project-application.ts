@@ -15,6 +15,7 @@ export const useGetCommitteeProjectApplication = (params: Parameters<typeof getC
   return useQuery<GetCommitteeProjectApplicationResponse>({
     ...query,
     placeholderData: keepPreviousData,
+    refetchOnWindowFocus: false,
     enabled: Boolean(params.committeeId) && isAuthenticated,
   });
 };
