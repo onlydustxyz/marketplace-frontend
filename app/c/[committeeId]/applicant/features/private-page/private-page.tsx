@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { committeeApiClient } from "api-client/resources/committees";
 import { GetCommitteeProjectApplicationResponse } from "api-client/resources/committees/types";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
@@ -28,10 +28,12 @@ import { EmptyState } from "components/layout/placeholders/empty-state/empty-sta
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-import { useIntl } from "hooks/translate/use-translate";
+import { Key, useIntl } from "hooks/translate/use-translate";
 
 export function CommitteeApplicantPrivatePage() {
   const { T } = useIntl();
+  const router = useRouter();
+  const pathname = usePathname();
   const { committeeId } = useParams();
   const searchParams = useSearchParams();
   const initialProjectId = searchParams.get("p") ?? "";
@@ -44,6 +46,15 @@ export function CommitteeApplicantPrivatePage() {
     committeeId: typeof committeeId === "string" ? committeeId : "",
     projectId,
   });
+
+  useEffect(() => {
+    if (isError && initialProjectId) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete("p");
+      router.push(pathname + "?" + params.toString());
+      setProjectId("");
+    }
+  }, [isError, initialProjectId]);
 
   const { mutate, isPending, ...restMutation } = committeeApiClient.mutations.useUpdateCommitteeProjectApplication({
     committeeId: typeof committeeId === "string" ? committeeId : "",
@@ -60,7 +71,7 @@ export function CommitteeApplicantPrivatePage() {
     },
   });
 
-  const { handleSubmit, setValue, control, formState } = useForm<TPrivatePage.form>({
+  const { handleSubmit, setValue, control, formState, reset } = useForm<TPrivatePage.form>({
     mode: "all",
     resolver: zodResolver(TPrivatePage.validation),
     defaultValues: {
@@ -98,6 +109,12 @@ export function CommitteeApplicantPrivatePage() {
   function handleProjectChange(projectId: string) {
     setProjectId(projectId);
     setValue("projectId", projectId, { shouldDirty: true, shouldValidate: true });
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("p", projectId);
+    router.replace(pathname + "?" + params.toString());
+
+    reset({ projectId });
   }
 
   function handleFormSubmit(values: TPrivatePage.form) {
@@ -121,18 +138,44 @@ export function CommitteeApplicantPrivatePage() {
       );
     }
 
-    const condition = Boolean(canSubmit && !data.hasStartedApplication);
-    const title = condition
-      ? "v2.pages.committees.applicant.private.create.title"
-      : "v2.pages.committees.applicant.private.update.title";
-    const description = condition
-      ? "v2.pages.committees.applicant.private.create.description"
-      : "v2.pages.committees.applicant.private.update.description";
+    let title: Key = "";
+    let description: Key = "";
+
+    switch (data.status) {
+      case "OPEN_TO_APPLICATIONS": {
+        if (!data.hasStartedApplication) {
+          title = "v2.pages.committees.applicant.private.create.title";
+          description = "v2.pages.committees.applicant.private.create.description";
+        } else {
+          title = "v2.pages.committees.applicant.private.update.title";
+          description = "v2.pages.committees.applicant.private.update.description";
+        }
+        break;
+      }
+      case "OPEN_TO_VOTES":
+        title = "v2.pages.committees.applicant.private.voting.title";
+        description = "v2.pages.committees.applicant.private.voting.description";
+        break;
+      case "CLOSED":
+        title = "v2.pages.committees.applicant.private.closed.title";
+        description = "v2.pages.committees.applicant.private.closed.description";
+        break;
+    }
 
     return (
       <div className="grid gap-2">
         <Typography variant={"title-m"} translate={{ token: title }} />
-        <Typography variant={"body-s"} translate={{ token: description }} className={"text-spaceBlue-200"} />
+        <Typography
+          variant={"body-s"}
+          translate={{
+            token: description,
+            params: {
+              // TODO
+              date: "123",
+            },
+          }}
+          className={"text-spaceBlue-200"}
+        />
       </div>
     );
   }, [canSubmit, data]);
@@ -175,7 +218,7 @@ export function CommitteeApplicantPrivatePage() {
                   return (
                     <Textarea
                       {...field}
-                      value={field.value.answer || f.answer}
+                      value={field.value?.answer || f.answer}
                       label={f.question}
                       isRequired={f.required}
                       isInvalid={!!fieldState.error?.message && fieldState.isDirty}
