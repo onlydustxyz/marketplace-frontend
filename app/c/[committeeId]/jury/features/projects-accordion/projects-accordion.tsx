@@ -12,7 +12,7 @@ import { Typography } from "components/layout/typography/typography";
 
 export function ProjectsAccordion({ projectAssignments }: TProjectAccordion.Props) {
   return (
-    <Accordion variant="splitted" className="!p-0">
+    <Accordion variant="splitted" className="!gap-8 !p-0">
       {projectAssignments.map(({ project, score }) => (
         <AccordionItem
           key={project.id}
@@ -22,6 +22,7 @@ export function ProjectsAccordion({ projectAssignments }: TProjectAccordion.Prop
           aria-label={project.name}
           title={<Typography variant="body-m-bold">{project.name}</Typography>}
           subtitle={
+            // TODO
             // project.shortDescription ? (
             //   <Typography variant="body-s" className="text-spaceBlue-200">
             //     {project.shortDescription}
