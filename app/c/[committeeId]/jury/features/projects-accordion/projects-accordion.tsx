@@ -35,7 +35,7 @@ export function ProjectsAccordion({ projects }: TProjectAccordion.Props) {
           }}
           indicator={({ isOpen }) => (
             <div className={"flex items-center gap-3"}>
-              {/* TODO */}
+              {/* TODO update on submit */}
               <ProjectStatus score={1.23} />
               <Icon
                 remixName="ri-arrow-down-s-line"
@@ -54,7 +54,7 @@ export function ProjectsAccordion({ projects }: TProjectAccordion.Props) {
             criteria={[
               {
                 message: "Criteria 1",
-                score: 1,
+                score: 0,
               },
               {
                 message:
