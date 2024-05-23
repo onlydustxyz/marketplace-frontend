@@ -22,11 +22,12 @@ export function ProjectsAccordion({ projectAssignments }: TProjectAccordion.Prop
           aria-label={project.name}
           title={<Typography variant="body-m-bold">{project.name}</Typography>}
           subtitle={
-            project.shortDescription ? (
-              <Typography variant="body-s" className="text-spaceBlue-200">
-                {project.shortDescription}
-              </Typography>
-            ) : null
+            // project.shortDescription ? (
+            //   <Typography variant="body-s" className="text-spaceBlue-200">
+            //     {project.shortDescription}
+            //   </Typography>
+            // ) : null
+            null
           }
           classNames={{
             base: "!rounded-2xl !border !border-card-border-medium !bg-card-background-base !px-0 !shadow-medium",
