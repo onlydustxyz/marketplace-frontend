@@ -28,7 +28,7 @@ import { EmptyState } from "components/layout/placeholders/empty-state/empty-sta
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-import { useIntl } from "hooks/translate/use-translate";
+import { Key, useIntl } from "hooks/translate/use-translate";
 
 export function CommitteeApplicantPrivatePage() {
   const { T } = useIntl();
@@ -121,13 +121,29 @@ export function CommitteeApplicantPrivatePage() {
       );
     }
 
-    const condition = Boolean(canSubmit && !data.hasStartedApplication);
-    const title = condition
-      ? "v2.pages.committees.applicant.private.create.title"
-      : "v2.pages.committees.applicant.private.update.title";
-    const description = condition
-      ? "v2.pages.committees.applicant.private.create.description"
-      : "v2.pages.committees.applicant.private.update.description";
+    let title: Key = "";
+    let description: Key = "";
+
+    switch (data.status) {
+      case "OPEN_TO_APPLICATIONS": {
+        if (!data.hasStartedApplication) {
+          title = "v2.pages.committees.applicant.private.create.title";
+          description = "v2.pages.committees.applicant.private.create.description";
+        } else {
+          title = "v2.pages.committees.applicant.private.update.title";
+          description = "v2.pages.committees.applicant.private.update.description";
+        }
+        break;
+      }
+      case "OPEN_TO_VOTES":
+        title = "v2.pages.committees.applicant.private.voting.title";
+        description = "v2.pages.committees.applicant.private.voting.description";
+        break;
+      case "CLOSED":
+        title = "v2.pages.committees.applicant.private.closed.title";
+        description = "v2.pages.committees.applicant.private.closed.description";
+        break;
+    }
 
     return (
       <div className="grid gap-2">
