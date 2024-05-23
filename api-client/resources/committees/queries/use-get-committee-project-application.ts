@@ -17,5 +17,6 @@ export const useGetCommitteeProjectApplication = (params: Parameters<typeof getC
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
     enabled: Boolean(params.committeeId) && isAuthenticated,
+    retry: 0,
   });
 };
