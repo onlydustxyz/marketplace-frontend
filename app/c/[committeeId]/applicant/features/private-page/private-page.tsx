@@ -62,7 +62,7 @@ export function CommitteeApplicantPrivatePage() {
     },
   });
 
-  const { handleSubmit, setValue, control, formState } = useForm<TPrivatePage.form>({
+  const { handleSubmit, setValue, control, formState, reset } = useForm<TPrivatePage.form>({
     mode: "all",
     resolver: zodResolver(TPrivatePage.validation),
     defaultValues: {
@@ -104,6 +104,8 @@ export function CommitteeApplicantPrivatePage() {
     const params = new URLSearchParams(searchParams.toString());
     params.set("p", projectId);
     router.replace(pathname + "?" + params.toString());
+
+    reset({ projectId });
   }
 
   function handleFormSubmit(values: TPrivatePage.form) {
