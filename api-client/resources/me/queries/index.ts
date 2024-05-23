@@ -1,1 +1,1 @@
-export * from "api-client/resources/me/queries/use-get-my-committee-assignments";
+export * from "./use-get-my-committee-assignments";
