@@ -156,7 +156,17 @@ export function CommitteeApplicantPrivatePage() {
     return (
       <div className="grid gap-2">
         <Typography variant={"title-m"} translate={{ token: title }} />
-        <Typography variant={"body-s"} translate={{ token: description }} className={"text-spaceBlue-200"} />
+        <Typography
+          variant={"body-s"}
+          translate={{
+            token: description,
+            params: {
+              // TODO
+              date: "123",
+            },
+          }}
+          className={"text-spaceBlue-200"}
+        />
       </div>
     );
   }, [canSubmit, data]);
@@ -199,7 +209,7 @@ export function CommitteeApplicantPrivatePage() {
                   return (
                     <Textarea
                       {...field}
-                      value={field.value.answer || f.answer}
+                      value={field.value?.answer || f.answer}
                       label={f.question}
                       isRequired={f.required}
                       isInvalid={!!fieldState.error?.message && fieldState.isDirty}

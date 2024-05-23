@@ -17,7 +17,7 @@
       },
       "update": {
         "title": "Your application",
-        "description": "You can edit your application as long as the registration period is still open."
+        "description": "You can edit your application until __date__."
       },
       "voting": {
         "title": "Your application",
