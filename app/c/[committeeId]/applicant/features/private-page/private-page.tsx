@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { committeeApiClient } from "api-client/resources/committees";
 import { GetCommitteeProjectApplicationResponse } from "api-client/resources/committees/types";
+import { format } from "date-fns";
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
@@ -109,7 +110,7 @@ export function CommitteeApplicantPrivatePage() {
         }))
       );
     }
-  }, [data]);
+  }, [data, projectId]);
 
   function handleProjectChange(projectId: string) {
     setProjectId(projectId);
@@ -157,7 +158,9 @@ export function CommitteeApplicantPrivatePage() {
           description = "v2.pages.committees.applicant.private.create.description";
         } else {
           title = "v2.pages.committees.applicant.private.update.title";
-          description = "v2.pages.committees.applicant.private.update.description";
+          description = data.applicationEndDate
+            ? "v2.pages.committees.applicant.private.update.descriptionDate"
+            : "v2.pages.committees.applicant.private.update.description";
         }
         break;
       }
@@ -179,8 +182,7 @@ export function CommitteeApplicantPrivatePage() {
           translate={{
             token: description,
             params: {
-              // TODO
-              date: "123",
+              date: format(new Date(data.applicationEndDate), "dd/MM/yyyy"),
             },
           }}
           className={"text-spaceBlue-200"}
@@ -227,7 +229,8 @@ export function CommitteeApplicantPrivatePage() {
                   return (
                     <Textarea
                       {...field}
-                      value={field.value?.answer || f.answer}
+                      value={field.value?.answer}
+                      defaultValue={field.value?.answer || f.answer}
                       label={f.question}
                       isRequired={f.required}
                       isInvalid={!!fieldState.error?.message && fieldState.isDirty}
