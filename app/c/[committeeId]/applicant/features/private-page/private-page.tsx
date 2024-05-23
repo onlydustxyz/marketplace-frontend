@@ -40,12 +40,17 @@ export function CommitteeApplicantPrivatePage() {
   const isInitialLoadingRef = useRef(true);
   const statusRef = useRef<GetCommitteeProjectApplicationResponse["status"]>();
 
-  const { data, isError, isFetching } = committeeApiClient.queries.useGetCommitteeProjectApplication({
+  const {
+    data,
+    isError,
+    isFetching,
+    refetch: refetchCommetteeProjectApplication,
+  } = committeeApiClient.queries.useGetCommitteeProjectApplication({
     committeeId: typeof committeeId === "string" ? committeeId : "",
     projectId,
   });
 
-  const { mutate, isPending, ...restMutation } = committeeApiClient.mutations.useUpdateCommitteeProjectApplication({
+  const { isPending, ...restMutation } = committeeApiClient.mutations.useUpdateCommitteeProjectApplication({
     committeeId: typeof committeeId === "string" ? committeeId : "",
     projectId,
   });
@@ -103,12 +108,16 @@ export function CommitteeApplicantPrivatePage() {
   function handleFormSubmit(values: TPrivatePage.form) {
     if (!canSubmit) return;
 
-    mutate({
-      answers: values.answers.map(a => ({
-        questionId: a.questionId,
-        answer: a.answer,
-      })),
-    });
+    restMutation
+      .mutateAsync({
+        answers: values.answers.map(a => ({
+          questionId: a.questionId,
+          answer: a.answer,
+        })),
+      })
+      .then(() => {
+        refetchCommetteeProjectApplication();
+      });
   }
 
   const renderMainTitle = useMemo(() => {
