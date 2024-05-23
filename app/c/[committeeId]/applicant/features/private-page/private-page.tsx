@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { committeeApiClient } from "api-client/resources/committees";
 import { GetCommitteeProjectApplicationResponse } from "api-client/resources/committees/types";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
@@ -32,6 +32,8 @@ import { Key, useIntl } from "hooks/translate/use-translate";
 
 export function CommitteeApplicantPrivatePage() {
   const { T } = useIntl();
+  const router = useRouter();
+  const pathname = usePathname();
   const { committeeId } = useParams();
   const searchParams = useSearchParams();
   const initialProjectId = searchParams.get("p") ?? "";
@@ -98,6 +100,10 @@ export function CommitteeApplicantPrivatePage() {
   function handleProjectChange(projectId: string) {
     setProjectId(projectId);
     setValue("projectId", projectId, { shouldDirty: true, shouldValidate: true });
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("p", projectId);
+    router.replace(pathname + "?" + params.toString());
   }
 
   function handleFormSubmit(values: TPrivatePage.form) {
