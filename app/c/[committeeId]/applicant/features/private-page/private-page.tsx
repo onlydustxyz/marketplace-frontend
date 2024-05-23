@@ -12,6 +12,7 @@ import { ReadOnlySection } from "app/c/[committeeId]/applicant/features/read-onl
 import { Steps } from "app/c/[committeeId]/applicant/features/steps/steps";
 
 import useMutationAlert from "src/api/useMutationAlert";
+import { IMAGES } from "src/assets/img";
 import MarkdownPreview from "src/components/MarkdownPreview";
 import { Spinner } from "src/components/Spinner/Spinner";
 
@@ -23,6 +24,7 @@ import { SkeletonEl } from "components/ds/skeleton/skeleton";
 import { Tag } from "components/ds/tag/tag";
 import { Contributor } from "components/features/contributor/contributor";
 import { Icon } from "components/layout/icon/icon";
+import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
@@ -38,7 +40,7 @@ export function CommitteeApplicantPrivatePage() {
   const isInitialLoadingRef = useRef(true);
   const statusRef = useRef<GetCommitteeProjectApplicationResponse["status"]>();
 
-  const { data, isError, isLoading } = committeeApiClient.queries.useGetCommitteeProjectApplication({
+  const { data, isError, isFetching } = committeeApiClient.queries.useGetCommitteeProjectApplication({
     committeeId: typeof committeeId === "string" ? committeeId : "",
     projectId,
   });
@@ -110,27 +112,27 @@ export function CommitteeApplicantPrivatePage() {
   }
 
   const renderMainTitle = useMemo(() => {
-    if (canSubmit && !data?.hasStartedApplication) {
+    if (!data) {
       return (
         <div className="grid gap-2">
-          <Typography variant={"title-m"} translate={{ token: "v2.pages.committees.applicant.private.create.title" }} />
-          <Typography
-            variant={"body-s"}
-            translate={{ token: "v2.pages.committees.applicant.private.create.description" }}
-            className={"text-spaceBlue-200"}
-          />
+          <SkeletonEl variant={"rounded"} width={"33%"} height={32} />
+          <SkeletonEl variant={"rounded"} width={"100%"} height={16} />
         </div>
       );
     }
 
+    const condition = Boolean(canSubmit && !data.hasStartedApplication);
+    const title = condition
+      ? "v2.pages.committees.applicant.private.create.title"
+      : "v2.pages.committees.applicant.private.update.title";
+    const description = condition
+      ? "v2.pages.committees.applicant.private.create.description"
+      : "v2.pages.committees.applicant.private.update.description";
+
     return (
       <div className="grid gap-2">
-        <Typography variant={"title-m"} translate={{ token: "v2.pages.committees.applicant.private.update.title" }} />
-        <Typography
-          variant={"body-s"}
-          translate={{ token: "v2.pages.committees.applicant.private.update.description" }}
-          className={"text-spaceBlue-200"}
-        />
+        <Typography variant={"title-m"} translate={{ token: title }} />
+        <Typography variant={"body-s"} translate={{ token: description }} className={"text-spaceBlue-200"} />
       </div>
     );
   }, [canSubmit, data]);
@@ -223,67 +225,80 @@ export function CommitteeApplicantPrivatePage() {
 
           {renderMainTitle}
 
-          <div className={"grid gap-4"}>
-            <ProjectSelection projectId={projectId} onChange={handleProjectChange} isLoading={isLoading} />
+          {data?.projectInfos && !data?.hasStartedApplication && !canSubmit ? (
+            <>
+              <ProjectSelection projectId={projectId} onChange={handleProjectChange} isLoading={isFetching} />
+              <EmptyState
+                illustrationSrc={IMAGES.svg.technology}
+                title={{ token: "v2.pages.committees.applicant.private.empty.title" }}
+                description={{ token: "v2.pages.committees.applicant.private.empty.description" }}
+              />
+            </>
+          ) : (
+            <>
+              <div className={"grid gap-4"}>
+                <ProjectSelection projectId={projectId} onChange={handleProjectChange} isLoading={isFetching} />
 
-            {data?.projectInfos ? (
-              <Card className={"grid gap-4 shadow-light"}>
-                <header className={"flex gap-4"}>
-                  <Avatar src={data.projectInfos.logoUrl} size={"2xl"} shape={"square"} isBordered={false} />
+                {data?.projectInfos ? (
+                  <Card className={"grid gap-4 shadow-light"}>
+                    <header className={"flex gap-4"}>
+                      <Avatar src={data.projectInfos.logoUrl} size={"2xl"} shape={"square"} isBordered={false} />
 
-                  <div className={"grid flex-1 gap-2"}>
-                    <Typography variant={"title-m"}>{data.projectInfos.name}</Typography>
+                      <div className={"grid flex-1 gap-2"}>
+                        <Typography variant={"title-m"}>{data.projectInfos.name}</Typography>
 
-                    {data.projectInfos.projectLeads?.length ? (
-                      <ul className={"flex flex-wrap gap-x-3 gap-y-1"}>
-                        {data.projectInfos.projectLeads.map(lead => (
-                          <li key={lead.id}>
-                            <Contributor
-                              login={lead.login}
-                              githubUserId={lead.githubUserId}
-                              avatarUrl={lead.avatarUrl}
-                              isRegistered={false}
-                              typograhy={{ variant: "body-s-bold" }}
-                            />
-                          </li>
-                        ))}
-                      </ul>
+                        {data.projectInfos.projectLeads?.length ? (
+                          <ul className={"flex flex-wrap gap-x-3 gap-y-1"}>
+                            {data.projectInfos.projectLeads.map(lead => (
+                              <li key={lead.id}>
+                                <Contributor
+                                  login={lead.login}
+                                  githubUserId={lead.githubUserId}
+                                  avatarUrl={lead.avatarUrl}
+                                  isRegistered={false}
+                                  typograhy={{ variant: "body-s-bold" }}
+                                />
+                              </li>
+                            ))}
+                          </ul>
+                        ) : null}
+                      </div>
+                    </header>
+
+                    {data.projectInfos.longDescription ? (
+                      <MarkdownPreview>{data.projectInfos.longDescription}</MarkdownPreview>
                     ) : null}
-                  </div>
-                </header>
 
-                {data.projectInfos.longDescription ? (
-                  <MarkdownPreview>{data.projectInfos.longDescription}</MarkdownPreview>
+                    {data.projectInfos.last3monthsMetrics ? (
+                      <>
+                        <Typography
+                          variant={"title-s"}
+                          translate={{ token: "v2.pages.committees.applicant.private.project.metrics.title" }}
+                        />
+                        <ul className={"flex flex-wrap gap-2.5"}>
+                          {Object.entries(data.projectInfos.last3monthsMetrics).map(([key, value]) => (
+                            <Tag key={key} as={"li"} shape={"square"}>
+                              <span>{value}</span>
+                              <span className={"text-spaceBlue-200"}>
+                                {T(`v2.pages.committees.applicant.private.project.metrics.${key}`, { count: value })}
+                              </span>
+                            </Tag>
+                          ))}
+                        </ul>
+                      </>
+                    ) : null}
+                  </Card>
                 ) : null}
+              </div>
 
-                {data.projectInfos.last3monthsMetrics ? (
-                  <>
-                    <Typography
-                      variant={"title-s"}
-                      translate={{ token: "v2.pages.committees.applicant.private.project.metrics.title" }}
-                    />
-                    <ul className={"flex flex-wrap gap-2.5"}>
-                      {Object.entries(data.projectInfos.last3monthsMetrics).map(([key, value]) => (
-                        <Tag key={key} as={"li"} shape={"square"}>
-                          <span>{value}</span>
-                          <span className={"text-spaceBlue-200"}>
-                            {T(`v2.pages.committees.applicant.private.project.metrics.${key}`, { count: value })}
-                          </span>
-                        </Tag>
-                      ))}
-                    </ul>
-                  </>
-                ) : null}
-              </Card>
-            ) : null}
-          </div>
-
-          {data?.projectInfos?.id ? (
-            <div className={"grid gap-8"}>
-              {renderTitleQuestionSection}
-              {renderQuestionSection}
-            </div>
-          ) : null}
+              {data?.projectInfos?.id && data?.projectQuestions.length ? (
+                <div className={"grid gap-8"}>
+                  {renderTitleQuestionSection}
+                  {renderQuestionSection}
+                </div>
+              ) : null}
+            </>
+          )}
         </div>
       </div>
 
@@ -294,7 +309,7 @@ export function CommitteeApplicantPrivatePage() {
             size={"l"}
             backgroundColor={"blue"}
             className="w-full md:w-auto"
-            disabled={isLoading || !formState.isValid || isPending}
+            disabled={isFetching || !formState.isValid || isPending}
           >
             {isPending ? <Spinner className="h-4 w-4" /> : <Icon remixName={"ri-check-line"} size={24} />}{" "}
             <Translate token={data?.hasStartedApplication ? "v2.commons.form.update" : "v2.commons.form.submit"} />

@@ -64,6 +64,10 @@
       },
       "form": {
         "success": "Your application was submitted successfully."
+      },
+      "empty": {
+        "title": "Project not applied",
+        "description": "This project didn't apply for the committee in time."
       }
     }
   },
