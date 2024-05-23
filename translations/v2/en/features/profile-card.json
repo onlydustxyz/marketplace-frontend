@@ -27,6 +27,10 @@
       "many": "Lead on __count__ projects"
     }
   },
+  "rankExplanation": {
+    "description": "Contributor ranks range from Wood to Diamond.",
+    "link": "Learn more"
+  },
   "rankCategories": {
     "a": "Diamond contributor",
     "b": "Gold contributor",
