@@ -9,7 +9,7 @@ import { Typography } from "components/layout/typography/typography";
 
 import { useIntl } from "hooks/translate/use-translate";
 
-export function ProjectVote({ projectId, criteria }: TProjectVote.Props) {
+export function ProjectVote({ criteria }: TProjectVote.Props) {
   const { T } = useIntl();
 
   // useMutationAlert({
