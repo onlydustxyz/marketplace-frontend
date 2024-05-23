@@ -260,7 +260,7 @@ export function CommitteeApplicantPrivatePage() {
   }, [canSubmit, data, fields, isInitialLoadingRef.current]);
 
   if (isError) {
-    return <CommitteeErrorPage />;
+    return <CommitteeErrorPage type={"applicant"} />;
   }
 
   return (

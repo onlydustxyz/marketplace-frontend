@@ -3,6 +3,7 @@ import { useParams } from "next/navigation";
 
 import { Steps } from "app/c/[committeeId]/applicant/features/steps/steps";
 import { CommitteeErrorPage } from "app/c/[committeeId]/features/error-page/error-page";
+import { CommitteeLoadingPage } from "app/c/[committeeId]/features/loading-page/loading-page";
 import { ProjectsAccordion } from "app/c/[committeeId]/jury/features/projects-accordion/projects-accordion";
 
 import { BaseLink } from "components/layout/base-link/base-link";
@@ -20,21 +21,15 @@ export function CommitteeJuryPrivatePage() {
     typeof committeeId === "string" ? committeeId : ""
   );
 
-  if (isError) {
-    return <CommitteeErrorPage />;
+  if (isError || !data) {
+    return <CommitteeErrorPage type={"jury"} />;
   }
 
   if (isLoading) {
-    // TODO
-    return "Loading";
+    return <CommitteeLoadingPage />;
   }
 
-  if (!data) {
-    // TODO
-    return "Empty";
-  }
-
-  const [descStart, descEnd] = T("v2.pages.committees.jury.description").split("__link__");
+  const [descStart, descEnd] = T("v2.pages.committees.jury.private.description").split("__link__");
   const description = [
     descStart,
     <BaseLink key={"@GregGamb"} href={"https://t.me/GregGamb"} className={"text-spacePurple-500"}>
@@ -55,13 +50,14 @@ export function CommitteeJuryPrivatePage() {
             <Typography variant={"title-l"}>{data.name}</Typography>
 
             <div className="grid gap-2">
-              <Typography variant={"title-m"} translate={{ token: "v2.pages.committees.jury.title" }} />
+              <Typography variant={"title-m"} translate={{ token: "v2.pages.committees.jury.private.title" }} />
               <Typography
                 variant={"body-s"}
                 translate={{
-                  token: "v2.pages.committees.jury.subtitle",
+                  token: "v2.pages.committees.jury.private.subtitle",
                   params: {
-                    name: user?.firstName || user?.login || T("v2.pages.committees.jury.subtitleNamePlaceholder"),
+                    name:
+                      user?.firstName || user?.login || T("v2.pages.committees.jury.private.subtitleNamePlaceholder"),
                     projects: data.projectAssignments.length,
                   },
                 }}

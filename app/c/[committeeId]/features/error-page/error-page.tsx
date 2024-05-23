@@ -4,9 +4,11 @@ import { Typography } from "components/layout/typography/typography";
 
 import { useIntl } from "hooks/translate/use-translate";
 
-export function CommitteeErrorPage() {
+export function CommitteeErrorPage({ type }: { type: "applicant" | "jury" }) {
   const { T } = useIntl();
   const [descStart, descLink, descEnd] = T("v2.pages.committees.applicant.private.error.description").split("_");
+
+  const isApplicant = type === "applicant";
 
   return (
     <div className="relative flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-card-background-base">
@@ -16,7 +18,14 @@ export function CommitteeErrorPage() {
         <OnlyDustCrashedLogo />
 
         <div className="grid gap-4 text-center">
-          <Typography variant={"title-l"} translate={{ token: "v2.pages.committees.applicant.private.error.title" }} />
+          <Typography
+            variant={"title-l"}
+            translate={{
+              token: isApplicant
+                ? "v2.pages.committees.applicant.private.error.title"
+                : "v2.pages.committees.jury.private.error.title",
+            }}
+          />
           <Typography variant={"body-l"} className={"text-spaceBlue-200"}>
             {descStart}
             <a className="underline" href={"mailto:contact@onlydust.xyz"}>

@@ -81,11 +81,22 @@
     }
   },
   "jury": {
-    "title": "Vote for your assigned projects",
-    "subtitle": "\uD83D\uDC4B Hello __name__, please find below the __projects__ projects to review for this month.",
-    "subtitleNamePlaceholder": "there",
-    "description": "Following your feedback, we have added metrics to help you judge projects. We don’t filter projects when they apply; we want to be permissionless.\n\nBe careful; even with low metrics, you can find hidden gems (especially for new projects).\nIf you have a conflict of interest, don’t vote. A 0 is a non-vote. There is a conflict if you have invested or have a close relationship with a project (employee, employer, investor in your project, biggest customer, best friend, etc.)\n\nThe 4 criteria are here to help, but ultimately, we count the aggregate vote. So, if you have a very strong opinion, you can give only 5 or only 1, even if it doesn't match the reality of each criterion.\n\nIf you have a question, reach __link__ on TG.\nWe are here to help.",
-    "notStarted": "Not started",
-    "votingTitle": "Vote for this project"
+    "public": {
+      "title": "Vote in the committee",
+      "description": "Do you want to vote for projects in the committee?\nWe just need you to connect to get started.",
+      "login": "Connect with GitHub"
+    },
+    "private": {
+      "title": "Vote for your assigned projects",
+      "subtitle": "\uD83D\uDC4B Hello __name__, please find below the __projects__ projects to review for this month.",
+      "subtitleNamePlaceholder": "there",
+      "description": "Following your feedback, we have added metrics to help you judge projects. We don’t filter projects when they apply; we want to be permissionless.\n\nBe careful; even with low metrics, you can find hidden gems (especially for new projects).\nIf you have a conflict of interest, don’t vote. A 0 is a non-vote. There is a conflict if you have invested or have a close relationship with a project (employee, employer, investor in your project, biggest customer, best friend, etc.)\n\nThe 4 criteria are here to help, but ultimately, we count the aggregate vote. So, if you have a very strong opinion, you can give only 5 or only 1, even if it doesn't match the reality of each criterion.\n\nIf you have a question, reach __link__ on TG.\nWe are here to help.",
+      "notStarted": "Not started",
+      "votingTitle": "Vote for this project",
+      "error": {
+        "title": "We can't find the committee",
+        "description": "Please try again or _contact us_ if the problem persists."
+      }
+    }
   }
 }

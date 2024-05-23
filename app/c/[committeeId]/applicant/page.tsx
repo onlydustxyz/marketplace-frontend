@@ -15,8 +15,8 @@ export default function CommitteeApplicantPage() {
 
   return (
     <div className="scrollbar-sm my-auto flex items-start justify-center">
-      <div className="max-w-full overflow-hidden px-6 py-12">
-        {isAuthenticated ? <CommitteeApplicantPrivatePage /> : <CommitteePublicPage />}
+      <div className="max-w-full overflow-hiddenpx-6 py-12">
+        {isAuthenticated ? <CommitteeApplicantPrivatePage /> : <CommitteePublicPage type={"applicant"} />}
       </div>
     </div>
   );
