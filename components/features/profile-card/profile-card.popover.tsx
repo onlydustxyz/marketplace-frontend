@@ -33,7 +33,7 @@ export function ProfileCardPopover({
             login={userProfile.login}
             avatarUrl={userProfile.avatarUrl}
             {...userProfile.statsSummary}
-            isLoginClickable
+            isInPopover
           />
         </>
       );

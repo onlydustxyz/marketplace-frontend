@@ -19,7 +19,7 @@ export namespace TProfileCard {
   }
   export interface Props extends PropsWithChildren {
     className?: string;
-    isLoginClickable?: boolean;
+    isInPopover?: boolean;
     avatarUrl: string;
     login: string;
     rankCategory?: PublicProfilerankCategoryUnion;

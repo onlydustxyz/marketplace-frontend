@@ -1,4 +1,3 @@
-import { rankCategoryEmojiMapping, rankCategoryMapping } from "api-client/resources/users/types";
 import Image from "next/image";
 import profileCardBackground from "public/images/profile-card-bg.svg";
 import { getOrdinalSuffix } from "utils/profile/ordinal-position-suffix";
@@ -8,9 +7,9 @@ import { cn } from "src/utils/cn";
 import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
 import { Tag } from "components/ds/tag/tag";
+import { RankCategory } from "components/features/profile-card/components/rank-category/rank-category";
 import { TProfileCard } from "components/features/profile-card/profile-card.types";
 import { BaseLink } from "components/layout/base-link/base-link";
-import { Emoji } from "components/layout/emoji/emoji";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
@@ -29,7 +28,7 @@ function ProfileStatItem({ icon, token, count }: TProfileCard.ProfileStatProps) 
 export function ProfileCard(props: TProfileCard.Props) {
   const {
     className,
-    isLoginClickable = false,
+    isInPopover = false,
     avatarUrl,
     login,
     rankCategory,
@@ -54,7 +53,7 @@ export function ProfileCard(props: TProfileCard.Props) {
         <div className="flex w-full flex-col gap-1">
           <div className="flex justify-between gap-2">
             <Typography variant="title-m" className="line-clamp-1 capitalize">
-              {isLoginClickable ? (
+              {!isInPopover ? (
                 <BaseLink
                   href={NEXT_ROUTER.publicProfile.root(login)}
                   className="transition-all hover:text-spacePurple-500"
@@ -68,16 +67,7 @@ export function ProfileCard(props: TProfileCard.Props) {
             <Typography variant="title-m">{getOrdinalSuffix(rank)}</Typography>
           </div>
           <div className="flex justify-between gap-2">
-            {rankCategory ? (
-              <div className="flex items-center gap-1">
-                <Emoji symbol={rankCategoryEmojiMapping[rankCategory]} label="rank emoji" />
-                <Typography
-                  variant="title-s"
-                  className="line-clamp-2 text-spaceBlue-100"
-                  translate={{ token: rankCategoryMapping[rankCategory] }}
-                />
-              </div>
-            ) : null}
+            <RankCategory rankCategory={rankCategory} hasPopover={!isInPopover} />
             {rankPercentile && rankPercentile !== 100 ? (
               <Typography
                 variant="body-s"
