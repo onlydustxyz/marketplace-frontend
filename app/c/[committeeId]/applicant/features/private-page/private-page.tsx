@@ -8,8 +8,8 @@ import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 import { TPrivatePage } from "app/c/[committeeId]/applicant/features/private-page/private-page.types";
 import { ProjectSelection } from "app/c/[committeeId]/applicant/features/project-selection/project-selection";
-import { ReadOnlySection } from "app/c/[committeeId]/applicant/features/read-only-section/read-only-section";
 import { ProjectSummary } from "app/c/[committeeId]/components/project-summary/project-summary";
+import { ReadOnlyQuestions } from "app/c/[committeeId]/components/read-only-questions/read-only-questions";
 import { Steps } from "app/c/[committeeId]/components/steps/steps";
 import { CommitteeErrorPage } from "app/c/[committeeId]/features/error-page/error-page";
 
@@ -252,7 +252,7 @@ export function CommitteeApplicantPrivatePage() {
       );
     }
 
-    return <ReadOnlySection questions={data?.projectQuestions || []} />;
+    return <ReadOnlyQuestions questions={data?.projectQuestions || []} />;
   }, [canSubmit, data, fields, isInitialLoadingRef.current]);
 
   if (isError) {

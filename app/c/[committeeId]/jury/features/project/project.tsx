@@ -2,8 +2,11 @@ import { meApiClient } from "api-client/resources/me";
 import { useParams } from "next/navigation";
 
 import { ProjectSummary } from "app/c/[committeeId]/components/project-summary/project-summary";
+import { ReadOnlyQuestions } from "app/c/[committeeId]/components/read-only-questions/read-only-questions";
 import { ProjectVote } from "app/c/[committeeId]/jury/features/project-vote/project-vote";
 import { TProject } from "app/c/[committeeId]/jury/features/project/project.types";
+
+import { Card } from "components/ds/card/card";
 
 export function Project({ projectId, enabled }: TProject.Props) {
   const { committeeId } = useParams();
@@ -26,13 +29,17 @@ export function Project({ projectId, enabled }: TProject.Props) {
     return "Loading";
   }
 
-  const { project } = data;
+  const { project, answers } = data;
 
   return (
     <div className={"grid gap-4"}>
       <ProjectSummary project={project} />
 
-      <div>questions</div>
+      {answers.length ? (
+        <Card>
+          <ReadOnlyQuestions questions={answers} />
+        </Card>
+      ) : null}
 
       <ProjectVote
         projectId={project.id}
