@@ -5,6 +5,11 @@
       "description": "Do you want to register your project to the committee?\nWe just need you to connect to get started.",
       "login": "Connect with GitHub"
     },
+    "success": {
+      "title": "Thank you for applying",
+      "description": "We have received your application. You can review and edit it until registration closes.",
+      "back": "Back to my application"
+    },
     "private": {
       "step": {
         "applications": "Applications",

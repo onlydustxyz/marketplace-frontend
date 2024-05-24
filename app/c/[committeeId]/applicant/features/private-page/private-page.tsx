@@ -27,7 +27,7 @@ import { Typography } from "components/layout/typography/typography";
 
 import { Key, useIntl } from "hooks/translate/use-translate";
 
-export function CommitteeApplicantPrivatePage() {
+export function CommitteeApplicantPrivatePage({ onSuccessSubmit }: { onSuccessSubmit: () => void }) {
   const { T } = useIntl();
   const router = useRouter();
   const pathname = usePathname();
@@ -58,10 +58,13 @@ export function CommitteeApplicantPrivatePage() {
     }
   }, [isError, initialProjectId]);
 
-  const { isPending, ...restMutation } = committeeApiClient.mutations.useUpdateCommitteeProjectApplication({
-    committeeId: typeof committeeId === "string" ? committeeId : "",
-    projectId,
-  });
+  const { isPending, ...restMutation } = committeeApiClient.mutations.useUpdateCommitteeProjectApplication(
+    {
+      committeeId: typeof committeeId === "string" ? committeeId : "",
+      projectId,
+    },
+    { onSuccess: onSuccessSubmit }
+  );
 
   useMutationAlert({
     mutation: restMutation,
@@ -115,7 +118,6 @@ export function CommitteeApplicantPrivatePage() {
     const params = new URLSearchParams(searchParams.toString());
     params.set("p", projectId);
     router.replace(pathname + "?" + params.toString());
-
     reset({ projectId });
   }
 
@@ -219,14 +221,13 @@ export function CommitteeApplicantPrivatePage() {
             </li>
           ) : null}
           {fields.map((f, index) => (
-            <li key={f.questionId}>
+            <li key={f.id}>
               <Controller
                 render={({ field, fieldState }) => {
                   return (
                     <Textarea
                       {...field}
                       value={field.value?.answer}
-                      defaultValue={field.value?.answer || f.answer}
                       label={f.question}
                       isRequired={f.required}
                       isInvalid={!!fieldState.error?.message && fieldState.isDirty}
