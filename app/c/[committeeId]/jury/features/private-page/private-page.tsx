@@ -73,7 +73,7 @@ export function CommitteeJuryPrivatePage() {
             </Typography>
           </div>
 
-          {/* TODO handle different steps */}
+          {/* TODO @hayden handle different steps */}
           <ProjectsAccordion projectAssignments={data.projectAssignments} />
         </div>
       </div>

@@ -31,7 +31,7 @@ export function ProjectsAccordion({ projectAssignments }: TProjectAccordion.Prop
           aria-label={project.name}
           title={<Typography variant="body-m-bold">{project.name}</Typography>}
           subtitle={
-            // TODO
+            // TODO @hayden
             // project.shortDescription ? (
             //   <Typography variant="body-s" className="text-spaceBlue-200">
             //     {project.shortDescription}
