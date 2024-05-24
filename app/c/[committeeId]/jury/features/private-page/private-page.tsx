@@ -21,12 +21,16 @@ export function CommitteeJuryPrivatePage() {
     typeof committeeId === "string" ? committeeId : ""
   );
 
-  if (isError || !data) {
+  if (isError) {
     return <CommitteeErrorPage type={"jury"} />;
   }
 
   if (isLoading) {
     return <CommitteeLoadingPage />;
+  }
+
+  if (!data) {
+    return <CommitteeErrorPage type={"jury"} />;
   }
 
   const [descStart, descEnd] = T("v2.pages.committees.jury.private.description").split("__link__");
