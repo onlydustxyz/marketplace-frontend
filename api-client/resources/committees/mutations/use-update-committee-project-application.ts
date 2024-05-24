@@ -11,8 +11,8 @@ import { UpdateCommitteeProjectApplicationParams, UpdateCommitteeProjectApplicat
 export const useUpdateCommitteeProjectApplication = ({
   committeeId,
   projectId,
-  onSuccess,
-}: UpdateCommitteeProjectApplicationParams & { onSuccess?: () => void }) => {
+  options,
+}: UpdateCommitteeProjectApplicationParams & { options?: { onSuccess?: () => void } }) => {
   const { mutation } = useReactQueryAdapter(updateCommitteeProjectApplication({ committeeId, projectId }));
   const queryClient = useQueryClient();
 
@@ -23,7 +23,7 @@ export const useUpdateCommitteeProjectApplication = ({
         queryKey: [committeeApiClient.tags.project_application(committeeId, projectId)],
         exact: false,
       });
-      onSuccess?.();
+      options?.onSuccess?.();
     },
   });
 };

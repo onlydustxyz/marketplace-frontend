@@ -65,7 +65,7 @@ export function CommitteeApplicantPrivatePage({ onSuccessSubmit }: { onSuccessSu
   const { isPending, ...restMutation } = committeeApiClient.mutations.useUpdateCommitteeProjectApplication({
     committeeId: typeof committeeId === "string" ? committeeId : "",
     projectId,
-    onSuccess: onSuccessSubmit,
+    options: { onSuccess: onSuccessSubmit },
   });
 
   useMutationAlert({
