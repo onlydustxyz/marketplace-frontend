@@ -29,36 +29,7 @@
         "description": "This committee is now closed for applications."
       },
       "project": {
-        "select": "Select a project",
-        "metrics": {
-          "title": "Last 3 month metrics",
-          "activeContributors": {
-            "zero": "active contributors",
-            "one": "active contributor",
-            "many": "active contributors"
-          },
-          "amountSentInUsd": "sent in USD",
-          "contributionsCompleted": {
-            "zero": "contributions completed",
-            "one": "contribution completed",
-            "many": "contributions completed"
-          },
-          "contributorsRewarded": {
-            "zero": "contributors rewarded",
-            "one": "contributor rewarded",
-            "many": "contributors rewarded"
-          },
-          "newContributors": {
-            "zero": "new contributors",
-            "one": "new contributor",
-            "many": "new contributors"
-          },
-          "openIssues": {
-            "zero": "open issues",
-            "one": "open issue",
-            "many": "open issues"
-          }
-        }
+        "select": "Select a project"
       },
       "questions": {
         "title": "Answer the following questions",
@@ -96,6 +67,37 @@
       "error": {
         "title": "We can't find the committee",
         "description": "Please try again or _contact us_ if the problem persists."
+      }
+    }
+  },
+  "project": {
+    "metrics": {
+      "title": "Last 3 month metrics",
+      "activeContributors": {
+        "zero": "active contributors",
+        "one": "active contributor",
+        "many": "active contributors"
+      },
+      "amountSentInUsd": "sent in USD",
+      "contributionsCompleted": {
+        "zero": "contributions completed",
+        "one": "contribution completed",
+        "many": "contributions completed"
+      },
+      "contributorsRewarded": {
+        "zero": "contributors rewarded",
+        "one": "contributor rewarded",
+        "many": "contributors rewarded"
+      },
+      "newContributors": {
+        "zero": "new contributors",
+        "one": "new contributor",
+        "many": "new contributors"
+      },
+      "openIssues": {
+        "zero": "open issues",
+        "one": "open issue",
+        "many": "open issues"
       }
     }
   }
