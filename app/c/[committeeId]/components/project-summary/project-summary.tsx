@@ -18,9 +18,17 @@ export function ProjectSummary({ project }: TProjectSummary.Props) {
         <Avatar src={project.logoUrl} size={"2xl"} shape={"square"} isBordered={false} />
 
         <div className={"grid flex-1 gap-2"}>
-          <Typography variant={"title-m"} className={"truncate"}>
-            {project.name}
-          </Typography>
+          <div className={"flex items-center justify-between gap-2 overflow-hidden"}>
+            <Typography variant={"title-m"} className={"truncate"}>
+              {project.name}
+            </Typography>
+
+            {/*<BaseLink href={""}>*/}
+            {/*  <Button as={"div"} size="s" variant="secondary" iconOnly className="h-8 w-8 rounded-xl p-2">*/}
+            {/*    <Icon remixName={"ri-github-fill"} size={16} />*/}
+            {/*  </Button>*/}
+            {/*</BaseLink>*/}
+          </div>
 
           {project.projectLeads?.length ? (
             <ul className={"flex flex-wrap gap-x-3 gap-y-1"}>
