@@ -62,11 +62,13 @@ export function CommitteeApplicantPrivatePage({ onSuccessSubmit }: { onSuccessSu
     }
   }, [isError, initialProjectId]);
 
-  const { isPending, ...restMutation } = committeeApiClient.mutations.useUpdateCommitteeProjectApplication({
-    committeeId: typeof committeeId === "string" ? committeeId : "",
-    projectId,
-    options: { onSuccess: onSuccessSubmit },
-  });
+  const { isPending, ...restMutation } = committeeApiClient.mutations.useUpdateCommitteeProjectApplication(
+    {
+      committeeId: typeof committeeId === "string" ? committeeId : "",
+      projectId,
+    },
+    { onSuccess: onSuccessSubmit }
+  );
 
   useMutationAlert({
     mutation: restMutation,
