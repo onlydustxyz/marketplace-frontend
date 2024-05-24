@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 import { TProjectVote } from "app/c/[committeeId]/jury/features/project-vote/project-vote.types";
-import { StatusContext } from "app/c/[committeeId]/jury/utils/status-context";
+import { CommitteeContext } from "app/c/[committeeId]/utils/committee-context";
 
 import useMutationAlert from "src/api/useMutationAlert";
 import { Spinner } from "src/components/Spinner/Spinner";
@@ -20,7 +20,7 @@ import { useIntl } from "hooks/translate/use-translate";
 export function ProjectVote({ votes }: TProjectVote.Props) {
   const { T } = useIntl();
 
-  const status = useContext(StatusContext);
+  const { status } = useContext(CommitteeContext);
   const canVote = status === "OPEN_TO_VOTES";
 
   const {
