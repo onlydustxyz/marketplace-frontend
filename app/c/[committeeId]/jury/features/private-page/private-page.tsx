@@ -43,7 +43,7 @@ export function CommitteeJuryPrivatePage() {
   ];
 
   return (
-    <form className="relative flex w-[740px] max-w-full flex-col overflow-hidden rounded-2xl bg-card-background-base shadow-light">
+    <div className="relative m-auto flex w-full max-w-[740px] flex-col overflow-hidden rounded-2xl bg-card-background-base shadow-light">
       <div className="w-full bg-mosaic bg-cover pb-1.5" />
 
       <div className={"grid gap-8 p-6 md:p-12"}>
@@ -73,10 +73,10 @@ export function CommitteeJuryPrivatePage() {
             </Typography>
           </div>
 
-          {/* TODO handle different steps */}
+          {/* TODO @hayden handle different steps */}
           <ProjectsAccordion projectAssignments={data.projectAssignments} />
         </div>
       </div>
-    </form>
+    </div>
   );
 }

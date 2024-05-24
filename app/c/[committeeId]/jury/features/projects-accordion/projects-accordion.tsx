@@ -29,9 +29,13 @@ export function ProjectsAccordion({ projectAssignments }: TProjectAccordion.Prop
             <Avatar src={project.logoUrl} alt={project.name} shape={"square"} size={"xl"} isBordered={false} />
           }
           aria-label={project.name}
-          title={<Typography variant="body-m-bold">{project.name}</Typography>}
+          title={
+            <Typography variant="body-m-bold" className={"truncate"}>
+              {project.name}
+            </Typography>
+          }
           subtitle={
-            // TODO
+            // TODO @hayden
             // project.shortDescription ? (
             //   <Typography variant="body-s" className="text-spaceBlue-200">
             //     {project.shortDescription}

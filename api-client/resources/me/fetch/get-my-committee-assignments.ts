@@ -1,9 +1,9 @@
 import { FetchAdapter } from "api-client/adapter/fetch/fetch-adapter";
 import { IFetchAdapater } from "api-client/adapter/fetch/fetch-adapter.types";
-import tags from "api-client/resources/me/tags";
-import { GetMyCommitteeAssignmentsResponse } from "api-client/resources/me/types";
 
 import adapters from "../adapters";
+import tags from "../tags";
+import { GetMyCommitteeAssignmentsResponse } from "../types";
 
 export function getMyCommitteeAssignments(committeeId: string): IFetchAdapater<GetMyCommitteeAssignmentsResponse> {
   return new FetchAdapter<GetMyCommitteeAssignmentsResponse>(adapters.getMyCommitteeAssignments)

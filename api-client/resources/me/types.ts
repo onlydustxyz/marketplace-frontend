@@ -6,9 +6,18 @@ export interface UpdateHackathonsRegistrationsParams {
 }
 
 export type CommitteeAssignmentLinkResponse = components["schemas"]["CommitteeAssignmentLinkResponse"];
+export type CommitteeJuryVoteResponse = components["schemas"]["CommitteeJuryVoteResponse"];
 
 type MyCommitteeAssignmentsResponse = components["schemas"]["MyCommitteeAssignmentsResponse"];
 export interface GetMyCommitteeAssignmentsResponse extends MyCommitteeAssignmentsResponse {}
 
 type MyCommitteeAssignmentResponse = components["schemas"]["MyCommitteeAssignmentResponse"];
 export interface GetMyCommitteeAssignmentResponse extends MyCommitteeAssignmentResponse {}
+
+export interface UpdateMyCommitteeAssignmentParams {
+  committeeId: string;
+  projectId: string;
+}
+
+type VoteForCommitteeAssignmentRequest = components["schemas"]["VoteForCommitteeAssignmentRequest"];
+export interface UpdateMyCommitteeAssignmentVariables extends VoteForCommitteeAssignmentRequest {}
