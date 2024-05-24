@@ -38,7 +38,7 @@ export function Project({ projectId, enabled }: TProject.Props) {
     return <ProjectError />;
   }
 
-  const { project, answers } = data;
+  const { project, answers, votes } = data;
 
   return (
     <div className={"grid gap-4"}>
@@ -50,20 +50,7 @@ export function Project({ projectId, enabled }: TProject.Props) {
         </Card>
       ) : null}
 
-      <ProjectVote
-        projectId={project.id}
-        criteria={[
-          {
-            message: "Criteria 1",
-            score: 0,
-          },
-          {
-            message:
-              "Criteria 2 hqsdfh qsdklfhqs klfqshfkl qshfkqs fqsklhf klsdhf qsklfhql kjhqsdfkqhsfklqs fklqs kflqsh fkjlqsdhfkqshfkqsjh fkqsh fqsfklqsh fkjlqsh dhkqsdh fkjqsdhfk qsd",
-            score: 3,
-          },
-        ]}
-      />
+      {votes ? <ProjectVote projectId={project.id} votes={votes} /> : null}
     </div>
   );
 }

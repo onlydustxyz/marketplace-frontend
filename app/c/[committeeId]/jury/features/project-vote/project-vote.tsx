@@ -9,7 +9,7 @@ import { Typography } from "components/layout/typography/typography";
 
 import { useIntl } from "hooks/translate/use-translate";
 
-export function ProjectVote({ criteria }: TProjectVote.Props) {
+export function ProjectVote({ votes }: TProjectVote.Props) {
   const { T } = useIntl();
 
   // useMutationAlert({
@@ -26,13 +26,13 @@ export function ProjectVote({ criteria }: TProjectVote.Props) {
     mode: "all",
     resolver: zodResolver(TProjectVote.validation),
     defaultValues: {
-      criteria,
+      votes,
     },
   });
 
   const { fields } = useFieldArray({
     control,
-    name: "criteria",
+    name: "votes",
   });
 
   function handleFormSubmit(values: TProjectVote.form) {
@@ -55,22 +55,22 @@ export function ProjectVote({ criteria }: TProjectVote.Props) {
           <li key={f.id}>
             <Controller
               control={control}
-              name={`criteria.${index}`}
+              name={`votes.${index}`}
               render={({ field, fieldState }) => {
                 return (
                   <li className={"flex items-start justify-between gap-3"}>
                     <Typography variant={"body-s-bold"} className={"pt-1 text-spaceBlue-200"}>
-                      {f.message}
+                      {f.criteria}
                     </Typography>
                     <div className={"shrink-0"}>
                       <DustScore
-                        initialScore={f.score}
-                        onScoreChange={score =>
+                        initialScore={f.vote ?? 0}
+                        onScoreChange={vote =>
                           setValue(
-                            `criteria.${index}`,
+                            `votes.${index}`,
                             {
                               ...field.value,
-                              score,
+                              vote,
                             },
                             { shouldDirty: true, shouldValidate: true }
                           )
