@@ -99,6 +99,10 @@
         "one": "open issue",
         "many": "open issues"
       }
+    },
+    "error": {
+      "title": "We can't find the project",
+      "description": "Please try again or _contact us_ if the problem persists."
     }
   }
 }
