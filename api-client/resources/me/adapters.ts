@@ -3,6 +3,7 @@ import { FetchAdapaterConstructor } from "api-client/adapter/fetch/fetch-adapter
 enum Paths {
   hackathonRegistrations = "hackathonRegistrations",
   getMyCommitteeAssignments = "getMyCommitteeAssignments",
+  getMyCommitteeAssignmentProject = "getMyCommitteeAssignmentProject",
 }
 
 const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
@@ -12,6 +13,10 @@ const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
   },
   getMyCommitteeAssignments: {
     url: "me/committees/:committeeId",
+    method: "GET",
+  },
+  getMyCommitteeAssignmentProject: {
+    url: "me/committees/:committeeId/projects/:projectId",
     method: "GET",
   },
 };
