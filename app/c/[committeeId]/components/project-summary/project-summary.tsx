@@ -18,7 +18,9 @@ export function ProjectSummary({ project }: TProjectSummary.Props) {
         <Avatar src={project.logoUrl} size={"2xl"} shape={"square"} isBordered={false} />
 
         <div className={"grid flex-1 gap-2"}>
-          <Typography variant={"title-m"}>{project.name}</Typography>
+          <Typography variant={"title-m"} className={"truncate"}>
+            {project.name}
+          </Typography>
 
           {project.projectLeads?.length ? (
             <ul className={"flex flex-wrap gap-x-3 gap-y-1"}>

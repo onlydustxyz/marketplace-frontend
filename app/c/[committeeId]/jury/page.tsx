@@ -9,14 +9,16 @@ import { CommitteeJuryPrivatePage } from "app/c/[committeeId]/jury/features/priv
 export default function CommitteeJuryPage() {
   const { isAuthenticated, isLoading } = useAuth0();
 
-  if (isLoading) {
-    return <CommitteeLoadingPage />;
-  }
-
   return (
-    <div className="scrollbar-sm my-auto flex items-start justify-center">
-      <div className="max-w-full overflow-hidden px-6 py-12">
-        {isAuthenticated ? <CommitteeJuryPrivatePage /> : <CommitteePublicPage type={"jury"} />}
+    <div className="scrollbar-sm my-auto flex w-full items-start justify-center">
+      <div className="w-full overflow-hidden px-6 py-12">
+        {isLoading ? (
+          <CommitteeLoadingPage />
+        ) : isAuthenticated ? (
+          <CommitteeJuryPrivatePage />
+        ) : (
+          <CommitteePublicPage type={"jury"} />
+        )}
       </div>
     </div>
   );

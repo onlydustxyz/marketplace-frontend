@@ -13,6 +13,10 @@ export default function CommitteeApplicantPage() {
   const { isAuthenticated, isLoading } = useAuth0();
 
   const Page = useMemo(() => {
+    if (isLoading) {
+      return <CommitteeLoadingPage />;
+    }
+
     if (isAuthenticated && !hasSubmitted) {
       return <CommitteeApplicantPrivatePage onSuccessSubmit={() => setHasSubmitted(true)} />;
     }
@@ -22,15 +26,11 @@ export default function CommitteeApplicantPage() {
     }
 
     return <CommitteePublicPage type="applicant" />;
-  }, [hasSubmitted, isAuthenticated]);
-
-  if (isLoading) {
-    return <CommitteeLoadingPage />;
-  }
+  }, [isLoading, hasSubmitted, isAuthenticated]);
 
   return (
-    <div className="scrollbar-sm my-auto flex items-start justify-center">
-      <div className="max-w-full overflow-hidden px-6 py-12">{Page}</div>
+    <div className="scrollbar-sm my-auto flex w-full items-start justify-center">
+      <div className="w-full overflow-hidden px-6 py-12">{Page}</div>
     </div>
   );
 }
