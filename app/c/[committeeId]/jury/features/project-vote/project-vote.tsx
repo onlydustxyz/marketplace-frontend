@@ -23,7 +23,11 @@ export function ProjectVote({ votes }: TProjectVote.Props) {
   const status = useContext(StatusContext);
   const canVote = status === "OPEN_TO_VOTES";
 
-  const { mutate, isPending, ...restMutation } = meApiClient.mutations.useUpdateCommitteeProjectApplication({
+  const {
+    mutate: _m,
+    isPending,
+    ...restMutation
+  } = meApiClient.mutations.useUpdateCommitteeProjectApplication({
     committeeId: "committeeId",
     projectId: "projectId",
   });
