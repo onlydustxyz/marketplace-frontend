@@ -1,8 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { meApiClient } from "api-client/resources/me";
+import { useContext } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 import { TProjectVote } from "app/c/[committeeId]/jury/features/project-vote/project-vote.types";
+import { StatusContext } from "app/c/[committeeId]/jury/utils/status-context";
 
 import useMutationAlert from "src/api/useMutationAlert";
 import { Spinner } from "src/components/Spinner/Spinner";
@@ -17,6 +19,9 @@ import { useIntl } from "hooks/translate/use-translate";
 
 export function ProjectVote({ votes }: TProjectVote.Props) {
   const { T } = useIntl();
+
+  const status = useContext(StatusContext);
+  const canVote = status === "OPEN_TO_VOTES";
 
   const { mutate, isPending, ...restMutation } = meApiClient.mutations.useUpdateCommitteeProjectApplication({
     committeeId: "committeeId",
@@ -47,6 +52,8 @@ export function ProjectVote({ votes }: TProjectVote.Props) {
   });
 
   function handleFormSubmit(values: TProjectVote.form) {
+    if (!canVote) return null;
+
     // TODO @hayden test when contract has been updated
     console.log({ values });
 
@@ -60,10 +67,14 @@ export function ProjectVote({ votes }: TProjectVote.Props) {
   }
 
   return (
-    <form className={"grid gap-6"} onSubmit={handleSubmit(handleFormSubmit)}>
+    <form className={"grid gap-6 p-4"} onSubmit={handleSubmit(handleFormSubmit)}>
       <Typography
         variant={"title-s"}
-        translate={{ token: "v2.pages.committees.jury.votingTitle" }}
+        translate={{
+          token: canVote
+            ? "v2.pages.committees.jury.private.form.titleVote"
+            : "v2.pages.committees.jury.private.form.titleReadonly",
+        }}
         className={"text-greyscale-50"}
       />
 
@@ -81,6 +92,7 @@ export function ProjectVote({ votes }: TProjectVote.Props) {
                     </Typography>
                     <div className={"shrink-0"}>
                       <DustScore
+                        canUpdate={canVote}
                         initialScore={f.vote ?? 0}
                         onScoreChange={vote =>
                           setValue(
@@ -104,18 +116,20 @@ export function ProjectVote({ votes }: TProjectVote.Props) {
         ))}
       </ul>
 
-      <footer className={"flex justify-end"}>
-        <Button
-          type={"submit"}
-          size={"s"}
-          backgroundColor={"blue"}
-          className="w-full md:w-auto"
-          disabled={!formState.isValid || isPending}
-        >
-          {isPending ? <Spinner className="h-4 w-4" /> : <Icon remixName={"ri-check-line"} size={16} />}
-          <Translate token={"v2.commons.form.submit"} />
-        </Button>
-      </footer>
+      {canVote ? (
+        <footer className={"flex justify-end"}>
+          <Button
+            type={"submit"}
+            size={"s"}
+            backgroundColor={"blue"}
+            className="w-full md:w-auto"
+            disabled={!formState.isValid || isPending}
+          >
+            {isPending ? <Spinner className="h-4 w-4" /> : <Icon remixName={"ri-check-line"} size={16} />}
+            <Translate token={"v2.commons.form.submit"} />
+          </Button>
+        </footer>
+      ) : null}
     </form>
   );
 }
