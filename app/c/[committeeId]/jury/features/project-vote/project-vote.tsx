@@ -48,13 +48,14 @@ export function ProjectVote({ votes }: TProjectVote.Props) {
 
   function handleFormSubmit(values: TProjectVote.form) {
     // TODO @hayden test when contract has been updated
-    mutate({
-      votes: values.votes.map(v => ({
-        criteriaId: v.criteriaId,
-        vote: v.vote,
-      })),
-    });
+    console.log({ values });
 
+    // mutate({
+    //   votes: values.votes.map(v => ({
+    //     criteriaId: v.criteriaId,
+    //     vote: v.vote,
+    //   })),
+    // });
     // TODO @hayden invalidate/refetch
   }
 
