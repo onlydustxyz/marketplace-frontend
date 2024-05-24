@@ -4,6 +4,7 @@ enum Paths {
   hackathonRegistrations = "hackathonRegistrations",
   getMyCommitteeAssignments = "getMyCommitteeAssignments",
   getMyCommitteeAssignmentProject = "getMyCommitteeAssignmentProject",
+  updateMyCommitteeAssignmentProject = "updateMyCommitteeAssignmentProject",
 }
 
 const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
@@ -18,6 +19,10 @@ const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
   getMyCommitteeAssignmentProject: {
     url: "me/committees/:committeeId/projects/:projectId",
     method: "GET",
+  },
+  updateMyCommitteeAssignmentProject: {
+    url: "me/committees/:committeeId/projects/:projectId",
+    method: "PUT",
   },
 };
 

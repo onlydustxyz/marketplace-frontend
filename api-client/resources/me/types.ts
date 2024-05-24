@@ -13,3 +13,11 @@ export interface GetMyCommitteeAssignmentsResponse extends MyCommitteeAssignment
 
 type MyCommitteeAssignmentResponse = components["schemas"]["MyCommitteeAssignmentResponse"];
 export interface GetMyCommitteeAssignmentResponse extends MyCommitteeAssignmentResponse {}
+
+export interface UpdateMyCommitteeAssignmentParams {
+  committeeId: string;
+  projectId: string;
+}
+
+type VoteForCommitteeAssignmentRequest = components["schemas"]["VoteForCommitteeAssignmentRequest"];
+export interface UpdateMyCommitteeAssignmentVariables extends VoteForCommitteeAssignmentRequest {}
