@@ -8,22 +8,18 @@ import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 import { TPrivatePage } from "app/c/[committeeId]/applicant/features/private-page/private-page.types";
 import { ProjectSelection } from "app/c/[committeeId]/applicant/features/project-selection/project-selection";
-import { ReadOnlySection } from "app/c/[committeeId]/applicant/features/read-only-section/read-only-section";
-import { Steps } from "app/c/[committeeId]/applicant/features/steps/steps";
+import { ProjectSummary } from "app/c/[committeeId]/components/project-summary/project-summary";
+import { ReadOnlyQuestions } from "app/c/[committeeId]/components/read-only-questions/read-only-questions";
+import { Steps } from "app/c/[committeeId]/components/steps/steps";
 import { CommitteeErrorPage } from "app/c/[committeeId]/features/error-page/error-page";
 
 import useMutationAlert from "src/api/useMutationAlert";
 import { IMAGES } from "src/assets/img";
-import MarkdownPreview from "src/components/MarkdownPreview";
 import { Spinner } from "src/components/Spinner/Spinner";
 
-import { Avatar } from "components/ds/avatar/avatar";
 import { Button } from "components/ds/button/button";
-import { Card } from "components/ds/card/card";
 import { Textarea } from "components/ds/form/textarea/textarea";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
-import { Tag } from "components/ds/tag/tag";
-import { Contributor } from "components/features/contributor/contributor";
 import { Icon } from "components/layout/icon/icon";
 import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 import { Translate } from "components/layout/translate/translate";
@@ -256,7 +252,7 @@ export function CommitteeApplicantPrivatePage() {
       );
     }
 
-    return <ReadOnlySection questions={data?.projectQuestions || []} />;
+    return <ReadOnlyQuestions questions={data?.projectQuestions || []} />;
   }, [canSubmit, data, fields, isInitialLoadingRef.current]);
 
   if (isError) {
@@ -293,57 +289,7 @@ export function CommitteeApplicantPrivatePage() {
             <>
               <div className={"grid gap-4"}>
                 <ProjectSelection projectId={projectId} onChange={handleProjectChange} isLoading={isFetching} />
-
-                {data?.projectInfos ? (
-                  <Card className={"grid gap-4 shadow-light"}>
-                    <header className={"flex gap-4"}>
-                      <Avatar src={data.projectInfos.logoUrl} size={"2xl"} shape={"square"} isBordered={false} />
-
-                      <div className={"grid flex-1 gap-2"}>
-                        <Typography variant={"title-m"}>{data.projectInfos.name}</Typography>
-
-                        {data.projectInfos.projectLeads?.length ? (
-                          <ul className={"flex flex-wrap gap-x-3 gap-y-1"}>
-                            {data.projectInfos.projectLeads.map(lead => (
-                              <li key={lead.id}>
-                                <Contributor
-                                  login={lead.login}
-                                  githubUserId={lead.githubUserId}
-                                  avatarUrl={lead.avatarUrl}
-                                  isRegistered={false}
-                                  typograhy={{ variant: "body-s-bold" }}
-                                />
-                              </li>
-                            ))}
-                          </ul>
-                        ) : null}
-                      </div>
-                    </header>
-
-                    {data.projectInfos.longDescription ? (
-                      <MarkdownPreview>{data.projectInfos.longDescription}</MarkdownPreview>
-                    ) : null}
-
-                    {data.projectInfos.last3monthsMetrics ? (
-                      <>
-                        <Typography
-                          variant={"title-s"}
-                          translate={{ token: "v2.pages.committees.applicant.private.project.metrics.title" }}
-                        />
-                        <ul className={"flex flex-wrap gap-2.5"}>
-                          {Object.entries(data.projectInfos.last3monthsMetrics).map(([key, value]) => (
-                            <Tag key={key} as={"li"} shape={"square"}>
-                              <span>{value}</span>
-                              <span className={"text-spaceBlue-200"}>
-                                {T(`v2.pages.committees.applicant.private.project.metrics.${key}`, { count: value })}
-                              </span>
-                            </Tag>
-                          ))}
-                        </ul>
-                      </>
-                    ) : null}
-                  </Card>
-                ) : null}
+                <ProjectSummary project={data?.projectInfos} />
               </div>
 
               {data?.projectInfos?.id && data?.projectQuestions.length ? (

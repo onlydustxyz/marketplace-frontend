@@ -1,7 +1,7 @@
 import { meApiClient } from "api-client/resources/me";
 import { useParams } from "next/navigation";
 
-import { Steps } from "app/c/[committeeId]/applicant/features/steps/steps";
+import { Steps } from "app/c/[committeeId]/components/steps/steps";
 import { CommitteeErrorPage } from "app/c/[committeeId]/features/error-page/error-page";
 import { CommitteeLoadingPage } from "app/c/[committeeId]/features/loading-page/loading-page";
 import { ProjectsAccordion } from "app/c/[committeeId]/jury/features/projects-accordion/projects-accordion";
@@ -21,12 +21,16 @@ export function CommitteeJuryPrivatePage() {
     typeof committeeId === "string" ? committeeId : ""
   );
 
-  if (isError || !data) {
+  if (isError) {
     return <CommitteeErrorPage type={"jury"} />;
   }
 
   if (isLoading) {
     return <CommitteeLoadingPage />;
+  }
+
+  if (!data) {
+    return <CommitteeErrorPage type={"jury"} />;
   }
 
   const [descStart, descEnd] = T("v2.pages.committees.jury.private.description").split("__link__");

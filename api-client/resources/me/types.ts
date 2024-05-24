@@ -5,7 +5,10 @@ export interface UpdateHackathonsRegistrationsParams {
   hackathonSlug: string;
 }
 
-type MyCommitteeAssignmentsResponse = components["schemas"]["MyCommitteeAssignmentsResponse"];
 export type CommitteeAssignmentLinkResponse = components["schemas"]["CommitteeAssignmentLinkResponse"];
 
+type MyCommitteeAssignmentsResponse = components["schemas"]["MyCommitteeAssignmentsResponse"];
 export interface GetMyCommitteeAssignmentsResponse extends MyCommitteeAssignmentsResponse {}
+
+type MyCommitteeAssignmentResponse = components["schemas"]["MyCommitteeAssignmentResponse"];
+export interface GetMyCommitteeAssignmentResponse extends MyCommitteeAssignmentResponse {}
