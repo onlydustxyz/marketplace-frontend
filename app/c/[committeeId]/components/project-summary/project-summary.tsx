@@ -3,12 +3,9 @@ import { TProjectSummary } from "app/c/[committeeId]/components/project-summary/
 import MarkdownPreview from "src/components/MarkdownPreview";
 
 import { Avatar } from "components/ds/avatar/avatar";
-import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
 import { Tag } from "components/ds/tag/tag";
 import { Contributor } from "components/features/contributor/contributor";
-import { BaseLink } from "components/layout/base-link/base-link";
-import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
@@ -26,11 +23,11 @@ export function ProjectSummary({ project }: TProjectSummary.Props) {
               {project.name}
             </Typography>
 
-            <BaseLink href={""}>
-              <Button as={"div"} size="s" variant="secondary" iconOnly className="h-8 w-8 rounded-xl p-2">
-                <Icon remixName={"ri-github-fill"} size={16} />
-              </Button>
-            </BaseLink>
+            {/*<BaseLink href={""}>*/}
+            {/*  <Button as={"div"} size="s" variant="secondary" iconOnly className="h-8 w-8 rounded-xl p-2">*/}
+            {/*    <Icon remixName={"ri-github-fill"} size={16} />*/}
+            {/*  </Button>*/}
+            {/*</BaseLink>*/}
           </div>
 
           {project.projectLeads?.length ? (
