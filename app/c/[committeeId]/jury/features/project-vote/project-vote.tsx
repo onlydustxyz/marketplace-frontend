@@ -1,10 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { meApiClient } from "api-client/resources/me";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 import { TProjectVote } from "app/c/[committeeId]/jury/features/project-vote/project-vote.types";
 
+import useMutationAlert from "src/api/useMutationAlert";
+import { Spinner } from "src/components/Spinner/Spinner";
+
 import { Button } from "components/ds/button/button";
 import { DustScore } from "components/features/dust-score/dust-score";
+import { Icon } from "components/layout/icon/icon";
+import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 import { useIntl } from "hooks/translate/use-translate";
@@ -12,15 +18,20 @@ import { useIntl } from "hooks/translate/use-translate";
 export function ProjectVote({ votes }: TProjectVote.Props) {
   const { T } = useIntl();
 
-  // useMutationAlert({
-  //     mutation: restMutation,
-  //     success: {
-  //         message: T("v2.pages.committees.applicant.private.form.success"),
-  //     },
-  //     error: {
-  //         default: true,
-  //     },
-  // });
+  const { mutate, isPending, ...restMutation } = meApiClient.mutations.useUpdateCommitteeProjectApplication({
+    committeeId: "committeeId",
+    projectId: "projectId",
+  });
+
+  useMutationAlert({
+    mutation: restMutation,
+    success: {
+      message: T("v2.pages.committees.jury.private.form.success"),
+    },
+    error: {
+      default: true,
+    },
+  });
 
   const { handleSubmit, control, setValue, formState } = useForm<TProjectVote.form>({
     mode: "all",
@@ -36,10 +47,15 @@ export function ProjectVote({ votes }: TProjectVote.Props) {
   });
 
   function handleFormSubmit(values: TProjectVote.form) {
-    // TODO
-    console.log({ values });
+    // TODO @hayden test when contract has been updated
+    mutate({
+      votes: values.votes.map(v => ({
+        criteriaId: v.criteriaId,
+        vote: v.vote,
+      })),
+    });
 
-    // TODO invalidate/refetch
+    // TODO @hayden invalidate/refetch
   }
 
   return (
@@ -93,12 +109,10 @@ export function ProjectVote({ votes }: TProjectVote.Props) {
           size={"s"}
           backgroundColor={"blue"}
           className="w-full md:w-auto"
-          // TODO
-          //disabled={isLoading || !formState.isValid || isPending}
-          disabled={!formState.isValid}
+          disabled={!formState.isValid || isPending}
         >
-          {/*{isPending ? <Spinner className="h-4 w-4" /> : <Icon remixName={"ri-check-line"} size={24} />}{" "}*/}
-          {T("v2.commons.form.submit")}
+          {isPending ? <Spinner className="h-4 w-4" /> : <Icon remixName={"ri-check-line"} size={16} />}
+          <Translate token={"v2.commons.form.submit"} />
         </Button>
       </footer>
     </form>
