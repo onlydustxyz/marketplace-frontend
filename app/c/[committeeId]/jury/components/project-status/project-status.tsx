@@ -22,7 +22,7 @@ export function ProjectStatus({ score }: TProjectStatus.Props) {
           {score} <OnlyDust className={"h-3.5 w-3.5"} />
         </>
       ) : (
-        <Translate token={"v2.pages.committees.jury.notStarted"} />
+        <Translate token={"v2.pages.committees.jury.private.notStarted"} />
       )}
     </Typography>
   );
