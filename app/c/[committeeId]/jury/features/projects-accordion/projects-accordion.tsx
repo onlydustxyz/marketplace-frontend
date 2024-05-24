@@ -1,7 +1,9 @@
+import { Selection } from "@nextui-org/react";
 import { Accordion, AccordionItem } from "@nextui-org/react";
+import { useState } from "react";
 
 import { ProjectStatus } from "app/c/[committeeId]/jury/components/project-status/project-status";
-import { ProjectVote } from "app/c/[committeeId]/jury/features/project-vote/project-vote";
+import { Project } from "app/c/[committeeId]/jury/features/project/project";
 import { TProjectAccordion } from "app/c/[committeeId]/jury/features/projects-accordion/projects-accordion.types";
 
 import { cn } from "src/utils/cn";
@@ -11,8 +13,15 @@ import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
 export function ProjectsAccordion({ projectAssignments }: TProjectAccordion.Props) {
+  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set());
+
   return (
-    <Accordion variant="splitted" className="!gap-8 !p-0">
+    <Accordion
+      variant="splitted"
+      className="!gap-8 !p-0"
+      selectedKeys={selectedKeys}
+      onSelectionChange={setSelectedKeys}
+    >
       {projectAssignments.map(({ project, score }) => (
         <AccordionItem
           key={project.id}
@@ -51,23 +60,7 @@ export function ProjectsAccordion({ projectAssignments }: TProjectAccordion.Prop
           )}
           disableIndicatorAnimation
         >
-          <div>project</div>
-          <div>questions</div>
-
-          <ProjectVote
-            projectId={project.id}
-            criteria={[
-              {
-                message: "Criteria 1",
-                score: 0,
-              },
-              {
-                message:
-                  "Criteria 2 hqsdfh qsdklfhqs klfqshfkl qshfkqs fqsklhf klsdhf qsklfhql kjhqsdfkqhsfklqs fklqs kflqsh fkjlqsdhfkqshfkqsjh fkqsh fqsfklqsh fkjlqsh dhkqsdh fkjqsdhfk qsd",
-                score: 3,
-              },
-            ]}
-          />
+          <Project projectId={project.id} enabled={selectedKeys instanceof Set && selectedKeys.has(project.id)} />
         </AccordionItem>
       ))}
     </Accordion>

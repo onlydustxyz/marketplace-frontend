@@ -8,7 +8,10 @@ import { GetMyCommitteeAssignmentResponse } from "api-client/resources/me/types"
 
 type Params = Parameters<typeof getMyCommitteeAssignmentProject>;
 
-export const useGetMyCommitteeAssignmentProject = (committeeId: Params[0], projectId: Params[1]) => {
+export const useGetMyCommitteeAssignmentProject = (
+  { committeeId, projectId }: { committeeId: Params[0]; projectId: Params[1] },
+  { enabled }: { enabled?: boolean }
+) => {
   const { query } = useReactQueryAdapter<GetMyCommitteeAssignmentResponse>(
     getMyCommitteeAssignmentProject(committeeId, projectId)
   );
@@ -16,6 +19,6 @@ export const useGetMyCommitteeAssignmentProject = (committeeId: Params[0], proje
 
   return useQuery<GetMyCommitteeAssignmentResponse>({
     ...query,
-    enabled: Boolean(committeeId) && Boolean(projectId) && isAuthenticated,
+    enabled: enabled && Boolean(committeeId) && Boolean(projectId) && isAuthenticated,
   });
 };
