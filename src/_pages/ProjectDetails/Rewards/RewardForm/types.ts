@@ -25,4 +25,5 @@ export type Inputs = {
   remainingBudget: number;
   currency: Money.Currency;
   amountToWire: number;
+  amountInDollars: number;
 };

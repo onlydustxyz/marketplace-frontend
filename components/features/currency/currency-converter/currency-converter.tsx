@@ -24,8 +24,8 @@ export function CurrencyConverter({ className, budgets, onChange }: TCurrencyCon
   });
 
   useEffect(() => {
-    onChange({ amount: currencyAmount });
-  }, [currencyAmount]);
+    onChange({ amount: currencyAmount, amountInDollars: usdValue });
+  }, [currencyAmount, usdValue]);
 
   useEffect(() => {
     if (currencySelection) {
