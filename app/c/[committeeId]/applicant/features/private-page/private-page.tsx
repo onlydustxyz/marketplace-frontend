@@ -16,6 +16,7 @@ import useMutationAlert from "src/api/useMutationAlert";
 import { IMAGES } from "src/assets/img";
 import MarkdownPreview from "src/components/MarkdownPreview";
 import { Spinner } from "src/components/Spinner/Spinner";
+import { usePosthog } from "src/hooks/usePosthog";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { Button } from "components/ds/button/button";
@@ -33,6 +34,7 @@ import { Key, useIntl } from "hooks/translate/use-translate";
 
 export function CommitteeApplicantPrivatePage({ onSuccessSubmit }: { onSuccessSubmit: () => void }) {
   const { T } = useIntl();
+  const { capture } = usePosthog();
   const router = useRouter();
   const pathname = usePathname();
   const { committeeId } = useParams();
@@ -42,7 +44,6 @@ export function CommitteeApplicantPrivatePage({ onSuccessSubmit }: { onSuccessSu
 
   const isInitialLoadingRef = useRef(true);
   const statusRef = useRef<GetCommitteeProjectApplicationResponse["status"]>();
-
   const {
     data,
     isError,
@@ -52,6 +53,12 @@ export function CommitteeApplicantPrivatePage({ onSuccessSubmit }: { onSuccessSu
     committeeId: typeof committeeId === "string" ? committeeId : "",
     projectId,
   });
+
+  useEffect(() => {
+    if (data) {
+      capture("committee_application_viewed", { committee_id: committeeId });
+    }
+  }, [data]);
 
   useEffect(() => {
     if (isError && initialProjectId) {
@@ -136,6 +143,12 @@ export function CommitteeApplicantPrivatePage({ onSuccessSubmit }: { onSuccessSu
         })),
       })
       .then(() => {
+        capture("committee_application_sent", {
+          committee_id: committeeId,
+          project_id: values.projectId,
+          project_slug: data?.projectInfos?.slug,
+          isUpdate: data?.hasStartedApplication || false,
+        });
         refetchCommetteeProjectApplication();
       });
   }
