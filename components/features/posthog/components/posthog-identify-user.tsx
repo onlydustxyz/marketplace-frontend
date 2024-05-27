@@ -17,9 +17,9 @@ export function PosthogIdentifyUser() {
 
   useEffect(() => {
     if (isAuthenticated && githubUserId && data) {
-      const { isAdmin: admin, createdAt: created_at, githubUserId: github_user_id, id, email } = data;
+      const { isAdmin: admin, createdAt: created_at, githubUserId: github_user_id, id, email, projectsLed = [] } = data;
 
-      identify(id, { admin, created_at, email, github_user_id });
+      identify(id, { admin, created_at, email, github_user_id, lead_on: projectsLed.length });
 
       if (githubUserId !== github_user_id) {
         capture("impersonated");
