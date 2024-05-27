@@ -13,6 +13,7 @@ import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import MeApi from "src/api/me";
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
+import { usePosthog } from "src/hooks/usePosthog";
 import { useSessionStorage } from "src/hooks/useStorage/useStorage";
 import { useShowToaster } from "src/hooks/useToaster";
 import { MoreInfosField } from "src/types";
@@ -99,6 +100,7 @@ export function EditProvider({ children, project }: EditContextProps) {
   const searchParams = useSearchParams();
   const installation_id = searchParams.get("installation_id") ?? "";
   const [inGithubWorkflow, setInGithubWorkflow] = useState(false);
+  const { capture } = usePosthog();
 
   const { refetchOnWindowFocus, refetchInterval, onRefetching, onForcePooling } = usePooling({
     limites: 4,
@@ -273,7 +275,7 @@ export function EditProvider({ children, project }: EditContextProps) {
     formStorage.removeValue();
   }, []);
 
-  const { mutate: updateProject, isPending: isSubmitting } = ProjectApi.mutations.useUpdateProject({
+  const { mutateAsync: updateProject, isPending: isSubmitting } = ProjectApi.mutations.useUpdateProject({
     params: { projectId: project?.id, projectSlug: project?.slug },
     options: {
       onSuccess: async (data, queryClient) => {
@@ -307,6 +309,8 @@ export function EditProvider({ children, project }: EditContextProps) {
       githubRepoIds,
       moreInfos: (moreInfos || []).filter(info => info.url !== "").map(info => ({ url: info.url, value: info.value })),
       ecosystemIds: ecosystems?.map(ecosystem => `${ecosystem.id}`),
+    }).then(() => {
+      capture("project_information_changed");
     });
   };
 
