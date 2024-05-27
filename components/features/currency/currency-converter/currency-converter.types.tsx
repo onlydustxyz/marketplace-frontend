@@ -7,6 +7,7 @@ export namespace TCurrencyConverter {
 
   export interface CurrencyAmount {
     amount?: string;
+    amountInDollars?: string;
     currency?: Money.Currency;
   }
 
