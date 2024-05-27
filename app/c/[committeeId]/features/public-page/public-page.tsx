@@ -21,7 +21,7 @@ export function CommitteePublicPage({ type }: { type: "applicant" | "jury" }) {
   }
 
   return (
-    <Card className="relative flex max-w-3xl justify-center px-6 pb-12 pt-20 lg:px-12 xl:px-24" padded={false}>
+    <Card className="relative m-auto flex max-w-3xl justify-center px-6 pb-12 pt-20 lg:px-12 xl:px-24" padded={false}>
       <div className="absolute -top-10">
         <OnlyDustLogo width={OnlyDustLogoWidth.Large} />
       </div>

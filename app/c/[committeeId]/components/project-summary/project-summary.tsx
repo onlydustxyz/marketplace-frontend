@@ -1,15 +1,24 @@
 import { TProjectSummary } from "app/c/[committeeId]/components/project-summary/project-summary.types";
 
+import { useStackProjectOverview } from "src/App/Stacks/Stacks";
 import MarkdownPreview from "src/components/MarkdownPreview";
 
 import { Avatar } from "components/ds/avatar/avatar";
+import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
 import { Tag } from "components/ds/tag/tag";
 import { Contributor } from "components/features/contributor/contributor";
+import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 export function ProjectSummary({ project }: TProjectSummary.Props) {
+  const [openProjectOverview] = useStackProjectOverview();
+
+  function handleViewProject() {
+    openProjectOverview({ slug: project?.slug });
+  }
+
   if (!project) return null;
 
   return (
@@ -23,11 +32,16 @@ export function ProjectSummary({ project }: TProjectSummary.Props) {
               {project.name}
             </Typography>
 
-            {/*<BaseLink href={""}>*/}
-            {/*  <Button as={"div"} size="s" variant="secondary" iconOnly className="h-8 w-8 rounded-xl p-2">*/}
-            {/*    <Icon remixName={"ri-github-fill"} size={16} />*/}
-            {/*  </Button>*/}
-            {/*</BaseLink>*/}
+            <Button
+              type={"button"}
+              size="s"
+              variant="secondary"
+              iconOnly
+              className="h-8 w-8 rounded-xl p-2"
+              onClick={handleViewProject}
+            >
+              <Icon remixName={"ri-eye-line"} size={16} />
+            </Button>
           </div>
 
           {project.projectLeads?.length ? (
