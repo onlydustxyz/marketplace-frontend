@@ -150,7 +150,6 @@ export function CommitteeApplicantPrivatePage({ onSuccessSubmit }: { onSuccessSu
           isUpdate: data?.hasStartedApplication || false,
         });
         refetchCommetteeProjectApplication();
-        // committee_application_sent
       });
   }
 
