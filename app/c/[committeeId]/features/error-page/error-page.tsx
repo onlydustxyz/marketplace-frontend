@@ -1,6 +1,4 @@
-import OnlyDustCrashedLogo from "src/assets/icons/OnlyDustCrashedLogo";
-
-import { Typography } from "components/layout/typography/typography";
+import { Error } from "components/layout/error/error";
 
 import { useIntl } from "hooks/translate/use-translate";
 
@@ -11,29 +9,26 @@ export function CommitteeErrorPage({ type }: { type: "applicant" | "jury" }) {
   const isApplicant = type === "applicant";
 
   return (
-    <div className="relative flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-card-background-base">
+    <div className="relative m-auto flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-card-background-base">
       <div className="w-full bg-mosaic bg-cover pb-1.5" />
 
-      <div className={"grid place-items-center gap-8 p-12"}>
-        <OnlyDustCrashedLogo />
-
-        <div className="grid gap-4 text-center">
-          <Typography
-            variant={"title-l"}
-            translate={{
-              token: isApplicant
-                ? "v2.pages.committees.applicant.private.error.title"
-                : "v2.pages.committees.jury.private.error.title",
-            }}
-          />
-          <Typography variant={"body-l"} className={"text-spaceBlue-200"}>
-            {descStart}
-            <a className="underline" href={"mailto:contact@onlydust.xyz"}>
-              {descLink}
-            </a>
-            {descEnd}
-          </Typography>
-        </div>
+      <div className={"p-12"}>
+        <Error
+          title={T(
+            isApplicant
+              ? "v2.pages.committees.applicant.private.error.title"
+              : "v2.pages.committees.jury.private.error.title"
+          )}
+          message={
+            <>
+              {descStart}
+              <a className="underline" href={"mailto:contact@onlydust.xyz"}>
+                {descLink}
+              </a>
+              {descEnd}
+            </>
+          }
+        />
       </div>
     </div>
   );
