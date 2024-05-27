@@ -6,6 +6,7 @@ import SponsorApi from "src/api/Sponsors";
 import useMutationAlert from "src/api/useMutationAlert";
 import { Spinner } from "src/components/Spinner/Spinner";
 import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
+import { usePosthog } from "src/hooks/usePosthog";
 import { useCloseStack } from "src/libs/react-stack";
 import { cn } from "src/utils/cn";
 
@@ -31,6 +32,7 @@ const shortcuts = [25, 50, 75, 100] as const;
 export function SponsorProjectStack({ project, initialSponsorId }: TSponsorProjectStack.Props) {
   const { T } = useIntl();
   const closeStack = useCloseStack();
+  const { capture } = usePosthog();
 
   const { user } = useCurrentUser();
 
@@ -128,6 +130,8 @@ export function SponsorProjectStack({ project, initialSponsorId }: TSponsorProje
       amount: currencyAmountFloat,
       currencyId: currencySelection?.id ?? "",
     });
+
+    capture("project_budget_allocated", { project_id: selectedProjectId, sponsor_id: sponsorId });
 
     closeStack();
   }
