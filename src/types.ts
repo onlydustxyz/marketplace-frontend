@@ -253,7 +253,7 @@ export enum RewardDisabledReason {
   GithubApp = "GithubApp", // Problem with Github App installation
 }
 
-export type ShortProject = components["schemas"]["ShortProjectResponse"];
+export type ShortProject = components["schemas"]["ProjectShortResponse"];
 
 export type ShortRepo = components["schemas"]["ShortGithubRepoResponse"];
 
