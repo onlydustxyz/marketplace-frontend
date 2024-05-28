@@ -42,8 +42,7 @@ export function Wrapper({ children }: PropsWithChildren) {
           justifyContent: "space-between",
           alignItems: "center",
           zIndex: 2,
-          paddingLeft: 72,
-          paddingRight: 63,
+          padding: 72,
         }}
       >
         {children}

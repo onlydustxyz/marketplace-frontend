@@ -9,6 +9,8 @@ export function PublicProfileImageMetadata({
   login,
   image,
   data,
+  rank,
+  rankPercentile,
   topLanguages,
   rewardsCount,
   contributionCount,
@@ -16,7 +18,15 @@ export function PublicProfileImageMetadata({
 }: TPublicProfileImageMetadata.Props) {
   return (
     <Wrapper>
-      <OgContent image={image} login={login} title={title} topLanguages={topLanguages} topEcosystem={topEcosystem} />
+      <OgContent
+        image={image}
+        login={login}
+        title={title}
+        topLanguages={topLanguages}
+        topEcosystem={topEcosystem}
+        rank={rank}
+        rankPercentile={rankPercentile}
+      />
       <OGActivityGraph data={data} rewards={rewardsCount} contribution={contributionCount} />
     </Wrapper>
   );
