@@ -5,7 +5,7 @@
   },
   "processing": {
     "label": "Processing",
-    "tooltip": "Reward is being processed by our team, usually within 2 weeks"
+    "tooltip": "Reward is being processed by our team, it takes up to 6 business days"
   },
   "locked": {
     "label": "Locked",
