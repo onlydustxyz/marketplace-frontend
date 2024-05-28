@@ -31,6 +31,6 @@ export type UserRewardsType = {
   setFilterQueryParams: Dispatch<FilterQueryParams>;
   dateSorting: useQueryParamsSortingReturn<Fields>;
   query: UseInfiniteQueryResult<InfiniteData<UseMyRewardsInfiniteListResponse>>;
-  projects: components["schemas"]["ShortProjectResponse"][];
+  projects: components["schemas"]["ProjectShortResponse"][];
   currencies: UseGetMeRewardCurrencies["currencies"];
 };

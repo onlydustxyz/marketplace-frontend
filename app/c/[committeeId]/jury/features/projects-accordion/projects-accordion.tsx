@@ -35,13 +35,11 @@ export function ProjectsAccordion({ projectAssignments }: TProjectAccordion.Prop
             </Typography>
           }
           subtitle={
-            // TODO @hayden
-            // project.shortDescription ? (
-            //   <Typography variant="body-s" className="text-spaceBlue-200">
-            //     {project.shortDescription}
-            //   </Typography>
-            // ) : null
-            null
+            project.shortDescription ? (
+              <Typography variant="body-s" className="text-spaceBlue-200">
+                {project.shortDescription}
+              </Typography>
+            ) : null
           }
           classNames={{
             base: "!rounded-2xl !border !border-card-border-medium !bg-card-background-base !px-0 !shadow-medium",
