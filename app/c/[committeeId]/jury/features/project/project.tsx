@@ -11,7 +11,7 @@ import { Spinner } from "src/components/Spinner/Spinner";
 
 import { Card } from "components/ds/card/card";
 
-export function Project({ projectId, enabled, onSuccess }: TProject.Props) {
+export function Project({ projectId, enabled }: TProject.Props) {
   const { committeeId } = useParams();
 
   const { data, isLoading, isError } = meApiClient.queries.useGetMyCommitteeAssignmentProject(
@@ -50,7 +50,7 @@ export function Project({ projectId, enabled, onSuccess }: TProject.Props) {
         </Card>
       ) : null}
 
-      {votes ? <ProjectVote projectId={project.id} votes={votes} onSuccess={onSuccess} /> : null}
+      {votes ? <ProjectVote projectId={project.id} votes={votes} /> : null}
     </div>
   );
 }
