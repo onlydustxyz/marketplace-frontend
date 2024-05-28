@@ -20,8 +20,7 @@ export default async function Image(props: { params: { committeeId: string } }) 
         />
       ),
     });
-  } catch (err) {
-    console.log("eee", err);
+  } catch {
     return Generator({
       children: <GenericImageMetadata />,
     });
