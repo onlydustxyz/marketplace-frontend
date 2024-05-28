@@ -5,6 +5,7 @@ export namespace TProjectVote {
   export interface Props {
     projectId: string;
     votes: CommitteeJuryVoteResponse[];
+    onSuccess: () => void;
   }
 
   export const validation = z.object({
@@ -12,7 +13,7 @@ export namespace TProjectVote {
       z.object({
         criteriaId: z.string().min(1),
         criteria: z.string().min(1),
-        vote: z.number().optional(),
+        vote: z.number(),
       })
     ),
   });
