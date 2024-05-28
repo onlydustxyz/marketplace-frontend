@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { meApiClient } from "api-client/resources/me";
+import { useParams } from "next/navigation";
 import { useContext } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
@@ -17,15 +18,16 @@ import { Typography } from "components/layout/typography/typography";
 
 import { useIntl } from "hooks/translate/use-translate";
 
-export function ProjectVote({ votes }: TProjectVote.Props) {
+export function ProjectVote({ votes, projectId }: TProjectVote.Props) {
+  const { committeeId } = useParams();
   const { T } = useIntl();
 
   const { status } = useContext(CommitteeContext);
   const canVote = status === "OPEN_TO_VOTES";
 
   const { mutate, isPending, ...restMutation } = meApiClient.mutations.useUpdateCommitteeProjectApplication({
-    committeeId: "committeeId",
-    projectId: "projectId",
+    committeeId: typeof committeeId === "string" ? committeeId : "",
+    projectId,
   });
 
   useMutationAlert({
