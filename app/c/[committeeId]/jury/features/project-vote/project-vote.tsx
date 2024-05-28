@@ -18,14 +18,14 @@ import { Typography } from "components/layout/typography/typography";
 
 import { useIntl } from "hooks/translate/use-translate";
 
-export function ProjectVote({ votes, projectId }: TProjectVote.Props) {
+export function ProjectVote({ votes, projectId, onSuccess }: TProjectVote.Props) {
   const { committeeId } = useParams();
   const { T } = useIntl();
 
   const { status } = useContext(CommitteeContext);
   const canVote = status === "OPEN_TO_VOTES";
 
-  const { mutate, isPending, ...restMutation } = meApiClient.mutations.useUpdateCommitteeProjectApplication({
+  const { isPending, ...restMutation } = meApiClient.mutations.useUpdateCommitteeProjectApplication({
     committeeId: typeof committeeId === "string" ? committeeId : "",
     projectId,
   });
@@ -56,14 +56,16 @@ export function ProjectVote({ votes, projectId }: TProjectVote.Props) {
   function handleFormSubmit(values: TProjectVote.form) {
     if (!canVote) return null;
 
-    mutate({
-      votes: values.votes.map(v => ({
-        criteriaId: v.criteriaId,
-        vote: v.vote,
-      })),
-    });
-
-    // TODO @hayden refetch ?
+    restMutation
+      .mutateAsync({
+        votes: values.votes.map(v => ({
+          criteriaId: v.criteriaId,
+          vote: v.vote,
+        })),
+      })
+      .then(() => {
+        onSuccess();
+      });
   }
 
   return (

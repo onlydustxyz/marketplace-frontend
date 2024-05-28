@@ -16,7 +16,7 @@ export const useUpdateCommitteeProjectApplication = ({ committeeId, projectId }:
     ...mutation,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: [tags.committeeProject(committeeId, projectId)],
+        queryKey: [tags.committeeProject(committeeId, projectId), tags.committee(committeeId)],
         exact: false,
       });
     },
