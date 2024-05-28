@@ -23,11 +23,7 @@ export function ProjectVote({ votes }: TProjectVote.Props) {
   const { status } = useContext(CommitteeContext);
   const canVote = status === "OPEN_TO_VOTES";
 
-  const {
-    mutate: _m,
-    isPending,
-    ...restMutation
-  } = meApiClient.mutations.useUpdateCommitteeProjectApplication({
+  const { mutate, isPending, ...restMutation } = meApiClient.mutations.useUpdateCommitteeProjectApplication({
     committeeId: "committeeId",
     projectId: "projectId",
   });
@@ -58,16 +54,14 @@ export function ProjectVote({ votes }: TProjectVote.Props) {
   function handleFormSubmit(values: TProjectVote.form) {
     if (!canVote) return null;
 
-    // TODO @hayden test when contract has been updated
-    console.log({ values });
+    mutate({
+      votes: values.votes.map(v => ({
+        criteriaId: v.criteriaId,
+        vote: v.vote,
+      })),
+    });
 
-    // mutate({
-    //   votes: values.votes.map(v => ({
-    //     criteriaId: v.criteriaId,
-    //     vote: v.vote,
-    //   })),
-    // });
-    // TODO @hayden invalidate/refetch
+    // TODO @hayden refetch ?
   }
 
   return (

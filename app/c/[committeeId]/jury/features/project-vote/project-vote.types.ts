@@ -12,7 +12,7 @@ export namespace TProjectVote {
       z.object({
         criteriaId: z.string().min(1),
         criteria: z.string().min(1),
-        vote: z.number().optional(),
+        vote: z.number(),
       })
     ),
   });
