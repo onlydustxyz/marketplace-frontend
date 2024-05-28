@@ -8,7 +8,6 @@ export type CommitteeProjectInfosResponse = components["schemas"]["CommitteeProj
 export interface GetCommitteeProjectApplicationResponse extends CommitteeApplicationResponse {}
 export interface GetCommitteeProjectQuestionResponse extends CommitteeProjectQuestionResponse {}
 export interface GetCommitteePublicResponse extends CommitteePublicResponse {}
-
 export interface UpdateCommitteeProjectApplicationParams {
   committeeId: string;
   projectId: string;
