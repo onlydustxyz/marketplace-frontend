@@ -66,6 +66,8 @@ const RewardForm: React.FC = () => {
         count_contributions: formValues.workItems.length,
         project_id: project?.id,
         recipient_id: contributor?.githubUserId,
+        currency: formValues.currency.code,
+        amount_in_dollars: formValues.amountInDollars,
       });
 
       try {

@@ -10,25 +10,37 @@ import { Typography } from "components/layout/typography/typography";
 
 import { useIntl } from "hooks/translate/use-translate";
 
-export function CommitteePublicPage() {
+export function CommitteePublicPage({ type }: { type: "applicant" | "jury" }) {
   const { T } = useIntl();
   const { loginWithRedirect } = useAuth0();
+
+  const isApplicant = type === "applicant";
+
   function handleLogin() {
     handleLoginWithRedirect(loginWithRedirect);
   }
 
   return (
-    <Card className="relative flex max-w-3xl justify-center px-6 pb-12 pt-20 lg:px-12 xl:px-24" padded={false}>
+    <Card className="relative m-auto flex max-w-3xl justify-center px-6 pb-12 pt-20 lg:px-12 xl:px-24" padded={false}>
       <div className="absolute -top-10">
         <OnlyDustLogo width={OnlyDustLogoWidth.Large} />
       </div>
 
       <div className="flex flex-col items-center gap-6 text-center">
-        <Typography variant={"title-l"} translate={{ token: "v2.pages.committees.applicant.public.title" }} />
+        <Typography
+          variant={"title-l"}
+          translate={{
+            token: isApplicant ? "v2.pages.committees.applicant.public.title" : "v2.pages.committees.jury.public.title",
+          }}
+        />
 
         <Typography
           variant={"body-m"}
-          translate={{ token: "v2.pages.committees.applicant.public.description" }}
+          translate={{
+            token: isApplicant
+              ? "v2.pages.committees.applicant.public.description"
+              : "v2.pages.committees.jury.public.description",
+          }}
           className={"whitespace-pre-line leading-normal"}
         />
 

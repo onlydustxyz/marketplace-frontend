@@ -4,6 +4,8 @@ import ProjectApi from "src/api/Project";
 import Flex from "src/components/Utils/Flex";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
+import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
+
 import { useIntl } from "hooks/translate/use-translate";
 
 import Title from "../Title";
@@ -27,6 +29,8 @@ export default function Insights() {
 
   return (
     <>
+      <PosthogOnMount eventName={"project_insights_viewed"} />
+
       <div className="flex flex-col items-start justify-start gap-4 md:flex-row md:items-center md:justify-between md:gap-2">
         <Title>{T("project.details.insights.title")}</Title>
         {!hasOrgsWithUnauthorizedRepos ? (

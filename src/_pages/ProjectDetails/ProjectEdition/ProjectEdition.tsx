@@ -25,6 +25,7 @@ import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import { cn } from "src/utils/cn";
 import { hasUnauthorizedInGithubRepo } from "src/utils/getOrgsWithUnauthorizedRepos";
 
+import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 import { BaseLink } from "components/layout/base-link/base-link";
 
 import { NEXT_ROUTER } from "constants/router";
@@ -115,69 +116,73 @@ function SafeProjectEdition() {
   );
 
   return (
-    <Flex className="mx-auto h-full max-w-7xl flex-col gap-6 pt-6">
-      <Flex className="w-full flex-col gap-6 px-4 xl:px-8 2xl:px-0">
-        <Flex className="items-center">
-          {project?.slug && (
-            <BaseLink href={NEXT_ROUTER.projects.details.root(project?.slug)}>
-              <Button size={ButtonSize.Xs} type={ButtonType.Secondary} iconOnly className="mr-3">
-                <CloseLine />
-              </Button>
-            </BaseLink>
-          )}
-          <Title>
-            <Flex className="flex-row items-center justify-between gap-2">{T("project.details.edit.title")}</Flex>
-          </Title>
-        </Flex>
+    <>
+      <PosthogOnMount eventName={"project_information_viewed"} />
 
-        {!project?.indexingComplete ? <StillFetchingBanner /> : null}
-      </Flex>
-
-      <WrapperComponent className="flex w-full flex-1 flex-col overflow-hidden" padded={false} withBg={false}>
-        <header className="z-10 w-full border-b border-greyscale-50/20 bg-card-background-base px-4 pb-4 pt-7 shadow-2xl md:px-8 md:pb-0 md:pt-8 2xl:rounded-t-2xl">
-          <Tabs tabs={tabs} variant="blue" showMobile mobileTitle={T("project.details.edit.title")} />
-        </header>
-
-        <Flex
-          className={cn(
-            "scrollbar-sm bg-transparency-gradiant w-full flex-1 justify-center overflow-y-scroll p-4 lg:p-6"
-          )}
-        >
-          {activeTab === TabsType.General ? (
-            <Card className="bg-card-background-base">
-              <Information />
-            </Card>
-          ) : (
-            <Repository />
-          )}
-        </Flex>
-
-        <Flex className="w-full border-t border-card-border-light bg-card-background-base shadow-medium xl:rounded-b-2xl">
-          <Flex
-            justify="between"
-            item="center"
-            gap={4}
-            className="h-full w-full items-center bg-card-background-light px-6 py-5"
-          >
-            <FormStatus
-              {...{ isDirty: form?.formState.isDirty, isValid: form?.formState.isValid }}
-              errorMessage={T("project.details.edit.errors.informations")}
-            />
-            <Button
-              size={ButtonSize.Md}
-              htmlType="submit"
-              disabled={!form?.formState.isDirty || !form?.formState.isValid || isSubmitting}
-              onBackground={ButtonOnBackground.Blue}
-              className="w-full lg:w-auto"
-            >
-              {isSubmitting ? <Spinner /> : null}
-              {T("project.details.edit.save")}
-              <ArrowRightSLine className="-mr-2 text-2xl" />
-            </Button>
+      <Flex className="mx-auto h-full max-w-7xl flex-col gap-6 pt-6">
+        <Flex className="w-full flex-col gap-6 px-4 xl:px-8 2xl:px-0">
+          <Flex className="items-center">
+            {project?.slug && (
+              <BaseLink href={NEXT_ROUTER.projects.details.root(project?.slug)}>
+                <Button size={ButtonSize.Xs} type={ButtonType.Secondary} iconOnly className="mr-3">
+                  <CloseLine />
+                </Button>
+              </BaseLink>
+            )}
+            <Title>
+              <Flex className="flex-row items-center justify-between gap-2">{T("project.details.edit.title")}</Flex>
+            </Title>
           </Flex>
+
+          {!project?.indexingComplete ? <StillFetchingBanner /> : null}
         </Flex>
-      </WrapperComponent>
-    </Flex>
+
+        <WrapperComponent className="flex w-full flex-1 flex-col overflow-hidden" padded={false} withBg={false}>
+          <header className="z-10 w-full border-b border-greyscale-50/20 bg-card-background-base px-4 pb-4 pt-7 shadow-2xl md:px-8 md:pb-0 md:pt-8 2xl:rounded-t-2xl">
+            <Tabs tabs={tabs} variant="blue" showMobile mobileTitle={T("project.details.edit.title")} />
+          </header>
+
+          <Flex
+            className={cn(
+              "scrollbar-sm bg-transparency-gradiant w-full flex-1 justify-center overflow-y-scroll p-4 lg:p-6"
+            )}
+          >
+            {activeTab === TabsType.General ? (
+              <Card className="bg-card-background-base">
+                <Information />
+              </Card>
+            ) : (
+              <Repository />
+            )}
+          </Flex>
+
+          <Flex className="w-full border-t border-card-border-light bg-card-background-base shadow-medium xl:rounded-b-2xl">
+            <Flex
+              justify="between"
+              item="center"
+              gap={4}
+              className="h-full w-full items-center bg-card-background-light px-6 py-5"
+            >
+              <FormStatus
+                {...{ isDirty: form?.formState.isDirty, isValid: form?.formState.isValid }}
+                errorMessage={T("project.details.edit.errors.informations")}
+              />
+              <Button
+                size={ButtonSize.Md}
+                htmlType="submit"
+                disabled={!form?.formState.isDirty || !form?.formState.isValid || isSubmitting}
+                onBackground={ButtonOnBackground.Blue}
+                className="w-full lg:w-auto"
+              >
+                {isSubmitting ? <Spinner /> : null}
+                {T("project.details.edit.save")}
+                <ArrowRightSLine className="-mr-2 text-2xl" />
+              </Button>
+            </Flex>
+          </Flex>
+        </WrapperComponent>
+      </Flex>
+    </>
   );
 }
 

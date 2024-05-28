@@ -1,11 +1,8 @@
+import { CommitteeAssignmentLinkResponse } from "api-client/resources/me/types";
+
 export namespace TProjectAccordion {
   export interface Props {
-    projects: {
-      id: string;
-      name: string;
-      logoUrl: string;
-      description: string;
-      status: string;
-    }[];
+    projectAssignments: CommitteeAssignmentLinkResponse[];
+    onSuccess: () => void;
   }
 }

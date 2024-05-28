@@ -16,6 +16,7 @@ import Flex from "src/components/Utils/Flex";
 import useInfiniteRewardsList from "src/hooks/useInfiniteRewardsList";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
+import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 
 import { useIntl } from "hooks/translate/use-translate";
@@ -123,6 +124,8 @@ const RewardList: React.FC = () => {
 
   return (
     <>
+      <PosthogOnMount eventName={"project_reward_list_viewed"} />
+
       <div className="flex flex-col items-start justify-start gap-4 md:flex-row md:items-center md:justify-between md:gap-2">
         <Flex className="z-10 gap-8">
           <Title>{T("project.details.rewards.title")}</Title>

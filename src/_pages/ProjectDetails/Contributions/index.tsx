@@ -16,6 +16,8 @@ import StackLine from "src/icons/StackLine";
 import { ContributionStatus, OrderBy } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
+import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
+
 import { useIntl } from "hooks/translate/use-translate";
 
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
@@ -223,6 +225,8 @@ export default function Contributions() {
 
   return (
     <>
+      <PosthogOnMount eventName={"project_contributions_list_viewed"} />
+
       <div className="flex flex-col items-start justify-start gap-4 md:flex-row md:items-center md:justify-between md:gap-2">
         <Title>{T("project.details.contributions.title")}</Title>
         {!hasOrgsWithUnauthorizedRepos ? (

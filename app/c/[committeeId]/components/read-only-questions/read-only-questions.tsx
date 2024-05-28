@@ -1,9 +1,10 @@
-import { TReadOnlySection } from "app/c/[committeeId]/applicant/features/read-only-section/read-only-section.types";
+import { TReadOnlyQuestions } from "app/c/[committeeId]/components/read-only-questions/read-only-questions.types";
 
 import { Typography } from "components/layout/typography/typography";
 
-export function ReadOnlySection({ questions }: TReadOnlySection.Props) {
+export function ReadOnlyQuestions({ questions }: TReadOnlyQuestions.Props) {
   if (!questions.length) return null;
+
   return (
     <section className="grid gap-10">
       <ul className="flex flex-col gap-6">

@@ -83,6 +83,8 @@ export default async function Image(props: { params: { githubLogin: string } }) 
               ? TPublicProfileImageMetadata.rankCategoryTranslationMapping[user.statsSummary?.rankCategory]
               : ""
           }
+          rank={user.statsSummary?.rank || 0}
+          rankPercentile={user.statsSummary?.rankPercentile || 0}
           {...(ecosystem
             ? {
                 topEcosystem: {
