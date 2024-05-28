@@ -9,6 +9,8 @@ export namespace TPublicProfileImageMetadata {
     image: string;
     contributionCount: number;
     rewardsCount: number;
+    rank: number;
+    rankPercentile: number;
     topLanguages?: {
       name: string;
       image: string;

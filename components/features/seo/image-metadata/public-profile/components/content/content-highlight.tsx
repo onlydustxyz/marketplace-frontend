@@ -16,7 +16,7 @@ export function ContentHighlight({ name, image, label, icon }: Props) {
         justifyContent: "flex-start",
         gap: "20px",
         background: "#FFFFFF0D",
-        border: "1px solid #F3F0EE33",
+        border: "2px solid #F3F0EE33",
         borderRadius: 16,
         padding: 24,
       }}
