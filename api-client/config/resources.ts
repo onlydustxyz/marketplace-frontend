@@ -3,4 +3,5 @@ export enum apiResources {
   me = "ME",
   users = "USERS",
   committees = "COMMITTEES",
+  ecosystems = "ECOSYSTEMS",
 }
