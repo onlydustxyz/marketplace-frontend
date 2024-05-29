@@ -1,1 +1,9 @@
-{}
+{
+  "projectGoodFirstIssues": {
+    "contributors": {
+      "many": "+__count__ contributors",
+      "one": "+1 contributor",
+      "zero": "+0 contributors"
+    }
+  }
+}
