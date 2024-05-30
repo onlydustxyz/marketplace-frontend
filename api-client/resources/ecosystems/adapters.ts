@@ -1,10 +1,12 @@
 import { FetchAdapaterConstructor } from "api-client/adapter/fetch/fetch-adapter.types";
+import { apiVersions } from "api-client/config/api-versions";
 
 import tags from "./tags";
 
 enum Paths {
   root = "root",
   get_projects_by_slug = "get_projects_by_slug",
+  get_all = "get_all",
 }
 
 const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
@@ -16,6 +18,11 @@ const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
   get_projects_by_slug: {
     url: "ecosystems/:ecosystemSlug/projects",
     method: "GET",
+  },
+  get_all: {
+    url: "ecosystems",
+    method: "GET",
+    version: apiVersions.v2,
   },
 };
 

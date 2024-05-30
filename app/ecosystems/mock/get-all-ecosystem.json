@@ -1,0 +1,58 @@
+{
+  "totalPageNumber": 0,
+  "totalItemNumber": 0,
+  "hasMore": true,
+  "nextPageIndex": 0,
+  "ecosystems": [
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "slug": "zama",
+      "name": "Starkent Foundation",
+      "description": "A short ecosystem description",
+      "banners": {
+        "xl": {
+          "url": "https://app.onlydust.com/cdn-cgi/image/width=384,height=112,fit=cover/https://od-meta[…]op.s3.eu-west-1.amazonaws.com/ecosystems-banner-starknet.png",
+          "fontColor": "DARK"
+        },
+        "md": {
+          "url": "https://app.onlydust.com/cdn-cgi/image/width=384,height=112,fit=cover/https://od-meta[…]op.s3.eu-west-1.amazonaws.com/ecosystems-banner-starknet.png",
+          "fontColor": "DARK"
+        }
+      },
+      "topProjects": [
+        {
+          "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "slug": "my-awesome-project",
+          "name": "string",
+          "logoUrl": "string"
+        }
+      ],
+      "projectCount": 2
+    },
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "slug": "zama",
+      "name": "Ethereum Foundation",
+      "description": "A short ecosystem description",
+      "banners": {
+        "xl": {
+          "url": "https://app.onlydust.com/cdn-cgi/image/width=384,height=112,fit=cover/https://od-meta[…]op.s3.eu-west-1.amazonaws.com/ecosystems-banner-ethereum.png",
+          "fontColor": "DARK"
+        },
+        "md": {
+          "url": "https://app.onlydust.com/cdn-cgi/image/width=384,height=112,fit=cover/https://od-meta[…]op.s3.eu-west-1.amazonaws.com/ecosystems-banner-ethereum.png",
+          "fontColor": "DARK"
+        }
+      },
+      "topProjects": [
+        {
+          "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "slug": "my-awesome-project",
+          "name": "string",
+          "logoUrl": "string"
+        }
+      ],
+      "projectCount": 2
+    }
+  ]
+}
