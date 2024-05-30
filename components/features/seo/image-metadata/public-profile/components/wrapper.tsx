@@ -12,20 +12,6 @@ export function Wrapper({ children }: PropsWithChildren) {
         zIndex: 1,
       }}
     >
-      <img
-        alt="background"
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: -1,
-        }}
-      />
       <div
         style={{
           width: "100%",
