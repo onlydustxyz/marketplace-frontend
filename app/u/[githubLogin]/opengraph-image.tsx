@@ -73,6 +73,8 @@ export default async function Image(props: { params: { githubLogin: string } }) 
       return data;
     };
 
+    const data = createData();
+
     return Generator({
       children: (
         <PublicProfileImageMetadata
@@ -103,7 +105,7 @@ export default async function Image(props: { params: { githubLogin: string } }) 
                 },
               }
             : {})}
-          data={createData()}
+          data={data}
         />
       ),
     });
