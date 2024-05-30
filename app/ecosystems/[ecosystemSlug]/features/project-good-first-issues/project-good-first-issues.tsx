@@ -4,9 +4,12 @@ import { ecosystemsApiClient } from "api-client/resources/ecosystems";
 import { EcosystemProject } from "api-client/resources/ecosystems/types";
 import { useParams } from "next/navigation";
 import { useMemo } from "react";
+import { useMediaQuery } from "usehooks-ts";
 
 import { CarouselStepper } from "app/ecosystems/components/carousel-stepper/carousel-stepper";
 import { Section } from "app/ecosystems/components/section/section";
+
+import { viewportConfig } from "src/config";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
@@ -18,12 +21,15 @@ import { Typography } from "components/layout/typography/typography";
 
 import { NEXT_ROUTER } from "constants/router";
 
-const MAX_LANGUAGES = 3;
 const MAX_CONTRIBUTORS = 3;
 
 function Project({ project }: { project: EcosystemProject }) {
+  const isSm = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
+
+  const maxLanguages = isSm ? 3 : 2;
+
   const nbLanguages = useMemo(() => project.languages?.length ?? 0, [project.languages]);
-  const isMaxLanguages = useMemo(() => nbLanguages > MAX_LANGUAGES, [nbLanguages]);
+  const isMaxLanguages = useMemo(() => nbLanguages > maxLanguages, [nbLanguages, maxLanguages]);
 
   const nbContributors = useMemo(() => project.contributorsCount ?? 0, [project.contributorsCount]);
   const isMaxContributors = useMemo(() => nbContributors > MAX_CONTRIBUTORS, [nbContributors]);
@@ -31,7 +37,7 @@ function Project({ project }: { project: EcosystemProject }) {
   function renderLanguages() {
     if (!project.languages || project.languages.length === 0) return null;
 
-    const firstLanguages = project.languages.slice(0, MAX_LANGUAGES);
+    const firstLanguages = project.languages.slice(0, maxLanguages);
 
     return (
       <Tooltip
@@ -44,13 +50,13 @@ function Project({ project }: { project: EcosystemProject }) {
             ))}
           </ul>
         }
-        enabled={isMaxLanguages}
+        enabled={isMaxLanguages && isSm}
       >
         <Tag>
           <Icon remixName={"ri-code-s-slash-line"} size={12} />
           <Typography variant={"body-xs"}>
             {firstLanguages?.map(l => l.name).join(", ")}
-            {isMaxLanguages ? ` +${nbLanguages - MAX_LANGUAGES}` : ""}
+            {isMaxLanguages ? ` +${nbLanguages - maxLanguages}` : ""}
           </Typography>
         </Tag>
       </Tooltip>
@@ -68,18 +74,16 @@ function Project({ project }: { project: EcosystemProject }) {
     >
       <div className={"grid gap-5 p-5"}>
         <div className={"flex items-start gap-4"}>
-          <Avatar src={project.logoUrl} alt={project.name} size={"xl"} shape={"square"} />
+          <Avatar src={project.logoUrl} alt={project.name} size={"3xl"} shape={"square"} />
 
           <div className="grid gap-2">
-            <div className={"grid gap-1"}>
-              <Typography variant={"title-s"} className={"truncate"}>
-                {project.name}
-              </Typography>
+            <Typography variant={"title-s"} className={"truncate"}>
+              {project.name}
+            </Typography>
 
-              <Typography variant={"body-s"} className={"line-clamp-2 text-spaceBlue-200"}>
-                {project.shortDescription}
-              </Typography>
-            </div>
+            <Typography variant={"body-s"} className={"line-clamp-2 text-spaceBlue-200"}>
+              {project.shortDescription}
+            </Typography>
 
             {renderLanguages()}
           </div>
