@@ -4,9 +4,11 @@ import { useMemo } from "react";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
+import { Tag } from "components/ds/tag/tag";
 import { Tooltip } from "components/ds/tooltip/tooltip";
 import { ContributorsAvatars } from "components/features/contributors-avatars/contributors-avatars";
 import { Container } from "components/layout/container/container";
+import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
 const MAX_CONTRIBUTORS = 3;
@@ -54,8 +56,10 @@ function Project() {
         </div>
 
         <footer className={"flex items-center gap-3"}>
-          {/* TODO @hayden */}
-          <span>Tag</span>
+          <Tag>
+            <Icon remixName={"ri-code-s-slash-line"} size={12} />
+            <Typography variant={"body-xs"}>Cairo, Python</Typography>
+          </Tag>
 
           <Tooltip content={<ContributorsAvatars.TooltipContent contributors={avatars} />} canInteract>
             <ContributorsAvatars
