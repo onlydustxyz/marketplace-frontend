@@ -18,12 +18,15 @@ interface Props {
   };
 }
 export function OGActivityGraph({ data, contribution, rewards }: Props) {
+  console.time("BUILD OGActivityGraph");
   const dates = {
     start: createStartDate(),
     end: createEndDate(),
   };
   const weeks = createWeeks({ ...dates });
   const splitWeeks = splitWeeksIntoSubArray({ weeks });
+  console.timeEnd("BUILD OGActivityGraph");
+  console.time("RENDER OGActivityGraph");
   return (
     <div style={{ display: "flex", justifyContent: "flex-start", alignItems: "center", height: "100%" }}>
       <div
@@ -69,6 +72,7 @@ export function OGActivityGraph({ data, contribution, rewards }: Props) {
           ))}
         </div>
         <ActivityHighlight contribution={contribution} rewards={rewards} />
+        <>{console.timeEnd("RENDER OGActivityGraph")}</>
       </div>
     </div>
   );

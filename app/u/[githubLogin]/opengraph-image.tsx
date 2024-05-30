@@ -47,6 +47,7 @@ export default async function Image(props: { params: { githubLogin: string } }) 
     console.timeEnd("REQUEST DATA");
 
     const createData = () => {
+      console.time("BUILD DATA");
       const data: {
         [key: string]: {
           level: TActivityGraph.level;
@@ -68,7 +69,7 @@ export default async function Image(props: { params: { githubLogin: string } }) 
           reward: activity.rewardCount > 0,
         };
       });
-
+      console.timeEnd("BUILD DATA");
       return data;
     };
 
