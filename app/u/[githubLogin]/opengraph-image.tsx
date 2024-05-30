@@ -7,16 +7,13 @@ import { getLevelRange } from "components/features/graphs/activity-graph/utils/g
 import { getWeekId } from "components/features/graphs/activity-graph/utils/getWeekId";
 import { Generator } from "components/features/seo/image-metadata/commons/generator/generator";
 import { GenericImageMetadata } from "components/features/seo/image-metadata/generic/image-metadata";
-import { PublicProfileImageMetadata } from "components/features/seo/image-metadata/public-profile/image-metadata";
-import { TPublicProfileImageMetadata } from "components/features/seo/image-metadata/public-profile/image-metadata.types";
 
 export const runtime = "edge";
 export default async function Image(props: { params: { githubLogin: string } }) {
   try {
-    console.time("REQUEST DATA");
     const user = await usersApiClient.fetch.getUserPublicProfileByGithubLogin(props.params.githubLogin).request();
     const githubUserId = user?.githubUserId || 0;
-    const [stats, languages, ecosystems] = await Promise.all([
+    const [stats] = await Promise.all([
       usersApiClient.fetch
         .getUserPublicStats(githubUserId)
         .request()
@@ -43,12 +40,7 @@ export default async function Image(props: { params: { githubLogin: string } }) 
         }),
     ]);
 
-    const ecosystem = ecosystems?.ecosystems?.[0];
-    const language = languages?.languages?.[0];
-    console.timeEnd("REQUEST DATA");
-
     const createData = () => {
-      console.time("BUILD DATA");
       const data: {
         [key: string]: {
           level: TActivityGraph.level;
@@ -70,45 +62,13 @@ export default async function Image(props: { params: { githubLogin: string } }) 
           reward: activity.rewardCount > 0,
         };
       });
-      console.timeEnd("BUILD DATA");
       return data;
     };
 
-    const data = createData();
+    createData();
 
     return Generator({
-      children: (
-        <PublicProfileImageMetadata
-          login={user.login}
-          image={user.avatarUrl}
-          contributionCount={user.statsSummary?.contributionCount || 0}
-          rewardsCount={user.statsSummary?.rewardCount || 0}
-          title={
-            user.statsSummary?.rankCategory
-              ? TPublicProfileImageMetadata.rankCategoryTranslationMapping[user.statsSummary?.rankCategory]
-              : ""
-          }
-          rank={user.statsSummary?.rank || 0}
-          rankPercentile={user.statsSummary?.rankPercentile || 0}
-          {...(ecosystem
-            ? {
-                topEcosystem: {
-                  name: ecosystem.ecosystem.name,
-                  image: ecosystem.ecosystem.logoUrl,
-                },
-              }
-            : {})}
-          {...(language
-            ? {
-                topLanguages: {
-                  name: language.language.name,
-                  image: language.language.logoUrl,
-                },
-              }
-            : {})}
-          data={data}
-        />
-      ),
+      children: <GenericImageMetadata />,
     });
   } catch {
     return Generator({

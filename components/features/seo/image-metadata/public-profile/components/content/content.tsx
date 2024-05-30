@@ -19,7 +19,6 @@ interface Props {
   };
 }
 export function OgContent({ login, title, image, topLanguages, topEcosystem, rank, rankPercentile }: Props) {
-  console.time("RENDER OgContent");
   return (
     <div
       style={{
@@ -66,7 +65,6 @@ export function OgContent({ login, title, image, topLanguages, topEcosystem, ran
               label="Top ecosystem"
             />
           ) : null}
-          <>{console.timeEnd("RENDER OgContent")}</>
         </div>
       </div>
     </div>
