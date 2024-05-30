@@ -12,9 +12,9 @@ import { TPublicProfileImageMetadata } from "components/features/seo/image-metad
 
 export default async function Image(props: { params: { githubLogin: string } }) {
   try {
+    console.time("REQUEST DATA");
     const user = await usersApiClient.fetch.getUserPublicProfileByGithubLogin(props.params.githubLogin).request();
     const githubUserId = user?.githubUserId || 0;
-
     const [stats, languages, ecosystems] = await Promise.all([
       usersApiClient.fetch
         .getUserPublicStats(githubUserId)
@@ -44,6 +44,7 @@ export default async function Image(props: { params: { githubLogin: string } }) 
 
     const ecosystem = ecosystems?.ecosystems?.[0];
     const language = languages?.languages?.[0];
+    console.timeEnd("REQUEST DATA");
 
     const createData = () => {
       const data: {
