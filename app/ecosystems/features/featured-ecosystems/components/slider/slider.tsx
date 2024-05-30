@@ -20,13 +20,29 @@ export function Slider({ children }: TSlider.Props) {
     },
   });
 
-  const navigations = useMemo(() => {
+  const navigationsItems = useMemo(() => {
     if (!instanceRef.current) {
       return [];
     }
 
     return [...Array(instanceRef.current.track.details.slides.length).keys()];
   }, [instanceRef, loaded]);
+
+  const navigationsElements = useMemo(() => {
+    return navigationsItems.map(slideId => {
+      return (
+        <button
+          key={slideId}
+          onClick={() => {
+            instanceRef.current?.moveToIdx(slideId);
+          }}
+          className={cn("h-2 w-2 rounded-full bg-spaceBlue-400", {
+            "!bg-greyscale-50": currentSlide === slideId,
+          })}
+        ></button>
+      );
+    });
+  }, [navigationsItems]);
 
   return (
     <>
@@ -38,19 +54,7 @@ export function Slider({ children }: TSlider.Props) {
         ))}
       </div>
       <div className="flex w-full flex-row items-center justify-center gap-2 p-4">
-        {navigations.map(slideId => {
-          return (
-            <button
-              key={slideId}
-              onClick={() => {
-                instanceRef.current?.moveToIdx(slideId);
-              }}
-              className={cn("h-2 w-2 rounded-full bg-spaceBlue-400", {
-                "!bg-greyscale-50": currentSlide === slideId,
-              })}
-            ></button>
-          );
-        })}
+        {navigationsElements.map(el => el)}
       </div>
     </>
   );
