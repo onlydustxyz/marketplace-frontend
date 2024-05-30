@@ -1,8 +1,9 @@
 "use client";
 
 import type { DefaultError } from "@tanstack/query-core";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useReactQueryAdapter } from "api-client/adapter/react-query/react-query-adapter";
+import { useInvalidateQuery } from "api-client/invalidate/use-invalidate-query";
 
 import { updateMyCommitteeAssignmentProject } from "../fetch";
 import tags from "../tags";
@@ -10,15 +11,13 @@ import { UpdateMyCommitteeAssignmentParams, UpdateMyCommitteeAssignmentVariables
 
 export const useUpdateCommitteeProjectApplication = ({ committeeId, projectId }: UpdateMyCommitteeAssignmentParams) => {
   const { mutation } = useReactQueryAdapter(updateMyCommitteeAssignmentProject({ committeeId, projectId }));
-  const queryClient = useQueryClient();
+  const { invalidateQuery } = useInvalidateQuery();
 
   return useMutation<unknown, DefaultError, UpdateMyCommitteeAssignmentVariables>({
     ...mutation,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: [tags.committeeProject(committeeId, projectId), tags.committee(committeeId)],
-        exact: false,
-      });
+    onSuccess: () => {
+      invalidateQuery(tags.committee(committeeId));
+      invalidateQuery(tags.committeeProject(committeeId, projectId));
     },
   });
 };

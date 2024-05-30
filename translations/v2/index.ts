@@ -22,6 +22,7 @@ import en_features_verify from "./en/features/verify.json";
 import en_billing_create from "./en/pages/billing-create-stacks.json";
 import en_billing_invite_team_member from "./en/pages/billing-invite-team-member-stacks.json";
 import en_page_committees from "./en/pages/committees.json";
+import en_ecosystems from "./en/pages/ecosystems";
 import en_hackathons_details from "./en/pages/hackathons-details.json";
 import en_hackathons from "./en/pages/hackathons.json";
 import en_project_details_header from "./en/pages/project-details/project-header.json";
@@ -105,6 +106,7 @@ export const en = {
       publicProfile: en_public_profile,
       sponsor: en_page_sponsor,
       committees: en_page_committees,
+      ecosystems: en_ecosystems,
     },
   },
 };

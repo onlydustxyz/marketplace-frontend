@@ -12,13 +12,14 @@ import { TPublicProfileImageMetadata } from "components/features/seo/image-metad
 
 export default async function Image(props: { params: { githubLogin: string } }) {
   try {
-    const user = await usersApiClient.fetch.getUserPublicProfileByGithubLogin(props.params.githubLogin).request();
+    const user = await usersApiClient.fetch
+      .getUserPublicProfileByGithubLogin(props.params.githubLogin)
+      .request({ next: { revalidate: 86400 } });
     const githubUserId = user?.githubUserId || 0;
-
     const [stats, languages, ecosystems] = await Promise.all([
       usersApiClient.fetch
         .getUserPublicStats(githubUserId)
-        .request()
+        .request({ next: { revalidate: 86400 } })
         .then(res => res)
         .catch(e => {
           console.error(e);
@@ -26,7 +27,7 @@ export default async function Image(props: { params: { githubLogin: string } }) 
         }),
       usersApiClient.fetch
         .getUserPublicLanguages(githubUserId, { pageSize: 2, pageIndex: 0 })
-        .request()
+        .request({ next: { revalidate: 86400 } })
         .then(res => res)
         .catch(e => {
           console.error(e);
@@ -34,7 +35,7 @@ export default async function Image(props: { params: { githubLogin: string } }) 
         }),
       usersApiClient.fetch
         .getUserPublicEcosystems(githubUserId, { pageSize: 2, pageIndex: 0 })
-        .request()
+        .request({ next: { revalidate: 86400 } })
         .then(res => res)
         .catch(e => {
           console.error(e);
@@ -67,9 +68,10 @@ export default async function Image(props: { params: { githubLogin: string } }) 
           reward: activity.rewardCount > 0,
         };
       });
-
       return data;
     };
+
+    const data = createData();
 
     return Generator({
       children: (
@@ -101,7 +103,7 @@ export default async function Image(props: { params: { githubLogin: string } }) 
                 },
               }
             : {})}
-          data={createData()}
+          data={data}
         />
       ),
     });
