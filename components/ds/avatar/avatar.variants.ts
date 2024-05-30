@@ -15,6 +15,7 @@ export const avatarVariants = tv({
       xl: "",
       "2xl": "",
       "3xl": "",
+      "4xl": "",
     },
     isLoading: {
       true: "animate-pulse",
@@ -57,6 +58,11 @@ export const avatarVariants = tv({
       class: "h-20 w-20 rounded-2xl border-4",
     },
     {
+      shape: "square",
+      size: "4xl",
+      class: "h-24 w-24 rounded-2xl border-4",
+    },
+    {
       shape: "circle",
       size: "xs",
       class: "h-4 w-4 border",
@@ -90,6 +96,11 @@ export const avatarVariants = tv({
       shape: "circle",
       size: "3xl",
       class: "h-20 w-20 border-4",
+    },
+    {
+      shape: "circle",
+      size: "4xl",
+      class: "h-24 w-24 rounded-2xl border-4",
     },
   ],
   defaultVariants: {
