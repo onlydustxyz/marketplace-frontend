@@ -21,7 +21,7 @@ export function Slide({ imageUrl, slug, color, title, description }: TSlide.Prop
       <div className="flex h-auto max-w-[60%] flex-col gap-3">
         <Typography
           variant="special-label"
-          className={cn(slideColor, "w-full")}
+          className={cn(slideColor, "w-full uppercase")}
           translate={{ token: "v2.pages.ecosystems.list.bannerUpperTitle" }}
         />
         <Typography variant="title-xl" className={cn(slideColor, "w-full")}>
