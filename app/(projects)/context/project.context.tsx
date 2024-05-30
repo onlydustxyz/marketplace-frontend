@@ -29,6 +29,7 @@ export const ProjectsContext = createContext<TProjectContext.Return>({
   },
 });
 
+// TODO: @NeoxAzrot Voir avec Pierre pour les ecosystems
 export function ProjectsContextProvider({ children }: TProjectContext.Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -42,28 +43,32 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
     const urlParams = new URLSearchParams(searchParams.toString());
     const filters: TProjectContext.Filter = { ...TProjectContext.DEFAULT_FILTER };
 
-    if (urlParams.getAll("tags").length > 0) {
-      filters.tags = urlParams.getAll("tags") as TProjectContext.Filter["tags"];
+    const tags = urlParams.getAll("tags");
+    const technologies = urlParams.getAll("technologies");
+    const ecosystems = urlParams.getAll("ecosystems");
+    const search = urlParams.get("search");
+    const sort = urlParams.get("sort");
+
+    if (tags.length > 0) {
+      filters.tags = tags as TProjectContext.Filter["tags"];
     }
 
-    if (urlParams.getAll("technologies").length > 0) {
-      filters.technologies = urlParams.getAll("technologies");
+    if (technologies.length > 0) {
+      filters.technologies = technologies;
     }
 
-    if (urlParams.getAll("ecosystems").length > 0) {
-      const ecosystemNames = urlParams.getAll("ecosystems");
-
+    if (ecosystems.length > 0) {
       filters.ecosystems = filtersOptions.ecosystems.filter(ecosystem =>
-        ecosystemNames.includes(ecosystem.label as string)
+        ecosystems.includes(ecosystem.label as string)
       );
     }
 
-    if (urlParams.get("search")) {
-      filters.search = urlParams.get("search")!;
+    if (search) {
+      filters.search = search!;
     }
 
-    if (urlParams.get("sort")) {
-      filters.sorting = urlParams.get("sort") as TProjectContext.Filter["sorting"];
+    if (sort) {
+      filters.sorting = sort as TProjectContext.Filter["sorting"];
     }
 
     return filters;
@@ -73,24 +78,27 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
     const urlParams = new URLSearchParams();
 
     filters.tags.forEach(tag => urlParams.append("tags", tag));
-    filters.ecosystems.forEach(({ label, id }) => urlParams.append("ecosystems", label?.toString() || id.toString()));
+    // We need to check if the label is a string because of the TSelectAutocomplete.Item type that can be a string or a JSX.Element
+    // Here, it's return by the API, it can only be a string
+    filters.ecosystems.forEach(({ label }) => urlParams.append("ecosystems", typeof label === "string" ? label : ""));
     filters.technologies.forEach(tech => urlParams.append("technologies", tech));
 
     if (filters.search) {
       urlParams.set("search", filters.search);
     }
 
-    if (filters.sorting && filters.sorting !== "RANK") {
+    if (filters.sorting) {
       urlParams.set("sort", filters.sorting);
     }
 
     router.replace(`?${urlParams.toString()}`);
   };
 
+  // TODO: @NeoxAzrot Voir pour delete le filtersOptions dans le useEffect
   useEffect(() => {
     const initialFilters = getFiltersFromURL();
     setFilters(initialFilters);
-  }, [searchParams]);
+  }, [searchParams, filtersOptions]);
 
   const queryParams = useMemo(() => {
     const params: useInfiniteBaseQueryProps["queryParams"] = [
