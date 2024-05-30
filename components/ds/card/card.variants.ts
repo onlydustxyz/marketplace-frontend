@@ -19,7 +19,7 @@ export const cardVariants = tv({
       medium: "border border-card-border-medium",
       heavy: "border border-card-border-heavy",
       spacePurple: "border border-spacePurple-500",
-      multiColor: "border-multicolored before:pointer-events-none before:rounded-2xl",
+      multiColor: "border-multicolored relative before:pointer-events-none before:rounded-2xl",
     },
     background: {
       false: "bg-transparent",
@@ -33,6 +33,7 @@ export const cardVariants = tv({
       "whiteFakeOpacity-8": "bg-whiteFakeOpacity-8",
       "whiteFakeOpacity-12": "bg-whiteFakeOpacity-12",
       spacePurple: "bg-spacePurple-900",
+      multiColor: "bg-card-background-multicolor",
     },
     clickable: {
       true: "group relative z-[1] transition-all",

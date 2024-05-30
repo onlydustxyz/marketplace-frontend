@@ -1,7 +1,22 @@
 import { FetchAdapaterConstructor } from "api-client/adapter/fetch/fetch-adapter.types";
 
-enum Paths {}
+import tags from "./tags";
 
-const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {};
+enum Paths {
+  root = "root",
+  get_projects_by_slug = "get_projects_by_slug",
+}
+
+const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
+  root: {
+    url: "ecosystems",
+    method: "GET",
+    tag: tags.root,
+  },
+  get_projects_by_slug: {
+    url: "ecosystems/:ecosystemSlug/projects",
+    method: "GET",
+  },
+};
 
 export default Adapters;
