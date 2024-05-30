@@ -12,7 +12,6 @@ import { TPublicProfileImageMetadata } from "components/features/seo/image-metad
 
 export default async function Image(props: { params: { githubLogin: string } }) {
   try {
-    console.time("1. START REQUEST");
     const user = await usersApiClient.fetch
       .getUserPublicProfileByGithubLogin(props.params.githubLogin)
       .request({ next: { revalidate: 86400 } });
@@ -43,7 +42,6 @@ export default async function Image(props: { params: { githubLogin: string } }) 
           return null;
         }),
     ]);
-    console.timeEnd("1. START REQUEST");
 
     const ecosystem = ecosystems?.ecosystems?.[0];
     const language = languages?.languages?.[0];
@@ -73,11 +71,9 @@ export default async function Image(props: { params: { githubLogin: string } }) 
       return data;
     };
 
-    console.time("2. START BUILD DATA");
     const data = createData();
-    console.timeEnd("2. START BUILD DATA");
-    console.time("3. START GENERATE");
-    const generated = await Generator({
+
+    return Generator({
       children: (
         <PublicProfileImageMetadata
           login={user.login}
@@ -111,8 +107,6 @@ export default async function Image(props: { params: { githubLogin: string } }) 
         />
       ),
     });
-    console.timeEnd("3. START GENERATE");
-    return generated;
   } catch {
     return Generator({
       children: <GenericImageMetadata />,
