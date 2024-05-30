@@ -22,7 +22,6 @@ export namespace TActivityGraph {
     id: string;
     startDate: Date;
     endDate: Date;
-    days: Day[];
   }
   export interface Props<T> {
     endDate?: Date;
