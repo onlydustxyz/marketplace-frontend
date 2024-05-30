@@ -5,7 +5,6 @@ import { useMemo } from "react";
 import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
 import { Tag } from "components/ds/tag/tag";
-import { Tooltip } from "components/ds/tooltip/tooltip";
 import { ContributorsAvatars } from "components/features/contributors-avatars/contributors-avatars";
 import { Container } from "components/layout/container/container";
 import { Icon } from "components/layout/icon/icon";
@@ -25,6 +24,7 @@ function Project() {
   const nbContributors = useMemo(() => avatars.length, [avatars]);
 
   function handleClick() {
+    // TODO @hayden route to project page
     alert("Check this project out 👌");
   }
 
@@ -38,6 +38,7 @@ function Project() {
       onClick={handleClick}
     >
       <div className={"grid gap-5 p-5"}>
+        {/* TODO @hayden project data */}
         <div className={"flex gap-4"}>
           <Avatar src={""} alt={"PROJECT NAME"} size={"xl"} shape={"square"} />
 
@@ -61,7 +62,7 @@ function Project() {
             <Typography variant={"body-xs"}>Cairo, Python</Typography>
           </Tag>
 
-          <Tooltip content={<ContributorsAvatars.TooltipContent contributors={avatars} />} canInteract>
+          <div className={"flex items-center"}>
             <ContributorsAvatars
               contributors={displayContributors}
               avatarProps={{ size: "xs" }}
@@ -78,7 +79,7 @@ function Project() {
                 }}
               />
             ) : null}
-          </Tooltip>
+          </div>
         </footer>
       </div>
     </Card>
@@ -89,6 +90,7 @@ export function ProjectGoodFirstIssues() {
   return (
     <Container>
       <Card border={"multiColor"} background={"multiColor"} className={"grid gap-3 lg:grid-cols-3"}>
+        {/* TODO @hayden carousel */}
         <Project />
         <Project />
         <Project />
