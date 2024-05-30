@@ -1,4 +1,4 @@
-import { GetBannerColor } from "app/ecosystems/utils/get-banner-color";
+import { getBannerColor } from "app/ecosystems/utils/get-banner-color";
 
 import { cn } from "src/utils/cn";
 
@@ -9,7 +9,7 @@ import { NEXT_ROUTER } from "constants/router";
 import { TSlide } from "./slide.types";
 
 export function Slide({ imageUrl, slug, color, title, description }: TSlide.Props) {
-  const slideColor = GetBannerColor({ color });
+  const slideColor = getBannerColor({ color });
   return (
     <a
       href={NEXT_ROUTER.ecosystems.details.root(slug)}

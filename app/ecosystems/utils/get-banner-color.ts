@@ -1,6 +1,6 @@
 import { EcosystemsBannerColor } from "api-client/resources/ecosystems/types";
 
-export function GetBannerColor({ color }: { color: EcosystemsBannerColor }) {
+export function getBannerColor({ color }: { color: EcosystemsBannerColor }) {
   if (color === "LIGHT") {
     return "text-greyscale-50";
   }
