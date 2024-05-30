@@ -19,3 +19,4 @@ export interface GetEcosystemPageResponse extends EcosystemsPageResponse {}
 
 export type EcosystemProject = components["schemas"]["EcosystemProjectPageItemResponse"];
 export type EcosystemsPageItem = components["schemas"]["EcosystemPageItemResponse"];
+export type EcosystemsBannerColor = components["schemas"]["EcosystemBanner"]["fontColor"];

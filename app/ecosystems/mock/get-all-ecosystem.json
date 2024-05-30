@@ -11,11 +11,11 @@
       "description": "A short ecosystem description",
       "banners": {
         "xl": {
-          "url": "https://app.onlydust.com/cdn-cgi/image/width=384,height=112,fit=cover/https://od-meta[…]op.s3.eu-west-1.amazonaws.com/ecosystems-banner-starknet.png",
+          "url": "https://app.onlydust.com/cdn-cgi/image/width=384,height=112,fit=cover/https://od-metadata-assets-develop.s3.eu-west-1.amazonaws.com/ecosystems-banner-starknet.png",
           "fontColor": "DARK"
         },
         "md": {
-          "url": "https://app.onlydust.com/cdn-cgi/image/width=384,height=112,fit=cover/https://od-meta[…]op.s3.eu-west-1.amazonaws.com/ecosystems-banner-starknet.png",
+          "url": "https://app.onlydust.com/cdn-cgi/image/width=384,height=112,fit=cover/https://od-metadata-assets-develop.s3.eu-west-1.amazonaws.com/ecosystems-banner-starknet.png",
           "fontColor": "DARK"
         }
       },
@@ -36,12 +36,12 @@
       "description": "A short ecosystem description",
       "banners": {
         "xl": {
-          "url": "https://app.onlydust.com/cdn-cgi/image/width=384,height=112,fit=cover/https://od-meta[…]op.s3.eu-west-1.amazonaws.com/ecosystems-banner-ethereum.png",
-          "fontColor": "DARK"
+          "url": "https://app.onlydust.com/cdn-cgi/image/width=384,height=112,fit=cover/https://od-metadata-assets-develop.s3.eu-west-1.amazonaws.com/ecosystems-banner-ethereum.png",
+          "fontColor": "LIGHT"
         },
         "md": {
-          "url": "https://app.onlydust.com/cdn-cgi/image/width=384,height=112,fit=cover/https://od-meta[…]op.s3.eu-west-1.amazonaws.com/ecosystems-banner-ethereum.png",
-          "fontColor": "DARK"
+          "url": "https://app.onlydust.com/cdn-cgi/image/width=384,height=112,fit=cover/https://od-metadata-assets-develop.s3.eu-west-1.amazonaws.com/ecosystems-banner-ethereum.png",
+          "fontColor": "LIGHT"
         }
       },
       "topProjects": [
