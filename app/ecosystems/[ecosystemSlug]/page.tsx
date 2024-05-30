@@ -10,7 +10,7 @@ import { NEXT_ROUTER } from "constants/router";
 
 export default function EcosystemDetailPage() {
   return (
-    <div className={"grid gap-8 lg:gap-10"}>
+    <div className={"grid gap-8 py-10 lg:gap-10"}>
       <div>
         <Container>
           <div className={"flex items-center gap-4"}>
