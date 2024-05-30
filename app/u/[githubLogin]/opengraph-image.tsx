@@ -10,6 +10,7 @@ import { GenericImageMetadata } from "components/features/seo/image-metadata/gen
 import { PublicProfileImageMetadata } from "components/features/seo/image-metadata/public-profile/image-metadata";
 import { TPublicProfileImageMetadata } from "components/features/seo/image-metadata/public-profile/image-metadata.types";
 
+export const runtime = "edge";
 export default async function Image(props: { params: { githubLogin: string } }) {
   try {
     console.time("REQUEST DATA");
