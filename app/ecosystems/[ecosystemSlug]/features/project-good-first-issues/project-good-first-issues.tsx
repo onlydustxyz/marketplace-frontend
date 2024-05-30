@@ -128,7 +128,7 @@ export function ProjectGoodFirstIssues() {
       // hasGoodFirstIssues: true,
     },
     {
-      pageSize: "20",
+      pageSize: "3",
     }
   );
 
