@@ -1,7 +1,6 @@
 import { PropsWithChildren } from "react";
 
 export function Wrapper({ children }: PropsWithChildren) {
-  const backgroundUrl = `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/profile-opengraph-background.png`;
   return (
     <div
       style={{
@@ -14,7 +13,6 @@ export function Wrapper({ children }: PropsWithChildren) {
       }}
     >
       <img
-        src={backgroundUrl}
         alt="background"
         style={{
           width: "100%",
