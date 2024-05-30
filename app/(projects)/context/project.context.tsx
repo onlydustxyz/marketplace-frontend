@@ -1,7 +1,7 @@
 "use client";
 
+import { useRouter, useSearchParams } from "next/navigation";
 import { createContext, useEffect, useMemo, useState } from "react";
-import { useLocalStorage } from "react-use";
 import { useDebounce } from "usehooks-ts";
 
 import ProjectApi from "src/api/Project";
@@ -30,20 +30,75 @@ export const ProjectsContext = createContext<TProjectContext.Return>({
 });
 
 export function ProjectsContextProvider({ children }: TProjectContext.Props) {
-  const [storage, setStorage] = useLocalStorage(TProjectContext.FILTER_KEY, TProjectContext.DEFAULT_FILTER);
-  const [filters, setFilters] = useState<TProjectContext.Filter>({ ...TProjectContext.DEFAULT_FILTER, ...storage });
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [filters, setFilters] = useState<TProjectContext.Filter>({ ...TProjectContext.DEFAULT_FILTER });
   const [filtersOptions, setFiltersOptions] = useState<TProjectContext.FiltersOptions>({
     technologies: [],
     ecosystems: [],
   });
+
+  const getFiltersFromURL = () => {
+    const urlParams = new URLSearchParams(searchParams.toString());
+    const filters: TProjectContext.Filter = { ...TProjectContext.DEFAULT_FILTER };
+
+    if (urlParams.getAll("tags").length > 0) {
+      filters.tags = urlParams.getAll("tags") as TProjectContext.Filter["tags"];
+    }
+
+    if (urlParams.getAll("technologies").length > 0) {
+      filters.technologies = urlParams.getAll("technologies");
+    }
+
+    if (urlParams.getAll("ecosystems").length > 0) {
+      const ecosystemNames = urlParams.getAll("ecosystems");
+
+      filters.ecosystems = filtersOptions.ecosystems.filter(ecosystem =>
+        ecosystemNames.includes(ecosystem.label as string)
+      );
+    }
+
+    if (urlParams.get("search")) {
+      filters.search = urlParams.get("search")!;
+    }
+
+    if (urlParams.get("sort")) {
+      filters.sorting = urlParams.get("sort") as TProjectContext.Filter["sorting"];
+    }
+
+    return filters;
+  };
+
+  const updateURLWithFilters = (filters: TProjectContext.Filter) => {
+    const urlParams = new URLSearchParams();
+
+    filters.tags.forEach(tag => urlParams.append("tags", tag));
+    filters.ecosystems.forEach(({ label, id }) => urlParams.append("ecosystems", label?.toString() || id.toString()));
+    filters.technologies.forEach(tech => urlParams.append("technologies", tech));
+
+    if (filters.search) {
+      urlParams.set("search", filters.search);
+    }
+
+    if (filters.sorting && filters.sorting !== "RANK") {
+      urlParams.set("sort", filters.sorting);
+    }
+
+    router.replace(`?${urlParams.toString()}`);
+  };
+
+  useEffect(() => {
+    const initialFilters = getFiltersFromURL();
+    setFilters(initialFilters);
+  }, [searchParams]);
+
   const queryParams = useMemo(() => {
     const params: useInfiniteBaseQueryProps["queryParams"] = [
-      filters.technologies.length > 0 ? ["technologies", filters.technologies.join(",")] : null,
-      filters.ecosystemId.length > 0 ? ["ecosystemId", filters.ecosystemId.map(({ id }) => id).join(",")] : null,
       filters.tags.length > 0 ? ["tags", filters.tags.join(",")] : null,
+      filters.technologies.length > 0 ? ["technologies", filters.technologies.join(",")] : null,
+      filters.ecosystems.length > 0 ? ["ecosystemId", filters.ecosystems.map(({ id }) => id).join(",")] : null,
       filters.search ? ["search", filters.search] : null,
       filters.sorting ? ["sort", filters.sorting] : null,
-      filters.mine ? ["mine", filters.mine] : null,
     ].filter((param): param is string[] => Boolean(param));
 
     return params;
@@ -60,17 +115,17 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
 
   const projects = useMemo(() => data?.pages?.flatMap(({ projects }) => projects) ?? [], [data]);
   const filtersCount = useMemo(() => {
-    return filters.tags.length + filters.ecosystemId.length + filters.technologies.length + (filters.mine ? 1 : 0);
+    return filters.tags.length + filters.ecosystems.length + filters.technologies.length;
   }, [filters]);
 
   function onFilterChange(newFilter: Partial<TProjectContext.Filter>) {
     const filtersValues = { ...filters, ...newFilter };
     setFilters(filtersValues);
-    setStorage(filtersValues);
+    updateURLWithFilters(filtersValues);
   }
   function onClearFilter() {
     setFilters(TProjectContext.DEFAULT_FILTER);
-    setStorage(TProjectContext.DEFAULT_FILTER);
+    updateURLWithFilters(TProjectContext.DEFAULT_FILTER);
   }
 
   useEffect(() => {

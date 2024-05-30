@@ -18,10 +18,10 @@ import { FiltersTags } from "./filters-tags/filters-tags";
 import { FiltersTechnologies } from "./filters-technologies/filters-technologies";
 
 export function ProjectsFilters({ showOn }: { showOn: "mobile" | "desktop" }) {
-  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
+  const isLg = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.lg}px)`);
   const [openMobilePanel, setOpenMobilePanel] = useState(false);
   const { filters } = useContext(ProjectsContext);
-  if (!isXl && showOn === "mobile") {
+  if (!isLg && showOn === "mobile") {
     return (
       <>
         <Button variant={"secondary"} size="s" onClick={() => setOpenMobilePanel(true)}>
