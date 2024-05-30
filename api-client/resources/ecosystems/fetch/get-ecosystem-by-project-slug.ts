@@ -3,11 +3,11 @@ import { IFetchAdapater } from "api-client/adapter/fetch/fetch-adapter.types";
 
 import adapters from "../adapters";
 import tags from "../tags";
-import { EcosystemProjectPathParams, EcosystemProjectQueryParams, GetEcosystemProjectPageResponse } from "../types";
+import { EcosystemProjectsPathParams, EcosystemProjectsQueryParams, GetEcosystemProjectPageResponse } from "../types";
 
 export function getEcosystemByProjectSlug(
-  pathParams: EcosystemProjectPathParams,
-  queryParams: EcosystemProjectQueryParams
+  pathParams: EcosystemProjectsPathParams,
+  queryParams: EcosystemProjectsQueryParams
 ): IFetchAdapater<GetEcosystemProjectPageResponse> {
   return new FetchAdapter<GetEcosystemProjectPageResponse>(adapters.get_projects_by_slug)
     .setPathParams(pathParams)

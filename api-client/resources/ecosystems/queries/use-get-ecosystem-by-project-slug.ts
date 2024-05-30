@@ -5,11 +5,11 @@ import { useReactInfiniteQueryAdapter } from "api-client/adapter/react-infinite-
 import { ReactQueryOptions } from "api-client/types/react-query-options";
 
 import { getEcosystemByProjectSlug } from "../fetch";
-import { EcosystemProjectPathParams, EcosystemProjectQueryParams, GetEcosystemProjectPageResponse } from "../types";
+import { EcosystemProjectsPathParams, EcosystemProjectsQueryParams, GetEcosystemProjectPageResponse } from "../types";
 
 export function useGetEcosystemByProjectSlug(
-  pathParams: EcosystemProjectPathParams,
-  queryParams: EcosystemProjectQueryParams,
+  pathParams: EcosystemProjectsPathParams,
+  queryParams: EcosystemProjectsQueryParams,
   options?: ReactQueryOptions
 ) {
   const query = useReactInfiniteQueryAdapter<GetEcosystemProjectPageResponse>(
