@@ -1,5 +1,7 @@
 "use client";
 
+import { ecosystemsApiClient } from "api-client/resources/ecosystems";
+import { useParams } from "next/navigation";
 import { useMemo } from "react";
 
 import { Avatar } from "components/ds/avatar/avatar";
@@ -12,6 +14,23 @@ import { Typography } from "components/layout/typography/typography";
 
 const MAX_CONTRIBUTORS = 3;
 function Project() {
+  const { ecosystemSlug } = useParams();
+
+  const { data } = ecosystemsApiClient.queries.useGetEcosystemByProjectSlug(
+    {
+      ecosystemSlug: typeof ecosystemSlug === "string" ? ecosystemSlug : "",
+    },
+    {
+      // TODO @hayden uncomment to test
+      //hasGoodFirstIssues: true,
+    },
+    {
+      pageSize: "3",
+    }
+  );
+
+  console.log({ data });
+
   const avatars = [
     { avatarUrl: "", login: "ABC", githubUserId: 123 },
     { avatarUrl: "", login: "DEF", githubUserId: 456 },

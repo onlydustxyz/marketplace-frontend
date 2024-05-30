@@ -13,12 +13,9 @@ export function useGetEcosystemByProjectSlug(
   options?: ReactQueryOptions
 ) {
   const query = useReactInfiniteQueryAdapter<GetEcosystemProjectPageResponse>(
-    getEcosystemByProjectSlug(pathParams, queryParams)
+    getEcosystemByProjectSlug(pathParams, queryParams),
+    { enabled: Boolean(pathParams.ecosystemSlug) && (options?.enabled ?? true), ...options }
   );
 
-  return useInfiniteQuery<GetEcosystemProjectPageResponse>({
-    ...query,
-    enabled: Boolean(pathParams.ecosystemSlug) && (options?.enabled ?? true),
-    ...options,
-  });
+  return useInfiniteQuery<GetEcosystemProjectPageResponse>(query);
 }
