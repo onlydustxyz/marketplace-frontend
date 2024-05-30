@@ -23,7 +23,10 @@ const MAX_CONTRIBUTORS = 3;
 
 function Project({ project }: { project: EcosystemProject }) {
   const nbLanguages = useMemo(() => project.languages?.length ?? 0, [project.languages]);
+  const isMaxLanguages = useMemo(() => nbLanguages > MAX_LANGUAGES, [nbLanguages]);
+
   const nbContributors = useMemo(() => project.contributorsCount ?? 0, [project.contributorsCount]);
+  const isMaxContributors = useMemo(() => nbContributors > MAX_CONTRIBUTORS, [nbContributors]);
 
   function renderLanguages() {
     if (!project.languages || project.languages.length === 0) return null;
@@ -41,13 +44,13 @@ function Project({ project }: { project: EcosystemProject }) {
             ))}
           </ul>
         }
-        enabled={nbLanguages > MAX_LANGUAGES}
+        enabled={isMaxLanguages}
       >
         <Tag>
           <Icon remixName={"ri-code-s-slash-line"} size={12} />
           <Typography variant={"body-xs"}>
             {firstLanguages?.map(l => l.name).join(", ")}
-            {nbLanguages > MAX_LANGUAGES ? ` +${nbLanguages - MAX_LANGUAGES}` : ""}
+            {isMaxLanguages ? ` +${nbLanguages - MAX_LANGUAGES}` : ""}
           </Typography>
         </Tag>
       </Tooltip>
@@ -91,7 +94,7 @@ function Project({ project }: { project: EcosystemProject }) {
                 enableTooltip={false}
               />
 
-              {nbContributors > MAX_CONTRIBUTORS ? (
+              {isMaxContributors ? (
                 <Typography
                   variant={"body-s"}
                   className={"ml-1 text-spaceBlue-100"}
