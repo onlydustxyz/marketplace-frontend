@@ -7,4 +7,7 @@ export type EcosystemProjectsQueryParams = Omit<
 >;
 
 type EcosystemProjectPageResponse = components["schemas"]["EcosystemProjectPageResponse"];
+
 export interface GetEcosystemProjectPageResponse extends EcosystemProjectPageResponse {}
+
+export type EcosystemProject = components["schemas"]["EcosystemProjectPageItemResponse"];
