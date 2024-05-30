@@ -5,11 +5,13 @@ import { EcosystemProject } from "api-client/resources/ecosystems/types";
 import { useParams } from "next/navigation";
 import { useMemo } from "react";
 
+import { CarouselStepper } from "app/ecosystems/components/carousel-stepper/carousel-stepper";
+import { Section } from "app/ecosystems/components/section/section";
+
 import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
 import { Tag } from "components/ds/tag/tag";
 import { ContributorsAvatars } from "components/features/contributors-avatars/contributors-avatars";
-import { Container } from "components/layout/container/container";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
@@ -97,11 +99,15 @@ export function ProjectGoodFirstIssues() {
   const flatProjects = useMemo(() => data?.pages.flatMap(page => page.projects), [data]);
 
   return (
-    <Container>
+    <Section
+      iconProps={{ remixName: "ri-thumb-up-line" }}
+      titleProps={{ translate: { token: "v2.pages.ecosystems.detail.projectGoodFirstIssues.title" } }}
+      rightContent={<CarouselStepper prevProps={{}} nextProps={{}} />}
+    >
       <Card border={"multiColor"} background={"multiColor"} className={"grid gap-3 lg:grid-cols-3"}>
         {/* TODO @hayden carousel */}
         {flatProjects?.length ? flatProjects.map(p => <Project key={p.id} project={p} />) : null}
       </Card>
-    </Container>
+    </Section>
   );
 }
