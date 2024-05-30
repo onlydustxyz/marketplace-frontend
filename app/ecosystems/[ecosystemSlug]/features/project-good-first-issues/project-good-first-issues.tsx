@@ -112,7 +112,7 @@ function Project({ project }: { project: EcosystemProject }) {
 export function ProjectGoodFirstIssues() {
   const { ecosystemSlug } = useParams();
 
-  const { data } = ecosystemsApiClient.queries.useGetEcosystemByProjectSlug(
+  const { data } = ecosystemsApiClient.queries.useGetEcosystemProjectBySlug(
     {
       ecosystemSlug: typeof ecosystemSlug === "string" ? ecosystemSlug : "",
     },

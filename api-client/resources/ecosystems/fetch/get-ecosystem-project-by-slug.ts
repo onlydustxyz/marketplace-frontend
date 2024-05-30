@@ -5,7 +5,7 @@ import adapters from "../adapters";
 import tags from "../tags";
 import { EcosystemProjectsPathParams, EcosystemProjectsQueryParams, GetEcosystemProjectPageResponse } from "../types";
 
-export function getEcosystemByProjectSlug(
+export function getEcosystemProjectBySlug(
   pathParams: EcosystemProjectsPathParams,
   queryParams: EcosystemProjectsQueryParams
 ): IFetchAdapater<GetEcosystemProjectPageResponse> {
