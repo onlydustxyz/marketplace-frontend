@@ -2,21 +2,21 @@
 
 import { useMemo } from "react";
 
-import { AvatarGroup } from "components/ds/avatar-group/avatar-group";
 import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
 import { Tooltip } from "components/ds/tooltip/tooltip";
+import { ContributorsAvatars } from "components/features/contributors-avatars/contributors-avatars";
 import { Container } from "components/layout/container/container";
 import { Typography } from "components/layout/typography/typography";
 
 const MAX_CONTRIBUTORS = 3;
 function Project() {
   const avatars = [
-    { avatarUrl: "", login: "ABC" },
-    { avatarUrl: "", login: "DEF" },
-    { avatarUrl: "", login: "GHI" },
-    { avatarUrl: "", login: "JKL" },
-    { avatarUrl: "", login: "MNO" },
+    { avatarUrl: "", login: "ABC", githubUserId: 123 },
+    { avatarUrl: "", login: "DEF", githubUserId: 456 },
+    { avatarUrl: "", login: "GHI", githubUserId: 789 },
+    { avatarUrl: "", login: "JKL", githubUserId: 101112 },
+    { avatarUrl: "", login: "MNO", githubUserId: 131415 },
   ];
 
   const displayContributors = useMemo(() => avatars.slice(0, 3), [avatars]);
@@ -24,21 +24,6 @@ function Project() {
 
   function handleClick() {
     alert("Check this project out 👌");
-  }
-
-  function renderTooltip() {
-    return (
-      <ul>
-        {avatars.map((contributor, i) => (
-          <li key={i}>
-            {/* TODO @hayden get project list styles */}
-            <Avatar.Labelled avatarProps={{ src: contributor.avatarUrl, size: "xs" }}>
-              {contributor.login}
-            </Avatar.Labelled>
-          </li>
-        ))}
-      </ul>
-    );
   }
 
   return (
@@ -72,15 +57,11 @@ function Project() {
           {/* TODO @hayden */}
           <span>Tag</span>
 
-          <Tooltip content={renderTooltip()}>
-            <AvatarGroup
-              avatars={displayContributors.map(contributor => ({
-                src: contributor.avatarUrl,
-                alt: contributor.login || "",
-              }))}
-              avatarProps={{
-                size: "xs",
-              }}
+          <Tooltip content={<ContributorsAvatars.TooltipContent contributors={avatars} />} canInteract>
+            <ContributorsAvatars
+              contributors={displayContributors}
+              avatarProps={{ size: "xs" }}
+              enableTooltip={false}
             />
 
             {nbContributors > MAX_CONTRIBUTORS ? (

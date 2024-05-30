@@ -68,7 +68,7 @@ export function Contributor({
             : undefined
         }
       >
-        {avatarUrl ? <Avatar src={avatarUrl} alt={login} size="s" {...avatarProps} /> : null}
+        {typeof avatarUrl === "string" ? <Avatar src={avatarUrl} alt={login} size="s" {...avatarProps} /> : null}
 
         <Typography
           variant="body-s"
