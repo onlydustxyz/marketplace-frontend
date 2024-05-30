@@ -11,15 +11,48 @@ import { Section } from "app/ecosystems/components/section/section";
 import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
 import { Tag } from "components/ds/tag/tag";
+import { Tooltip } from "components/ds/tooltip/tooltip";
 import { ContributorsAvatars } from "components/features/contributors-avatars/contributors-avatars";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
 import { NEXT_ROUTER } from "constants/router";
 
+const MAX_LANGUAGES = 3;
 const MAX_CONTRIBUTORS = 3;
+
 function Project({ project }: { project: EcosystemProject }) {
+  const nbLanguages = useMemo(() => project.languages?.length ?? 0, [project.languages]);
   const nbContributors = useMemo(() => project.contributorsCount ?? 0, [project.contributorsCount]);
+
+  function renderLanguages() {
+    if (!project.languages || project.languages.length === 0) return null;
+
+    const firstLanguages = project.languages.slice(0, MAX_LANGUAGES);
+
+    return (
+      <Tooltip
+        content={
+          <ul className={"grid gap-2 text-left"}>
+            {project.languages.map(l => (
+              <li key={l.id}>
+                <Typography variant={"body-s"}>{l.name}</Typography>
+              </li>
+            ))}
+          </ul>
+        }
+        enabled={nbLanguages > MAX_LANGUAGES}
+      >
+        <Tag>
+          <Icon remixName={"ri-code-s-slash-line"} size={12} />
+          <Typography variant={"body-xs"}>
+            {firstLanguages?.map(l => l.name).join(", ")}
+            {nbLanguages > MAX_LANGUAGES ? ` +${nbLanguages - MAX_LANGUAGES}` : ""}
+          </Typography>
+        </Tag>
+      </Tooltip>
+    );
+  }
 
   return (
     <Card
@@ -34,26 +67,22 @@ function Project({ project }: { project: EcosystemProject }) {
         <div className={"flex items-start gap-4"}>
           <Avatar src={project.logoUrl} alt={project.name} size={"xl"} shape={"square"} />
 
-          <div className={"grid gap-1"}>
-            <Typography variant={"title-s"} className={"truncate"}>
-              {project.name}
-            </Typography>
+          <div className="grid gap-2">
+            <div className={"grid gap-1"}>
+              <Typography variant={"title-s"} className={"truncate"}>
+                {project.name}
+              </Typography>
 
-            <Typography variant={"body-s"} className={"line-clamp-2 text-spaceBlue-200"}>
-              {project.shortDescription}
-            </Typography>
+              <Typography variant={"body-s"} className={"line-clamp-2 text-spaceBlue-200"}>
+                {project.shortDescription}
+              </Typography>
+            </div>
+
+            {renderLanguages()}
           </div>
         </div>
 
-        <footer className={"flex items-center gap-3"}>
-          {project.languages?.length ? (
-            <Tag>
-              <Icon remixName={"ri-code-s-slash-line"} size={12} />
-              <Typography variant={"body-xs"}>{project.languages.map(l => l.name).join(", ")}</Typography>
-            </Tag>
-          ) : (
-            <div className={"h-7"} />
-          )}
+        <footer>
           {project.topContributors?.length ? (
             <div className={"flex items-center"}>
               <ContributorsAvatars
@@ -92,7 +121,7 @@ export function ProjectGoodFirstIssues() {
       // hasGoodFirstIssues: true,
     },
     {
-      pageSize: "20",
+      pageSize: "3",
     }
   );
 
