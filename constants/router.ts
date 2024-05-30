@@ -52,4 +52,10 @@ export const NEXT_ROUTER = {
       tracks: (slug: string) => `/h/${slug}#tracks`,
     },
   },
+  ecosystems: {
+    root: "/ecosystems",
+    details: {
+      root: (slug: string) => `/ecosystems/${slug}`,
+    },
+  },
 } as const;
