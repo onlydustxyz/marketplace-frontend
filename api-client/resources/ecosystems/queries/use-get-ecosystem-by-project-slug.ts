@@ -1,16 +1,24 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { useReactQueryAdapter } from "api-client/adapter/react-query/react-query-adapter";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useReactInfiniteQueryAdapter } from "api-client/adapter/react-infinite-query/react-infinite-query-adapter";
+import { ReactQueryOptions } from "api-client/types/react-query-options";
 
 import { getEcosystemByProjectSlug } from "../fetch";
-import { GetEcosystemProjectPageResponse } from "../types";
+import { EcosystemProjectPathParams, EcosystemProjectQueryParams, GetEcosystemProjectPageResponse } from "../types";
 
-export function useGetEcosystemByProjectSlug(params: Parameters<typeof getEcosystemByProjectSlug>[0]) {
-  const { query } = useReactQueryAdapter<GetEcosystemProjectPageResponse>(getEcosystemByProjectSlug(params));
+export function useGetEcosystemByProjectSlug(
+  pathParams: EcosystemProjectPathParams,
+  queryParams: EcosystemProjectQueryParams,
+  options?: ReactQueryOptions
+) {
+  const query = useReactInfiniteQueryAdapter<GetEcosystemProjectPageResponse>(
+    getEcosystemByProjectSlug(pathParams, queryParams)
+  );
 
-  return useQuery<GetEcosystemProjectPageResponse>({
+  return useInfiniteQuery<GetEcosystemProjectPageResponse>({
     ...query,
-    enabled: Boolean(params.ecosystemSlug),
+    enabled: Boolean(pathParams.ecosystemSlug) && (options?.enabled ?? true),
+    ...options,
   });
 }
