@@ -6,8 +6,8 @@ import { useParams } from "next/navigation";
 import { useMemo } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
-import { CarouselStepper } from "app/ecosystems/components/carousel-stepper/carousel-stepper";
 import { Section } from "app/ecosystems/components/section/section";
+import { SliderStepper } from "app/ecosystems/components/slider-stepper/slider-stepper";
 
 import { viewportConfig } from "src/config";
 
@@ -138,7 +138,7 @@ export function ProjectGoodFirstIssues() {
     <Section
       iconProps={{ remixName: "ri-thumb-up-line" }}
       titleProps={{ translate: { token: "v2.pages.ecosystems.detail.projectGoodFirstIssues.title" } }}
-      rightContent={<CarouselStepper prevProps={{}} nextProps={{}} />}
+      rightContent={<SliderStepper prevProps={{}} nextProps={{}} />}
     >
       <Card border={"multiColor"} background={"multiColor"} className={"grid gap-3 lg:grid-cols-3"}>
         {/* TODO @hayden carousel */}
