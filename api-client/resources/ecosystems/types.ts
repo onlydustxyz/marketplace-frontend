@@ -19,7 +19,6 @@ export type EcosystemProjectsQueryParams = Omit<
   operations["getEcosystemProjects"]["parameters"]["query"],
   "pageIndex" | "pageSize"
 >;
-
 type EcosystemProjectPageResponse = components["schemas"]["EcosystemProjectPageResponse"];
 
 export interface GetEcosystemProjectPageResponse extends EcosystemProjectPageResponse {}
@@ -40,3 +39,4 @@ type EcosystemContributorsPageResponse = components["schemas"]["EcosystemContrib
 export interface GetEcosystemContributorsPageResponse extends EcosystemContributorsPageResponse {}
 
 export type EcosystemContributor = components["schemas"]["EcosystemContributorsPageItemResponse"];
+export type EcosystemShortProject = components["schemas"]["ProjectLinkResponse"];
