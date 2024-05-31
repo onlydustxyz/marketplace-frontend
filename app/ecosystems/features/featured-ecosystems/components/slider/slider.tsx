@@ -4,6 +4,11 @@ import { cn } from "@nextui-org/react";
 import { useKeenSlider } from "keen-slider/react";
 import { useMemo, useState } from "react";
 
+import { CarouselStepper } from "app/ecosystems/components/carousel-stepper/carousel-stepper";
+import { Section } from "app/ecosystems/components/section/section";
+
+import { SkeletonEl } from "components/ds/skeleton/skeleton";
+
 import { TSlider } from "./slider.types";
 
 export function Slider({ children }: TSlider.Props) {
@@ -26,7 +31,7 @@ export function Slider({ children }: TSlider.Props) {
     }
 
     return [...Array(instanceRef.current.track.details.slides.length).keys()];
-  }, [instanceRef, loaded]);
+  }, [instanceRef, loaded, currentSlide]);
 
   const navigationsElements = useMemo(() => {
     return navigationsItems.map(slideId => {
@@ -39,16 +44,32 @@ export function Slider({ children }: TSlider.Props) {
           className={cn("h-2 w-2 rounded-full bg-spaceBlue-400", {
             "!bg-greyscale-50": currentSlide === slideId,
           })}
-        ></button>
+        />
       );
     });
-  }, [navigationsItems]);
+  }, [navigationsItems, currentSlide]);
 
   return (
-    <>
+    <Section
+      iconProps={{ remixName: "ri-global-line" }}
+      titleProps={{ translate: { token: "v2.pages.ecosystems.list.featuredEcosystem.sectionTitle" } }}
+      rightContent={
+        <CarouselStepper
+          prevProps={{
+            onClick: () => instanceRef.current?.prev(),
+          }}
+          nextProps={{
+            onClick: () => instanceRef.current?.next(),
+          }}
+        />
+      }
+    >
+      <div className={cn("pointer-events-none absolute inset-0 p-1.5", { "opacity-0": loaded })}>
+        <SkeletonEl width="100%" height="360px" variant="rounded" />
+      </div>
       <div ref={sliderRef} className={cn("keen-slider transition-all", { "pointer-events-none opacity-0": !loaded })}>
         {children.map((c, key) => (
-          <div key={key} className="keen-slider__slide o h-[360px] bg-transparent p-1.5">
+          <div key={key} className="keen-slider__slide h-[360px] bg-transparent p-1.5">
             {c}
           </div>
         ))}
@@ -56,6 +77,6 @@ export function Slider({ children }: TSlider.Props) {
       <div className="flex w-full flex-row items-center justify-center gap-2 p-4">
         {navigationsElements.map(el => el)}
       </div>
-    </>
+    </Section>
   );
 }

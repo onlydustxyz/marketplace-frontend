@@ -6,11 +6,11 @@ import { Container } from "components/layout/container/container";
 
 export function Section({ children, ...restProps }: PropsWithChildren<ComponentProps<typeof SectionHeader>>) {
   return (
-    <section>
+    <section className="overflow-hidden">
       <Container>
-        <div className={"grid gap-4"}>
+        <div className={"flex flex-col gap-4"}>
           <SectionHeader {...restProps} />
-          <div>{children}</div>
+          <div className="relative">{children}</div>
         </div>
       </Container>
     </section>

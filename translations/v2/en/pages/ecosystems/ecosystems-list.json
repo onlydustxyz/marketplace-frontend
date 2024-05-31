@@ -1,3 +1,7 @@
 {
-  "bannerUpperTitle": "ecosystem"
+  "pageTitle": "Ecosystems",
+  "bannerUpperTitle": "ecosystem",
+  "featuredEcosystem": {
+    "sectionTitle": "Featured this week"
+  }
 }
