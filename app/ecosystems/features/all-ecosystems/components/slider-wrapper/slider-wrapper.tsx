@@ -19,7 +19,9 @@ export function SliderWrapper({ children }: TSliderWrapper.Props) {
   return (
     <div
       ref={sliderRef}
-      className={cn("keen-slider overflow-hidden transition-all", { "pointer-events-none opacity-0": !loaded })}
+      className={cn("keen-slider !overflow-visible transition-all sm:!overflow-hidden", {
+        "pointer-events-none opacity-0": !loaded,
+      })}
     >
       {children.map((c, key) => (
         <div key={key} className="keen-slider__slide h-auto bg-transparent p-1">
