@@ -1,5 +1,17 @@
 import { components, operations } from "src/__generated/api";
 
+/* --------------------------------- Ecosystems ROOT -------------------------------- */
+
+export type EcosystemsQueryParams = Omit<
+  operations["getEcosystemsPage"]["parameters"]["query"],
+  "pageIndex" | "pageSize"
+>;
+
+type EcosystemsPageResponse = components["schemas"]["EcosystemPageV2"];
+
+export type EcosystemsPageItem = components["schemas"]["EcosystemPageItemResponse"];
+export type EcosystemsBannerColor = components["schemas"]["EcosystemBanner"]["fontColor"];
+
 /* --------------------------------- Ecosystem PROJECT -------------------------------- */
 
 export type EcosystemProjectsPathParams = operations["getEcosystemProjects"]["parameters"]["path"];
@@ -11,6 +23,7 @@ export type EcosystemProjectsQueryParams = Omit<
 type EcosystemProjectPageResponse = components["schemas"]["EcosystemProjectPageResponse"];
 
 export interface GetEcosystemProjectPageResponse extends EcosystemProjectPageResponse {}
+export interface GetEcosystemPageResponse extends EcosystemsPageResponse {}
 
 export type EcosystemProject = components["schemas"]["EcosystemProjectPageItemResponse"];
 

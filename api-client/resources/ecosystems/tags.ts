@@ -4,6 +4,7 @@ import {
   EcosystemContributorsQueryParams,
   EcosystemProjectsPathParams,
   EcosystemProjectsQueryParams,
+  EcosystemsQueryParams,
 } from "api-client/resources/ecosystems/types";
 
 export default {
@@ -12,4 +13,5 @@ export default {
     `${apiResources.ecosystems}-projects-by-slug-${JSON.stringify(pathParams)}-${JSON.stringify(queryParams)}`,
   contributors_by_slug: (pathParams: EcosystemContributorsPathParams, queryParams: EcosystemContributorsQueryParams) =>
     `${apiResources.ecosystems}-contributors-by-slug-${JSON.stringify(pathParams)}-${JSON.stringify(queryParams)}`,
+  get_all: (queryParams: EcosystemsQueryParams) => `${apiResources.ecosystems}-list-${JSON.stringify(queryParams)}`,
 };
