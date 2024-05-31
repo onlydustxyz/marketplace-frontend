@@ -3,11 +3,11 @@ import { EcosystemContributor, EcosystemContributorsQueryParams } from "api-clie
 export namespace TLeaderBoard {
   export interface LeaderBoardItemProps {
     contributor: EcosystemContributor;
-    sortBy?: EcosystemContributorsQueryParams["sort"];
+    sortBy: EcosystemContributorsQueryParams["sort"];
   }
   export interface LeaderBoardProps {
     ecosystemSlug: string;
     className?: string;
-    sortBy?: EcosystemContributorsQueryParams["sort"];
+    sortBy: EcosystemContributorsQueryParams["sort"];
   }
 }
