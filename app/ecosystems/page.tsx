@@ -11,9 +11,7 @@ export default async function EcosystemsListPage() {
         <Typography variant={"title-xl"} translate={{ token: "v2.pages.ecosystems.list.pageTitle" }} />
       </Container>
       <FeaturedEcosystems />
-      <Container>
-        <AllEcosystems />
-      </Container>
+      <AllEcosystems />
     </div>
   );
 }
