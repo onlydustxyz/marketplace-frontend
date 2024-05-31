@@ -14,7 +14,7 @@ export default async function EcosystemsListLoading() {
         <SkeletonEl width="100%" height="auto" className="aspect-[3.41/1]" variant="rounded" />
       </SectionLoading>
       <SectionLoading>
-        <div className="grid grid-cols-2 gap-3 py-3 sm:grid-cols-3 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 py-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           <SkeletonEl width="100%" height="auto" className="aspect-[0.89/1]" variant="rounded" />
           <SkeletonEl width="100%" height="auto" className="aspect-[0.89/1]" variant="rounded" />
           <SkeletonEl width="100%" height="auto" className="aspect-[0.89/1]" variant="rounded" />
