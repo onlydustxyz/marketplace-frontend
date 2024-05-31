@@ -6,5 +6,11 @@
       "one": "+1 contributor",
       "zero": "+0 contributors"
     }
+  },
+  "leaderBoard": {
+    "title": "Leaderboards",
+    "titleSpecialMention": "Last 7 days",
+    "totalContributionsSubtitle": "By total contributions",
+    "totalEarnedSubtitle": "By total earned"
   }
 }
