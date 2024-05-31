@@ -31,10 +31,11 @@ function HeaderClient() {
 
   const { data: myProfileInfo } = MeApi.queries.useGetMyProfileInfo({});
 
-  const rewardsMenuItem = githubUserId && !onboardingInProgress ? T("v2.features.menu.rewards") : undefined;
+  const projectsMenuItem = T("v2.features.menu.projects");
+  const ecosystemsMenuItem = T("v2.features.menu.ecosystems");
   const hackathonsMenuItem = T("v2.features.menu.hackathons");
   const contributionsMenuItem = githubUserId && !onboardingInProgress ? T("v2.features.menu.contributions") : undefined;
-  const projectsMenuItem = T("v2.features.menu.projects");
+  const rewardsMenuItem = githubUserId && !onboardingInProgress ? T("v2.features.menu.rewards") : undefined;
 
   const isMatchMaintenance = useMatchPath(NEXT_ROUTER.maintenance, { exact: false });
 
@@ -48,9 +49,10 @@ function HeaderClient() {
     <View
       menuItems={{
         [NEXT_ROUTER.projects.all]: projectsMenuItem,
+        [NEXT_ROUTER.ecosystems.root]: ecosystemsMenuItem,
+        [NEXT_ROUTER.hackathons.root]: hackathonsMenuItem,
         [NEXT_ROUTER.contributions.all]: contributionsMenuItem,
         [NEXT_ROUTER.rewards.all]: rewardsMenuItem,
-        [NEXT_ROUTER.hackathons.root]: hackathonsMenuItem,
       }}
       impersonating={isImpersonating}
       profileCompletionScore={myProfileInfo ? calculateUserCompletionScore(myProfileInfo) : undefined}
