@@ -2,6 +2,7 @@ import { Suspense } from "react";
 
 import { LeaderBoard } from "app/ecosystems/[ecosystemSlug]/features/leader-board/leader-board";
 import { ProjectGoodFirstIssues } from "app/ecosystems/[ecosystemSlug]/features/project-good-first-issues/project-good-first-issues";
+import { SectionLoading } from "app/ecosystems/components/section/section.loading";
 
 import { Button } from "components/ds/button/button";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
@@ -34,7 +35,14 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
             </div>
           </Container>
         </div>
-        <Suspense fallback={<SkeletonEl width="100%" height="466px" variant="rounded" />}>
+
+        <Suspense
+          fallback={
+            <SectionLoading>
+              <SkeletonEl width="100%" height="224px" variant="rounded" />
+            </SectionLoading>
+          }
+        >
           <ProjectGoodFirstIssues ecosystemSlug={ecosystemSlug} />
         </Suspense>
 

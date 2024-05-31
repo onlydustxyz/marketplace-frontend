@@ -18,6 +18,8 @@ export async function ProjectGoodFirstIssues({ ecosystemSlug }: { ecosystemSlug:
     )
     .request();
 
+  if (!projects.length) return null;
+
   return (
     <Slider>
       {projects.map(p => (
