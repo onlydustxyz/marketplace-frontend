@@ -14,7 +14,7 @@ export function Slide({ imageUrl, slug, color, title, description, smImageUrl }:
   return (
     <a
       href={NEXT_ROUTER.ecosystems.details.root(slug)}
-      className="outline-st relative z-[1] flex h-full w-full flex-col items-start justify-end overflow-hidden rounded-[32px] bg-card-background-base bg-cover bg-center px-16 py-12 outline outline-[6px] outline-card-border-medium md:rounded-none md:outline-none"
+      className="outline-st relative z-[1] flex h-full w-full flex-col items-start justify-end overflow-hidden rounded-[16px] bg-card-background-base bg-cover bg-center outline outline-[6px] outline-card-border-medium sm:rounded-none sm:px-8 sm:py-8 sm:outline-none md:px-16 md:py-12"
     >
       <SlideContent smBannerUrl={smImageUrl} name={title}>
         <img

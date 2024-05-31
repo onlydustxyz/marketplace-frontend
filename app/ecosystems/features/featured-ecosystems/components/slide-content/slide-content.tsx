@@ -4,12 +4,15 @@ import { useMediaQuery } from "usehooks-ts";
 
 import { viewportConfig } from "src/config";
 
+import { useClientOnly } from "components/layout/client-only/client-only";
+
 import { TSlideContent } from "./slide-content.types";
 
 export function SlideContent({ children, smBannerUrl, name }: TSlideContent.Props) {
   const isSm = useMediaQuery(`(max-width: ${viewportConfig.breakpoints.sm}px)`);
+  const isClient = useClientOnly();
 
-  if (isSm) {
+  if (isSm && isClient) {
     return (
       <img
         src={smBannerUrl}

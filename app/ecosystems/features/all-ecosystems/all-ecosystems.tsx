@@ -19,7 +19,7 @@ export async function AllEcosystems() {
         {ecosystems.map(ecosystem => (
           <EcosystemCard
             key={ecosystem.id}
-            bannerUrl={ecosystem.banners.xl.url}
+            bannerUrl={ecosystem.banners.md.url}
             slug={ecosystem.slug}
             description={ecosystem.description}
             name={ecosystem.name}

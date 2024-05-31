@@ -7,13 +7,17 @@ import { SliderWrapper } from "app/ecosystems/features/all-ecosystems/components
 
 import { viewportConfig } from "src/config";
 
+import { useClientOnly } from "components/layout/client-only/client-only";
+
 import { TResponsiveWrapper } from "./responsive-wrapper.types";
 
 export function ResponsiveWrapper({ children }: TResponsiveWrapper.Props) {
   const isSm = useMediaQuery(`(max-width: ${viewportConfig.breakpoints.sm}px)`);
+  const isClient = useClientOnly();
 
-  if (isSm) {
+  if (isSm && isClient) {
     return <SliderWrapper>{children.map(child => child)}</SliderWrapper>;
   }
+
   return <GridWrapper>{children.map(child => child)}</GridWrapper>;
 }
