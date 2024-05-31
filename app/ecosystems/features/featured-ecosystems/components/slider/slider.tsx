@@ -67,9 +67,15 @@ export function Slider({ children }: TSlider.Props) {
       <div className={cn("pointer-events-none absolute inset-0 p-1.5", { "opacity-0": loaded })}>
         <SkeletonEl width="100%" height="360px" variant="rounded" />
       </div>
-      <div ref={sliderRef} className={cn("keen-slider transition-all", { "pointer-events-none opacity-0": !loaded })}>
+      <div
+        ref={sliderRef}
+        className={cn(
+          "keen-slider overflow-hidden rounded-[32px] outline outline-[6px] outline-card-border-medium transition-all",
+          { "pointer-events-none opacity-0": !loaded }
+        )}
+      >
         {children.map((c, key) => (
-          <div key={key} className="keen-slider__slide h-[360px] bg-transparent p-1.5">
+          <div key={key} className="keen-slider__slide h-[360px] bg-transparent">
             {c}
           </div>
         ))}

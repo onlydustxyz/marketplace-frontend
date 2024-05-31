@@ -5,8 +5,10 @@ import { EcosystemCard } from "app/ecosystems/features/all-ecosystems/components
 import { ResponsiveWrapper } from "app/ecosystems/features/all-ecosystems/components/responsive-wrapper/responsive-wrapper";
 
 export async function AllEcosystems() {
-  const ecosystems = await ecosystemsApiClient.fetch.getAllEcosystems({ featured: false }).request();
-  console.log("all ecosystems", ecosystems);
+  const ecosystems = await ecosystemsApiClient.fetch
+    .getAllEcosystems({ featured: false })
+    .request()
+    .then(res => res.ecosystems);
 
   return (
     <Section
@@ -14,7 +16,7 @@ export async function AllEcosystems() {
       titleProps={{ translate: { token: "v2.pages.ecosystems.list.allEcosystems.sectionTitle" } }}
     >
       <ResponsiveWrapper>
-        {ecosystems.ecosystems.map(ecosystem => (
+        {ecosystems.map(ecosystem => (
           <EcosystemCard
             key={ecosystem.id}
             bannerUrl={ecosystem.banners.xl.url}

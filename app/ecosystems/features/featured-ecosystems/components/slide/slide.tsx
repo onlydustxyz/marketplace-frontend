@@ -13,7 +13,7 @@ export function Slide({ imageUrl, slug, color, title, description }: TSlide.Prop
   return (
     <a
       href={NEXT_ROUTER.ecosystems.details.root(slug)}
-      className="outline-st relative z-[1] flex h-full w-full flex-col items-start justify-end overflow-hidden rounded-[32px] bg-card-background-base bg-cover bg-center px-16 py-12 outline outline-[6px] outline-card-border-medium"
+      className="outline-st relative z-[1] flex h-full w-full flex-col items-start justify-end overflow-hidden bg-card-background-base bg-cover bg-center px-16 py-12"
     >
       <img
         src={imageUrl}

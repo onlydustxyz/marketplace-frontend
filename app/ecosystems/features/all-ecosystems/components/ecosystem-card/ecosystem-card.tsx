@@ -7,15 +7,7 @@ import { NEXT_ROUTER } from "constants/router";
 
 import { TEcosystemCard } from "./ecosystem-card.types";
 
-export function EcosystemCard({
-  bannerUrl,
-  name,
-  description,
-  projectCount,
-  categories,
-  projects,
-  slug,
-}: TEcosystemCard.Props) {
+export function EcosystemCard({ bannerUrl, name, description, projectCount, projects, slug }: TEcosystemCard.Props) {
   return (
     <Card
       as={"a"}
