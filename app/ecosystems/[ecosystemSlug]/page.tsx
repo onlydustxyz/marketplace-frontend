@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 
 import { LeaderBoard } from "app/ecosystems/[ecosystemSlug]/features/leader-board/leader-board";
 import { ProjectGoodFirstIssues } from "app/ecosystems/[ecosystemSlug]/features/project-good-first-issues/project-good-first-issues";
@@ -45,12 +46,16 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
           </div>
 
           <div className="grid gap-4 lg:grid-cols-2">
-            <Suspense fallback={<SkeletonEl width="100%" height="466px" variant="rounded" />}>
-              <LeaderBoard sortBy={"CONTRIBUTION_COUNT"} ecosystemSlug={params.ecosystemSlug} />
-            </Suspense>
-            <Suspense fallback={<SkeletonEl width="100%" height="466px" variant="rounded" />}>
-              <LeaderBoard sortBy={"TOTAL_EARNED"} ecosystemSlug={params.ecosystemSlug} />
-            </Suspense>
+            <ErrorBoundary fallback={null}>
+              <Suspense fallback={<SkeletonEl width="100%" height="466px" variant="rounded" />}>
+                <LeaderBoard sortBy={"CONTRIBUTION_COUNT"} ecosystemSlug={params.ecosystemSlug} />
+              </Suspense>
+            </ErrorBoundary>
+            <ErrorBoundary fallback={null}>
+              <Suspense fallback={<SkeletonEl width="100%" height="466px" variant="rounded" />}>
+                <LeaderBoard sortBy={"TOTAL_EARNED"} ecosystemSlug={params.ecosystemSlug} />
+              </Suspense>
+            </ErrorBoundary>
           </div>
         </div>
       </Container>
