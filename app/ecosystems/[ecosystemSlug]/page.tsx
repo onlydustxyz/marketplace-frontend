@@ -13,6 +13,8 @@ import { Typography } from "components/layout/typography/typography";
 import { NEXT_ROUTER } from "constants/router";
 
 export default async function EcosystemDetailPage({ params }: { params: { ecosystemSlug: string } }) {
+  const { ecosystemSlug } = params;
+
   return (
     <div className={"grid gap-8 py-10 lg:gap-10"}>
       <div>
@@ -30,7 +32,9 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
           </div>
         </Container>
       </div>
-      <ProjectGoodFirstIssues />
+      <Suspense fallback={<SkeletonEl width="100%" height="466px" variant="rounded" />}>
+        <ProjectGoodFirstIssues ecosystemSlug={ecosystemSlug} />
+      </Suspense>
 
       <Container>
         <div className="flex flex-col gap-4">
@@ -46,10 +50,10 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
 
           <div className="grid gap-4 lg:grid-cols-2">
             <Suspense fallback={<SkeletonEl width="100%" height="466px" variant="rounded" />}>
-              <LeaderBoard sortBy={"CONTRIBUTION_COUNT"} ecosystemSlug={params.ecosystemSlug} />
+              <LeaderBoard sortBy={"CONTRIBUTION_COUNT"} ecosystemSlug={ecosystemSlug} />
             </Suspense>
             <Suspense fallback={<SkeletonEl width="100%" height="466px" variant="rounded" />}>
-              <LeaderBoard sortBy={"TOTAL_EARNED"} ecosystemSlug={params.ecosystemSlug} />
+              <LeaderBoard sortBy={"TOTAL_EARNED"} ecosystemSlug={ecosystemSlug} />
             </Suspense>
           </div>
         </div>

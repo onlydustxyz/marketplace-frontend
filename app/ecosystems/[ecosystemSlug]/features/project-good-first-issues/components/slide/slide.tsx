@@ -1,3 +1,5 @@
+"use client";
+
 import { EcosystemProject } from "api-client/resources/ecosystems/types";
 import { useMemo } from "react";
 import { useMediaQuery } from "usehooks-ts";
