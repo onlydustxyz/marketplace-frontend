@@ -4,8 +4,8 @@ import { cn } from "@nextui-org/react";
 import { useKeenSlider } from "keen-slider/react";
 import { useMemo, useState } from "react";
 
-import { CarouselStepper } from "app/ecosystems/components/carousel-stepper/carousel-stepper";
 import { Section } from "app/ecosystems/components/section/section";
+import { SliderStepper } from "app/ecosystems/components/slider-stepper/slider-stepper";
 
 import { viewportConfig } from "src/config";
 
@@ -64,7 +64,7 @@ export function Slider({ children }: TSlider.Props) {
       iconProps={{ remixName: "ri-global-line" }}
       titleProps={{ translate: { token: "v2.pages.ecosystems.list.featuredEcosystem.sectionTitle" } }}
       rightContent={
-        <CarouselStepper
+        <SliderStepper
           prevProps={{
             onClick: () => instanceRef.current?.prev(),
           }}
