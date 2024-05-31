@@ -35,11 +35,13 @@ export function Slider({ children }: TSlider.Props) {
         [`(max-width: ${viewportConfig.breakpoints.lg}px)`]: {
           slides: {
             perView: 2,
+            spacing: 12,
           },
         },
         [`(max-width: ${viewportConfig.breakpoints.sm}px)`]: {
           slides: {
             perView: 1,
+            spacing: 12,
             origin: "center",
           },
         },
