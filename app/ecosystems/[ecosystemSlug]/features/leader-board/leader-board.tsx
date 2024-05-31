@@ -54,7 +54,7 @@ export async function LeaderBoard({ ecosystemSlug, sortBy, className }: TLeaderB
     .getEcosystemContributorsBySlug(
       { ecosystemSlug },
       {
-        sort: sortBy,
+        sort: sortBy || "CONTRIBUTION_COUNT",
       },
       {
         pageSize: 5,
