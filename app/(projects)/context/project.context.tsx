@@ -132,9 +132,17 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
     setFilters(filtersValues);
     updateURLWithFilters(filtersValues);
   }
+
   function onClearFilter() {
-    setFilters(TProjectContext.DEFAULT_FILTER);
-    updateURLWithFilters(TProjectContext.DEFAULT_FILTER);
+    const clearFilters = {
+      ...filters,
+      tags: [],
+      ecosystems: [],
+      technologies: [],
+    };
+
+    setFilters(clearFilters);
+    updateURLWithFilters(clearFilters);
   }
 
   useEffect(() => {
