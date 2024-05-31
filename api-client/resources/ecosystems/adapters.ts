@@ -6,6 +6,7 @@ import tags from "./tags";
 enum Paths {
   root = "root",
   get_projects_by_slug = "get_projects_by_slug",
+  get_contributors_by_slug = "get_contributors_by_slug",
   get_all = "get_all",
 }
 
@@ -17,6 +18,10 @@ const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
   },
   get_projects_by_slug: {
     url: "ecosystems/:ecosystemSlug/projects",
+    method: "GET",
+  },
+  get_contributors_by_slug: {
+    url: "ecosystems/:ecosystemSlug/contributors",
     method: "GET",
   },
   get_all: {
