@@ -12,8 +12,8 @@ export function FiltersEcosystems() {
     filters.set({ ecosystems });
   };
 
-  const selected = filters.options.ecosystems.filter(({ id }) =>
-    filters.values.ecosystems.some(({ id: selectedId }) => selectedId === id)
+  const selected = filters.options.ecosystems.filter(({ value }) =>
+    filters.values.ecosystems.some(({ value: selectedValue }) => value === selectedValue)
   );
 
   return <Filter selected={selected} ecosystems={filters.options.ecosystems} onChange={handleEcosystemClick} />;

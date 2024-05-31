@@ -29,7 +29,6 @@ export const ProjectsContext = createContext<TProjectContext.Return>({
   },
 });
 
-// TODO: @NeoxAzrot Voir avec Pierre pour les ecosystems
 export function ProjectsContextProvider({ children }: TProjectContext.Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -58,9 +57,11 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
     }
 
     if (ecosystems.length > 0) {
-      filters.ecosystems = filtersOptions.ecosystems.filter(ecosystem =>
-        ecosystems.includes(ecosystem.label as string)
-      );
+      // We have to map the ecosystems to the correct format, because of the type of the filter - TSelectAutocomplete.Item[]
+      filters.ecosystems = ecosystems.map(value => ({
+        id: value,
+        value,
+      }));
     }
 
     if (search) {
@@ -78,33 +79,33 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
     const urlParams = new URLSearchParams();
 
     filters.tags.forEach(tag => urlParams.append("tags", tag));
-    // We need to check if the label is a string because of the TSelectAutocomplete.Item type that can be a string or a JSX.Element
-    // Here, it's return by the API, it can only be a string
-    filters.ecosystems.forEach(({ label }) => urlParams.append("ecosystems", typeof label === "string" ? label : ""));
+    filters.ecosystems.forEach(({ value }) => urlParams.append("ecosystems", value));
     filters.technologies.forEach(tech => urlParams.append("technologies", tech));
 
     if (filters.search) {
       urlParams.set("search", filters.search);
     }
 
-    if (filters.sorting) {
+    const hasOtherFilters =
+      filters.tags.length > 0 || filters.ecosystems.length > 0 || filters.technologies.length > 0 || filters.search;
+
+    if (filters.sorting && (hasOtherFilters || filters.sorting !== TProjectContext.DEFAULT_SORTING)) {
       urlParams.set("sort", filters.sorting);
     }
 
     router.replace(`?${urlParams.toString()}`);
   };
 
-  // TODO: @NeoxAzrot Voir pour delete le filtersOptions dans le useEffect
   useEffect(() => {
     const initialFilters = getFiltersFromURL();
     setFilters(initialFilters);
-  }, [searchParams, filtersOptions]);
+  }, [searchParams]);
 
   const queryParams = useMemo(() => {
     const params: useInfiniteBaseQueryProps["queryParams"] = [
       filters.tags.length > 0 ? ["tags", filters.tags.join(",")] : null,
       filters.technologies.length > 0 ? ["technologies", filters.technologies.join(",")] : null,
-      filters.ecosystems.length > 0 ? ["ecosystemId", filters.ecosystems.map(({ id }) => id).join(",")] : null,
+      filters.ecosystems.length > 0 ? ["ecosystemSlug", filters.ecosystems.map(({ value }) => value).join(",")] : null,
       filters.search ? ["search", filters.search] : null,
       filters.sorting ? ["sort", filters.sorting] : null,
     ].filter((param): param is string[] => Boolean(param));
@@ -150,10 +151,10 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
             }))
           : prevOptions.technologies,
         ecosystems: newEcosystems?.length
-          ? newEcosystems.map(({ name, id, logoUrl }) => ({
+          ? newEcosystems.map(({ name, id, logoUrl, slug }) => ({
               id,
               label: name,
-              value: id,
+              value: slug,
               image: logoUrl,
             }))
           : prevOptions.technologies,
