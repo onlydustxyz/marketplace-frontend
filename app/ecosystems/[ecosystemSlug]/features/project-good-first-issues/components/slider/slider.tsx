@@ -61,16 +61,18 @@ export function Slider({ children }: TSlider.Props) {
       titleProps={{ translate: { token: "v2.pages.ecosystems.detail.projectGoodFirstIssues.title" } }}
       rightContent={
         nbSlides > 3 ? (
-          <SliderStepper
-            prevProps={{
-              onClick: instanceRef.current?.prev,
-              disabled: currentIndex === 0,
-            }}
-            nextProps={{
-              onClick: instanceRef.current?.next,
-              disabled: currentIndex >= maxIndex,
-            }}
-          />
+          <div className={"hidden sm:block"}>
+            <SliderStepper
+              prevProps={{
+                onClick: instanceRef.current?.prev,
+                disabled: currentIndex === 0,
+              }}
+              nextProps={{
+                onClick: instanceRef.current?.next,
+                disabled: currentIndex >= maxIndex,
+              }}
+            />
+          </div>
         ) : null
       }
     >
