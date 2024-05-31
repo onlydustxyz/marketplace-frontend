@@ -18,7 +18,7 @@ export function EcosystemCard({ bannerUrl, name, description, projectCount, proj
       <div className="relative h-[134px] w-full overflow-hidden rounded-t-[16px]">
         <img src={bannerUrl} alt={name} className="absolute inset-0 h-full w-full object-cover object-center" />
       </div>
-      <div className="flex w-full flex-col gap-2 p-4">
+      <div className="flex w-full flex-col gap-2 overflow-hidden rounded-b-[16px] p-4">
         <Typography variant={"title-s"}>{name}</Typography>
         <Typography variant={"body-m"} className="text-spaceBlue-100">
           {description || <Translate token={"v2.pages.ecosystems.list.allEcosystems.descriptionPlaceholder"} />}

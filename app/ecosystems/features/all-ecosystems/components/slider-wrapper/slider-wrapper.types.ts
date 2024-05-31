@@ -1,5 +1,7 @@
-import { PropsWithChildren } from "react";
+import { ReactNode } from "react";
 
 export namespace TSliderWrapper {
-  export interface Props extends PropsWithChildren {}
+  export interface Props {
+    children: ReactNode[];
+  }
 }

@@ -15,6 +15,7 @@ export async function FeaturedEcosystems() {
         <Slide
           key={ecosystem.id}
           imageUrl={ecosystem.banners.xl.url}
+          smImageUrl={ecosystem.banners.md.url}
           slug={ecosystem.slug}
           color={ecosystem.banners.xl.fontColor}
           description={ecosystem.description}

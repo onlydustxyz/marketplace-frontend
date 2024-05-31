@@ -7,6 +7,8 @@ import { useMemo, useState } from "react";
 import { CarouselStepper } from "app/ecosystems/components/carousel-stepper/carousel-stepper";
 import { Section } from "app/ecosystems/components/section/section";
 
+import { viewportConfig } from "src/config";
+
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
 
 import { TSlider } from "./slider.types";
@@ -19,6 +21,14 @@ export function Slider({ children }: TSlider.Props) {
     initial: 0,
     slideChanged(slider) {
       setCurrentSlide(slider.track.details.rel);
+    },
+    breakpoints: {
+      [`(max-width: ${viewportConfig.breakpoints.sm}px)`]: {
+        slides: {
+          perView: 1.1,
+          spacing: 12,
+        },
+      },
     },
     created() {
       setLoaded(true);
@@ -70,12 +80,12 @@ export function Slider({ children }: TSlider.Props) {
       <div
         ref={sliderRef}
         className={cn(
-          "keen-slider overflow-hidden rounded-[32px] outline outline-[6px] outline-card-border-medium transition-all",
+          "keen-slider overflow-hidden transition-all md:rounded-[32px] md:outline md:outline-[6px] md:outline-card-border-medium",
           { "pointer-events-none opacity-0": !loaded }
         )}
       >
         {children.map((c, key) => (
-          <div key={key} className="keen-slider__slide h-[360px] bg-transparent">
+          <div key={key} className="keen-slider__slide h-[134px] bg-transparent p-1 md:h-[360px] md:p-0">
             {c}
           </div>
         ))}
