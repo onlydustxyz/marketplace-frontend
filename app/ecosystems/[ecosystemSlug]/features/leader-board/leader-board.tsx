@@ -14,7 +14,7 @@ import { Typography } from "components/layout/typography/typography";
 function LeaderBoardItem({ contributor, sortBy }: TLeaderBoard.LeaderBoardItemProps) {
   return (
     <div className="flex items-center gap-2 px-5 py-6">
-      <div className="min-w-[36px] justify-start">#{contributor.dynamicRank}</div>
+      <div className="min-w-[36px] justify-start">{`#${contributor.dynamicRank}`}</div>
       <AvatarLabelled
         avatarProps={{ src: contributor.avatarUrl, alt: contributor.login, size: "l", shape: "square" }}
         labelProps={{ title: contributor.login }}
