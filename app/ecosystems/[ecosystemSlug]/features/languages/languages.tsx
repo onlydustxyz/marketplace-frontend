@@ -26,7 +26,7 @@ export async function Languages({ ecosystemSlug }: TLanguages.Props) {
       iconProps={{ remixName: "ri-code-s-slash-line" }}
       titleProps={{
         translate: {
-          token: "v2.pages.ecosystems.detail.learnMore.title",
+          token: "v2.pages.ecosystems.detail.languages.title",
         },
       }}
     >
@@ -34,7 +34,7 @@ export async function Languages({ ecosystemSlug }: TLanguages.Props) {
         {languages.map(language => (
           <FilterCard
             as={"a"}
-            href={NEXT_ROUTER.projects.all}
+            href={NEXT_ROUTER.projects.allWithParams({ ecosystems: ecosystemSlug })}
             key={language.id}
             icon={<img src={language.logoUrl} alt={language.name} className="h-6 w-6 object-contain object-center" />}
           >
