@@ -6,7 +6,7 @@ import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
 export async function MoreProjectTitle({ ecosystemSlug }: TMoreProjectTitle.Props) {
-  const [hotCommunity, newbiesWelcome, fastAndFurious] = await Promise.all([
+  const [hasHotCommunity, hasNewbiesWelcome, hasHastAndFurious] = await Promise.all([
     ecosystemsApiClient.fetch
       .getEcosystemProjectBySlug(
         { ecosystemSlug },
@@ -18,6 +18,9 @@ export async function MoreProjectTitle({ ecosystemSlug }: TMoreProjectTitle.Prop
       )
       .request({
         next: { revalidate: 120 },
+      })
+      .then(res => {
+        return !!res.projects.length;
       }),
     ecosystemsApiClient.fetch
       .getEcosystemProjectBySlug(
@@ -30,6 +33,9 @@ export async function MoreProjectTitle({ ecosystemSlug }: TMoreProjectTitle.Prop
       )
       .request({
         next: { revalidate: 120 },
+      })
+      .then(res => {
+        return !!res.projects.length;
       }),
     ecosystemsApiClient.fetch
       .getEcosystemProjectBySlug(
@@ -42,8 +48,13 @@ export async function MoreProjectTitle({ ecosystemSlug }: TMoreProjectTitle.Prop
       )
       .request({
         next: { revalidate: 120 },
+      })
+      .then(res => {
+        return !!res.projects.length;
       }),
   ]);
+
+  if (!hasHotCommunity && !hasNewbiesWelcome && !hasHastAndFurious) return null;
   return (
     <div className="flex items-baseline gap-2">
       <Icon remixName="ri-folder-3-line" size={24} />

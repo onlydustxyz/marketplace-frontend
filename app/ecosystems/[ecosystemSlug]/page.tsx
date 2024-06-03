@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
 import { LeaderBoard } from "app/ecosystems/[ecosystemSlug]/features/leader-board/leader-board";
+import { MoreProjectTitle } from "app/ecosystems/[ecosystemSlug]/features/more-project-title/more-project-title";
 import { MoreProject } from "app/ecosystems/[ecosystemSlug]/features/more-project/more-project";
 import { Overview } from "app/ecosystems/[ecosystemSlug]/features/overview/overview";
 import { OverviewLoading } from "app/ecosystems/[ecosystemSlug]/features/overview/overview.loading";
@@ -78,10 +79,11 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
 
         <Container>
           <div className="flex flex-col gap-4">
-            <div className="flex items-baseline gap-2">
-              <Icon remixName="ri-folder-3-line" size={24} />
-              <Typography variant="title-m" translate={{ token: "v2.pages.ecosystems.detail.moreProjects.title" }} />
-            </div>
+            <ErrorBoundary fallback={null}>
+              <Suspense fallback={<SkeletonEl width="100px" height="18px" variant="text" />}>
+                <MoreProjectTitle ecosystemSlug={params.ecosystemSlug} />
+              </Suspense>
+            </ErrorBoundary>
 
             <div className="flex gap-4">
               <ErrorBoundary fallback={null}>
