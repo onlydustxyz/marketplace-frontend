@@ -89,11 +89,12 @@ export function Slider({ children }: TSlider.Props) {
           />
         </div>
       )}
+
       <div
         ref={sliderRef}
         className={cn(
           "keen-slider !overflow-visible transition-all aspect-[2.16/1] sm:!overflow-hidden sm:rounded-[32px] sm:outline sm:outline-[6px] sm:outline-card-border-medium sm:aspect-[3.41/1]",
-          { "pointer-events-none opacity-0": !loaded }
+          { "pointer-events-none !fixed top-[9999px] opacity-0": !loaded }
         )}
       >
         {children.map((c, key) => (
@@ -105,6 +106,7 @@ export function Slider({ children }: TSlider.Props) {
           </div>
         ))}
       </div>
+
       <div className="flex w-full flex-row items-center justify-center gap-2 p-4">
         {navigationsElements.map(el => el)}
       </div>
