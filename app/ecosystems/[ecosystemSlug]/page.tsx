@@ -9,6 +9,8 @@ import { MoreProject } from "app/ecosystems/[ecosystemSlug]/features/more-projec
 import { Overview } from "app/ecosystems/[ecosystemSlug]/features/overview/overview";
 import { OverviewLoading } from "app/ecosystems/[ecosystemSlug]/features/overview/overview.loading";
 import { ProjectGoodFirstIssues } from "app/ecosystems/[ecosystemSlug]/features/project-good-first-issues/project-good-first-issues";
+import { TopProjects } from "app/ecosystems/[ecosystemSlug]/features/top-projects/top-projects";
+import { TopProjectsLoading } from "app/ecosystems/[ecosystemSlug]/features/top-projects/top-projects.loading";
 import { SectionLoading } from "app/ecosystems/components/section/section.loading";
 
 import { Button } from "components/ds/button/button";
@@ -106,6 +108,13 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
             </div>
           </Container>
         </ErrorBoundary>
+
+        <ErrorBoundary fallback={null}>
+          <Suspense fallback={<TopProjectsLoading />}>
+            <TopProjects ecosystemSlug={ecosystemSlug} />
+          </Suspense>
+        </ErrorBoundary>
+
         <Suspense fallback={<LearnMoreLoading />}>
           <LearnMore ecosystemSlug={ecosystemSlug} />
         </Suspense>

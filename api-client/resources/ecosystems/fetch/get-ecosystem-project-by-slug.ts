@@ -12,10 +12,12 @@ export function getEcosystemProjectBySlug(
   queryParams: EcosystemProjectsQueryParams,
   pagination?: PaginationInterface
 ): IFetchAdapater<GetEcosystemProjectPageResponse> {
-  const fetcher = new FetchAdapter<GetEcosystemProjectPageResponse>(adapters.get_projects_by_slug)
+  const fetchAdapter = new FetchAdapter<GetEcosystemProjectPageResponse>(adapters.get_projects_by_slug)
     .setPathParams(pathParams)
-    .setParams(queryParams)
     .setTag(tags.projects_by_slug(pathParams, queryParams));
 
-  return PaginationAdapter(fetcher, pagination).fetcher;
+  if (queryParams) {
+    fetchAdapter.setParams(queryParams);
+  }
+  return PaginationAdapter(fetchAdapter, pagination).fetcher;
 }
