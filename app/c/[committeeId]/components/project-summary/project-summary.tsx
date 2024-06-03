@@ -22,9 +22,13 @@ export function ProjectSummary({ project }: TProjectSummary.Props) {
   if (!project) return null;
 
   return (
-    <Card className={"grid gap-4 shadow-light"}>
+    <Card
+      className={
+        "grid gap-4 border-none bg-transparent p-2 sm:border-card-border-light sm:bg-card-background-light sm:p-4 sm:shadow-light lg:p-6"
+      }
+    >
       <header className={"flex gap-4"}>
-        <Avatar src={project.logoUrl} size={"2xl"} shape={"square"} isBordered={false} />
+        <Avatar src={project.logoUrl} size={"xl"} shape={"square"} isBordered={false} className="sm:h-16 sm:w-16" />
 
         <div className={"grid flex-1 gap-2"}>
           <div className={"flex items-center justify-between gap-2 overflow-hidden"}>
