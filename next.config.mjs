@@ -25,6 +25,19 @@ const nextConfig = {
     config.resolve.alias.canvas = false;
     return config;
   },
+  async headers() {
+    return [
+      {
+        source: "/:all*(ttf|otf|woff|woff2)",
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=2628000, immutable'
+          }
+        ]
+      },
+    ];
+  },
   async redirects() {
     return [
       {

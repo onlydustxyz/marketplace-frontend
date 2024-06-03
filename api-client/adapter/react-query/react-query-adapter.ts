@@ -24,7 +24,7 @@ export const useReactQueryAdapter = <T>(
   const { isImpersonating } = useImpersonation();
 
   const query = {
-    queryKey: [...(fetcher.tag || []), isImpersonating],
+    queryKey: [fetcher.tag ?? "", isImpersonating],
     queryFn: () => fetcher.request(),
     ...options,
   };

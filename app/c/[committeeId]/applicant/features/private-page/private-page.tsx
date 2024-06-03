@@ -40,12 +40,7 @@ export function CommitteeApplicantPrivatePage({ onSuccessSubmit }: { onSuccessSu
 
   const isInitialLoadingRef = useRef(true);
   const statusRef = useRef<GetCommitteeProjectApplicationResponse["status"]>();
-  const {
-    data,
-    isError,
-    isFetching,
-    refetch: refetchCommetteeProjectApplication,
-  } = committeeApiClient.queries.useGetCommitteeProjectApplication({
+  const { data, isError, isFetching } = committeeApiClient.queries.useGetCommitteeProjectApplication({
     committeeId: typeof committeeId === "string" ? committeeId : "",
     projectId,
   });
@@ -145,7 +140,6 @@ export function CommitteeApplicantPrivatePage({ onSuccessSubmit }: { onSuccessSu
           project_slug: data?.projectInfos?.slug,
           isUpdate: data?.hasStartedApplication || false,
         });
-        refetchCommetteeProjectApplication();
       });
   }
 

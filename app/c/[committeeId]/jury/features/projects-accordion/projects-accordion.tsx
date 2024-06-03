@@ -12,7 +12,7 @@ import { Avatar } from "components/ds/avatar/avatar";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
-export function ProjectsAccordion({ projectAssignments, onSuccess }: TProjectAccordion.Props) {
+export function ProjectsAccordion({ projectAssignments }: TProjectAccordion.Props) {
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set());
 
   return (
@@ -63,11 +63,7 @@ export function ProjectsAccordion({ projectAssignments, onSuccess }: TProjectAcc
           )}
           disableIndicatorAnimation
         >
-          <Project
-            projectId={project.id}
-            enabled={selectedKeys instanceof Set && selectedKeys.has(project.id)}
-            onSuccess={onSuccess}
-          />
+          <Project projectId={project.id} enabled={selectedKeys instanceof Set && selectedKeys.has(project.id)} />
         </AccordionItem>
       ))}
     </Accordion>

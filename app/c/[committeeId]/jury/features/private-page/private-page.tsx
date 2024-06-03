@@ -18,7 +18,7 @@ export function CommitteeJuryPrivatePage() {
   const { committeeId } = useParams();
   const { user } = useCurrentUser();
 
-  const { data, isLoading, isError, refetch } = meApiClient.queries.useGetMyCommitteeAssignments(
+  const { data, isLoading, isError } = meApiClient.queries.useGetMyCommitteeAssignments(
     typeof committeeId === "string" ? committeeId : ""
   );
 
@@ -75,7 +75,7 @@ export function CommitteeJuryPrivatePage() {
           </div>
 
           <CommitteeContext.Provider value={{ status: data.status }}>
-            <ProjectsAccordion projectAssignments={data.projectAssignments} onSuccess={refetch} />
+            <ProjectsAccordion projectAssignments={data.projectAssignments} />
           </CommitteeContext.Provider>
         </div>
       </div>
