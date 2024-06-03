@@ -8,7 +8,7 @@ export const buttonMultiColorVariants = tv({
   extend: buttonVariants,
   base: cn(
     "relative overflow-hidden",
-    "before:absolute before:-z-[2] before:aspect-square before:w-[calc(100%_*_2)] before:animate-spin-invert-slow before:bg-multi-color-gradient",
+    "before:absolute before:-z-[2] before:w-[calc(100%_*_2)] before:animate-spin-invert-slow before:bg-multi-color-gradient before:aspect-square",
     "rounded-lg after:absolute after:inset-px after:-z-[1] after:bg-card-background-base after:transition-all"
   ),
   variants: {
