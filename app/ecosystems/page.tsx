@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import { AllEcosystems } from "app/ecosystems/features/all-ecosystems/all-ecosystems";
 import { FeaturedEcosystems } from "app/ecosystems/features/featured-ecosystems/featured-ecosystems";
 
@@ -12,8 +14,12 @@ export default async function EcosystemsListPage() {
         <Container>
           <Typography variant={"title-xl"} translate={{ token: "v2.pages.ecosystems.list.pageTitle" }} />
         </Container>
-        <FeaturedEcosystems />
-        <AllEcosystems />
+        <Suspense fallback={<div>Loading...</div>}>
+          <FeaturedEcosystems />
+        </Suspense>
+        <Suspense fallback={<div>Loading...</div>}>
+          <AllEcosystems />
+        </Suspense>
       </div>
     </ScrollView>
   );
