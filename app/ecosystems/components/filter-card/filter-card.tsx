@@ -18,7 +18,7 @@ export function FilterCard({ icon, children, ...props }: TFilterCard.Props) {
     >
       <div className="relative z-[1] flex flex-row items-center justify-start gap-2 p-6">
         {icon}
-        <Typography variant={"body-l-bold"} as="div">
+        <Typography variant={"body-l-bold"} as="div" className="transition-all group-hover:text-spacePurple-100">
           {children}
         </Typography>
       </div>
