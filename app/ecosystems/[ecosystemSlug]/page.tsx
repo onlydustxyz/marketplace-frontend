@@ -39,7 +39,7 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
             </div>
           </Container>
         </div>
-  <Suspense
+        <Suspense
           fallback={
             <SectionLoading>
               <SkeletonEl width="100%" height="224px" variant="rounded" />
@@ -103,7 +103,6 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
           </div>
         </Container>
       </div>
-
     </ScrollView>
   );
 }
