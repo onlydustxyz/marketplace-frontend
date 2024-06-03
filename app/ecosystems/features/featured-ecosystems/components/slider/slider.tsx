@@ -96,7 +96,11 @@ export function Slider({ children }: TSlider.Props) {
             key={key}
             className="keen-slider__slide height-full rounded-[16px] bg-transparent p-1 sm:rounded-none sm:p-0"
           >
-            <AspectRatio ratio="3.41/1" breakpoints={[{ width: viewportConfig.breakpoints.sm, ratio: "2.16/1" }]}>
+            <AspectRatio
+              ratio="3.41/1"
+              breakpoints={[{ width: viewportConfig.breakpoints.sm, ratio: "2.16/1" }]}
+              initialHeight="20vw"
+            >
               {c}
             </AspectRatio>
           </div>

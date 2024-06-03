@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 
 import { LeaderBoard } from "app/ecosystems/[ecosystemSlug]/features/leader-board/leader-board";
+import { Overview } from "app/ecosystems/[ecosystemSlug]/features/overview/overview";
+import { OverviewLoading } from "app/ecosystems/[ecosystemSlug]/features/overview/overview.loading";
 import { ProjectGoodFirstIssues } from "app/ecosystems/[ecosystemSlug]/features/project-good-first-issues/project-good-first-issues";
 
 import { Button } from "components/ds/button/button";
@@ -17,16 +19,16 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
     <div className={"grid gap-8 py-10 lg:gap-10"}>
       <div>
         <Container>
-          <div className={"flex items-center gap-4"}>
+          <div className={"flex flex-col items-start gap-4"}>
             <BaseLink href={NEXT_ROUTER.ecosystems.root}>
               <Button as={"div"} variant={"secondary"} size={"s"} iconOnly>
                 <Icon remixName={"ri-arrow-left-s-line"} size={16} />
               </Button>
             </BaseLink>
 
-            <Typography variant={"title-l"} className={"lg:hidden"}>
-              PROJECT NAME
-            </Typography>
+            <Suspense fallback={<OverviewLoading />}>
+              <Overview ecosystemSlug={params.ecosystemSlug} />
+            </Suspense>
           </div>
         </Container>
       </div>
