@@ -23,8 +23,8 @@ export default function CommitteeJuryPage() {
   }, [isLoading, isAuthenticated]);
 
   return (
-    <div className="scrollbar-sm my-auto flex w-full items-start justify-center">
-      <div className="w-full overflow-hidden px-6 py-12">{Page}</div>
+    <div className="scrollbar-sm flex w-full items-start justify-center sm:my-auto">
+      <div className="w-full overflow-hidden px-0 py-0 sm:px-6 sm:py-12">{Page}</div>
     </div>
   );
 }

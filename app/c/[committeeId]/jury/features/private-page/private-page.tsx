@@ -44,10 +44,10 @@ export function CommitteeJuryPrivatePage() {
   ];
 
   return (
-    <div className="relative m-auto flex w-full max-w-[740px] flex-col overflow-hidden rounded-2xl bg-card-background-base shadow-light">
-      <div className="w-full bg-mosaic bg-cover pb-1.5" />
+    <div className="relative m-auto flex w-full max-w-[740px] flex-col overflow-hidden rounded-none bg-card-background-base shadow-light sm:rounded-2xl">
+      <div className="hidden w-full bg-mosaic bg-cover pb-1.5 sm:block" />
 
-      <div className={"grid gap-8 p-6 md:p-12"}>
+      <div className={"grid gap-8 p-2 py-6 sm:p-6 md:p-12"}>
         <div className="grid gap-8">
           <Steps status={data.status} />
 
