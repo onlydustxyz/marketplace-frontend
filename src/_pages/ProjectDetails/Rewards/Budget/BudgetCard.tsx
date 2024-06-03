@@ -98,7 +98,7 @@ export function BudgetCard({
       {type === CardTypes.Remaining && (
         <div
           className={cn(
-            "absolute bottom-0 left-1/2 top-1/2 -z-[1] aspect-square w-[calc(100%_+_20px)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl bg-red-500",
+            "absolute bottom-0 left-1/2 top-1/2 -z-[1] w-[calc(100%_+_20px)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl bg-red-500 aspect-square",
             "after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:h-full after:w-full",
             "after:od-bg-budget after:animate-budgetcard after:transition-all after:group-hover:bg-[position:100%_100%]"
           )}
