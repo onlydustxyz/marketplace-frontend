@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
 import { LeaderBoard } from "app/ecosystems/[ecosystemSlug]/features/leader-board/leader-board";
+import { MoreProject } from "app/ecosystems/[ecosystemSlug]/features/more-project/more-project";
 import { ProjectGoodFirstIssues } from "app/ecosystems/[ecosystemSlug]/features/project-good-first-issues/project-good-first-issues";
 
 import { Button } from "components/ds/button/button";
@@ -54,6 +55,33 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
             <ErrorBoundary fallback={null}>
               <Suspense fallback={<SkeletonEl width="100%" height="466px" variant="rounded" />}>
                 <LeaderBoard sortBy={"TOTAL_EARNED"} ecosystemSlug={params.ecosystemSlug} />
+              </Suspense>
+            </ErrorBoundary>
+          </div>
+        </div>
+      </Container>
+
+      <Container>
+        <div className="flex flex-col gap-4">
+          <div className="flex items-baseline gap-2">
+            <Icon remixName="ri-folder-3-line" size={24} />
+            <Typography variant="title-m" translate={{ token: "v2.pages.ecosystems.detail.moreProjects.title" }} />
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <ErrorBoundary fallback={null}>
+              <Suspense fallback={<SkeletonEl width="100%" height="466px" variant="rounded" />}>
+                <MoreProject tag={"NEWBIES_WELCOME"} ecosystemSlug={params.ecosystemSlug} />
+              </Suspense>
+            </ErrorBoundary>
+            <ErrorBoundary fallback={null}>
+              <Suspense fallback={<SkeletonEl width="100%" height="466px" variant="rounded" />}>
+                <MoreProject tag={"HOT_COMMUNITY"} ecosystemSlug={params.ecosystemSlug} />
+              </Suspense>
+            </ErrorBoundary>
+            <ErrorBoundary fallback={null}>
+              <Suspense fallback={<SkeletonEl width="100%" height="466px" variant="rounded" />}>
+                <MoreProject tag={"FAST_AND_FURIOUS"} ecosystemSlug={params.ecosystemSlug} />
               </Suspense>
             </ErrorBoundary>
           </div>

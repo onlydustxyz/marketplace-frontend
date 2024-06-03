@@ -12,5 +12,11 @@
     "titleSpecialMention": "Last 7 days",
     "totalContributionsSubtitle": "By total contributions",
     "totalEarnedSubtitle": "By total earned"
+  },
+  "moreProjects": {
+    "title": "More projects",
+    "newbiesWelcomeSubtitle": "Newbies welcome",
+    "hotCommunitySubtitle": "Hot community",
+    "fastAndFuriousSubtitle": "Fast and furious"
   }
 }

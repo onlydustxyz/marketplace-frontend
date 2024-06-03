@@ -15,7 +15,10 @@ export type EcosystemsBannerColor = components["schemas"]["EcosystemBanner"]["fo
 /* --------------------------------- Ecosystem PROJECT -------------------------------- */
 
 export type EcosystemProjectsPathParams = operations["getEcosystemProjects"]["parameters"]["path"];
-export type EcosystemProjectsQueryParams = Partial<operations["getEcosystemProjects"]["parameters"]["query"]>;
+export type EcosystemProjectsQueryParams = Omit<
+  operations["getEcosystemProjects"]["parameters"]["query"],
+  "pageIndex" | "pageSize"
+>;
 
 type EcosystemProjectPageResponse = components["schemas"]["EcosystemProjectPageResponse"];
 
