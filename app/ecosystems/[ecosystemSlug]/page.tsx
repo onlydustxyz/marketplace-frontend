@@ -16,7 +16,7 @@ import { NEXT_ROUTER } from "constants/router";
 
 export default async function EcosystemDetailPage({ params }: { params: { ecosystemSlug: string } }) {
   return (
-    <div className="scrollbar-sm my-auto flex w-full items-start justify-center">
+    <div className="scrollbar-sm">
       <div className={"grid gap-8 py-10 lg:gap-10"}>
         <div>
           <Container>
@@ -69,19 +69,19 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
               <Typography variant="title-m" translate={{ token: "v2.pages.ecosystems.detail.moreProjects.title" }} />
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div className="flex gap-4">
               <ErrorBoundary fallback={null}>
-                <Suspense fallback={<SkeletonEl width="100%" height="466px" variant="rounded" />}>
+                <Suspense fallback={<SkeletonEl width="400px" height="466px" variant="rounded" />}>
                   <MoreProject tag={"NEWBIES_WELCOME"} ecosystemSlug={params.ecosystemSlug} />
                 </Suspense>
               </ErrorBoundary>
               <ErrorBoundary fallback={null}>
-                <Suspense fallback={<SkeletonEl width="100%" height="466px" variant="rounded" />}>
+                <Suspense fallback={<SkeletonEl width="400px" height="466px" variant="rounded" />}>
                   <MoreProject tag={"HOT_COMMUNITY"} ecosystemSlug={params.ecosystemSlug} />
                 </Suspense>
               </ErrorBoundary>
               <ErrorBoundary fallback={null}>
-                <Suspense fallback={<SkeletonEl width="100%" height="466px" variant="rounded" />}>
+                <Suspense fallback={<SkeletonEl width="400px" height="466px" variant="rounded" />}>
                   <MoreProject tag={"FAST_AND_FURIOUS"} ecosystemSlug={params.ecosystemSlug} />
                 </Suspense>
               </ErrorBoundary>
