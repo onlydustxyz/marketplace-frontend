@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
+import { LeaderBoardTitle } from "app/ecosystems/[ecosystemSlug]/features/leader-board-title/leader-board-title";
 import { LeaderBoard } from "app/ecosystems/[ecosystemSlug]/features/leader-board/leader-board";
 import { LearnMore } from "app/ecosystems/[ecosystemSlug]/features/learn-more/learn-more";
 import { LearnMoreLoading } from "app/ecosystems/[ecosystemSlug]/features/learn-more/learn-more.loading";
@@ -19,7 +20,6 @@ import { BaseLink } from "components/layout/base-link/base-link";
 import { Container } from "components/layout/container/container";
 import { Icon } from "components/layout/icon/icon";
 import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
-import { Typography } from "components/layout/typography/typography";
 
 import { NEXT_ROUTER } from "constants/router";
 
@@ -54,32 +54,28 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
           <ProjectGoodFirstIssues ecosystemSlug={ecosystemSlug} />
         </Suspense>
 
-        <Container>
-          <div className="flex flex-col gap-4">
-            <div className="flex items-baseline gap-2">
-              <Icon remixName="ri-trophy-line" size={24} />
-              <Typography variant="title-m" translate={{ token: "v2.pages.ecosystems.detail.leaderBoard.title" }} />
-              <Typography
-                variant="body-l"
-                translate={{ token: "v2.pages.ecosystems.detail.leaderBoard.titleSpecialMention" }}
-                className="text-spaceBlue-100"
-              />
-            </div>
+        <ErrorBoundary fallback={null}>
+          <Container>
+            <div className="flex flex-col gap-4">
+              <Suspense fallback={<SkeletonEl width="100px" height="18px" variant="text" />}>
+                <LeaderBoardTitle ecosystemSlug={params.ecosystemSlug} />
+              </Suspense>
 
-            <div className="grid gap-4 lg:grid-cols-2">
-              <ErrorBoundary fallback={null}>
-                <Suspense fallback={<SkeletonEl width="100%" height="466px" variant="rounded" />}>
-                  <LeaderBoard sortBy={"CONTRIBUTION_COUNT"} ecosystemSlug={ecosystemSlug} />
-                </Suspense>
-              </ErrorBoundary>
-              <ErrorBoundary fallback={null}>
-                <Suspense fallback={<SkeletonEl width="100%" height="466px" variant="rounded" />}>
-                  <LeaderBoard sortBy={"TOTAL_EARNED"} ecosystemSlug={ecosystemSlug} />
-                </Suspense>
-              </ErrorBoundary>
+              <div className="grid gap-4 lg:grid-cols-2">
+                <ErrorBoundary fallback={null}>
+                  <Suspense fallback={<SkeletonEl width="100%" height="466px" variant="rounded" />}>
+                    <LeaderBoard sortBy={"CONTRIBUTION_COUNT"} ecosystemSlug={ecosystemSlug} />
+                  </Suspense>
+                </ErrorBoundary>
+                <ErrorBoundary fallback={null}>
+                  <Suspense fallback={<SkeletonEl width="100%" height="466px" variant="rounded" />}>
+                    <LeaderBoard sortBy={"TOTAL_EARNED"} ecosystemSlug={ecosystemSlug} />
+                  </Suspense>
+                </ErrorBoundary>
+              </div>
             </div>
-          </div>
-        </Container>
+          </Container>
+        </ErrorBoundary>
 
         <ErrorBoundary fallback={null}>
           <Container>
