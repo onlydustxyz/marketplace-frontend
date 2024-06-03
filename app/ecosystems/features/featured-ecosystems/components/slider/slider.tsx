@@ -10,6 +10,7 @@ import { Section } from "app/ecosystems/components/section/section";
 import { viewportConfig } from "src/config";
 
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
+import { AspectRatio } from "components/layout/aspect-ratio/aspect-ratio";
 
 import { TSlider } from "./slider.types";
 
@@ -80,7 +81,7 @@ export function Slider({ children }: TSlider.Props) {
             "opacity-0": loaded,
           })}
         >
-          <SkeletonEl width="100%" height="auto" className="aspect-[3.41/1]" variant="rounded" />
+          <SkeletonEl width="100%" height="auto" className="aspect-[3.41/1] min-h-[30vh]" variant="rounded" />
         </div>
       )}
       <div
@@ -93,9 +94,11 @@ export function Slider({ children }: TSlider.Props) {
         {children.map((c, key) => (
           <div
             key={key}
-            className="keen-slider__slide aspect-[2.16/1] rounded-[16px] bg-transparent p-1 sm:aspect-[3.41/1] sm:rounded-none sm:p-0"
+            className="keen-slider__slide height-full rounded-[16px] bg-transparent p-1 sm:rounded-none sm:p-0"
           >
-            {c}
+            <AspectRatio ratio="3.41/1" breakpoints={[{ width: viewportConfig.breakpoints.sm, ratio: "2.16/1" }]}>
+              {c}
+            </AspectRatio>
           </div>
         ))}
       </div>
