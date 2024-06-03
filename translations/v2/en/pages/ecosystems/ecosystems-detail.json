@@ -19,5 +19,9 @@
     "newbiesWelcomeSubtitle": "Newbies welcome",
     "hotCommunitySubtitle": "Hot community",
     "fastAndFuriousSubtitle": "Fast and furious"
+  },
+  "learnMore": {
+    "title": "Learn more about __name__",
+    "button": "Read more"
   }
 }
