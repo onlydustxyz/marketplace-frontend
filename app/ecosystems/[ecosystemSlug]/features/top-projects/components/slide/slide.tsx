@@ -1,7 +1,6 @@
 "use client";
 
 import { EcosystemProject } from "api-client/resources/ecosystems/types";
-import { useMediaQuery } from "usehooks-ts";
 
 import { viewportConfig } from "src/config";
 
@@ -11,8 +10,10 @@ import { Typography } from "components/layout/typography/typography";
 
 import { NEXT_ROUTER } from "constants/router";
 
+import { useClientMediaQuery } from "hooks/layout/useClientMediaQuery/use-client-media-query";
+
 export function Slide({ project, rank }: { project: EcosystemProject; rank: number }) {
-  const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
+  const isMd = useClientMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
   return (
     <article className={"relative flex h-full justify-end"}>

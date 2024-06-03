@@ -2,7 +2,6 @@
 
 import { EcosystemProject } from "api-client/resources/ecosystems/types";
 import { useMemo } from "react";
-import { useMediaQuery } from "usehooks-ts";
 
 import { viewportConfig } from "src/config";
 
@@ -16,10 +15,12 @@ import { Typography } from "components/layout/typography/typography";
 
 import { NEXT_ROUTER } from "constants/router";
 
+import { useClientMediaQuery } from "hooks/layout/useClientMediaQuery/use-client-media-query";
+
 const MAX_CONTRIBUTORS = 3;
 
 export function Slide({ project }: { project: EcosystemProject }) {
-  const isSm = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
+  const isSm = useClientMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
 
   const maxLanguages = isSm ? 3 : 2;
 
