@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 
 import { AllEcosystems } from "app/ecosystems/features/all-ecosystems/all-ecosystems";
 import { AllEcosystemsLoading } from "app/ecosystems/features/all-ecosystems/all-ecosystems.loading";
@@ -16,12 +17,16 @@ export default async function EcosystemsListPage() {
         <Container>
           <Typography variant={"title-xl"} translate={{ token: "v2.pages.ecosystems.list.pageTitle" }} />
         </Container>
-        <Suspense fallback={<FeaturedEcosystemsLoading />}>
-          <FeaturedEcosystems />
-        </Suspense>
-        <Suspense fallback={<AllEcosystemsLoading />}>
-          <AllEcosystems />
-        </Suspense>
+        <ErrorBoundary fallback={null}>
+          <Suspense fallback={<FeaturedEcosystemsLoading />}>
+            <FeaturedEcosystems />
+          </Suspense>
+        </ErrorBoundary>
+        <ErrorBoundary fallback={null}>
+          <Suspense fallback={<AllEcosystemsLoading />}>
+            <AllEcosystems />
+          </Suspense>
+        </ErrorBoundary>
       </div>
     </ScrollView>
   );
