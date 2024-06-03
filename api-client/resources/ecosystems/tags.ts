@@ -2,6 +2,7 @@ import { apiResources } from "api-client/config/resources";
 import {
   EcosystemContributorsPathParams,
   EcosystemContributorsQueryParams,
+  EcosystemDetailsPathParams,
   EcosystemProjectsPathParams,
   EcosystemProjectsQueryParams,
   EcosystemsQueryParams,
@@ -9,6 +10,7 @@ import {
 
 export default {
   root: `${apiResources.ecosystems}-root`,
+  by_slug: (pathParams: EcosystemDetailsPathParams) => `${apiResources.ecosystems}-slug-${JSON.stringify(pathParams)}`,
   projects_by_slug: (pathParams: EcosystemProjectsPathParams, queryParams: EcosystemProjectsQueryParams) =>
     `${apiResources.ecosystems}-projects-by-slug-${JSON.stringify(pathParams)}-${JSON.stringify(queryParams)}`,
   contributors_by_slug: (pathParams: EcosystemContributorsPathParams, queryParams: EcosystemContributorsQueryParams) =>

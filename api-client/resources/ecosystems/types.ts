@@ -12,6 +12,10 @@ type EcosystemsPageResponse = components["schemas"]["EcosystemPageV2"];
 export type EcosystemsPageItem = components["schemas"]["EcosystemPageItemResponse"];
 export type EcosystemsBannerColor = components["schemas"]["EcosystemBanner"]["fontColor"];
 
+/* --------------------------------- Ecosystem DETAILS -------------------------------- */
+type EcosystemDetailsResponse = components["schemas"]["EcosystemDetailsResponse"];
+export interface GetEcosystemDetailsResponse extends EcosystemDetailsResponse {}
+export type EcosystemDetailsPathParams = operations["getEcosystemBySlug"]["parameters"]["path"];
 /* --------------------------------- Ecosystem PROJECT -------------------------------- */
 
 export type EcosystemProjectsPathParams = operations["getEcosystemProjects"]["parameters"]["path"];

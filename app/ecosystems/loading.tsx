@@ -1,4 +1,5 @@
-import { SectionLoading } from "app/ecosystems/components/section/section.loading";
+import { AllEcosystemsLoading } from "app/ecosystems/features/all-ecosystems/all-ecosystems.loading";
+import { FeaturedEcosystemsLoading } from "app/ecosystems/features/featured-ecosystems/featured-ecosystems.loading";
 
 import SkeletonEl from "src/components/New/Skeleton/Skeleton";
 
@@ -10,17 +11,8 @@ export default async function EcosystemsListLoading() {
       <Container>
         <SkeletonEl width="30%" height="24px" variant="rounded" />
       </Container>
-      <SectionLoading>
-        <SkeletonEl width="100%" height="auto" className="aspect-[3.41/1]" variant="rounded" />
-      </SectionLoading>
-      <SectionLoading>
-        <div className="grid grid-cols-2 gap-3 py-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          <SkeletonEl width="100%" height="auto" className="aspect-[0.89/1]" variant="rounded" />
-          <SkeletonEl width="100%" height="auto" className="aspect-[0.89/1]" variant="rounded" />
-          <SkeletonEl width="100%" height="auto" className="aspect-[0.89/1]" variant="rounded" />
-          <SkeletonEl width="100%" height="auto" className="aspect-[0.89/1]" variant="rounded" />
-        </div>
-      </SectionLoading>
+      <FeaturedEcosystemsLoading />
+      <AllEcosystemsLoading />
     </div>
   );
 }

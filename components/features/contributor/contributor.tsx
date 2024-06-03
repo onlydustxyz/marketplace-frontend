@@ -1,3 +1,5 @@
+"use client";
+
 import { debounce } from "lodash";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";

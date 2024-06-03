@@ -4,8 +4,8 @@ import { cn } from "@nextui-org/react";
 import { useKeenSlider } from "keen-slider/react";
 import { useMemo, useState } from "react";
 
-import { CarouselStepper } from "app/ecosystems/components/carousel-stepper/carousel-stepper";
 import { Section } from "app/ecosystems/components/section/section";
+import { SliderStepper } from "app/ecosystems/components/slider-stepper/slider-stepper";
 
 import { viewportConfig } from "src/config";
 
@@ -64,7 +64,7 @@ export function Slider({ children }: TSlider.Props) {
       iconProps={{ remixName: "ri-global-line" }}
       titleProps={{ translate: { token: "v2.pages.ecosystems.list.featuredEcosystem.sectionTitle" } }}
       rightContent={
-        <CarouselStepper
+        <SliderStepper
           prevProps={{
             onClick: () => instanceRef.current?.prev(),
           }}
@@ -76,24 +76,29 @@ export function Slider({ children }: TSlider.Props) {
     >
       {!loaded && (
         <div
-          className={cn("pointer-events-none aspect-[3.41/1] w-full p-1.5", {
+          className={cn("pointer-events-none w-full p-1.5 aspect-[2.16/1] sm:aspect-[3.41/1]", {
             "opacity-0": loaded,
           })}
         >
-          <SkeletonEl width="100%" height="auto" className="aspect-[3.41/1]" variant="rounded" />
+          <SkeletonEl
+            width="100%"
+            height="auto"
+            className="min-h-[30vh] aspect-[2.16/1] sm:aspect-[3.41/1]"
+            variant="rounded"
+          />
         </div>
       )}
       <div
         ref={sliderRef}
         className={cn(
-          "keen-slider !overflow-visible transition-all sm:!overflow-hidden sm:rounded-[32px] sm:outline sm:outline-[6px] sm:outline-card-border-medium",
+          "keen-slider !overflow-visible transition-all aspect-[2.16/1] sm:!overflow-hidden sm:rounded-[32px] sm:outline sm:outline-[6px] sm:outline-card-border-medium sm:aspect-[3.41/1]",
           { "pointer-events-none opacity-0": !loaded }
         )}
       >
         {children.map((c, key) => (
           <div
             key={key}
-            className="keen-slider__slide aspect-[2.16/1] rounded-[16px] bg-transparent p-1 sm:aspect-[3.41/1] sm:rounded-none sm:p-0"
+            className="keen-slider__slide height-full rounded-[16px] bg-transparent p-1 sm:rounded-none sm:p-0"
           >
             {c}
           </div>
