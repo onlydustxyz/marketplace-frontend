@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
+import { Languages } from "app/ecosystems/[ecosystemSlug]/features/languages/languages";
+import { LanguagesLoading } from "app/ecosystems/[ecosystemSlug]/features/languages/languages.loading";
 import { LeaderBoard } from "app/ecosystems/[ecosystemSlug]/features/leader-board/leader-board";
 import { LearnMore } from "app/ecosystems/[ecosystemSlug]/features/learn-more/learn-more";
 import { LearnMoreLoading } from "app/ecosystems/[ecosystemSlug]/features/learn-more/learn-more.loading";
@@ -53,6 +55,11 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
         >
           <ProjectGoodFirstIssues ecosystemSlug={ecosystemSlug} />
         </Suspense>
+        <ErrorBoundary fallback={null}>
+          <Suspense fallback={<LanguagesLoading />}>
+            <Languages ecosystemSlug={ecosystemSlug} />
+          </Suspense>
+        </ErrorBoundary>
 
         <Container>
           <div className="flex flex-col gap-4">

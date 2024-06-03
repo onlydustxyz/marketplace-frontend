@@ -1,11 +1,13 @@
 import { TCarouselStepper } from "app/ecosystems/components/slider-stepper/slider-stepper.types";
 
+import { cn } from "src/utils/cn";
+
 import { Button } from "components/ds/button/button";
 import { Icon } from "components/layout/icon/icon";
 
-export function SliderStepper({ prevProps, nextProps }: TCarouselStepper.Props) {
+export function SliderStepper({ prevProps, nextProps, className }: TCarouselStepper.Props) {
   return (
-    <div className={"flex gap-1"}>
+    <div className={cn("flex gap-1", className)}>
       <Button variant={"secondary"} size={"s"} iconOnly {...prevProps}>
         <Icon remixName={"ri-arrow-left-s-line"} size={16} />
       </Button>

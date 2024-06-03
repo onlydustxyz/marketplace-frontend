@@ -26,5 +26,8 @@
   },
   "topProjects": {
     "title": "Top 10 projects"
+  },
+  "languages": {
+    "title": "Explore projects by languages"
   }
 }

@@ -65,6 +65,7 @@ export function Slider({ children }: TSlider.Props) {
       titleProps={{ translate: { token: "v2.pages.ecosystems.list.featuredEcosystem.sectionTitle" } }}
       rightContent={
         <SliderStepper
+          className={cn("hidden sm:flex")}
           prevProps={{
             onClick: () => instanceRef.current?.prev(),
           }}
