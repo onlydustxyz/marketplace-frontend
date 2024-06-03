@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 
+import { Languages } from "app/ecosystems/[ecosystemSlug]/features/languages/languages";
 import { LeaderBoard } from "app/ecosystems/[ecosystemSlug]/features/leader-board/leader-board";
 import { Overview } from "app/ecosystems/[ecosystemSlug]/features/overview/overview";
 import { OverviewLoading } from "app/ecosystems/[ecosystemSlug]/features/overview/overview.loading";
@@ -47,6 +48,7 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
         >
           <ProjectGoodFirstIssues ecosystemSlug={ecosystemSlug} />
         </Suspense>
+        <Languages ecosystemSlug={ecosystemSlug} />
 
         <Container>
           <div className="flex flex-col gap-4">

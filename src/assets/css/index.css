@@ -98,6 +98,15 @@
     mask-composite: exclude;
   }
 
+  .border-mask::before {
+    border: unset;
+    content: "";
+    padding: 1px;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
   .bg-rainbow {
     background: linear-gradient(90deg, #6808ad 25%, #dd6a37 50% 52%, #3107b6 75%);
   }
