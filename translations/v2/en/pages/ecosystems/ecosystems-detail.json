@@ -16,5 +16,8 @@
   "learnMore": {
     "title": "Learn more about __name__",
     "button": "Read more"
+  },
+  "topProjects": {
+    "title": "Top 10 projects"
   }
 }
