@@ -41,7 +41,7 @@ export const bannerVariants = tv({
       },
       multiColor: {
         wrapper:
-          "before:animate-glow-border-slow relative z-10 flex h-full w-full items-center justify-center overflow-hidden rounded-2xl before:absolute before:-z-10 before:aspect-square before:w-full before:animate-spin-invert-slow before:bg-multi-color-gradient after:absolute after:left-px after:top-px after:-z-[1] after:h-[calc(100%-2px)] after:w-[calc(100%-2px)] after:rounded-[15px] after:bg-card-background-base",
+          "before:animate-glow-border-slow relative z-10 flex h-full w-full items-center justify-center overflow-hidden rounded-2xl before:absolute before:-z-10 before:w-full before:animate-spin-invert-slow before:bg-multi-color-gradient before:aspect-square after:absolute after:left-px after:top-px after:-z-[1] after:h-[calc(100%-2px)] after:w-[calc(100%-2px)] after:rounded-[15px] after:bg-card-background-base",
       },
       orange: {
         wrapper: "bg-orange-800",

@@ -13,6 +13,13 @@
     "totalContributionsSubtitle": "By total contributions",
     "totalEarnedSubtitle": "By total earned"
   },
+  "moreProjects": {
+    "title": "More projects",
+    "seeMore": "See more",
+    "newbiesWelcomeSubtitle": "Newbies welcome",
+    "hotCommunitySubtitle": "Hot community",
+    "fastAndFuriousSubtitle": "Fast and furious"
+  },
   "learnMore": {
     "title": "Learn more about __name__",
     "button": "Read more"
