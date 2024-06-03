@@ -4,14 +4,18 @@ import { Slide } from "app/ecosystems/features/featured-ecosystems/components/sl
 import { Slider } from "app/ecosystems/features/featured-ecosystems/components/slider/slider";
 
 export async function FeaturedEcosystems() {
-  const ecosystems = await ecosystemsApiClient.fetch.getAllEcosystems({ featured: true }).request();
+  const ecosystems = await ecosystemsApiClient.fetch
+    .getAllEcosystems({ featured: true })
+    .request()
+    .then(res => res.ecosystems);
 
   return (
     <Slider>
-      {ecosystems.ecosystems.map(ecosystem => (
+      {ecosystems.map(ecosystem => (
         <Slide
           key={ecosystem.id}
           imageUrl={ecosystem.banners.xl.url}
+          smImageUrl={ecosystem.banners.md.url}
           slug={ecosystem.slug}
           color={ecosystem.banners.xl.fontColor}
           description={ecosystem.description}
