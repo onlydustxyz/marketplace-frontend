@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 
 import { LeaderBoard } from "app/ecosystems/[ecosystemSlug]/features/leader-board/leader-board";
+import { LearnMore } from "app/ecosystems/[ecosystemSlug]/features/learn-more/learn-more";
+import { LearnMoreLoading } from "app/ecosystems/[ecosystemSlug]/features/learn-more/learn-more.loading";
 import { Overview } from "app/ecosystems/[ecosystemSlug]/features/overview/overview";
 import { OverviewLoading } from "app/ecosystems/[ecosystemSlug]/features/overview/overview.loading";
 import { ProjectGoodFirstIssues } from "app/ecosystems/[ecosystemSlug]/features/project-good-first-issues/project-good-first-issues";
@@ -70,6 +72,9 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
             </div>
           </div>
         </Container>
+        <Suspense fallback={<LearnMoreLoading />}>
+          <LearnMore ecosystemSlug={ecosystemSlug} />
+        </Suspense>
       </div>
     </ScrollView>
   );

@@ -12,5 +12,9 @@
     "titleSpecialMention": "Last 7 days",
     "totalContributionsSubtitle": "By total contributions",
     "totalEarnedSubtitle": "By total earned"
+  },
+  "learnMore": {
+    "title": "Learn more about __name__",
+    "button": "Read more"
   }
 }
