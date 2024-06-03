@@ -45,7 +45,7 @@ export function Project({ projectId, enabled, onSuccess }: TProject.Props) {
       <ProjectSummary project={project} />
 
       {answers.length ? (
-        <Card>
+        <Card className="rounded-none border-l-0 border-r-0 border-card-border-light bg-transparent p-2 py-4 sm:rounded-2xl sm:border-card-border-light sm:bg-card-background-light sm:p-4 sm:shadow-light lg:p-6">
           <ReadOnlyQuestions questions={answers} />
         </Card>
       ) : null}
