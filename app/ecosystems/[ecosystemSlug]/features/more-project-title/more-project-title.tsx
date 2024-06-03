@@ -54,7 +54,9 @@ export async function MoreProjectTitle({ ecosystemSlug }: TMoreProjectTitle.Prop
       }),
   ]);
 
-  if (!hasHotCommunity && !hasNewbiesWelcome && !hasHastAndFurious) return null;
+  if (!hasHotCommunity && !hasNewbiesWelcome && !hasHastAndFurious) {
+    throw new Error("No more projects found");
+  }
   return (
     <div className="flex items-baseline gap-2">
       <Icon remixName="ri-folder-3-line" size={24} />

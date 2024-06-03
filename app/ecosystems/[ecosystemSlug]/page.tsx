@@ -77,33 +77,33 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
           </div>
         </Container>
 
-        <Container>
-          <div className="flex flex-col gap-4">
-            <ErrorBoundary fallback={null}>
+        <ErrorBoundary fallback={null}>
+          <Container>
+            <div className="flex flex-col gap-4">
               <Suspense fallback={<SkeletonEl width="100px" height="18px" variant="text" />}>
                 <MoreProjectTitle ecosystemSlug={params.ecosystemSlug} />
               </Suspense>
-            </ErrorBoundary>
 
-            <div className="flex gap-4">
-              <ErrorBoundary fallback={null}>
-                <Suspense fallback={<SkeletonEl width="400px" height="466px" variant="rounded" />}>
-                  <MoreProject tag={"NEWBIES_WELCOME"} ecosystemSlug={params.ecosystemSlug} />
-                </Suspense>
-              </ErrorBoundary>
-              <ErrorBoundary fallback={null}>
-                <Suspense fallback={<SkeletonEl width="400px" height="466px" variant="rounded" />}>
-                  <MoreProject tag={"HOT_COMMUNITY"} ecosystemSlug={params.ecosystemSlug} />
-                </Suspense>
-              </ErrorBoundary>
-              <ErrorBoundary fallback={null}>
-                <Suspense fallback={<SkeletonEl width="400px" height="466px" variant="rounded" />}>
-                  <MoreProject tag={"FAST_AND_FURIOUS"} ecosystemSlug={params.ecosystemSlug} />
-                </Suspense>
-              </ErrorBoundary>
+              <div className="flex gap-4">
+                <ErrorBoundary fallback={null}>
+                  <Suspense fallback={<SkeletonEl width="400px" height="466px" variant="rounded" />}>
+                    <MoreProject tag={"NEWBIES_WELCOME"} ecosystemSlug={params.ecosystemSlug} />
+                  </Suspense>
+                </ErrorBoundary>
+                <ErrorBoundary fallback={null}>
+                  <Suspense fallback={<SkeletonEl width="400px" height="466px" variant="rounded" />}>
+                    <MoreProject tag={"HOT_COMMUNITY"} ecosystemSlug={params.ecosystemSlug} />
+                  </Suspense>
+                </ErrorBoundary>
+                <ErrorBoundary fallback={null}>
+                  <Suspense fallback={<SkeletonEl width="400px" height="466px" variant="rounded" />}>
+                    <MoreProject tag={"FAST_AND_FURIOUS"} ecosystemSlug={params.ecosystemSlug} />
+                  </Suspense>
+                </ErrorBoundary>
+              </div>
             </div>
-          </div>
-        </Container>
+          </Container>
+        </ErrorBoundary>
       </div>
     </ScrollView>
   );
