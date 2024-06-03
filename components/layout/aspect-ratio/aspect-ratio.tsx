@@ -6,9 +6,9 @@ import { useClientOnly } from "components/layout/client-only/client-only";
 
 import { TAspectRatio } from "./aspect-ratio.types";
 
-export function AspectRatio({ ratio, children, breakpoints }: TAspectRatio.Props) {
+export function AspectRatio({ ratio, children, breakpoints, initialHeight }: TAspectRatio.Props) {
   const isClient = useClientOnly();
-  const [height, setHeight] = useState(0);
+  const [height, setHeight] = useState<string | number>(initialHeight || 0);
   const ref = useRef<HTMLDivElement>(null);
 
   function getRatio(): TAspectRatio.ratio {
