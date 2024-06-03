@@ -76,16 +76,15 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
           </div>
         </Container>
 
-          <ErrorBoundary fallback={null}>
-              <Suspense fallback={<TopProjectsLoading />}>
-                  <TopProjects ecosystemSlug={ecosystemSlug} />
-              </Suspense>
-          </ErrorBoundary>
+        <ErrorBoundary fallback={null}>
+          <Suspense fallback={<TopProjectsLoading />}>
+            <TopProjects ecosystemSlug={ecosystemSlug} />
+          </Suspense>
+        </ErrorBoundary>
 
         <Suspense fallback={<LearnMoreLoading />}>
           <LearnMore ecosystemSlug={ecosystemSlug} />
         </Suspense>
-
       </div>
     </ScrollView>
   );
