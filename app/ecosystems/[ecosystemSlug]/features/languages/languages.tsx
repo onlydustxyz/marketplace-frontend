@@ -17,9 +17,7 @@ export async function Languages({ ecosystemSlug }: TLanguages.Props) {
         pageIndex: 0,
       }
     )
-    .request({
-      next: { revalidate: 120 },
-    })
+    .request()
     .then(res => res.languages);
 
   return (
