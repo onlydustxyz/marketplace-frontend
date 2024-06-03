@@ -13,7 +13,7 @@ export async function Languages({ ecosystemSlug }: TLanguages.Props) {
     .getEcosystemLanguagesBySlug(
       { slug: ecosystemSlug },
       {
-        pageSize: 5,
+        pageSize: 6,
         pageIndex: 0,
       }
     )
