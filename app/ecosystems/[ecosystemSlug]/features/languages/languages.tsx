@@ -9,7 +9,7 @@ import { NEXT_ROUTER } from "constants/router";
 import { TLanguages } from "./languages.types";
 
 export async function Languages({ ecosystemSlug }: TLanguages.Props) {
-  const languages = await ecosystemsApiClient.fetch
+  const { languages } = await ecosystemsApiClient.fetch
     .getEcosystemLanguagesBySlug(
       { slug: ecosystemSlug },
       {
@@ -17,8 +17,7 @@ export async function Languages({ ecosystemSlug }: TLanguages.Props) {
         pageIndex: 0,
       }
     )
-    .request()
-    .then(res => res.languages);
+    .request();
 
   return (
     <Section
