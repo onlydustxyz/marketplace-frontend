@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { BannerContent } from "app/ecosystems/components/banner/banner-content";
 import { getBannerColor } from "app/ecosystems/utils/get-banner-color";
 
@@ -12,11 +14,13 @@ export function Banner({ imageUrl, color, title, description, smImageUrl }: TBan
 
   return (
     <BannerContent smBannerUrl={smImageUrl} name={title}>
-      <img
+      <Image
         src={imageUrl}
         alt={title}
         className="absolute inset-0 -z-[1] h-full w-full object-cover object-center"
         loading={"lazy"}
+        width={1208}
+        height={354}
       />
       <div className="relative z-[1] flex h-auto max-w-[60%] flex-col gap-3">
         <Typography

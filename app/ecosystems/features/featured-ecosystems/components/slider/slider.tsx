@@ -10,7 +10,6 @@ import { Section } from "app/ecosystems/components/section/section";
 import { viewportConfig } from "src/config";
 
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
-import { AspectRatio } from "components/layout/aspect-ratio/aspect-ratio";
 
 import { TSlider } from "./slider.types";
 
@@ -77,17 +76,22 @@ export function Slider({ children }: TSlider.Props) {
     >
       {!loaded && (
         <div
-          className={cn("pointer-events-none aspect-[3.41/1] w-full p-1.5", {
+          className={cn("pointer-events-none w-full p-1.5 aspect-[2.16/1] sm:aspect-[3.41/1]", {
             "opacity-0": loaded,
           })}
         >
-          <SkeletonEl width="100%" height="auto" className="aspect-[3.41/1] min-h-[30vh]" variant="rounded" />
+          <SkeletonEl
+            width="100%"
+            height="auto"
+            className="min-h-[30vh] aspect-[2.16/1] sm:aspect-[3.41/1]"
+            variant="rounded"
+          />
         </div>
       )}
       <div
         ref={sliderRef}
         className={cn(
-          "keen-slider !overflow-visible transition-all sm:!overflow-hidden sm:rounded-[32px] sm:outline sm:outline-[6px] sm:outline-card-border-medium",
+          "keen-slider !overflow-visible transition-all aspect-[2.16/1] sm:!overflow-hidden sm:rounded-[32px] sm:outline sm:outline-[6px] sm:outline-card-border-medium sm:aspect-[3.41/1]",
           { "pointer-events-none opacity-0": !loaded }
         )}
       >
@@ -96,13 +100,7 @@ export function Slider({ children }: TSlider.Props) {
             key={key}
             className="keen-slider__slide height-full rounded-[16px] bg-transparent p-1 sm:rounded-none sm:p-0"
           >
-            <AspectRatio
-              ratio="3.41/1"
-              breakpoints={[{ width: viewportConfig.breakpoints.sm, ratio: "2.16/1" }]}
-              initialHeight="20vw"
-            >
-              {c}
-            </AspectRatio>
+            {c}
           </div>
         ))}
       </div>

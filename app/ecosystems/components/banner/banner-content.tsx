@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useMediaQuery } from "usehooks-ts";
 
 import { viewportConfig } from "src/config";
@@ -14,11 +15,13 @@ export function BannerContent({ children, smBannerUrl, name }: TBanner.PropsCont
 
   if (isSm && isClient) {
     return (
-      <img
+      <Image
         src={smBannerUrl}
         alt={name}
         className="absolute inset-0 -z-[1] h-full w-full object-cover object-center"
         loading={"lazy"}
+        width={290}
+        height={134}
       />
     );
   }
