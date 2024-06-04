@@ -65,6 +65,7 @@ export function Slider({ children }: TSlider.Props) {
       titleProps={{ translate: { token: "v2.pages.ecosystems.list.featuredEcosystem.sectionTitle" } }}
       rightContent={
         <SliderStepper
+          className={cn("hidden sm:flex")}
           prevProps={{
             onClick: () => instanceRef.current?.prev(),
           }}
@@ -76,7 +77,7 @@ export function Slider({ children }: TSlider.Props) {
     >
       {!loaded && (
         <div
-          className={cn("pointer-events-none w-full p-1.5 aspect-[2.16/1] sm:aspect-[3.41/1]", {
+          className={cn("pointer-events-none absolute left-0 top-0 w-full p-1.5 aspect-[2.16/1] sm:aspect-[3.41/1]", {
             "opacity-0": loaded,
           })}
         >
@@ -88,6 +89,7 @@ export function Slider({ children }: TSlider.Props) {
           />
         </div>
       )}
+
       <div
         ref={sliderRef}
         className={cn(
@@ -104,6 +106,7 @@ export function Slider({ children }: TSlider.Props) {
           </div>
         ))}
       </div>
+
       <div className="flex w-full flex-row items-center justify-center gap-2 p-4">
         {navigationsElements.map(el => el)}
       </div>

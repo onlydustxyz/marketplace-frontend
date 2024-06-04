@@ -41,3 +41,17 @@ export interface GetEcosystemContributorsPageResponse extends EcosystemContribut
 
 export type EcosystemContributor = components["schemas"]["EcosystemContributorsPageItemResponse"];
 export type EcosystemShortProject = components["schemas"]["ProjectLinkResponse"];
+
+/* --------------------------------- Ecosystem Languages -------------------------------- */
+
+export type EcosystemLanguagesPathParams = operations["getEcosystemLanguages"]["parameters"]["path"];
+export type EcosystemLanguagesQueryParams = Omit<
+  operations["getEcosystemLanguages"]["parameters"]["query"],
+  "pageIndex" | "pageSize"
+>;
+
+type EcosystemLanguagesPageResponse = components["schemas"]["EcosystemLanguagesPageResponse"];
+
+export interface GetEcosystemLanguagesPageResponse extends EcosystemLanguagesPageResponse {}
+
+export type EcosystemLanguage = components["schemas"]["LanguageResponse"];

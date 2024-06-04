@@ -7,6 +7,9 @@
       "zero": "+0 contributors"
     }
   },
+  "featuredProjects": {
+    "title": "Featured projects"
+  },
   "leaderBoard": {
     "title": "Leaderboards",
     "titleSpecialMention": "Last 7 days",
@@ -26,5 +29,8 @@
   },
   "topProjects": {
     "title": "Top 10 projects"
+  },
+  "languages": {
+    "title": "Explore projects by languages"
   }
 }

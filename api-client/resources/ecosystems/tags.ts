@@ -3,6 +3,8 @@ import {
   EcosystemContributorsPathParams,
   EcosystemContributorsQueryParams,
   EcosystemDetailsPathParams,
+  EcosystemLanguagesPathParams,
+  EcosystemLanguagesQueryParams,
   EcosystemProjectsPathParams,
   EcosystemProjectsQueryParams,
   EcosystemsQueryParams,
@@ -15,5 +17,7 @@ export default {
     `${apiResources.ecosystems}-projects-by-slug-${JSON.stringify(pathParams)}-${JSON.stringify(queryParams)}`,
   contributors_by_slug: (pathParams: EcosystemContributorsPathParams, queryParams: EcosystemContributorsQueryParams) =>
     `${apiResources.ecosystems}-contributors-by-slug-${JSON.stringify(pathParams)}-${JSON.stringify(queryParams)}`,
+  languages_by_slug: (pathParams: EcosystemLanguagesPathParams, queryParams: EcosystemLanguagesQueryParams) =>
+    `${apiResources.ecosystems}-languages-slug-${JSON.stringify(pathParams)}-${JSON.stringify(queryParams)}`,
   get_all: (queryParams: EcosystemsQueryParams) => `${apiResources.ecosystems}-list-${JSON.stringify(queryParams)}`,
 };

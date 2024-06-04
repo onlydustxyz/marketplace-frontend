@@ -2,6 +2,10 @@ import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
 import { LeaderBoardTitle } from "app/ecosystems/[ecosystemSlug]/features/leader-board-title/leader-board-title";
+import { FeaturedProjects } from "app/ecosystems/[ecosystemSlug]/features/featured-projects/featured-projects";
+import { FeaturedProjectsLoading } from "app/ecosystems/[ecosystemSlug]/features/featured-projects/featured-projects.loading";
+import { Languages } from "app/ecosystems/[ecosystemSlug]/features/languages/languages";
+import { LanguagesLoading } from "app/ecosystems/[ecosystemSlug]/features/languages/languages.loading";
 import { LeaderBoard } from "app/ecosystems/[ecosystemSlug]/features/leader-board/leader-board";
 import { LearnMore } from "app/ecosystems/[ecosystemSlug]/features/learn-more/learn-more";
 import { LearnMoreLoading } from "app/ecosystems/[ecosystemSlug]/features/learn-more/learn-more.loading";
@@ -10,9 +14,9 @@ import { MoreProject } from "app/ecosystems/[ecosystemSlug]/features/more-projec
 import { Overview } from "app/ecosystems/[ecosystemSlug]/features/overview/overview";
 import { OverviewLoading } from "app/ecosystems/[ecosystemSlug]/features/overview/overview.loading";
 import { ProjectGoodFirstIssues } from "app/ecosystems/[ecosystemSlug]/features/project-good-first-issues/project-good-first-issues";
+import { ProjectGoodFirstIssuesLoading } from "app/ecosystems/[ecosystemSlug]/features/project-good-first-issues/project-good-first-issues.loading";
 import { TopProjects } from "app/ecosystems/[ecosystemSlug]/features/top-projects/top-projects";
 import { TopProjectsLoading } from "app/ecosystems/[ecosystemSlug]/features/top-projects/top-projects.loading";
-import { SectionLoading } from "app/ecosystems/components/section/section.loading";
 
 import { Button } from "components/ds/button/button";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
@@ -29,30 +33,37 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
   return (
     <ScrollView>
       <div className={"grid gap-8 py-10 lg:gap-10"}>
-        <div>
-          <Container>
-            <div className={"flex flex-col items-start gap-4"}>
-              <BaseLink href={NEXT_ROUTER.ecosystems.root}>
-                <Button as={"div"} variant={"secondary"} size={"s"} iconOnly>
-                  <Icon remixName={"ri-arrow-left-s-line"} size={16} />
-                </Button>
-              </BaseLink>
+        <Container>
+          <div className={"flex flex-col items-start gap-4"}>
+            <BaseLink href={NEXT_ROUTER.ecosystems.root}>
+              <Button as={"div"} variant={"secondary"} size={"s"} iconOnly>
+                <Icon remixName={"ri-arrow-left-s-line"} size={16} />
+              </Button>
+            </BaseLink>
 
-              <Suspense fallback={<OverviewLoading />}>
-                <Overview ecosystemSlug={params.ecosystemSlug} />
-              </Suspense>
-            </div>
-          </Container>
-        </div>
-        <Suspense
-          fallback={
-            <SectionLoading>
-              <SkeletonEl width="100%" height="224px" variant="rounded" />
-            </SectionLoading>
-          }
-        >
-          <ProjectGoodFirstIssues ecosystemSlug={ecosystemSlug} />
-        </Suspense>
+            <Suspense fallback={<OverviewLoading />}>
+              <Overview ecosystemSlug={params.ecosystemSlug} />
+            </Suspense>
+          </div>
+        </Container>
+
+        <ErrorBoundary fallback={null}>
+          <Suspense fallback={<ProjectGoodFirstIssuesLoading />}>
+            <ProjectGoodFirstIssues ecosystemSlug={ecosystemSlug} />
+          </Suspense>
+        </ErrorBoundary>
+
+        <ErrorBoundary fallback={null}>
+          <Suspense fallback={<LanguagesLoading />}>
+            <Languages ecosystemSlug={ecosystemSlug} />
+          </Suspense>
+        </ErrorBoundary>
+
+        <ErrorBoundary fallback={null}>
+          <Suspense fallback={<FeaturedProjectsLoading />}>
+            <FeaturedProjects ecosystemSlug={ecosystemSlug} />
+          </Suspense>
+        </ErrorBoundary>
 
         <ErrorBoundary fallback={null}>
           <Container>
@@ -111,9 +122,11 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
           </Suspense>
         </ErrorBoundary>
 
-        <Suspense fallback={<LearnMoreLoading />}>
-          <LearnMore ecosystemSlug={ecosystemSlug} />
-        </Suspense>
+        <ErrorBoundary fallback={null}>
+          <Suspense fallback={<LearnMoreLoading />}>
+            <LearnMore ecosystemSlug={ecosystemSlug} />
+          </Suspense>
+        </ErrorBoundary>
       </div>
     </ScrollView>
   );
