@@ -60,7 +60,7 @@ export function Contributor({
     >
       <Component
         type={clickable ? "button" : undefined}
-        className={cn("group/contributor od-text-title-s flex flex-row items-center gap-1", className)}
+        className={cn("group/contributor flex flex-row items-center gap-1", className)}
         onClick={
           clickable
             ? e => {
