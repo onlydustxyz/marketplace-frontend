@@ -32,7 +32,7 @@ function MoreProjectItem({ project }: TMoreProject.MoreProjectItemProps) {
   );
 }
 
-export function MoreProject({ projects, hasMore, tag, className }: TMoreProject.MoreProjectProps) {
+export function MoreProject({ projects, hasMore, tag, ecosystemSlug, className }: TMoreProject.MoreProjectProps) {
   const title = (): Key => {
     switch (tag) {
       case "HOT_COMMUNITY":
@@ -62,7 +62,10 @@ export function MoreProject({ projects, hasMore, tag, className }: TMoreProject.
           className="col-span-2"
         />
         {hasMore ? (
-          <BaseLink href={NEXT_ROUTER.projects.allWithParams({ tags: tag })} className="w-full">
+          <BaseLink
+            href={NEXT_ROUTER.projects.allWithParams({ tags: tag, ecosystems: ecosystemSlug })}
+            className="w-full"
+          >
             <Typography
               variant="body-xs"
               className="text-right text-spacePurple-500"

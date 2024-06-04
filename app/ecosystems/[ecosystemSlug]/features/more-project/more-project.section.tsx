@@ -83,18 +83,21 @@ export async function MoreProjectSection({ ecosystemSlug, className }: TMoreProj
           projects={hotCommunityProjects.projects}
           hasMore={hotCommunityProjects.hasMore}
           className={className}
+          ecosystemSlug={ecosystemSlug}
         />
         <MoreProject
           tag={"HOT_COMMUNITY"}
           projects={newbiesWelcomeProjects.projects}
           hasMore={newbiesWelcomeProjects.hasMore}
           className={className}
+          ecosystemSlug={ecosystemSlug}
         />
         <MoreProject
           tag={"FAST_AND_FURIOUS"}
           projects={fastAndFuriousProjects.projects}
           hasMore={fastAndFuriousProjects.hasMore}
           className={className}
+          ecosystemSlug={ecosystemSlug}
         />
       </div>
     </Section>
