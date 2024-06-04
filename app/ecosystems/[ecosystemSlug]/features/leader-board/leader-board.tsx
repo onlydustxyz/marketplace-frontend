@@ -8,6 +8,8 @@ import { cn } from "src/utils/cn";
 
 import { AvatarLabelled } from "components/ds/avatar/avatar.labelled";
 import { Card } from "components/ds/card/card";
+import { Contributor } from "components/features/contributor/contributor";
+import { ClientOnly } from "components/layout/client-only/client-only";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
@@ -20,7 +22,16 @@ function LeaderBoardItem({ contributor, sortBy }: TLeaderBoard.LeaderBoardItemPr
         labelProps={{ title: contributor.login }}
         className="col-span-3 flex-1"
       >
-        <Typography variant="title-s">{contributor.login}</Typography>
+        {/*<Typography variant="title-s">{contributor.login}</Typography>*/}
+        <ClientOnly>
+          <Contributor
+            githubUserId={contributor.githubUserId}
+            login={contributor.login}
+            isRegistered={false}
+            clickable
+            className={"od-text-title-s"}
+          />
+        </ClientOnly>
         <Typography
           variant="body-s"
           className="line-clamp-2 text-spaceBlue-100"
