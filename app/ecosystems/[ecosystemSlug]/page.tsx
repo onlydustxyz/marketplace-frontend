@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
+import { FeaturedProjects } from "app/ecosystems/[ecosystemSlug]/features/featured-projects/featured-projects";
+import { FeaturedProjectsLoading } from "app/ecosystems/[ecosystemSlug]/features/featured-projects/featured-projects.loading";
 import { Languages } from "app/ecosystems/[ecosystemSlug]/features/languages/languages";
 import { LanguagesLoading } from "app/ecosystems/[ecosystemSlug]/features/languages/languages.loading";
 import { LeaderBoard } from "app/ecosystems/[ecosystemSlug]/features/leader-board/leader-board";
@@ -45,12 +47,21 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
           </div>
         </Container>
 
-        <Suspense fallback={<ProjectGoodFirstIssuesLoading />}>
-          <ProjectGoodFirstIssues ecosystemSlug={ecosystemSlug} />
-        </Suspense>
+        <ErrorBoundary fallback={null}>
+          <Suspense fallback={<ProjectGoodFirstIssuesLoading />}>
+            <ProjectGoodFirstIssues ecosystemSlug={ecosystemSlug} />
+          </Suspense>
+        </ErrorBoundary>
+
         <ErrorBoundary fallback={null}>
           <Suspense fallback={<LanguagesLoading />}>
             <Languages ecosystemSlug={ecosystemSlug} />
+          </Suspense>
+        </ErrorBoundary>
+
+        <ErrorBoundary fallback={null}>
+          <Suspense fallback={<FeaturedProjectsLoading />}>
+            <FeaturedProjects ecosystemSlug={ecosystemSlug} />
           </Suspense>
         </ErrorBoundary>
 
