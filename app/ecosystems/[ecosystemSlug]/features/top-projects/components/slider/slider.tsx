@@ -82,7 +82,11 @@ export function Slider({ children }: TSlider.Props) {
         ) : null
       }
     >
-      <Card border={"multiColor"} background={"base"} className={"overflow-hidden"}>
+      <Card
+        border={"multiColor"}
+        background={false}
+        className={"overflow-hidden bg-gradient-to-b from-[#0c091c] to-[#0c0b20]"}
+      >
         <div
           ref={sliderRef}
           className={cn("keen-slider will-change-all !overflow-visible transition-all", {
