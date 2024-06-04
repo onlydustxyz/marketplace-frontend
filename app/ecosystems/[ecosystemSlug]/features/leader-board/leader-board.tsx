@@ -50,7 +50,8 @@ function LeaderBoardItem({ contributor, sortBy }: TLeaderBoard.LeaderBoardItemPr
               Money.format({
                 amount: contributor.totalEarnedUsd,
                 currency: Money.USD,
-              }).string
+                options: { currencyClassName: "od-text-body-s" },
+              }).html
             }
           </Typography>
         </div>
