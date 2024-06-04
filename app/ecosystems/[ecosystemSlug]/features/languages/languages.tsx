@@ -19,6 +19,10 @@ export async function Languages({ ecosystemSlug }: TLanguages.Props) {
     )
     .request();
 
+  if (!languages?.length) {
+    return null;
+  }
+
   return (
     <Section
       iconProps={{ remixName: "ri-code-s-slash-line" }}
