@@ -32,11 +32,6 @@ export const ProjectsContext = createContext<TProjectContext.Return>({
 export function ProjectsContextProvider({ children }: TProjectContext.Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [filters, setFilters] = useState<TProjectContext.Filter>({ ...TProjectContext.DEFAULT_FILTER });
-  const [filtersOptions, setFiltersOptions] = useState<TProjectContext.FiltersOptions>({
-    languages: [],
-    ecosystems: [],
-  });
 
   const getFiltersFromURL = () => {
     const urlParams = new URLSearchParams(searchParams.toString());
@@ -79,6 +74,16 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
     return filters;
   };
 
+  const [filters, setFilters] = useState<TProjectContext.Filter>({
+    ...TProjectContext.DEFAULT_FILTER,
+    ...getFiltersFromURL(),
+  });
+
+  const [filtersOptions, setFiltersOptions] = useState<TProjectContext.FiltersOptions>({
+    languages: [],
+    ecosystems: [],
+  });
+
   const updateURLWithFilters = (filters: TProjectContext.Filter) => {
     const urlParams = new URLSearchParams();
 
@@ -108,8 +113,8 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
   const queryParams = useMemo(() => {
     const params: useInfiniteBaseQueryProps["queryParams"] = [
       filters.tags.length > 0 ? ["tags", filters.tags.join(",")] : null,
-      filters.languages.length > 0 ? ["languages", filters.languages.map(({ value }) => value).join(",")] : null,
-      filters.ecosystems.length > 0 ? ["ecosystemSlug", filters.ecosystems.map(({ value }) => value).join(",")] : null,
+      filters.languages.length > 0 ? ["languageIds", filters.languages.map(({ value }) => value).join(",")] : null,
+      filters.ecosystems.length > 0 ? ["ecosystemSlugs", filters.ecosystems.map(({ value }) => value).join(",")] : null,
       filters.search ? ["search", filters.search] : null,
       filters.sorting ? ["sort", filters.sorting] : null,
     ].filter((param): param is string[] => Boolean(param));
