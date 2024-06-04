@@ -67,7 +67,7 @@ export function MoreProject({ projects, hasMore, tag, ecosystemSlug, className }
             className="w-full"
           >
             <Typography
-              variant="body-xs"
+              variant="body-xs-bold"
               className="text-right text-spacePurple-500"
               translate={{ token: "v2.pages.ecosystems.detail.moreProjects.seeMore" }}
             />
