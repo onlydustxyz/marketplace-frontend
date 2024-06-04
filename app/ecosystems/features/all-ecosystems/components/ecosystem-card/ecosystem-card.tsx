@@ -16,7 +16,12 @@ export function EcosystemCard({ bannerUrl, name, description, projectCount, proj
       className="flex flex-col !rounded-[16px] border-none !p-0 outline outline-[3px] outline-card-border-light"
     >
       <div className="relative h-[134px] w-full overflow-hidden rounded-t-[16px]">
-        <img src={bannerUrl} alt={name} className="absolute inset-0 h-full w-full object-cover object-center" />
+        <img
+          src={bannerUrl}
+          alt={name}
+          className="absolute inset-0 h-full w-full object-cover object-center"
+          loading={"lazy"}
+        />
       </div>
       <div className="flex w-full flex-col gap-2 overflow-hidden rounded-b-[16px] p-4">
         <Typography variant={"title-s"}>{name}</Typography>
