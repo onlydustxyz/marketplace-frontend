@@ -13,7 +13,7 @@ export function EcosystemCard({ bannerUrl, name, description, projectCount, proj
       as={"a"}
       href={NEXT_ROUTER.ecosystems.details.root(slug)}
       background={"base"}
-      className="flex flex-col !rounded-[16px] border-none !p-0 outline outline-[3px] outline-card-border-light"
+      className="flex flex-col !rounded-[16px] border border-[3px] border-card-border-medium !p-0"
     >
       <div className="relative h-[134px] w-full overflow-hidden rounded-t-[16px]">
         <img src={bannerUrl} alt={name} className="absolute inset-0 h-full w-full object-cover object-center" />
