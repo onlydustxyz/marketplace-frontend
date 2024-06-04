@@ -46,10 +46,10 @@ export function Slider({ children }: TSlider.Props) {
   });
 
   return (
-    <>
+    <div className="relative w-full">
       {!loaded && (
         <div
-          className={cn("pointer-events-none w-full", {
+          className={cn("pointer-events-none absolute left-0 top-0 w-full", {
             "opacity-0": loaded,
           })}
         >
@@ -60,7 +60,7 @@ export function Slider({ children }: TSlider.Props) {
       <div
         ref={sliderRef}
         className={cn("keen-slider will-change-all !overflow-visible transition-all", {
-          "pointer-events-none !fixed top-[9999px] opacity-0": !loaded,
+          "pointer-events-none opacity-0": !loaded,
         })}
       >
         {children.map((c, key) => (
@@ -69,6 +69,6 @@ export function Slider({ children }: TSlider.Props) {
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 }
