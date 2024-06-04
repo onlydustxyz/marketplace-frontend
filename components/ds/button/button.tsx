@@ -14,18 +14,21 @@ export function Button<T extends ElementType = typeof TButton.DEFAULT_ELEMENT_TY
   type = "button",
   variant = "primary",
   className,
+  accentColor,
+  backgroundColor,
+  iconOnly,
   ...props
 }: TButton.Props<T>) {
   const Component = as ?? TButton.DEFAULT_ELEMENT_TYPE;
   const buttonType = Component === TButton.DEFAULT_ELEMENT_TYPE ? type : undefined;
-
+  const variantProps = { ...props, accentColor, backgroundColor, iconOnly };
   return (
     <Component
       className={cn(
-        variant === "primary" && buttonPrimaryVariants({ ...props }),
-        variant === "secondary" && buttonSecondaryVariants({ ...props }),
-        variant === "tertiary" && buttonTertiaryVariants({ ...props }),
-        variant === "multi-color" && buttonMultiColorVariants({ ...props }),
+        variant === "primary" && buttonPrimaryVariants({ ...variantProps }),
+        variant === "secondary" && buttonSecondaryVariants({ ...variantProps }),
+        variant === "tertiary" && buttonTertiaryVariants({ ...variantProps }),
+        variant === "multi-color" && buttonMultiColorVariants({ ...variantProps }),
         className
       )}
       type={buttonType}
