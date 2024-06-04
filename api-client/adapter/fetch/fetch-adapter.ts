@@ -2,6 +2,7 @@ import { AuthAdapter } from "api-client/adapter/auth/auth-adapter.types";
 import { apiClientConfig } from "api-client/config";
 import { apiVersions } from "api-client/config/api-versions";
 import { HTTP_METHOD } from "next/dist/server/web/http";
+import { NextResponse } from "next/server";
 
 import { FetchError } from "src/api/query.type";
 
@@ -23,6 +24,7 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
   private authAdapter?: AuthAdapter;
   private url: string = "";
   private debug: boolean = false;
+  private enableRequestLogger: boolean = false;
   private method: HTTP_METHOD = "GET";
   private body?: Body = undefined;
   private params?: Params = undefined;
@@ -39,11 +41,28 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
     this.tag = params.tag;
     this.version = params.version || apiVersions.v1;
     this.debug = false;
+    this.enableRequestLogger = true;
   }
 
   private debugLog(...messages: DebugMessage) {
     if (this.debug) {
       console.log(...messages);
+    }
+  }
+
+  private requestLogger(status: number, response: any) {
+    if (this.enableRequestLogger) {
+      const endpoint = this.getEndpointUrl(this.url, this.params, true);
+      const params = new URLSearchParams();
+      params.append("status", `${status}`);
+      params.append("url", this.getEndpointUrl(this.url, this.params, false));
+      const url = `http://localhost:5173/logger/${endpoint}/?${params.toString()}`;
+      return fetch(url, {
+        method: "GET",
+      }).catch(e => {
+        console.log("ee", e);
+        // just catch
+      });
     }
   }
 
@@ -70,7 +89,7 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
     }, new URLSearchParams());
   }
 
-  private getEndpointUrl(url: string, params?: Params) {
+  private getEndpointUrl(url: string, params?: Params, hostOnly?: boolean) {
     const searchParams = this.convertParamsToURLSearchParams(params)?.toString();
 
     const pathParams = url.split("/").filter(param => param.startsWith(":"));
@@ -80,6 +99,10 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
     });
 
     const path = apiClientConfig.basePaths[this.version](url);
+
+    if (hostOnly) {
+      return `${url}${searchParams ? `?${searchParams}` : ""}`;
+    }
 
     return `${path}${searchParams ? `?${searchParams}` : ""}`;
   }
@@ -143,6 +166,7 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
         const json = await res.json();
         this.debugLog(" Success");
         this.debugLog("   --- with response", json);
+        await this.requestLogger(res.status, json);
         return json as T;
       } catch {
         return {} as T;
