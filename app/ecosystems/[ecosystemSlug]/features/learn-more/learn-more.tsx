@@ -25,7 +25,7 @@ export async function LearnMore({ ecosystemSlug }: TLearnMore.Props) {
       iconProps={{ remixName: "ri-graduation-cap-line" }}
       titleProps={{
         translate: {
-          token: "v2.pages.ecosystems.detail.languages.title",
+          token: "v2.pages.ecosystems.detail.learnMore.title",
           params: { name: ecosystem.name },
         },
       }}
