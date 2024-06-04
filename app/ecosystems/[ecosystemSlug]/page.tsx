@@ -1,11 +1,11 @@
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
-import { LeaderBoardTitle } from "app/ecosystems/[ecosystemSlug]/features/leader-board-title/leader-board-title";
 import { FeaturedProjects } from "app/ecosystems/[ecosystemSlug]/features/featured-projects/featured-projects";
 import { FeaturedProjectsLoading } from "app/ecosystems/[ecosystemSlug]/features/featured-projects/featured-projects.loading";
 import { Languages } from "app/ecosystems/[ecosystemSlug]/features/languages/languages";
 import { LanguagesLoading } from "app/ecosystems/[ecosystemSlug]/features/languages/languages.loading";
+import { LeaderBoardTitle } from "app/ecosystems/[ecosystemSlug]/features/leader-board-title/leader-board-title";
 import { LeaderBoard } from "app/ecosystems/[ecosystemSlug]/features/leader-board/leader-board";
 import { LearnMore } from "app/ecosystems/[ecosystemSlug]/features/learn-more/learn-more";
 import { LearnMoreLoading } from "app/ecosystems/[ecosystemSlug]/features/learn-more/learn-more.loading";
@@ -88,7 +88,7 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
           </Container>
         </ErrorBoundary>
 
-        <ErrorBoundary fallback={null}>
+        <ErrorBoundary fallback={<div></div>}>
           <Container>
             <div className="flex flex-col gap-4">
               <Suspense fallback={<SkeletonEl width="100px" height="18px" variant="text" />}>

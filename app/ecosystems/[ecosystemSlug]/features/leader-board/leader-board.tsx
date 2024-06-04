@@ -22,14 +22,13 @@ function LeaderBoardItem({ contributor, sortBy }: TLeaderBoard.LeaderBoardItemPr
         labelProps={{ title: contributor.login }}
         className="col-span-3 flex-1"
       >
-        {/*<Typography variant="title-s">{contributor.login}</Typography>*/}
         <ClientOnly>
           <Contributor
             githubUserId={contributor.githubUserId}
             login={contributor.login}
             isRegistered={false}
             clickable
-            className={"od-text-title-s"}
+            typograhy={{ className: "!od-text-title-s hover:text-spacePurple-500 transition-all capitalize" }}
           />
         </ClientOnly>
         <Typography
