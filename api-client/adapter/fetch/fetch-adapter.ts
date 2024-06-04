@@ -2,7 +2,6 @@ import { AuthAdapter } from "api-client/adapter/auth/auth-adapter.types";
 import { apiClientConfig } from "api-client/config";
 import { apiVersions } from "api-client/config/api-versions";
 import { HTTP_METHOD } from "next/dist/server/web/http";
-import { NextResponse } from "next/server";
 
 import { FetchError } from "src/api/query.type";
 
@@ -238,13 +237,6 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
 
   public async request(params?: Partial<FetchParams>): Promise<T> {
     const res = await this.fetch(params);
-    console.info(
-      new NextResponse("Fetch adapter", {
-        status: res.status,
-        headers: res.headers,
-        url: res.url,
-      })
-    );
 
     return this.formatResponse(res);
   }
