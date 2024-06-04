@@ -1,4 +1,5 @@
 import { EcosystemProject } from "api-client/resources/ecosystems/types";
+import { optimiseImageSource } from "utils/images/optimise-source";
 
 import { Contributors } from "app/ecosystems/[ecosystemSlug]/components/contributors/contributors";
 import { LanguagesTag } from "app/ecosystems/[ecosystemSlug]/components/languages-tag/languages-tag";
@@ -9,6 +10,7 @@ import { Typography } from "components/layout/typography/typography";
 import { NEXT_ROUTER } from "constants/router";
 
 export function Slide({ project }: { project: EcosystemProject }) {
+  const src = optimiseImageSource(project.logoUrl ?? "", { size: { w: 192, h: 120 } });
   return (
     <Card
       as={"a"}
@@ -20,7 +22,7 @@ export function Slide({ project }: { project: EcosystemProject }) {
     >
       <div className="flex h-full flex-col gap-3 p-5">
         <img
-          src={project.logoUrl ?? ""}
+          src={src}
           alt={project.name}
           width={192}
           height={120}
