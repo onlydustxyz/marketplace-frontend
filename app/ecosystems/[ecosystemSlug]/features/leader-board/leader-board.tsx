@@ -77,6 +77,8 @@ export async function LeaderBoard({ ecosystemSlug, sortBy, className }: TLeaderB
     })
     .then(res => res.contributors);
 
+  if (!contributors?.length) return null;
+
   return (
     <div className="flex flex-col gap-2">
       <Typography
