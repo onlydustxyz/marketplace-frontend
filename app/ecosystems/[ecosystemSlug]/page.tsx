@@ -88,7 +88,7 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
           </Container>
         </ErrorBoundary>
 
-        <ErrorBoundary fallback={<div></div>}>
+        <ErrorBoundary fallback={null}>
           <Container>
             <div className="flex flex-col gap-4">
               <Suspense fallback={<SkeletonEl width="100px" height="18px" variant="text" />}>
