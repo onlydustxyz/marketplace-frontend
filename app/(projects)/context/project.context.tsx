@@ -156,10 +156,11 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
       setFiltersOptions(prevOptions => ({
         ...prevOptions,
         languages: newLanguages?.length
-          ? newLanguages.map(({ name, id }) => ({
+          ? newLanguages.map(({ name, id, logoUrl }) => ({
               id,
               label: name,
               value: id,
+              image: logoUrl,
             }))
           : prevOptions.languages,
         ecosystems: newEcosystems?.length

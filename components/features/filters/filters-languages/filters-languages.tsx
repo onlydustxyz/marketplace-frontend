@@ -10,7 +10,7 @@ export function FiltersLanguages({ languages, selected, onChange }: TFiltersLang
   return (
     <FilterFieldContainer label={T("filter.languages.title")}>
       <SelectAutocomplete
-        type="square"
+        type="circle"
         icon={({ className }) => <Icon remixName={"ri-code-s-slash-line"} className={className} />}
         tokens={{
           zero: "v2.features.filters.languages.all",
