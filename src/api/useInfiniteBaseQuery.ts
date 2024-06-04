@@ -53,7 +53,7 @@ export function useInfiniteBaseQuery<R extends InfiniteQueryResponseData>(
     enabled,
     ...restQueryOptions
   } = queryOptions;
-  const { getAccessTokenSilently, isAuthenticated, logout } = useAuth0();
+  const { getAccessTokenSilently, isAuthenticated, logout, isLoading } = useAuth0();
   const { getImpersonateHeaders } = useImpersonation();
 
   return useInfiniteQuery<R>({
@@ -94,11 +94,12 @@ export function useInfiniteBaseQuery<R extends InfiniteQueryResponseData>(
         pageParams: data.pageParams,
       };
     },
+
     initialPageParam,
     getNextPageParam,
     refetchInterval,
     refetchIntervalInBackground,
-    enabled,
+    enabled: !isLoading && enabled,
     ...restQueryOptions,
   });
 }

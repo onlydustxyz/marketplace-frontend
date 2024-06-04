@@ -143,6 +143,25 @@ export function ViewMobile({
                     <Translate token="v2.features.menu.projects" />
                   </BaseLink>
 
+                  {/* TODO: Uncomment this section when the feature is ready */}
+                  {/* <BaseLink
+                    href={NEXT_ROUTER.ecosystems.root}
+                    onClick={() => setPanelOpen(false)}
+                    className="flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8"
+                  >
+                    <Icon remixName="ri-global-line" size={20} />
+                    <Translate token="v2.features.menu.ecosystems" />
+                  </BaseLink> */}
+
+                  <BaseLink
+                    href={NEXT_ROUTER.hackathons.root}
+                    onClick={() => setPanelOpen(false)}
+                    className="flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8"
+                  >
+                    <Icon remixName="ri-medal-line" size={20} />
+                    <Translate token="v2.features.menu.hackathons" />
+                  </BaseLink>
+
                   {githubUserId ? (
                     <BaseLink
                       href={NEXT_ROUTER.contributions.all}
@@ -161,15 +180,6 @@ export function ViewMobile({
                   >
                     <Icon remixName="ri-exchange-dollar-line" size={20} />
                     <Translate token="v2.features.menu.rewards" />
-                  </BaseLink>
-
-                  <BaseLink
-                    href={NEXT_ROUTER.hackathons.root}
-                    onClick={() => setPanelOpen(false)}
-                    className="flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8"
-                  >
-                    <Icon remixName="ri-medal-line" size={20} />
-                    <Translate token="v2.features.menu.hackathons" />
                   </BaseLink>
 
                   <span className="my-1 block h-px bg-greyscale-50/8" />

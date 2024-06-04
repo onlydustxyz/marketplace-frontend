@@ -1,3 +1,5 @@
+"use client";
+
 import { debounce } from "lodash";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
@@ -68,14 +70,18 @@ export function Contributor({
             : undefined
         }
       >
-        {avatarUrl ? <Avatar src={avatarUrl} alt={login} size="s" {...avatarProps} /> : null}
+        {typeof avatarUrl === "string" ? <Avatar src={avatarUrl} alt={login} size="s" {...avatarProps} /> : null}
 
         <Typography
           variant="body-s"
+          as="div"
+          className={cn(
+            {
+              "relative block truncate transition-all group-hover/contributor:text-spacePurple-300": clickable,
+            },
+            typograhy?.className
+          )}
           {...typograhy}
-          className={cn({
-            "relative block truncate transition-all group-hover/contributor:text-spacePurple-300": clickable,
-          })}
         >
           <div className="relative flex flex-row gap-1 truncate">
             <span>{login}</span>

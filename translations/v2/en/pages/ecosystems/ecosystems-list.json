@@ -1,1 +1,16 @@
-{}
+{
+  "pageTitle": "Ecosystems",
+  "bannerUpperTitle": "ecosystem",
+  "featuredEcosystem": {
+    "sectionTitle": "Featured this week"
+  },
+  "allEcosystems": {
+    "sectionTitle": "All ecosystems",
+    "descriptionPlaceholder": "No description provided",
+    "projectCount": {
+      "many": "__count__ projects",
+      "one": "1 project",
+      "zero": "0 projects"
+    }
+  }
+}

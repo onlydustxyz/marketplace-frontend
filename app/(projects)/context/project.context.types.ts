@@ -26,26 +26,23 @@ export namespace TProjectContext {
   };
 
   export interface Filter {
-    mine: boolean;
-    technologies: string[];
-    ecosystemId: TSelectAutocomplete.Item[];
+    languages: TSelectAutocomplete.Item[];
+    ecosystems: TSelectAutocomplete.Item[];
     search?: string;
     sorting: ProjectTypes.Sorting;
     tags: ProjectTypes.Tags[];
   }
 
   export interface FiltersOptions {
-    technologies: TSelectAutocomplete.Item[];
+    languages: TSelectAutocomplete.Item[];
     ecosystems: TSelectAutocomplete.Item[];
   }
 
-  export const FILTER_KEY = "project_filter-v2-0-0";
   export const DEFAULT_SORTING = ProjectTypes.Sorting.Trending;
 
   export const DEFAULT_FILTER: Filter = {
-    mine: false,
-    technologies: [],
-    ecosystemId: [],
+    languages: [],
+    ecosystems: [],
     tags: [],
     sorting: DEFAULT_SORTING,
   };

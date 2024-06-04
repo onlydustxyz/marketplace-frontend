@@ -9,14 +9,12 @@ export function FiltersEcosystems() {
   const { filters } = useContext(ProjectsContext);
 
   const handleEcosystemClick = (ecosystems: TSelectAutocomplete.Item[]) => {
-    filters.set({ ecosystemId: ecosystems });
+    filters.set({ ecosystems });
   };
 
-  return (
-    <Filter
-      selected={filters.values.ecosystemId}
-      ecosystems={filters.options.ecosystems}
-      onChange={handleEcosystemClick}
-    />
+  const selected = filters.options.ecosystems.filter(({ value }) =>
+    filters.values.ecosystems.some(({ value: selectedValue }) => value === selectedValue)
   );
+
+  return <Filter selected={selected} ecosystems={filters.options.ecosystems} onChange={handleEcosystemClick} />;
 }

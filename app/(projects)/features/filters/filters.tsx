@@ -14,14 +14,14 @@ import { Typography } from "components/layout/typography/typography";
 import { ProjectsContext } from "../../context/project.context";
 import { FiltersClearAll } from "./clear-all/clear-all";
 import { FiltersEcosystems } from "./filters-ecosystems/filters-ecosystems";
+import { FiltersLanguages } from "./filters-languages/filters-languages";
 import { FiltersTags } from "./filters-tags/filters-tags";
-import { FiltersTechnologies } from "./filters-technologies/filters-technologies";
 
 export function ProjectsFilters({ showOn }: { showOn: "mobile" | "desktop" }) {
-  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
+  const isLg = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.lg}px)`);
   const [openMobilePanel, setOpenMobilePanel] = useState(false);
   const { filters } = useContext(ProjectsContext);
-  if (!isXl && showOn === "mobile") {
+  if (!isLg && showOn === "mobile") {
     return (
       <>
         <Button variant={"secondary"} size="s" onClick={() => setOpenMobilePanel(true)}>
@@ -47,7 +47,7 @@ export function ProjectsFilters({ showOn }: { showOn: "mobile" | "desktop" }) {
               <FiltersEcosystems />
             </div>
             <div className="py-4">
-              <FiltersTechnologies />
+              <FiltersLanguages />
             </div>
           </div>
         </BottomSheet>
@@ -72,7 +72,7 @@ export function ProjectsFilters({ showOn }: { showOn: "mobile" | "desktop" }) {
         <FiltersEcosystems />
       </div>
       <div className="px-6 py-4">
-        <FiltersTechnologies />
+        <FiltersLanguages />
       </div>
     </Card>
   );

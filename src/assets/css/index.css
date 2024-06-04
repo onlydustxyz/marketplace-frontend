@@ -98,6 +98,15 @@
     mask-composite: exclude;
   }
 
+  .border-mask::before {
+    border: unset;
+    content: "";
+    padding: 1px;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
   .bg-rainbow {
     background: linear-gradient(90deg, #6808ad 25%, #dd6a37 50% 52%, #3107b6 75%);
   }
@@ -112,5 +121,17 @@
 
   .scrollbar-sm {
     @apply scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5;
+  }
+
+  .bg-card-background-multicolor {
+    background: linear-gradient(90deg, #2F1434 0%, #212048 7.9%, #0F2B51 14.11%, #0D0E4E 40.25%, #1C024F 54.05%, #34093C 87.48%, #150645 100%), linear-gradient(89.3deg, #210A1F 1.14%, #212048 8.91%, #0F2B51 15.01%, #0D0E4E 40.69%, #1C024F 54.25%, #34093C 87.1%, #150645 99.39%), #000113;
+  }
+
+  .text-shadow-spacePurple-500 {
+    text-shadow:
+      2px 0 1px #AE00FF,
+      -2px 0 1px #AE00FF,
+      0 2px 1px #AE00FF,
+      0 -2px 1px #AE00FF;
   }
 }

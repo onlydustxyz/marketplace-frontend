@@ -264,6 +264,9 @@ const config: Config = withTV({
       },
     },
   },
+  corePlugins: {
+    aspectRatio: false,
+  },
   plugins: [
     typography,
     headlessUi,
@@ -533,6 +536,30 @@ const config: Config = withTV({
         {
           values: theme("transitionDelay"),
         }
+      );
+    }),
+    plugin(({ matchUtilities, theme }) => {
+      matchUtilities(
+        {
+          aspect: value => ({
+            "@supports (aspect-ratio: 1 / 1)": {
+              aspectRatio: value,
+            },
+            "@supports not (aspect-ratio: 1 / 1)": {
+              "&::before": {
+                content: '""',
+                float: "left",
+                paddingTop: `calc(100% / (${value}))`,
+              },
+              "&::after": {
+                clear: "left",
+                content: '""',
+                display: "block",
+              },
+            },
+          }),
+        },
+        { values: theme("aspectRatio") }
       );
     }),
     nextui({

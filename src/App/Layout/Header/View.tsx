@@ -24,9 +24,10 @@ import { ProfileButtonDisplay } from "./ProfileButton/ProfileButtonDisplay";
 interface HeaderViewProps {
   menuItems: {
     [NEXT_ROUTER.projects.all]?: string;
+    [NEXT_ROUTER.ecosystems.root]?: string;
+    [NEXT_ROUTER.hackathons.root]?: string;
     [NEXT_ROUTER.contributions.all]?: string;
     [NEXT_ROUTER.rewards.all]?: string;
-    [NEXT_ROUTER.hackathons.root]?: string;
   };
   impersonating?: boolean;
   profileCompletionScore?: number;
@@ -87,6 +88,10 @@ export default function HeaderView({ menuItems, impersonating = false }: HeaderV
                 {menuItems[NEXT_ROUTER.projects.all] ? (
                   <MenuItem href={NEXT_ROUTER.projects.all}>{menuItems[NEXT_ROUTER.projects.all]}</MenuItem>
                 ) : null}
+                {/* TODO: Uncomment this section when the feature is ready */}
+                {/* {menuItems[NEXT_ROUTER.ecosystems.root] ? (
+                  <MenuItem href={NEXT_ROUTER.ecosystems.root}>{menuItems[NEXT_ROUTER.ecosystems.root]}</MenuItem>
+                ) : null} */}
                 {menuItems[NEXT_ROUTER.hackathons.root] ? (
                   <MenuItem href={NEXT_ROUTER.hackathons.root}>{menuItems[NEXT_ROUTER.hackathons.root]}</MenuItem>
                 ) : null}

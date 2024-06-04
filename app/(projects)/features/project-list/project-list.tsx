@@ -1,6 +1,5 @@
 import { useContext, useEffect } from "react";
 
-import { ProjectTypes } from "src/api/Project/types";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { usePosthog } from "src/hooks/usePosthog";
 import { isUserProjectLead } from "src/utils/isUserProjectLead";
@@ -19,9 +18,8 @@ export function ProjectList() {
 
   useEffect(() => {
     capture("project_list_viewed", {
-      technologies: filters.values.technologies,
-      ecosystems: filters.values.ecosystemId.map(({ label }) => label),
-      ownership: filters.values.mine ? ProjectTypes.Ownership.Mine : ProjectTypes.Ownership.All,
+      languages: filters.values.languages.map(({ label }) => label),
+      ecosystems: filters.values.ecosystems.map(({ label }) => label),
       tags: filters.values.tags,
     });
   }, [filters]);

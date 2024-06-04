@@ -1,7 +1,7 @@
 "use client";
 
+import { useRouter, useSearchParams } from "next/navigation";
 import { createContext, useEffect, useMemo, useState } from "react";
-import { useLocalStorage } from "react-use";
 import { useDebounce } from "usehooks-ts";
 
 import ProjectApi from "src/api/Project";
@@ -23,27 +23,100 @@ export const ProjectsContext = createContext<TProjectContext.Return>({
     set: () => null,
     clear: () => null,
     options: {
-      technologies: [],
+      languages: [],
       ecosystems: [],
     },
   },
 });
 
 export function ProjectsContextProvider({ children }: TProjectContext.Props) {
-  const [storage, setStorage] = useLocalStorage(TProjectContext.FILTER_KEY, TProjectContext.DEFAULT_FILTER);
-  const [filters, setFilters] = useState<TProjectContext.Filter>({ ...TProjectContext.DEFAULT_FILTER, ...storage });
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const getFiltersFromURL = () => {
+    const urlParams = new URLSearchParams(searchParams.toString());
+    const filters: TProjectContext.Filter = { ...TProjectContext.DEFAULT_FILTER };
+
+    const tags = urlParams.getAll("tags");
+    const languages = urlParams.getAll("languages");
+    const ecosystems = urlParams.getAll("ecosystems");
+    const search = urlParams.get("search");
+    const sort = urlParams.get("sort");
+
+    if (tags.length > 0) {
+      filters.tags = tags as TProjectContext.Filter["tags"];
+    }
+
+    if (languages.length > 0) {
+      // We have to map the languages to the correct format, because of the type of the filter - TSelectAutocomplete.Item[]
+      filters.languages = languages.map(value => ({
+        id: value,
+        value,
+      }));
+    }
+
+    if (ecosystems.length > 0) {
+      // We have to map the ecosystems to the correct format, because of the type of the filter - TSelectAutocomplete.Item[]
+      filters.ecosystems = ecosystems.map(value => ({
+        id: value,
+        value,
+      }));
+    }
+
+    if (search) {
+      filters.search = search!;
+    }
+
+    if (sort) {
+      filters.sorting = sort as TProjectContext.Filter["sorting"];
+    }
+
+    return filters;
+  };
+
+  const [filters, setFilters] = useState<TProjectContext.Filter>({
+    ...TProjectContext.DEFAULT_FILTER,
+    ...getFiltersFromURL(),
+  });
+
   const [filtersOptions, setFiltersOptions] = useState<TProjectContext.FiltersOptions>({
-    technologies: [],
+    languages: [],
     ecosystems: [],
   });
+
+  const updateURLWithFilters = (filters: TProjectContext.Filter) => {
+    const urlParams = new URLSearchParams();
+
+    filters.tags.forEach(tag => urlParams.append("tags", tag));
+    filters.ecosystems.forEach(({ value }) => urlParams.append("ecosystems", value));
+    filters.languages.forEach(({ value }) => urlParams.append("languages", value));
+
+    if (filters.search) {
+      urlParams.set("search", filters.search);
+    }
+
+    const hasOtherFilters =
+      filters.tags.length > 0 || filters.ecosystems.length > 0 || filters.languages.length > 0 || filters.search;
+
+    if (filters.sorting && (hasOtherFilters || filters.sorting !== TProjectContext.DEFAULT_SORTING)) {
+      urlParams.set("sort", filters.sorting);
+    }
+
+    router.replace(`?${urlParams.toString()}`);
+  };
+
+  useEffect(() => {
+    const initialFilters = getFiltersFromURL();
+    setFilters(initialFilters);
+  }, [searchParams]);
+
   const queryParams = useMemo(() => {
     const params: useInfiniteBaseQueryProps["queryParams"] = [
-      filters.technologies.length > 0 ? ["technologies", filters.technologies.join(",")] : null,
-      filters.ecosystemId.length > 0 ? ["ecosystemId", filters.ecosystemId.map(({ id }) => id).join(",")] : null,
       filters.tags.length > 0 ? ["tags", filters.tags.join(",")] : null,
+      filters.languages.length > 0 ? ["languageIds", filters.languages.map(({ value }) => value).join(",")] : null,
+      filters.ecosystems.length > 0 ? ["ecosystemSlugs", filters.ecosystems.map(({ value }) => value).join(",")] : null,
       filters.search ? ["search", filters.search] : null,
       filters.sorting ? ["sort", filters.sorting] : null,
-      filters.mine ? ["mine", filters.mine] : null,
     ].filter((param): param is string[] => Boolean(param));
 
     return params;
@@ -60,40 +133,49 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
 
   const projects = useMemo(() => data?.pages?.flatMap(({ projects }) => projects) ?? [], [data]);
   const filtersCount = useMemo(() => {
-    return filters.tags.length + filters.ecosystemId.length + filters.technologies.length + (filters.mine ? 1 : 0);
+    return filters.tags.length + filters.ecosystems.length + filters.languages.length;
   }, [filters]);
 
   function onFilterChange(newFilter: Partial<TProjectContext.Filter>) {
     const filtersValues = { ...filters, ...newFilter };
     setFilters(filtersValues);
-    setStorage(filtersValues);
+    updateURLWithFilters(filtersValues);
   }
+
   function onClearFilter() {
-    setFilters(TProjectContext.DEFAULT_FILTER);
-    setStorage(TProjectContext.DEFAULT_FILTER);
+    const clearFilters = {
+      ...filters,
+      tags: [],
+      ecosystems: [],
+      languages: [],
+    };
+
+    setFilters(clearFilters);
+    updateURLWithFilters(clearFilters);
   }
 
   useEffect(() => {
     if (data?.pages[0]) {
-      const newTechnologies = data?.pages[0]?.technologies;
+      const newLanguages = data?.pages[0]?.languages;
       const newEcosystems = data?.pages[0]?.ecosystems;
       setFiltersOptions(prevOptions => ({
         ...prevOptions,
-        technologies: newTechnologies?.length
-          ? newTechnologies.map(name => ({
-              label: name,
-              id: name,
-              value: name,
-            }))
-          : prevOptions.technologies,
-        ecosystems: newEcosystems?.length
-          ? newEcosystems.map(({ name, id, logoUrl }) => ({
+        languages: newLanguages?.length
+          ? newLanguages.map(({ name, id, logoUrl }) => ({
               id,
               label: name,
               value: id,
               image: logoUrl,
             }))
-          : prevOptions.technologies,
+          : prevOptions.languages,
+        ecosystems: newEcosystems?.length
+          ? newEcosystems.map(({ name, id, logoUrl, slug }) => ({
+              id,
+              label: name,
+              value: slug,
+              image: logoUrl,
+            }))
+          : prevOptions.ecosystems,
       }));
     }
   }, [data]);
