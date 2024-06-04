@@ -31,7 +31,11 @@ export function Ecosystems({ ecosystems }: TEcosystems.Props) {
   }
 
   return (
-    <Tooltip content={<EcosystemsLogos.TooltipContent ecosystems={sortedByName} />} enabled={sortedByName.length > 1}>
+    <Tooltip
+      content={<EcosystemsLogos.TooltipContent ecosystems={sortedByName} />}
+      enabled={sortedByName.length > 1}
+      canInteract
+    >
       <div className="flex flex-row items-center gap-1 font-walsheim text-snow">
         <EcosystemsLogos ecosystems={sortedByName} avatarProps={{ size: "xs" }} enableTooltip={false} />
 
