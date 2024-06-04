@@ -1,5 +1,3 @@
-import { ecosystemsApiClient } from "api-client/resources/ecosystems";
-
 import { TMoreProject } from "app/ecosystems/[ecosystemSlug]/features/more-project/more-project.types";
 
 import { cn } from "src/utils/cn";
@@ -34,28 +32,7 @@ function MoreProjectItem({ project }: TMoreProject.MoreProjectItemProps) {
   );
 }
 
-export async function MoreProject({ ecosystemSlug, tag, className }: TMoreProject.MoreProjectProps) {
-  const data = await ecosystemsApiClient.fetch
-    .getEcosystemProjectBySlug(
-      { ecosystemSlug },
-      {
-        tag,
-      },
-      {
-        pageSize: 3,
-        pageIndex: 0,
-      }
-    )
-    .request({
-      next: { revalidate: 120 },
-    })
-    .then(res => {
-      return {
-        projects: res.projects,
-        hasMore: res.hasMore,
-      };
-    });
-
+export function MoreProject({ projects, hasMore, tag, className }: TMoreProject.MoreProjectProps) {
   const title = (): Key => {
     switch (tag) {
       case "HOT_COMMUNITY":
@@ -69,36 +46,34 @@ export async function MoreProject({ ecosystemSlug, tag, className }: TMoreProjec
     }
   };
 
-  if (!data?.projects.length) return null;
+  if (!projects.length) return null;
 
   return (
-    <div className="flex-1 flex-col gap-2 md:max-w-[50%]">
-      <Card
-        className={cn("relative flex h-full w-full flex-col divide-y divide-card-border-light !px-5 !py-0", className)}
-        background="base"
-      >
-        <div className="grid grid-cols-3 py-6">
-          <Typography
-            variant="title-s"
-            translate={{
-              token: title(),
-            }}
-            className="col-span-2"
-          />
-          {data?.hasMore ? (
-            <BaseLink href={NEXT_ROUTER.projects.allWithParams({ tags: tag })} className="w-full">
-              <Typography
-                variant="body-xs"
-                className="text-right text-spacePurple-500"
-                translate={{ token: "v2.pages.ecosystems.detail.moreProjects.seeMore" }}
-              />
-            </BaseLink>
-          ) : null}
-        </div>
-        {data?.projects?.map(project => (
-          <MoreProjectItem key={project.id} project={project} />
-        ))}
-      </Card>
-    </div>
+    <Card
+      className={cn("relative flex h-full w-full flex-col divide-y divide-card-border-light !px-5 !py-0", className)}
+      background="base"
+    >
+      <div className="grid grid-cols-3 py-6">
+        <Typography
+          variant="title-s"
+          translate={{
+            token: title(),
+          }}
+          className="col-span-2"
+        />
+        {hasMore ? (
+          <BaseLink href={NEXT_ROUTER.projects.allWithParams({ tags: tag })} className="w-full">
+            <Typography
+              variant="body-xs"
+              className="text-right text-spacePurple-500"
+              translate={{ token: "v2.pages.ecosystems.detail.moreProjects.seeMore" }}
+            />
+          </BaseLink>
+        ) : null}
+      </div>
+      {projects?.map(project => (
+        <MoreProjectItem key={project.id} project={project} />
+      ))}
+    </Card>
   );
 }
