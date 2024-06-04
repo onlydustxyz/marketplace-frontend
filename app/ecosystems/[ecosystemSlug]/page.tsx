@@ -6,10 +6,12 @@ import { FeaturedProjectsLoading } from "app/ecosystems/[ecosystemSlug]/features
 import { Languages } from "app/ecosystems/[ecosystemSlug]/features/languages/languages";
 import { LanguagesLoading } from "app/ecosystems/[ecosystemSlug]/features/languages/languages.loading";
 import { LeaderBoardTitle } from "app/ecosystems/[ecosystemSlug]/features/leader-board-title/leader-board-title";
+import { LeaderBoardTitleLoading } from "app/ecosystems/[ecosystemSlug]/features/leader-board-title/leader-board-title.loading";
 import { LeaderBoard } from "app/ecosystems/[ecosystemSlug]/features/leader-board/leader-board";
 import { LearnMore } from "app/ecosystems/[ecosystemSlug]/features/learn-more/learn-more";
 import { LearnMoreLoading } from "app/ecosystems/[ecosystemSlug]/features/learn-more/learn-more.loading";
 import { MoreProjectTitle } from "app/ecosystems/[ecosystemSlug]/features/more-project-title/more-project-title";
+import { MoreProjectTitleLoading } from "app/ecosystems/[ecosystemSlug]/features/more-project-title/more-project-title.loading";
 import { MoreProject } from "app/ecosystems/[ecosystemSlug]/features/more-project/more-project";
 import { Overview } from "app/ecosystems/[ecosystemSlug]/features/overview/overview";
 import { OverviewLoading } from "app/ecosystems/[ecosystemSlug]/features/overview/overview.loading";
@@ -68,7 +70,7 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
         <ErrorBoundary fallback={null}>
           <Container>
             <div className="flex flex-col gap-4">
-              <Suspense fallback={<SkeletonEl width="100px" height="18px" variant="text" />}>
+              <Suspense fallback={<LeaderBoardTitleLoading />}>
                 <LeaderBoardTitle ecosystemSlug={params.ecosystemSlug} />
               </Suspense>
 
@@ -91,7 +93,7 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
         <ErrorBoundary fallback={null}>
           <Container>
             <div className="flex flex-col gap-4">
-              <Suspense fallback={<SkeletonEl width="100px" height="18px" variant="text" />}>
+              <Suspense fallback={<MoreProjectTitleLoading />}>
                 <MoreProjectTitle ecosystemSlug={params.ecosystemSlug} />
               </Suspense>
 
