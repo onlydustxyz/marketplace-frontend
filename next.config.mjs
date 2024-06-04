@@ -18,6 +18,11 @@ const nextConfig = {
   env: {
     APP_COMMIT_HASH: getCommitHash(),
   },
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
   experimental: {
     serverComponentsExternalPackages: ["@react-pdf/renderer"],
   },
