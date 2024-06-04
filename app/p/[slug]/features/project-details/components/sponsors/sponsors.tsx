@@ -21,7 +21,7 @@ export function Sponsors({ sponsors }: TSponsors.Props) {
       }}
       remixIconName="ri-service-line"
     >
-      <Flex wrap="wrap" className="gap-1">
+      <Flex wrap="wrap" className="gap-3">
         {sponsors.map(sponsor => (
           <Fragment key={sponsor.id}>
             {sponsor.url ? (
