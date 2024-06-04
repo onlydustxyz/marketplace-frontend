@@ -5,6 +5,7 @@ import { cn } from "src/utils/cn";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
+import { LanguagesTag } from "components/features/languages-tag/languages-tag";
 import { ProjectLeadInvitationBanner } from "components/features/project-lead-invitation-banner/project-lead-invitation-banner";
 import { ProjectMissingGithubBanner } from "components/features/project-missing-github-banner/project-missing-github-banner";
 import { BaseLink } from "components/layout/base-link/base-link";
@@ -20,7 +21,6 @@ import { Ecosystems } from "./ecosystems/ecosystems";
 import { Leaders } from "./leaders/leaders";
 import { TProjectCard } from "./project-card.types";
 import { Summary } from "./summary/summary";
-import { Technologies } from "./technologies/technologies";
 
 export function ProjectCard({ project, isFirstHiringProject = false, isUserProjectLead }: TProjectCard.Props) {
   const { T } = useIntl();
@@ -36,7 +36,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
     leaders,
     contributorCount,
     ecosystems,
-    technologies,
+    languages,
   } = project;
 
   const isErrorVariant = Boolean(isUserProjectLead && hasMissingGithubAppInstallation);
@@ -121,7 +121,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
               <Leaders leaders={leaders} />
               <ContributorsCounter count={contributorCount} />
               <Ecosystems ecosystems={ecosystems} />
-              <Technologies technologies={technologies} />
+              <LanguagesTag languages={languages} />
             </div>
           </Flex>
         </Flex>
