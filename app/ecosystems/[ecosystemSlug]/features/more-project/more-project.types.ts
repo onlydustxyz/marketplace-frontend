@@ -21,5 +21,6 @@ export namespace TMoreProject {
     projects: EcosystemProject[];
     hasMore: boolean;
     tag: TagUnion;
+    ecosystemSlug: string;
   }
 }
