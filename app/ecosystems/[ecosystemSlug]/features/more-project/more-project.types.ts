@@ -1,6 +1,10 @@
 import { EcosystemProject } from "api-client/resources/ecosystems/types";
 
 export namespace TMoreProject {
+  export interface MoreProjectSectionProps {
+    ecosystemSlug: string;
+    className?: string;
+  }
   type TagUnion =
     | "HOT_COMMUNITY"
     | "NEWBIES_WELCOME"
@@ -13,8 +17,9 @@ export namespace TMoreProject {
     project: EcosystemProject;
   }
   export interface MoreProjectProps {
-    ecosystemSlug: string;
     className?: string;
+    projects: EcosystemProject[];
+    hasMore: boolean;
     tag: TagUnion;
   }
 }
