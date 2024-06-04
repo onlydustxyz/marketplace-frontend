@@ -74,10 +74,14 @@ export function Contributor({
 
         <Typography
           variant="body-s"
+          as="div"
+          className={cn(
+            {
+              "relative block truncate transition-all group-hover/contributor:text-spacePurple-300": clickable,
+            },
+            typograhy?.className
+          )}
           {...typograhy}
-          className={cn({
-            "relative block truncate transition-all group-hover/contributor:text-spacePurple-300": clickable,
-          })}
         >
           <div className="relative flex flex-row gap-1 truncate">
             <span>{login}</span>

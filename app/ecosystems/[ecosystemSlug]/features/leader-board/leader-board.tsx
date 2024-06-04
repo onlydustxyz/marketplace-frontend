@@ -8,6 +8,7 @@ import { cn } from "src/utils/cn";
 
 import { AvatarLabelled } from "components/ds/avatar/avatar.labelled";
 import { Card } from "components/ds/card/card";
+import { Contributor } from "components/features/contributor/contributor";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
@@ -20,7 +21,13 @@ function LeaderBoardItem({ contributor, sortBy }: TLeaderBoard.LeaderBoardItemPr
         labelProps={{ title: contributor.login }}
         className="col-span-3 flex-1"
       >
-        <Typography variant="title-s">{contributor.login}</Typography>
+        <Contributor
+          githubUserId={contributor.githubUserId}
+          login={contributor.login}
+          isRegistered={false}
+          clickable
+          typograhy={{ className: "!od-text-title-s hover:text-spacePurple-500 transition-all capitalize" }}
+        />
         <Typography
           variant="body-s"
           className="line-clamp-2 text-spaceBlue-100"
@@ -40,7 +47,8 @@ function LeaderBoardItem({ contributor, sortBy }: TLeaderBoard.LeaderBoardItemPr
               Money.format({
                 amount: contributor.totalEarnedUsd,
                 currency: Money.USD,
-              }).string
+                options: { currencyClassName: "od-text-body-s" },
+              }).html
             }
           </Typography>
         </div>
@@ -65,6 +73,8 @@ export async function LeaderBoard({ ecosystemSlug, sortBy, className }: TLeaderB
       next: { revalidate: 120 },
     })
     .then(res => res.contributors);
+
+  if (!contributors?.length) return null;
 
   return (
     <div className="flex flex-col gap-2">
