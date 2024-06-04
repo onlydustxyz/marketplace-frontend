@@ -1,24 +1,17 @@
-"use client";
-
 import { useMemo } from "react";
-
-import { TLanguagesTag } from "app/ecosystems/[ecosystemSlug]/components/languages-tag/languages-tag.types";
-
-import { viewportConfig } from "src/config";
 
 import { Tag } from "components/ds/tag/tag";
 import { Tooltip } from "components/ds/tooltip/tooltip";
+import { TLanguagesTag } from "components/features/languages-tag/languages-tag.types";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
-import { useClientMediaQuery } from "hooks/layout/useClientMediaQuery/use-client-media-query";
+const MAX_LANGUAGES = 2;
 
-export function LanguagesTag({ languages = [] }: TLanguagesTag.Props) {
-  const isSm = useClientMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
-  const maxLanguages = isSm ? 3 : 2;
+export function LanguagesTag({ languages }: TLanguagesTag.Props) {
   const nbLanguages = useMemo(() => languages?.length ?? 0, [languages]);
-  const isMaxLanguages = useMemo(() => nbLanguages > maxLanguages, [nbLanguages, maxLanguages]);
-  const firstLanguages = useMemo(() => languages?.slice(0, maxLanguages) ?? [], [languages, maxLanguages]);
+  const isMaxLanguages = useMemo(() => nbLanguages > MAX_LANGUAGES, [nbLanguages, MAX_LANGUAGES]);
+  const firstLanguages = useMemo(() => languages?.slice(0, MAX_LANGUAGES) ?? [], [languages, MAX_LANGUAGES]);
 
   if (!languages?.length) return null;
 
@@ -33,13 +26,13 @@ export function LanguagesTag({ languages = [] }: TLanguagesTag.Props) {
           ))}
         </ul>
       }
-      enabled={isMaxLanguages && isSm}
+      enabled={isMaxLanguages}
     >
       <Tag>
         <Icon remixName={"ri-code-s-slash-line"} size={12} />
         <Typography variant={"body-xs"}>
           {firstLanguages?.map(l => l.name).join(", ")}
-          {isMaxLanguages ? ` +${nbLanguages - maxLanguages}` : ""}
+          {isMaxLanguages ? ` +${nbLanguages - MAX_LANGUAGES}` : ""}
         </Typography>
       </Tag>
     </Tooltip>

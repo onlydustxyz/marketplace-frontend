@@ -26,7 +26,7 @@ export namespace TProjectContext {
   };
 
   export interface Filter {
-    technologies: string[];
+    languages: TSelectAutocomplete.Item[];
     ecosystems: TSelectAutocomplete.Item[];
     search?: string;
     sorting: ProjectTypes.Sorting;
@@ -34,14 +34,14 @@ export namespace TProjectContext {
   }
 
   export interface FiltersOptions {
-    technologies: TSelectAutocomplete.Item[];
+    languages: TSelectAutocomplete.Item[];
     ecosystems: TSelectAutocomplete.Item[];
   }
 
   export const DEFAULT_SORTING = ProjectTypes.Sorting.Trending;
 
   export const DEFAULT_FILTER: Filter = {
-    technologies: [],
+    languages: [],
     ecosystems: [],
     tags: [],
     sorting: DEFAULT_SORTING,

@@ -18,7 +18,7 @@ export function ProjectList() {
 
   useEffect(() => {
     capture("project_list_viewed", {
-      technologies: filters.values.technologies,
+      languages: filters.values.languages.map(({ label }) => label),
       ecosystems: filters.values.ecosystems.map(({ label }) => label),
       tags: filters.values.tags,
     });

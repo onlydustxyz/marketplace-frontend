@@ -12,8 +12,7 @@ export async function ProjectGoodFirstIssues({ ecosystemSlug }: { ecosystemSlug:
       {
         pageIndex: 0,
         pageSize: 20,
-        // TODO @hayden uncomment to test
-        // hasGoodFirstIssues: true,
+        hasGoodFirstIssues: true,
       }
     )
     .request();

@@ -1,10 +1,10 @@
 import { EcosystemProject } from "api-client/resources/ecosystems/types";
 
 import { Contributors } from "app/ecosystems/[ecosystemSlug]/components/contributors/contributors";
-import { LanguagesTag } from "app/ecosystems/[ecosystemSlug]/components/languages-tag/languages-tag";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
+import { LanguagesTag } from "components/features/languages-tag/languages-tag";
 import { Typography } from "components/layout/typography/typography";
 
 import { NEXT_ROUTER } from "constants/router";

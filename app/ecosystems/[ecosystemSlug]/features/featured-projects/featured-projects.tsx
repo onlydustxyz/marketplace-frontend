@@ -14,8 +14,7 @@ export async function FeaturedProjects({ ecosystemSlug }: { ecosystemSlug: strin
       {
         pageIndex: 0,
         pageSize: 5,
-        // TODO @hayden uncomment to test
-        // featuredOnly: true,
+        featuredOnly: true,
       }
     )
     .request();
