@@ -25,7 +25,7 @@ export function EcosystemCard({ bannerUrl, name, description, projectCount, proj
       </div>
       <div className="flex w-full flex-col gap-2 overflow-hidden rounded-b-[16px] p-4">
         <Typography variant={"title-s"}>{name}</Typography>
-        <Typography variant={"body-m"} className="text-spaceBlue-100">
+        <Typography variant={"body-m"} className="line-clamp-4 min-h-[80px] text-spaceBlue-100">
           {description || <Translate token={"v2.pages.ecosystems.list.allEcosystems.descriptionPlaceholder"} />}
         </Typography>
         <div className="flex w-full items-center justify-between gap-1 pt-5">
