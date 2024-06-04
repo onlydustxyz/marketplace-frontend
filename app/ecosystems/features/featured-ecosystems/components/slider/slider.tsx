@@ -77,7 +77,7 @@ export function Slider({ children }: TSlider.Props) {
     >
       {!loaded && (
         <div
-          className={cn("pointer-events-none w-full p-1.5 aspect-[2.16/1] sm:aspect-[3.41/1]", {
+          className={cn("pointer-events-none absolute left-0 top-0 w-full p-1.5 aspect-[2.16/1] sm:aspect-[3.41/1]", {
             "opacity-0": loaded,
           })}
         >
@@ -94,7 +94,7 @@ export function Slider({ children }: TSlider.Props) {
         ref={sliderRef}
         className={cn(
           "keen-slider !overflow-visible transition-all aspect-[2.16/1] sm:!overflow-hidden sm:rounded-[32px] sm:outline sm:outline-[6px] sm:outline-card-border-medium sm:aspect-[3.41/1]",
-          { "pointer-events-none !fixed top-[9999px] opacity-0": !loaded }
+          { "pointer-events-none opacity-0": !loaded }
         )}
       >
         {children.map((c, key) => (
