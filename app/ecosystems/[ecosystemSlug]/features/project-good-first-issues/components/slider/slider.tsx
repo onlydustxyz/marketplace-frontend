@@ -22,7 +22,7 @@ export function Slider({ children }: TSlider.Props) {
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     initial: 0,
     slides: {
-      perView: nbSlides < 3 ? 2 : 3.1,
+      perView: nbSlides < 3 ? 2 : 3,
       spacing: 12,
     },
     breakpoints: {
