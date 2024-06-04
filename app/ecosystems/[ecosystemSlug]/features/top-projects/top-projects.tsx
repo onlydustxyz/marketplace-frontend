@@ -13,8 +13,7 @@ export async function TopProjects({ ecosystemSlug }: { ecosystemSlug: string }) 
       {
         pageIndex: 0,
         pageSize: 10,
-        // TODO @hayden uncomment to test
-        // topProjects: true,
+        sortBy: "RANK",
       }
     )
     .request();
