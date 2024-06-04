@@ -23,7 +23,7 @@ export const ProjectsContext = createContext<TProjectContext.Return>({
     set: () => null,
     clear: () => null,
     options: {
-      technologies: [],
+      languages: [],
       ecosystems: [],
     },
   },
@@ -34,7 +34,7 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
   const searchParams = useSearchParams();
   const [filters, setFilters] = useState<TProjectContext.Filter>({ ...TProjectContext.DEFAULT_FILTER });
   const [filtersOptions, setFiltersOptions] = useState<TProjectContext.FiltersOptions>({
-    technologies: [],
+    languages: [],
     ecosystems: [],
   });
 
@@ -43,7 +43,7 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
     const filters: TProjectContext.Filter = { ...TProjectContext.DEFAULT_FILTER };
 
     const tags = urlParams.getAll("tags");
-    const technologies = urlParams.getAll("technologies");
+    const languages = urlParams.getAll("languages");
     const ecosystems = urlParams.getAll("ecosystems");
     const search = urlParams.get("search");
     const sort = urlParams.get("sort");
@@ -52,8 +52,12 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
       filters.tags = tags as TProjectContext.Filter["tags"];
     }
 
-    if (technologies.length > 0) {
-      filters.technologies = technologies;
+    if (languages.length > 0) {
+      // We have to map the languages to the correct format, because of the type of the filter - TSelectAutocomplete.Item[]
+      filters.languages = languages.map(value => ({
+        id: value,
+        value,
+      }));
     }
 
     if (ecosystems.length > 0) {
@@ -80,14 +84,14 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
 
     filters.tags.forEach(tag => urlParams.append("tags", tag));
     filters.ecosystems.forEach(({ value }) => urlParams.append("ecosystems", value));
-    filters.technologies.forEach(tech => urlParams.append("technologies", tech));
+    filters.languages.forEach(({ value }) => urlParams.append("languages", value));
 
     if (filters.search) {
       urlParams.set("search", filters.search);
     }
 
     const hasOtherFilters =
-      filters.tags.length > 0 || filters.ecosystems.length > 0 || filters.technologies.length > 0 || filters.search;
+      filters.tags.length > 0 || filters.ecosystems.length > 0 || filters.languages.length > 0 || filters.search;
 
     if (filters.sorting && (hasOtherFilters || filters.sorting !== TProjectContext.DEFAULT_SORTING)) {
       urlParams.set("sort", filters.sorting);
@@ -104,7 +108,7 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
   const queryParams = useMemo(() => {
     const params: useInfiniteBaseQueryProps["queryParams"] = [
       filters.tags.length > 0 ? ["tags", filters.tags.join(",")] : null,
-      filters.technologies.length > 0 ? ["technologies", filters.technologies.join(",")] : null,
+      filters.languages.length > 0 ? ["languages", filters.languages.map(({ value }) => value).join(",")] : null,
       filters.ecosystems.length > 0 ? ["ecosystemSlug", filters.ecosystems.map(({ value }) => value).join(",")] : null,
       filters.search ? ["search", filters.search] : null,
       filters.sorting ? ["sort", filters.sorting] : null,
@@ -124,7 +128,7 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
 
   const projects = useMemo(() => data?.pages?.flatMap(({ projects }) => projects) ?? [], [data]);
   const filtersCount = useMemo(() => {
-    return filters.tags.length + filters.ecosystems.length + filters.technologies.length;
+    return filters.tags.length + filters.ecosystems.length + filters.languages.length;
   }, [filters]);
 
   function onFilterChange(newFilter: Partial<TProjectContext.Filter>) {
@@ -138,7 +142,7 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
       ...filters,
       tags: [],
       ecosystems: [],
-      technologies: [],
+      languages: [],
     };
 
     setFilters(clearFilters);
@@ -147,17 +151,17 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
 
   useEffect(() => {
     if (data?.pages[0]) {
-      const newTechnologies = data?.pages[0]?.technologies;
+      const newLanguages = data?.pages[0]?.languages;
       const newEcosystems = data?.pages[0]?.ecosystems;
       setFiltersOptions(prevOptions => ({
         ...prevOptions,
-        technologies: newTechnologies?.length
-          ? newTechnologies.map(name => ({
+        languages: newLanguages?.length
+          ? newLanguages.map(({ name, id }) => ({
+              id,
               label: name,
-              id: name,
-              value: name,
+              value: id,
             }))
-          : prevOptions.technologies,
+          : prevOptions.languages,
         ecosystems: newEcosystems?.length
           ? newEcosystems.map(({ name, id, logoUrl, slug }) => ({
               id,
@@ -165,7 +169,7 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
               value: slug,
               image: logoUrl,
             }))
-          : prevOptions.technologies,
+          : prevOptions.ecosystems,
       }));
     }
   }, [data]);
