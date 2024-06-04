@@ -74,6 +74,7 @@ export function Contributor({
 
         <Typography
           variant="body-s"
+          as="div"
           className={cn(
             {
               "relative block truncate transition-all group-hover/contributor:text-spacePurple-300": clickable,
