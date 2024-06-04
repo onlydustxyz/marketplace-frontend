@@ -53,7 +53,7 @@ export function MoreProject({ projects, hasMore, tag, className }: TMoreProject.
       className={cn("relative flex h-full w-full flex-col divide-y divide-card-border-light !px-5 !py-0", className)}
       background="base"
     >
-      <div className="grid grid-cols-3 py-6">
+      <div className="grid grid-cols-3 items-center py-6">
         <Typography
           variant="title-s"
           translate={{
