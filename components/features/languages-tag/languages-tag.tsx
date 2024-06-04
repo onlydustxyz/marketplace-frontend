@@ -8,7 +8,7 @@ import { Typography } from "components/layout/typography/typography";
 
 const MAX_LANGUAGES = 2;
 
-export function LanguagesTag({ languages = [] }: TLanguagesTag.Props) {
+export function LanguagesTag({ languages }: TLanguagesTag.Props) {
   const nbLanguages = useMemo(() => languages?.length ?? 0, [languages]);
   const isMaxLanguages = useMemo(() => nbLanguages > MAX_LANGUAGES, [nbLanguages, MAX_LANGUAGES]);
   const firstLanguages = useMemo(() => languages?.slice(0, MAX_LANGUAGES) ?? [], [languages, MAX_LANGUAGES]);
