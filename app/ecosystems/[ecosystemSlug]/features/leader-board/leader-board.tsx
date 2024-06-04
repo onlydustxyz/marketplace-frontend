@@ -1,4 +1,3 @@
-import { ecosystemsApiClient } from "api-client/resources/ecosystems";
 import { rankCategoryMapping } from "api-client/resources/users/types";
 import { Money } from "utils/Money/Money";
 
@@ -57,23 +56,7 @@ function LeaderBoardItem({ contributor, sortBy }: TLeaderBoard.LeaderBoardItemPr
   );
 }
 
-export async function LeaderBoard({ ecosystemSlug, sortBy, className }: TLeaderBoard.LeaderBoardProps) {
-  const contributors = await ecosystemsApiClient.fetch
-    .getEcosystemContributorsBySlug(
-      { ecosystemSlug },
-      {
-        sort: sortBy,
-      },
-      {
-        pageSize: 5,
-        pageIndex: 0,
-      }
-    )
-    .request({
-      next: { revalidate: 120 },
-    })
-    .then(res => res.contributors);
-
+export function LeaderBoard({ contributors, sortBy, className }: TLeaderBoard.LeaderBoardProps) {
   if (!contributors?.length) return null;
 
   return (

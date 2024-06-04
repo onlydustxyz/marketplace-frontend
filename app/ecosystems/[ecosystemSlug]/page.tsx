@@ -5,9 +5,8 @@ import { FeaturedProjects } from "app/ecosystems/[ecosystemSlug]/features/featur
 import { FeaturedProjectsLoading } from "app/ecosystems/[ecosystemSlug]/features/featured-projects/featured-projects.loading";
 import { Languages } from "app/ecosystems/[ecosystemSlug]/features/languages/languages";
 import { LanguagesLoading } from "app/ecosystems/[ecosystemSlug]/features/languages/languages.loading";
-import { LeaderBoardTitle } from "app/ecosystems/[ecosystemSlug]/features/leader-board-title/leader-board-title";
-import { LeaderBoardTitleLoading } from "app/ecosystems/[ecosystemSlug]/features/leader-board-title/leader-board-title.loading";
-import { LeaderBoard } from "app/ecosystems/[ecosystemSlug]/features/leader-board/leader-board";
+import { LeaderBoardLoading } from "app/ecosystems/[ecosystemSlug]/features/leader-board/leader-board.loading";
+import { LeaderBoardSection } from "app/ecosystems/[ecosystemSlug]/features/leader-board/leader-board.section";
 import { LearnMore } from "app/ecosystems/[ecosystemSlug]/features/learn-more/learn-more";
 import { LearnMoreLoading } from "app/ecosystems/[ecosystemSlug]/features/learn-more/learn-more.loading";
 import { MoreProjectTitle } from "app/ecosystems/[ecosystemSlug]/features/more-project-title/more-project-title";
@@ -68,26 +67,9 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
         </ErrorBoundary>
 
         <ErrorBoundary fallback={null}>
-          <Container>
-            <div className="flex flex-col gap-4">
-              <Suspense fallback={<LeaderBoardTitleLoading />}>
-                <LeaderBoardTitle ecosystemSlug={params.ecosystemSlug} />
-              </Suspense>
-
-              <div className="grid gap-4 lg:grid-cols-2">
-                <ErrorBoundary fallback={null}>
-                  <Suspense fallback={<SkeletonEl width="100%" height="466px" variant="rounded" />}>
-                    <LeaderBoard sortBy={"CONTRIBUTION_COUNT"} ecosystemSlug={ecosystemSlug} />
-                  </Suspense>
-                </ErrorBoundary>
-                <ErrorBoundary fallback={null}>
-                  <Suspense fallback={<SkeletonEl width="100%" height="466px" variant="rounded" />}>
-                    <LeaderBoard sortBy={"TOTAL_EARNED"} ecosystemSlug={ecosystemSlug} />
-                  </Suspense>
-                </ErrorBoundary>
-              </div>
-            </div>
-          </Container>
+          <Suspense fallback={<LeaderBoardLoading />}>
+            <LeaderBoardSection ecosystemSlug={ecosystemSlug} />
+          </Suspense>
         </ErrorBoundary>
 
         <ErrorBoundary fallback={null}>
