@@ -4,7 +4,7 @@ import { Slide } from "app/ecosystems/[ecosystemSlug]/features/project-good-firs
 import { Slider } from "app/ecosystems/[ecosystemSlug]/features/project-good-first-issues/components/slider/slider";
 
 export async function ProjectGoodFirstIssues({ ecosystemSlug }: { ecosystemSlug: string }) {
-  const { projects } = await ecosystemsApiClient.fetch
+  const { projects, hasMore } = await ecosystemsApiClient.fetch
     .getEcosystemProjectBySlug(
       {
         ecosystemSlug,
@@ -19,7 +19,7 @@ export async function ProjectGoodFirstIssues({ ecosystemSlug }: { ecosystemSlug:
   if (!projects.length) return null;
 
   return (
-    <Slider>
+    <Slider hasMore={hasMore}>
       {projects.map(p => (
         <Slide key={p.id} project={p} />
       ))}
