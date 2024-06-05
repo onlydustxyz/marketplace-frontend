@@ -19,7 +19,7 @@ export async function ProjectGoodFirstIssues({ ecosystemSlug }: { ecosystemSlug:
   if (!projects.length) return null;
 
   return (
-    <Slider hasMore={hasMore}>
+    <Slider ecosystemSlug={ecosystemSlug} hasMore={hasMore}>
       {projects.map(p => (
         <Slide key={p.id} project={p} />
       ))}
