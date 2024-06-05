@@ -42,7 +42,9 @@ export async function LearnMore({ ecosystemSlug }: TLearnMore.Props) {
         </a>
         <div className="flex flex-1 flex-col items-start justify-between gap-4">
           <a href={article.url} rel="noreferrer" target={"_blank"}>
-            <Typography variant={"title-m"}>{article.title}</Typography>
+            <Typography variant={"title-m"} className="transition-all hover:text-spacePurple-200">
+              {article.title}
+            </Typography>
           </a>
           <Typography variant={"body-l"} className="text-spaceBlue-100">
             {article.description}
