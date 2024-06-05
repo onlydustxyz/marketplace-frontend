@@ -36,7 +36,7 @@ export async function LearnMore({ ecosystemSlug }: TLearnMore.Props) {
           alt={ecosystem.name}
           width={600}
           height={350}
-          className="h-full w-full rounded-xl object-cover object-center shadow-light aspect-[16/9]"
+          className="h-full w-1/2 rounded-xl object-cover object-center shadow-light aspect-[16/9]"
         />
         <div className="flex flex-col items-start justify-between gap-4">
           <Typography variant={"title-m"}>{article.title}</Typography>
