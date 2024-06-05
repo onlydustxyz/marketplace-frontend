@@ -16,7 +16,7 @@ import { Typography } from "components/layout/typography/typography";
 
 import { NEXT_ROUTER } from "constants/router";
 
-export function Slider({ children }: TSlider.Props) {
+export function Slider({ children, hasMore }: TSlider.Props) {
   const [loaded, setLoaded] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [maxIndex, setMaxIndex] = useState(0);
@@ -65,7 +65,7 @@ export function Slider({ children }: TSlider.Props) {
       titleProps={{ translate: { token: "v2.pages.ecosystems.detail.projectGoodFirstIssues.title" } }}
       rightContent={
         <div className={"flex items-center gap-4"}>
-          {nbSlides > 9 ? (
+          {hasMore ? (
             <BaseLink href={NEXT_ROUTER.projects.allWithParams({ hasGoodFirstIssues: "true" })}>
               <Typography
                 variant="body-s-bold"
