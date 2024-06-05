@@ -168,7 +168,7 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
         const json = await res.json();
         this.debugLog(" Success");
         this.debugLog("   --- with response", json);
-        this.requestLogger(res.status, json);
+        await this.requestLogger(res.status, json);
         return json as T;
       } catch {
         return {} as T;
