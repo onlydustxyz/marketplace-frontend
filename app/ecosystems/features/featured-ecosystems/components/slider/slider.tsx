@@ -27,6 +27,7 @@ export function Slider({ children }: TSlider.Props) {
         slides: {
           perView: 1.1,
           spacing: 12,
+          origin: "center",
         },
       },
     },

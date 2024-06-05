@@ -8,7 +8,8 @@
     }
   },
   "featuredProjects": {
-    "title": "Featured projects"
+    "title": "Featured projects",
+    "viewAll": "View all projects"
   },
   "leaderBoard": {
     "title": "Leaderboards",
@@ -28,7 +29,7 @@
     "button": "Read more"
   },
   "topProjects": {
-    "title": "Top 10 projects"
+    "title": "Top __count__ projects"
   },
   "languages": {
     "title": "Explore projects by languages"

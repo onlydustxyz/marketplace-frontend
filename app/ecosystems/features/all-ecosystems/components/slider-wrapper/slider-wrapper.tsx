@@ -11,6 +11,7 @@ export function SliderWrapper({ children }: TSliderWrapper.Props) {
     slides: {
       perView: 1.1,
       spacing: 12,
+      origin: "center",
     },
     created() {
       setLoaded(true);
@@ -24,7 +25,7 @@ export function SliderWrapper({ children }: TSliderWrapper.Props) {
       })}
     >
       {children.map((c, key) => (
-        <div key={key} className="keen-slider__slide h-auto bg-transparent p-1">
+        <div key={key} className="keen-slider__slide h-auto bg-transparent">
           {c}
         </div>
       ))}

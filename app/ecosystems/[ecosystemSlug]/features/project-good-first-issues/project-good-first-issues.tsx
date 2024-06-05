@@ -10,10 +10,9 @@ export async function ProjectGoodFirstIssues({ ecosystemSlug }: { ecosystemSlug:
         ecosystemSlug,
       },
       {
-        pageIndex: 0,
-        pageSize: 20,
         hasGoodFirstIssues: true,
-      }
+      },
+      { pageIndex: 0, pageSize: 20 }
     )
     .request();
 

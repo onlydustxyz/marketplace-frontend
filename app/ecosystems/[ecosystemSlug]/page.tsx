@@ -18,13 +18,8 @@ import { ProjectGoodFirstIssuesLoading } from "app/ecosystems/[ecosystemSlug]/fe
 import { TopProjects } from "app/ecosystems/[ecosystemSlug]/features/top-projects/top-projects";
 import { TopProjectsLoading } from "app/ecosystems/[ecosystemSlug]/features/top-projects/top-projects.loading";
 
-import { Button } from "components/ds/button/button";
-import { BaseLink } from "components/layout/base-link/base-link";
 import { Container } from "components/layout/container/container";
-import { Icon } from "components/layout/icon/icon";
 import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
-
-import { NEXT_ROUTER } from "constants/router";
 
 export default async function EcosystemDetailPage({ params }: { params: { ecosystemSlug: string } }) {
   const { ecosystemSlug } = params;
@@ -33,17 +28,9 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
     <ScrollView>
       <div className={"grid gap-8 py-10 lg:gap-10"}>
         <Container>
-          <div className={"flex flex-col items-start gap-4"}>
-            <BaseLink href={NEXT_ROUTER.ecosystems.root}>
-              <Button as={"div"} variant={"secondary"} size={"s"} iconOnly>
-                <Icon remixName={"ri-arrow-left-s-line"} size={16} />
-              </Button>
-            </BaseLink>
-
-            <Suspense fallback={<OverviewLoading />}>
-              <Overview ecosystemSlug={params.ecosystemSlug} />
-            </Suspense>
-          </div>
+          <Suspense fallback={<OverviewLoading />}>
+            <Overview ecosystemSlug={params.ecosystemSlug} />
+          </Suspense>
         </Container>
 
         <ErrorBoundary fallback={null}>

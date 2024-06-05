@@ -8,7 +8,6 @@ import MenuItem from "src/App/Layout/Header/MenuItem";
 import { viewportConfig } from "src/config";
 
 import { Link } from "components/ds/link/link";
-import { BaseLink } from "components/layout/base-link/base-link";
 
 import { NEXT_ROUTER } from "constants/router";
 
@@ -67,30 +66,21 @@ export default function HeaderView({ menuItems, impersonating = false }: HeaderV
   return (
     <div className="sticky left-0 top-0 z-50 w-full">
       <div className="gap-3 bg-black px-6 py-4 font-walsheim text-xl text-neutral-400 xl:gap-8" data-testid="header">
-        <div className="flex items-center justify-center gap-8 xl:justify-start">
+        <div className="flex items-center justify-between gap-8 xl:justify-start">
           <Link href={NEXT_ROUTER.projects.all} className="flex w-fit items-center gap-3 ">
             <OnlyDustLogo />
             {!isSm && <OnlyDustTitle />}
           </Link>
-          <div className="flex flex-1 items-center justify-center xl:hidden">
-            <div className="rounded-xl border border-card-border-medium bg-card-background-light px-4 py-2">
-              <BaseLink
-                href={NEXT_ROUTER.hackathons.root}
-                className="od-text-body-m-bold text-white data-[active=true]:text-spacePurple-500"
-              >
-                {T("v2.features.menu.hackathons")}
-              </BaseLink>
-            </div>
-          </div>
           <div className="items-center gap-8 xl:flex xl:flex-1">
             {isXl && (
               <>
                 {menuItems[NEXT_ROUTER.projects.all] ? (
                   <MenuItem href={NEXT_ROUTER.projects.all}>{menuItems[NEXT_ROUTER.projects.all]}</MenuItem>
                 ) : null}
-                {menuItems[NEXT_ROUTER.ecosystems.root] ? (
-                  <MenuItem href={NEXT_ROUTER.ecosystems.root}>{menuItems[NEXT_ROUTER.ecosystems.root]}</MenuItem>
-                ) : null}
+                {/*TODO display once ready*/}
+                {/*{menuItems[NEXT_ROUTER.ecosystems.root] ? (*/}
+                {/*  <MenuItem href={NEXT_ROUTER.ecosystems.root}>{menuItems[NEXT_ROUTER.ecosystems.root]}</MenuItem>*/}
+                {/*) : null}*/}
                 {menuItems[NEXT_ROUTER.hackathons.root] ? (
                   <MenuItem href={NEXT_ROUTER.hackathons.root}>{menuItems[NEXT_ROUTER.hackathons.root]}</MenuItem>
                 ) : null}

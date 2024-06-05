@@ -12,6 +12,7 @@ export async function Languages({ ecosystemSlug }: TLanguages.Props) {
   const { languages } = await ecosystemsApiClient.fetch
     .getEcosystemLanguagesBySlug(
       { slug: ecosystemSlug },
+      {},
       {
         pageSize: 6,
         pageIndex: 0,
@@ -19,7 +20,7 @@ export async function Languages({ ecosystemSlug }: TLanguages.Props) {
     )
     .request();
 
-  if (!languages?.length) {
+  if (languages.length < 2) {
     return null;
   }
 
@@ -36,7 +37,7 @@ export async function Languages({ ecosystemSlug }: TLanguages.Props) {
         {languages.map(language => (
           <FilterCard
             as={"a"}
-            href={NEXT_ROUTER.projects.allWithParams({ ecosystems: ecosystemSlug, languages: language.id })}
+            href={NEXT_ROUTER.projects.allWithParams({ ecosystems: ecosystemSlug, languages: language.slug })}
             key={language.id}
             icon={<img src={language.logoUrl} alt={language.name} className="h-6 w-6 object-contain object-center" />}
           >

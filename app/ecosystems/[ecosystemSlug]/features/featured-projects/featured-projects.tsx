@@ -2,20 +2,24 @@ import { ecosystemsApiClient } from "api-client/resources/ecosystems";
 
 import { Section } from "app/ecosystems/components/section/section";
 
+import { BaseLink } from "components/layout/base-link/base-link";
+import { Typography } from "components/layout/typography/typography";
+
+import { NEXT_ROUTER } from "constants/router";
+
 import { Slide } from "./components/slide/slide";
 import { Slider } from "./components/slider/slider";
 
 export async function FeaturedProjects({ ecosystemSlug }: { ecosystemSlug: string }) {
-  const { projects } = await ecosystemsApiClient.fetch
+  const { projects, hasMore } = await ecosystemsApiClient.fetch
     .getEcosystemProjectBySlug(
       {
         ecosystemSlug,
       },
       {
-        pageIndex: 0,
-        pageSize: 5,
         featuredOnly: true,
-      }
+      },
+      { pageIndex: 0, pageSize: 5 }
     )
     .request();
 
@@ -25,6 +29,17 @@ export async function FeaturedProjects({ ecosystemSlug }: { ecosystemSlug: strin
     <Section
       iconProps={{ remixName: "ri-fire-line" }}
       titleProps={{ translate: { token: "v2.pages.ecosystems.detail.featuredProjects.title" } }}
+      rightContent={
+        hasMore ? (
+          <BaseLink href={NEXT_ROUTER.projects.allWithParams({ ecosystems: ecosystemSlug })}>
+            <Typography
+              variant="body-s-bold"
+              className="text-spacePurple-500"
+              translate={{ token: "v2.pages.ecosystems.detail.featuredProjects.viewAll" }}
+            />
+          </BaseLink>
+        ) : null
+      }
     >
       <Slider>
         {projects.map(p => (
