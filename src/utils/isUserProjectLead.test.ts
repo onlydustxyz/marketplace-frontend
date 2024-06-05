@@ -34,6 +34,7 @@ const project: components["schemas"]["ProjectPageItemResponse"] = {
       id: "123",
       name: "JavaScript",
       logoUrl: "",
+      slug: "javascript",
     },
   ],
   isInvitedAsProjectLead: false,

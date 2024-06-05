@@ -83,6 +83,7 @@ const mockProject: Parameters<typeof getOrgsWithUnauthorizedRepos>[0] = {
       id: "123",
       name: "Rust",
       logoUrl: "",
+      slug: "rust",
     },
   ],
   hasRemainingBudget: true,

@@ -25,7 +25,7 @@ export async function Languages({ ecosystemSlug }: TLanguages.Props) {
 
   return (
     <Slider>
-      {[...languages, ...languages].map(language => (
+      {languages.map(language => (
         <FilterCard
           as={"a"}
           href={NEXT_ROUTER.projects.allWithParams({ ecosystems: ecosystemSlug, languages: language.slug })}
