@@ -10,9 +10,11 @@ export async function TopProjects({ ecosystemSlug }: { ecosystemSlug: string }) 
         ecosystemSlug,
       },
       {
+        sortBy: "RANK",
+      },
+      {
         pageIndex: 0,
         pageSize: 10,
-        sortBy: "RANK",
       }
     )
     .request();
