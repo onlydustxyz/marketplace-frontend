@@ -6,7 +6,7 @@ import { ResponsiveWrapper } from "app/ecosystems/features/all-ecosystems/compon
 
 export async function AllEcosystems() {
   const ecosystems = await ecosystemsApiClient.fetch
-    .getAllEcosystems({ featured: false })
+    .getAllEcosystems({ featured: false, hidden: false })
     .request()
     .then(res => res.ecosystems);
 
