@@ -18,9 +18,9 @@ function LeaderBoardItem({ contributor, sortBy }: TLeaderBoard.LeaderBoardItemPr
   return (
     <BaseLink
       href={NEXT_ROUTER.publicProfile.root(contributor.login)}
-      className="group flex w-full items-center gap-2 px-5 py-6 transition-all hover:bg-card-background-medium"
+      className="group flex w-full items-center gap-5 px-5 py-6 transition-all hover:bg-card-background-medium"
     >
-      <div className="min-w-[36px] justify-start">{`#${contributor.dynamicRank}`}</div>
+      <div className="justify-start">{`#${contributor.dynamicRank}`}</div>
       <AvatarLabelled
         avatarProps={{ src: contributor.avatarUrl, alt: contributor.login, size: "l", shape: "square" }}
         labelProps={{ title: contributor.login }}
