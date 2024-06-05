@@ -61,8 +61,7 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
         const url = `${baseUrl}/logger/${endpoint}`;
         return fetch(url, {
           method: "GET",
-        }).catch(e => {
-          console.log("ee", e);
+        }).catch(() => {
           // just catch
         });
       }
@@ -169,7 +168,7 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
         const json = await res.json();
         this.debugLog(" Success");
         this.debugLog("   --- with response", json);
-        await this.requestLogger(res.status, json);
+        this.requestLogger(res.status, json);
         return json as T;
       } catch {
         return {} as T;
