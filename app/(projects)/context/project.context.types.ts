@@ -31,6 +31,7 @@ export namespace TProjectContext {
     search?: string;
     sorting: ProjectTypes.Sorting;
     tags: ProjectTypes.Tags[];
+    hasGoodFirstIssues?: boolean;
   }
 
   export interface FiltersOptions {
