@@ -17,10 +17,9 @@ export async function FeaturedProjects({ ecosystemSlug }: { ecosystemSlug: strin
         ecosystemSlug,
       },
       {
-        pageIndex: 0,
-        pageSize: 5,
         featuredOnly: true,
-      }
+      },
+      { pageIndex: 0, pageSize: 5 }
     )
     .request();
 
