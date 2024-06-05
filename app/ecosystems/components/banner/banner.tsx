@@ -31,7 +31,7 @@ export function Banner({ imageUrl, color, title, description, smImageUrl }: TBan
         <Typography variant="title-xl" className={cn(slideColor, "w-full")}>
           {title}
         </Typography>
-        <Typography variant="body-l" className={cn(slideColor, "w-full")}>
+        <Typography variant="body-l" className={cn(slideColor, "line-clamp-2 w-full")}>
           {description}
         </Typography>
       </div>
