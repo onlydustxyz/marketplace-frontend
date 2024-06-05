@@ -12,6 +12,7 @@ export async function Languages({ ecosystemSlug }: TLanguages.Props) {
   const { languages } = await ecosystemsApiClient.fetch
     .getEcosystemLanguagesBySlug(
       { slug: ecosystemSlug },
+      {},
       {
         pageSize: 6,
         pageIndex: 0,
