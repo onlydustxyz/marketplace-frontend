@@ -88,9 +88,10 @@ export default function HeaderView({ menuItems, impersonating = false }: HeaderV
                 {menuItems[NEXT_ROUTER.projects.all] ? (
                   <MenuItem href={NEXT_ROUTER.projects.all}>{menuItems[NEXT_ROUTER.projects.all]}</MenuItem>
                 ) : null}
-                {menuItems[NEXT_ROUTER.ecosystems.root] ? (
-                  <MenuItem href={NEXT_ROUTER.ecosystems.root}>{menuItems[NEXT_ROUTER.ecosystems.root]}</MenuItem>
-                ) : null}
+                {/*TODO display once ready*/}
+                {/*{menuItems[NEXT_ROUTER.ecosystems.root] ? (*/}
+                {/*  <MenuItem href={NEXT_ROUTER.ecosystems.root}>{menuItems[NEXT_ROUTER.ecosystems.root]}</MenuItem>*/}
+                {/*) : null}*/}
                 {menuItems[NEXT_ROUTER.hackathons.root] ? (
                   <MenuItem href={NEXT_ROUTER.hackathons.root}>{menuItems[NEXT_ROUTER.hackathons.root]}</MenuItem>
                 ) : null}
