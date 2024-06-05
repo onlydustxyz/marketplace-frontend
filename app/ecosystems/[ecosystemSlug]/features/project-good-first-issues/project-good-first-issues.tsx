@@ -12,7 +12,7 @@ export async function ProjectGoodFirstIssues({ ecosystemSlug }: { ecosystemSlug:
       {
         hasGoodFirstIssues: true,
       },
-      { pageIndex: 0, pageSize: 20 }
+      { pageIndex: 0, pageSize: 10 }
     )
     .request();
 
