@@ -18,7 +18,7 @@ function LeaderBoardItem({ contributor, sortBy }: TLeaderBoard.LeaderBoardItemPr
   return (
     <BaseLink
       href={NEXT_ROUTER.publicProfile.root(contributor.login)}
-      className="group flex w-full items-center gap-5 px-5 py-6 transition-all hover:bg-card-background-medium"
+      className="group flex w-full items-center gap-3 px-3 py-4 transition-all hover:bg-card-background-medium sm:gap-5 sm:px-5 sm:py-6"
     >
       <div className="justify-start">{`#${contributor.dynamicRank}`}</div>
       <AvatarLabelled
@@ -35,7 +35,7 @@ function LeaderBoardItem({ contributor, sortBy }: TLeaderBoard.LeaderBoardItemPr
         />
         <Typography
           variant="body-s"
-          className="line-clamp-2 text-spaceBlue-100"
+          className="line-clamp-1 text-spaceBlue-100"
           translate={{ token: rankCategoryMapping[contributor.globalRankCategory] }}
         />
       </AvatarLabelled>
@@ -80,7 +80,7 @@ export function LeaderBoard({ contributors, sortBy, className }: TLeaderBoard.Le
               ? "v2.pages.ecosystems.detail.leaderBoard.totalContributionsSubtitle"
               : "v2.pages.ecosystems.detail.leaderBoard.totalEarnedSubtitle",
         }}
-        className="px-5 py-6"
+        className="px-3 py-4 sm:px-5 sm:py-6"
       />
       {contributors?.map(contributor => (
         <LeaderBoardItem key={contributor.githubUserId} contributor={contributor} sortBy={sortBy} />
