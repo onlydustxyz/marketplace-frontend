@@ -71,8 +71,8 @@ export async function MoreProjectSection({ ecosystemSlug, className }: TMoreProj
       titleProps={{ translate: { token: "v2.pages.ecosystems.detail.moreProjects.title" } }}
     >
       <div
-        className={cn("grid gap-4 lg:grid-cols-2", {
-          "lg:grid-cols-3":
+        className={cn("grid grid-cols-1 gap-4 md:grid-cols-2", {
+          "md:grid-cols-2 lg:grid-cols-3":
             hotCommunityProjects.projects.length &&
             newbiesWelcomeProjects.projects.length &&
             fastAndFuriousProjects.projects.length,
