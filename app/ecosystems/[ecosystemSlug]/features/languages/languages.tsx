@@ -8,7 +8,6 @@ import { NEXT_ROUTER } from "constants/router";
 
 import { TLanguages } from "./languages.types";
 
-const SHOWED_LANGUAGES_NUMBER = 6;
 export async function Languages({ ecosystemSlug }: TLanguages.Props) {
   const { languages } = await ecosystemsApiClient.fetch
     .getEcosystemLanguagesBySlug(
@@ -25,8 +24,6 @@ export async function Languages({ ecosystemSlug }: TLanguages.Props) {
     return null;
   }
 
-  const slicedLanguages = languages.slice(0, SHOWED_LANGUAGES_NUMBER);
-
   return (
     <Section
       iconProps={{ remixName: "ri-code-s-slash-line" }}
@@ -37,7 +34,7 @@ export async function Languages({ ecosystemSlug }: TLanguages.Props) {
       }}
     >
       <Slider>
-        {slicedLanguages.map(language => (
+        {[...languages, ...languages].map(language => (
           <FilterCard
             as={"a"}
             href={NEXT_ROUTER.projects.allWithParams({ ecosystems: ecosystemSlug, languages: language.id })}
