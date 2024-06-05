@@ -66,7 +66,7 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
         params.append("status", `${status ?? 204}`);
         const url = `${baseUrl}/logger/${endpoint}`;
         return fetch(url, {
-          method: "GET",
+          method: this.method,
         }).catch(() => {
           // just catch
         });
