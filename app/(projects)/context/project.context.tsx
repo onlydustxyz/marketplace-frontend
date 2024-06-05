@@ -42,6 +42,7 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
     const ecosystems = urlParams.getAll("ecosystems");
     const search = urlParams.get("search");
     const sort = urlParams.get("sort");
+    const hasGoodFirstIssues = urlParams.get("hasGoodFirstIssues");
 
     if (tags.length > 0) {
       filters.tags = tags as TProjectContext.Filter["tags"];
@@ -69,6 +70,10 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
 
     if (sort) {
       filters.sorting = sort as TProjectContext.Filter["sorting"];
+    }
+
+    if (hasGoodFirstIssues) {
+      filters.hasGoodFirstIssues = Boolean(hasGoodFirstIssues) as TProjectContext.Filter["hasGoodFirstIssues"];
     }
 
     return filters;
@@ -117,6 +122,7 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
       filters.ecosystems.length > 0 ? ["ecosystemSlugs", filters.ecosystems.map(({ value }) => value).join(",")] : null,
       filters.search ? ["search", filters.search] : null,
       filters.sorting ? ["sort", filters.sorting] : null,
+      filters.hasGoodFirstIssues ? ["hasGoodFirstIssues", filters.hasGoodFirstIssues] : null,
     ].filter((param): param is string[] => Boolean(param));
 
     return params;

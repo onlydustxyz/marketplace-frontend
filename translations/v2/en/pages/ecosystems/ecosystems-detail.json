@@ -1,6 +1,7 @@
 {
   "projectGoodFirstIssues": {
     "title": "Projects with good first issues",
+    "viewAll": "View all projects",
     "contributors": {
       "many": "+__count__ contributors",
       "one": "+1 contributor",

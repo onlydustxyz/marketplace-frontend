@@ -11,6 +11,10 @@ import { SliderStepper } from "app/ecosystems/components/slider-stepper/slider-s
 import { viewportConfig } from "src/config";
 
 import { Card } from "components/ds/card/card";
+import { BaseLink } from "components/layout/base-link/base-link";
+import { Typography } from "components/layout/typography/typography";
+
+import { NEXT_ROUTER } from "constants/router";
 
 export function Slider({ children }: TSlider.Props) {
   const [loaded, setLoaded] = useState(false);
@@ -60,20 +64,32 @@ export function Slider({ children }: TSlider.Props) {
       iconProps={{ remixName: "ri-thumb-up-line" }}
       titleProps={{ translate: { token: "v2.pages.ecosystems.detail.projectGoodFirstIssues.title" } }}
       rightContent={
-        nbSlides > 3 ? (
-          <div className={"hidden sm:block"}>
-            <SliderStepper
-              prevProps={{
-                onClick: instanceRef.current?.prev,
-                disabled: currentIndex === 0,
-              }}
-              nextProps={{
-                onClick: instanceRef.current?.next,
-                disabled: currentIndex >= maxIndex,
-              }}
-            />
-          </div>
-        ) : null
+        <div className={"flex items-center gap-4"}>
+          {nbSlides > 9 ? (
+            <BaseLink href={NEXT_ROUTER.projects.allWithParams({ hasGoodFirstIssues: "true" })}>
+              <Typography
+                variant="body-s-bold"
+                className="text-spacePurple-500"
+                translate={{ token: "v2.pages.ecosystems.detail.projectGoodFirstIssues.viewAll" }}
+              />
+            </BaseLink>
+          ) : null}
+
+          {nbSlides > 3 ? (
+            <div className={"hidden sm:block"}>
+              <SliderStepper
+                prevProps={{
+                  onClick: instanceRef.current?.prev,
+                  disabled: currentIndex === 0,
+                }}
+                nextProps={{
+                  onClick: instanceRef.current?.next,
+                  disabled: currentIndex >= maxIndex,
+                }}
+              />
+            </div>
+          ) : null}
+        </div>
       }
     >
       <Card border={"multiColor"} background={"multiColor"} className={"overflow-hidden"}>
