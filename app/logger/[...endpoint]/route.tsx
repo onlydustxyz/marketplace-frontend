@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
   const status = parseInt(searchParams.get("status") ?? "201");
   searchParams.delete("status");
 
-  return new NextResponse(JSON.stringify(paramsToObject(searchParams.entries())), {
+  return new NextResponse(`PARAMS : ${JSON.stringify(paramsToObject(searchParams.entries()))}`, {
     status,
   });
 }
