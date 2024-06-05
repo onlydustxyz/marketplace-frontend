@@ -143,15 +143,14 @@ export function ViewMobile({
                     <Translate token="v2.features.menu.projects" />
                   </BaseLink>
 
-                  {/* TODO: Uncomment this section when the feature is ready */}
-                  {/* <BaseLink
+                  <BaseLink
                     href={NEXT_ROUTER.ecosystems.root}
                     onClick={() => setPanelOpen(false)}
                     className="flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8"
                   >
                     <Icon remixName="ri-global-line" size={20} />
                     <Translate token="v2.features.menu.ecosystems" />
-                  </BaseLink> */}
+                  </BaseLink>
 
                   <BaseLink
                     href={NEXT_ROUTER.hackathons.root}
