@@ -1,8 +1,6 @@
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { cn } from "src/utils/cn";
 
-import { Typography } from "components/layout/typography/typography";
-
 import { TUseMenu } from "hooks/menu/use-menu/use-menu.types";
 
 interface Props extends TUseMenu.Return {
@@ -24,9 +22,6 @@ export function ViewMobile({ avatarUrl, login, errorColor, error }: Props) {
       )}
     >
       {avatarUrl && <img className="h-8 w-8 rounded-full" src={avatarUrl} loading="lazy" alt={login} />}
-      <Typography variant="title-s" className={cn("text-sm leading-4", { "mr-1": !error })}>
-        {login}
-      </Typography>
       {error && (
         <ErrorWarningLine
           className={cn("text-xl text-spaceBlue-200", {
