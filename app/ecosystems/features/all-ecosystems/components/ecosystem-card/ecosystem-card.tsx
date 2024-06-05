@@ -29,7 +29,6 @@ export function EcosystemCard({ bannerUrl, name, description, projectCount, proj
           {description || <Translate token={"v2.pages.ecosystems.list.allEcosystems.descriptionPlaceholder"} />}
         </Typography>
         <div className="flex w-full items-center justify-between gap-1 pt-5">
-          <div /> {/** @TODO category go here */}
           <div className="flex items-center justify-start gap-1">
             <AvatarGroup
               avatars={projects.map(p => ({
