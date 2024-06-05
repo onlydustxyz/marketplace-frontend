@@ -39,10 +39,6 @@ export const Default: Story = {
               id: ProjectTypes.Sorting.ProjectName,
             },
             {
-              label: "Repos Count",
-              id: ProjectTypes.Sorting.ReposCount,
-            },
-            {
               label: "Contributors Count",
               id: ProjectTypes.Sorting.ContributorsCount,
             },

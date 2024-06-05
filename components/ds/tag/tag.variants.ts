@@ -28,7 +28,7 @@ export const tagVariants = tv({
         base: "border border-github-red bg-white/2",
       },
       "multi-color": {
-        base: "bg-spaceBlue-900 before:absolute before:-z-10 before:aspect-square before:w-[calc(100%_*_2)] before:animate-spin-invert-slow before:rounded-full before:bg-multi-color-gradient",
+        base: "bg-spaceBlue-900 before:absolute before:-z-10 before:w-[calc(100%_*_2)] before:animate-spin-invert-slow before:rounded-full before:bg-multi-color-gradient before:aspect-square",
       },
     },
     color: {

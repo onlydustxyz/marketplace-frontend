@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 
+import { Languages } from "app/p/[slug]/features/project-details/components/languages/languages";
+
 import { IMAGES } from "src/assets/img";
 import isDefined from "src/utils/isDefined";
 
@@ -14,11 +16,10 @@ import { Ecosystems } from "./components/ecosystems/ecosystems";
 import { MoreInfos } from "./components/more-infos/more-infos";
 import { ProjectLeads } from "./components/project-leads/project-leads";
 import { Sponsors } from "./components/sponsors/sponsors";
-import { Technologies } from "./components/technologies/technologies";
 import { TProjectDetails } from "./project-details.types";
 
 export function ProjectDetails({ project }: TProjectDetails.Props) {
-  const { contributorCount, topContributors, leaders, invitedLeaders, moreInfos, technologies, ecosystems, sponsors } =
+  const { contributorCount, topContributors, leaders, invitedLeaders, moreInfos, ecosystems, sponsors, languages } =
     project;
 
   const projectLeads = useMemo(() => {
@@ -53,7 +54,7 @@ export function ProjectDetails({ project }: TProjectDetails.Props) {
         <Contributors contributorCount={contributorCount} topContributors={topContributors} />
         <Ecosystems ecosystems={ecosystems} />
         <Sponsors sponsors={sponsors} />
-        <Technologies technologies={technologies} />
+        <Languages languages={languages} />
         <MoreInfos moreInfos={moreInfos} />
       </Flex>
     </Card>

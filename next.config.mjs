@@ -18,6 +18,11 @@ const nextConfig = {
   env: {
     APP_COMMIT_HASH: getCommitHash(),
   },
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
   experimental: {
     serverComponentsExternalPackages: ["@react-pdf/renderer"],
   },
@@ -65,6 +70,17 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "onlydust-app-images.s3.eu-west-1.amazonaws.com",
+      },      {
+        protocol: "https",
+        hostname: "od-metadata-assets-develop.s3.eu-west-1.amazonaws.com",
+      },
+      {
+        protocol: "https",
+        hostname: "od-metadata-assets-staging.s3.eu-west-1.amazonaws.com",
+      },
+      {
+        protocol: "https",
+        hostname: "od-metadata-assets-production.s3.eu-west-1.amazonaws.com",
       },
     ],
     // ordered list of acceptable optimized image formats (mime types)

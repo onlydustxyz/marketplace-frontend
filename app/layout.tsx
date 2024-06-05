@@ -1,4 +1,5 @@
 import { GoogleTagManager } from "@next/third-parties/google";
+import "keen-slider/keen-slider.min.css";
 import type { Metadata } from "next";
 import { PropsWithChildren } from "react";
 import "remixicon/fonts/remixicon.css";

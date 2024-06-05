@@ -7,6 +7,7 @@ import { FetchError } from "src/api/query.type";
 
 import {
   Body,
+  DebugMessage,
   FetchAdapaterConstructor,
   FetchParams,
   HttpStatusStrings,
@@ -21,6 +22,7 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
   private impersonationHeaders?: impersonationHeaders;
   private authAdapter?: AuthAdapter;
   private url: string = "";
+  private debug: boolean = false;
   private method: HTTP_METHOD = "GET";
   private body?: Body = undefined;
   private params?: Params = undefined;
@@ -36,6 +38,13 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
     this.params = params.params;
     this.tag = params.tag;
     this.version = params.version || apiVersions.v1;
+    this.debug = false;
+  }
+
+  private debugLog(...messages: DebugMessage) {
+    if (this.debug) {
+      console.log(...messages);
+    }
   }
 
   private convertParamsToURLSearchParams(params?: Params) {
@@ -115,6 +124,10 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
     error.status = res.status;
     error.message = res.statusText;
     error.errorType = mapHttpStatusToString(res.status);
+    this.debugLog(" Error");
+    this.debugLog(`   --- With status : ${error.status}`);
+    this.debugLog(`   --- With message : ${error.message}`);
+    this.debugLog(`   --- With type : ${error.errorType}`);
     return error;
   }
 
@@ -127,7 +140,10 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
 
       try {
         this.successCallback?.();
-        return (await res.json()) as T;
+        const json = await res.json();
+        this.debugLog(" Success");
+        this.debugLog("   --- with response", json);
+        return json as T;
       } catch {
         return {} as T;
       }
@@ -140,6 +156,12 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
   private async fetch(params?: Partial<FetchParams>) {
     const endpointUrl = this.getEndpointUrl(this.url, this.params);
     const headers = await this.getHeaders();
+    this.debugLog(`fetching ${endpointUrl}`);
+    this.debugLog(" --- with method :", params?.method || this.method);
+    this.debugLog(" --- with params :", this.params);
+    this.debugLog(" --- with body :", params?.body || this.body);
+    this.debugLog(" --- with tag :", { ...(this.tag ? { tag: [this.tag] } : {}) });
+
     return fetch(endpointUrl, {
       ...(!params?.next?.revalidate ? { cache: "no-cache" } : {}),
       ...params,
@@ -205,6 +227,11 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
   }
   public setImpersonationHeaders(impersonationHeaders: impersonationHeaders) {
     this.impersonationHeaders = impersonationHeaders;
+    return this;
+  }
+
+  public setDebugger(enabled: boolean) {
+    this.debug = enabled;
     return this;
   }
 

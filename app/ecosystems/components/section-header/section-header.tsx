@@ -10,10 +10,10 @@ export function SectionHeader({ iconProps, titleProps, subtitleProps, rightConte
         <Icon size={24} {...iconProps} />
 
         <div className={"flex items-baseline gap-2"}>
-          <Typography variant={"title-m"} {...titleProps} />
+          <Typography variant={"title-s"} {...titleProps} className={"sm:od-text-title-m"} />
 
           {subtitleProps ? (
-            <Typography variant={"body-l-bold"} className={"text-spaceBlue-200"} {...subtitleProps} />
+            <Typography variant={"body-m-bold"} className={"text-spaceBlue-200"} {...subtitleProps} />
           ) : null}
         </div>
       </div>

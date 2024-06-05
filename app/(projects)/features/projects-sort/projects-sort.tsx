@@ -18,7 +18,7 @@ import { ProjectsContext } from "../../context/project.context";
 export function ProjectsSort() {
   const { T } = useIntl();
   const [openMobilePanel, setOpenMobilePanel] = useState(false);
-  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
+  const isLg = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.lg}px)`);
   const { filters } = useContext(ProjectsContext);
 
   const options: TSelectSort.Option[] = useMemo(
@@ -43,7 +43,7 @@ export function ProjectsSort() {
     filters.set({ sorting: value || ProjectTypes.Sorting.Trending });
   };
 
-  if (!isXl) {
+  if (!isLg) {
     return (
       <>
         <Button variant={"secondary"} size="s" onClick={() => setOpenMobilePanel(true)}>

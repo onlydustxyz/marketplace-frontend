@@ -1,1 +1,38 @@
-{}
+{
+  "projectGoodFirstIssues": {
+    "title": "Projects with good first issues",
+    "viewAll": "View all projects",
+    "contributors": {
+      "many": "+__count__ contributors",
+      "one": "+1 contributor",
+      "zero": "+0 contributors"
+    }
+  },
+  "featuredProjects": {
+    "title": "Featured projects",
+    "viewAll": "View all projects"
+  },
+  "leaderBoard": {
+    "title": "Leaderboards",
+    "titleSpecialMention": "Last 7 days",
+    "totalContributionsSubtitle": "By total contributions",
+    "totalEarnedSubtitle": "By total earned"
+  },
+  "moreProjects": {
+    "title": "More projects",
+    "seeMore": "See more",
+    "newbiesWelcomeSubtitle": "Newbies welcome",
+    "hotCommunitySubtitle": "Hot community",
+    "fastAndFuriousSubtitle": "Fast and furious"
+  },
+  "learnMore": {
+    "title": "Learn more about __name__",
+    "button": "Read more"
+  },
+  "topProjects": {
+    "title": "Top __count__ projects"
+  },
+  "languages": {
+    "title": "Explore projects by languages"
+  }
+}

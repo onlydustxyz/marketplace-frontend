@@ -78,9 +78,13 @@ const mockProject: Parameters<typeof getOrgsWithUnauthorizedRepos>[0] = {
   ],
   invitedLeaders: [],
   sponsors: [],
-  technologies: {
-    Rust: 23314,
-  },
+  languages: [
+    {
+      id: "123",
+      name: "Rust",
+      logoUrl: "",
+    },
+  ],
   hasRemainingBudget: true,
   rewardSettings: {
     ignorePullRequests: true,

@@ -1,6 +1,10 @@
 export const NEXT_ROUTER = {
   projects: {
     all: "/",
+    allWithParams: (params: { [key: string]: string }) => {
+      const searchParams = new URLSearchParams(params);
+      return `/?${searchParams.toString()}`;
+    },
     details: {
       root: (slug: string) => `/p/${slug}`,
       contributors: (slug: string) => `/p/${slug}/contributors`,
@@ -50,6 +54,12 @@ export const NEXT_ROUTER = {
       root: (slug: string) => `/h/${slug}`,
       overview: (slug: string) => `/h/${slug}#overview`,
       tracks: (slug: string) => `/h/${slug}#tracks`,
+    },
+  },
+  ecosystems: {
+    root: "/ecosystems",
+    details: {
+      root: (slug: string) => `/ecosystems/${slug}`,
     },
   },
 } as const;
