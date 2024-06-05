@@ -46,7 +46,7 @@ export function BurgerMenu() {
 
   return (
     <>
-      <Button onClick={() => setPanelOpen(true)} iconOnly size={"s"} variant={"secondary"}>
+      <Button onClick={() => setPanelOpen(true)} iconOnly size={"s"} variant={"secondary"} className="flex xl:hidden">
         <Icon remixName="ri-menu-line" size={18} />
       </Button>
 

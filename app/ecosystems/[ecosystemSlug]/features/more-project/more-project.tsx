@@ -16,21 +16,19 @@ function MoreProjectItem({ project }: TMoreProject.MoreProjectItemProps) {
   return (
     <BaseLink
       href={NEXT_ROUTER.projects.details.root(project.slug)}
-      className="group w-full transition-all hover:bg-card-background-medium"
+      className="group flex w-full max-w-full items-center gap-3 px-3 py-4 transition-all hover:bg-card-background-medium sm:gap-5 sm:px-5 sm:py-6"
     >
-      <div className="flex max-w-full items-center gap-2 px-5 py-6">
-        <AvatarLabelled
-          avatarProps={{ src: project.logoUrl, alt: project.name, size: "l", shape: "square" }}
-          labelProps={{ title: project.name }}
-          className="col-span-3 flex-1"
-        >
-          <Typography variant="title-s">{project.name}</Typography>
-          <Typography variant="body-s" className="line-clamp-2 whitespace-normal text-spaceBlue-100">
-            {project.shortDescription}
-          </Typography>
-        </AvatarLabelled>
-        <Icon remixName="ri-arrow-right-s-line" className="transition-all group-hover:translate-x-1" size={24} />
-      </div>
+      <AvatarLabelled
+        avatarProps={{ src: project.logoUrl, alt: project.name, size: "l", shape: "square" }}
+        labelProps={{ title: project.name }}
+        className="col-span-3 flex-1"
+      >
+        <Typography variant="title-s">{project.name}</Typography>
+        <Typography variant="body-s" className="line-clamp-2 whitespace-normal text-spaceBlue-100">
+          {project.shortDescription}
+        </Typography>
+      </AvatarLabelled>
+      <Icon remixName="ri-arrow-right-s-line" className="transition-all group-hover:translate-x-1" size={24} />
     </BaseLink>
   );
 }
@@ -57,7 +55,7 @@ export function MoreProject({ projects, hasMore, tag, ecosystemSlug, className }
       background="base"
       hasPadding={false}
     >
-      <div className="grid grid-cols-3 items-center px-5 py-6">
+      <div className="grid grid-cols-3 items-center px-3 py-4 sm:px-5 sm:py-6">
         <Typography
           variant="title-s"
           translate={{
