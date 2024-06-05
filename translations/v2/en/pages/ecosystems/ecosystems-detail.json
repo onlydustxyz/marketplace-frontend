@@ -8,7 +8,8 @@
     }
   },
   "featuredProjects": {
-    "title": "Featured projects"
+    "title": "Featured projects",
+    "viewAll": "View all projects"
   },
   "leaderBoard": {
     "title": "Leaderboards",
