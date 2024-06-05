@@ -64,7 +64,7 @@ export function Slider({ children }: TSlider.Props) {
   return (
     <Section
       iconProps={{ remixName: "ri-trophy-line" }}
-      titleProps={{ translate: { token: "v2.pages.ecosystems.detail.topProjects.title" } }}
+      titleProps={{ translate: { token: "v2.pages.ecosystems.detail.topProjects.title", params: { count: nbSlides } } }}
       rightContent={
         nbSlides > 3 ? (
           <div className={"hidden sm:block"}>

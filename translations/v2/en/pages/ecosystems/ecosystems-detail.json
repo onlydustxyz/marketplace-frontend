@@ -29,7 +29,7 @@
     "button": "Read more"
   },
   "topProjects": {
-    "title": "Top 10 projects"
+    "title": "Top __count__ projects"
   },
   "languages": {
     "title": "Explore projects by languages"

@@ -17,7 +17,7 @@ export async function TopProjects({ ecosystemSlug }: { ecosystemSlug: string }) 
     )
     .request();
 
-  if (!projects.length) return null;
+  if (projects.length < 5) return null;
 
   return (
     <Slider>
