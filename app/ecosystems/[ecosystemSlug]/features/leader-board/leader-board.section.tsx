@@ -34,7 +34,7 @@ export async function LeaderBoardSection({ ecosystemSlug, className }: TLeaderBo
       .then(res => res.contributors),
   ]);
 
-  if (!contributorsByCount?.length && !contributorsByTotalEarned?.length) return null;
+  if (contributorsByCount?.length < 5 && contributorsByTotalEarned?.length < 5) return null;
 
   return (
     <Section
@@ -43,8 +43,12 @@ export async function LeaderBoardSection({ ecosystemSlug, className }: TLeaderBo
       subtitleProps={{ translate: { token: "v2.pages.ecosystems.detail.leaderBoard.titleSpecialMention" } }}
     >
       <div className="grid gap-4 lg:grid-cols-2">
-        <LeaderBoard sortBy={"CONTRIBUTION_COUNT"} contributors={contributorsByCount} className={className} />
-        <LeaderBoard sortBy={"TOTAL_EARNED"} contributors={contributorsByTotalEarned} className={className} />
+        {contributorsByCount.length === 5 ? (
+          <LeaderBoard sortBy={"CONTRIBUTION_COUNT"} contributors={contributorsByCount} className={className} />
+        ) : null}
+        {contributorsByTotalEarned.length === 5 ? (
+          <LeaderBoard sortBy={"TOTAL_EARNED"} contributors={contributorsByTotalEarned} className={className} />
+        ) : null}
       </div>
     </Section>
   );
