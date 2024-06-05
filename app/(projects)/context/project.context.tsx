@@ -113,7 +113,7 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
   const queryParams = useMemo(() => {
     const params: useInfiniteBaseQueryProps["queryParams"] = [
       filters.tags.length > 0 ? ["tags", filters.tags.join(",")] : null,
-      filters.languages.length > 0 ? ["languages", filters.languages.map(({ value }) => value).join(",")] : null,
+      filters.languages.length > 0 ? ["languageSlugs", filters.languages.map(({ value }) => value).join(",")] : null,
       filters.ecosystems.length > 0 ? ["ecosystemSlugs", filters.ecosystems.map(({ value }) => value).join(",")] : null,
       filters.search ? ["search", filters.search] : null,
       filters.sorting ? ["sort", filters.sorting] : null,
