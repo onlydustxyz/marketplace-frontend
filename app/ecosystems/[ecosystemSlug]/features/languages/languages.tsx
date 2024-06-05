@@ -20,7 +20,7 @@ export async function Languages({ ecosystemSlug }: TLanguages.Props) {
     )
     .request();
 
-  if (!languages?.length) {
+  if (languages.length < 2) {
     return null;
   }
 
@@ -34,7 +34,7 @@ export async function Languages({ ecosystemSlug }: TLanguages.Props) {
       }}
     >
       <Slider>
-        {[...languages, ...languages].map(language => (
+        {languages.map(language => (
           <FilterCard
             as={"a"}
             href={NEXT_ROUTER.projects.allWithParams({ ecosystems: ecosystemSlug, languages: language.id })}
