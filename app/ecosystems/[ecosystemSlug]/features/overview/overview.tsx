@@ -29,7 +29,7 @@ export async function Overview({ ecosystemSlug }: TOverview.Props) {
         <PageTitle>{ecosystem.name}</PageTitle>
       </div>
 
-      <div className="relative z-[1] flex h-full w-full flex-col items-start justify-end overflow-hidden rounded-[16px] bg-card-background-base bg-cover bg-center outline outline-[6px] outline-card-border-medium aspect-[2.16/1] sm:px-8 sm:py-8 sm:aspect-[3.41/1] md:px-16 md:py-12">
+      <div className="relative z-[1] flex w-full flex-col items-start justify-center overflow-hidden rounded-[16px] bg-card-background-base bg-cover bg-center outline outline-[6px] outline-card-border-medium aspect-[2.16/1] sm:px-8  md:px-16 md:aspect-[3.41/1] lg:aspect-[302/59]">
         <PosthogOnMount
           eventName={"ecosystem_viewed"}
           params={{
