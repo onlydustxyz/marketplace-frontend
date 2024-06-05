@@ -42,7 +42,7 @@ export async function LeaderBoardSection({ ecosystemSlug, className }: TLeaderBo
       titleProps={{ translate: { token: "v2.pages.ecosystems.detail.leaderBoard.title" } }}
       subtitleProps={{ translate: { token: "v2.pages.ecosystems.detail.leaderBoard.titleSpecialMention" } }}
     >
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {contributorsByCount.length === 5 ? (
           <LeaderBoard sortBy={"CONTRIBUTION_COUNT"} contributors={contributorsByCount} className={className} />
         ) : null}
