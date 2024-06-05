@@ -1,7 +1,7 @@
 import { KeenSliderPlugin } from "keen-slider";
 import { useRef } from "react";
 
-export const wheelControls: KeenSliderPlugin = slider => {
+const wheelControls: KeenSliderPlugin = slider => {
   let touchTimeout: ReturnType<typeof setTimeout>;
   let position: {
     x: number;
