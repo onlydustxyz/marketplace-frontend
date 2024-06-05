@@ -14,8 +14,11 @@ import { Key } from "hooks/translate/use-translate";
 
 function MoreProjectItem({ project }: TMoreProject.MoreProjectItemProps) {
   return (
-    <BaseLink href={NEXT_ROUTER.projects.details.root(project.slug)} className="w-full">
-      <div className="flex max-w-full items-center gap-2 py-6">
+    <BaseLink
+      href={NEXT_ROUTER.projects.details.root(project.slug)}
+      className="group w-full transition-all hover:bg-card-background-medium"
+    >
+      <div className="flex max-w-full items-center gap-2 px-5 py-6">
         <AvatarLabelled
           avatarProps={{ src: project.logoUrl, alt: project.name, size: "l", shape: "square" }}
           labelProps={{ title: project.name }}
@@ -26,7 +29,7 @@ function MoreProjectItem({ project }: TMoreProject.MoreProjectItemProps) {
             {project.shortDescription}
           </Typography>
         </AvatarLabelled>
-        <Icon remixName="ri-arrow-right-s-line" size={24} />
+        <Icon remixName="ri-arrow-right-s-line" className="transition-all group-hover:translate-x-1" size={24} />
       </div>
     </BaseLink>
   );
@@ -50,10 +53,11 @@ export function MoreProject({ projects, hasMore, tag, ecosystemSlug, className }
 
   return (
     <Card
-      className={cn("relative flex h-full w-full flex-col divide-y divide-card-border-light !px-5 !py-0", className)}
+      className={cn("relative flex h-full w-full flex-col divide-y divide-card-border-light", className)}
       background="base"
+      hasPadding={false}
     >
-      <div className="grid grid-cols-3 items-center py-6">
+      <div className="grid grid-cols-3 items-center px-5 py-6">
         <Typography
           variant="title-s"
           translate={{
