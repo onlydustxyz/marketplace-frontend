@@ -19,19 +19,19 @@ export function Slider({ children }: TSlider.Props) {
       spacing: 12,
     },
     breakpoints: {
-      [`(max-width: ${viewportConfig.breakpoints.lg}px)`]: {
+      [`(max-width: ${viewportConfig.breakpoints.xl}px)`]: {
         slides: {
           perView: 4.1,
           spacing: 12,
         },
       },
-      [`(max-width: ${viewportConfig.breakpoints.md}px)`]: {
+      [`(max-width: ${viewportConfig.breakpoints.lg}px)`]: {
         slides: {
           perView: 3.1,
           spacing: 12,
         },
       },
-      [`(max-width: ${viewportConfig.breakpoints.sm}px)`]: {
+      [`(max-width: ${viewportConfig.breakpoints.md}px)`]: {
         slides: {
           perView: 2.1,
           spacing: 12,
@@ -46,7 +46,7 @@ export function Slider({ children }: TSlider.Props) {
   return (
     <div
       ref={sliderRef}
-      className={cn("keen-slider will-change-all transition-all", {
+      className={cn("keen-slider will-change-all !overflow-visible transition-all", {
         "pointer-events-none opacity-0": !loaded,
       })}
     >
