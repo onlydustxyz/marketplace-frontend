@@ -12,6 +12,8 @@ export function FiltersLanguages() {
     filters.set({ languages });
   };
 
+  console.log("filters.options.languages", filters.options.languages);
+  console.log("filters.values.languages", filters.values.languages);
   const selected = filters.options.languages.filter(({ value }) =>
     filters.values.languages.some(({ value: selectedValue }) => value === selectedValue)
   );
