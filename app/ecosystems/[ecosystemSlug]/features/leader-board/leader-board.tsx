@@ -8,12 +8,18 @@ import { cn } from "src/utils/cn";
 import { AvatarLabelled } from "components/ds/avatar/avatar.labelled";
 import { Card } from "components/ds/card/card";
 import { Contributor } from "components/features/contributor/contributor";
+import { BaseLink } from "components/layout/base-link/base-link";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
+import { NEXT_ROUTER } from "constants/router";
+
 function LeaderBoardItem({ contributor, sortBy }: TLeaderBoard.LeaderBoardItemProps) {
   return (
-    <div className="flex items-center gap-2 px-5 py-6">
+    <BaseLink
+      href={NEXT_ROUTER.publicProfile.root(contributor.login)}
+      className="group flex w-full items-center gap-2 px-5 py-6 transition-all hover:bg-card-background-medium"
+    >
       <div className="min-w-[36px] justify-start">{`#${contributor.dynamicRank}`}</div>
       <AvatarLabelled
         avatarProps={{ src: contributor.avatarUrl, alt: contributor.login, size: "l", shape: "square" }}
@@ -24,7 +30,7 @@ function LeaderBoardItem({ contributor, sortBy }: TLeaderBoard.LeaderBoardItemPr
           githubUserId={contributor.githubUserId}
           login={contributor.login}
           isRegistered={false}
-          clickable
+          clickable={false}
           typograhy={{ className: "!od-text-title-s hover:text-spacePurple-500 transition-all capitalize" }}
         />
         <Typography
@@ -52,7 +58,8 @@ function LeaderBoardItem({ contributor, sortBy }: TLeaderBoard.LeaderBoardItemPr
           </Typography>
         </div>
       ) : null}
-    </div>
+      <Icon remixName="ri-arrow-right-s-line" className="transition-all group-hover:translate-x-1" size={24} />
+    </BaseLink>
   );
 }
 
@@ -60,7 +67,11 @@ export function LeaderBoard({ contributors, sortBy, className }: TLeaderBoard.Le
   if (!contributors?.length) return null;
 
   return (
-    <div className="flex flex-col gap-2">
+    <Card
+      className={cn("relative flex w-full flex-col divide-y divide-card-border-light", className)}
+      background="base"
+      hasPadding={false}
+    >
       <Typography
         variant="title-s"
         translate={{
@@ -69,16 +80,11 @@ export function LeaderBoard({ contributors, sortBy, className }: TLeaderBoard.Le
               ? "v2.pages.ecosystems.detail.leaderBoard.totalContributionsSubtitle"
               : "v2.pages.ecosystems.detail.leaderBoard.totalEarnedSubtitle",
         }}
+        className="px-5 py-6"
       />
-      <Card
-        className={cn("relative flex w-full flex-col divide-y divide-card-border-light", className)}
-        background="base"
-        hasPadding={false}
-      >
-        {contributors?.map(contributor => (
-          <LeaderBoardItem key={contributor.githubUserId} contributor={contributor} sortBy={sortBy} />
-        ))}
-      </Card>
-    </div>
+      {contributors?.map(contributor => (
+        <LeaderBoardItem key={contributor.githubUserId} contributor={contributor} sortBy={sortBy} />
+      ))}
+    </Card>
   );
 }
