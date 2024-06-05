@@ -59,7 +59,7 @@ export function Slider({ children }: TSlider.Props) {
 
       <div
         ref={sliderRef}
-        className={cn("keen-slider will-change-all !overflow-visible transition-all", {
+        className={cn("keen-slider will-change-all !overflow-visible transition-all sm:!overflow-hidden", {
           "pointer-events-none opacity-0": !loaded,
         })}
       >
