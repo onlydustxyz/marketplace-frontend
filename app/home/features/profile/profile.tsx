@@ -1,13 +1,19 @@
+import { usersApiClient } from "api-client/resources/users";
+
 import styles from "app/home/styles/styles.module.css";
 
 import { cn } from "src/utils/cn";
 
-import { Card } from "components/ds/card/card";
+import { ProfileCard } from "components/features/profile-card/profile-card";
 import { Section } from "components/layout/section/section";
 
 import { TProfile } from "./profile.types";
 
-export function Profile(_: TProfile.Props) {
+export async function Profile({ githubUserId }: TProfile.Props) {
+  const userProfile = await usersApiClient.fetch.getUserPublicProfileByGithubId(githubUserId).request();
+
+  if (!userProfile) return null;
+
   return (
     <div className={cn("w-full", styles.areaProfile)}>
       <Section
@@ -16,7 +22,12 @@ export function Profile(_: TProfile.Props) {
           children: "Profile",
         }}
       >
-        <Card background={"base"}>Profile</Card>
+        <ProfileCard
+          login={userProfile.login}
+          avatarUrl={userProfile.avatarUrl}
+          {...userProfile.statsSummary}
+          isInPopover
+        />
       </Section>
     </div>
   );
