@@ -17,10 +17,8 @@ export async function Profile({ githubUserId }: TProfile.Props) {
   return (
     <div className={cn("w-full", styles.areaProfile)}>
       <Section
-        iconProps={{ remixName: "ri-code-s-slash-line" }}
-        titleProps={{
-          children: "Profile",
-        }}
+        iconProps={{ remixName: "ri-shining-line" }}
+        titleProps={{ translate: { token: "v2.pages.home.profile.title" } }}
       >
         <ProfileCard
           login={userProfile.login}
