@@ -25,6 +25,7 @@ import en_page_committees from "./en/pages/committees.json";
 import en_ecosystems from "./en/pages/ecosystems";
 import en_hackathons_details from "./en/pages/hackathons-details.json";
 import en_hackathons from "./en/pages/hackathons.json";
+import en_home from "./en/pages/home";
 import en_project_details_header from "./en/pages/project-details/project-header.json";
 import en_project_overview from "./en/pages/project-overview.json";
 import en_projects from "./en/pages/projects.json";
@@ -107,6 +108,7 @@ export const en = {
       sponsor: en_page_sponsor,
       committees: en_page_committees,
       ecosystems: en_ecosystems,
+      home: en_home,
     },
   },
 };
