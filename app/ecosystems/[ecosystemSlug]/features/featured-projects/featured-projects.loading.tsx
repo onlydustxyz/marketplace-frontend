@@ -3,7 +3,6 @@ import { SectionLoading } from "app/ecosystems/components/section/section.loadin
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
 
 export function FeaturedProjectsLoading() {
-  // TODO @hayden handle mobile
   return (
     <SectionLoading>
       <div className={"grid h-[284px] grid-cols-5 gap-3"}>
