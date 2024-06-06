@@ -1,4 +1,5 @@
 export enum apiResources {
+  projects = "PROJECTS",
   hackathons = "HACKATHONS",
   me = "ME",
   users = "USERS",
