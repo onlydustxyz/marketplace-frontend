@@ -1,6 +1,5 @@
-import { TSectionHeader } from "app/ecosystems/components/section-header/section-header.types";
-
 import { Icon } from "components/layout/icon/icon";
+import { TSectionHeader } from "components/layout/section/components/section-header/section-header.types";
 import { Typography } from "components/layout/typography/typography";
 
 export function SectionHeader({ iconProps, titleProps, subtitleProps, rightContent }: TSectionHeader.Props) {

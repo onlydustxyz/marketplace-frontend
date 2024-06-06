@@ -26,55 +26,55 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
 
   return (
     <ScrollView>
-      <div className={"grid gap-8 py-10 lg:gap-10"}>
-        <Container>
+      <Container>
+        <div className={"flex flex-col gap-8 py-10 lg:gap-10"}>
           <Suspense fallback={<OverviewLoading />}>
             <Overview ecosystemSlug={params.ecosystemSlug} />
           </Suspense>
-        </Container>
 
-        <ErrorBoundary fallback={null}>
-          <Suspense fallback={<ProjectGoodFirstIssuesLoading />}>
-            <ProjectGoodFirstIssues ecosystemSlug={ecosystemSlug} />
-          </Suspense>
-        </ErrorBoundary>
+          <ErrorBoundary fallback={null}>
+            <Suspense fallback={<ProjectGoodFirstIssuesLoading />}>
+              <ProjectGoodFirstIssues ecosystemSlug={ecosystemSlug} />
+            </Suspense>
+          </ErrorBoundary>
 
-        <ErrorBoundary fallback={null}>
-          <Suspense fallback={<LanguagesLoading />}>
-            <Languages ecosystemSlug={ecosystemSlug} />
-          </Suspense>
-        </ErrorBoundary>
+          <ErrorBoundary fallback={null}>
+            <Suspense fallback={<LanguagesLoading />}>
+              <Languages ecosystemSlug={ecosystemSlug} />
+            </Suspense>
+          </ErrorBoundary>
 
-        <ErrorBoundary fallback={null}>
-          <Suspense fallback={<FeaturedProjectsLoading />}>
-            <FeaturedProjects ecosystemSlug={ecosystemSlug} />
-          </Suspense>
-        </ErrorBoundary>
+          <ErrorBoundary fallback={null}>
+            <Suspense fallback={<FeaturedProjectsLoading />}>
+              <FeaturedProjects ecosystemSlug={ecosystemSlug} />
+            </Suspense>
+          </ErrorBoundary>
 
-        <ErrorBoundary fallback={null}>
-          <Suspense fallback={<LeaderBoardLoading />}>
-            <LeaderBoardSection ecosystemSlug={ecosystemSlug} />
-          </Suspense>
-        </ErrorBoundary>
+          <ErrorBoundary fallback={null}>
+            <Suspense fallback={<LeaderBoardLoading />}>
+              <LeaderBoardSection ecosystemSlug={ecosystemSlug} />
+            </Suspense>
+          </ErrorBoundary>
 
-        <ErrorBoundary fallback={null}>
-          <Suspense fallback={<MoreProjectLoading />}>
-            <MoreProjectSection ecosystemSlug={ecosystemSlug} />
-          </Suspense>
-        </ErrorBoundary>
+          <ErrorBoundary fallback={null}>
+            <Suspense fallback={<MoreProjectLoading />}>
+              <MoreProjectSection ecosystemSlug={ecosystemSlug} />
+            </Suspense>
+          </ErrorBoundary>
 
-        <ErrorBoundary fallback={null}>
-          <Suspense fallback={<TopProjectsLoading />}>
-            <TopProjects ecosystemSlug={ecosystemSlug} />
-          </Suspense>
-        </ErrorBoundary>
+          <ErrorBoundary fallback={null}>
+            <Suspense fallback={<TopProjectsLoading />}>
+              <TopProjects ecosystemSlug={ecosystemSlug} />
+            </Suspense>
+          </ErrorBoundary>
 
-        <ErrorBoundary fallback={null}>
-          <Suspense fallback={<LearnMoreLoading />}>
-            <LearnMore ecosystemSlug={ecosystemSlug} />
-          </Suspense>
-        </ErrorBoundary>
-      </div>
+          <ErrorBoundary fallback={null}>
+            <Suspense fallback={<LearnMoreLoading />}>
+              <LearnMore ecosystemSlug={ecosystemSlug} />
+            </Suspense>
+          </ErrorBoundary>
+        </div>
+      </Container>
     </ScrollView>
   );
 }

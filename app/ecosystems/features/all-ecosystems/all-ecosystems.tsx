@@ -1,8 +1,9 @@
 import { ecosystemsApiClient } from "api-client/resources/ecosystems";
 
-import { Section } from "app/ecosystems/components/section/section";
 import { EcosystemCard } from "app/ecosystems/features/all-ecosystems/components/ecosystem-card/ecosystem-card";
 import { ResponsiveWrapper } from "app/ecosystems/features/all-ecosystems/components/responsive-wrapper/responsive-wrapper";
+
+import { Section } from "components/layout/section/section";
 
 export async function AllEcosystems() {
   const ecosystems = await ecosystemsApiClient.fetch
