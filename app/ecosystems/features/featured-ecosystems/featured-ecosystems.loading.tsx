@@ -1,6 +1,6 @@
-import { SectionLoading } from "app/ecosystems/components/section/section.loading";
-
 import SkeletonEl from "src/components/New/Skeleton/Skeleton";
+
+import { SectionLoading } from "components/layout/section/section.loading";
 
 export async function FeaturedEcosystemsLoading() {
   return (

@@ -5,13 +5,13 @@ import { useKeenSlider } from "keen-slider/react";
 import { useState } from "react";
 
 import { TSlider } from "app/ecosystems/[ecosystemSlug]/features/project-good-first-issues/components/slider/slider.types";
-import { Section } from "app/ecosystems/components/section/section";
 import { SliderStepper } from "app/ecosystems/components/slider-stepper/slider-stepper";
 
 import { viewportConfig } from "src/config";
 
 import { Card } from "components/ds/card/card";
 import { BaseLink } from "components/layout/base-link/base-link";
+import { Section } from "components/layout/section/section";
 import { Typography } from "components/layout/typography/typography";
 
 import { NEXT_ROUTER } from "constants/router";

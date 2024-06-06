@@ -2,7 +2,8 @@ import { ecosystemsApiClient } from "api-client/resources/ecosystems";
 
 import { LeaderBoard } from "app/ecosystems/[ecosystemSlug]/features/leader-board/leader-board";
 import { TLeaderBoard } from "app/ecosystems/[ecosystemSlug]/features/leader-board/leader-board.types";
-import { Section } from "app/ecosystems/components/section/section";
+
+import { Section } from "components/layout/section/section";
 
 export async function LeaderBoardSection({ ecosystemSlug, className }: TLeaderBoard.LeaderBoardSectionProps) {
   const [contributorsByCount, contributorsByTotalEarned] = await Promise.all([
