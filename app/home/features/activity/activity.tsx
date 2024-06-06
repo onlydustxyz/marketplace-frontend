@@ -14,7 +14,6 @@ export function Activity(_: TActivity.Props) {
         titleProps={{
           children: "Activity",
         }}
-        hasPadding={false}
       >
         <Card background={"base"}>Activity</Card>
       </Section>

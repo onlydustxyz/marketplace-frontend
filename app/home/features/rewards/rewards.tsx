@@ -15,7 +15,6 @@ export function Rewards(_: TRewards.Props) {
         titleProps={{
           children: "Rewards",
         }}
-        hasPadding={false}
       >
         <Card background={"base"}>Rewards</Card>
       </Section>

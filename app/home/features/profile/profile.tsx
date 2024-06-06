@@ -15,7 +15,6 @@ export function Profile(_: TProfile.Props) {
         titleProps={{
           children: "Profile",
         }}
-        hasPadding={false}
       >
         <Card background={"base"}>Profile</Card>
       </Section>

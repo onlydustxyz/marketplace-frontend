@@ -15,7 +15,6 @@ export function RecommendedProjects(_: TRecommendedProjects.Props) {
         titleProps={{
           children: "Recommended Projects",
         }}
-        hasPadding={false}
       >
         <Card background={"base"}>Recommended Projects</Card>
       </Section>

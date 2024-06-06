@@ -15,7 +15,6 @@ export function TrendyProjects(_: TTrendyProjects.Props) {
         titleProps={{
           children: "Trendy Projects",
         }}
-        hasPadding={false}
       >
         <Card background={"base"}>Trendy Projects</Card>
       </Section>

@@ -15,7 +15,6 @@ export function LeadProjects(_: TLeadProjects.Props) {
         titleProps={{
           children: "Lead Projects",
         }}
-        hasPadding={false}
       >
         <Card background={"base"}>Lead projects</Card>
       </Section>

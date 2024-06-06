@@ -15,7 +15,6 @@ export function Journey(_: TJourney.Props) {
         titleProps={{
           children: "Journey",
         }}
-        hasPadding={false}
       >
         <Card background={"base"}>Journey</Card>
       </Section>
