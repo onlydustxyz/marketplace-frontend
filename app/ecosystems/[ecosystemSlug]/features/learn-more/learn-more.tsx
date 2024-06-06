@@ -30,16 +30,22 @@ export async function LearnMore({ ecosystemSlug }: TLearnMore.Props) {
         },
       }}
     >
-      <div className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
-        <Image
-          src={article.imageUrl}
-          alt={ecosystem.name}
-          width={600}
-          height={350}
-          className="h-full w-full rounded-xl object-cover object-center shadow-light aspect-[16/9]"
-        />
-        <div className="flex flex-col items-start justify-between gap-4">
-          <Typography variant={"title-m"}>{article.title}</Typography>
+      <div className="flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center">
+        <a rel="noreferrer" href={article.url} target={"_blank"} className="flex flex-1">
+          <Image
+            src={article.imageUrl}
+            alt={ecosystem.name}
+            width={600}
+            height={350}
+            className="h-full w-full rounded-xl object-cover object-center shadow-light aspect-[16/9]"
+          />
+        </a>
+        <div className="flex flex-1 flex-col items-start justify-between gap-4">
+          <a href={article.url} rel="noreferrer" target={"_blank"}>
+            <Typography variant={"title-m"} className="transition-all hover:text-spacePurple-200">
+              {article.title}
+            </Typography>
+          </a>
           <Typography variant={"body-l"} className="text-spaceBlue-100">
             {article.description}
           </Typography>
