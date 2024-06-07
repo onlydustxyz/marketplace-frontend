@@ -1,3 +1,6 @@
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+
 import { PageGrid } from "app/home/components/page-grid/page-grid";
 import { Activity } from "app/home/features/activity/activity";
 import { Journey } from "app/home/features/journey/journey";
@@ -7,6 +10,7 @@ import { Profile } from "app/home/features/profile/profile";
 import { RecommendedProjects } from "app/home/features/recommended-projects/recommended-projects";
 import { Rewards } from "app/home/features/rewards/rewards";
 import { TrendyProjects } from "app/home/features/trendy-projects/trendy-projects";
+import { TrendyProjectsLoading } from "app/home/features/trendy-projects/trendy-projects.loading";
 
 import { RequiredAuthGuard, RequiredUnauthGuard } from "components/features/auth0/guards/auth-guard";
 import { Container } from "components/layout/container/container";
@@ -29,7 +33,12 @@ export default function HomePage() {
           </RequiredAuthGuard>
 
           <RequiredUnauthGuard>
-            <TrendyProjects />
+            <ErrorBoundary fallback={null}>
+              <Suspense fallback={<TrendyProjectsLoading />}>
+                <TrendyProjects />
+              </Suspense>
+            </ErrorBoundary>
+
             <Activity />
           </RequiredUnauthGuard>
         </PageGrid>
