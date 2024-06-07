@@ -9,7 +9,7 @@ export namespace TUseSearchProjects {
     id: string;
     slug: string;
     name: string;
-    logoUrl: string;
+    logoUrl?: string;
   }
   export interface Props {
     onSelectProjects: (projects: Project[]) => void;
