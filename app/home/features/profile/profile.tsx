@@ -1,5 +1,8 @@
+"use client";
+
 import { usersApiClient } from "api-client/resources/users";
 
+import { ProfileLoading } from "app/home/features/profile/profile.loading";
 import styles from "app/home/styles/styles.module.css";
 
 import { cn } from "src/utils/cn";
@@ -7,11 +10,16 @@ import { cn } from "src/utils/cn";
 import { ProfileCard } from "components/features/profile-card/profile-card";
 import { Section } from "components/layout/section/section";
 
-import { TProfile } from "./profile.types";
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
-export async function Profile({ githubUserId }: TProfile.Props) {
-  const userProfile = await usersApiClient.fetch.getUserPublicProfileByGithubId(githubUserId).request();
+export function Profile() {
+  const { githubUserId } = useCurrentUser();
 
+  const { data: userProfile, isLoading } = usersApiClient.queries.useGetUserPublicProfileByGithubId(githubUserId ?? 0, {
+    enabled: !!githubUserId,
+  });
+
+  if (isLoading) return <ProfileLoading />;
   if (!userProfile) return null;
 
   return (
