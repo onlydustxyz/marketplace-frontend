@@ -10,27 +10,30 @@ import { TrendyProjects } from "app/home/features/trendy-projects/trendy-project
 
 import { RequiredAuthGuard, RequiredUnauthGuard } from "components/features/auth0/guards/auth-guard";
 import { Container } from "components/layout/container/container";
+import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 
 export default function HomePage() {
   return (
-    <Container>
-      <PageGrid>
-        <JourneyGuard>
-          <Journey />
-        </JourneyGuard>
+    <ScrollView>
+      <Container>
+        <PageGrid>
+          <JourneyGuard>
+            <Journey />
+          </JourneyGuard>
 
-        <RequiredAuthGuard>
-          <Profile />
-          <Rewards />
-          <LeadProjects />
-          <RecommendedProjects />
-        </RequiredAuthGuard>
+          <RequiredAuthGuard>
+            <Profile />
+            <Rewards />
+            <LeadProjects />
+            <RecommendedProjects />
+          </RequiredAuthGuard>
 
-        <RequiredUnauthGuard>
-          <TrendyProjects />
-          <Activity />
-        </RequiredUnauthGuard>
-      </PageGrid>
-    </Container>
+          <RequiredUnauthGuard>
+            <TrendyProjects />
+            <Activity />
+          </RequiredUnauthGuard>
+        </PageGrid>
+      </Container>
+    </ScrollView>
   );
 }
