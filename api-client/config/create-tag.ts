@@ -6,7 +6,7 @@ export function createTag(
   pathParams?: Record<string, unknown> | null,
   queryParams?: Record<string, unknown>
 ) {
-  return `${resource}-${name}-${pathParams ? JSON.stringify(queryParams) : ""}-${
+  return `${resource}-${name}-${pathParams ? JSON.stringify(pathParams) : ""}-${
     queryParams ? JSON.stringify(queryParams) : ""
   }`;
 }
