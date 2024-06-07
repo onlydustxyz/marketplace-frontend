@@ -7,5 +7,6 @@ export namespace TProjectListItem {
   >;
   export interface Props {
     project: Project;
+    className?: string;
   }
 }
