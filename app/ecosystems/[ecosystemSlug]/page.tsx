@@ -12,7 +12,6 @@ import { LearnMoreLoading } from "app/ecosystems/[ecosystemSlug]/features/learn-
 import { MoreProjectLoading } from "app/ecosystems/[ecosystemSlug]/features/more-project/more-project.loading";
 import { MoreProjectSection } from "app/ecosystems/[ecosystemSlug]/features/more-project/more-project.section";
 import { Overview } from "app/ecosystems/[ecosystemSlug]/features/overview/overview";
-import { OverviewLoading } from "app/ecosystems/[ecosystemSlug]/features/overview/overview.loading";
 import { ProjectGoodFirstIssues } from "app/ecosystems/[ecosystemSlug]/features/project-good-first-issues/project-good-first-issues";
 import { ProjectGoodFirstIssuesLoading } from "app/ecosystems/[ecosystemSlug]/features/project-good-first-issues/project-good-first-issues.loading";
 import { TopProjects } from "app/ecosystems/[ecosystemSlug]/features/top-projects/top-projects";
@@ -28,9 +27,7 @@ export default async function EcosystemDetailPage({ params }: { params: { ecosys
     <ScrollView>
       <Container>
         <div className={"flex flex-col gap-8 py-10 lg:gap-10"}>
-          <Suspense fallback={<OverviewLoading />}>
-            <Overview ecosystemSlug={params.ecosystemSlug} />
-          </Suspense>
+          <Overview ecosystemSlug={params.ecosystemSlug} />
 
           <ErrorBoundary fallback={null}>
             <Suspense fallback={<ProjectGoodFirstIssuesLoading />}>
