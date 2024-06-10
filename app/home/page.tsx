@@ -16,6 +16,7 @@ import { TrendyProjects } from "app/home/features/trendy-projects/trendy-project
 import { TrendyProjectsLoading } from "app/home/features/trendy-projects/trendy-projects.loading";
 
 import { RequiredAuthGuard, RequiredUnauthGuard } from "components/features/auth0/guards/auth-guard";
+import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 import { Container } from "components/layout/container/container";
 import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 
@@ -23,6 +24,7 @@ export default function HomePage() {
   return (
     <ScrollView>
       <Container>
+        <PosthogOnMount eventName={"home_dashboard_viewed"} />
         <PageGrid>
           <JourneyGuard>
             <Journey />
