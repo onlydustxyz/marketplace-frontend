@@ -6,6 +6,7 @@ import { Activity } from "app/home/features/activity/activity";
 import { Journey } from "app/home/features/journey/journey";
 import { JourneyGuard } from "app/home/features/journey/journey.guard";
 import { LeadProjects } from "app/home/features/lead-projects/lead-projects";
+import { LeadProjectsLoading } from "app/home/features/lead-projects/lead-projects.loading";
 import { Profile } from "app/home/features/profile/profile";
 import { RecommendedProjects } from "app/home/features/recommended-projects/recommended-projects";
 import { RecommendedProjectsLoading } from "app/home/features/recommended-projects/recommended-projects.loading";
@@ -29,7 +30,11 @@ export default function HomePage() {
           <RequiredAuthGuard>
             <Profile />
             <Rewards />
-            <LeadProjects />
+            <ErrorBoundary fallback={null}>
+              <Suspense fallback={<LeadProjectsLoading />}>
+                <LeadProjects />
+              </Suspense>
+            </ErrorBoundary>
             <ErrorBoundary fallback={null}>
               <Suspense fallback={<RecommendedProjectsLoading />}>
                 <RecommendedProjects />

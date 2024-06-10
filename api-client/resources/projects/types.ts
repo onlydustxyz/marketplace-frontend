@@ -8,3 +8,4 @@ export type ProjectsGetAllQueryParams = Omit<
 >;
 
 export type GetProjectPageResponse = components["schemas"]["ProjectPageResponse"];
+export type GetProjectPageItemResponse = components["schemas"]["ProjectPageItemResponse"];
