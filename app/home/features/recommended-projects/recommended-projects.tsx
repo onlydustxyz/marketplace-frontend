@@ -34,21 +34,19 @@ export function RecommendedProjects(_: TRecommendedProjects.Props) {
           translate: { token: "v2.pages.home.recommendedProjects.title" },
         }}
       >
-        <Card background={"base"}>
-          <Card background={"base"} hasPadding={false}>
-            <div className={"grid gap-x-4 sm:grid-cols-2"}>
-              {projects.map((project, i) => (
-                <ProjectListItem
-                  key={project.id}
-                  project={project}
-                  className={cn("border-t border-card-border-light", {
-                    "border-none": i === 0,
-                    "sm:border-none": i < 2,
-                  })}
-                />
-              ))}
-            </div>
-          </Card>
+        <Card background={"base"} hasPadding={false} className={"overflow-hidden"}>
+          <div className={"grid gap-x-4 sm:grid-cols-2"}>
+            {projects.map((project, i) => (
+              <ProjectListItem
+                key={project.id}
+                project={project}
+                className={cn("border-t border-card-border-light", {
+                  "border-none": i === 0,
+                  "sm:border-none": i < 2,
+                })}
+              />
+            ))}
+          </div>
         </Card>
       </Section>
     </div>
