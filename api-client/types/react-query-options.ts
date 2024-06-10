@@ -3,4 +3,5 @@ export interface ReactQueryOptions {
   pageSize?: string;
   pageIndex?: string;
   retry?: number;
+  refetchInterval?: () => number;
 }
