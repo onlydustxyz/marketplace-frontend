@@ -9,11 +9,8 @@ import { GetMyRewardsPageResponse, MyRewardsQueryParams } from "../types";
 
 export function useGetMyRewards(queryParams: MyRewardsQueryParams, options?: ReactQueryOptions) {
   const query = useReactInfiniteQueryAdapter<GetMyRewardsPageResponse>(getMyRewards(queryParams), {
-    enabled: options?.enabled ?? true,
     ...options,
   });
 
-  return useSuspenseInfiniteQuery<GetMyRewardsPageResponse>({
-    ...query,
-  });
+  return useSuspenseInfiniteQuery<GetMyRewardsPageResponse>(query);
 }
