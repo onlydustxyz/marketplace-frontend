@@ -50,7 +50,14 @@ export default function HomePage() {
             </ErrorBoundary>
           </RequiredAuthGuard>
 
-          <RequiredUnauthGuard>
+          <RequiredUnauthGuard
+            fallback={
+              <>
+                <TrendyProjectsLoading />
+                <ActivityLoading />
+              </>
+            }
+          >
             <ErrorBoundary fallback={null}>
               <Suspense fallback={<TrendyProjectsLoading />}>
                 <TrendyProjects />
