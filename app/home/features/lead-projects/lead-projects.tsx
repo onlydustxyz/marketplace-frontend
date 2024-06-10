@@ -15,7 +15,7 @@ import { TLeadProjects } from "./lead-projects.types";
 export function LeadProjects(_: TLeadProjects.Props) {
   const { data, error, isFetching } = projectsApiClient.queries.useInfiniteGetAllProject({
     queryParams: { mine: true },
-    options: { pageSize: "20" },
+    pagination: { pageSize: 20 },
   });
 
   if (error && !isFetching) {
