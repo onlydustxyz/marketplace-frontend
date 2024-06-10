@@ -6,7 +6,7 @@ enum Paths {
   get_my_committee_assignment_project = "get_my_committee_assignment_project",
   update_my_committee_assignment_project = "update_my_committee_assignment_project",
   get_my_recommended_projects = "get_my_recommended_projects",
-  getMyRewards = "getMyRewards",
+  get_my_rewards = "get_my_rewards",
 }
 
 const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
@@ -26,7 +26,7 @@ const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
     url: "me/committees/:committeeId/projects/:projectId",
     method: "PUT",
   },
-  getMyRewards: {
+  get_my_rewards: {
     url: "me/rewards",
     method: "GET",
   },
