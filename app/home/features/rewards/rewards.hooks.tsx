@@ -20,7 +20,7 @@ export function useMyRewardsTable() {
 
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } = meApiClient.queries.useGetMyRewards({
     queryParams: { status: "PENDING_REQUEST", direction: "DESC" },
-    options: { pageSize: "3" },
+    pagination: { pageSize: 3 },
   });
 
   const flattenRewards = data?.pages.flatMap(({ rewards }) => rewards) ?? [];
