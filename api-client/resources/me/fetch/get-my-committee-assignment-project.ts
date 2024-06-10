@@ -9,7 +9,7 @@ export function getMyCommitteeAssignmentProject(
   committeeId: string,
   projectId: string
 ): IFetchAdapater<GetMyCommitteeAssignmentResponse> {
-  return new FetchAdapter<GetMyCommitteeAssignmentResponse>(adapters.getMyCommitteeAssignmentProject)
+  return new FetchAdapter<GetMyCommitteeAssignmentResponse>(adapters.get_my_committee_assignment_project)
     .setPathParams({ committeeId, projectId })
     .setTag(tags.committee_project(committeeId, projectId));
 }

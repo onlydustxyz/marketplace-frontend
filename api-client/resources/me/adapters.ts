@@ -1,27 +1,27 @@
 import { FetchAdapaterConstructor } from "api-client/adapter/fetch/fetch-adapter.types";
 
 enum Paths {
-  hackathonRegistrations = "hackathonRegistrations",
-  getMyCommitteeAssignments = "getMyCommitteeAssignments",
-  getMyCommitteeAssignmentProject = "getMyCommitteeAssignmentProject",
-  updateMyCommitteeAssignmentProject = "updateMyCommitteeAssignmentProject",
+  hackathon_registrations = "hackathon_registrations",
+  get_my_committee_assignments = "get_my_committee_assignments",
+  get_my_committee_assignment_project = "get_my_committee_assignment_project",
+  update_my_committee_assignment_project = "update_my_committee_assignment_project",
   get_my_recommended_projects = "get_my_recommended_projects",
 }
 
 const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
-  hackathonRegistrations: {
+  hackathon_registrations: {
     url: "me/hackathons/:hackathonId/registrations",
     method: "PUT",
   },
-  getMyCommitteeAssignments: {
+  get_my_committee_assignments: {
     url: "me/committees/:committeeId",
     method: "GET",
   },
-  getMyCommitteeAssignmentProject: {
+  get_my_committee_assignment_project: {
     url: "me/committees/:committeeId/projects/:projectId",
     method: "GET",
   },
-  updateMyCommitteeAssignmentProject: {
+  update_my_committee_assignment_project: {
     url: "me/committees/:committeeId/projects/:projectId",
     method: "PUT",
   },
