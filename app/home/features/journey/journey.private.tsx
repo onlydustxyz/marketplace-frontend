@@ -1,3 +1,7 @@
+"use client";
+
+import { meApiClient } from "api-client/resources/me";
+
 import styles from "app/home/styles/styles.module.css";
 
 import { cn } from "src/utils/cn";
@@ -9,7 +13,11 @@ import { Typography } from "components/layout/typography/typography";
 
 import { TJourney } from "./journey.types";
 
-export function Journey(_: TJourney.Props) {
+export function JourneyPrivate(_: TJourney.Props) {
+  const { data, isLoading } = meApiClient.queries.useGetMyJourney({});
+
+  if (!data && !isLoading) return null;
+
   return (
     <div className={cn("w-full", styles.areaJourney)}>
       <Section
@@ -24,7 +32,7 @@ export function Journey(_: TJourney.Props) {
           <div className="flex items-center gap-2">
             <ProgressBar
               maxValue={100}
-              value={88}
+              value={data?.completion}
               color="spacePurple"
               classNames={{
                 track: "h-4",
@@ -32,7 +40,7 @@ export function Journey(_: TJourney.Props) {
             />
             <Typography
               variant="body-l-bold"
-              translate={{ token: "v2.pages.home.journey.progressPercentage", params: { count: "33" } }}
+              translate={{ token: "v2.pages.home.journey.progressPercentage", params: { count: data.completion } }}
               className="text-spaceBlue-200"
             />
           </div>
