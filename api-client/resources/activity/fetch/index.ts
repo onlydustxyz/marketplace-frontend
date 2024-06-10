@@ -1,1 +1,1 @@
-export * from "api-client/resources/activity/fetch/get-public-activity";
+export * from "./get-public-activity";
