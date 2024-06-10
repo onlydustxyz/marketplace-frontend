@@ -13,16 +13,16 @@ import { cn } from "src/utils/cn";
 import { TPageGrid } from "./page-grid.types";
 
 export function PageGrid({ children }: TPageGrid.Props) {
-  const isSm = useMediaQuery(`(max-width: ${viewportConfig.breakpoints.lg}px)`);
+  const isLg = useMediaQuery(`(max-width: ${viewportConfig.breakpoints.lg}px)`);
   const { isAuthenticated } = useAuth0();
   const showJourney = useJourney();
 
   const classes = useMemo(() => {
-    if (isSm) {
+    if (isLg) {
       return {
-        authenticatedWithJourney: styles.gridAuthenticatedWithJourneySm,
-        authenticated: styles.gridAuthenticatedSm,
-        unauthenticated: styles.gridUnauthenticatedSm,
+        authenticatedWithJourney: styles.gridAuthenticatedWithJourneyLg,
+        authenticated: styles.gridAuthenticatedLg,
+        unauthenticated: styles.gridUnauthenticatedLg,
       };
     }
 
@@ -31,7 +31,7 @@ export function PageGrid({ children }: TPageGrid.Props) {
       authenticated: styles.gridAuthenticated,
       unauthenticated: styles.gridUnauthenticated,
     };
-  }, [isSm]);
+  }, [isLg]);
 
   const templateArea = useMemo(() => {
     if (isAuthenticated) {

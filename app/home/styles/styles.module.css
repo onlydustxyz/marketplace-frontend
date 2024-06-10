@@ -6,7 +6,7 @@
     "trendyProjects trendyProjects";
 }
 
-.gridUnauthenticatedSm {
+.gridUnauthenticatedLg {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-areas:
@@ -24,7 +24,7 @@
     "recommendedProjects recommendedProjects";
 }
 
-.gridAuthenticatedSm {
+.gridAuthenticatedLg {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-areas:
@@ -44,7 +44,7 @@
     "journey recommendedProjects";
 }
 
-.gridAuthenticatedWithJourneySm {
+.gridAuthenticatedWithJourneyLg {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-areas:
