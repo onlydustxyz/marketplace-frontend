@@ -1,5 +1,6 @@
 {
   "title": "Start your journey now",
+  "progressPercentage": "__count__%",
   "steps": {
     "step1": {
       "title": "Set up your personal billing profile.",
