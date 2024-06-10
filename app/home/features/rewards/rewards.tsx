@@ -95,13 +95,9 @@ export function Rewards(_: TRewards.Props) {
           },
         }}
         rightContent={
-          <BaseLink href={NEXT_ROUTER.rewards.all} className="flex gap-1">
-            <Typography
-              className="text-spacePurple-500"
-              translate={{ token: "v2.pages.home.rewards.seeAllRewards" }}
-              variant="body-s-bold"
-            />
-            <Icon remixName="ri-arrow-right-s-line" className="text-spacePurple-500" size={16} />
+          <BaseLink href={NEXT_ROUTER.rewards.all} className="flex gap-1 text-spacePurple-500">
+            <Typography translate={{ token: "v2.pages.home.rewards.seeAllRewards" }} variant="body-s-bold" />
+            <Icon remixName="ri-arrow-right-s-line" size={16} />
           </BaseLink>
         }
         classNames={{
