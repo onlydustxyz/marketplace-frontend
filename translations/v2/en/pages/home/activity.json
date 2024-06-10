@@ -1,1 +1,12 @@
-{}
+{
+  "actions": {
+    "PULL_REQUEST": "merged a",
+    "PULL_REQUEST_2": "Pull Request",
+    "REWARD_CREATED": "rewarded",
+    "REWARD_CLAIMED": "claimed",
+    "PROJECT_CREATED": "created by"
+  },
+  "actions_details": {
+    "PULL_REQUEST": "Pull Request"
+  }
+}
