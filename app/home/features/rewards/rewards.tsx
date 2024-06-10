@@ -7,7 +7,12 @@ import { cn } from "src/utils/cn";
 
 import { Card } from "components/ds/card/card";
 import { Table } from "components/ds/table/table";
+import { BaseLink } from "components/layout/base-link/base-link";
+import { Icon } from "components/layout/icon/icon";
 import { Section } from "components/layout/section/section";
+import { Typography } from "components/layout/typography/typography";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { useIntl } from "hooks/translate/use-translate";
 
@@ -26,6 +31,16 @@ export function Rewards(_: TRewards.Props) {
             token: "v2.pages.home.rewards.title",
           },
         }}
+        rightContent={
+          <BaseLink href={NEXT_ROUTER.rewards.all} className="flex gap-1">
+            <Typography
+              className="text-spacePurple-500"
+              translate={{ token: "v2.pages.home.rewards.seeAllRewards" }}
+              variant="body-s-bold"
+            />
+            <Icon remixName="ri-arrow-right-s-line" className="text-spacePurple-500" size={16} />
+          </BaseLink>
+        }
         classNames={{
           section: "h-full",
           content: "h-full",
@@ -49,7 +64,10 @@ export function Rewards(_: TRewards.Props) {
               className: "h-full",
             }}
             TableRowProps={{
-              className: "px-4 py-6 last:border-none",
+              className: "last:border-none cursor-pointer",
+            }}
+            TableCellProps={{
+              className: "first:pl-6 last:pr-6",
             }}
           />
         </Card>

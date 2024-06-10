@@ -1,5 +1,6 @@
 {
   "title": "Pending Rewards",
+  "seeAllRewards": "See all rewards",
   "rewardsTable": {
     "title": "Rewards",
     "columns": {
