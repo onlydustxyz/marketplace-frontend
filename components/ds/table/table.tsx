@@ -26,9 +26,10 @@ export function Table({
   TableRowProps = {},
   TableCellProps = {},
   EmptyProps,
+  classNames,
   ...TableProps
 }: TTable.Props) {
-  const classNames = useMemo(
+  const localClassNames = useMemo(
     () => ({
       wrapper: "bg-transparent",
       thead: "last:[&>tr]:hidden pb-1",
@@ -36,12 +37,13 @@ export function Table({
       tr: "group/table-row",
       td: "py-3 h-auto",
       sortIcon: "data-[visible=true]:text-spacePurple-500 mb-1",
+      ...classNames,
     }),
     []
   );
 
   return (
-    <NextTable aria-label={label} classNames={classNames} removeWrapper {...TableProps}>
+    <NextTable aria-label={label} classNames={localClassNames} removeWrapper {...TableProps}>
       <TableHeader columns={columns} {...(TableHeaderProps || {})}>
         {({ key, align, icon, children, ...restColumn }) => (
           <TableColumn

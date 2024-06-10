@@ -1,1 +1,19 @@
-{}
+{
+  "title": "Pending Rewards",
+  "rewardsTable": {
+    "title": "Rewards",
+    "columns": {
+      "date": "Date",
+      "project": "Project",
+      "amount": "Amount",
+      "status": "Status"
+    },
+    "rows": {
+      "projectContribution": {
+        "many": "#__id__ · __count__ contributions",
+        "one": "#__id__ · 1 contribution",
+        "zero": "#__id__ · No contributions"
+      }
+    }
+  }
+}

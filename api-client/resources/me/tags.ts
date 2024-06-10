@@ -5,4 +5,5 @@ export default {
   committee: (committeeId: string) => `${apiResources.me}-committees-${committeeId}`,
   committeeProject: (committeeId: string, projectId: string) =>
     `${apiResources.me}-committees-${committeeId}-${projectId}`,
+  myRewards: `${apiResources.me}-my-rewards`,
 };

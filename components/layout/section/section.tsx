@@ -1,12 +1,13 @@
-import { ComponentProps, PropsWithChildren } from "react";
+import { cn } from "src/utils/cn";
 
 import { SectionHeader } from "components/layout/section/components/section-header/section-header";
+import { TSection } from "components/layout/section/section.types";
 
-export function Section({ children, ...restProps }: PropsWithChildren<ComponentProps<typeof SectionHeader>>) {
+export function Section({ children, classNames, ...restProps }: TSection.Props) {
   return (
-    <section className="flex flex-col gap-4">
+    <section className={cn("flex flex-col gap-4", classNames?.section)}>
       <SectionHeader {...restProps} />
-      <div className="relative">{children}</div>
+      <div className={cn("relative h-full", classNames?.content)}>{children}</div>
     </section>
   );
 }
