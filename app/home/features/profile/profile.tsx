@@ -21,10 +21,13 @@ import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 export function Profile() {
   const { T } = useIntl();
-  const { githubUserId, user } = useCurrentUser();
+  const { githubUserId = 0, user } = useCurrentUser();
 
-  const { data: userProfile, isLoading } = usersApiClient.queries.useGetUserPublicProfileByGithubId(githubUserId ?? 0, {
-    enabled: !!githubUserId,
+  const { data: userProfile, isLoading } = usersApiClient.queries.useGetUserPublicProfileByGithubId({
+    pathParams: { githubId: githubUserId },
+    options: {
+      enabled: !!githubUserId,
+    },
   });
 
   if (isLoading) return <ProfileLoading />;
