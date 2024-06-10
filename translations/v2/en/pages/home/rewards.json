@@ -16,5 +16,10 @@
         "zero": "#__id__ · No contributions"
       }
     }
+  },
+  "emptyState": {
+    "title": "No reward to request",
+    "subtitle": "Keep contributing on projects to get new rewards and earn money.",
+    "action": "Contribute to a project"
   }
 }
