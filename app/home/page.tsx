@@ -8,6 +8,7 @@ import { JourneyGuard } from "app/home/features/journey/journey.guard";
 import { LeadProjects } from "app/home/features/lead-projects/lead-projects";
 import { Profile } from "app/home/features/profile/profile";
 import { RecommendedProjects } from "app/home/features/recommended-projects/recommended-projects";
+import { RecommendedProjectsLoading } from "app/home/features/recommended-projects/recommended-projects.loading";
 import { Rewards } from "app/home/features/rewards/rewards";
 import { TrendyProjects } from "app/home/features/trendy-projects/trendy-projects";
 import { TrendyProjectsLoading } from "app/home/features/trendy-projects/trendy-projects.loading";
@@ -29,7 +30,11 @@ export default function HomePage() {
             <Profile />
             <Rewards />
             <LeadProjects />
-            <RecommendedProjects />
+            <ErrorBoundary fallback={null}>
+              <Suspense fallback={<RecommendedProjectsLoading />}>
+                <RecommendedProjects />
+              </Suspense>
+            </ErrorBoundary>
           </RequiredAuthGuard>
 
           <RequiredUnauthGuard>
