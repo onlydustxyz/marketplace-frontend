@@ -6,6 +6,15 @@
     "trendyProjects trendyProjects";
 }
 
+.gridUnauthenticatedSm {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "journey"
+    "activity"
+    "trendyProjects";
+}
+
 .gridAuthenticated {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -15,6 +24,17 @@
     "recommendedProjects recommendedProjects";
 }
 
+.gridAuthenticatedSm {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "profile"
+    "rewards"
+    "leadProjects"
+    "leadProjects"
+    "recommendedProjects";
+}
+
 .gridAuthenticatedWithJourney {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -22,6 +42,17 @@
     "profile rewards"
     "leadProjects leadProjects"
     "journey recommendedProjects";
+}
+
+.gridAuthenticatedWithJourneySm {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "profile"
+    "rewards"
+    "leadProjects"
+    "journey"
+    "recommendedProjects";
 }
 
 .areaActivity{
