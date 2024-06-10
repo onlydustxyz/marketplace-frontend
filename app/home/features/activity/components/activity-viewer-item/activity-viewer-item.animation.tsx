@@ -20,28 +20,26 @@ export function ActivityViewerItemAnimation({ data, index }: TActivityViewerItem
   const storedIndex = useRef(index);
 
   useEffect(() => {
-    controls?.set(ActivityAnimationState.Hidden);
-  }, [controls]);
-
-  useEffect(() => {
-    if (index !== storedIndex.current) {
-      controls?.start({
-        scale: 0.97,
-        transition,
-      });
-      if (state !== ActivityAnimationState.Exit) {
-        setTimeout(() => {
-          controls?.start(animate[ActivityAnimationState.Enter]);
-          storedIndex.current = index;
-        }, 300);
+    if (controls && state) {
+      if (index !== storedIndex.current) {
+        controls?.start({
+          scale: 0.97,
+          transition,
+        });
+        if (state !== ActivityAnimationState.Exit) {
+          setTimeout(() => {
+            controls?.start(animate[ActivityAnimationState.Enter]);
+            storedIndex.current = index;
+          }, 300);
+        }
       }
     }
   }, [index, state, controls]);
 
   useEffect(() => {
-    setTimeout(() => {
+    if (state && controls) {
       controls?.start(state);
-    }, 100);
+    }
   }, [state, controls]);
 
   const animate: Variants = {
