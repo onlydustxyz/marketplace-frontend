@@ -15,7 +15,7 @@ import { TRecommendedProjects } from "./recommended-projects.types";
 
 export function RecommendedProjects(_: TRecommendedProjects.Props) {
   const { data, error, isFetching } = meApiClient.queries.useGetMyRecommendedProjects({
-    params: { pagination: { pageIndex: 0, pageSize: 10 } },
+    options: { pageSize: "10" },
   });
 
   if (error && !isFetching) {

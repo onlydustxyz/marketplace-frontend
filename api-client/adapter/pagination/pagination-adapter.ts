@@ -7,7 +7,7 @@ export function PaginationAdapter<T>(
   pagination?: PaginationInterface
 ): IPaginationAdapter<T> {
   const pageIndex = pagination?.pageIndex || 0;
-  const pageSize = pagination?.pageSize || 15;
+  const pageSize = pagination?.pageSize || 10;
 
   const fetcher = fetchAdapter
     .setParams({ pageIndex: pageIndex.toString() })
