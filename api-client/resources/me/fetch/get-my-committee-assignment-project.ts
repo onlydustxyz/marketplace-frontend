@@ -11,5 +11,5 @@ export function getMyCommitteeAssignmentProject(
 ): IFetchAdapater<GetMyCommitteeAssignmentResponse> {
   return new FetchAdapter<GetMyCommitteeAssignmentResponse>(adapters.getMyCommitteeAssignmentProject)
     .setPathParams({ committeeId, projectId })
-    .setTag(tags.committeeProject(committeeId, projectId));
+    .setTag(tags.committee_project(committeeId, projectId));
 }

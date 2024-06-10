@@ -22,7 +22,9 @@ export function ProjectListItem({ project, className }: TProjectListItem.Props) 
         labelProps={{ title: project.name }}
         className="col-span-3 flex-1"
       >
-        <Typography variant="title-s">{project.name}</Typography>
+        <Typography variant="title-s" className={"truncate"}>
+          {project.name}
+        </Typography>
         <Typography variant="body-s" className="line-clamp-2 whitespace-normal text-spaceBlue-100">
           {project.shortDescription}
         </Typography>

@@ -21,3 +21,7 @@ export interface UpdateMyCommitteeAssignmentParams {
 
 type VoteForCommitteeAssignmentRequest = components["schemas"]["VoteForCommitteeAssignmentRequest"];
 export interface UpdateMyCommitteeAssignmentVariables extends VoteForCommitteeAssignmentRequest {}
+
+// Recommended Projects
+
+export type GetRecommendedProjectsPageResponse = components["schemas"]["RecommendedProjectsPageResponse"];
