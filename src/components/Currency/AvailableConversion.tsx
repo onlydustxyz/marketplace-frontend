@@ -24,6 +24,7 @@ export type AvailableConversion = {
   totalAmount?: number;
   numberCurencyToShow?: number;
   sizeClassName?: string;
+  showDollarConversion?: boolean;
 };
 
 const ConversionAmount = ({ amount, currency }: { amount: number | undefined; currency?: Money.Currency }) => {
@@ -102,6 +103,7 @@ export const AvailableConversion: FC<AvailableConversion> = ({
   currency,
   totalAmount,
   sizeClassName,
+  showDollarConversion = true,
 }) => {
   const orderedCurrencies = useCurrenciesOrder({ currencies });
 
@@ -146,9 +148,11 @@ export const AvailableConversion: FC<AvailableConversion> = ({
           ))}
         </Chips>
         <ConversionAmount amount={totalAmount || currency?.amount} currency={currency?.currency || Money.USD} />
-        <div {...(currency ? tooltipIdProps : {})}>
-          <ConversionDollar dollar={!Money.isFiat(currency?.currency) ? currency?.dollar : undefined} />
-        </div>
+        {showDollarConversion ? (
+          <div {...(currency ? tooltipIdProps : {})}>
+            <ConversionDollar dollar={!Money.isFiat(currency?.currency) ? currency?.dollar : undefined} />
+          </div>
+        ) : null}
       </div>
       {!Money.isFiat(currency?.currency) ? (
         <ConversionTooltip tooltipId={tooltipId} currencies={orderedCurrencies} />

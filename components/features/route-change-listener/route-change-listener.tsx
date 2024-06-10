@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 import { useCloseAllStack } from "src/libs/react-stack";
@@ -8,8 +8,12 @@ import { useCloseAllStack } from "src/libs/react-stack";
 export function RouteChangeListener() {
   const pathname = usePathname();
   const closeAllPanels = useCloseAllStack();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
+    if (searchParams.has("stack")) {
+      return;
+    }
     closeAllPanels();
   }, [pathname]);
 
