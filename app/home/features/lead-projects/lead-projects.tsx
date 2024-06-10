@@ -1,22 +1,46 @@
+"use client";
+
+import { projectsApiClient } from "api-client/resources/projects";
+import { useMemo } from "react";
+
+import { ProjectCard } from "app/home/features/lead-projects/components/project-card/project-card";
 import styles from "app/home/styles/styles.module.css";
 
 import { cn } from "src/utils/cn";
 
-import { Card } from "components/ds/card/card";
 import { Section } from "components/layout/section/section";
 
 import { TLeadProjects } from "./lead-projects.types";
 
 export function LeadProjects(_: TLeadProjects.Props) {
+  const { data, error, isFetching } = projectsApiClient.queries.useInfiniteGetAllProject({
+    queryParams: { mine: true },
+    options: { pageSize: "20" },
+  });
+
+  if (error && !isFetching) {
+    throw error;
+  }
+
+  const projects = useMemo(() => data.pages.flatMap(page => page.projects), [data]);
+
+  if (!projects?.length) return null;
+
   return (
     <div className={cn("w-full", styles.areaLeadProjects)}>
       <Section
-        iconProps={{ remixName: "ri-code-s-slash-line" }}
+        iconProps={{ remixName: "ri-star-line" }}
         titleProps={{
-          children: "Lead Projects",
+          translate: {
+            token: "v2.pages.home.leadProjects.title",
+          },
         }}
       >
-        <Card background={"base"}>Lead projects</Card>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {projects.map(p => (
+            <ProjectCard key={p.id} data={p} />
+          ))}
+        </div>
       </Section>
     </div>
   );
