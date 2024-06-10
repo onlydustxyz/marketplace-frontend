@@ -1,0 +1,25 @@
+{
+  "title": "Start your journey now",
+  "steps": {
+    "step1": {
+      "title": "Set up your personal billing profile.",
+      "description": "Verify your personal information and provide your document ID."
+    },
+    "step2": {
+      "title": "Complete your first contribution.",
+      "description": "Even if it’s not rewarded, we value your work on your profile."
+    },
+    "step3": {
+      "title": "Claim your first reward",
+      "description": "Go to your reward page and follow the 2 min process."
+    },
+    "step4": {
+      "title": "Update your description",
+      "description": "To help other find out who you really are."
+    },
+    "step5": {
+      "title": "Update your contact methods.",
+      "description": "Make sure that you’re reachable through multiple accounts."
+    }
+  }
+}
