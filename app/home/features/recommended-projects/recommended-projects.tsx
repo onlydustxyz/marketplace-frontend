@@ -11,9 +11,9 @@ export function RecommendedProjects(_: TRecommendedProjects.Props) {
   return (
     <div className={cn("w-full", styles.areaRecommendedProjects)}>
       <Section
-        iconProps={{ remixName: "ri-code-s-slash-line" }}
+        iconProps={{ remixName: "ri-folder-3-line" }}
         titleProps={{
-          children: "Recommended Projects",
+          translate: { token: "v2.pages.home.recommendedProjects.title" },
         }}
       >
         <Card background={"base"}>Recommended Projects</Card>
