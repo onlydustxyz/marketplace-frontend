@@ -7,10 +7,13 @@ import adapters from "../adapters";
 import tags from "../tags";
 import { GetMyRewardsPageResponse, MyRewardsQueryParams } from "../types";
 
-export function getMyRewards(
-  queryParams: MyRewardsQueryParams,
-  pagination?: PaginationInterface
-): IFetchAdapater<GetMyRewardsPageResponse> {
+export function getMyRewards({
+  queryParams,
+  pagination,
+}: {
+  queryParams: MyRewardsQueryParams;
+  pagination?: PaginationInterface;
+}): IFetchAdapater<GetMyRewardsPageResponse> {
   const fetchAdapter = new FetchAdapter<GetMyRewardsPageResponse>(adapters.get_my_rewards).setTag(tags.my_rewards());
 
   if (queryParams) {
