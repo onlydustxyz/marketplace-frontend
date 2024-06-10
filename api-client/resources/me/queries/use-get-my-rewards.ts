@@ -1,6 +1,6 @@
 "use client";
 
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { useReactInfiniteQueryAdapter } from "api-client/adapter/react-infinite-query/react-infinite-query-adapter";
 import { getMyRewards } from "api-client/resources/me/fetch/get-my-rewards";
 import { ReactQueryOptions } from "api-client/types/react-query-options";
@@ -13,5 +13,7 @@ export function useGetMyRewards(queryParams: MyRewardsQueryParams, options?: Rea
     ...options,
   });
 
-  return useInfiniteQuery<GetMyRewardsPageResponse>(query);
+  return useSuspenseInfiniteQuery<GetMyRewardsPageResponse>({
+    ...query,
+  });
 }

@@ -11,7 +11,7 @@ export function getMyRewards(
   queryParams: MyRewardsQueryParams,
   pagination?: PaginationInterface
 ): IFetchAdapater<GetMyRewardsPageResponse> {
-  const fetchAdapter = new FetchAdapter<GetMyRewardsPageResponse>(adapters.getMyRewards).setTag(tags.myRewards);
+  const fetchAdapter = new FetchAdapter<GetMyRewardsPageResponse>(adapters.getMyRewards).setTag(tags.my_rewards());
 
   if (queryParams) {
     fetchAdapter.setParams(queryParams);
