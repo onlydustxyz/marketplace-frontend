@@ -1,4 +1,4 @@
-import { LazyMotion, Variants, domAnimation, motion, useAnimation } from "framer-motion";
+import { Variants, m, useAnimation } from "framer-motion";
 import { useEffect, useMemo, useRef } from "react";
 
 import { ActivityAnimationState } from "app/home/features/activity/activity.hooks";
@@ -25,24 +25,24 @@ export function ActivityViewerItemAnimation({ data, index }: TActivityViewerItem
 
   useEffect(() => {
     if (index !== storedIndex.current) {
-      controls.start({
+      controls?.start({
         scale: 0.97,
         transition,
       });
       if (state !== ActivityAnimationState.Exit) {
         setTimeout(() => {
-          controls.start(animate[ActivityAnimationState.Enter]);
+          controls?.start(animate[ActivityAnimationState.Enter]);
           storedIndex.current = index;
         }, 300);
       }
     }
-  }, [index, state]);
+  }, [index, state, controls]);
 
   useEffect(() => {
     setTimeout(() => {
-      controls.start(state);
+      controls?.start(state);
     }, 100);
-  }, [state]);
+  }, [state, controls]);
 
   const animate: Variants = {
     [ActivityAnimationState.Hidden]: () => ({
@@ -76,16 +76,14 @@ export function ActivityViewerItemAnimation({ data, index }: TActivityViewerItem
   };
 
   return (
-    <LazyMotion features={domAnimation}>
-      <motion.div
-        variants={animate}
-        animate={controls}
-        transition={{ type: "spring", stiffness: 100 }}
-        initial={ActivityAnimationState.Hidden}
-        exit={ActivityAnimationState.Exit}
-      >
-        <ActivityViewerItem data={data} index={index} />
-      </motion.div>
-    </LazyMotion>
+    <m.div
+      variants={animate}
+      animate={controls}
+      transition={{ type: "spring", stiffness: 100 }}
+      initial={ActivityAnimationState.Hidden}
+      exit={ActivityAnimationState.Exit}
+    >
+      <ActivityViewerItem data={data} index={index} />
+    </m.div>
   );
 }
