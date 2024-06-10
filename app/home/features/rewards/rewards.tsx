@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 
 import { useMyRewardsTable } from "app/home/features/rewards/rewards.hooks";
@@ -26,15 +25,10 @@ import { TRewards } from "./rewards.types";
 
 export function Rewards(_: TRewards.Props) {
   const { T } = useIntl();
-  const router = useRouter();
   const { columns, rows, infiniteQuery, onRowAction } = useMyRewardsTable();
 
-  function handleClick() {
-    router.push(NEXT_ROUTER.rewards.all);
-  }
-
   const renderContent = useMemo(() => {
-    if (!rows.length) {
+    if (rows.length) {
       return (
         <Card
           className={cn(
@@ -46,7 +40,7 @@ export function Rewards(_: TRewards.Props) {
           <div className="flex flex-1 flex-col gap-4">
             <Typography translate={{ token: "v2.pages.home.rewards.emptyState.title" }} variant="title-m" />
             <Typography translate={{ token: "v2.pages.home.rewards.emptyState.subtitle" }} variant="body-s-bold" />
-            <Button size="s" onClick={handleClick}>
+            <Button size="s" as="a" href={NEXT_ROUTER.projects.all}>
               <Icon remixName="ri-sparkling-line" size={16} />
               <Typography translate={{ token: "v2.pages.home.rewards.emptyState.action" }} variant="body-s-bold" />
             </Button>
