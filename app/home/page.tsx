@@ -3,6 +3,7 @@ import { ErrorBoundary } from "react-error-boundary";
 
 import { PageGrid } from "app/home/components/page-grid/page-grid";
 import { Activity } from "app/home/features/activity/activity";
+import { ActivityLoading } from "app/home/features/activity/activity.loading";
 import { Journey } from "app/home/features/journey/journey";
 import { JourneyGuard } from "app/home/features/journey/journey.guard";
 import { LeadProjects } from "app/home/features/lead-projects/lead-projects";
@@ -43,8 +44,11 @@ export default function HomePage() {
                 <TrendyProjects />
               </Suspense>
             </ErrorBoundary>
-
-            <Activity />
+            <ErrorBoundary fallback={null}>
+              <Suspense fallback={<ActivityLoading />}>
+                <Activity />
+              </Suspense>
+            </ErrorBoundary>
           </RequiredUnauthGuard>
         </PageGrid>
       </Container>
