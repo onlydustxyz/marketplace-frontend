@@ -1,6 +1,7 @@
 "use client";
 
 import { projectsApiClient } from "api-client/resources/projects";
+import { useMemo } from "react";
 
 import { ProjectCard } from "app/home/features/lead-projects/components/project-card/project-card";
 import styles from "app/home/styles/styles.module.css";
@@ -12,16 +13,18 @@ import { Section } from "components/layout/section/section";
 import { TLeadProjects } from "./lead-projects.types";
 
 export function LeadProjects(_: TLeadProjects.Props) {
-  const { data, error, isFetching } = projectsApiClient.queries.useGetAllProjects({
+  const { data, error, isFetching } = projectsApiClient.queries.useInfiniteGetAllProject({
     queryParams: { mine: true },
-    pagination: { pageIndex: 0, pageSize: 20 },
+    options: { pageSize: "20" },
   });
 
   if (error && !isFetching) {
     throw error;
   }
 
-  if (!data.projects?.length) return null;
+  const projects = useMemo(() => data.pages.flatMap(page => page.projects), [data]);
+
+  if (!projects?.length) return null;
 
   return (
     <div className={cn("w-full", styles.areaLeadProjects)}>
@@ -33,8 +36,8 @@ export function LeadProjects(_: TLeadProjects.Props) {
           },
         }}
       >
-        <div className="flex flex-row flex-wrap gap-4">
-          {data?.projects.map(p => (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {projects.map(p => (
             <ProjectCard key={p.id} data={p} />
           ))}
         </div>

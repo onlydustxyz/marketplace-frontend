@@ -9,12 +9,9 @@ export function LeadProjectsLoading() {
   return (
     <div className={cn("w-full", styles.areaLeadProjects)}>
       <SectionLoading>
-        <div className="flex flex-row flex-wrap gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {Array.from({ length: 10 }).map((_, i) => (
-            <div
-              key={i}
-              className="w-full sm:w-[calc(50%_-_16px)] md:w-[calc(33%_-_16px)] lg:w-[calc(25%_-_16px)] xl:lg:w-[calc(20%_-_16px)]"
-            >
+            <div key={i} className="w-full">
               <SkeletonEl width="100%" height="218px" variant="rounded" />
             </div>
           ))}

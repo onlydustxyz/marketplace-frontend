@@ -1,6 +1,6 @@
 "use client";
 
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { useReactInfiniteQueryAdapter } from "api-client/adapter/react-infinite-query/react-infinite-query-adapter";
 import { getAllProjects } from "api-client/resources/projects/fetch";
 import { GetProjectPageResponse, ProjectsGetAllQueryParams } from "api-client/resources/projects/types";
@@ -15,5 +15,5 @@ export const useInfiniteGetAllProject = ({
 }) => {
   const query = useReactInfiniteQueryAdapter<GetProjectPageResponse>(getAllProjects(queryParams), options);
 
-  return useInfiniteQuery<GetProjectPageResponse>(query);
+  return useSuspenseInfiniteQuery<GetProjectPageResponse>(query);
 };

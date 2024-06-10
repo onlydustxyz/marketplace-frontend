@@ -1,3 +1,4 @@
+import { useStackProjectOverview } from "src/App/Stacks/Stacks";
 import { ProjectConstants } from "src/api/Project/constants";
 
 import { Avatar } from "components/ds/avatar/avatar";
@@ -14,11 +15,9 @@ import { TProjectCard } from "./project-card.types";
 import tagMapping = ProjectConstants.tagMapping;
 
 export function ProjectCard({ data }: TProjectCard.Props) {
+  const [open] = useStackProjectOverview();
   return (
-    <Card
-      className="flex w-full flex-col gap-4 !p-4 sm:w-[calc(50%_-_16px)] md:w-[calc(33%_-_16px)] lg:w-[calc(25%_-_16px)] xl:lg:w-[calc(20%_-_16px)]"
-      background={"base"}
-    >
+    <Card className="flex w-full flex-col gap-4 !p-4" background={"base"} onClick={() => open({ slug: data.slug })}>
       <div className="flex h-full flex-col justify-between gap-3">
         <div className="flex w-full flex-row justify-between">
           <Avatar src={data.logoUrl} alt={data.name} size={"m"} shape={"square"} />
