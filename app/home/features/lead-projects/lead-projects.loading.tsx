@@ -10,7 +10,7 @@ export function LeadProjectsLoading() {
     <div className={cn("w-full", styles.areaLeadProjects)}>
       <SectionLoading>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {Array.from({ length: 10 }).map((_, i) => (
+          {Array.from({ length: 6 }).map((_, i) => (
             <div key={i} className="w-full">
               <SkeletonEl width="100%" height="218px" variant="rounded" />
             </div>
