@@ -1,33 +1,70 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { activityApiClient } from "api-client/resources/activity";
+import { GetActivityItem } from "api-client/resources/activity/types";
+import { useEffect, useRef, useState } from "react";
 
 import { useRequestAnimationFrame } from "hooks/animations/use-request-animation-frame";
 
 export enum ActivityAnimationState {
   Enter = "enter",
   Exit = "exit",
-  Visible = "visible",
   Hidden = "hidden",
 }
-type activityItem = { name: string; state: ActivityAnimationState };
-const MAX_ACTIVITY = 5;
-export function useActivity() {
-  const stocks = useRef<activityItem[]>([
-    { name: "Activity6", state: ActivityAnimationState.Enter },
-    { name: "Activity7", state: ActivityAnimationState.Enter },
-    { name: "Activity8", state: ActivityAnimationState.Enter },
-    { name: "Activity9", state: ActivityAnimationState.Enter },
-    { name: "Activity10", state: ActivityAnimationState.Enter },
-  ]);
 
-  const [activityItem, setActivityItem] = useState<activityItem[]>([
-    { name: "Activity1", state: ActivityAnimationState.Enter },
-    { name: "Activity2", state: ActivityAnimationState.Enter },
-    { name: "Activity3", state: ActivityAnimationState.Enter },
-    { name: "Activity4", state: ActivityAnimationState.Enter },
-    { name: "Activity5", state: ActivityAnimationState.Enter },
-  ]);
+export interface ActivityItem extends GetActivityItem {
+  state: ActivityAnimationState;
+}
+const MAX_ACTIVITY = 5;
+
+export function useActivity() {
+  const keys = useRef<string[]>([]);
+
+  const stocks = useRef<ActivityItem[]>([]);
+
+  const [activityItem, setActivityItem] = useState<ActivityItem[]>([]);
+
+  const { data } = activityApiClient.queries.useGetPublicActivity({
+    pagination: {
+      pageSize: 10,
+      pageIndex: 0,
+    },
+    options: {
+      refetchInterval: () => 5000,
+    },
+  });
+
+  function setInitialActivityItem(items: ActivityItem[]) {
+    setActivityItem(items);
+  }
+
+  function createSlug(item: GetActivityItem) {
+    return `${item.type}-${item.timestamp}`;
+  }
+
+  function addKeys(item: GetActivityItem[]) {
+    keys.current = [...keys.current, ...item.map(i => createSlug(i))];
+  }
+
+  useEffect(() => {
+    if (data) {
+      const activities = data.activities.reverse();
+      if (!activityItem?.length) {
+        const initial = activities.slice(0, MAX_ACTIVITY);
+        const stock = activities.slice(MAX_ACTIVITY);
+        setInitialActivityItem(initial.reverse().map(p => ({ ...p, state: ActivityAnimationState.Enter })));
+        stocks.current = stock.map(p => ({ ...p, state: ActivityAnimationState.Enter }));
+        addKeys([...initial, ...stock]);
+      } else {
+        const newActivities = activities.filter(a => !keys.current.includes(createSlug(a)));
+        addKeys(newActivities);
+        stocks.current = [
+          ...stocks.current,
+          ...newActivities.map(p => ({ ...p, state: ActivityAnimationState.Enter })),
+        ];
+      }
+    }
+  }, [data]);
 
   const addActivityItem = () => {
     const newActivityItem = stocks.current.shift();
@@ -43,14 +80,11 @@ export function useActivity() {
 
   useRequestAnimationFrame(
     () => {
-      console.log("ADD ACTIVITY ITEM");
       addActivityItem();
     },
     5000,
-    false
+    true
   );
-
-  console.log("activityItem : ", activityItem, "stocks : ", stocks.current);
 
   return {
     items: activityItem,

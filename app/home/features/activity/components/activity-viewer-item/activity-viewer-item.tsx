@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { Variants, motion, useAnimation } from "framer-motion";
 import { useEffect, useMemo, useRef } from "react";
 import { useIsClient } from "usehooks-ts";
@@ -8,7 +9,7 @@ import { Card } from "components/ds/card/card";
 
 import { TActivityViewerItem } from "./activity-viewer-item.types";
 
-export function ActivityViewerItem({ name, state, index }: TActivityViewerItem.Props) {
+export function ActivityViewerItem({ type, timestamp, state, index }: TActivityViewerItem.Props) {
   const isClientOnly = useIsClient();
   const controls = useAnimation();
   const delay = useMemo(() => index * 0.1, [index]);
@@ -86,7 +87,7 @@ export function ActivityViewerItem({ name, state, index }: TActivityViewerItem.P
       exit={ActivityAnimationState.Exit}
     >
       <Card border={"light"} background={"light"}>
-        {name}
+        {type} {format(new Date(timestamp), "dd/MM/yyyy HH:mm:ss")}
       </Card>
     </motion.div>
   );

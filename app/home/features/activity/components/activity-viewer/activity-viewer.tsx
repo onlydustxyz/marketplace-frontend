@@ -12,8 +12,8 @@ export function ActivityViewer(_: TActivityViewer.Props) {
   return (
     <div className="flex flex-col gap-4">
       <AnimatePresence initial={false}>
-        {items.map(({ name, state }, key) => (
-          <ActivityViewerItem key={name} name={name} state={state} index={key} />
+        {items.map((data, key) => (
+          <ActivityViewerItem key={`${data.type}-${data.timestamp}`} {...data} index={key} />
         ))}
       </AnimatePresence>
     </div>
