@@ -8,7 +8,7 @@ export function updateMyCommitteeAssignmentProject({
   committeeId,
   projectId,
 }: UpdateMyCommitteeAssignmentParams): IFetchAdapater<unknown> {
-  return new FetchAdapter<never>(adapters.updateMyCommitteeAssignmentProject).setPathParams({
+  return new FetchAdapter<never>(adapters.update_my_committee_assignment_project).setPathParams({
     committeeId,
     projectId,
   });

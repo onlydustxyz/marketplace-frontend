@@ -8,5 +8,5 @@ import adapters from "../adapters";
 export function updateHackathonsRegistrations({
   hackathonId,
 }: UpdateHackathonsRegistrationsParams): IFetchAdapater<unknown> {
-  return new FetchAdapter<GetHackathonDetailsReponse>(adapters.hackathonRegistrations).setPathParams({ hackathonId });
+  return new FetchAdapter<GetHackathonDetailsReponse>(adapters.hackathon_registrations).setPathParams({ hackathonId });
 }

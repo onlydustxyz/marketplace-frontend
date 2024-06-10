@@ -1,0 +1,25 @@
+{
+  "title": "Pending Rewards",
+  "seeAllRewards": "See all rewards",
+  "rewardsTable": {
+    "title": "Rewards",
+    "columns": {
+      "date": "Date",
+      "project": "Project",
+      "amount": "Amount",
+      "status": "Status"
+    },
+    "rows": {
+      "projectContribution": {
+        "many": "#__id__ · __count__ contributions",
+        "one": "#__id__ · 1 contribution",
+        "zero": "#__id__ · No contributions"
+      }
+    }
+  },
+  "emptyState": {
+    "title": "No reward to request",
+    "subtitle": "Keep contributing on projects to get new rewards and earn money.",
+    "action": "Contribute to a project"
+  }
+}

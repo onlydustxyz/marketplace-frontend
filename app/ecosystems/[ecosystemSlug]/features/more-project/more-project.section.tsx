@@ -2,9 +2,10 @@ import { ecosystemsApiClient } from "api-client/resources/ecosystems";
 
 import { MoreProject } from "app/ecosystems/[ecosystemSlug]/features/more-project/more-project";
 import { TMoreProject } from "app/ecosystems/[ecosystemSlug]/features/more-project/more-project.types";
-import { Section } from "app/ecosystems/components/section/section";
 
 import { cn } from "src/utils/cn";
+
+import { Section } from "components/layout/section/section";
 
 export async function MoreProjectSection({ ecosystemSlug, className }: TMoreProject.MoreProjectSectionProps) {
   const [hotCommunityProjects, newbiesWelcomeProjects, fastAndFuriousProjects] = await Promise.all([

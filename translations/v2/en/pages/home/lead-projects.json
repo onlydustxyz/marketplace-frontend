@@ -1,0 +1,13 @@
+{
+  "title": "Your projects",
+  "contributors": {
+    "zero": "No contributors",
+    "one": "1 contributor",
+    "many": "__count__ contributors"
+  },
+  "budget": {
+    "zero": "No budget",
+    "one": "1 USD left",
+    "many": "__count__ USD left"
+  }
+}

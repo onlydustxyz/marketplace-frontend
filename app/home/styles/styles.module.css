@@ -1,0 +1,86 @@
+.gridUnauthenticated {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "journey activity"
+    "trendyProjects trendyProjects";
+}
+
+.gridUnauthenticatedLg {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "journey"
+    "activity"
+    "trendyProjects";
+}
+
+.gridAuthenticated {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "profile rewards"
+    "leadProjects leadProjects"
+    "recommendedProjects recommendedProjects";
+}
+
+.gridAuthenticatedLg {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "profile"
+    "rewards"
+    "leadProjects"
+    "leadProjects"
+    "recommendedProjects";
+}
+
+.gridAuthenticatedWithJourney {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "profile rewards"
+    "leadProjects leadProjects"
+    "journey recommendedProjects";
+}
+
+.gridAuthenticatedWithJourneyLg {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "profile"
+    "rewards"
+    "leadProjects"
+    "journey"
+    "recommendedProjects";
+}
+
+.areaActivity{
+  grid-area: activity;
+}
+
+.areaJourney{
+  grid-area: journey;
+}
+
+.areaTrendyProjects{
+  grid-area: trendyProjects;
+}
+
+.areaProfile{
+  grid-area: profile;
+}
+
+.areaRewards{
+  grid-area: rewards;
+}
+
+.areaLeadProjects{
+  grid-area: leadProjects;
+}
+
+.areaRecommendedProjects{
+  grid-area: recommendedProjects;
+}
+
+

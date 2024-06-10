@@ -5,10 +5,11 @@ import { useKeenSlider } from "keen-slider/react";
 import { useState } from "react";
 
 import { SliderLoading } from "app/ecosystems/[ecosystemSlug]/features/languages/components/slider/slider.loading";
-import { Section } from "app/ecosystems/components/section/section";
 import { SliderStepper } from "app/ecosystems/components/slider-stepper/slider-stepper";
 
 import { viewportConfig } from "src/config";
+
+import { Section } from "components/layout/section/section";
 
 import { TSlider } from "./slider.types";
 

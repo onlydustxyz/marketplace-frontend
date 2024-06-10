@@ -6,7 +6,7 @@ import tags from "../tags";
 import { GetMyCommitteeAssignmentsResponse } from "../types";
 
 export function getMyCommitteeAssignments(committeeId: string): IFetchAdapater<GetMyCommitteeAssignmentsResponse> {
-  return new FetchAdapter<GetMyCommitteeAssignmentsResponse>(adapters.getMyCommitteeAssignments)
+  return new FetchAdapter<GetMyCommitteeAssignmentsResponse>(adapters.get_my_committee_assignments)
     .setPathParams({ committeeId })
     .setTag(tags.committee(committeeId));
 }
