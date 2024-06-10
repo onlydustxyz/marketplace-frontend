@@ -6,5 +6,6 @@ export default {
   committee: (committeeId: string) => `${apiResources.me}-committees-${committeeId}`,
   committee_project: (committeeId: string, projectId: string) =>
     `${apiResources.me}-committees-${committeeId}-${projectId}`,
+  my_rewards: () => createTag(apiResources.me, "my-rewards"),
   recommended_projects: () => createTag(apiResources.me, "recommended-projects"),
 };
