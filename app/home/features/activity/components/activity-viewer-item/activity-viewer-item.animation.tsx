@@ -1,4 +1,4 @@
-import { Variants, motion, useAnimation } from "framer-motion";
+import { LazyMotion, Variants, domAnimation, motion, useAnimation } from "framer-motion";
 import { useEffect, useMemo, useRef } from "react";
 import { useIsClient } from "usehooks-ts";
 
@@ -78,14 +78,16 @@ export function ActivityViewerItemAnimation({ data, index }: TActivityViewerItem
   };
 
   return (
-    <motion.div
-      variants={animate}
-      animate={controls}
-      transition={{ type: "spring", stiffness: 100 }}
-      initial={ActivityAnimationState.Hidden}
-      exit={ActivityAnimationState.Exit}
-    >
-      <ActivityViewerItem data={data} index={index} />
-    </motion.div>
+    <LazyMotion features={domAnimation}>
+      <motion.div
+        variants={animate}
+        animate={controls}
+        transition={{ type: "spring", stiffness: 100 }}
+        initial={ActivityAnimationState.Hidden}
+        exit={ActivityAnimationState.Exit}
+      >
+        <ActivityViewerItem data={data} index={index} />
+      </motion.div>
+    </LazyMotion>
   );
 }
