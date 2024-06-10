@@ -15,10 +15,8 @@ export function Activity(_: TActivity.Props) {
   return (
     <div className={cn("w-full", styles.areaActivity)}>
       <Section
-        iconProps={{ remixName: "ri-code-s-slash-line" }}
-        titleProps={{
-          children: "Activity",
-        }}
+        iconProps={{ remixName: "ri-fire-line" }}
+        titleProps={{ translate: { token: "v2.pages.home.activity.title" } }}
       >
         <Card background={"base"} className="h-[494px] overflow-hidden">
           <ClientOnly>

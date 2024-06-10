@@ -1,4 +1,5 @@
 {
+  "title": "Recent contributors activity",
   "actions": {
     "PULL_REQUEST": "merged a",
     "PULL_REQUEST_2": "Pull Request",
