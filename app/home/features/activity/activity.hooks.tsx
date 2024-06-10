@@ -4,32 +4,38 @@ import { useRef, useState } from "react";
 
 import { useRequestAnimationFrame } from "hooks/animations/use-request-animation-frame";
 
-type activityItem = { name: string; exit: boolean; enter: boolean; visible: boolean };
+export enum ActivityAnimationState {
+  Enter = "enter",
+  Exit = "exit",
+  Visible = "visible",
+  Hidden = "hidden",
+}
+type activityItem = { name: string; state: ActivityAnimationState };
 const MAX_ACTIVITY = 5;
 export function useActivity() {
   const stocks = useRef<activityItem[]>([
-    { name: "Activity6", exit: false, enter: false, visible: false },
-    { name: "Activity7", exit: false, enter: false, visible: false },
-    { name: "Activity8", exit: false, enter: false, visible: false },
-    { name: "Activity9", exit: false, enter: false, visible: false },
-    { name: "Activity10", exit: false, enter: false, visible: false },
+    { name: "Activity6", state: ActivityAnimationState.Enter },
+    { name: "Activity7", state: ActivityAnimationState.Enter },
+    { name: "Activity8", state: ActivityAnimationState.Enter },
+    { name: "Activity9", state: ActivityAnimationState.Enter },
+    { name: "Activity10", state: ActivityAnimationState.Enter },
   ]);
 
   const [activityItem, setActivityItem] = useState<activityItem[]>([
-    { name: "Activity1", exit: false, enter: false, visible: true },
-    { name: "Activity2", exit: false, enter: false, visible: true },
-    { name: "Activity3", exit: false, enter: false, visible: true },
-    { name: "Activity4", exit: false, enter: false, visible: true },
-    { name: "Activity5", exit: false, enter: false, visible: true },
+    { name: "Activity1", state: ActivityAnimationState.Enter },
+    { name: "Activity2", state: ActivityAnimationState.Enter },
+    { name: "Activity3", state: ActivityAnimationState.Enter },
+    { name: "Activity4", state: ActivityAnimationState.Enter },
+    { name: "Activity5", state: ActivityAnimationState.Enter },
   ]);
 
   const addActivityItem = () => {
     const newActivityItem = stocks.current.shift();
     if (newActivityItem) {
       setActivityItem(prev => {
-        const newActivity = [...prev.slice(0, MAX_ACTIVITY + 1)];
-        newActivity.unshift({ ...newActivityItem, enter: true, visible: true });
-        newActivity[MAX_ACTIVITY].exit = true;
+        const newActivity = [...prev.map(p => ({ ...p, state: ActivityAnimationState.Enter })).slice(0, MAX_ACTIVITY)];
+        newActivity.unshift(newActivityItem);
+        newActivity[MAX_ACTIVITY].state = ActivityAnimationState.Exit;
         return newActivity;
       });
     }
@@ -41,12 +47,12 @@ export function useActivity() {
       addActivityItem();
     },
     5000,
-    true
+    false
   );
 
   console.log("activityItem : ", activityItem, "stocks : ", stocks.current);
 
   return {
-    activity: "Activity",
+    items: activityItem,
   };
 }
