@@ -12,6 +12,7 @@ import { Profile } from "app/home/features/profile/profile";
 import { RecommendedProjects } from "app/home/features/recommended-projects/recommended-projects";
 import { RecommendedProjectsLoading } from "app/home/features/recommended-projects/recommended-projects.loading";
 import { Rewards } from "app/home/features/rewards/rewards";
+import { RewardsLoading } from "app/home/features/rewards/rewards.loading";
 import { TrendyProjects } from "app/home/features/trendy-projects/trendy-projects";
 import { TrendyProjectsLoading } from "app/home/features/trendy-projects/trendy-projects.loading";
 
@@ -32,7 +33,11 @@ export default function HomePage() {
 
           <RequiredAuthGuard>
             <Profile />
-            <Rewards />
+            <ErrorBoundary fallback={null}>
+              <Suspense fallback={<RewardsLoading />}>
+                <Rewards />
+              </Suspense>
+            </ErrorBoundary>
             <ErrorBoundary fallback={null}>
               <Suspense fallback={<LeadProjectsLoading />}>
                 <LeadProjects />
