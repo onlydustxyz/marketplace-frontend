@@ -67,9 +67,9 @@ export function Rewards(_: TRewards.Props) {
           selectionMode="single"
           hideHeader
           classNames={{
-            table: "h-full",
-            tbody: "h-full",
-            base: "h-full",
+            table: "max-h-full",
+            tbody: "max-h-full",
+            base: "max-h-full",
           }}
           TableBodyProps={{
             className: "h-full",
