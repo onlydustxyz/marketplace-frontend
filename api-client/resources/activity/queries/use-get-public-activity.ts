@@ -10,7 +10,7 @@ import { ReactQueryOptions } from "api-client/types/react-query-options";
 export const useGetPublicActivity = ({
   queryParams,
   pagination,
-  options,
+  options = {},
 }: {
   queryParams?: ActivityAllQueryParams;
   pagination?: PaginationInterface;
@@ -20,6 +20,6 @@ export const useGetPublicActivity = ({
 
   return useQuery<GetActivityPageResponse>({
     ...query,
-    ...(options || {}),
+    ...options,
   });
 };

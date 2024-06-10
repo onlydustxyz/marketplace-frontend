@@ -6,7 +6,6 @@ import { TActivityContent } from "app/home/features/activity/components/activity
 import { AvailableConversion } from "src/components/Currency/AvailableConversion";
 
 import { Avatar } from "components/ds/avatar/avatar";
-import { Card } from "components/ds/card/card";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 
@@ -112,9 +111,5 @@ export function ActivityViewerItem({ data }: TActivityViewerItem.Props) {
     return undefined;
   }, [data]);
 
-  return (
-    <Card border={"light"} background={"light"} className="!p-5">
-      {ContentProps ? <ActivityContent {...ContentProps} /> : null}
-    </Card>
-  );
+  return ContentProps ? <ActivityContent {...ContentProps} /> : null;
 }

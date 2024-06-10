@@ -1,6 +1,5 @@
 import { LazyMotion, Variants, domAnimation, motion, useAnimation } from "framer-motion";
 import { useEffect, useMemo, useRef } from "react";
-import { useIsClient } from "usehooks-ts";
 
 import { ActivityAnimationState } from "app/home/features/activity/activity.hooks";
 import { ActivityViewerItem } from "app/home/features/activity/components/activity-viewer-item/activity-viewer-item";
@@ -9,7 +8,6 @@ import { TActivityViewerItem } from "./activity-viewer-item.types";
 
 export function ActivityViewerItemAnimation({ data, index }: TActivityViewerItem.Props) {
   const { state } = data;
-  const isClientOnly = useIsClient();
   const controls = useAnimation();
   const delay = useMemo(() => index * 0.1, [index]);
   const transition = useMemo(
@@ -22,8 +20,8 @@ export function ActivityViewerItemAnimation({ data, index }: TActivityViewerItem
   const storedIndex = useRef(index);
 
   useEffect(() => {
-    controls.set(ActivityAnimationState.Hidden);
-  }, [isClientOnly]);
+    controls?.set(ActivityAnimationState.Hidden);
+  }, [controls]);
 
   useEffect(() => {
     if (index !== storedIndex.current) {
