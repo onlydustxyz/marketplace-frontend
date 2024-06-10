@@ -34,3 +34,7 @@ type MyRewardsPageResponse = components["schemas"]["MyRewardsPageResponse"];
 export interface GetMyRewardsPageResponse extends MyRewardsPageResponse {}
 
 export type MyRewards = components["schemas"]["MyRewardPageItemResponse"];
+
+// Recommended Projects
+
+export type GetRecommendedProjectsPageResponse = components["schemas"]["RecommendedProjectsPageResponse"];

@@ -4,7 +4,7 @@ export namespace TContributionItem {
   interface Project {
     name: string;
     slug: string;
-    logoUrl: string;
+    logoUrl?: string;
   }
   export interface Props {
     project: Project;

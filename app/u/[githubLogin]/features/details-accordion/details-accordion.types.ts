@@ -11,7 +11,7 @@ export namespace TDetailsAccordion {
     id: string;
     name: string;
     slug: string;
-    logoUrl: string;
+    logoUrl?: string;
   }
 
   export interface Detail {

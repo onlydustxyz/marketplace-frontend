@@ -1,5 +1,7 @@
 import { EcosystemProject } from "api-client/resources/ecosystems/types";
 
+import { TProjectListItem } from "components/ds/project-list-item/project-list-item.types";
+
 export namespace TMoreProject {
   export interface MoreProjectSectionProps {
     ecosystemSlug: string;
@@ -18,7 +20,7 @@ export namespace TMoreProject {
   }
   export interface MoreProjectProps {
     className?: string;
-    projects: EcosystemProject[];
+    projects: TProjectListItem.Project[];
     hasMore: boolean;
     tag: TagUnion;
     ecosystemSlug: string;

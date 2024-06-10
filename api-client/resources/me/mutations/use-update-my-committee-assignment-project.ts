@@ -17,7 +17,7 @@ export const useUpdateCommitteeProjectApplication = ({ committeeId, projectId }:
     ...mutation,
     onSuccess: () => {
       invalidateQuery(tags.committee(committeeId));
-      invalidateQuery(tags.committeeProject(committeeId, projectId));
+      invalidateQuery(tags.committee_project(committeeId, projectId));
     },
   });
 };
