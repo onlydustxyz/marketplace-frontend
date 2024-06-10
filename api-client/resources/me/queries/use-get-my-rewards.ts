@@ -7,7 +7,13 @@ import { ReactQueryOptions } from "api-client/types/react-query-options";
 
 import { GetMyRewardsPageResponse, MyRewardsQueryParams } from "../types";
 
-export function useGetMyRewards(queryParams: MyRewardsQueryParams, options?: ReactQueryOptions) {
+export function useGetMyRewards({
+  queryParams,
+  options,
+}: {
+  queryParams: MyRewardsQueryParams;
+  options?: ReactQueryOptions;
+}) {
   const query = useReactInfiniteQueryAdapter<GetMyRewardsPageResponse>(getMyRewards({ queryParams }), options);
 
   return useSuspenseInfiniteQuery<GetMyRewardsPageResponse>(query);

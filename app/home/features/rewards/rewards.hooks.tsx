@@ -18,15 +18,10 @@ export function useMyRewardsTable() {
   const { T } = useIntl();
   const router = useRouter();
 
-  const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } = meApiClient.queries.useGetMyRewards(
-    {
-      status: "PENDING_REQUEST",
-      direction: "DESC",
-    },
-    {
-      pageSize: "3",
-    }
-  );
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } = meApiClient.queries.useGetMyRewards({
+    queryParams: { status: "PENDING_REQUEST", direction: "DESC" },
+    options: { pageSize: "3" },
+  });
 
   const flattenRewards = data?.pages.flatMap(({ rewards }) => rewards) ?? [];
 
