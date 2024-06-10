@@ -12,8 +12,13 @@ export const iconTagVariants = tv({
       true: "border-2 border-spacePurple-500 bg-spacePurple-900",
       false: "border-greyscale-50/12",
     },
+    size: {
+      s: "h-6 w-6",
+      m: "h-7 w-7",
+    },
   },
   defaultVariants: {
     active: false,
+    size: "m",
   },
 });
