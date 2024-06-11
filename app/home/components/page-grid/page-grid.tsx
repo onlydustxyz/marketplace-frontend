@@ -10,15 +10,18 @@ import styles from "app/home/styles/styles.module.css";
 import { viewportConfig } from "src/config";
 import { cn } from "src/utils/cn";
 
+import { useClientOnly } from "components/layout/client-only/client-only";
+
 import { TPageGrid } from "./page-grid.types";
 
 export function PageGrid({ children }: TPageGrid.Props) {
   const isLg = useMediaQuery(`(max-width: ${viewportConfig.breakpoints.lg}px)`);
   const { isAuthenticated } = useAuth0();
   const showJourney = useJourney();
+  const isClient = useClientOnly();
 
   const classes = useMemo(() => {
-    if (isLg) {
+    if (isLg && isClient) {
       return {
         authenticatedWithJourney: styles.gridAuthenticatedWithJourneyLg,
         authenticated: styles.gridAuthenticatedLg,
@@ -31,7 +34,7 @@ export function PageGrid({ children }: TPageGrid.Props) {
       authenticated: styles.gridAuthenticated,
       unauthenticated: styles.gridUnauthenticated,
     };
-  }, [isLg]);
+  }, [isLg, isClient]);
 
   const templateArea = useMemo(() => {
     if (isAuthenticated) {
@@ -39,7 +42,7 @@ export function PageGrid({ children }: TPageGrid.Props) {
       return classes.authenticated;
     }
     return classes.unauthenticated;
-  }, [isAuthenticated, showJourney, classes]);
+  }, [isAuthenticated, showJourney, classes, isLg]);
 
   return <div className={cn("px w-full gap-x-6 gap-y-12 py-8", templateArea)}>{children}</div>;
 }
