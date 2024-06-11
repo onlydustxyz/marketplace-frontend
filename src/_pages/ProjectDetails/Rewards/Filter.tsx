@@ -65,7 +65,7 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
   const orderedCurrencies = useCurrenciesOrder({ currencies: projectBudget?.budgets });
 
   const [filtersStorage, setFiltersStorage] = useLocalStorage(
-    `project-rewards-table-filters-${slug}-v3-0-0`,
+    `project-rewards-table-filters-${slug}-v4-0-0`,
     JSON.stringify(initialFilters)
   );
 
