@@ -15,7 +15,7 @@ export enum ActivityAnimationState {
 export interface ActivityItem extends GetActivityItem {
   state: ActivityAnimationState;
 }
-const MAX_ACTIVITY = 5;
+const MAX_ACTIVITY = 4;
 
 export function useActivity() {
   const keys = useRef<string[]>([]);
