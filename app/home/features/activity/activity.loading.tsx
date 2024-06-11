@@ -9,7 +9,7 @@ export function ActivityLoading() {
   return (
     <div className={cn("w-full", styles.areaActivity)}>
       <SectionLoading>
-        <SkeletonEl width="100%" height="494px" variant="rounded" />
+        <SkeletonEl width="100%" height="404px" variant="rounded" />
       </SectionLoading>
     </div>
   );

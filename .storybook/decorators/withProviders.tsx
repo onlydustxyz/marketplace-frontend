@@ -2,7 +2,7 @@
 import { StoryFn } from "@storybook/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-import { Stacks } from "src/App/Stacks/Stacks";
+import { Stacks } from "src/App/Stacks/Stacks.components";
 import { SidePanelProvider } from "src/hooks/useSidePanel";
 import { SidePanelStackProvider } from "src/hooks/useSidePanelStack";
 import { ToasterProvider } from "src/hooks/useToaster";
