@@ -29,7 +29,7 @@ export function JourneyPublic() {
     handleLoginWithRedirect(loginWithRedirect);
   }
 
-  const blogUrl = process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX ?? "";
+  const blogUrl = process.env.NEXT_PUBLIC_OD_BLOG_COMMUNITY_TIP ?? "";
 
   return (
     <div className={cn("flex w-full flex-col gap-8", styles.areaJourney)}>
