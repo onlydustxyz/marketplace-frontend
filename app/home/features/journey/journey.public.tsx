@@ -15,15 +15,23 @@ import { Card } from "components/ds/card/card";
 import { IconTag } from "components/ds/icon-tag/icon-tag";
 import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
 import { BaseLink } from "components/layout/base-link/base-link";
+import { Icon } from "components/layout/icon/icon";
 import { Section } from "components/layout/section/section";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
+import { useIntl } from "hooks/translate/use-translate";
+
 export function JourneyPublic(_: TJourney.JourneyPublicProps) {
   const { loginWithRedirect } = useAuth0();
+  const { T } = useIntl();
   function handleLogin() {
     handleLoginWithRedirect(loginWithRedirect);
   }
+
+  const blogUrl =
+    "https://blog.onlydust.com/how-starknet-can-help-provide-real-world-solutions-starting-with-decentralized-financial-solutions/";
+
   return (
     <div className={cn("flex w-full flex-col gap-8", styles.areaJourney)}>
       <Section
@@ -57,6 +65,23 @@ export function JourneyPublic(_: TJourney.JourneyPublicProps) {
             token: "v2.pages.home.journey.learnMore.title",
           },
         }}
+        rightContent={
+          <>
+            <BaseLink href={blogUrl} className="hidden gap-1 text-spacePurple-500 sm:flex">
+              <Typography translate={{ token: "v2.pages.home.journey.learnMore.readBlog" }} variant="body-s-bold" />
+              <Icon remixName="ri-arrow-right-s-line" size={16} />
+            </BaseLink>
+            <BaseLink
+              href={blogUrl}
+              className={"block sm:hidden"}
+              title={T("v2.pages.home.journey.learnMore.readBlog")}
+            >
+              <Button variant={"secondary"} size={"s"} iconOnly>
+                <Icon remixName={"ri-exchange-dollar-line"} />
+              </Button>
+            </BaseLink>
+          </>
+        }
         classNames={{
           section: "hidden md:flex",
         }}
@@ -75,7 +100,7 @@ export function JourneyPublic(_: TJourney.JourneyPublicProps) {
               translate={{ token: "v2.pages.home.journey.learnMore.description" }}
               className="text-spaceBlue-200"
             />
-            <BaseLink href="https://blog.onlydust.com/how-starknet-can-help-provide-real-world-solutions-starting-with-decentralized-financial-solutions/">
+            <BaseLink href={blogUrl}>
               <Button variant="secondary" size="s">
                 <Translate token="v2.pages.home.journey.learnMore.buttonLabel" />
               </Button>
