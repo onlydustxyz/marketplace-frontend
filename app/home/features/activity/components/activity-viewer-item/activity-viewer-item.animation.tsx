@@ -46,7 +46,8 @@ export function ActivityViewerItemAnimation({ data, index, lastElement }: TActiv
     [ActivityAnimationState.Hidden]: () => ({
       opacity: 0,
       y: -20,
-      scale: 1.1,
+      scale: 1.2,
+      maxHeight: 0,
       transition: {
         delay,
         ...transition,
@@ -64,6 +65,7 @@ export function ActivityViewerItemAnimation({ data, index, lastElement }: TActiv
     [ActivityAnimationState.Enter]: () => ({
       opacity: 1,
       y: 0,
+      maxHeight: "120px",
       x: 0,
       scale: 1,
       transition: {
