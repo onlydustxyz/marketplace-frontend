@@ -72,16 +72,19 @@ export function JourneyPrivate(_: TJourney.JourneyPrivateProps) {
   const { data, isLoading } = meApiClient.queries.useGetMyJourney({});
 
   const steps = useMemo(() => {
+    if (!data) return [];
     return [
-      { stepName: "step1", completion: data.individualBillingProfileSetup },
-      { stepName: "step2", completion: data.firstContributionMade },
-      { stepName: "step3", completion: data.firstRewardClaimed },
-      { stepName: "step4", completion: data.descriptionUpdated },
-      { stepName: "step5", completion: data.telegramAdded },
+      { stepName: "step1", completion: data?.individualBillingProfileSetup },
+      { stepName: "step2", completion: data?.firstContributionMade },
+      { stepName: "step3", completion: data?.firstRewardClaimed },
+      { stepName: "step4", completion: data?.descriptionUpdated },
+      { stepName: "step5", completion: data?.telegramAdded },
     ];
   }, [data]);
 
-  if (!data && !isLoading) return null;
+  if (isLoading) return null;
+
+  if (!data) return null;
 
   return (
     <div className={cn("w-full", styles.areaJourney)}>

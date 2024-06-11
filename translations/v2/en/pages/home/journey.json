@@ -22,5 +22,15 @@
       "title": "Update your contact methods.",
       "description": "Make sure that you’re reachable through multiple accounts."
     }
+  },
+  "public": {
+    "subtitle": "Sign-up and create your account",
+    "description": "Get access to more than 500 projects to contribute."
+  },
+  "learnMore": {
+    "title": "Learn more about Onlydust",
+    "subtitle": "“I don’t know where to start.” Sound familiar? Read on.",
+    "description": "When asking contributors what the most challenging thing for them was when starting out on their open source journey, we started to notice some common frustrations that many have faced at some point or another.",
+    "buttonLabel": "Read more"
   }
 }

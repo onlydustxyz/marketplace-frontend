@@ -1,5 +1,3 @@
-import { PropsWithChildren } from "react";
-
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 
 import { NEXT_ROUTER } from "constants/router";
@@ -9,7 +7,9 @@ export namespace TJourney {
     stepName: string;
     completion: boolean;
   }
-  export interface JourneyPrivateProps extends PropsWithChildren {}
+  export interface JourneyPrivateProps {}
+
+  export interface JourneyPublicProps {}
 
   export const stepMapping: Record<string, { icon: RemixIconsName; link: string }> = {
     step1: {
