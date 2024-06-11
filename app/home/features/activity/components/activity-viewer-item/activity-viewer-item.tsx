@@ -74,13 +74,6 @@ export function ActivityViewerItem({ data, lastElement }: TActivityViewerItem.Pr
         from: recipient.login,
         action: <Translate token={"v2.pages.home.activity.actions.REWARD_CLAIMED"} />,
         to: (
-          <Avatar.Labelled avatarProps={{ src: project.logoUrl, shape: "square", size: "xs" }}>
-            {project.name}
-          </Avatar.Labelled>
-        ),
-        badge: <Icon remixName="ri-medal-2-fill" className="text-spaceBlue-400" size={20} />,
-        timestamp: data.timestamp,
-        details: (
           <AvailableConversion
             currency={{
               currency: amount.currency,
@@ -88,6 +81,13 @@ export function ActivityViewerItem({ data, lastElement }: TActivityViewerItem.Pr
               dollar: undefined,
             }}
           />
+        ),
+        badge: <Icon remixName="ri-medal-2-fill" className="text-spaceBlue-400" size={20} />,
+        timestamp: data.timestamp,
+        details: (
+          <Avatar.Labelled avatarProps={{ src: project.logoUrl, shape: "square", size: "xs" }}>
+            {project.name}
+          </Avatar.Labelled>
         ),
       };
     }
