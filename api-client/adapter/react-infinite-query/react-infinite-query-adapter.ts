@@ -20,8 +20,7 @@ export const useReactInfiniteQueryAdapter = <T extends BaseResponse>(
 
   return infiniteQueryOptions<T>({
     queryKey: fetcher.tag ? [fetcher.tag] : [],
-    queryFn: ({ pageParam = 0 }) =>
-      fetcher.setParams({ pageIndex: `${pageParam}`, pageSize: options?.pageSize || "10" }).request(),
+    queryFn: ({ pageParam = 0 }) => fetcher.setParams({ pageIndex: `${pageParam}` }).request(),
     initialPageParam: 0,
     getNextPageParam: lastPage => (lastPage?.hasMore ? lastPage.nextPageIndex : undefined),
     select: data => {

@@ -52,7 +52,14 @@ export default function HomePage() {
             </ErrorBoundary>
           </RequiredAuthGuard>
 
-          <RequiredUnauthGuard>
+          <RequiredUnauthGuard
+            fallback={
+              <>
+                <TrendyProjectsLoading />
+                <ActivityLoading />
+              </>
+            }
+          >
             <ErrorBoundary fallback={null}>
               <Suspense fallback={<JourneyLoading />}>
                 <JourneyPublic />

@@ -51,52 +51,52 @@ export function BurgerMenu() {
       </Button>
 
       <SidePanel withBackdrop open={panelOpen} setOpen={setPanelOpen} hasCloseButton={false} placement="bottom">
-        <div className="flex flex-col bg-whiteFakeOpacity-5 p-3 font-walsheim text-sm">
+        <div className="flex flex-col divide-y divide-greyscale-50/8 bg-whiteFakeOpacity-5 p-3 font-walsheim text-sm">
           {!props.hideProfileItems && (
             <>
-              <div>
-                {githubUserId ? (
-                  <BaseLink
-                    href={redirection}
-                    onClick={() => setPanelOpen(false)}
-                    className="flex w-full items-center gap-2 rounded-md px-3 py-4"
-                  >
-                    {avatarUrl ? (
-                      <img className="h-7 w-7 rounded-full" src={avatarUrl} loading="lazy" alt={login} />
-                    ) : null}
+              {githubUserId || sponsors.length ? (
+                <div>
+                  {githubUserId ? (
+                    <BaseLink
+                      href={redirection}
+                      onClick={() => setPanelOpen(false)}
+                      className="flex w-full items-center gap-2 rounded-md px-3 py-4"
+                    >
+                      {avatarUrl ? (
+                        <img className="h-7 w-7 rounded-full" src={avatarUrl} loading="lazy" alt={login} />
+                      ) : null}
 
-                    <Flex direction="col" alignItems="start" className="gap-px">
-                      <Typography variant="title-s" className="text-sm leading-4">
-                        {login}
-                      </Typography>
+                      <Flex direction="col" alignItems="start" className="gap-px">
+                        <Typography variant="title-s" className="text-sm leading-4">
+                          {login}
+                        </Typography>
 
-                      <Typography
-                        variant="body-m"
-                        translate={{
-                          token: labelToken,
-                        }}
-                        className={cn("text-spaceBlue-200", {
-                          "text-orange-500": errorColor === TUseMenu.ERROR_COLORS.WARNING,
-                          "text-github-red": errorColor === TUseMenu.ERROR_COLORS.ERROR,
-                        })}
-                      />
-                    </Flex>
-                  </BaseLink>
-                ) : null}
+                        <Typography
+                          variant="body-m"
+                          translate={{
+                            token: labelToken,
+                          }}
+                          className={cn("text-spaceBlue-200", {
+                            "text-orange-500": errorColor === TUseMenu.ERROR_COLORS.WARNING,
+                            "text-github-red": errorColor === TUseMenu.ERROR_COLORS.ERROR,
+                          })}
+                        />
+                      </Flex>
+                    </BaseLink>
+                  ) : null}
 
-                {sponsors.length ? (
-                  <BaseLink
-                    href={NEXT_ROUTER.sponsor.details.root(sponsors[0].id)}
-                    onClick={() => setPanelOpen(false)}
-                    className="flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8"
-                  >
-                    <Icon remixName="ri-service-line" size={20} />
-                    <Translate token="v2.features.menu.sponsoring" />
-                  </BaseLink>
-                ) : null}
-
-                <span className="my-1 block h-px bg-greyscale-50/8" />
-              </div>
+                  {sponsors.length ? (
+                    <BaseLink
+                      href={NEXT_ROUTER.sponsor.details.root(sponsors[0].id)}
+                      onClick={() => setPanelOpen(false)}
+                      className="flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8"
+                    >
+                      <Icon remixName="ri-service-line" size={20} />
+                      <Translate token="v2.features.menu.sponsoring" />
+                    </BaseLink>
+                  ) : null}
+                </div>
+              ) : null}
 
               <div>
                 <BaseLink
@@ -147,8 +147,6 @@ export function BurgerMenu() {
                     <Translate token="v2.features.menu.rewards" />
                   </BaseLink>
                 ) : null}
-
-                <span className="my-1 block h-px bg-greyscale-50/8" />
               </div>
             </>
           )}
@@ -181,8 +179,6 @@ export function BurgerMenu() {
               <Icon remixName="ri-lock-line" size={20} />
               <Translate token="v2.features.menu.privacy" />
             </button>
-
-            <span className="my-1 block h-px bg-greyscale-50/8" />
           </div>
 
           {githubUserId ? (

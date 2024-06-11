@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 
 import { useMyRewardsTable } from "app/home/features/rewards/rewards.hooks";
@@ -26,12 +25,7 @@ import { TRewards } from "./rewards.types";
 
 export function Rewards(_: TRewards.Props) {
   const { T } = useIntl();
-  const router = useRouter();
   const { columns, rows, infiniteQuery, onRowAction } = useMyRewardsTable();
-
-  function handleClick() {
-    router.push(NEXT_ROUTER.rewards.all);
-  }
 
   const renderContent = useMemo(() => {
     if (!rows.length) {
@@ -46,7 +40,7 @@ export function Rewards(_: TRewards.Props) {
           <div className="flex flex-1 flex-col gap-4">
             <Typography translate={{ token: "v2.pages.home.rewards.emptyState.title" }} variant="title-m" />
             <Typography translate={{ token: "v2.pages.home.rewards.emptyState.subtitle" }} variant="body-s-bold" />
-            <Button size="s" onClick={handleClick}>
+            <Button size="s" as="a" href={NEXT_ROUTER.projects.all}>
               <Icon remixName="ri-sparkling-line" size={16} />
               <Typography translate={{ token: "v2.pages.home.rewards.emptyState.action" }} variant="body-s-bold" />
             </Button>
@@ -67,9 +61,9 @@ export function Rewards(_: TRewards.Props) {
           selectionMode="single"
           hideHeader
           classNames={{
-            table: "h-full",
-            tbody: "h-full",
-            base: "h-full",
+            table: "max-h-full",
+            tbody: "max-h-full",
+            base: "max-h-full",
           }}
           TableBodyProps={{
             className: "h-full",
@@ -95,14 +89,21 @@ export function Rewards(_: TRewards.Props) {
           },
         }}
         rightContent={
-          <BaseLink href={NEXT_ROUTER.rewards.all} className="flex gap-1">
-            <Typography
-              className="text-spacePurple-500"
-              translate={{ token: "v2.pages.home.rewards.seeAllRewards" }}
-              variant="body-s-bold"
-            />
-            <Icon remixName="ri-arrow-right-s-line" className="text-spacePurple-500" size={16} />
-          </BaseLink>
+          <>
+            <BaseLink href={NEXT_ROUTER.rewards.all} className="hidden gap-1 text-spacePurple-500 sm:flex">
+              <Typography translate={{ token: "v2.pages.home.rewards.seeAllRewards" }} variant="body-s-bold" />
+              <Icon remixName="ri-arrow-right-s-line" size={16} />
+            </BaseLink>
+            <BaseLink
+              href={NEXT_ROUTER.rewards.all}
+              className={"block sm:hidden"}
+              title={T("v2.pages.home.rewards.seeAllRewards")}
+            >
+              <Button variant={"secondary"} size={"s"} iconOnly>
+                <Icon remixName={"ri-exchange-dollar-line"} />
+              </Button>
+            </BaseLink>
+          </>
         }
         classNames={{
           section: "h-full",
