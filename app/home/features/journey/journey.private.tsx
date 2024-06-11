@@ -4,6 +4,7 @@ import { meApiClient } from "api-client/resources/me";
 import { useMemo } from "react";
 
 import { JourneyItem } from "app/home/features/journey/components/journey-item";
+import { JourneyPrivateLoading } from "app/home/features/journey/journey.private.loading";
 import styles from "app/home/styles/styles.module.css";
 
 import { cn } from "src/utils/cn";
@@ -27,7 +28,7 @@ export function JourneyPrivate() {
     ];
   }, [data]);
 
-  if (isLoading) return null;
+  if (isLoading) return <JourneyPrivateLoading />;
 
   if (!data) return null;
 

@@ -5,7 +5,6 @@ import { PageGrid } from "app/home/components/page-grid/page-grid";
 import { Activity } from "app/home/features/activity/activity";
 import { ActivityLoading } from "app/home/features/activity/activity.loading";
 import { JourneyPrivate } from "app/home/features/journey/journey.private";
-import { JourneyPrivateLoading } from "app/home/features/journey/journey.private.loading";
 import { JourneyPublic } from "app/home/features/journey/journey.public";
 import { JourneyPublicLoading } from "app/home/features/journey/journey.public.loading";
 import { LeadProjects } from "app/home/features/lead-projects/lead-projects";
@@ -29,13 +28,7 @@ export default function HomePage() {
       <Container>
         <PosthogOnMount eventName={"home_dashboard_viewed"} />
         <PageGrid>
-          <RequiredAuthGuard
-            fallback={
-              <>
-                <JourneyPrivateLoading />
-              </>
-            }
-          >
+          <RequiredAuthGuard>
             <Profile />
             <JourneyPrivate />
             <ErrorBoundary fallback={null}>
