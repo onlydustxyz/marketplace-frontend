@@ -10,6 +10,7 @@ import styles from "app/home/styles/styles.module.css";
 import { viewportConfig } from "src/config";
 import { cn } from "src/utils/cn";
 
+import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
 import { Table } from "components/ds/table/table";
 import { BaseLink } from "components/layout/base-link/base-link";
