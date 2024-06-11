@@ -11,11 +11,11 @@ export namespace TJourney {
   export const stepMapping: Record<string, { icon: RemixIconsName; link: string }> = {
     step1: {
       icon: "ri-building-line",
-      link: NEXT_ROUTER.settings.all,
+      link: NEXT_ROUTER.settings.payoutPreferences,
     },
     step2: {
       icon: "ri-stack-line",
-      link: NEXT_ROUTER.contributions.all,
+      link: NEXT_ROUTER.projects.allWithParams({ hasGoodFirstIssues: "true" }),
     },
     step3: {
       icon: "ri-medal-2-fill",
