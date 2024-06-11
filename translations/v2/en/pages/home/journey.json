@@ -1,0 +1,38 @@
+{
+  "title": "Start your journey now",
+  "progressPercentage": "__count__%",
+  "steps": {
+    "step1": {
+      "title": "Set up your personal billing profile.",
+      "description": "Verify your personal information and provide your document ID."
+    },
+    "step2": {
+      "title": "Complete your first contribution.",
+      "description": "Even if it’s not rewarded, we value your work on your profile."
+    },
+    "step3": {
+      "title": "Claim your first reward",
+      "description": "Go to your reward page and follow the 2 min process."
+    },
+    "step4": {
+      "title": "Update your description",
+      "description": "To help others find out who you really are."
+    },
+    "step5": {
+      "title": "Update your contact methods.",
+      "description": "Make sure that you’re reachable through multiple accounts."
+    }
+  },
+  "public": {
+    "subtitle": "Sign-up and create your account",
+    "description": "Get access to more than 500 projects to contribute to."
+  },
+  "learnMore": {
+    "title": "Learn more about Onlydust",
+    "subtitle": "“I don’t know where to start.” Sound familiar? Read on.",
+    "description": "When asking contributors what the most challenging thing for them was when starting out on their open source journey, we started to notice some common frustrations that many have faced at some point or another.",
+    "buttonLabel": "Read more",
+    "readBlog": "Read blog",
+    "imageAlt": "Onlydust community tips"
+  }
+}

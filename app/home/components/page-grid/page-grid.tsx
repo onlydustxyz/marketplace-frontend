@@ -16,7 +16,7 @@ import { TPageGrid } from "./page-grid.types";
 export function PageGrid({ children }: TPageGrid.Props) {
   const isLg = useClientMediaQuery(`(max-width: ${viewportConfig.breakpoints.lg}px)`);
   const { isAuthenticated } = useAuth0();
-  const showJourney = useJourney();
+  const { completed: journeyCompleted, isLoading: isLoadingJourney } = useJourney();
 
   const classes = useMemo(() => {
     if (isLg) {
@@ -36,11 +36,11 @@ export function PageGrid({ children }: TPageGrid.Props) {
 
   const templateArea = useMemo(() => {
     if (isAuthenticated) {
-      if (showJourney) return classes.authenticatedWithJourney;
+      if (!journeyCompleted) return classes.authenticatedWithJourney;
       return classes.authenticated;
     }
     return classes.unauthenticated;
-  }, [isAuthenticated, showJourney, classes, isLg]);
+  }, [isAuthenticated, journeyCompleted, isLoadingJourney, classes, isLg]);
 
   return <div className={cn("px w-full gap-x-6 gap-y-12 py-8", templateArea)}>{children}</div>;
 }
