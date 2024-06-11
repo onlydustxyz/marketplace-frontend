@@ -2,6 +2,7 @@
 
 import { useAuth0 } from "@auth0/auth0-react";
 import Image from "next/image";
+import process from "process";
 import odCommunityTips from "public/images/od-community-tips.png";
 
 import { TJourney } from "app/home/features/journey/journey.types";
@@ -29,8 +30,7 @@ export function JourneyPublic(_: TJourney.JourneyPublicProps) {
     handleLoginWithRedirect(loginWithRedirect);
   }
 
-  const blogUrl =
-    "https://blog.onlydust.com/how-starknet-can-help-provide-real-world-solutions-starting-with-decentralized-financial-solutions/";
+  const blogUrl = process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX ?? "";
 
   return (
     <div className={cn("flex w-full flex-col gap-8", styles.areaJourney)}>

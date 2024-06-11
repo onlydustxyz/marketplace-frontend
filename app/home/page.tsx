@@ -29,13 +29,15 @@ export default function HomePage() {
       <Container>
         <PosthogOnMount eventName={"home_dashboard_viewed"} />
         <PageGrid>
-          <RequiredAuthGuard>
+          <RequiredAuthGuard
+            fallback={
+              <>
+                <JourneyPrivateLoading />
+              </>
+            }
+          >
             <Profile />
-            <ErrorBoundary fallback={null}>
-              <Suspense fallback={<JourneyPrivateLoading />}>
-                <JourneyPrivate />
-              </Suspense>
-            </ErrorBoundary>
+            <JourneyPrivate />
             <ErrorBoundary fallback={null}>
               <Suspense fallback={<RewardsLoading />}>
                 <Rewards />

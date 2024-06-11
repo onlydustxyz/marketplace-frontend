@@ -5,6 +5,6 @@ export function useJourney() {
   return {
     isLoading,
     isError,
-    completed: data?.completed,
+    completed: data?.completed || false,
   };
 }
