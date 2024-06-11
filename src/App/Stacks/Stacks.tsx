@@ -1,35 +1,21 @@
 "use client";
 
-import { ComponentProps } from "react";
-
-import { ContributionDetail } from "src/App/Stacks/ContributionDetail/ContributionDetail";
-import { FeedbackPanel } from "src/App/Stacks/FeedbackPanel/FeedbackPanel";
-import RewardSidePanel, { RewardSidePanelAsLeader } from "src/App/Stacks/RewardSidePanel";
-import { VerifySidePanel } from "src/App/Stacks/VerifySidePanel/VerifySidePanel";
+import { TVerifySidePanel } from "src/App/Stacks/VerifySidePanel/VerifySidePanel.types";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import EyeLine from "src/icons/EyeLine";
 import GithubLogo from "src/icons/GithubLogo";
-import { RegisterStack, useCloseAllStack, useStackNavigation } from "src/libs/react-stack";
+import { useCloseAllStack, useStackNavigation } from "src/libs/react-stack";
 import { StacksParams } from "src/libs/react-stack/types/Stack";
 
-import { BillingCreateStack } from "components/features/stacks/billing-create-stack/billing-create-stack";
 import { TBillingCreateStack } from "components/features/stacks/billing-create-stack/billing-create-stack.types";
-import { BillingInviteTeamMember } from "components/features/stacks/billing-invite-team-member/billing-invite-team-member";
 import { TBillingInviteTeamMember } from "components/features/stacks/billing-invite-team-member/billing-invite-team-member.types";
-import { MandateDetailStack } from "components/features/stacks/payments-flow/mandate-detail-stack/mandate-detail-stack";
-import { RequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks";
 import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks.types";
-import { SponsorProjectStack } from "components/features/stacks/sponsor-project-stack/sponsor-project-stack";
 import { TSponsorProjectStack } from "components/features/stacks/sponsor-project-stack/sponsor-project-stack.types";
 import { BaseLink } from "components/layout/base-link/base-link";
 
 import { NEXT_ROUTER } from "constants/router";
 
 import { useIntl } from "hooks/translate/use-translate";
-
-import ClaimSidePanel from "./GithubWorkflow/ClaimSidePanel/ClaimSidePanel";
-import TutorialSidePanel from "./GithubWorkflow/TutorialSidePanel/TutorialSidePanel";
-import { ProjectOverviewSidePanel } from "./ProjectOverviewSidePanel/ProjectOverviewSidePanel";
 
 export enum StackRoute {
   ProjectOverview = "project-overview",
@@ -68,56 +54,9 @@ export interface StackRouterParams {
   GithubWorkflowClaim: {
     projectSlug: string;
   };
-  Verify: ComponentProps<typeof VerifySidePanel>;
-  SponsorProject: ComponentProps<typeof SponsorProjectStack>;
+  Verify: TVerifySidePanel.Props;
+  SponsorProject: TSponsorProjectStack.Props;
 }
-
-export const Stacks = () => {
-  return (
-    <>
-      <RegisterStack<StackRouterParams["ProjectLeaderReward"]> name={StackRoute.ProjectLeaderReward}>
-        {({ params }) => <RewardSidePanelAsLeader {...params} />}
-      </RegisterStack>
-      <RegisterStack<StackRouterParams["Reward"]> name={StackRoute.Reward}>
-        {({ params }) => <RewardSidePanel {...params} />}
-      </RegisterStack>
-      <RegisterStack<StackRouterParams["Contribution"]> name={StackRoute.Contribution}>
-        {({ params }) => <ContributionDetail {...params} />}
-      </RegisterStack>
-      <RegisterStack<StackRouterParams["GithubWorkflowClaim"]> name={StackRoute.GithubWorkflowClaim}>
-        {({ params }) => <ClaimSidePanel {...params} />}
-      </RegisterStack>
-      <RegisterStack<StackRouterParams["ProjectOverview"]> name={StackRoute.ProjectOverview}>
-        {({ params }) => <ProjectOverviewSidePanel {...params} />}
-      </RegisterStack>
-      <RegisterStack name={StackRoute.GithubWorkflowTutorial}>{() => <TutorialSidePanel />}</RegisterStack>
-      <RegisterStack<TBillingCreateStack.Props> name={StackRoute.BillingCreate}>
-        {({ params }) => <BillingCreateStack {...params} />}
-      </RegisterStack>
-      <RegisterStack<StackRouterParams["Verify"]>
-        name={StackRoute.Verify}
-        option={{
-          panel: {
-            theme: "light",
-          },
-        }}
-      >
-        {({ params }) => <VerifySidePanel {...params} />}
-      </RegisterStack>
-      <RegisterStack<TRequestPaymentsStacks.Props> name={StackRoute.RequestPayments}>
-        {({ params }) => <RequestPaymentsStacks {...params} />}
-      </RegisterStack>
-      <RegisterStack name={StackRoute.Feedback}>{() => <FeedbackPanel />}</RegisterStack>
-      <RegisterStack<TBillingInviteTeamMember.Props> name={StackRoute.BillingInviteTeamMember}>
-        {({ params }) => <BillingInviteTeamMember {...params} />}
-      </RegisterStack>
-      <RegisterStack name={StackRoute.MandateDetail}>{() => <MandateDetailStack />}</RegisterStack>
-      <RegisterStack<TSponsorProjectStack.Props> name={StackRoute.SponsorProject}>
-        {({ params }) => <SponsorProjectStack {...params} />}
-      </RegisterStack>
-    </>
-  );
-};
 
 export const useStackSponsorProject = () => {
   return useStackNavigation<TSponsorProjectStack.Props>(StackRoute.SponsorProject);
