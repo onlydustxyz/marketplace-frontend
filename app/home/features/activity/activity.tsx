@@ -18,7 +18,7 @@ export function Activity(_: TActivity.Props) {
         iconProps={{ remixName: "ri-fire-line" }}
         titleProps={{ translate: { token: "v2.pages.home.activity.title" } }}
       >
-        <Card background={"base"} className="h-[494px] overflow-hidden">
+        <Card background={"base"} className="h-[410px] overflow-hidden">
           <ClientOnly>
             <ActivityViewer />
           </ClientOnly>

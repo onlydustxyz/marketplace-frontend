@@ -18,7 +18,7 @@ export function ActivityViewer(_: TActivityViewer.Props) {
               key={`${data.type}-${data.timestamp}`}
               data={data}
               index={key}
-              lastElement={key >= 4}
+              lastElement={key >= 3}
             />
           ))}
         </AnimatePresence>
