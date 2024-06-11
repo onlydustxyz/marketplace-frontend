@@ -78,9 +78,7 @@ export function useActivity() {
     }
   };
 
-  useRequestAnimationFrame(() => {
-    addActivityItem();
-  }, 5000);
+  useRequestAnimationFrame(addActivityItem, 5000);
 
   return {
     items: activityItem,
