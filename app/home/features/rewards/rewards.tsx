@@ -28,7 +28,7 @@ export function Rewards(_: TRewards.Props) {
   const { columns, rows, infiniteQuery, onRowAction } = useMyRewardsTable();
 
   const renderContent = useMemo(() => {
-    if (true || !rows.length) {
+    if (!rows.length) {
       return (
         <Card
           className={cn(
