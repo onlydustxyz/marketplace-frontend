@@ -20,7 +20,7 @@ export function RewardsMobile({
     <Card background={"base"} hasPadding={false}>
       <div className="grid gap-4 p-4">
         {rewards.map(reward => (
-          <Card background={"light"} hasPadding={false} onClick={onClick} className={"group"}>
+          <Card key={reward.id} background={"light"} hasPadding={false} onClick={onClick} className={"group"}>
             <div className={"grid gap-2.5 divide-y divide-card-border-light px-5 py-3"}>
               <div className="flex items-center justify-between gap-5">
                 <AvatarLabelled
