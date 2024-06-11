@@ -7,9 +7,6 @@ export namespace TJourney {
     stepName: string;
     completion: boolean;
   }
-  export interface JourneyPrivateProps {}
-
-  export interface JourneyPublicProps {}
 
   export const stepMapping: Record<string, { icon: RemixIconsName; link: string }> = {
     step1: {

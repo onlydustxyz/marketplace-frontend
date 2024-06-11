@@ -13,9 +13,7 @@ import { ProgressBar } from "components/ds/progress-bar/progress-bar";
 import { Section } from "components/layout/section/section";
 import { Typography } from "components/layout/typography/typography";
 
-import { TJourney } from "./journey.types";
-
-export function JourneyPrivate(_: TJourney.JourneyPrivateProps) {
+export function JourneyPrivate() {
   const { data, isLoading } = meApiClient.queries.useGetMyJourney({});
 
   const steps = useMemo(() => {

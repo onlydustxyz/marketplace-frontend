@@ -5,7 +5,6 @@ import Image from "next/image";
 import process from "process";
 import odCommunityTips from "public/images/od-community-tips.png";
 
-import { TJourney } from "app/home/features/journey/journey.types";
 import styles from "app/home/styles/styles.module.css";
 
 import { cn } from "src/utils/cn";
@@ -23,7 +22,7 @@ import { Typography } from "components/layout/typography/typography";
 
 import { useIntl } from "hooks/translate/use-translate";
 
-export function JourneyPublic(_: TJourney.JourneyPublicProps) {
+export function JourneyPublic() {
   const { loginWithRedirect } = useAuth0();
   const { T } = useIntl();
   function handleLogin() {

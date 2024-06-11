@@ -5,10 +5,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useReactQueryAdapter } from "api-client/adapter/react-query/react-query-adapter";
 import { getMyJourney } from "api-client/resources/me/fetch/get-my-journey";
 import { GetMyJourneyResponse } from "api-client/resources/me/types";
-import { ParametersInterfaceWithReactQuery } from "api-client/types/parameters-interface";
+import { ReactQueryOptions } from "api-client/types/react-query-options";
 
-export const useGetMyJourney = ({ options }: ParametersInterfaceWithReactQuery<typeof getMyJourney>) => {
-  // export const useGetMyJourney = ({ options = {} }: { options?: ReactQueryOptions }) => {
+export const useGetMyJourney = ({ options = {} }: { options?: ReactQueryOptions }) => {
   const { isAuthenticated } = useAuth0();
   const { query } = useReactQueryAdapter<GetMyJourneyResponse>(getMyJourney(), {
     enabled: isAuthenticated,
