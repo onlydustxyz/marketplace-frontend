@@ -14,8 +14,11 @@ export function ProfileCardPopover({
   isPreload,
   ...PopOverProps
 }: TProfileCard.ProfilePopoverProps) {
-  const { data: userProfile } = usersApiClient.queries.useGetUserPublicProfileByGithubId(githubId, {
-    enabled: isPreload || isOpen,
+  const { data: userProfile } = usersApiClient.queries.useGetUserPublicProfileByGithubId({
+    pathParams: { githubId },
+    options: {
+      enabled: isPreload || isOpen,
+    },
   });
 
   const renderContent = useMemo(() => {

@@ -10,6 +10,7 @@ export namespace TActivityContent {
     to: ReactNode;
     badge: ReactNode;
     timestamp: string;
+    lastElement: boolean;
     details?: ReactNode;
   }
 }

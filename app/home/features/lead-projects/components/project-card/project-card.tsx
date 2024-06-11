@@ -38,7 +38,7 @@ export function ProjectCard({ data }: TProjectCard.Props) {
             {data.shortDescription}
           </Typography>
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-row gap-2 sm:flex-col">
           <Tag>
             <Icon remixName={"ri-user-line"} size={16} />
             <Translate

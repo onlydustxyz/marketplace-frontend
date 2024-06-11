@@ -4,8 +4,8 @@ import { SectionHeader } from "components/layout/section/components/section-head
 
 export namespace TSection {
   interface classNames {
-    section: string;
-    content: string;
+    section?: string;
+    content?: string;
   }
 
   export interface Props extends PropsWithChildren<ComponentProps<typeof SectionHeader>> {
