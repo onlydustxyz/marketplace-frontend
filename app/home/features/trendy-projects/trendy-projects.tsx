@@ -4,6 +4,7 @@ import styles from "app/home/styles/styles.module.css";
 
 import { cn } from "src/utils/cn";
 
+import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
 import { ProjectListItem } from "components/ds/project-list-item/project-list-item";
 import { BaseLink } from "components/layout/base-link/base-link";
@@ -33,17 +34,24 @@ export async function TrendyProjects(_: TTrendyProjects.Props) {
         }}
         rightContent={
           hasMore ? (
-            <BaseLink
-              href={NEXT_ROUTER.projects.allWithParams({ sort: "RANK" })}
-              className="flex items-center gap-1 text-spacePurple-500"
-            >
-              <Typography variant="body-s-bold" translate={{ token: "v2.pages.home.trendyProjects.seeAll" }} />
-              <Icon remixName={"ri-arrow-right-s-line"} />
-            </BaseLink>
+            <>
+              <BaseLink
+                href={NEXT_ROUTER.projects.allWithParams({ sort: "RANK" })}
+                className="hidden items-center gap-1 text-spacePurple-500 sm:flex"
+              >
+                <Typography variant="body-s-bold" translate={{ token: "v2.pages.home.trendyProjects.seeAll" }} />
+                <Icon remixName={"ri-arrow-right-s-line"} />
+              </BaseLink>
+              <BaseLink href={NEXT_ROUTER.projects.allWithParams({ sort: "RANK" })} className={"block sm:hidden"}>
+                <Button variant={"secondary"} size={"s"} iconOnly>
+                  <Icon remixName={"ri-folder-3-line"} />
+                </Button>
+              </BaseLink>
+            </>
           ) : null
         }
       >
-        <Card background={"base"} hasPadding={false}>
+        <Card background={"base"} hasPadding={false} className={"overflow-hidden"}>
           <div className={"grid gap-x-4 sm:grid-cols-2 lg:grid-cols-3"}>
             {projects.map((project, i) => (
               <ProjectListItem
