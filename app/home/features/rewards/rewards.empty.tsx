@@ -31,7 +31,13 @@ export function RewardsEmpty() {
           <Typography translate={{ token: "v2.pages.home.rewards.emptyState.action" }} variant="body-s-bold" />
         </Button>
       </div>
-      <Image src={IMAGES.global.payment} width={120} height={120} alt={T("emptyStatePictureFallback")} />
+      <Image
+        src={IMAGES.global.payment}
+        width={120}
+        height={120}
+        alt={T("emptyStatePictureFallback")}
+        className={"hidden sm:block"}
+      />
     </Card>
   );
 }
