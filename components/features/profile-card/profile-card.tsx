@@ -48,8 +48,26 @@ export function ProfileCard(props: TProfileCard.Props) {
         className="absolute inset-0 -z-[1] h-full w-full object-cover object-center opacity-50"
         priority={true}
       />
+      <div className="flex flex-row items-center justify-between gap-1 sm:hidden">
+        <Avatar src={avatarUrl} alt={login} size="xl" />
+        <div className="flex flex-col justify-end gap-2">
+          <Typography variant="title-m" className="text-right">
+            {getOrdinalSuffix(rank)}
+          </Typography>
+          {rankPercentile && rankPercentile !== 100 ? (
+            <Typography
+              variant="body-s"
+              className="whitespace-nowrap text-right text-spaceBlue-100"
+              translate={{
+                token: "v2.features.profileCard.rank",
+                params: { count: `${rankPercentile}` },
+              }}
+            />
+          ) : null}
+        </div>
+      </div>
       <div className="relative z-[1] flex gap-4 max-[400px]:flex-wrap">
-        <Avatar src={avatarUrl} alt={login} size="3xl" />
+        <Avatar src={avatarUrl} alt={login} size="3xl" className="hidden sm:flex" />
         <div className="flex w-full flex-col gap-1">
           <div className="flex justify-between gap-2">
             <Typography variant="title-m" className="line-clamp-1 capitalize">
@@ -64,14 +82,16 @@ export function ProfileCard(props: TProfileCard.Props) {
                 <>{login}</>
               )}
             </Typography>
-            <Typography variant="title-m">{getOrdinalSuffix(rank)}</Typography>
+            <Typography variant="title-m" className="hidden sm:block">
+              {getOrdinalSuffix(rank)}
+            </Typography>
           </div>
           <div className="flex justify-between gap-2">
             <RankCategory rankCategory={rankCategory} hasPopover={!isInPopover} />
             {rankPercentile && rankPercentile !== 100 ? (
               <Typography
                 variant="body-s"
-                className="whitespace-nowrap text-spaceBlue-100"
+                className="hidden whitespace-nowrap text-spaceBlue-100 sm:block"
                 translate={{
                   token: "v2.features.profileCard.rank",
                   params: { count: `${rankPercentile}` },
