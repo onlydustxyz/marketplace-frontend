@@ -89,7 +89,7 @@ export function JourneyPublic(_: TJourney.JourneyPublicProps) {
         <Card background={"base"} className="flex items-center gap-6">
           <Image
             src={odCommunityTips}
-            alt="Onlydust community tips"
+            alt={T("v2.pages.home.journey.learnMore.imageAlt")}
             className="max-w-[50%] flex-none rounded-xl"
             priority={false}
           />
