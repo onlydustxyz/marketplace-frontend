@@ -2,7 +2,6 @@
 
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMemo } from "react";
-import { useMediaQuery } from "usehooks-ts";
 
 import { useJourney } from "app/home/features/journey/journey.hooks";
 import styles from "app/home/styles/styles.module.css";
@@ -10,18 +9,17 @@ import styles from "app/home/styles/styles.module.css";
 import { viewportConfig } from "src/config";
 import { cn } from "src/utils/cn";
 
-import { useClientOnly } from "components/layout/client-only/client-only";
+import { useClientMediaQuery } from "hooks/layout/useClientMediaQuery/use-client-media-query";
 
 import { TPageGrid } from "./page-grid.types";
 
 export function PageGrid({ children }: TPageGrid.Props) {
-  const isLg = useMediaQuery(`(max-width: ${viewportConfig.breakpoints.lg}px)`);
+  const isLg = useClientMediaQuery(`(max-width: ${viewportConfig.breakpoints.lg}px)`);
   const { isAuthenticated } = useAuth0();
   const showJourney = useJourney();
-  const isClient = useClientOnly();
 
   const classes = useMemo(() => {
-    if (isLg && isClient) {
+    if (isLg) {
       return {
         authenticatedWithJourney: styles.gridAuthenticatedWithJourneyLg,
         authenticated: styles.gridAuthenticatedLg,
@@ -34,7 +32,7 @@ export function PageGrid({ children }: TPageGrid.Props) {
       authenticated: styles.gridAuthenticated,
       unauthenticated: styles.gridUnauthenticated,
     };
-  }, [isLg, isClient]);
+  }, [isLg]);
 
   const templateArea = useMemo(() => {
     if (isAuthenticated) {
