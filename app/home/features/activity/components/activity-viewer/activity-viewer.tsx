@@ -14,7 +14,12 @@ export function ActivityViewer(_: TActivityViewer.Props) {
       <m.div className="flex flex-col gap-4" layout transition={{ type: "spring", stiffness: 100 }}>
         <AnimatePresence initial={false}>
           {items.map((data, key) => (
-            <ActivityViewerItemAnimation key={`${data.type}-${data.timestamp}`} data={data} index={key} />
+            <ActivityViewerItemAnimation
+              key={`${data.type}-${data.timestamp}`}
+              data={data}
+              index={key}
+              lastElement={key >= 4}
+            />
           ))}
         </AnimatePresence>
       </m.div>

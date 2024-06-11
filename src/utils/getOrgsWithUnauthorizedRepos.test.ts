@@ -93,6 +93,8 @@ const mockProject: Parameters<typeof getOrgsWithUnauthorizedRepos>[0] = {
     ignoreCodeReviews: false,
     ignoreContributionsBefore: "1970-01-01T00:00:00Z",
   },
+  categories: [],
+  goodFirstIssueCount: 0,
 };
 
 describe("getOrgsWithUnauthorizedRepos", () => {

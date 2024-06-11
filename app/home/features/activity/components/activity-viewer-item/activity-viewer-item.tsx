@@ -11,11 +11,12 @@ import { Translate } from "components/layout/translate/translate";
 
 import { TActivityViewerItem } from "./activity-viewer-item.types";
 
-export function ActivityViewerItem({ data }: TActivityViewerItem.Props) {
+export function ActivityViewerItem({ data, lastElement }: TActivityViewerItem.Props) {
   const ContentProps: TActivityContent.Props | undefined = useMemo(() => {
     if (data.type === "REWARD_CREATED" && data.rewardCreated) {
       const { amount, recipient, project } = data.rewardCreated;
       return {
+        lastElement,
         mainAvatar: {
           shape: "square",
           src: project.logoUrl,
@@ -44,6 +45,7 @@ export function ActivityViewerItem({ data }: TActivityViewerItem.Props) {
     if (data.type === "PULL_REQUEST" && data.pullRequest) {
       const { author, project } = data.pullRequest;
       return {
+        lastElement,
         mainAvatar: {
           shape: "circle",
           src: author.avatarUrl,
@@ -64,6 +66,7 @@ export function ActivityViewerItem({ data }: TActivityViewerItem.Props) {
     if (data.type === "REWARD_CLAIMED" && data.rewardClaimed) {
       const { amount, recipient, project } = data.rewardClaimed;
       return {
+        lastElement,
         mainAvatar: {
           shape: "circle",
           src: recipient.avatarUrl,
@@ -92,6 +95,7 @@ export function ActivityViewerItem({ data }: TActivityViewerItem.Props) {
     if (data.type === "PROJECT_CREATED" && data.projectCreated) {
       const { createdBy, project } = data.projectCreated;
       return {
+        lastElement,
         mainAvatar: {
           shape: "square",
           src: project.logoUrl,

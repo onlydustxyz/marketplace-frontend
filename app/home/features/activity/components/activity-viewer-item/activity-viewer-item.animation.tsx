@@ -6,7 +6,7 @@ import { ActivityViewerItem } from "app/home/features/activity/components/activi
 
 import { TActivityViewerItem } from "./activity-viewer-item.types";
 
-export function ActivityViewerItemAnimation({ data, index }: TActivityViewerItem.Props) {
+export function ActivityViewerItemAnimation({ data, index, lastElement }: TActivityViewerItem.Props) {
   const { state } = data;
   const controls = useAnimation();
   const delay = useMemo(() => index * 0.1, [index]);
@@ -81,7 +81,7 @@ export function ActivityViewerItemAnimation({ data, index }: TActivityViewerItem
       initial={ActivityAnimationState.Hidden}
       exit={ActivityAnimationState.Exit}
     >
-      <ActivityViewerItem data={data} index={index} />
+      <ActivityViewerItem data={data} index={index} lastElement={lastElement} />
     </m.div>
   );
 }
