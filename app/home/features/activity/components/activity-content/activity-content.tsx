@@ -8,11 +8,20 @@ import { Typography } from "components/layout/typography/typography";
 
 import { TActivityContent } from "./activity-content.types";
 
-export function ActivityContent({ mainAvatar, from, action, to, timestamp, details, badge }: TActivityContent.Props) {
+export function ActivityContent({
+  mainAvatar,
+  from,
+  action,
+  to,
+  timestamp,
+  details,
+  badge,
+  lastElement,
+}: TActivityContent.Props) {
   const date = formatDistanceToNowStrict(new Date(timestamp), { addSuffix: true });
 
   return (
-    <Card border={"light"} background={"light"} className="!p-5">
+    <Card border={"light"} background={"light"} className={cn("!p-4", { "blur-sm": lastElement })}>
       <div className="flex flex-row items-center justify-between gap-4">
         <Avatar {...mainAvatar} size="xl" />
         <div className="flex flex-1 flex-col gap-2">
