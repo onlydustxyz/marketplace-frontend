@@ -20,7 +20,11 @@ export function ActivityContent({
 }: TActivityContent.Props) {
   const date = formatDistanceToNowStrict(new Date(timestamp), { addSuffix: true });
   return (
-    <Card border={"light"} background={"light"} className={cn("overflow-hidden !p-5", { "blur-sm": lastElement })}>
+    <Card
+      border={"light"}
+      background={"light"}
+      className={cn("overflow-hidden !p-5 transition-all", { "blur-sm": lastElement })}
+    >
       <div className="flex flex-row items-start justify-between gap-4 sm:items-center">
         <Avatar {...mainAvatar} size={"xl"} className="hidden sm:flex" />
         <div className="flex flex-1 flex-col gap-2">
