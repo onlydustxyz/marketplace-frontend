@@ -30,7 +30,7 @@ export function JourneyPrivate() {
 
   if (isLoading) return <JourneyPrivateLoading />;
 
-  if (!data) return null;
+  if (!data || data?.completed) return null;
 
   return (
     <div className={cn("w-full", styles.areaJourney)}>
