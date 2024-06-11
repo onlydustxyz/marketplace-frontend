@@ -113,5 +113,6 @@ export function useMyRewardsTable() {
       isFetchingNextPage,
     },
     onRowAction,
+    rewards: flattenRewards,
   };
 }

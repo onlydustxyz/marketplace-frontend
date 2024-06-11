@@ -1,15 +1,15 @@
 "use client";
 
-import Image from "next/image";
 import { useMemo } from "react";
 
+import { RewardsEmpty } from "app/home/features/rewards/rewards.empty";
 import { useMyRewardsTable } from "app/home/features/rewards/rewards.hooks";
+import { RewardsMobile } from "app/home/features/rewards/rewards.mobile";
 import styles from "app/home/styles/styles.module.css";
 
-import { IMAGES } from "src/assets/img";
+import { viewportConfig } from "src/config";
 import { cn } from "src/utils/cn";
 
-import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
 import { Table } from "components/ds/table/table";
 import { BaseLink } from "components/layout/base-link/base-link";
@@ -19,41 +19,23 @@ import { Typography } from "components/layout/typography/typography";
 
 import { NEXT_ROUTER } from "constants/router";
 
+import { useClientMediaQuery } from "hooks/layout/useClientMediaQuery/use-client-media-query";
 import { useIntl } from "hooks/translate/use-translate";
 
 import { TRewards } from "./rewards.types";
 
 export function Rewards(_: TRewards.Props) {
   const { T } = useIntl();
-  const { columns, rows, infiniteQuery, onRowAction } = useMyRewardsTable();
+  const { columns, rows, infiniteQuery, onRowAction, rewards } = useMyRewardsTable();
+  const isSm = useClientMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
 
   const renderContent = useMemo(() => {
     if (!rows.length) {
-      return (
-        <Card
-          className={cn(
-            "flex h-full gap-4",
-            "relative z-[1] w-full border-none bg-gradient-to-r from-[#422074] via-[#28115E] to-[#1C0E73]",
-            "border-mask via-10% before:pointer-events-none before:absolute before:inset-0 before:-z-[1] before:h-full before:w-full before:rounded-2xl before:bg-gradient-to-r before:from-[#A390B3] before:via-[#8E7AA1] before:to-[#3B2A53]"
-          )}
-        >
-          <div className="flex flex-1 flex-col gap-4">
-            <Typography translate={{ token: "v2.pages.home.rewards.emptyState.title" }} variant="title-m" />
-            <Typography translate={{ token: "v2.pages.home.rewards.emptyState.subtitle" }} variant="body-s-bold" />
-            <Button size="s" as="a" href={NEXT_ROUTER.projects.all}>
-              <Icon remixName="ri-sparkling-line" size={16} />
-              <Typography translate={{ token: "v2.pages.home.rewards.emptyState.action" }} variant="body-s-bold" />
-            </Button>
-          </div>
-          <Image
-            src={IMAGES.global.payment}
-            width={120}
-            height={120}
-            alt={T("emptyStatePictureFallback")}
-            className={"hidden sm:block"}
-          />
-        </Card>
-      );
+      return <RewardsEmpty />;
+    }
+
+    if (!isSm) {
+      return <RewardsMobile rewards={rewards} onClick={onRowAction} />;
     }
 
     return (
@@ -83,7 +65,7 @@ export function Rewards(_: TRewards.Props) {
         />
       </Card>
     );
-  }, [infiniteQuery, rows]);
+  }, [infiniteQuery, rows, isSm]);
 
   return (
     <div className={cn("h-full w-full", styles.areaRewards)}>
