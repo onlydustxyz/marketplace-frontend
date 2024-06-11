@@ -18,7 +18,7 @@ import { TTrendyProjects } from "./trendy-projects.types";
 
 export async function TrendyProjects(_: TTrendyProjects.Props) {
   const { projects, hasMore } = await projectsApiClient.fetch
-    .getAllProjects({ pagination: { pageIndex: 0, pageSize: 9 } })
+    .getAllProjects({ pagination: { pageIndex: 0, pageSize: 9 }, queryParams: { sort: "RANK" } })
     .request();
 
   if (!projects.length) return null;
