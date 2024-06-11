@@ -28,7 +28,7 @@ export function Rewards(_: TRewards.Props) {
   const { columns, rows, infiniteQuery, onRowAction } = useMyRewardsTable();
 
   const renderContent = useMemo(() => {
-    if (!rows.length) {
+    if (true || !rows.length) {
       return (
         <Card
           className={cn(
@@ -45,7 +45,13 @@ export function Rewards(_: TRewards.Props) {
               <Typography translate={{ token: "v2.pages.home.rewards.emptyState.action" }} variant="body-s-bold" />
             </Button>
           </div>
-          <Image src={IMAGES.global.payment} width={120} height={120} alt={T("emptyStatePictureFallback")} />
+          <Image
+            src={IMAGES.global.payment}
+            width={120}
+            height={120}
+            alt={T("emptyStatePictureFallback")}
+            className={"hidden sm:block"}
+          />
         </Card>
       );
     }
