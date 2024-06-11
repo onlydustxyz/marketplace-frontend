@@ -42,20 +42,20 @@ export function JourneyPublic(_: TJourney.JourneyPublicProps) {
           },
         }}
       >
-        <Banner
-          title={<Translate token="v2.pages.home.journey.public.subtitle" />}
-          description={<Translate token="v2.pages.home.journey.public.description" />}
-          size="m"
-          icon={{ remixName: "ri-user-line" }}
-          button={{
-            children: <IconTag icon={{ remixName: "ri-arrow-right-s-line", size: 12 }} size={"s"} />,
-            onClick: handleLogin,
-            iconOnly: true,
-            variant: "secondary",
-            className: "h-8 w-8 p-2 border-none p-0 !bg-color-none",
-          }}
-          variant="rainbow"
-        />
+        <Button
+          onClick={handleLogin}
+          className="flex h-20 w-full !bg-transparent p-0 text-left text-snow hover:text-snow"
+        >
+          <Banner
+            title={<Translate token="v2.pages.home.journey.public.subtitle" />}
+            description={<Translate token="v2.pages.home.journey.public.description" />}
+            size="m"
+            icon={{ remixName: "ri-user-line" }}
+            variant="rainbow"
+            endElement={<IconTag icon={{ remixName: "ri-arrow-right-s-line", size: 16 }} size={"s"} />}
+            classNames={{ wrapper: "w-full" }}
+          />
+        </Button>
       </Section>
 
       <Section
