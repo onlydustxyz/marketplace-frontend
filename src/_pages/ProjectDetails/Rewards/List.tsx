@@ -46,7 +46,7 @@ const RewardList: React.FC = () => {
   const { sorting, sortField, queryParams } = useQueryParamsSorting({
     field: Fields.Date,
     isAscending: false,
-    storageKey: "projectRewardsSorting",
+    storageKey: "projectRewardsSorting-v2",
   });
 
   const {
