@@ -1,9 +1,8 @@
 import { ecosystemsApiClient } from "api-client/resources/ecosystems";
 import Image from "next/image";
 
-import { Section } from "app/ecosystems/components/section/section";
-
 import { Button } from "components/ds/button/button";
+import { Section } from "components/layout/section/section";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 

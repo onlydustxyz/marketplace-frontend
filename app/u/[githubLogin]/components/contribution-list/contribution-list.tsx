@@ -13,19 +13,18 @@ import { EmptyState } from "components/layout/placeholders/empty-state/empty-sta
 
 export function ContributionList({ githubUserId, languageId, ecosystemId }: TContributionList.Props) {
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } =
-    usersApiClient.queries.useGetUserContributionsByGithubId(
-      githubUserId,
-      {
+    usersApiClient.queries.useGetUserContributionsByGithubId({
+      queryParams: {
         ...(languageId ? { languages: [languageId] } : {}),
         ...(ecosystemId ? { ecosystems: [ecosystemId] } : {}),
         statuses: ["COMPLETED"],
         direction: "DESC",
       },
-      {
-        pageSize: "5",
+      options: {
         enabled: !!githubUserId && (!!languageId || !!ecosystemId),
-      }
-    );
+      },
+      pagination: { pageSize: 5 },
+    });
 
   const flattenContributions = data?.pages.flatMap(({ contributions }) => contributions) ?? [];
 

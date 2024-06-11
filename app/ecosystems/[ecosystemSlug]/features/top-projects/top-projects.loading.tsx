@@ -1,6 +1,5 @@
-import { SectionLoading } from "app/ecosystems/components/section/section.loading";
-
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
+import { SectionLoading } from "components/layout/section/section.loading";
 
 export function TopProjectsLoading() {
   return (

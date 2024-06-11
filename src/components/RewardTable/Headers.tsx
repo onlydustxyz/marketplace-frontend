@@ -11,7 +11,7 @@ import { useIntl } from "hooks/translate/use-translate";
 import { SortField, Sorting } from "./useQueryParamsSorting";
 
 export enum Fields {
-  Date = "DATE",
+  Date = "REQUESTED_AT",
   Contributor = "CONTRIBUTION",
   Amount = "AMOUNT",
   Status = "STATUS",

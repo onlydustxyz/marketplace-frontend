@@ -21,7 +21,7 @@ export enum Rounding {
 }
 
 interface RoundedImageProps {
-  src: string | null;
+  src?: string | null;
   alt: string | null;
   size?: ImageSize;
   className?: string;

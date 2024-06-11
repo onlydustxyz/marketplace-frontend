@@ -4,12 +4,12 @@ import { cn } from "@nextui-org/react";
 import { useKeenSlider } from "keen-slider/react";
 import { useMemo, useState } from "react";
 
-import { Section } from "app/ecosystems/components/section/section";
 import { SliderStepper } from "app/ecosystems/components/slider-stepper/slider-stepper";
 
 import { viewportConfig } from "src/config";
 
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
+import { Section } from "components/layout/section/section";
 
 import { TSlider } from "./slider.types";
 

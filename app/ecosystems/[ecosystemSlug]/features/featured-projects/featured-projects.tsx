@@ -1,8 +1,7 @@
 import { ecosystemsApiClient } from "api-client/resources/ecosystems";
 
-import { Section } from "app/ecosystems/components/section/section";
-
 import { BaseLink } from "components/layout/base-link/base-link";
+import { Section } from "components/layout/section/section";
 import { Typography } from "components/layout/typography/typography";
 
 import { NEXT_ROUTER } from "constants/router";
