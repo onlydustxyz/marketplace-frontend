@@ -21,7 +21,7 @@ export default function ErrorFallback(props?: Props) {
         isFixed={isFixed}
         onBackClicked={() => {
           resetBoundary();
-          router.push(NEXT_ROUTER.projects.all);
+          router.push(NEXT_ROUTER.home.all);
         }}
         onRefreshClicked={router.refresh}
       />,
@@ -33,7 +33,7 @@ export default function ErrorFallback(props?: Props) {
       isFixed={isFixed}
       onBackClicked={() => {
         resetBoundary();
-        router.push(NEXT_ROUTER.projects.all);
+        router.push(NEXT_ROUTER.home.all);
       }}
       onRefreshClicked={router.refresh}
     />

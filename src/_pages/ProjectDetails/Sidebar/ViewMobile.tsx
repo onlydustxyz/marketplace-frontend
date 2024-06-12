@@ -42,7 +42,7 @@ export default function ViewMobile(props: Props) {
         {!isGrantingReward && (
           <>
             <div className="flex items-center gap-1">
-              <BackLink to={NEXT_ROUTER.projects.all} className="divide-none" />
+              <BackLink to={NEXT_ROUTER.home.all} className="divide-none" />
               <div className="flex items-center gap-2 font-belwe text-2xl">
                 <Avatar src={currentProject?.logoUrl || ""} alt="Project Logo" size="s" />
                 <div className="line-clamp-1">{currentProject.name}</div>

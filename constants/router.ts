@@ -1,9 +1,12 @@
 export const NEXT_ROUTER = {
-  projects: {
+  home: {
     all: "/",
+  },
+  projects: {
+    all: "/projects",
     allWithParams: (params: { [key: string]: string }) => {
       const searchParams = new URLSearchParams(params);
-      return `/?${searchParams.toString()}`;
+      return `/projects?${searchParams.toString()}`;
     },
     details: {
       root: (slug: string) => `/p/${slug}`,

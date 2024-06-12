@@ -22,6 +22,7 @@ import { ProfileButtonDisplay } from "./ProfileButton/ProfileButtonDisplay";
 
 interface HeaderViewProps {
   menuItems: {
+    [NEXT_ROUTER.home.all]?: string;
     [NEXT_ROUTER.projects.all]?: string;
     [NEXT_ROUTER.ecosystems.root]?: string;
     [NEXT_ROUTER.hackathons.root]?: string;
@@ -67,13 +68,16 @@ export default function HeaderView({ menuItems, impersonating = false }: HeaderV
     <div className="sticky left-0 top-0 z-50 w-full">
       <div className="gap-3 bg-black px-6 py-4 font-walsheim text-xl text-neutral-400 xl:gap-8" data-testid="header">
         <div className="flex items-center justify-between gap-8 xl:justify-start">
-          <Link href={NEXT_ROUTER.projects.all} className="flex w-fit items-center gap-3 ">
+          <Link href={NEXT_ROUTER.home.all} className="flex w-fit items-center gap-3 ">
             <OnlyDustLogo />
             {!isSm && <OnlyDustTitle />}
           </Link>
           <div className="items-center gap-8 xl:flex xl:flex-1">
             {isXl && (
               <>
+                {menuItems[NEXT_ROUTER.home.all] ? (
+                  <MenuItem href={NEXT_ROUTER.home.all}>{menuItems[NEXT_ROUTER.home.all]}</MenuItem>
+                ) : null}
                 {menuItems[NEXT_ROUTER.projects.all] ? (
                   <MenuItem href={NEXT_ROUTER.projects.all}>{menuItems[NEXT_ROUTER.projects.all]}</MenuItem>
                 ) : null}
