@@ -21,7 +21,11 @@ export const ButtonCore = ({
   const slots = ButtonCoreVariants({ ...props });
 
   return (
-    <Component {...props} className={cn(slots.wrapper(), className, classNames?.wrapper)}>
+    <Component
+      data-state={props.state || "default"}
+      {...props}
+      className={cn(slots.wrapper(), className, classNames?.wrapper, "group")}
+    >
       {startContent ? startContent : null}
       {startIcon ? (
         <Icon size={16} {...startIcon} className={cn(slots.startIcon(), classNames?.startIcon, startIcon.className)} />

@@ -29,9 +29,9 @@ export const ButtonCoreVariants = tv({
       },
       disabled: {
         wrapper: "bg-container-2",
-        startIcon: "!text-text-3",
-        endIcon: "!text-text-3",
-        content: "!text-text-3",
+        startIcon: "text-text-3",
+        endIcon: "text-text-3",
+        content: "text-text-3",
       },
     },
   },

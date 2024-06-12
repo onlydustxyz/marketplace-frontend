@@ -58,7 +58,7 @@ export const Danger: Story = {
     return (
       <div className="flex w-full items-center gap-2">
         <ButtonDanger {...defaultProps} {...args} />
-        <ButtonDanger {...defaultProps} {...args} state="disabled" />
+        <ButtonDanger {...defaultProps} {...args} size={"l"} state="disabled" />
       </div>
     );
   },
