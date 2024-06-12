@@ -100,6 +100,15 @@ export function BurgerMenu() {
 
               <div>
                 <BaseLink
+                  href={NEXT_ROUTER.home.all}
+                  onClick={() => setPanelOpen(false)}
+                  className="flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8"
+                >
+                  <Icon remixName="ri-home-2-line" size={20} />
+                  <Translate token="v2.features.menu.home" />
+                </BaseLink>
+
+                <BaseLink
                   href={NEXT_ROUTER.projects.all}
                   onClick={() => setPanelOpen(false)}
                   className="flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8"
