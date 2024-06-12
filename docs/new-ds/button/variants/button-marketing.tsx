@@ -1,4 +1,4 @@
-import { ButtonCore, ButtonCoreProps } from "app/migration/home/button-v1/button.core";
+import { ButtonCore, ButtonCoreProps } from "../button.core";
 
 export const ButtonMarketing = ({ ...props }: ButtonCoreProps) => {
   return (
