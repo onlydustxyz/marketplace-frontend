@@ -23,7 +23,7 @@ export function NotFound() {
         </div>
         <div className="font-walsheim text-base text-spaceBlue-200 sm:text-lg">{T("notFound.text")}</div>
       </div>
-      <BaseLink href={NEXT_ROUTER.projects.all}>
+      <BaseLink href={NEXT_ROUTER.home.all}>
         <Button size={ButtonSize.Lg}>
           <ArrowLeftSLine className="text-xl" /> {T("notFound.button")}
         </Button>

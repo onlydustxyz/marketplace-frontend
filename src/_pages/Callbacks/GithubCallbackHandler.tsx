@@ -37,7 +37,7 @@ export default function GithubCallbackHandler() {
   }, [searchParams, router]);
 
   if (!searchParams.has("installation_id") && !searchParams.has("state")) {
-    router.push(NEXT_ROUTER.projects.all);
+    router.push(NEXT_ROUTER.home.all);
   }
 
   return null;

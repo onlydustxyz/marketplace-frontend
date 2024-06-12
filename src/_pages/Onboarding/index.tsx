@@ -50,7 +50,7 @@ export default function Onboarding() {
     options: {
       onSuccess: () => {
         setOnboardingWizardCompleted(true);
-        router.push(NEXT_ROUTER.projects.all);
+        router.push(NEXT_ROUTER.home.all);
       },
     },
   });

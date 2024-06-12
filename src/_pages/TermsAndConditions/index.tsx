@@ -27,7 +27,7 @@ export default function TermsAndConditions() {
   const { mutate: updateUserMutation, isSuccess } = MeApi.mutations.useUpdateMe({
     options: {
       onSuccess: () => {
-        router.push(NEXT_ROUTER.projects.all);
+        router.push(NEXT_ROUTER.home.all);
       },
     },
   });
