@@ -16,6 +16,7 @@ export const ButtonCore = ({
   startContent,
   endContent,
   children,
+  isLoading,
   ...props
 }: TButtonProps) => {
   const slots = ButtonCoreVariants({ ...props });

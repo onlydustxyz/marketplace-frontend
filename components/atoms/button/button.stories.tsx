@@ -36,18 +36,33 @@ export const Default: Story = {
         <ButtonCore {...defaultProps} {...args} size={"l"} />
         <ButtonCore {...defaultProps} {...args} />
         <ButtonCore {...defaultProps} {...args} size={"s"} />
-        <ButtonCore {...defaultProps} {...args} size={"s"} state={"disabled"} />
       </div>
     );
   },
 };
 
 export const Primary: Story = {
+  parameters: {
+    backgrounds: {
+      default: "black",
+      values: [{ name: "black", value: "#1E2551" }],
+    },
+  },
   render: args => {
     return (
-      <div className="flex w-full items-center gap-2">
-        <ButtonPrimary {...defaultProps} {...args} />
-        <ButtonPrimary {...defaultProps} {...args} state="disabled" />
+      <div className="flex w-full items-start gap-5">
+        <div className="flex flex-col gap-2">
+          <ButtonPrimary {...defaultProps} {...args} size={"l"} />
+          <ButtonPrimary {...defaultProps} {...args} size={"l"} state="disabled" />
+        </div>
+        <div className="flex flex-col gap-2">
+          <ButtonPrimary {...defaultProps} {...args} />
+          <ButtonPrimary {...defaultProps} {...args} state="disabled" />
+        </div>
+        <div className="flex flex-col gap-2">
+          <ButtonPrimary {...defaultProps} {...args} size={"s"} />
+          <ButtonPrimary {...defaultProps} {...args} size={"s"} state="disabled" />
+        </div>
       </div>
     );
   },
@@ -56,9 +71,19 @@ export const Primary: Story = {
 export const Danger: Story = {
   render: args => {
     return (
-      <div className="flex w-full items-center gap-2">
-        <ButtonDanger {...defaultProps} {...args} />
-        <ButtonDanger {...defaultProps} {...args} size={"l"} state="disabled" />
+      <div className="flex w-full items-start gap-5">
+        <div className="flex flex-col gap-2">
+          <ButtonDanger {...defaultProps} {...args} size={"l"} />
+          <ButtonDanger {...defaultProps} {...args} size={"l"} state="disabled" />
+        </div>
+        <div className="flex flex-col gap-2">
+          <ButtonDanger {...defaultProps} {...args} />
+          <ButtonDanger {...defaultProps} {...args} state="disabled" />
+        </div>
+        <div className="flex flex-col gap-2">
+          <ButtonDanger {...defaultProps} {...args} size={"s"} />
+          <ButtonDanger {...defaultProps} {...args} size={"s"} state="disabled" />
+        </div>
       </div>
     );
   },

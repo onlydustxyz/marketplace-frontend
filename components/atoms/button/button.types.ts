@@ -20,4 +20,5 @@ export type TButtonProps<T extends ElementType = "button"> = AsProps<T> &
     startContent?: ReactNode;
     endContent?: ReactNode;
     translate?: TTranslate.Props;
+    isLoading?: boolean;
   };
