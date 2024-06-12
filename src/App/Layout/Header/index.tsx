@@ -31,6 +31,7 @@ function HeaderClient() {
 
   const { data: myProfileInfo } = MeApi.queries.useGetMyProfileInfo({});
 
+  const homeMenuItem = T("v2.features.menu.home");
   const projectsMenuItem = T("v2.features.menu.projects");
   const ecosystemsMenuItem = T("v2.features.menu.ecosystems");
   const hackathonsMenuItem = T("v2.features.menu.hackathons");
@@ -48,6 +49,7 @@ function HeaderClient() {
   return (
     <View
       menuItems={{
+        [NEXT_ROUTER.home.all]: homeMenuItem,
         [NEXT_ROUTER.projects.all]: projectsMenuItem,
         [NEXT_ROUTER.ecosystems.root]: ecosystemsMenuItem,
         [NEXT_ROUTER.hackathons.root]: hackathonsMenuItem,
@@ -67,7 +69,7 @@ function Header() {
       <div className="sticky left-0 top-0 z-50 w-full">
         <div className="gap-3 bg-black px-6 py-4 font-walsheim text-xl text-neutral-400 xl:gap-8" data-testid="header">
           <div className="flex items-center justify-center gap-8 xl:justify-start">
-            <Link href={NEXT_ROUTER.projects.all} className="flex w-fit items-center gap-3 ">
+            <Link href={NEXT_ROUTER.home.all} className="flex w-fit items-center gap-3 ">
               <OnlyDustLogo />
               <OnlyDustTitle />
             </Link>

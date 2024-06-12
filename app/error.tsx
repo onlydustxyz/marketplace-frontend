@@ -31,7 +31,7 @@ export default function Error({ error: _, reset }: { error: Error & { digest?: s
             {descEnd}
           </>
         }
-        onBack={() => router.push(NEXT_ROUTER.projects.all)}
+        onBack={() => router.push(NEXT_ROUTER.home.all)}
         onRefresh={reset}
       />
     </div>
