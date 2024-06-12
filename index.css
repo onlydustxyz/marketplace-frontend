@@ -7,16 +7,71 @@
   /*COLORS*/
 
   :root {
-    /* Primitive */
+    /* --------------- Primitive --------------- */
 
-    /* Blue 100 */
+    /*  --- Blue ---  */
     --_Blue100: #A2ABDA;
+    --_Blue200: #62629A;
+    --_Blue300: #484876;
+    --_Blue400: #2B3362;
+    --_Blue500: #1E2551;
+    --_Blue600: #171D44;
+    --_Blue700: #1A1A33;
+    --_Blue800: #05051E;
 
-    /* Technical */
-    /* Container */
-    --container-1: var(--_Blue100);
+    /*  --- Grey ---  */
+    --_Grey100: #EEEEF6;
+    --_Grey200: #DFDFEB;
+    --_Grey300: #CDCDDC;
+    --_Grey400: #B9B9CC;
+    --_Grey500: #A5A5BC;
+    --_Grey600: #87879E;
+    --_Grey700: #6C6C82;
+    --_Grey800: #4C4C5C;
 
-    /* Business */
+    /*  --- Brand ---  */
+    --_Brand1: #FF9000;
+    --_Brand2: #AC00FF;
+    --_Brand3: #00FFFF;
+    --_Brand4: #0B0CCB;
+
+    /*  --- Basic ---  */
+    --_White: #FFFFFF;
+    --_Black: #000000;
+
+
+    /*  --- Decoration ---  */
+    --_decoration-red: #EB5757;
+    --_decoration-pink: #EB5757;
+    --_decoration-green: #4CB782;
+    --_decoration-yellow: #F2C94C;
+    --_decoration-orange: #F2994A;
+    --_decoration-purple: #BB87FC;
+    --_decoration-blue: #4EA7FC;
+    --_decoration-grey: #95A2B3;
+
+    /* --------------- Technical --------------- */
+
+    /*  --- Container ---  */
+    --container-1: var(--_Blue800);
+    --container-2: var(--_Blue700);
+    --container-3: var(--_Blue600);
+    --container-4: var(--_Blue500);
+    --container-action: var(--_Black);
+    --container-reverse: var(--_White);
+
+    /*  --- Text ---  */
+    --text-1: var(--_White);
+    --text-2: var(--_Grey300);
+    --text-3: var(--_Grey800);
+    --text-4: var(--_Black);
+
+
+    /*  --- Interactions ---  */
+    --interactions-error: var(--_White);
+
+
+    /* --------------- Business --------------- */
   }
 
 
