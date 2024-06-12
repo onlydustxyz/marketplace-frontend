@@ -17,7 +17,13 @@ const config: Config = withTV({
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   presets: [legacyPreset],
-  theme: {},
+  theme: {
+    extend: {
+      colors: {
+        "container-1": "var(--container-1)",
+      },
+    },
+  },
   plugins: [
     typography,
     scrollbar({ nocompatible: true }),

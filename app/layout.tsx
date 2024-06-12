@@ -7,7 +7,7 @@ import "remixicon/fonts/remixicon.css";
 import Providers from "app/providers";
 
 import Header from "src/App/Layout/Header";
-import "src/assets/css/index.css";
+import "index.css";
 import "src/assets/fonts/Alfreda/stylesheet.css";
 import "src/assets/fonts/Belwe/stylesheet.css";
 import "src/assets/fonts/GTWalsheimPro/stylesheet.css";

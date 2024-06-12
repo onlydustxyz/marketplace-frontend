@@ -4,6 +4,23 @@
 
 @layer base {
 
+  /*COLORS*/
+
+  :root {
+    /* Primitive */
+
+    /* Blue 100 */
+    --_Blue100: #A2ABDA;
+
+    /* Technical */
+    /* Container */
+    --container-1: var(--_Blue100);
+
+    /* Business */
+  }
+
+
+  /*DOM STYLES*/
 
   body {
     margin: 0;

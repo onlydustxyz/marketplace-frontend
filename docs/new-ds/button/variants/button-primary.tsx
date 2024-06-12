@@ -1,6 +1,8 @@
-import { ButtonCore, ButtonCoreProps } from "../button.core";
+import { TButtonCore } from "docs/new-ds/button/button.type";
 
-export const ButtonPrimary = ({ ...props }: ButtonCoreProps) => {
+import { ButtonCore } from "../button.core";
+
+export const ButtonPrimary = ({ ...props }: TButtonCore.Props) => {
   return (
     <ButtonCore
       {...props}
