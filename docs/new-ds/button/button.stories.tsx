@@ -2,7 +2,6 @@ import { Meta, StoryObj } from "@storybook/react";
 import { TButtonCore } from "docs/new-ds/button/button.type";
 
 import { ButtonCore } from "./button.core";
-import { ButtonMarketing } from "./variants/button-marketing";
 import { ButtonPrimary } from "./variants/button-primary";
 
 type Story = StoryObj<typeof ButtonCore>;
@@ -36,25 +35,13 @@ export const Default: Story = {
   },
 };
 
-export const Primary: Story = {
+export const Core: Story = {
   render: args => {
     return (
       <div className="flex w-full items-center gap-2">
         <ButtonPrimary {...defaultProps} {...args}>
           Default
         </ButtonPrimary>
-      </div>
-    );
-  },
-};
-
-export const Marketing: Story = {
-  render: args => {
-    return (
-      <div className="flex w-full items-center gap-2">
-        <ButtonMarketing {...defaultProps} {...args}>
-          Default
-        </ButtonMarketing>
       </div>
     );
   },

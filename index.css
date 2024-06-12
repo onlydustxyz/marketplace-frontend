@@ -36,13 +36,13 @@
     --_Brand4: #0B0CCB;
 
     /*  --- Basic ---  */
-    --_White: #FFFFFF;
-    --_Black: #000000;
+    --_BasicWhite: #FFFFFF;
+    --_BasicBlack: #000000;
 
 
     /*  --- Decoration ---  */
     --_decoration-red: #EB5757;
-    --_decoration-pink: #EB5757;
+    --_decoration-pink: #FA6563;
     --_decoration-green: #4CB782;
     --_decoration-yellow: #F2C94C;
     --_decoration-orange: #F2994A;
@@ -57,18 +57,30 @@
     --container-2: var(--_Blue700);
     --container-3: var(--_Blue600);
     --container-4: var(--_Blue500);
-    --container-action: var(--_Black);
-    --container-reverse: var(--_White);
+    --container-action: var(--_BasicBlack);
+    --container-reverse: var(--_BasicWhite);
 
     /*  --- Text ---  */
-    --text-1: var(--_White);
+    --text-1: var(--_BasicWhite);
     --text-2: var(--_Grey300);
     --text-3: var(--_Grey800);
-    --text-4: var(--_Black);
+    --text-4: var(--_BasicBlack);
+
+    /*  --- Label ---  */
+    --_label-red: var(--_decoration-red);
+    --_label-pink: var(--_decoration-pink);
+    --_label-green: var(--_decoration-green);
+    --_label-yellow: var(--_decoration-yellow);
+    --_label-orange: var(--_decoration-orange);
+    --_label-purple: var(--_decoration-purple);
+    --_label-blue: var(--_decoration-blue);
+    --_label-grey: var(--_decoration-grey);
 
 
     /*  --- Interactions ---  */
-    --interactions-error: var(--_White);
+    --interactions-error: var(--_decoration-red);
+
+    /** TODO */
 
 
     /* --------------- Business --------------- */

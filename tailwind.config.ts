@@ -20,7 +20,29 @@ const config: Config = withTV({
   theme: {
     extend: {
       colors: {
+        /** CONTAINER */
         "container-1": "var(--container-1)",
+        "container-2": "var(--container-2)",
+        "container-3": "var(--container-3)",
+        "container-4": "var(--container-4)",
+        "container-action": "var(--container-action)",
+        "container-reverse": "var(--container-reverse)",
+        /** TEXT */
+        "text-1": "var(--text-1)",
+        "text-2": "var(--text-2)",
+        "text-3": "var(--text-3)",
+        "text-4": "var(--text-4)",
+        /** TEXT */
+        "label-red": "var(--_label-red)",
+        "label-pink": "var(--_label-pink)",
+        "label-green": "var(--_label-green)",
+        "label-yellow": "var(--_label-yellow)",
+        "label-orange": "var(--_label-orange)",
+        "label-purple": "var(--_label-purple)",
+        "label-blue": "var(--_label-blue)",
+        "label-grey": "var(--_label-grey)",
+        /** INTERACTION */
+        "interactions-error": "var(--interactions-error)",
       },
     },
   },
