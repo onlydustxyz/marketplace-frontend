@@ -26,7 +26,7 @@ export function RewardsEmpty() {
       <div className="flex flex-1 flex-col gap-4">
         <Typography translate={{ token: "v2.pages.home.rewards.emptyState.title" }} variant="title-m" />
         <Typography translate={{ token: "v2.pages.home.rewards.emptyState.subtitle" }} variant="body-s-bold" />
-        <Button size="s" as="a" href={NEXT_ROUTER.home.all}>
+        <Button size="s" as="a" href={NEXT_ROUTER.projects.all}>
           <Icon remixName="ri-sparkling-line" size={16} />
           <Typography translate={{ token: "v2.pages.home.rewards.emptyState.action" }} variant="body-s-bold" />
         </Button>
