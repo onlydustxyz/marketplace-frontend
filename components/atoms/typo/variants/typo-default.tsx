@@ -1,6 +1,6 @@
 import { TypoCore } from "../typo.core";
-import { TTypoCore } from "../typo.types";
+import { TTypoProps } from "../typo.types";
 
-export const Typo = ({ ...props }: TTypoCore.Props) => {
-  return <TypoCore {...props} classNames={{}} />;
+export const Typo = ({ ...props }: TTypoProps) => {
+  return <TypoCore {...props} />;
 };

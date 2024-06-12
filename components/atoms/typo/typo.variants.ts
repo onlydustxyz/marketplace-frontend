@@ -3,7 +3,7 @@ import { tv } from "tailwind-variants";
 export const TypoCoreVariants = tv({
   base: "",
   slots: {
-    main: "",
+    main: "text-text-1",
   },
   variants: {
     size: {

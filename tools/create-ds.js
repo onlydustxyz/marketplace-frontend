@@ -12,14 +12,14 @@ async function createCoreComponent({ name, path, PascalName }) {
       `
         import { cn } from "src/utils/cn";
 
-        import { T${PascalName}Core } from "./${name}.types";
+        import { T${PascalName}Props } from "./${name}.types";
         import { ${PascalName}CoreVariants } from "./${name}.variants";
 
-        export const ${PascalName}Core = ({classNames, as: Component = "div",  ...props}: T${PascalName}Core.Props) => {
+        export const ${PascalName}Core = ({classNames, className, as: Component = "div",  ...props}: T${PascalName}Props) => {
           const slots = ${PascalName}CoreVariants({ ...props });
 
           return (
-            <Component className={cn(slots.wrapper(), classNames?.wrapper)} />
+            <Component {...props} className={cn(slots.wrapper(), className, classNames?.wrapper)} />
           );
         };
   `,
@@ -52,11 +52,11 @@ async function createVariants({ name, path, PascalName }) {
     `${path}/variants/${name}-default.tsx`,
     prettier.format(
       `
-        import { T${PascalName}Core } from "../${name}.types";
+        import { T${PascalName}Props } from "../${name}.types";
 
         import { ${PascalName}Core } from "../${name}.core";
 
-        export const ${PascalName} = ({ ...props }: T${PascalName}Core.Props) => {
+        export const ${PascalName} = ({ ...props }: T${PascalName}Props) => {
           return (
             <${PascalName}Core
               {...props}
@@ -80,15 +80,13 @@ async function createTypes({ name, path, PascalName }) {
         import { VariantProps } from "tailwind-variants";
         import { AsProps } from "types/as-element";
 
-        export namespace T${PascalName}Core {
 
-          export type Variants = VariantProps<typeof ${PascalName}CoreVariants>;
-          export type classNames = Partial<typeof ${PascalName}CoreVariants["slots"]>;
+        type Variants = VariantProps<typeof ${PascalName}CoreVariants>;
+        type classNames = Partial<typeof ${PascalName}CoreVariants["slots"]>;
 
-          export type Props<T extends ElementType = "div"> = AsProps<T> & Variants & {
-            classNames?: classNames;
-            as?: T;
-          }
+        export type T${PascalName}Props<T extends ElementType = "div"> = AsProps<T> & Variants & {
+          classNames?: classNames;
+          as?: T;
         }
   `,
       { parser: "typescript" }

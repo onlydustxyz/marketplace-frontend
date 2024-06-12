@@ -6,15 +6,13 @@ import { TTranslate } from "components/layout/translate/translate.types";
 
 import { TypoCoreVariants } from "./typo.variants";
 
-export namespace TTypoCore {
-  export type Variants = VariantProps<typeof TypoCoreVariants>;
-  export type classNames = Partial<typeof TypoCoreVariants["slots"]>;
+type Variants = VariantProps<typeof TypoCoreVariants>;
+type classNames = Partial<typeof TypoCoreVariants["slots"]>;
 
-  export type Props<T extends ElementType = "p"> = AsProps<T> &
-    Variants &
-    PropsWithChildren & {
-      classNames?: classNames;
-      as?: T;
-      translate?: TTranslate.Props;
-    };
-}
+export type TTypoProps<T extends ElementType = "p"> = AsProps<T> &
+  Variants &
+  PropsWithChildren & {
+    classNames?: classNames;
+    as?: T;
+    translate?: TTranslate.Props;
+  };

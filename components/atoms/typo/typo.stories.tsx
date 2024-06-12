@@ -2,12 +2,12 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import "../../../index.css";
 import { TypoCore } from "./typo.core";
-import { TTypoCore } from "./typo.types";
+import { TTypoProps } from "./typo.types";
 import { Typo } from "./variants/typo-default";
 
 type Story = StoryObj<typeof TypoCore>;
 
-const defaultProps: TTypoCore.Props = {
+const defaultProps: TTypoProps = {
   children: "Lorem ipsum dollor",
 };
 
