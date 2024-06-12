@@ -14,6 +14,9 @@ import { EmptyState } from "components/layout/placeholders/empty-state/empty-sta
 export function ContributionList({ githubUserId, languageId, ecosystemId }: TContributionList.Props) {
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } =
     usersApiClient.queries.useGetUserContributionsByGithubId({
+      pathParams: {
+        githubId: githubUserId,
+      },
       queryParams: {
         ...(languageId ? { languages: [languageId] } : {}),
         ...(ecosystemId ? { ecosystems: [ecosystemId] } : {}),

@@ -11,7 +11,7 @@ export function ActivityViewer(_: TActivityViewer.Props) {
   const { items } = useActivity();
   return (
     <LazyMotion features={domMax} strict>
-      <m.div className="flex flex-col gap-4" layout transition={{ type: "spring", stiffness: 100 }}>
+      <m.div className="flex flex-col gap-4" layout transition={{ type: "spring", stiffness: 50 }}>
         <AnimatePresence initial={false}>
           {items.map((data, key) => (
             <ActivityViewerItemAnimation
