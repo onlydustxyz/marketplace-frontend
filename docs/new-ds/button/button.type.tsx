@@ -1,6 +1,5 @@
+import { ButtonCoreVariants } from "docs/new-ds/button/button.variant";
 import { VariantProps } from "tailwind-variants";
-
-import { ButtonCoreVariants } from "./button.variant";
 
 export type ButtonCoreVariants = VariantProps<typeof ButtonCoreVariants>;
 
