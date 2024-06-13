@@ -1,7 +1,6 @@
 import { components } from "src/__generated/api";
 import { UseUpdateProfileBody } from "src/api/me/mutations";
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
-import { LanguageMap } from "src/types";
 
 export enum Channel {
   Discord = "DISCORD",
@@ -17,13 +16,6 @@ export enum AllocatedTime {
   GreaterThanThreeDays = "GREATER_THAN_THREE_DAYS",
   None = "NONE",
   OneToThreeDays = "ONE_TO_THREE_DAYS",
-}
-
-export enum ProfileCover {
-  Blue = "BLUE",
-  Cyan = "CYAN",
-  Magenta = "MAGENTA",
-  Yellow = "YELLOW",
 }
 
 export type UserProfileInfo = {
@@ -44,15 +36,13 @@ export type UserProfileInfo = {
   isDiscordPublic: boolean;
   linkedin: string;
   isLinkedInPublic: boolean;
-  technologies: LanguageMap;
   weeklyAllocatedTime: components["schemas"]["PrivateUserProfileResponse"]["allocatedTimeToContribute"];
   lookingForAJob: boolean;
   avatarUrl?: string;
 };
 
 export const fromFragment = (profile: UseGetMyProfileInfoResponse): UserProfileInfo => {
-  const { bio, location, website, login, contacts, technologies, allocatedTimeToContribute, isLookingForAJob } =
-    profile;
+  const { bio, location, website, login, contacts, allocatedTimeToContribute, isLookingForAJob } = profile;
 
   const getContactInfo = (channel: Channel) => contacts?.find(contact => contact.channel === channel)?.contact;
 
@@ -78,7 +68,6 @@ export const fromFragment = (profile: UseGetMyProfileInfoResponse): UserProfileI
     isDiscordPublic: isContactPublic(Channel.Discord),
     linkedin: getContactInfo(Channel.LinkedIn) ?? "",
     isLinkedInPublic: isContactPublic(Channel.LinkedIn),
-    technologies: technologies ?? {},
     weeklyAllocatedTime: allocatedTimeToContribute ?? AllocatedTime.None,
     lookingForAJob: isLookingForAJob ?? false,
   };
@@ -98,7 +87,6 @@ export const mapFormDataToSchema = (profile: UserProfileInfo): UseUpdateProfileB
     twitter,
     discord,
     linkedin,
-    technologies,
     isEmailPublic,
     isTelegramPublic,
     isWhatsappPublic,
@@ -116,7 +104,6 @@ export const mapFormDataToSchema = (profile: UserProfileInfo): UseUpdateProfileB
       createContact(Channel.Discord, discord, isDiscordPublic),
       createContact(Channel.LinkedIn, linkedin, isLinkedInPublic, "https://www.linkedin.com/in/"),
     ],
-    technologies,
     location,
     isLookingForAJob: lookingForAJob,
     website,
