@@ -89,7 +89,7 @@
     --container-3: var(--_Blue600);
     --container-4: var(--_Blue500);
     --container-action: var(--_Black);
-    --container-reverse: var(--_White);
+    --container-inverse: var(--_White);
     --container-stroke-separator: var(--_White200);
 
     /*  --- Text ---  */
