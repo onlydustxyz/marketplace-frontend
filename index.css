@@ -35,10 +35,41 @@
     --_Brand3: #00FFFF;
     --_Brand4: #0B0CCB;
 
-    /*  --- Basic ---  */
-    --_BasicWhite: #FFFFFF;
-    --_BasicBlack: #000000;
+    /*  --- WHITE ---  */
+    --_White: rgba(255, 255, 255, 1);
+    --_White100: rgba(255, 255, 255, 0.1);
+    --_White200: rgba(255, 255, 255, 0.2);
+    --_White300: rgba(255, 255, 255, 0.3);
+    --_White400: rgba(255, 255, 255, 0.4);
+    --_White500: rgba(255, 255, 255, 0.5);
+    --_White600: rgba(255, 255, 255, 0.6);
+    --_White700: rgba(255, 255, 255, 0.7);
+    --_White800: rgba(255, 255, 255, 0.8);
+    --_White900: rgba(255, 255, 255, 0.9);
 
+    /*  --- BLACK ---  */
+    --_Black: rgba(0,0,0, 1);
+    --_Black100: rgba(0,0,0, 0.1);
+    --_Black200: rgba(0,0,0, 0.2);
+    --_Black300: rgba(0,0,0, 0.3);
+    --_Black400: rgba(0,0,0, 0.4);
+    --_Black500: rgba(0,0,0, 0.5);
+    --_Black600: rgba(0,0,0, 0.6);
+    --_Black700: rgba(0,0,0, 0.7);
+    --_Black800: rgba(0,0,0, 0.8);
+    --_Black900: rgba(0,0,0, 0.9);
+
+    /*  --- RED ---  */
+    --_Red: rgba(235, 87, 87, 1);
+    --_Red100: rgba(235, 87, 87, 0.1);
+    --_Red200: rgba(235, 87, 87, 0.2);
+    --_Red300: rgba(235, 87, 87, 0.3);
+    --_Red400: rgba(235, 87, 87, 0.4);
+    --_Red500: rgba(235, 87, 87, 0.5);
+    --_Red600: rgba(235, 87, 87, 0.6);
+    --_Red700: rgba(235, 87, 87, 0.7);
+    --_Red800: rgba(235, 87, 87, 0.8);
+    --_Red900: rgba(235, 87, 87, 0.9);
 
     /*  --- Decoration ---  */
     --_decoration-red: #EB5757;
@@ -57,14 +88,15 @@
     --container-2: var(--_Blue700);
     --container-3: var(--_Blue600);
     --container-4: var(--_Blue500);
-    --container-action: var(--_BasicBlack);
-    --container-reverse: var(--_BasicWhite);
+    --container-action: var(--_Black);
+    --container-reverse: var(--_White);
+    --container-stroke-separator: var(--_White200);
 
     /*  --- Text ---  */
-    --text-1: var(--_BasicWhite);
+    --text-1: var(--_White);
     --text-2: var(--_Grey300);
     --text-3: var(--_Grey800);
-    --text-4: var(--_BasicBlack);
+    --text-4: var(--_Black);
 
     /*  --- Label ---  */
     --label-red: var(--_decoration-red);
@@ -78,7 +110,20 @@
 
 
     /*  --- Interactions ---  */
-    --interactions-error: var(--_decoration-red);
+    --interactions-error-default: var(--_Red200);
+    --interactions-error-hover: var(--_Red600);
+    --interactions-error-active: var(--_Red);
+    --interactions-error-disabled: var(--_Red100);
+
+    --interactions-white-default: var(--_White200);
+    --interactions-white-hover: var(--_White600);
+    --interactions-white-active: var(--_White);
+    --interactions-white-disabled: var(--_White100);
+
+    --interactions-black-default: var(--_Black200);
+    --interactions-black-hover: var(--_Black600);
+    --interactions-black-active: var(--_Black);
+    --interactions-black-disabled: var(--_Black100);
 
     /** TODO */
 

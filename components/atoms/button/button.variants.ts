@@ -2,10 +2,13 @@ import { tv } from "tailwind-variants";
 
 export const ButtonCoreVariants = tv({
   slots: {
-    base: "group flex flex-row items-center justify-center gap-2 rounded-md bg-container-1",
+    base: "group relative cursor-pointer overflow-hidden rounded-md bg-container-1 transition-background",
+    content: "flex  flex-row items-center justify-center gap-2",
     startIcon: "",
     endIcon: "",
-    content: "",
+    label: "",
+    loaderContainer: "absolute inset-0 flex h-full w-full flex-row items-center justify-center bg-container-1",
+    spinnerCircle: "h-4 w-4 border-b-white",
   },
   variants: {
     size: {
@@ -25,12 +28,13 @@ export const ButtonCoreVariants = tv({
       },
       loading: {
         base: "",
+        content: "opacity-0",
       },
       disabled: {
-        base: "pointer-events-none",
-        startIcon: "",
-        endIcon: "",
-        content: "",
+        base: "pointer-events-none cursor-not-allowed",
+        startIcon: "text-text-3",
+        endIcon: "text-text-3",
+        content: "text-text-3",
       },
     },
   },
