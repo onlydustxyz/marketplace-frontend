@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-const i = require("@inquirer/prompts");
 const fs = require("fs/promises");
 const prettier = require("prettier");
 const { COLORS, kebabToPascal, kebabToCamel, defaultPromptName } = require("./global");
@@ -114,6 +113,20 @@ async function createLoading({ name, path, PascalName }) {
   );
 }
 
+async function createIndex({ name, path }) {
+  await fs.appendFile(
+    `${path}/index.ts`,
+    prettier.format(
+      `
+        export * from "./${name}.core";
+        export * from "./variants/${name}-default";
+        export * from "./${name}.types";
+  `,
+      { parser: "typescript" }
+    )
+  );
+}
+
 async function createStories({ name, path, PascalName }) {
   await fs.appendFile(
     `${path}/${name}.stories.tsx`,
@@ -175,8 +188,8 @@ async function createFiles(informations) {
   await createTypes(informations);
   await createLoading(informations);
   await createStories(informations);
+  await createIndex(informations);
   await exec(`eslint '${informations.path}/*.{js,jsx,json,ts,tsx}' --max-warnings=0 --fix`);
-  // await createIndex(informations);
 }
 
 async function promptName() {
