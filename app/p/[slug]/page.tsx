@@ -3,6 +3,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo } from "react";
+import { useLocalStorage } from "react-use";
 import { useMediaQuery } from "usehooks-ts";
 
 import ProjectApi from "src/api/Project";
@@ -15,6 +16,7 @@ import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
 import { ApplyCallout } from "components/features/apply-callout/apply-callout";
+import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import { ProjectLeadInvitationBanner } from "components/features/project-lead-invitation-banner/project-lead-invitation-banner";
 import { withClientOnly } from "components/layout/client-only/client-only";
@@ -46,7 +48,16 @@ function ProjectPage() {
       params: { projectId: project?.id || "", projectSlug: slug },
     });
 
-  const { user } = useAuth0();
+  const { user, isAuthenticated, loginWithRedirect } = useAuth0();
+
+  const [scopeStorage, setScopesStorage] = useLocalStorage("auth0-scope");
+
+  useEffect(() => {
+    if (isAuthenticated && !scopeStorage) {
+      setScopesStorage("public_repo read:org read:user");
+      handleLoginWithRedirect(loginWithRedirect);
+    }
+  }, [scopeStorage, isAuthenticated]);
 
   const isProjectLeader = useProjectLeader({ id: project?.id });
 
