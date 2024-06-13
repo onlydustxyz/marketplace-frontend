@@ -2,7 +2,7 @@ import { tv } from "tailwind-variants";
 
 export const ButtonCoreVariants = tv({
   slots: {
-    base: "group relative cursor-pointer overflow-hidden rounded-md bg-container-1 transition-background",
+    base: "group relative w-fit cursor-pointer overflow-hidden rounded-md bg-container-1 transition-background",
     content: "flex  flex-row items-center justify-center gap-2",
     startIcon: "",
     endIcon: "",
@@ -22,13 +22,23 @@ export const ButtonCoreVariants = tv({
         base: "px-1 py-1",
       },
     },
+    display: {
+      default: {
+        base: "",
+      },
+      loader: {
+        content: "opacity-0",
+      },
+      icon: {
+        content: "",
+      },
+    },
     state: {
       default: {
         base: "",
       },
       loading: {
-        base: "",
-        content: "opacity-0",
+        base: "pointer-events-none cursor-not-allowed",
       },
       disabled: {
         base: "pointer-events-none cursor-not-allowed",
@@ -38,6 +48,29 @@ export const ButtonCoreVariants = tv({
       },
     },
   },
+  compoundVariants: [
+    {
+      display: "icon",
+      size: "l",
+      class: {
+        base: "px-3 py-3",
+      },
+    },
+    {
+      display: "icon",
+      size: "m",
+      class: {
+        base: "px-2 py-2",
+      },
+    },
+    {
+      display: "icon",
+      size: "s",
+      class: {
+        base: "px-1 py-1",
+      },
+    },
+  ],
   defaultVariants: {
     size: "m",
     state: "default",

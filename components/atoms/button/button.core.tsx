@@ -21,8 +21,12 @@ export function ButtonCore<C extends ElementType = "button">({
   ...props
 }: TButtonProps<C>) {
   const Component = as || "button";
-  const { state = "default", size, ...htmlProps } = props;
-  const slots = ButtonCoreVariants({ state: isLoading ? "loading" : state, size });
+  const { state = "default", size, display, ...htmlProps } = props;
+  const slots = ButtonCoreVariants({
+    state: isLoading ? "loading" : state,
+    display: isLoading ? "loader" : display,
+    size,
+  });
 
   const Icons = useMemo(
     () => ({
@@ -36,14 +40,23 @@ export function ButtonCore<C extends ElementType = "button">({
     [startIcon, endIcon]
   );
 
+  const Content = useMemo(() => {
+    if (children && display !== "icon") {
+      return (
+        <Typo size={"xs"} as={"p"} classNames={{ base: cn(slots.label(), classNames?.label) }}>
+          {children}
+        </Typo>
+      );
+    }
+    return null;
+  }, [children]);
+
   return (
     <Component {...htmlProps} data-state={state} className={cn(slots.base(), classNames?.base)}>
       <div className={cn(slots.content(), classNames?.content)}>
         {startContent}
         {Icons.startIcon}
-        <Typo size={"xs"} as={"p"} classNames={{ base: cn(slots.label(), classNames?.label) }}>
-          {children}
-        </Typo>
+        {Content}
         {Icons.endIcon}
         {endContent}
       </div>
