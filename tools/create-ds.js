@@ -104,7 +104,7 @@ async function createLoading({ name, path, PascalName }) {
     `${path}/${name}.loading.tsx`,
     prettier.format(
       `
-        export const ${PascalName}Loading = () => {
+        export function ${PascalName}Loading() {
           return <div />;
         };
   `,
