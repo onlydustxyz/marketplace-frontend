@@ -149,10 +149,6 @@ export interface MoreInfosField {
 
 export type Sponsor = components["schemas"]["SponsorResponse"];
 
-export interface Technologies {
-  [key: string]: number;
-}
-
 export interface TopContributor {
   githubUserId: number;
   login: string;
@@ -191,7 +187,6 @@ export interface Project {
   contributorCount: number;
   leaders: Leader[];
   sponsors: Sponsor[];
-  technologies: Technologies;
   topContributors: TopContributor[];
   repos: Repo[];
   isInvitedAsProjectLead: boolean;
