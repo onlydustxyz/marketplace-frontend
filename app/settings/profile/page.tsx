@@ -61,7 +61,6 @@ const formSchema = z.object({
     contact: z.string().regex(REGEX.linkedin, keys.invalidUsername).optional(),
     isPublic: z.boolean(),
   }),
-  technologies: z.record(z.number()),
   weeklyAllocatedTime: z.nativeEnum(TProfileForm.ALLOCATED_TIME),
   lookingForAJob: z.boolean(),
 });
