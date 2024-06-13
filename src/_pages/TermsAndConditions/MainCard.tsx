@@ -40,7 +40,7 @@ export default function TermsAndConditionsMainCard({
                 Only Dust is a platform provided by Wagmi SAS designed to optimize the financing of open source projects
                 using blockchain protocols. On behalf of foundations supporting the development of protocols, we
                 organize connections between open source projects and developers and organize the funding of the
-                latter's contributions.
+                latter&apos;s contributions.
               </div>
             </Section>
             <Section title="How to access Only Dust? ">
@@ -73,7 +73,7 @@ export default function TermsAndConditionsMainCard({
                 <p className="mb-4">
                   <u>In both cases</u>, you must: (i) properly use our platform and refrain from all fraudulent
                   activity; (ii) give us valid information about your status, including whether you act for a company or
-                  not; (iii) comply with the laws and regulations in force in the country in which you are located.
+                  not; (iii) comply with the laws and regulations in force in the country in which you are located.
                 </p>
                 <p className="mb-4">
                   <strong>What are Our responsibilities?</strong> We undertake to provide you with our platform and
