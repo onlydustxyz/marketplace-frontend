@@ -30,7 +30,6 @@ interface HeaderViewProps {
     [NEXT_ROUTER.rewards.all]?: string;
   };
   impersonating?: boolean;
-  profileCompletionScore?: number;
 }
 
 export default function HeaderView({ menuItems, impersonating = false }: HeaderViewProps) {
