@@ -17,13 +17,16 @@ export interface IFetchAdapater<T> {
   setErrorCallback(callback: () => void): IFetchAdapater<T>;
   setParams(params: Params): IFetchAdapater<T>;
   setPathParams(params: PathParams): IFetchAdapater<T>;
+  setDebugger(enabled: boolean): IFetchAdapater<T>;
   tag?: string;
   pathParams: PathParams;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type DebugMessage = any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Body = any;
-export type Params = { [key: string]: string };
+export type Params = { [key: string]: string | number | string[] | number[] | boolean };
 export type PathParams = { [key: string]: string | number };
 
 export interface FetchParams extends Partial<RequestInit> {

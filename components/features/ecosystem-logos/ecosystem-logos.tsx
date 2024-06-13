@@ -3,15 +3,24 @@ import { PropsWithChildren, useCallback } from "react";
 import { ProjectTypes } from "src/api/Project/types";
 
 import { AvatarGroup } from "components/ds/avatar-group/avatar-group";
+import { Avatar } from "components/ds/avatar/avatar";
+import { Link } from "components/ds/link/link";
 import { Tooltip } from "components/ds/tooltip/tooltip";
 import { TEcosystemLogos } from "components/features/ecosystem-logos/ecosystem-logos.types";
-import { Ecosystem } from "components/features/ecosystem/ecosystem";
+import { Typography } from "components/layout/typography/typography";
+
+import { NEXT_ROUTER } from "constants/router";
 
 function TooltipContent({ ecosystems }: { ecosystems: ProjectTypes.EcoSystem[] }) {
   return (
     <div className="flex flex-col flex-wrap gap-4 text-snow">
       {ecosystems.map(ecosystem => (
-        <Ecosystem key={ecosystem.id} name={ecosystem.name} logoUrl={ecosystem.logoUrl} />
+        <Link key={ecosystem.id} href={NEXT_ROUTER.ecosystems.details.root(ecosystem.slug)} className="gap-1">
+          <Avatar src={ecosystem.logoUrl} alt={ecosystem.name} size="s" />
+          <Typography variant="body-s" className="truncate">
+            {ecosystem.name}
+          </Typography>
+        </Link>
       ))}
     </div>
   );

@@ -1,9 +1,30 @@
+import process from "process";
+import { getOrdinalSuffix } from "utils/profile/ordinal-position-suffix";
+
 interface Props {
   login: string;
   title: string;
   image: string;
+  rank: number;
+  rankPercentile: number;
 }
-export function ContentUser({ login, title, image }: Props) {
+export function ContentUser({ login, title, image, rank, rankPercentile }: Props) {
+  const isRemoteImage = (() => {
+    if (process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX && image) {
+      return !image?.includes(process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX);
+    }
+
+    return false;
+  })();
+
+  const optimizeSrc = (() => {
+    if (isRemoteImage) {
+      return `${process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX}format=png/${image}`;
+    }
+
+    return image;
+  })();
+
   return (
     <div
       style={{
@@ -15,10 +36,10 @@ export function ContentUser({ login, title, image }: Props) {
       }}
     >
       <img
-        src={image}
+        src={optimizeSrc}
         alt="user-image"
-        width="108"
-        height="108"
+        width="196"
+        height="196"
         style={{
           objectFit: "cover",
           border: "6px solid #232338",
@@ -31,7 +52,7 @@ export function ContentUser({ login, title, image }: Props) {
           flexDirection: "column",
           alignItems: "flex-start",
           justifyContent: "flex-start",
-          gap: "24px",
+          gap: "20px",
         }}
       >
         <div
@@ -41,7 +62,7 @@ export function ContentUser({ login, title, image }: Props) {
             color: "#F3F0EE",
           }}
         >
-          {login}
+          {login.slice(0, 20)}
         </div>
         <div
           style={{
@@ -51,6 +72,21 @@ export function ContentUser({ login, title, image }: Props) {
           }}
         >
           {title}
+        </div>
+        <div
+          style={{
+            fontSize: "36px",
+            fontFamily: "Walsheim",
+            color: "#F3F0EE",
+            padding: "12px 24px",
+            borderRadius: 100,
+            display: "flex",
+            alignItems: "center",
+            border: "2px solid #F3F0EE33",
+            backgroundColor: "#FFFFFF0D",
+          }}
+        >
+          {getOrdinalSuffix(rank)} • Top {rankPercentile}%
         </div>
       </div>
     </div>

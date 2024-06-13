@@ -1,3 +1,4 @@
+import { Selection } from "@nextui-org/react";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { Money } from "utils/Money/Money";
 
@@ -5,10 +6,13 @@ import SponsorApi from "src/api/Sponsors";
 import useMutationAlert from "src/api/useMutationAlert";
 import { Spinner } from "src/components/Spinner/Spinner";
 import { useCurrenciesOrder } from "src/hooks/useCurrenciesOrder";
+import { usePosthog } from "src/hooks/usePosthog";
 import { useCloseStack } from "src/libs/react-stack";
 import { cn } from "src/utils/cn";
 
+import { Avatar } from "components/ds/avatar/avatar";
 import { Button } from "components/ds/button/button";
+import { Select } from "components/ds/form/select/select";
 import { Tooltip } from "components/ds/tooltip/tooltip";
 import { AmountSelect } from "components/features/currency/amount-select/amount-select";
 import { SearchProjects } from "components/features/search-projects/search-projects";
@@ -25,12 +29,25 @@ import { Label } from "./components/label/label";
 
 const shortcuts = [25, 50, 75, 100] as const;
 
-export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
+export function SponsorProjectStack({ project, initialSponsorId }: TSponsorProjectStack.Props) {
   const { T } = useIntl();
   const closeStack = useCloseStack();
+  const { capture } = usePosthog();
 
   const { user } = useCurrentUser();
-  const sponsorId = user?.sponsors?.[0].id ?? "";
+
+  const sponsors = useMemo(
+    () =>
+      user?.sponsors?.map(s => ({
+        label: s.name,
+        value: s.id,
+        startContent: <Avatar src={s.logoUrl} size={"xs"} className={"mx-1"} />,
+      })) ?? [],
+    [user]
+  );
+  const [sponsorId, setSponsorId] = useState(initialSponsorId ?? sponsors[0]?.value);
+  const selectedSponsor = useMemo(() => sponsors.find(s => s.value === sponsorId), [user, sponsorId]);
+
   const { data: sponsor, isLoading } = SponsorApi.queries.useGetSponsorById({
     params: {
       sponsorId,
@@ -48,12 +65,11 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
   // We only want to show currencies that have a budget
   const currencies = useMemo(() => sponsor?.availableBudgets.filter(b => Boolean(b.amount)) ?? [], [sponsor]);
   const orderedCurrencies = useCurrenciesOrder({ currencies });
+  const initialCurrencySelection = useMemo(() => orderedCurrencies?.[0]?.currency, [orderedCurrencies]);
 
   const [selectedProjectId, setSelectedProjectId] = useState("");
   const [currencyAmount, setCurrencyAmount] = useState("");
-  const [currencySelection, setCurrencySelection] = useState<Money.Currency | undefined>(
-    orderedCurrencies?.[0]?.currency
-  );
+  const [currencySelection, setCurrencySelection] = useState<Money.Currency | undefined>();
 
   useMutationAlert({
     mutation: restAllocation,
@@ -71,6 +87,13 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
       setSelectedProjectId(project.id);
     }
   }, [project]);
+
+  useEffect(() => {
+    // Need to set initial value inside an effect because the value comes from a deferred source
+    if (initialCurrencySelection) {
+      setCurrencySelection(initialCurrencySelection);
+    }
+  }, [initialCurrencySelection]);
 
   const currencyAmountFloat = currencyAmount ? parseFloat(currencyAmount) : 0;
 
@@ -108,7 +131,20 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
       currencyId: currencySelection?.id ?? "",
     });
 
+    capture("project_budget_allocated", { project_id: selectedProjectId, sponsor_id: sponsorId });
+
     closeStack();
+  }
+
+  function handleSponsorChange(keys: Selection) {
+    const [sponsorId] = keys;
+
+    if (typeof sponsorId === "string") {
+      setSponsorId(sponsorId);
+
+      // Reset amount, don't need to reset currency selection because it comes from a request depending on the sponsor id
+      setCurrencyAmount("");
+    }
   }
 
   function renderShortcuts() {
@@ -139,6 +175,22 @@ export function SponsorProjectStack({ project }: TSponsorProjectStack.Props) {
         <Typography variant={"title-m"} translate={{ token: "v2.pages.stacks.sponsorProject.title" }} />
 
         <div className={"divide-y divide-card-border-light"}>
+          <div className={"grid gap-3 py-6"}>
+            <Label htmlFor={"sponsor-project-sponsor"}>
+              <Translate token="v2.pages.stacks.sponsorProject.sponsor.title" />
+            </Label>
+            <Select
+              aria-label={T("v2.pages.sponsor.selectSponsor")}
+              defaultSelectedKeys={[sponsorId ?? ""]}
+              disabledKeys={[sponsorId ?? ""]}
+              startContent={selectedSponsor?.startContent}
+              items={sponsors}
+              onSelectionChange={handleSponsorChange}
+              size={"lg"}
+              variant={"grey"}
+            />
+          </div>
+
           <div className={"grid gap-3 py-6"}>
             <Label htmlFor={"sponsor-project-project"}>
               <Translate token="v2.pages.stacks.sponsorProject.project.title" />

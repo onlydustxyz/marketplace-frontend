@@ -11,7 +11,7 @@ export function getUserPublicStats(githubId: number, ecosystemId?: string): IFet
     .setTag(tags.public_stats(githubId, ecosystemId));
 
   if (ecosystemId) {
-    fetcher.setParams({ ecosystemId });
+    fetcher.setParams({ ecosystem: ecosystemId });
   }
 
   return fetcher;

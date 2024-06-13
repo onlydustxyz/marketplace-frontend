@@ -29,11 +29,14 @@ const project: components["schemas"]["ProjectPageItemResponse"] = {
     },
   ],
   ecosystems: [],
-  technologies: {
-    Java: 2063962,
-    Dockerfile: 833,
-    Shell: 31816,
-  },
+  languages: [
+    {
+      id: "123",
+      name: "JavaScript",
+      logoUrl: "",
+      slug: "javascript",
+    },
+  ],
   isInvitedAsProjectLead: false,
   hasMissingGithubAppInstallation: false,
 };

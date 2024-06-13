@@ -14,7 +14,7 @@ export const useUpdateHackathonsRegistrations = ({
   const { mutation } = useReactQueryAdapter(updateHackathonsRegistrations({ hackathonId, hackathonSlug }));
   const queryClient = useQueryClient();
 
-  return useMutation<unknown>({
+  return useMutation({
     ...mutation,
     onSuccess: async () => {
       await queryClient.invalidateQueries({

@@ -18,7 +18,12 @@ export function Legend({ data, setActiveId, renderTooltip, legendWrapperClassNam
   return (
     <Flex direction="col" className={cn("gap-2", legendWrapperClassName)}>
       {data.map(item => (
-        <div key={item.id} onMouseEnter={() => handleMouseEnter(item.id)} onMouseLeave={handleMouseLeave}>
+        <div
+          key={item.id}
+          onMouseEnter={() => handleMouseEnter(item.id)}
+          onMouseLeave={handleMouseLeave}
+          className={"inline-flex"}
+        >
           <Tooltip
             placement="right"
             content={

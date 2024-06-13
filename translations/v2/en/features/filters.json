@@ -1,12 +1,12 @@
 {
-  "technologies": {
-    "title": "Technologies",
-    "all": "All technologies",
-    "some": "Technologies",
-    "zero": "Technologies",
-    "empty": "No technologies found",
-    "one": "__count__ technology",
-    "many": "__count__ technologies"
+  "languages": {
+    "title": "Languages",
+    "all": "All languages",
+    "some": "Languages",
+    "zero": "Languages",
+    "empty": "No languages found",
+    "one": "__count__ language",
+    "many": "__count__ languages"
   },
   "ecosystems": {
     "title": "Ecosystems",

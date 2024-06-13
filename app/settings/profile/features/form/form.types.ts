@@ -2,8 +2,6 @@ import { components } from "src/__generated/api";
 import { LanguageMap } from "src/types";
 
 export namespace TProfileForm {
-  type Cover = components["schemas"]["PrivateUserProfileResponse"]["cover"];
-
   interface ContactProps {
     contact: string;
     isPublic: boolean;
@@ -27,7 +25,6 @@ export namespace TProfileForm {
     firstName?: string;
     lastName?: string;
     avatarUrl?: string;
-    cover: Cover;
     location: string;
     bio: string;
     website: string;

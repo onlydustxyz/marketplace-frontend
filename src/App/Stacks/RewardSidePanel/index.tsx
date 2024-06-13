@@ -49,6 +49,7 @@ export function RewardSidePanelAsLeader({
 }) {
   const showToaster = useShowToaster();
   const { T } = useIntl();
+  const { capture } = usePosthog();
 
   const { mutate: mutateReward } = useMutationRestfulData({
     resourcePath: ApiResourcePaths.PROJECT_REWARD,
@@ -57,6 +58,7 @@ export function RewardSidePanelAsLeader({
     onSuccess: () => {
       onRewardCancel();
       showToaster(T("reward.form.cancelled"));
+      capture("reward_cancelled", { reward_id: rewardId });
     },
   });
 

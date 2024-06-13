@@ -1,4 +1,5 @@
 import { TableBodyProps, TableCellProps, TableColumnProps, TableHeaderProps, TableProps } from "@nextui-org/react";
+import { UseInfiniteQueryResult } from "@tanstack/react-query";
 import { ComponentProps, ReactNode } from "react";
 import { TableRowProps } from "react-markdown/lib/ast-to-react";
 
@@ -7,7 +8,7 @@ import { Icon } from "components/layout/icon/icon";
 import { Key } from "hooks/translate/use-translate";
 
 export namespace TTable {
-  export type Base = Omit<TableProps, "aria-label" | "classNames" | "removeWrapper">;
+  export type Base = Omit<TableProps, "aria-label" | "removeWrapper">;
   export type TableHeader = Partial<TableHeaderProps<Column>>;
   export type TableColumn = Partial<TableColumnProps<Column>>;
   export type TableBody = Partial<TableBodyProps<Row>>;
@@ -29,6 +30,13 @@ export namespace TTable {
     [key: string]: ReactNode;
   }
 
+  interface InfiniteQuery {
+    hasNextPage: UseInfiniteQueryResult["hasNextPage"];
+    fetchNextPage: UseInfiniteQueryResult["fetchNextPage"];
+    isFetchingNextPage: UseInfiniteQueryResult["isFetchingNextPage"];
+    isLoading: UseInfiniteQueryResult["isLoading"];
+  }
+
   export interface Props extends Base {
     label: string;
     columns: Column[];
@@ -45,5 +53,6 @@ export namespace TTable {
       actionLabel?: TranslateToken;
       onAction?: () => void;
     };
+    infiniteQuery?: InfiniteQuery;
   }
 }

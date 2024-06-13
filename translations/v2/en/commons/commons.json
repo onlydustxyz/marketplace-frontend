@@ -62,11 +62,24 @@
         "hidden": "Hidden on public profile",
         "visible": "Visible on public profile"
       }
-    }
+    },
+    "submit": "Submit",
+    "update": "Update"
   },
   "currency": "Currency",
   "pendingInvite": "Pending invite",
   "pullRequests": "Pull requests",
   "issues": "Issues",
-  "codeReviews": "Code reviews"
+  "codeReviews": "Code reviews",
+  "globalState": {
+    "error": {
+      "title": "We just crashed...",
+      "description": "Please try again or _contact us_ if the problem persists.",
+      "back": "Go back home",
+      "refresh": "Refresh"
+    }
+  },
+  "navigation": {
+    "back": "Back"
+  }
 }

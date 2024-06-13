@@ -9,10 +9,12 @@ export function Textarea(props: TTextarea.Props) {
       classNames={{
         mainWrapper: "w-full",
         inputWrapper:
-          "rounded-lg border border-greyscale-50/8 bg-white/5 focus-within:!border-spacePurple-500 focus-within:bg-spacePurple-900 focus-within:ring-1 focus-within:ring-spacePurple-500 hover:border hover:border-greyscale-50/8 h-8 min-h-8 px-3 py-2 !transition-all",
+          "rounded-lg border border-greyscale-50/8 bg-white/5 focus-within:!border-spacePurple-500 focus-within:bg-spacePurple-900 focus-within:ring-1 focus-within:ring-spacePurple-500 hover:border hover:border-greyscale-50/8 h-8 min-h-8 px-3 py-2 !transition-all group-data-[invalid=true]:!border-github-red-light",
         innerWrapper: "gap-2",
-        input: "!p-0 !od-text-body-s",
-        label: "!od-text-body-s-bold !p-0 pointer-events-auto",
+        input: "!p-0 !od-text-body-s !text-white",
+        errorMessage: "hidden",
+        label:
+          "!od-text-body-s-bold !p-0 pointer-events-auto after:text-spacePurple-500 group-data-[invalid=true]:!text-greyscale-50",
         helperWrapper: "p-0 mt-2",
         description: "!od-text-body-xs text-greyscale-200",
       }}

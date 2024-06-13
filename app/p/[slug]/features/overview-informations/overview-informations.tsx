@@ -24,7 +24,7 @@ export function OverviewInformations({ project }: TOverviewInformations.Props) {
               objectFit="cover"
               width={80}
               height={80}
-              className="h-8 w-8 rounded-lg md:h-20 md:w-20"
+              className="h-8 w-8 rounded-lg object-cover object-center md:h-20 md:w-20"
             />
 
             <Flex direction="col" className="gap-1">

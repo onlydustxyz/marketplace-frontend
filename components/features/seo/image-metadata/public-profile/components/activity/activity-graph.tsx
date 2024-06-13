@@ -24,9 +24,8 @@ export function OGActivityGraph({ data, contribution, rewards }: Props) {
   };
   const weeks = createWeeks({ ...dates });
   const splitWeeks = splitWeeksIntoSubArray({ weeks });
-
   return (
-    <div style={{ display: "flex", justifyContent: "flex-start", alignItems: "flex-start" }}>
+    <div style={{ display: "flex", justifyContent: "flex-start", alignItems: "center", height: "100%" }}>
       <div
         style={{
           display: "flex",
@@ -34,10 +33,10 @@ export function OGActivityGraph({ data, contribution, rewards }: Props) {
           alignItems: "center",
           justifyContent: "center",
           gap: "30px",
-          height: "auto",
+          height: "100%",
           border: "1px solid #F3F0EE33",
           background: "#0E0D2E",
-          padding: "28px 40px",
+          padding: "32px 40px",
           borderRadius: 24,
         }}
       >

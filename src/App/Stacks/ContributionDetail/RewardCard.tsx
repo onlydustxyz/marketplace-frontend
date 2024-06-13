@@ -1,6 +1,3 @@
-import { SyntheticEvent } from "react";
-
-import { useStackContributorProfile } from "src/App/Stacks/Stacks";
 import { AvailableConversion } from "src/components/Currency/AvailableConversion";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Tag from "src/components/Tag";
@@ -10,7 +7,7 @@ import { cn } from "src/utils/cn";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { formatPaymentId } from "src/utils/formatPaymentId";
 
-import { Link } from "components/ds/link/link";
+import { Contributor } from "components/features/contributor/contributor";
 import { PayoutStatus } from "components/features/payout-status/payout-status";
 
 import { useIntl } from "hooks/translate/use-translate";
@@ -23,15 +20,6 @@ export function RewardCard({
   onClick?: () => void;
 }) {
   const { T } = useIntl();
-  const [openProfilePanel] = useStackContributorProfile();
-
-  const handleClick = (e: SyntheticEvent) => {
-    e.stopPropagation();
-
-    if (reward.from.githubUserId) {
-      openProfilePanel({ githubUserId: reward.from.githubUserId });
-    }
-  };
 
   return (
     <article
@@ -65,7 +53,6 @@ export function RewardCard({
           dates={{ unlockDate: reward?.unlockDate, processedAt: reward?.processedAt }}
         />
       </div>
-
       <Tag>
         <AvailableConversion
           tooltipId={`${reward.id}-reward-conversion`}
@@ -76,7 +63,6 @@ export function RewardCard({
           }}
         />
       </Tag>
-
       <div className="flex items-center gap-2">
         <RoundedImage
           src={reward.from.avatarUrl ?? ""}
@@ -84,10 +70,13 @@ export function RewardCard({
           rounding={Rounding.Circle}
           size={ImageSize.Xxs}
         />
-        <p className="text-sm leading-none text-greyscale-300">
-          {T("contributions.panel.rewards.fromUser")}&nbsp;
-          <Link.Button onClick={handleClick}>{reward.from.login}</Link.Button>
-        </p>
+        <Contributor
+          githubUserId={reward.from.githubUserId}
+          login={reward.from.login}
+          avatarUrl={null}
+          isRegistered={false}
+          clickable
+        />
       </div>
     </article>
   );

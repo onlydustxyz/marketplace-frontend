@@ -1,3 +1,5 @@
+import { PublicProfilerankCategoryUnion } from "api-client/resources/users/types";
+
 import { TActivityGraph } from "components/features/graphs/activity-graph/activity-graph.types";
 
 export namespace TPublicProfileImageMetadata {
@@ -7,6 +9,8 @@ export namespace TPublicProfileImageMetadata {
     image: string;
     contributionCount: number;
     rewardsCount: number;
+    rank: number;
+    rankPercentile: number;
     topLanguages?: {
       name: string;
       image: string;
@@ -22,4 +26,13 @@ export namespace TPublicProfileImageMetadata {
       };
     };
   }
+
+  export const rankCategoryTranslationMapping: Record<PublicProfilerankCategoryUnion, string> = {
+    A: "💎 Diamond contributor",
+    B: "🥇 Gold contributor",
+    C: "🥈 Silver contributor",
+    D: "🥉 Bronze contributor",
+    E: "🔨 Steel contributor",
+    F: "🪵 Wood contributor",
+  };
 }

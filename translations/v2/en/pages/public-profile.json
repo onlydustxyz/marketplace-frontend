@@ -10,8 +10,35 @@
     "rewards": "rewards",
     "usd": "USD"
   },
-  "activity": "Activity",
-  "languagesDetails": "Details by languages",
-  "totalEarned": "Total earned by project",
-  "workDistribution": "Work distribution"
+  "activity": {
+    "title": "Activity",
+    "empty": {
+      "title": "Seems a bit quiet here",
+      "description": "This user has no recent activity."
+    }
+  },
+  "bio": {
+    "empty": "No profile description added yet, stay tuned for more!"
+  },
+  "workDistribution": {
+    "title": "Work distribution",
+    "error": "Unable to fetch work distribution data."
+  },
+  "totalEarned": {
+    "title": "Total earned by project",
+    "error": "Unable to fetch total earned data."
+  },
+  "languagesDetails": {
+    "title": "Details by languages"
+  },
+  "ecosystemsDetails": {
+    "title": "Details by ecosystems"
+  },
+  "contributions": {
+    "empty": {
+      "title": "No contribution yet.",
+      "description": "Come back later to discover more work."
+    }
+  },
+  "totalEarnedOther": "Other"
 }

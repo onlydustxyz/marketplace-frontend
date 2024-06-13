@@ -296,8 +296,9 @@ const View: React.FC<Props> = ({
                 <RewardBudget
                   budgets={projectBudget.budgets}
                   preferedCurrency={preferredCurrency}
-                  onChange={({ amount, currency }: RewardBudgetChangeProps) => {
+                  onChange={({ amount, amountInDollars, currency }: RewardBudgetChangeProps) => {
                     if (amount) setValue("amountToWire", amount);
+                    if (amountInDollars) setValue("amountInDollars", amountInDollars);
                     if (currency) setValue("currency", currency);
                   }}
                   loading={isCreateProjectRewardLoading}

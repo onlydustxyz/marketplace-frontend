@@ -1,0 +1,117 @@
+{
+  "applicant": {
+    "public": {
+      "title": "Register to the committee",
+      "description": "Do you want to register your project to the committee?\nWe just need you to connect to get started.",
+      "login": "Connect with GitHub"
+    },
+    "success": {
+      "title": "Thank you for applying",
+      "description": "We have received your application. You can review and edit it until registration closes.",
+      "back": "Back to my application"
+    },
+    "private": {
+      "step": {
+        "applications": "Applications",
+        "votes": "Votes",
+        "results": "Results"
+      },
+      "create": {
+        "title": "Select your project",
+        "description": "Start by going through the details of your project. Should you wish to make any updates, please proceed to OnlyDust to edit your project information."
+      },
+      "update": {
+        "title": "Your application",
+        "descriptionDate": "You can edit your application until __date__.",
+        "description": "You can edit your application."
+      },
+      "voting": {
+        "title": "Your application",
+        "description": "Voting has begun. Your application can no longer be edited."
+      },
+      "closed": {
+        "title": "Your application",
+        "description": "This committee is now closed for applications."
+      },
+      "project": {
+        "select": "Select a project"
+      },
+      "questions": {
+        "title": "Answer the following questions",
+        "description": "This will help our jury to allocate budget for this committee."
+      },
+      "answers": {
+        "title": "Your answers"
+      },
+      "error": {
+        "title": "We can't find your application",
+        "description": "Please try again or _contact us_ if the problem persists."
+      },
+      "form": {
+        "success": "Your application was submitted successfully."
+      },
+      "empty": {
+        "title": "Project has not applied",
+        "description": "This project didn't apply for the committee in time."
+      }
+    }
+  },
+  "jury": {
+    "public": {
+      "title": "Vote in the committee",
+      "description": "Do you want to vote for projects in the committee?\nWe just need you to connect to get started.",
+      "login": "Connect with GitHub"
+    },
+    "private": {
+      "title": "Vote for your assigned projects",
+      "subtitle": "\uD83D\uDC4B Hello __name__, please find below the __projects__ projects to review for this month.",
+      "subtitleNamePlaceholder": "there",
+      "description": "Following your feedback, we have added metrics to help you judge projects. We don’t filter projects when they apply; we want to be permissionless.\n\nBe careful; even with low metrics, you can find hidden gems (especially for new projects).\nIf you have a conflict of interest, don’t vote. A 0 is a non-vote. There is a conflict if you have invested or have a close relationship with a project (employee, employer, investor in your project, biggest customer, best friend, etc.)\n\nThe 4 criteria are here to help, but ultimately, we count the aggregate vote. So, if you have a very strong opinion, you can give only 5 or only 1, even if it doesn't match the reality of each criterion.\n\nIf you have a question, reach __link__ on TG.\nWe are here to help.",
+      "notStarted": "Not started",
+      "error": {
+        "title": "We can't find the committee",
+        "description": "Please try again or _contact us_ if the problem persists."
+      },
+      "form": {
+        "titleVote": "Vote for this project",
+        "titleReadonly": "Votes for this project",
+        "success": "Your vote was submitted successfully."
+      }
+    }
+  },
+  "project": {
+    "metrics": {
+      "title": "Last 3 month metrics",
+      "activeContributors": {
+        "zero": "active contributors",
+        "one": "active contributor",
+        "many": "active contributors"
+      },
+      "amountSentInUsd": "sent in USD",
+      "contributionsCompleted": {
+        "zero": "contributions completed",
+        "one": "contribution completed",
+        "many": "contributions completed"
+      },
+      "contributorsRewarded": {
+        "zero": "contributors rewarded",
+        "one": "contributor rewarded",
+        "many": "contributors rewarded"
+      },
+      "newContributors": {
+        "zero": "new contributors",
+        "one": "new contributor",
+        "many": "new contributors"
+      },
+      "openIssues": {
+        "zero": "open issues",
+        "one": "open issue",
+        "many": "open issues"
+      }
+    },
+    "error": {
+      "title": "We can't find the project",
+      "description": "Please try again or _contact us_ if the problem persists."
+    }
+  }
+}

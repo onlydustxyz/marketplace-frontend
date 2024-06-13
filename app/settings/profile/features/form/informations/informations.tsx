@@ -2,7 +2,6 @@ import { Controller, useFormContext } from "react-hook-form";
 
 import MeApi from "src/api/me";
 import { FieldImage } from "src/components/New/Field/FileImage";
-import { cn } from "src/utils/cn";
 
 import { Card } from "components/ds/card/card";
 import { Input } from "components/ds/form/input/input";
@@ -11,7 +10,6 @@ import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 
-import { BannerButton } from "./banner-button/banner-button";
 import { FormInformationsSection } from "./section/section";
 
 // TODO: Handle error image
@@ -39,36 +37,6 @@ export function FormInformations() {
         direction="col"
         className="gap-4 divide-y divide-solid divide-greyscale-50/8 [&>div:first-child]:pt-0 [&>div]:pt-4"
       >
-        <FormInformationsSection title="v2.pages.settings.profile.informations.banner">
-          <Controller
-            name="cover"
-            control={control}
-            render={({ field: { value, onChange } }) => (
-              <Flex
-                alignItems="center"
-                justifyContent="center"
-                className={cn("h-36 w-full rounded-2xl bg-cover", {
-                  "bg-profile-cyan": value === "CYAN",
-                  "bg-profile-magenta": value === "MAGENTA",
-                  "bg-profile-yellow": value === "YELLOW",
-                  "bg-profile-blue": value === "BLUE",
-                })}
-              >
-                <Flex
-                  alignItems="center"
-                  justifyContent="center"
-                  className="gap-3 rounded-full border border-greyscale-50/8 bg-white/8 px-6 py-3 shadow-heavy"
-                >
-                  <BannerButton active={value === "CYAN"} cover="CYAN" onClick={onChange} />
-                  <BannerButton active={value === "MAGENTA"} cover="MAGENTA" onClick={onChange} />
-                  <BannerButton active={value === "YELLOW"} cover="YELLOW" onClick={onChange} />
-                  <BannerButton active={value === "BLUE"} cover="BLUE" onClick={onChange} />
-                </Flex>
-              </Flex>
-            )}
-          />
-        </FormInformationsSection>
-
         <FormInformationsSection title="v2.pages.settings.profile.informations.avatar">
           <Controller
             name="avatarUrl"

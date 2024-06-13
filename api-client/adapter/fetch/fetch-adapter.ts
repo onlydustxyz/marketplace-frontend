@@ -7,6 +7,7 @@ import { FetchError } from "src/api/query.type";
 
 import {
   Body,
+  DebugMessage,
   FetchAdapaterConstructor,
   FetchParams,
   HttpStatusStrings,
@@ -21,6 +22,7 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
   private impersonationHeaders?: impersonationHeaders;
   private authAdapter?: AuthAdapter;
   private url: string = "";
+  private debug: boolean = false;
   private method: HTTP_METHOD = "GET";
   private body?: Body = undefined;
   private params?: Params = undefined;
@@ -36,10 +38,41 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
     this.params = params.params;
     this.tag = params.tag;
     this.version = params.version || apiVersions.v1;
+    this.debug = false;
   }
 
-  private getEndpointUrl(url: string, params?: { [key: string]: string }) {
-    const searchParams = new URLSearchParams(params).toString();
+  private debugLog(...messages: DebugMessage) {
+    if (this.debug) {
+      console.log(...messages);
+    }
+  }
+
+  private convertParamsToURLSearchParams(params?: Params) {
+    if (!params) return undefined;
+
+    return Object.entries(params).reduce((acc, [key, value]) => {
+      if (value !== undefined) {
+        if (typeof value === "string" || typeof value === "number") {
+          acc.append(key, value.toString());
+        }
+        if (typeof value === "boolean") {
+          if (value) {
+            acc.append(key, "true");
+          } else {
+            acc.append(key, "false");
+          }
+        }
+        if (Array.isArray(value)) {
+          acc.append(key, value.join(","));
+        }
+      }
+      return acc;
+    }, new URLSearchParams());
+  }
+
+  private getEndpointUrl(url: string, params?: Params) {
+    const searchParams = this.convertParamsToURLSearchParams(params)?.toString();
+
     const pathParams = url.split("/").filter(param => param.startsWith(":"));
     pathParams.forEach(param => {
       const key = param.replace(":", "");
@@ -52,13 +85,21 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
   }
 
   private async getHeaders() {
-    const accessToken = await this.authAdapter?.getAccessToken();
-    return {
-      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+    const defaultHeaders = {
       "Content-Type": "application/json",
       accept: "application/json",
       ...(this.impersonationHeaders || {}),
     };
+
+    try {
+      const accessToken = await this.authAdapter?.getAccessToken();
+      return {
+        ...defaultHeaders,
+        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+      };
+    } catch {
+      return defaultHeaders;
+    }
   }
 
   private mapHttpStatusToString(statusCode: number): HttpStatusStrings {
@@ -79,10 +120,14 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
     res: Response,
     mapHttpStatusToString: (statusCode: number) => HttpStatusStrings
   ): FetchError {
-    const error = new Error(res.statusText) as FetchError;
+    const error = {} as FetchError;
     error.status = res.status;
     error.message = res.statusText;
     error.errorType = mapHttpStatusToString(res.status);
+    this.debugLog(" Error");
+    this.debugLog(`   --- With status : ${error.status}`);
+    this.debugLog(`   --- With message : ${error.message}`);
+    this.debugLog(`   --- With type : ${error.errorType}`);
     return error;
   }
 
@@ -95,7 +140,10 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
 
       try {
         this.successCallback?.();
-        return (await res.json()) as T;
+        const json = await res.json();
+        this.debugLog(" Success");
+        this.debugLog("   --- with response", json);
+        return json as T;
       } catch {
         return {} as T;
       }
@@ -108,14 +156,20 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
   private async fetch(params?: Partial<FetchParams>) {
     const endpointUrl = this.getEndpointUrl(this.url, this.params);
     const headers = await this.getHeaders();
+    this.debugLog(`fetching ${endpointUrl}`);
+    this.debugLog(" --- with method :", params?.method || this.method);
+    this.debugLog(" --- with params :", this.params);
+    this.debugLog(" --- with body :", params?.body || this.body);
+    this.debugLog(" --- with tag :", { ...(this.tag ? { tag: [this.tag] } : {}) });
+
     return fetch(endpointUrl, {
+      ...(!params?.next?.revalidate ? { cache: "no-cache" } : {}),
       ...params,
-      cache: "no-cache",
       method: params?.method || this.method,
       headers,
       body: params?.body || this.body,
       next: {
-        ...(this.tag ? { tag: this.tag } : {}),
+        ...(this.tag ? { tag: [this.tag] } : {}),
         ...params?.next,
       },
     });
@@ -173,6 +227,11 @@ export class FetchAdapter<T> implements IFetchAdapater<T> {
   }
   public setImpersonationHeaders(impersonationHeaders: impersonationHeaders) {
     this.impersonationHeaders = impersonationHeaders;
+    return this;
+  }
+
+  public setDebugger(enabled: boolean) {
+    this.debug = enabled;
     return this;
   }
 

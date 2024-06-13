@@ -11,6 +11,7 @@ import { cn } from "src/utils/cn";
 import { BaseLink } from "components/layout/base-link/base-link";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
+import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 import { NEXT_ROUTER } from "constants/router";
@@ -44,7 +45,6 @@ const MenuItem = ({ onClick, isProfile, children, ...rest }: MenuItemProps) => (
 interface Props extends TUseMenu.Return {
   avatarUrl: string | null;
   login: string;
-  githubUserId?: number;
   hideProfileItems?: boolean;
 }
 
@@ -141,7 +141,9 @@ export function View({ avatarUrl, login, hideProfileItems, labelToken, redirecti
                   <BaseLink href={NEXT_ROUTER.sponsor.details.root(sponsors[0].id)}>
                     <MenuItem>
                       <Icon remixName="ri-service-line" size={20} />
-                      <div className="grow">{T("v2.features.menu.sponsoring")}</div>
+                      <div className="grow">
+                        <Translate token="v2.features.menu.sponsoring" />
+                      </div>
                     </MenuItem>
                   </BaseLink>
                 ) : null}
@@ -151,19 +153,36 @@ export function View({ avatarUrl, login, hideProfileItems, labelToken, redirecti
             )}
 
             <div>
+              {login ? (
+                <BaseLink href={NEXT_ROUTER.publicProfile.root(login)}>
+                  <MenuItem>
+                    <Icon remixName="ri-user-line" size={20} />
+                    <div className="grow">
+                      <Translate token="v2.features.menu.publicProfile" />
+                    </div>
+                  </MenuItem>
+                </BaseLink>
+              ) : null}
+
               <MenuItem onClick={openFeedback}>
                 <Icon remixName="ri-discuss-line" size={20} />
-                <div className="grow">{T("v2.features.menu.feedback")}</div>
+                <div className="grow">
+                  <Translate token="v2.features.menu.feedback" />
+                </div>
               </MenuItem>
 
               <MenuItem onClick={openFullTermsAndConditions}>
                 <Icon remixName="ri-bill-line" size={20} />
-                <div className="grow">{T("v2.features.menu.terms")}</div>
+                <div className="grow">
+                  <Translate token="v2.features.menu.terms" />
+                </div>
               </MenuItem>
 
               <MenuItem onClick={openPrivacyPolicy}>
                 <Icon remixName="ri-lock-line" size={20} />
-                <div className="grow">{T("v2.features.menu.privacy")}</div>
+                <div className="grow">
+                  <Translate token="v2.features.menu.privacy" />
+                </div>
               </MenuItem>
 
               <span className="my-1 block h-px bg-greyscale-50/8" />
@@ -172,7 +191,9 @@ export function View({ avatarUrl, login, hideProfileItems, labelToken, redirecti
             <div>
               <MenuItem onClick={handleLogout}>
                 <Icon remixName="ri-logout-box-r-line" size={20} />
-                <div className="grow">{T("v2.features.menu.logout")}</div>
+                <div className="grow">
+                  <Translate token="v2.features.menu.logout" />
+                </div>
               </MenuItem>
             </div>
           </Menu.Items>

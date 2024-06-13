@@ -48,7 +48,7 @@ export default function ChurnedContributors({ projectId }: { projectId: string |
               name={contributor.login}
               isRegistered={contributor.isRegistered}
               actionLabel={T("project.details.insights.churned.buttonLabel")}
-              onAction={() => router.push(NEXT_ROUTER.newPublicProfile.root(contributor.login))}
+              onAction={() => router.push(NEXT_ROUTER.publicProfile.root(contributor.login))}
             >
               <LastContributionCard
                 lastContributionDate={contributor?.lastContribution?.completedAt}

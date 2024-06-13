@@ -8,4 +8,8 @@ export default {
   public_languages: (githubId: number) => `${apiResources.users}-public-languages-by-id-${githubId}`,
   public_stats: (githubId: number, ecosystemId?: string) =>
     `${apiResources.users}-public-stats-by-id-${githubId}-ecosystem-${ecosystemId || "all"}`,
+  public_contributions: (githubId: number, languageId?: string, ecosystemId?: string) =>
+    `${apiResources.users}-public-contributions-by-id-${githubId}-languages-${languageId || "all"}-ecosystems-${
+      ecosystemId || "all"
+    }`,
 };

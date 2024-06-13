@@ -6,7 +6,7 @@ import { PropsWithChildren } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
 import OnboardingProvider from "src/App/OnboardingProvider";
-import { Stacks } from "src/App/Stacks/Stacks";
+import { Stacks } from "src/App/Stacks/Stacks.components";
 import { Toaster } from "src/components/Toaster";
 import Tooltip from "src/components/Tooltip";
 import { viewportConfig } from "src/config";

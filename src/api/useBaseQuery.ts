@@ -41,10 +41,10 @@ export function useBaseQuery<R = unknown>({
 
   const { enabled, ...restQueryOptions } = queryOptions;
   const { isAuthenticated, getAccessTokenSilently, logout } = useAuth0();
-  const { getImpersonateHeaders } = useImpersonation();
+  const { getImpersonateHeaders, isImpersonating } = useImpersonation();
 
   return useQuery<R>({
-    queryKey: [...(tags || []), resourcePath, queryParams, isAuthenticated],
+    queryKey: [...(tags || []), resourcePath, queryParams, isAuthenticated, isImpersonating],
     queryFn: async () => {
       const { options } = await getHttpOptions({
         isAuthenticated,

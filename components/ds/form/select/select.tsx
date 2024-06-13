@@ -4,20 +4,31 @@ import { cn } from "src/utils/cn";
 
 import { TSelect } from "components/ds/form/select/select.types";
 
-export function Select({ selectItemProps, classNames, ...props }: TSelect.Props) {
+export function Select({ selectItemProps, classNames, variant = "blue", ...props }: TSelect.Props) {
   return (
     <NextSelect
       classNames={{
         trigger: cn(
           "px-2",
-          "border border-card-border-light rounded-large",
-          "bg-card-background-base hover:bg-card-background-base shadow-light",
-          "data-[open=true]:border-spacePurple-400 data-[open=true]:bg-spacePurple-900 data-[open=true]:hover:bg-spacePurple-900 data-[open=true]:text-spacePurple-400 data-[open=true]:outline-double data-[open=true]:outline-1 data-[open=true]:outline-spacePurple-400 data-[open=true]:outline-offset-0"
+          "border rounded-large shadow-light",
+          "data-[open=true]:border-spacePurple-400 data-[open=true]:bg-spacePurple-900 data-[open=true]:hover:bg-spacePurple-900 data-[open=true]:text-spacePurple-400 data-[open=true]:outline-double data-[open=true]:outline-1 data-[open=true]:outline-spacePurple-400 data-[open=true]:outline-offset-0",
+          {
+            "bg-card-background-base data-[hover=true]:bg-card-background-base border-card-border-light":
+              variant === "blue",
+            "bg-white/5 data-[hover=true]:bg-white/5 border-greyscale-50/8": variant === "grey",
+          }
         ),
         value: cn(
-          "od-text-body-s-bold text-greyscale-50 placeholder:text-greyscale-50 data-[open=true]:text-spacePurple-400 font-medium"
+          "od-text-body-s-bold text-greyscale-50 placeholder:text-greyscale-50 data-[open=true]:text-spacePurple-400 font-medium",
+          {
+            "placeholder:text-spaceBlue-200": variant === "blue",
+            "placeholder:text-greyscale-200": variant === "grey",
+          }
         ),
-        popoverContent: cn("border border-card-border-medium rounded-large bg-card-background-base shadow-medium p-3"),
+        popoverContent: cn("border rounded-large shadow-medium p-3", {
+          "bg-card-background-base border-card-border-medium": variant === "blue",
+          "bg-greyscale-900 border-default-200 border-greyscale-50/12": variant === "grey",
+        }),
         ...classNames,
       }}
       listboxProps={{

@@ -11,6 +11,11 @@ export function FeedbackPanel() {
       inheritParameters
       parameters={{
         user_id: user?.id,
+        first_name: user?.firstName || undefined,
+        last_name: user?.lastName || undefined,
+        email: user?.email || undefined,
+        github_id: `${user?.githubUserId}` || undefined,
+        github_login: user?.login || undefined,
       }}
     />
   );

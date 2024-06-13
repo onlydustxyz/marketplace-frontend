@@ -18,12 +18,30 @@ const nextConfig = {
   env: {
     APP_COMMIT_HASH: getCommitHash(),
   },
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
   experimental: {
     serverComponentsExternalPackages: ["@react-pdf/renderer"],
   },
   webpack: config => {
     config.resolve.alias.canvas = false;
     return config;
+  },
+  async headers() {
+    return [
+      {
+        source: "/:all*(ttf|otf|woff|woff2)",
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=2628000, immutable'
+          }
+        ]
+      },
+    ];
   },
   async redirects() {
     return [
@@ -52,8 +70,21 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "onlydust-app-images.s3.eu-west-1.amazonaws.com",
+      },      {
+        protocol: "https",
+        hostname: "od-metadata-assets-develop.s3.eu-west-1.amazonaws.com",
+      },
+      {
+        protocol: "https",
+        hostname: "od-metadata-assets-staging.s3.eu-west-1.amazonaws.com",
+      },
+      {
+        protocol: "https",
+        hostname: "od-metadata-assets-production.s3.eu-west-1.amazonaws.com",
       },
     ],
+    // ordered list of acceptable optimized image formats (mime types)
+    formats: ['image/webp','image/avif'],
   },
 };
 

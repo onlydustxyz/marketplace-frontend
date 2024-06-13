@@ -11,6 +11,7 @@ import { Card } from "components/ds/card/card";
 import { Tooltip } from "components/ds/tooltip/tooltip";
 import { CurrencyBudget } from "components/features/currency/currency-budget/currency-budget";
 import { CurrencyConverter } from "components/features/currency/currency-converter/currency-converter";
+import { TCurrencyConverter } from "components/features/currency/currency-converter/currency-converter.types";
 import { useCurrencyConverter } from "components/features/currency/currency-converter/hooks/use-currency-converter";
 import { Translate } from "components/layout/translate/translate";
 
@@ -23,17 +24,29 @@ export const RewardBudget: FC<RewardBudgetProps> = props => {
   const { T } = useIntl();
 
   const { budgets, loading } = props;
-  const { currencyAmount, handleSetCurrencyAmount, handleSetCurrencySelection, currencySelection, currencyBudget } =
-    useCurrencyConverter({
-      budgets,
-    });
+  const {
+    currencyAmount,
+    handleSetCurrencyAmount,
+    handleSetUsdValue,
+    handleSetCurrencySelection,
+    currencySelection,
+    currencyBudget,
+  } = useCurrencyConverter({
+    budgets,
+  });
 
-  const onSelectedBudgetChange = ({ amount, currency }: { amount?: string; currency?: Money.Currency }) => {
+  const onSelectedBudgetChange = ({ amount, amountInDollars, currency }: TCurrencyConverter.CurrencyAmount) => {
     if (!props.onChange) return;
     if (amount || amount === "") {
       handleSetCurrencyAmount(amount);
       props.onChange({
         amount: parseFloat(amount) || 0,
+      });
+    }
+    if (amountInDollars || amountInDollars === "") {
+      handleSetUsdValue(amountInDollars);
+      props.onChange({
+        amountInDollars: parseFloat(amountInDollars) || 0,
       });
     }
     if (currency) {

@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { ElementType } from "react";
 
@@ -37,11 +39,18 @@ export function EmptyState({
       </div>
       <div>
         {title?.token ? (
-          <Typography
-            variant="title-l"
-            className="mb-1 font-belwe text-greyscale-50"
-            translate={{ token: title?.token, params: title?.params }}
-          />
+          <>
+            <Typography
+              variant="title-m"
+              className="mb-1 hidden font-belwe text-greyscale-50 md:block"
+              translate={{ token: title?.token, params: title?.params }}
+            />
+            <Typography
+              variant="title-s"
+              className="mb-1 font-belwe text-greyscale-50 md:hidden"
+              translate={{ token: title?.token, params: title?.params }}
+            />
+          </>
         ) : null}
         {description?.token ? (
           <Typography
@@ -52,9 +61,26 @@ export function EmptyState({
         ) : null}
       </div>
       {actionLabel?.token ? (
-        <Button size="m" className="whitespace-nowrap" variant="primary" accentColor="orange" onClick={onAction}>
-          <Translate token={actionLabel?.token} />
-        </Button>
+        <>
+          <Button
+            size="m"
+            className="hidden whitespace-nowrap md:block"
+            variant="primary"
+            accentColor="orange"
+            onClick={onAction}
+          >
+            <Translate token={actionLabel?.token} />
+          </Button>
+          <Button
+            size="s"
+            className="whitespace-nowrap md:hidden"
+            variant="primary"
+            accentColor="orange"
+            onClick={onAction}
+          >
+            <Translate token={actionLabel?.token} />
+          </Button>
+        </>
       ) : null}
     </Component>
   );

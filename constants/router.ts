@@ -1,6 +1,13 @@
 export const NEXT_ROUTER = {
-  projects: {
+  home: {
     all: "/",
+  },
+  projects: {
+    all: "/projects",
+    allWithParams: (params: { [key: string]: string }) => {
+      const searchParams = new URLSearchParams(params);
+      return `/projects?${searchParams.toString()}`;
+    },
     details: {
       root: (slug: string) => `/p/${slug}`,
       contributors: (slug: string) => `/p/${slug}/contributors`,
@@ -37,12 +44,8 @@ export const NEXT_ROUTER = {
       invoices: (slug: string) => `/settings/billing/${slug}/invoices`,
     },
   },
-  // TODO replace actual public profile with the new one
   publicProfile: {
-    root: (slug: string) => `/u/${slug}`,
-  },
-  newPublicProfile: {
-    root: (login: string) => `/migration//u/${login}`,
+    root: (githubLogin: string) => `/u/${githubLogin}`,
   },
   notFound: "/not-found",
   onboarding: "/onboarding",
@@ -54,6 +57,12 @@ export const NEXT_ROUTER = {
       root: (slug: string) => `/h/${slug}`,
       overview: (slug: string) => `/h/${slug}#overview`,
       tracks: (slug: string) => `/h/${slug}#tracks`,
+    },
+  },
+  ecosystems: {
+    root: "/ecosystems",
+    details: {
+      root: (slug: string) => `/ecosystems/${slug}`,
     },
   },
 } as const;

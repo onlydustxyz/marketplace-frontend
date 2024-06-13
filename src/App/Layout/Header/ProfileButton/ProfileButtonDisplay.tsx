@@ -1,7 +1,5 @@
-import { useMediaQuery } from "usehooks-ts";
-
+import { BurgerMenu } from "src/App/Layout/Header/ProfileButton/burger-menu";
 import SkeletonEl from "src/components/New/Skeleton/Skeleton";
-import { viewportConfig } from "src/config";
 
 import ProfileButton from ".";
 import GithubLink from "../GithubLink";
@@ -12,15 +10,24 @@ type ProfileButtonDisplayProps = {
 };
 
 export function ProfileButtonDisplay({ isLoading, isAuthenticated }: ProfileButtonDisplayProps) {
-  const isSm = useMediaQuery(`(max-width: ${viewportConfig.breakpoints.sm}px)`);
   function render() {
     if (isLoading) {
       return <SkeletonEl variant="circular" color="grey" width={78} height={44} />;
     }
     if (isAuthenticated) {
-      return <ProfileButton />;
+      return (
+        <div className="flex flex-row items-center justify-end gap-2">
+          <ProfileButton />
+          <BurgerMenu />
+        </div>
+      );
     }
-    return <GithubLink showText={!isSm} />;
+    return (
+      <div className="flex flex-row items-center justify-end gap-2">
+        <GithubLink />
+        <BurgerMenu />
+      </div>
+    );
   }
 
   return <div className="flex text-base text-white">{render()}</div>;

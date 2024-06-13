@@ -135,6 +135,7 @@ export default function Contributions() {
             statuses: ContributionStatus.InProgress,
             ...sort.IN_PROGRESS,
             ...filterQueryParams,
+            includePrivateProjects: "true",
           },
         },
         options: {
@@ -171,6 +172,7 @@ export default function Contributions() {
             statuses: ContributionStatus.Completed,
             ...sort.COMPLETED,
             ...filterQueryParams,
+            includePrivateProjects: "true",
           },
         },
         options: {
@@ -207,6 +209,7 @@ export default function Contributions() {
             statuses: ContributionStatus.Cancelled,
             ...sort.CANCELLED,
             ...filterQueryParams,
+            includePrivateProjects: "true",
           },
         },
         options: {

@@ -7,6 +7,7 @@ import en_features_billings_profile from "./en/features/billingsProfile.json";
 import en_features_contributors from "./en/features/contributors.json";
 import en_features_currency from "./en/features/currency.json";
 import en_features_details_accordion from "./en/features/details-accordion.json";
+import en_features_dots_status from "./en/features/dots-status.json";
 import en_features_ecosystems from "./en/features/ecosystems.json";
 import en_features from "./en/features/features.json";
 import en_features_filters from "./en/features/filters.json";
@@ -20,8 +21,11 @@ import en_features_table from "./en/features/table.json";
 import en_features_verify from "./en/features/verify.json";
 import en_billing_create from "./en/pages/billing-create-stacks.json";
 import en_billing_invite_team_member from "./en/pages/billing-invite-team-member-stacks.json";
+import en_page_committees from "./en/pages/committees.json";
+import en_ecosystems from "./en/pages/ecosystems";
 import en_hackathons_details from "./en/pages/hackathons-details.json";
 import en_hackathons from "./en/pages/hackathons.json";
+import en_home from "./en/pages/home";
 import en_project_details_header from "./en/pages/project-details/project-header.json";
 import en_project_overview from "./en/pages/project-overview.json";
 import en_projects from "./en/pages/projects.json";
@@ -57,6 +61,7 @@ export const en = {
       leaders: en_features_leaders,
       ecosystems: en_features_ecosystems,
       payoutStatus: en_features_payout_status,
+      dotStatus: en_features_dots_status,
       sidebar: en_features_sidebar,
       billingsProfile: en_features_billings_profile,
       verify: en_features_verify,
@@ -101,6 +106,9 @@ export const en = {
       },
       publicProfile: en_public_profile,
       sponsor: en_page_sponsor,
+      committees: en_page_committees,
+      ecosystems: en_ecosystems,
+      home: en_home,
     },
   },
 };

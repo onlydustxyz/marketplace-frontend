@@ -22,6 +22,7 @@ import { RewardDisabledReason } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
 import { Card } from "components/ds/card/card";
+import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 
 import { useIntl } from "hooks/translate/use-translate";
@@ -113,6 +114,8 @@ export default function Contributors() {
 
   return (
     <>
+      <PosthogOnMount eventName={"project_contributors_list_viewed"} />
+
       <Title>
         <div className="flex flex-col items-start justify-start gap-4 md:flex-row md:items-center md:justify-between md:gap-2">
           {T("project.details.contributors.title")}

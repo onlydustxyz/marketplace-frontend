@@ -45,6 +45,8 @@ export function Avatar(props: TAvatar.Props) {
         return { w: 64 * dpr, h: 64 * dpr };
       case "3xl":
         return { w: 80 * dpr, h: 80 * dpr };
+      case "4xl":
+        return { w: 96 * dpr, h: 96 * dpr };
       default:
         return { w: 16 * dpr, h: 16 * dpr };
     }
@@ -82,14 +84,14 @@ export function Avatar(props: TAvatar.Props) {
       }}
       classNames={{
         fallback: "w-full",
-        img: "bg-greyscale-900 !opacity-100",
+        img: "bg-white !opacity-100",
       }}
       {...restProps}
       src={optimizeSrc}
     />
   );
 }
-
+// empty space
 Avatar.Labelled = function AvatarLabelled({
   children,
   href,

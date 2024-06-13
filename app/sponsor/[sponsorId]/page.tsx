@@ -5,6 +5,7 @@ import { withSponsorGuard } from "utils/guards/sponsor-guard";
 
 import { SponsorSelect } from "app/sponsor/[sponsorId]/features/sponsor-select/sponsor-select";
 
+import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 import { SponsorSidePanels } from "components/features/sponsor/sponsor-side-panels";
 import { withClientOnly } from "components/layout/client-only/client-only";
 import { Icon } from "components/layout/icon/icon";
@@ -17,37 +18,40 @@ import { SponsorSectionProject } from "./features/sponsor-section-project/sponso
 
 function SponsorPage() {
   return (
-    <div className={"scrollbar-sm h-full w-full overflow-y-auto"}>
-      <div className={"mx-auto grid max-w-7xl gap-6 px-4 py-8 xl:p-8"}>
-        <header className={"grid gap-3 sm:flex sm:items-center sm:justify-between"}>
-          <Typography variant={"title-l"}>
-            <Translate token="v2.pages.sponsor.title" />
-          </Typography>
+    <>
+      <PosthogOnMount eventName={"sponsor_dashboard_viewed"} />
+      <div className={"scrollbar-sm h-full w-full overflow-y-auto"}>
+        <div className={"mx-auto grid max-w-7xl gap-6 px-4 py-8 xl:p-8"}>
+          <header className={"grid gap-3 sm:flex sm:items-center sm:justify-between"}>
+            <Typography variant={"title-l"}>
+              <Translate token="v2.pages.sponsor.title" />
+            </Typography>
 
-          <div className={"flex flex-col items-center gap-3 sm:flex-row"}>
-            <SponsorSelect />
-            <SponsorSidePanels
-              panel={"fillout"}
-              buttonProps={{
-                size: "s",
-                className: "w-full sm:w-auto whitespace-nowrap",
-                children: (
-                  <>
-                    <Icon remixName={"ri-add-line"} />
-                    <Translate token="v2.pages.sponsor.newDeposit" />
-                  </>
-                ),
-              }}
-            />
+            <div className={"flex flex-col items-center gap-3 sm:flex-row"}>
+              <SponsorSelect />
+              <SponsorSidePanels
+                panel={"fillout"}
+                buttonProps={{
+                  size: "s",
+                  className: "w-full sm:w-auto whitespace-nowrap",
+                  children: (
+                    <>
+                      <Icon remixName={"ri-add-line"} />
+                      <Translate token="v2.pages.sponsor.newDeposit" />
+                    </>
+                  ),
+                }}
+              />
+            </div>
+          </header>
+          <div className={"grid gap-10"}>
+            <SponsorSectionBudget />
+            <SponsorSectionProject />
+            <SponsorSectionHistory />
           </div>
-        </header>
-        <div className={"grid gap-10"}>
-          <SponsorSectionBudget />
-          <SponsorSectionProject />
-          <SponsorSectionHistory />
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

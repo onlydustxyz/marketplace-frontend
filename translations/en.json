@@ -233,14 +233,14 @@
       "all": "All sponsors",
       "some": "Sponsors"
     },
-    "technologies": {
-      "title": "Technologies",
-      "all": "All technologies",
-      "some": "Technologies",
-      "zero": "technologies",
-      "empty": "No technologies found",
-      "one": "__count__ technology",
-      "many": "__count__ technologies"
+    "languages": {
+      "title": "Languages",
+      "all": "All languages",
+      "some": "Languages",
+      "zero": "languages",
+      "empty": "No languages found",
+      "one": "__count__ language",
+      "many": "__count__ languages"
     },
     "title": "Filter",
     "mobileButton": {
@@ -639,7 +639,7 @@
         "payoutInfoMissing": "Fill in your payment method to get paid",
         "payoutInfoMissingAsContributor": "Contributor must fill his reward information to get paid",
         "pending": "Contributor needs to sign up on OnlyDust and to complete payout info to get paid",
-        "processing": "Reward is being processed by our team, usually within 2 weeks"
+        "processing": "Reward is being processed by our team, it takes up to 6 business days"
       }
     },
     "table": {

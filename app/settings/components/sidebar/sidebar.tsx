@@ -50,7 +50,7 @@ function Sidebar() {
     <LayoutSidebar
       mobileHeader={
         <div className="flex items-center gap-3">
-          <BaseLink href={NEXT_ROUTER.projects.all}>
+          <BaseLink href={NEXT_ROUTER.home.all}>
             <Button as="div" iconOnly variant={"secondary"} size="s">
               <Icon remixName="ri-arrow-left-line" />
             </Button>
