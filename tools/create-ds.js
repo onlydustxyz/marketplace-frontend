@@ -15,11 +15,11 @@ async function createCoreComponent({ name, path, PascalName }) {
         import { T${PascalName}Props } from "./${name}.types";
         import { ${PascalName}CoreVariants } from "./${name}.variants";
 
-        export const ${PascalName}Core = ({classNames, className, as: Component = "div",  ...props}: T${PascalName}Props) => {
+        export function ${PascalName}Core({classNames, as: Component = "div",  ...props}: T${PascalName}Props<"div">) {
           const slots = ${PascalName}CoreVariants({ ...props });
 
           return (
-            <Component {...props} className={cn(slots.wrapper(), className, classNames?.wrapper)} />
+            <Component {...props} className={cn(slots.base(), classNames?.base)} />
           );
         };
   `,
@@ -37,9 +37,8 @@ async function createVariants({ name, path, PascalName }) {
         import { tv } from "tailwind-variants";
 
         export const ${PascalName}CoreVariants = tv({
-          base: "",
           slots: {
-            wrapper: "",
+            base: "group",
           },
           variants: {},
           defaultVariants: {},
@@ -56,7 +55,7 @@ async function createVariants({ name, path, PascalName }) {
 
         import { ${PascalName}Core } from "../${name}.core";
 
-        export const ${PascalName} = ({ ...props }: T${PascalName}Props) => {
+        export function ${PascalName}({ ...props }: T${PascalName}Props) {
           return (
             <${PascalName}Core
               {...props}
@@ -84,7 +83,7 @@ async function createTypes({ name, path, PascalName }) {
         type Variants = VariantProps<typeof ${PascalName}CoreVariants>;
         type classNames = Partial<typeof ${PascalName}CoreVariants["slots"]>;
 
-        export type T${PascalName}Props<T extends ElementType = "div"> = AsProps<T> & Variants & {
+        export type T${PascalName}Props<T extends ElementType> = AsProps<T> & Variants & {
           classNames?: classNames;
           as?: T;
         }

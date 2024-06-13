@@ -9,7 +9,7 @@ import { TButtonProps } from "./button.types";
 
 type Story = StoryObj<typeof ButtonCore>;
 
-const defaultProps: TButtonProps = {
+const defaultProps: TButtonProps<"button"> = {
   children: "Button core",
   startIcon: { remixName: "ri-square-line" },
   endIcon: { remixName: "ri-square-line" },

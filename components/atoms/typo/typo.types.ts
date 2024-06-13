@@ -1,4 +1,4 @@
-import { ElementType, PropsWithChildren } from "react";
+import { ElementType, ReactNode } from "react";
 import { VariantProps } from "tailwind-variants";
 import { AsProps } from "types/as-element";
 
@@ -9,10 +9,19 @@ import { TypoCoreVariants } from "./typo.variants";
 type Variants = VariantProps<typeof TypoCoreVariants>;
 type classNames = Partial<typeof TypoCoreVariants["slots"]>;
 
-export type TTypoProps<T extends ElementType = "p"> = AsProps<T> &
-  Variants &
-  PropsWithChildren & {
+type BaseProps<T extends ElementType> = AsProps<T> &
+  Variants & {
     classNames?: classNames;
     as?: T;
-    translate?: TTranslate.Props;
   };
+
+type WithChildren<T extends ElementType> = BaseProps<T> & {
+  translate?: never;
+  children: ReactNode;
+};
+type WithTranslate<T extends ElementType> = BaseProps<T> & {
+  translate: TTranslate.Props;
+  children?: never;
+};
+
+export type TTypoProps<T extends ElementType> = WithChildren<T> | WithTranslate<T>;

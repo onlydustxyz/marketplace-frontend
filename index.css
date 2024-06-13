@@ -67,14 +67,14 @@
     --text-4: var(--_BasicBlack);
 
     /*  --- Label ---  */
-    --_label-red: var(--_decoration-red);
-    --_label-pink: var(--_decoration-pink);
-    --_label-green: var(--_decoration-green);
-    --_label-yellow: var(--_decoration-yellow);
-    --_label-orange: var(--_decoration-orange);
-    --_label-purple: var(--_decoration-purple);
-    --_label-blue: var(--_decoration-blue);
-    --_label-grey: var(--_decoration-grey);
+    --label-red: var(--_decoration-red);
+    --label-pink: var(--_decoration-pink);
+    --label-green: var(--_decoration-green);
+    --label-yellow: var(--_decoration-yellow);
+    --label-orange: var(--_decoration-orange);
+    --label-purple: var(--_decoration-purple);
+    --label-blue: var(--_decoration-blue);
+    --label-grey: var(--_decoration-grey);
 
 
     /*  --- Interactions ---  */

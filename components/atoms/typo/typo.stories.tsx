@@ -7,7 +7,7 @@ import { Typo } from "./variants/typo-default";
 
 type Story = StoryObj<typeof TypoCore>;
 
-const defaultProps: TTypoProps = {
+const defaultProps: TTypoProps<"span"> = {
   children: "Lorem ipsum dollor",
 };
 
@@ -27,13 +27,13 @@ const meta: Meta<typeof TypoCore> = {
 };
 
 export const Default: Story = {
-  render: args => {
+  render: () => {
     return (
       <div className="flex w-full flex-col gap-2">
         {sizes.map(size => (
           <div key={size} className="flex w-full flex-row gap-2">
             <Typo size={size}>{size} - </Typo>
-            <Typo {...defaultProps} {...args} size={size} />
+            <Typo {...defaultProps} size={size} />
           </div>
         ))}
       </div>
@@ -42,7 +42,7 @@ export const Default: Story = {
 };
 
 export const DefaultMedium: Story = {
-  render: args => {
+  render: () => {
     return (
       <div className="flex w-full flex-col gap-2">
         {sizes.map(size => (
@@ -50,7 +50,7 @@ export const DefaultMedium: Story = {
             <Typo size={size} weight="medium">
               {size} -{" "}
             </Typo>
-            <Typo {...defaultProps} {...args} weight="medium" size={size} />
+            <Typo {...defaultProps} weight="medium" size={size} />
           </div>
         ))}
       </div>
@@ -59,7 +59,7 @@ export const DefaultMedium: Story = {
 };
 
 export const Branding: Story = {
-  render: args => {
+  render: () => {
     return (
       <div className="flex w-full flex-col gap-2">
         {sizes.map(size => (
@@ -67,7 +67,7 @@ export const Branding: Story = {
             <Typo size={size} variant="branding">
               {size} -{" "}
             </Typo>
-            <Typo {...defaultProps} {...args} variant="branding" size={size} />
+            <Typo {...defaultProps} variant="branding" size={size} />
           </div>
         ))}
       </div>
