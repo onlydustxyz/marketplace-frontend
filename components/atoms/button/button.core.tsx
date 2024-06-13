@@ -1,5 +1,5 @@
 import { Spinner } from "@nextui-org/react";
-import { ElementType, useMemo } from "react";
+import { ElementType } from "react";
 
 import { cn } from "src/utils/cn";
 
@@ -28,28 +28,25 @@ export function ButtonCore<C extends ElementType = "button">({
     size,
   });
 
-  const Icons = useMemo(
-    () => ({
-      startIcon: startIcon ? (
-        <Icon size={16} {...startIcon} className={cn(slots.startIcon(), classNames?.startIcon, startIcon.className)} />
-      ) : null,
-      endIcon: endIcon ? (
-        <Icon size={16} {...endIcon} className={cn(slots.endIcon(), classNames?.endIcon, endIcon.className)} />
-      ) : null,
-    }),
-    [startIcon, endIcon]
-  );
+  const Icons = (() => ({
+    startIcon: startIcon ? (
+      <Icon size={16} {...startIcon} className={cn(slots.startIcon(), classNames?.startIcon, startIcon.className)} />
+    ) : null,
+    endIcon: endIcon ? (
+      <Icon size={16} {...endIcon} className={cn(slots.endIcon(), classNames?.endIcon, endIcon.className)} />
+    ) : null,
+  }))();
 
-  const Content = useMemo(() => {
+  const Content = (() => {
     if (children && display !== "icon") {
       return (
-        <Typo size={"xs"} as={"p"} classNames={{ base: cn(slots.label(), classNames?.label) }}>
+        <Typo size={"xs"} as={"span"} classNames={{ base: cn(slots.label(), classNames?.label) }}>
           {children}
         </Typo>
       );
     }
     return null;
-  }, [children]);
+  })();
 
   return (
     <Component {...htmlProps} data-state={state} className={cn(slots.base(), classNames?.base)}>

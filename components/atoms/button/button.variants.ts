@@ -3,7 +3,7 @@ import { tv } from "tailwind-variants";
 export const ButtonCoreVariants = tv({
   slots: {
     base: "group relative w-fit cursor-pointer overflow-hidden rounded-md bg-container-1 transition-background",
-    content: "flex  flex-row items-center justify-center gap-2",
+    content: "flex flex-row items-center justify-center gap-2",
     startIcon: "",
     endIcon: "",
     label: "",
@@ -23,20 +23,14 @@ export const ButtonCoreVariants = tv({
       },
     },
     display: {
-      default: {
-        base: "",
-      },
+      default: "",
+      icon: "",
       loader: {
         content: "opacity-0",
       },
-      icon: {
-        content: "",
-      },
     },
     state: {
-      default: {
-        base: "",
-      },
+      default: "",
       loading: {
         base: "pointer-events-none cursor-not-allowed",
       },
