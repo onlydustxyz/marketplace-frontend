@@ -9,11 +9,11 @@ import { ButtonCoreVariants } from "./button.variants";
 type Variants = VariantProps<typeof ButtonCoreVariants>;
 type classNames = Partial<typeof ButtonCoreVariants["slots"]>;
 
-export type TButtonProps<T extends ElementType> = AsProps<T> &
+export type TButtonProps<C extends ElementType> = AsProps<C> &
   Variants &
   PropsWithChildren & {
     classNames?: classNames;
-    as?: T;
+    as?: C;
     startIcon?: TIcon.Props;
     endIcon?: TIcon.Props;
     startContent?: ReactNode;

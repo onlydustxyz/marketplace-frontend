@@ -4,22 +4,27 @@ const i = require("@inquirer/prompts");
 const fs = require("fs/promises");
 const prettier = require("prettier");
 const { COLORS, kebabToPascal, kebabToCamel, defaultPromptName } = require("./global");
+const { exec } = require("node:child_process");
 
 async function createCoreComponent({ name, path, PascalName }) {
   await fs.appendFile(
     `${path}/${name}.core.tsx`,
     prettier.format(
       `
+        import { ElementType } from "react";
+
         import { cn } from "src/utils/cn";
 
         import { T${PascalName}Props } from "./${name}.types";
         import { ${PascalName}CoreVariants } from "./${name}.variants";
 
-        export function ${PascalName}Core({classNames, as: Component = "div",  ...props}: T${PascalName}Props<"div">) {
-          const slots = ${PascalName}CoreVariants({ ...props });
+        export function ${PascalName}Core<C extends ElementType = "div">({classNames, as, ...props}: T${PascalName}Props<C>) {
+          const Component = as || "div";
+          const { ...htmlProps } = props;
+          const slots = ${PascalName}CoreVariants();
 
           return (
-            <Component {...props} className={cn(slots.base(), classNames?.base)} />
+            <Component {...htmlProps} className={cn(slots.base(), classNames?.base)} />
           );
         };
   `,
@@ -51,11 +56,13 @@ async function createVariants({ name, path, PascalName }) {
     `${path}/variants/${name}-default.tsx`,
     prettier.format(
       `
+        import { ElementType } from "react";
+
         import { T${PascalName}Props } from "../${name}.types";
 
         import { ${PascalName}Core } from "../${name}.core";
 
-        export function ${PascalName}({ ...props }: T${PascalName}Props) {
+        export function ${PascalName}<C extends ElementType = "div">({ ...props }: T${PascalName}Props<C>) {
           return (
             <${PascalName}Core
               {...props}
@@ -83,9 +90,9 @@ async function createTypes({ name, path, PascalName }) {
         type Variants = VariantProps<typeof ${PascalName}CoreVariants>;
         type classNames = Partial<typeof ${PascalName}CoreVariants["slots"]>;
 
-        export type T${PascalName}Props<T extends ElementType> = AsProps<T> & Variants & {
+        export type T${PascalName}Props<C extends ElementType> = AsProps<C> & Variants & {
           classNames?: classNames;
-          as?: T;
+          as?: C;
         }
   `,
       { parser: "typescript" }
@@ -113,14 +120,14 @@ async function createStories({ name, path, PascalName }) {
     prettier.format(
       `
         import { Meta, StoryObj } from "@storybook/react";
-        import { T${PascalName}Core  } from "./${name}.types";
+        import { T${PascalName}Props } from "./${name}.types";
 
         import { ${PascalName}Core } from "./${name}.core";
         import { ${PascalName} } from "./variants/${name}-default";
 
         type Story = StoryObj<typeof ${PascalName}Core>;
 
-        const defaultProps: T${PascalName}Core.Props = {};
+        const defaultProps: T${PascalName}Props<"div"> = {};
 
         const meta: Meta<typeof ${PascalName}Core> = {
           component: ${PascalName}Core,
@@ -168,6 +175,7 @@ async function createFiles(informations) {
   await createTypes(informations);
   await createLoading(informations);
   await createStories(informations);
+  await exec(`eslint '${informations.path}/*.{js,jsx,json,ts,tsx}' --max-warnings=0 --fix`);
   // await createIndex(informations);
 }
 

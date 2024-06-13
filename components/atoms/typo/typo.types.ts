@@ -9,19 +9,19 @@ import { TypoCoreVariants } from "./typo.variants";
 type Variants = VariantProps<typeof TypoCoreVariants>;
 type classNames = Partial<typeof TypoCoreVariants["slots"]>;
 
-type BaseProps<T extends ElementType> = AsProps<T> &
+type BaseProps<C extends ElementType> = AsProps<C> &
   Variants & {
     classNames?: classNames;
-    as?: T;
+    as?: C;
   };
 
-type WithChildren<T extends ElementType> = BaseProps<T> & {
+type WithChildren<C extends ElementType> = BaseProps<C> & {
   translate?: never;
   children: ReactNode;
 };
-type WithTranslate<T extends ElementType> = BaseProps<T> & {
+type WithTranslate<C extends ElementType> = BaseProps<C> & {
   translate: TTranslate.Props;
   children?: never;
 };
 
-export type TTypoProps<T extends ElementType> = WithChildren<T> | WithTranslate<T>;
+export type TTypoProps<C extends ElementType> = WithChildren<C> | WithTranslate<C>;

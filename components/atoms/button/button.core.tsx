@@ -1,3 +1,5 @@
+import { ElementType, useMemo } from "react";
+
 import { cn } from "src/utils/cn";
 
 import { Typo } from "components/atoms/typo/variants/typo-default";
@@ -6,31 +8,41 @@ import { Icon } from "components/layout/icon/icon";
 import { TButtonProps } from "./button.types";
 import { ButtonCoreVariants } from "./button.variants";
 
-export const ButtonCore = ({
+export function ButtonCore<C extends ElementType = "button">({
   classNames,
-  as: Component = "button",
+  as,
   startIcon,
   endIcon,
   startContent,
   endContent,
   children,
   ...props
-}: TButtonProps<"button">) => {
-  const slots = ButtonCoreVariants({ ...props });
+}: TButtonProps<C>) {
+  const Component = as || "button";
+  const { state = "default", size, ...htmlProps } = props;
+  const slots = ButtonCoreVariants({ state, size });
+
+  const Icons = useMemo(
+    () => ({
+      startIcon: startIcon ? (
+        <Icon size={16} {...startIcon} className={cn(slots.startIcon(), classNames?.startIcon, startIcon.className)} />
+      ) : null,
+      endIcon: endIcon ? (
+        <Icon size={16} {...endIcon} className={cn(slots.endIcon(), classNames?.endIcon, endIcon.className)} />
+      ) : null,
+    }),
+    [startIcon, endIcon]
+  );
 
   return (
-    <Component data-state={props.state || "default"} {...props} className={cn(slots.base(), classNames?.base)}>
-      {startContent ? startContent : null}
-      {startIcon ? (
-        <Icon size={16} {...startIcon} className={cn(slots.startIcon(), classNames?.startIcon, startIcon.className)} />
-      ) : null}
-      <Typo size={"xs"} as={"span"} classNames={{ base: cn(slots.content(), classNames?.content) }}>
+    <Component {...htmlProps} data-state={state} className={cn(slots.base(), classNames?.base)}>
+      {startContent}
+      {Icons.startIcon}
+      <Typo size={"xs"} as={"p"} classNames={{ base: cn(slots.content(), classNames?.content) }}>
         {children}
       </Typo>
-      {endIcon ? (
-        <Icon size={16} {...endIcon} className={cn(slots.endIcon(), classNames?.endIcon, endIcon.className)} />
-      ) : null}
-      {endContent ? endContent : null}
+      {Icons.endIcon}
+      {endContent}
     </Component>
   );
-};
+}

@@ -1,7 +1,9 @@
+import { ElementType } from "react";
+
 import { ButtonCore } from "../button.core";
 import { TButtonProps } from "../button.types";
 
-export const ButtonPrimary = ({ ...props }: TButtonProps<"button">) => {
+export function ButtonPrimary<C extends ElementType = "button">({ ...props }: TButtonProps<C>) {
   return (
     <ButtonCore
       {...props}
@@ -10,4 +12,4 @@ export const ButtonPrimary = ({ ...props }: TButtonProps<"button">) => {
       }}
     />
   );
-};
+}
