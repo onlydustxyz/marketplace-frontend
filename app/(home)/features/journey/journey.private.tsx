@@ -21,10 +21,10 @@ export function JourneyPrivate() {
     if (!data) return [];
     return [
       { stepName: "step1", completion: data?.individualBillingProfileSetup },
-      { stepName: "step2", completion: data?.firstContributionMade },
-      { stepName: "step3", completion: data?.firstRewardClaimed },
-      { stepName: "step4", completion: data?.descriptionUpdated },
-      { stepName: "step5", completion: data?.telegramAdded },
+      { stepName: "step2", completion: data?.descriptionUpdated },
+      { stepName: "step3", completion: data?.telegramAdded },
+      { stepName: "step4", completion: data?.firstContributionMade },
+      { stepName: "step5", completion: data?.firstRewardClaimed },
     ];
   }, [data]);
 

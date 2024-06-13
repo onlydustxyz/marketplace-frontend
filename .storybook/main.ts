@@ -1,26 +1,19 @@
-const config = {
-  stories: ["./stories/**/*.stories.@(js|jsx|ts|tsx|mdx)", "../components/**/*.stories.@(js|jsx|ts|tsx|mdx)"],
+import type { StorybookConfig } from "@storybook/nextjs";
+
+const config: StorybookConfig = {
+  stories: ["./**/*.mdx", "../**/*.mdx", "../**/*.stories.@(js|jsx|mjs|ts|tsx)"],
   addons: [
+    "@storybook/addon-onboarding",
     "@storybook/addon-links",
     "@storybook/addon-essentials",
+    "@chromatic-com/storybook",
     "@storybook/addon-interactions",
-    "storybook-addon-react-router-v6",
-    "@storybook/addon-styling",
-    "@storybook/addon-docs",
+    "@storybook/addon-styling-webpack",
   ],
   framework: {
     name: "@storybook/nextjs",
-    options: {
-      builder: {
-        useSWC: true, // Enables SWC support
-      },
-    },
+    options: {},
   },
-  features: {
-    storyStoreV7: true,
-  },
-  docs: {
-    autodocs: true,
-  },
+  staticDirs: ["../public"],
 };
 export default config;

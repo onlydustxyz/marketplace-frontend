@@ -6,8 +6,6 @@ import { isInMaintenanceMode } from "utils/maintenance/maintenance";
 import OnlyDustLogo from "src/App/Layout/Header/OnlyDustLogo";
 import OnlyDustTitle from "src/App/Layout/Header/OnlyDustTitle";
 import { useOnboarding } from "src/App/OnboardingProvider";
-import MeApi from "src/api/me";
-import { calculateUserCompletionScore } from "src/utils/calculateCompletionScore";
 
 import { Link } from "components/ds/link/link";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
@@ -28,8 +26,6 @@ function HeaderClient() {
   const { isImpersonating } = useImpersonation();
 
   const { onboardingInProgress } = useOnboarding();
-
-  const { data: myProfileInfo } = MeApi.queries.useGetMyProfileInfo({});
 
   const homeMenuItem = T("v2.features.menu.home");
   const projectsMenuItem = T("v2.features.menu.projects");
@@ -57,7 +53,6 @@ function HeaderClient() {
         [NEXT_ROUTER.rewards.all]: rewardsMenuItem,
       }}
       impersonating={isImpersonating}
-      profileCompletionScore={myProfileInfo ? calculateUserCompletionScore(myProfileInfo) : undefined}
     />
   );
 }
