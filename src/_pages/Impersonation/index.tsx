@@ -25,7 +25,7 @@ const ImpersonationPage = () => {
 
   useEffect(() => {
     if (!userId) {
-      router.push(NEXT_ROUTER.projects.all);
+      router.push(NEXT_ROUTER.home.all);
     } else {
       // Reset Posthog before refetching to so once refetch completes Posthog can update with impersonated user
       reset();
@@ -43,7 +43,7 @@ const ImpersonationPage = () => {
 
           if (userInfo && !isFetching && claimedGithubUserId) {
             if (userInfo?.githubUserId === claimedGithubUserId) {
-              router.push(NEXT_ROUTER.projects.all);
+              router.push(NEXT_ROUTER.home.all);
             } else {
               clearImpersonateClaim();
               reset(); // Return to initial user
@@ -59,7 +59,7 @@ const ImpersonationPage = () => {
     }
   }, [userId, impersonateClaims]);
 
-  return <BaseLink href={NEXT_ROUTER.projects.all}>{T("notFound.button")}</BaseLink>;
+  return <BaseLink href={NEXT_ROUTER.home.all}>{T("notFound.button")}</BaseLink>;
 };
 
 export default ImpersonationPage;

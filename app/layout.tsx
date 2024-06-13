@@ -1,4 +1,5 @@
 import { GoogleTagManager } from "@next/third-parties/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "keen-slider/keen-slider.min.css";
 import type { Metadata } from "next";
 import { PropsWithChildren } from "react";
@@ -36,8 +37,9 @@ export default function RootLayout({ children }: PropsWithChildren) {
           <PosthogIdentifyUser />
           <PosthogPageView />
         </Providers>
+        {config.GTM_ID ? <GoogleTagManager gtmId={config.GTM_ID} /> : null}
+        <SpeedInsights />
       </body>
-      {config.GTM_ID ? <GoogleTagManager gtmId={config.GTM_ID} /> : null}
     </html>
   );
 }
