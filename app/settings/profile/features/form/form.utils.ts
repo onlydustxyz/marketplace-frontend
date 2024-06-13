@@ -34,8 +34,7 @@ export function createContact({
 }
 
 export function formatToData(data: UseGetMyProfileInfoResponse): TProfileForm.Data {
-  const { firstName, lastName, avatarUrl, location, bio, website, contacts, technologies, allocatedTimeToContribute } =
-    data;
+  const { firstName, lastName, avatarUrl, location, bio, website, contacts, allocatedTimeToContribute } = data;
 
   function getContactInfo(contact: TProfileForm.Contact["channel"]) {
     const contactInfo = contacts?.find(contactInfo => contactInfo.channel === contact);
@@ -58,7 +57,6 @@ export function formatToData(data: UseGetMyProfileInfoResponse): TProfileForm.Da
     twitter: getContactInfo("TWITTER"),
     discord: getContactInfo("DISCORD"),
     linkedin: getContactInfo("LINKEDIN"),
-    technologies: technologies ?? {},
     weeklyAllocatedTime: allocatedTimeToContribute ?? TProfileForm.ALLOCATED_TIME.NONE,
     lookingForAJob: data.isLookingForAJob ?? false,
   };
@@ -77,7 +75,6 @@ export function formatToSchema(data: TProfileForm.Data) {
     twitter,
     discord,
     linkedin,
-    technologies,
     weeklyAllocatedTime,
     lookingForAJob,
   } = data;
@@ -119,7 +116,6 @@ export function formatToSchema(data: TProfileForm.Data) {
         prefixUrl: "https://www.linkedin.com/in/",
       }),
     ],
-    technologies,
     allocatedTimeToContribute: weeklyAllocatedTime,
     isLookingForAJob: lookingForAJob,
   };
