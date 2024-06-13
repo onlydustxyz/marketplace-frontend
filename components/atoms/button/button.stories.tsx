@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 
+import { ButtonLoading } from "components/atoms/button/button.loading";
 import { Icon } from "components/layout/icon/icon";
 
 import { ButtonCore } from "./button.core";
@@ -169,6 +170,26 @@ export const Danger: Story = {
           <ButtonDanger {...defaultProps} {...args} size={"s"} state="disabled" />
           <ButtonDanger {...defaultProps} {...args} size={"s"} isLoading={true} />
           <ButtonDanger {...args} startIcon={{ remixName: "ri-square-line" }} display="icon" size={"s"} />
+        </div>
+      </div>
+    );
+  },
+};
+export const Skeleton: Story = {
+  render: () => {
+    return (
+      <div className="flex w-full items-start gap-5">
+        <div className="flex flex-col gap-2">
+          <ButtonLoading size={"l"} />
+          <ButtonLoading size={"l"} display={"icon"} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <ButtonLoading />
+          <ButtonLoading display={"icon"} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <ButtonLoading size={"s"} />
+          <ButtonLoading size={"s"} display={"icon"} />
         </div>
       </div>
     );
