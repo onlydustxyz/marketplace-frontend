@@ -4,6 +4,7 @@ import { TagAvatar } from "components/atoms/tag/variants/tag-avatar";
 import { Icon } from "components/layout/icon/icon";
 
 import { TagCore } from "./tag.core";
+import { TagLoading } from "./tag.loading";
 import { TTagAvatarProps, TTagIconProps, TTagProps } from "./tag.types";
 import { Tag } from "./variants/tag-default";
 import { TagIcon } from "./variants/tag-icon";
@@ -201,6 +202,38 @@ export const Colors: Story = {
             </div>
           );
         })}
+      </div>
+    );
+  },
+};
+
+export const Skeleton: Story = {
+  parameters: {
+    docs: {
+      source: { code: "<TagLoading  />" },
+    },
+  },
+  render: () => {
+    return (
+      <div className="flex w-full items-start gap-5">
+        <div className="flex flex-col gap-2">
+          <TagLoading size={"m"} />
+          <TagLoading size={"m"} display={"square"} />
+          <TagLoading size={"m"} hideText />
+          <TagLoading size={"m"} hideText display={"square"} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <TagLoading size={"s"} />
+          <TagLoading size={"s"} display={"square"} />
+          <TagLoading size={"s"} hideText />
+          <TagLoading size={"s"} hideText display={"square"} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <TagLoading size={"xs"} />
+          <TagLoading size={"xs"} display={"square"} />
+          <TagLoading size={"xs"} hideText />
+          <TagLoading size={"xs"} hideText display={"square"} />
+        </div>
       </div>
     );
   },
