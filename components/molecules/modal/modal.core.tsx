@@ -17,6 +17,8 @@ export function ModalCore({
   closeButtonProps,
   footerStartContent,
   footerEndContent,
+  onClose,
+  title,
   ...props
 }: TModalProps) {
   const { size, ...htmlProps } = props;
@@ -33,19 +35,17 @@ export function ModalCore({
         footer: cn(slots.footer(), classNames?.footer),
       }}
       hideCloseButton
+      onClose={onClose}
     >
       <ModalContent>
         {onClose => (
           <>
             <ModalHeader>
-              <Typo {...titleProps} classNames={{ base: "truncate" }} />
+              <Typo {...titleProps} classNames={{ base: "truncate" }}>
+                {title}
+              </Typo>
               {!htmlProps.isDismissable ? (
-                <Button
-                  {...closeButtonProps}
-                  display={"icon"}
-                  startIcon={{ remixName: "ri-close-line" }}
-                  onClick={onClose}
-                />
+                <Button {...closeButtonProps} hideText startIcon={{ remixName: "ri-close-line" }} onClick={onClose} />
               ) : null}
             </ModalHeader>
             <ModalBody>{children}</ModalBody>

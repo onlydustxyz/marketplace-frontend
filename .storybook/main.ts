@@ -15,5 +15,16 @@ const config: StorybookConfig = {
     options: {},
   },
   staticDirs: ["../public"],
+  typescript: {
+    reactDocgen: "react-docgen-typescript",
+    reactDocgenTypescriptOptions: {
+      compilerOptions: {
+        allowSyntheticDefaultImports: false,
+        esModuleInterop: false,
+      },
+      // Filter out third-party props from node_modules except @mui packages.
+      propFilter: prop => (prop.parent ? !/node_modules\/(?!tailwind-variants)/.test(prop.parent.fileName) : true),
+    },
+  },
 };
 export default config;

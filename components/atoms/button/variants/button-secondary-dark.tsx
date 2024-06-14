@@ -11,7 +11,7 @@ export function ButtonSecondaryDark<C extends ElementType = "button">({ ...props
       {...props}
       classNames={{
         base: cn(
-          "bg-transparent border-1 border-interactions-black-default data-[state=disabled]:bg-interactions-black-disabled",
+          "bg-transparent border-1 border-interactions-black-default data-[disabled=true]:bg-interactions-black-disabled",
           "hover:bg-interactions-black-hover"
         ),
         label: "text-text-4",

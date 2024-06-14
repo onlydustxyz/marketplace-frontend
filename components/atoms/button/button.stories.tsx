@@ -5,11 +5,7 @@ import { Icon } from "components/layout/icon/icon";
 
 import { ButtonCore } from "./button.core";
 import { TButtonProps } from "./button.types";
-import { ButtonDanger } from "./variants/button-danger";
 import { Button } from "./variants/button-default";
-import { ButtonPrimary } from "./variants/button-primary";
-import { ButtonSecondaryDark } from "./variants/button-secondary-dark";
-import { ButtonSecondaryLight } from "./variants/button-secondary-light";
 
 type Story = StoryObj<typeof ButtonCore>;
 
@@ -35,6 +31,27 @@ const meta: Meta<typeof ButtonCore> = {
 
 export const Default: Story = {
   render: args => {
+    return <Button {...defaultProps} endContent={undefined} startContent={undefined} endIcon={undefined} {...args} />;
+  },
+};
+
+export const Size: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `
+<Button
+  startIcon={{
+    remixName: 'ri-square-line'
+  }}
+>
+  Button core
+</Button>
+        `,
+      },
+    },
+  },
+  render: args => {
     return (
       <div className="flex w-full items-start gap-5">
         <div className="flex flex-col gap-2">
@@ -57,27 +74,30 @@ export const Primary: Story = {
       default: "black",
       values: [{ name: "black", value: "#05051E" }],
     },
+    docs: {
+      source: { code: "<Button variant='primary' />" },
+    },
   },
   render: args => {
     return (
       <div className="flex w-full items-start gap-5">
         <div className="flex flex-col gap-2">
-          <ButtonPrimary {...defaultProps} {...args} size={"l"} />
-          <ButtonPrimary {...defaultProps} {...args} size={"l"} state="disabled" />
-          <ButtonPrimary {...defaultProps} {...args} size={"l"} isLoading={true} />
-          <ButtonPrimary {...args} startIcon={{ remixName: "ri-square-line" }} display="icon" size={"l"} />
+          <Button variant={"primary"} {...defaultProps} {...args} size={"l"} />
+          <Button variant={"primary"} {...defaultProps} {...args} size={"l"} isDisabled={true} />
+          <Button variant={"primary"} {...defaultProps} {...args} size={"l"} isLoading={true} />
+          <Button variant={"primary"} {...args} startIcon={{ remixName: "ri-square-line" }} hideText size={"l"} />
         </div>
         <div className="flex flex-col gap-2">
-          <ButtonPrimary {...defaultProps} {...args} />
-          <ButtonPrimary {...defaultProps} {...args} state="disabled" />
-          <ButtonPrimary {...defaultProps} {...args} isLoading={true} />
-          <ButtonPrimary {...args} startIcon={{ remixName: "ri-square-line" }} display="icon" />
+          <Button variant={"primary"} {...defaultProps} {...args} />
+          <Button variant={"primary"} {...defaultProps} {...args} isDisabled={true} />
+          <Button variant={"primary"} {...defaultProps} {...args} isLoading={true} />
+          <Button variant={"primary"} {...args} startIcon={{ remixName: "ri-square-line" }} hideText />
         </div>
         <div className="flex flex-col gap-2">
-          <ButtonPrimary {...defaultProps} {...args} size={"s"} />
-          <ButtonPrimary {...defaultProps} {...args} size={"s"} state="disabled" />
-          <ButtonPrimary {...defaultProps} {...args} size={"s"} isLoading={true} />
-          <ButtonPrimary {...args} startIcon={{ remixName: "ri-square-line" }} display="icon" size={"s"} />
+          <Button variant={"primary"} {...defaultProps} {...args} size={"s"} />
+          <Button variant={"primary"} {...defaultProps} {...args} size={"s"} isDisabled={true} />
+          <Button variant={"primary"} {...defaultProps} {...args} size={"s"} isLoading={true} />
+          <Button variant={"primary"} {...args} startIcon={{ remixName: "ri-square-line" }} hideText size={"s"} />
         </div>
       </div>
     );
@@ -90,27 +110,42 @@ export const SecondaryLight: Story = {
       default: "black",
       values: [{ name: "black", value: "#05051E" }],
     },
+    docs: {
+      source: { code: "<Button variant='secondary-light' />" },
+    },
   },
   render: args => {
     return (
       <div className="flex w-full items-start gap-5">
         <div className="flex flex-col gap-2">
-          <ButtonSecondaryLight {...defaultProps} {...args} size={"l"} />
-          <ButtonSecondaryLight {...defaultProps} {...args} size={"l"} state="disabled" />
-          <ButtonSecondaryLight {...defaultProps} {...args} size={"l"} isLoading={true} />
-          <ButtonSecondaryLight {...args} startIcon={{ remixName: "ri-square-line" }} display="icon" size={"l"} />
+          <Button variant={"secondary-light"} {...defaultProps} {...args} size={"l"} />
+          <Button variant={"secondary-light"} {...defaultProps} {...args} size={"l"} isDisabled={true} />
+          <Button variant={"secondary-light"} {...defaultProps} {...args} size={"l"} isLoading={true} />
+          <Button
+            variant={"secondary-light"}
+            {...args}
+            startIcon={{ remixName: "ri-square-line" }}
+            hideText
+            size={"l"}
+          />
         </div>
         <div className="flex flex-col gap-2">
-          <ButtonSecondaryLight {...defaultProps} {...args} />
-          <ButtonSecondaryLight {...defaultProps} {...args} state="disabled" />
-          <ButtonSecondaryLight {...defaultProps} {...args} isLoading={true} />
-          <ButtonSecondaryLight {...args} startIcon={{ remixName: "ri-square-line" }} display="icon" />
+          <Button variant={"secondary-light"} {...defaultProps} {...args} />
+          <Button variant={"secondary-light"} {...defaultProps} {...args} isDisabled={true} />
+          <Button variant={"secondary-light"} {...defaultProps} {...args} isLoading={true} />
+          <Button variant={"secondary-light"} {...args} startIcon={{ remixName: "ri-square-line" }} hideText />
         </div>
         <div className="flex flex-col gap-2">
-          <ButtonSecondaryLight {...defaultProps} {...args} size={"s"} />
-          <ButtonSecondaryLight {...defaultProps} {...args} size={"s"} state="disabled" />
-          <ButtonSecondaryLight {...defaultProps} {...args} size={"s"} isLoading={true} />
-          <ButtonSecondaryLight {...args} startIcon={{ remixName: "ri-square-line" }} display="icon" size={"s"} />
+          <Button variant={"secondary-light"} {...defaultProps} {...args} size={"s"} />
+          <Button variant={"secondary-light"} {...defaultProps} {...args} size={"s"} isDisabled={true} />
+          <Button variant={"secondary-light"} {...defaultProps} {...args} size={"s"} isLoading={true} />
+          <Button
+            variant={"secondary-light"}
+            {...args}
+            startIcon={{ remixName: "ri-square-line" }}
+            hideText
+            size={"s"}
+          />
         </div>
       </div>
     );
@@ -122,27 +157,42 @@ export const SecondaryDark: Story = {
       default: "black",
       values: [{ name: "black", value: "#FFFFFF" }],
     },
+    docs: {
+      source: { code: "<Button variant='secondary-dark' />" },
+    },
   },
   render: args => {
     return (
       <div className="flex w-full items-start gap-5">
         <div className="flex flex-col gap-2">
-          <ButtonSecondaryDark {...defaultProps} {...args} size={"l"} />
-          <ButtonSecondaryDark {...defaultProps} {...args} size={"l"} state="disabled" />
-          <ButtonSecondaryDark {...defaultProps} {...args} size={"l"} isLoading={true} />
-          <ButtonSecondaryDark {...args} startIcon={{ remixName: "ri-square-line" }} display="icon" size={"l"} />
+          <Button variant={"secondary-dark"} {...defaultProps} {...args} size={"l"} />
+          <Button variant={"secondary-dark"} {...defaultProps} {...args} size={"l"} isDisabled={true} />
+          <Button variant={"secondary-dark"} {...defaultProps} {...args} size={"l"} isLoading={true} />
+          <Button
+            variant={"secondary-dark"}
+            {...args}
+            startIcon={{ remixName: "ri-square-line" }}
+            hideText
+            size={"l"}
+          />
         </div>
         <div className="flex flex-col gap-2">
-          <ButtonSecondaryDark {...defaultProps} {...args} />
-          <ButtonSecondaryDark {...defaultProps} {...args} state="disabled" />
-          <ButtonSecondaryDark {...defaultProps} {...args} isLoading={true} />
-          <ButtonSecondaryDark {...args} startIcon={{ remixName: "ri-square-line" }} display="icon" />
+          <Button variant={"secondary-dark"} {...defaultProps} {...args} />
+          <Button variant={"secondary-dark"} {...defaultProps} {...args} isDisabled={true} />
+          <Button variant={"secondary-dark"} {...defaultProps} {...args} isLoading={true} />
+          <Button variant={"secondary-dark"} {...args} startIcon={{ remixName: "ri-square-line" }} hideText />
         </div>
         <div className="flex flex-col gap-2">
-          <ButtonSecondaryDark {...defaultProps} {...args} size={"s"} />
-          <ButtonSecondaryDark {...defaultProps} {...args} size={"s"} state="disabled" />
-          <ButtonSecondaryDark {...defaultProps} {...args} size={"s"} isLoading={true} />
-          <ButtonSecondaryDark {...args} startIcon={{ remixName: "ri-square-line" }} display="icon" size={"s"} />
+          <Button variant={"secondary-dark"} {...defaultProps} {...args} size={"s"} />
+          <Button variant={"secondary-dark"} {...defaultProps} {...args} size={"s"} isDisabled={true} />
+          <Button variant={"secondary-dark"} {...defaultProps} {...args} size={"s"} isLoading={true} />
+          <Button
+            variant={"secondary-dark"}
+            {...args}
+            startIcon={{ remixName: "ri-square-line" }}
+            hideText
+            size={"s"}
+          />
         </div>
       </div>
     );
@@ -150,46 +200,56 @@ export const SecondaryDark: Story = {
 };
 
 export const Danger: Story = {
+  parameters: {
+    docs: {
+      source: { code: "<Button variant='danger' />" },
+    },
+  },
   render: args => {
     return (
       <div className="flex w-full items-start gap-5">
         <div className="flex flex-col gap-2">
-          <ButtonDanger {...defaultProps} {...args} size={"l"} />
-          <ButtonDanger {...defaultProps} {...args} size={"l"} state="disabled" />
-          <ButtonDanger {...defaultProps} {...args} size={"l"} isLoading={true} />
-          <ButtonDanger {...args} startIcon={{ remixName: "ri-square-line" }} display="icon" size={"l"} />
+          <Button variant={"danger"} {...defaultProps} {...args} size={"l"} />
+          <Button variant={"danger"} {...defaultProps} {...args} size={"l"} isDisabled={true} />
+          <Button variant={"danger"} {...defaultProps} {...args} size={"l"} isLoading={true} />
+          <Button variant={"danger"} {...args} startIcon={{ remixName: "ri-square-line" }} hideText size={"l"} />
         </div>
         <div className="flex flex-col gap-2">
-          <ButtonDanger {...defaultProps} {...args} />
-          <ButtonDanger {...defaultProps} {...args} state="disabled" />
-          <ButtonDanger {...defaultProps} {...args} isLoading={true} />
-          <ButtonDanger {...args} startIcon={{ remixName: "ri-square-line" }} display="icon" />
+          <Button variant={"danger"} {...defaultProps} {...args} />
+          <Button variant={"danger"} {...defaultProps} {...args} isDisabled={true} />
+          <Button variant={"danger"} {...defaultProps} {...args} isLoading={true} />
+          <Button variant={"danger"} {...args} startIcon={{ remixName: "ri-square-line" }} hideText />
         </div>
         <div className="flex flex-col gap-2">
-          <ButtonDanger {...defaultProps} {...args} size={"s"} />
-          <ButtonDanger {...defaultProps} {...args} size={"s"} state="disabled" />
-          <ButtonDanger {...defaultProps} {...args} size={"s"} isLoading={true} />
-          <ButtonDanger {...args} startIcon={{ remixName: "ri-square-line" }} display="icon" size={"s"} />
+          <Button variant={"danger"} {...defaultProps} {...args} size={"s"} />
+          <Button variant={"danger"} {...defaultProps} {...args} size={"s"} isDisabled={true} />
+          <Button variant={"danger"} {...defaultProps} {...args} size={"s"} isLoading={true} />
+          <Button variant={"danger"} {...args} startIcon={{ remixName: "ri-square-line" }} hideText size={"s"} />
         </div>
       </div>
     );
   },
 };
 export const Skeleton: Story = {
+  parameters: {
+    docs: {
+      source: { code: "<ButtonLoading  />" },
+    },
+  },
   render: () => {
     return (
       <div className="flex w-full items-start gap-5">
         <div className="flex flex-col gap-2">
           <ButtonLoading size={"l"} />
-          <ButtonLoading size={"l"} display={"icon"} />
+          <ButtonLoading size={"l"} hideText />
         </div>
         <div className="flex flex-col gap-2">
           <ButtonLoading />
-          <ButtonLoading display={"icon"} />
+          <ButtonLoading hideText />
         </div>
         <div className="flex flex-col gap-2">
           <ButtonLoading size={"s"} />
-          <ButtonLoading size={"s"} display={"icon"} />
+          <ButtonLoading size={"s"} hideText />
         </div>
       </div>
     );

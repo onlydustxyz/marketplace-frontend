@@ -22,19 +22,17 @@ export const ButtonCoreVariants = tv({
         base: "px-1 py-1",
       },
     },
-    display: {
-      default: "",
-      icon: "",
-      loader: {
+    hideText: {
+      true: "",
+    },
+    isLoading: {
+      true: {
+        base: "pointer-events-none cursor-not-allowed",
         content: "opacity-0",
       },
     },
-    state: {
-      default: "",
-      loading: {
-        base: "pointer-events-none cursor-not-allowed",
-      },
-      disabled: {
+    isDisabled: {
+      true: {
         base: "pointer-events-none cursor-not-allowed",
         startIcon: "text-text-3",
         endIcon: "text-text-3",
@@ -68,5 +66,7 @@ export const ButtonCoreVariants = tv({
   defaultVariants: {
     size: "m",
     state: "default",
+    isDisabled: false,
+    isLoading: false,
   },
 });
