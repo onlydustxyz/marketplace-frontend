@@ -1,13 +1,15 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import { Button } from "components/ds/button/button";
 import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
+import { GrantPermissionModal } from "components/features/grant-permission-modal/grant-permission-modal";
 import { Translate } from "components/layout/translate/translate";
 
 import { TApplyButton } from "./apply-button.types";
 
 export function ApplyButton({ hasApplied, canApply }: TApplyButton.Props) {
+  const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated, loginWithRedirect } = useAuth0();
 
   function handleApply() {
@@ -17,6 +19,7 @@ export function ApplyButton({ hasApplied, canApply }: TApplyButton.Props) {
 
     if (!canApply) {
       // Open github grant permissions modal
+      setIsOpen(true);
     }
   }
 
@@ -24,7 +27,7 @@ export function ApplyButton({ hasApplied, canApply }: TApplyButton.Props) {
     // Open application consult drawer
   }
 
-  return useMemo(() => {
+  const renderButton = useMemo(() => {
     if (hasApplied) {
       return (
         <Button variant="secondary" size="s" onClick={handleConsultApplication} className="whitespace-nowrap">
@@ -39,4 +42,11 @@ export function ApplyButton({ hasApplied, canApply }: TApplyButton.Props) {
       </Button>
     );
   }, [hasApplied, canApply]);
+
+  return (
+    <>
+      {renderButton}
+      <GrantPermissionModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+    </>
+  );
 }

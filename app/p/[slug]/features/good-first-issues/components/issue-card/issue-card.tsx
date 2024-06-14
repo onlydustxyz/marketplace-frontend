@@ -18,7 +18,7 @@ import { TIssueCard } from "./issue-card.types";
 export function IssueCard({ issue }: TIssueCard.Props) {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
-  const hasApplied = true;
+  const hasApplied = false;
   const canApply = false;
 
   return (

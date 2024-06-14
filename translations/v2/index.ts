@@ -11,6 +11,7 @@ import en_features_dots_status from "./en/features/dots-status.json";
 import en_features_ecosystems from "./en/features/ecosystems.json";
 import en_features from "./en/features/features.json";
 import en_features_filters from "./en/features/filters.json";
+import en_features_github_grant_permissions from "./en/features/github-grant-permissions.json";
 import en_features_leaders from "./en/features/leaders.json";
 import en_features_menu from "./en/features/menu.json";
 import en_features_payout_status from "./en/features/payout-status.json";
@@ -72,6 +73,7 @@ export const en = {
       activityGraph: en_features_activity_graph,
       profileCard: en_features_profile_card,
       detailsAccordion: en_features_details_accordion,
+      githubGrantPermissions: en_features_github_grant_permissions,
     },
     pages: {
       projects: en_projects,
