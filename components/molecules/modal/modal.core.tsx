@@ -40,12 +40,7 @@ export function ModalCore({
             <ModalHeader>
               <Typo {...titleProps} classNames={{ base: "truncate" }} />
               {!htmlProps.isDismissable ? (
-                <Button
-                  {...closeButtonProps}
-                  display={"icon"}
-                  startIcon={{ remixName: "ri-close-line" }}
-                  onClick={onClose}
-                />
+                <Button {...closeButtonProps} hideText startIcon={{ remixName: "ri-close-line" }} onClick={onClose} />
               ) : null}
             </ModalHeader>
             <ModalBody>{children}</ModalBody>

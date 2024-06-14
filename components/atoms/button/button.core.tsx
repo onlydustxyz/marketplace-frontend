@@ -19,6 +19,7 @@ export function ButtonCore<C extends ElementType = "button">({
   startContent,
   endContent,
   children,
+  onClick,
   ...props
 }: TButtonProps<C>) {
   const Component = as || "button";
@@ -36,6 +37,7 @@ export function ButtonCore<C extends ElementType = "button">({
       data-loading={isLoading}
       data-disabled={isDisabled}
       className={cn(slots.base(), classNames?.base)}
+      onClick={onClick}
     >
       <div className={cn(slots.content(), classNames?.content)}>
         {startContent}

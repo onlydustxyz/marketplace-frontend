@@ -16,4 +16,5 @@ export interface TButtonProps<C extends ElementType> extends Variants, PropsWith
   endIcon?: TIcon.Props;
   startContent?: ReactNode;
   endContent?: ReactNode;
+  onClick?: () => void;
 }
