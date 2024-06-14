@@ -53,7 +53,8 @@
         "lead": "List issues on Github",
         "contributor": "See all issues on Github"
       }
-    }
+    },
+    "overview": "Overview"
   },
   "repositories": {
     "title": "Repositories"
