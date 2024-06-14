@@ -19,7 +19,7 @@ export interface TTagProps<C extends ElementType> extends Variants, PropsWithChi
   as?: C;
   startContent?: ReactNode;
   endContent?: ReactNode;
-  labelProps?: Partial<Omit<ComponentProps<typeof Typo>, "translate">>;
+  labelProps?: Partial<ComponentProps<typeof Typo>>;
   deletableIconProps?: Partial<ComponentProps<typeof Icon>>;
 }
 
