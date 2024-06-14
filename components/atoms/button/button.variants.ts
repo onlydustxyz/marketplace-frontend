@@ -13,10 +13,10 @@ export const ButtonCoreVariants = tv({
   variants: {
     size: {
       l: {
-        base: "px-3 py-4",
+        base: "px-4 py-3",
       },
       m: {
-        base: "px-2 py-3",
+        base: "px-3 py-2",
       },
       s: {
         base: "px-1 py-1",
@@ -42,21 +42,21 @@ export const ButtonCoreVariants = tv({
   },
   compoundVariants: [
     {
-      display: "icon",
+      hideText: true,
       size: "l",
       class: {
         base: "px-3 py-3",
       },
     },
     {
-      display: "icon",
+      hideText: true,
       size: "m",
       class: {
         base: "px-2 py-2",
       },
     },
     {
-      display: "icon",
+      hideText: true,
       size: "s",
       class: {
         base: "px-1 py-1",
