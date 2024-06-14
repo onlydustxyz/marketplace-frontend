@@ -1,3 +1,3 @@
-export const TypoLoading = () => {
+export function TypoLoading() {
   return <div />;
-};
+}
