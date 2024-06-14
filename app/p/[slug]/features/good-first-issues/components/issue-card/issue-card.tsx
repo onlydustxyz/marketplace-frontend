@@ -18,6 +18,9 @@ import { TIssueCard } from "./issue-card.types";
 export function IssueCard({ issue }: TIssueCard.Props) {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
+  const hasApplied = true;
+  const canApply = false;
+
   return (
     <Card key={issue.id} background="base" hasPadding={false}>
       <Flex direction="col" className="gap-4 p-5 md:gap-3">
@@ -26,7 +29,7 @@ export function IssueCard({ issue }: TIssueCard.Props) {
             {issue.title}
           </Typography>
 
-          {isMd ? <ApplyButton url={issue.htmlUrl} /> : null}
+          {isMd ? <ApplyButton hasApplied={hasApplied} canApply={canApply} /> : null}
         </Flex>
 
         <Flex alignItems="center" className="gap-3 gap-y-2" wrap="wrap">
