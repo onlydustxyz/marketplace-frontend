@@ -54,7 +54,10 @@
         "contributor": "See all issues on Github"
       }
     },
-    "overview": "Overview"
+    "overview": {
+      "title": "Overview",
+      "empty": "No description provided."
+    }
   },
   "repositories": {
     "title": "Repositories"
