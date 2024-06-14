@@ -153,6 +153,11 @@ async function createStories({ name, path, PascalName }) {
         };
 
         export const Default: Story = {
+          parameters: {
+            docs: {
+              source: { code: "<${PascalName} />" },
+            },
+          },
           render: args => {
             return (
               <div className="flex w-full items-center gap-2">

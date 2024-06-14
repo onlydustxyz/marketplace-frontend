@@ -24,6 +24,11 @@ const meta: Meta<typeof PaperCore> = {
 };
 
 export const Default: Story = {
+  parameters: {
+    docs: {
+      source: { code: "<Paper size='l' />" },
+    },
+  },
   render: args => {
     return (
       <div className="grid gap-2">
@@ -42,6 +47,11 @@ export const Default: Story = {
 };
 
 export const Containers: Story = {
+  parameters: {
+    docs: {
+      source: { code: "<Paper container='2' />" },
+    },
+  },
   render: args => {
     return (
       <div className="grid gap-2">
