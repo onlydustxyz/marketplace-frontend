@@ -1,7 +1,7 @@
 import { ModalCore } from "../modal.core";
 import { TModalProps } from "../modal.types";
 
-export function Modal({ ...props }: TModalProps) {
+export function Modal({ titleProps, closeButtonProps, ...props }: TModalProps) {
   return (
     <ModalCore
       {...props}
@@ -13,10 +13,12 @@ export function Modal({ ...props }: TModalProps) {
         variant: "branding",
         size: "xl",
         as: "h6",
+        ...titleProps,
       }}
       closeButtonProps={{
         variant: "secondary-light",
         size: "l",
+        ...closeButtonProps,
       }}
     />
   );

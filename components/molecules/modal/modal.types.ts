@@ -15,7 +15,9 @@ export interface TModalProps
     PropsWithChildren,
     Pick<ModalProps, "isOpen" | "onOpenChange" | "isDismissable"> {
   classNames?: classNames;
-  titleProps: Partial<ComponentProps<typeof Typo>>;
+  title: ReactNode;
+  onClose(): void;
+  titleProps?: Partial<ComponentProps<typeof Typo>>;
   closeButtonProps?: ComponentProps<typeof Button>;
   footerStartContent?: ReactNode;
   footerEndContent?: ReactNode;
