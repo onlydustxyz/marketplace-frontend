@@ -13,12 +13,12 @@ export namespace TIcon {
 
   interface CustomProps extends BaseProps {
     customName: TCustomIcon.Names;
-    remixName?: RemixIconsName;
+    remixName?: never;
   }
 
-  private interface RemixProps extends BaseProps {
+  interface RemixProps extends BaseProps {
     remixName: RemixIconsName;
-    customName?: TCustomIcon.Names;
+    customName?: never;
   }
 
   export type Props = CustomProps | RemixProps;
