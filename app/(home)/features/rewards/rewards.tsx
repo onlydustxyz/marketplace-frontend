@@ -61,7 +61,7 @@ export function Rewards(_: TRewards.Props) {
             className: "last:border-none cursor-pointer",
           }}
           TableCellProps={{
-            className: "first:pl-6 last:pr-6",
+            className: "first:pl-3 last:pr-3",
           }}
         />
       </Card>
