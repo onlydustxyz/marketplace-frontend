@@ -33,7 +33,6 @@ export function ModalCore({
         footer: cn(slots.footer(), classNames?.footer),
       }}
       hideCloseButton
-      defaultOpen
     >
       <ModalContent>
         {onClose => (
