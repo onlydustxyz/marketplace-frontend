@@ -69,5 +69,7 @@ export const ButtonCoreVariants = tv({
   defaultVariants: {
     size: "m",
     state: "default",
+    isDisabled: false,
+    isLoading: false,
   },
 });

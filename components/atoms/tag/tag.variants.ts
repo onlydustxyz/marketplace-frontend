@@ -24,7 +24,7 @@ export const TagCoreVariants = tv({
     deletable: {
       true: "",
     },
-    iconOnly: {
+    hideText: {
       true: "",
     },
     display: {
@@ -34,21 +34,21 @@ export const TagCoreVariants = tv({
   },
   compoundVariants: [
     {
-      iconOnly: true,
+      hideText: true,
       size: "m",
       class: {
         base: "px-3 py-3",
       },
     },
     {
-      iconOnly: true,
+      hideText: true,
       size: "s",
       class: {
         base: "px-2 py-2",
       },
     },
     {
-      iconOnly: true,
+      hideText: true,
       size: "xs",
       class: {
         base: "px-1 py-1",
