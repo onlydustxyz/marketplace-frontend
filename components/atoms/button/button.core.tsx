@@ -22,11 +22,11 @@ export function ButtonCore<C extends ElementType = "button">({
   ...props
 }: TButtonProps<C>) {
   const Component = as || "button";
-  const { isLoading, isDisabled, size, display, ...htmlProps } = props;
+  const { isLoading, isDisabled, size, hideText, ...htmlProps } = props;
   const slots = ButtonCoreVariants({
     isLoading,
     isDisabled,
-    display: isLoading ? "loader" : display,
+    hideText,
     size,
   });
 
@@ -44,7 +44,7 @@ export function ButtonCore<C extends ElementType = "button">({
           props={startIcon}
           overrideProps={{ className: cn(slots.startIcon(), classNames?.startIcon, startIcon?.className) }}
         />
-        <Show show={!!children && display !== "icon"}>
+        <Show show={!!children && !hideText}>
           <Typo size={"xs"} as={"span"} classNames={{ base: cn(slots.label(), classNames?.label) }}>
             {children}
           </Typo>

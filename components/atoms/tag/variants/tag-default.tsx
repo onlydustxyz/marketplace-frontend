@@ -1,8 +1,8 @@
 import { ElementType } from "react";
 
 import { TagCore } from "../tag.core";
-import { TTagCoreProps } from "../tag.types";
+import { TTagProps } from "../tag.types";
 
-export function Tag<C extends ElementType = "div">({ ...props }: TTagCoreProps<C>) {
+export function Tag<C extends ElementType = "div">({ ...props }: TTagProps<C>) {
   return <TagCore {...props} classNames={{}} />;
 }

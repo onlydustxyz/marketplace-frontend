@@ -83,13 +83,11 @@ async function createTypes({ name, path, PascalName }) {
         import { ElementType } from "react";
         import { ${PascalName}CoreVariants } from "./${name}.variants";
         import { VariantProps } from "tailwind-variants";
-        import { AsProps } from "types/as-element";
-
 
         type Variants = VariantProps<typeof ${PascalName}CoreVariants>;
         type classNames = Partial<typeof ${PascalName}CoreVariants["slots"]>;
 
-        export type T${PascalName}Props<C extends ElementType> = AsProps<C> & Variants & {
+        export interface T${PascalName}Props<C extends ElementType> extends Variants {
           classNames?: classNames;
           as?: C;
         }
@@ -149,7 +147,7 @@ async function createStories({ name, path, PascalName }) {
           parameters: {
             backgrounds: {
               default: "black",
-              values: [{ name: "black", value: "#0E0814" }],
+              values: [{ name: "black", value: "#1E1E1E" }],
             },
           },
         };

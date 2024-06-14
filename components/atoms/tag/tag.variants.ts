@@ -2,9 +2,10 @@ import { tv } from "tailwind-variants";
 
 export const TagCoreVariants = tv({
   slots: {
-    base: "group",
-    content: "flex flex-row items-center justify-center",
-    startIcon: "",
+    base: "group border-1 border-container-stroke-separator bg-container-4",
+    content: "flex flex-row items-center justify-center text-text-1",
+    label: "text-inherit",
+    deletableIcon: "text-inherit",
   },
   variants: {
     size: {
@@ -21,18 +22,65 @@ export const TagCoreVariants = tv({
         content: "gap-1.5",
       },
     },
-    deletable: {
+    isDeletable: {
       true: "",
     },
     hideText: {
       true: "",
     },
     display: {
-      rounded: "rounded-full",
-      square: "rounded-lg",
+      rounded: {
+        base: "rounded-full",
+      },
+      square: {
+        base: "rounded-lg",
+      },
+    },
+    style: {
+      false: "",
+      outline: {
+        base: "!bg-transparent",
+      },
+      fill: {
+        base: "!border-none",
+      },
+    },
+    color: {
+      false: "",
+      black: {
+        base: "border-container-action bg-container-action",
+      },
+      white: {
+        base: "border-container-inverse bg-container-inverse",
+      },
+      red: {
+        base: "border-label-red bg-label-red",
+      },
+      pink: {
+        base: "border-label-pink bg-label-pink",
+      },
+      grey: {
+        base: "border-label-grey bg-label-grey",
+      },
+      green: {
+        base: "border-label-green bg-label-green",
+      },
+      yellow: {
+        base: "border-label-yellow bg-label-yellow",
+      },
+      orange: {
+        base: "border-label-orange bg-label-orange",
+      },
+      purple: {
+        base: "border-label-purple bg-label-purple",
+      },
+      blue: {
+        base: "border-label-blue bg-label-blue",
+      },
     },
   },
   compoundVariants: [
+    // HIDE TEXT VARIANTS
     {
       hideText: true,
       size: "m",
@@ -54,6 +102,27 @@ export const TagCoreVariants = tv({
         base: "px-1 py-1",
       },
     },
+    /** COLORS */
+    {
+      color: "white",
+      style: "fill",
+      class: {
+        content: "text-text-4",
+      },
+    },
+    {
+      color: "black",
+      style: "outline",
+      class: {
+        content: "text-text-4",
+      },
+    },
   ],
-  defaultVariants: {},
+  defaultVariants: {
+    size: "m",
+    display: "rounded",
+    hideText: false,
+    style: "fill",
+    deletable: false,
+  },
 });

@@ -22,16 +22,13 @@ export const ButtonCoreVariants = tv({
         base: "px-1 py-1",
       },
     },
-    display: {
-      default: "",
-      icon: "",
-      loader: {
-        content: "opacity-0",
-      },
+    hideText: {
+      true: "",
     },
     isLoading: {
       true: {
         base: "pointer-events-none cursor-not-allowed",
+        content: "opacity-0",
       },
     },
     isDisabled: {

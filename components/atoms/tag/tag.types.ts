@@ -1,6 +1,5 @@
-import { ElementType, ReactNode } from "react";
+import { ComponentPropsWithoutRef, ElementType, PropsWithChildren, ReactNode } from "react";
 import { VariantProps } from "tailwind-variants";
-import { AsProps } from "types/as-element";
 
 import { TAvatar } from "components/ds/avatar/avatar.types";
 import { TIcon } from "components/layout/icon/icon.types";
@@ -10,25 +9,19 @@ import { TagCoreVariants } from "./tag.variants";
 type Variants = VariantProps<typeof TagCoreVariants>;
 type classNames = Partial<typeof TagCoreVariants["slots"]>;
 
-export type TTagCoreProps<C extends ElementType> = AsProps<C> &
-  Variants & {
-    classNames?: classNames;
-    as?: C;
-    startContent?: ReactNode;
-  };
+export interface TTagProps<C extends ElementType> extends Variants, PropsWithChildren {
+  htmlProps?: ComponentPropsWithoutRef<C>;
+  classNames?: classNames;
+  as?: C;
+  startContent?: ReactNode;
+  endContent?: ReactNode;
+}
 
-export type TTagIconProps<C extends ElementType> = Omit<TTagCoreProps<C>, "startContent"> & {
-  variant: "icon";
+export interface TTagIconProps<C extends ElementType> extends TTagProps<C> {
   icon: TIcon.Props;
-};
+}
 
-/** TODO use new icon */
-export type TTagAvatarProps<C extends ElementType> = Omit<TTagCoreProps<C>, "startContent"> & {
-  variant: "avatar";
+/** TODO refactor this with new avatar */
+export interface TTagAvatarProps<C extends ElementType> extends TTagProps<C> {
   avatar: TAvatar.Props;
-};
-
-export type TTagProps<C extends ElementType> =
-  | (TTagCoreProps<C> & { variant?: "default" })
-  | TTagIconProps<C>
-  | TTagAvatarProps<C>;
+}

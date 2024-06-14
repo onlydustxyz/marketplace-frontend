@@ -8,6 +8,11 @@ import "src/assets/fonts/GTWalsheimPro/stylesheet.css";
 
 const preview: Preview = {
   parameters: {
+    docs: {
+      canvas: {
+        sourceState: "shown",
+      },
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,
