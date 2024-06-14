@@ -2,6 +2,7 @@ import { ComponentPropsWithoutRef, ElementType, PropsWithChildren, ReactNode } f
 import { VariantProps } from "tailwind-variants";
 
 import { TIcon } from "components/layout/icon/icon.types";
+import { TTranslate } from "components/layout/translate/translate.types";
 
 import { ButtonCoreVariants } from "./button.variants";
 
@@ -11,6 +12,7 @@ type classNames = Partial<typeof ButtonCoreVariants["slots"]>;
 export interface TButtonProps<C extends ElementType> extends Variants, PropsWithChildren {
   htmlProps?: ComponentPropsWithoutRef<C>;
   classNames?: classNames;
+  translate?: TTranslate.Props;
   as?: C;
   startIcon?: TIcon.Props;
   endIcon?: TIcon.Props;

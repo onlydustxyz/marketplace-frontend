@@ -1,5 +1,6 @@
 import { create } from "@storybook/theming/create";
 
+// @ts-ignore
 import Logo from "./static/logo.svg";
 
 export default create({

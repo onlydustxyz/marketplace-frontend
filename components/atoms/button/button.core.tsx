@@ -7,6 +7,7 @@ import { Typo } from "components/atoms/typo/variants/typo-default";
 import { RenderWithProps } from "components/layout/components-utils/render-with-props/render-with-props";
 import { Show } from "components/layout/components-utils/show/show";
 import { Icon } from "components/layout/icon/icon";
+import { Translate } from "components/layout/translate/translate";
 
 import { TButtonProps } from "./button.types";
 import { ButtonCoreVariants } from "./button.variants";
@@ -20,6 +21,7 @@ export function ButtonCore<C extends ElementType = "button">({
   endContent,
   children,
   onClick,
+  translate,
   ...props
 }: TButtonProps<C>) {
   const Component = as || "button";
@@ -30,6 +32,8 @@ export function ButtonCore<C extends ElementType = "button">({
     hideText,
     size,
   });
+
+  const showChildren = !hideText && (!!children || !!translate);
 
   return (
     <Component
@@ -46,9 +50,9 @@ export function ButtonCore<C extends ElementType = "button">({
           props={startIcon}
           overrideProps={{ className: cn(slots.startIcon(), classNames?.startIcon, startIcon?.className) }}
         />
-        <Show show={!!children && !hideText}>
+        <Show show={showChildren}>
           <Typo size={"xs"} as={"span"} classNames={{ base: cn(slots.label(), classNames?.label) }}>
-            {children}
+            {children || <RenderWithProps Component={Translate} props={translate} />}
           </Typo>
         </Show>
         <RenderWithProps
