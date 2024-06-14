@@ -21,76 +21,72 @@ export default function TermsAndConditionsMainCard({
     <>
       <div className="hidden w-full bg-mosaic bg-cover pb-1.5 md:block" />
       <div className="flex flex-col gap-4 bg-card-background-base p-12 pb-5">
-        <div className="text-center font-belwe text-3xl">Summary of our Terms & Conditions</div>
+        <div className="text-center font-belwe text-3xl">Summary</div>
         <div className="text-center">
-          <p>To use OnlyDust, you must accept and comply with our Terms and Conditions.</p>
-          <p>Here’s a summary of our responsibilities and your commitments.</p>
+          <p>
+            This summary is intended to provide a simple and concise presentation of the content of these T&Cs. It has
+            no contractual value and does not form part of the T&Cs. To use our services, you must read the T&Cs below
+            and accept them in full. In the event of any contradiction between this summary and the T&Cs, the latter
+            shall prevail.
+          </p>
         </div>
       </div>
 
       <div className="flex flex-1 flex-col overflow-auto px-3">
         <div className="overflow-auto scrollbar-thin scrollbar-thumb-spaceBlue-600 scrollbar-thumb-rounded scrollbar-w-1.5">
           <div className="flex flex-col gap-4 px-9 pb-4">
-            <Section title="About us">
+            <Section title="What’s Only Dust?">
               <div className="pt-3 text-sm">
-                OnlyDust is a platform provided by Wagmi SAS (“Us”, “We”, “Our”) that allows the reward of open source
-                projects developed for blockchain ecosystems. Partners among the ecosystems give Us funds that we
-                distribute to developers (“You”, “Your”). The amount that is given to You is decided by members of the
-                open source community.
+                Only Dust is a platform provided by Wagmi SAS designed to optimize the financing of open source projects
+                using blockchain protocols. On behalf of foundations supporting the development of protocols, we
+                organize connections between open source projects and developers and organize the funding of the
+                latter&apos;s contributions.
               </div>
             </Section>
-            <Section title="Your commitments">
+            <Section title="How to access Only Dust? ">
               <div className="pt-3 text-sm">
-                <p className="mb-4">
-                  You can either be a contributor or a project leader. Contributors are developers and project leaders
-                  are those who manage contributors and projects.
+                <p>
+                  To use our platform, you must be of legal age (+ 16 years), not be a sanctioned person, and, of
+                  course, accept and observe the T&Cs in full. To obtain your rewards, you will need to comply with
+                  KYC/KYB requirements.
                 </p>
-                <div>
-                  In both cases, You must:
-                  <ul className="mb-4 ml-6 list-disc">
-                    <li>Properly use our platform and refrain from all fraudulent activity; </li>
-                    <li>
-                      Give Us valid information about your status, including whether you act for a company or not;
-                    </li>
-                    <li> Make proper developments for the project that you chose; and</li>
-                    <li>Comply with the laws and regulations in force in the country in which You are located.</li>
-                  </ul>
-                  If You are a project leader, You must manage the contributors and the projects developments. You must
-                  also decide the amount of funds that You want to allocate to each of the contributors that You manage.
-                  If You act for a company, you must comply with additional requirements so please read carefully Our
-                  Terms and Conditions.
-                </div>
               </div>
             </Section>
-            <Section title="Our responsibilities">
+            <Section title="What are your responsibilities? ">
               <div className="pt-3 text-sm">
-                We undertake to:
-                <ul className="mb-4 ml-6 list-disc">
-                  <li>Provide You with our platform and ensure its proper operation;</li>
-                  <li> List projects that You can participate in; and </li>
-                  <li>
-                    Transfer You the funds that have been attributed to You by the community, upon reporting of Your
-                    developments on the platform.
-                  </li>
-                </ul>
-                However, We are just an intermediary between You and the partners (the companies or foundations
-                providing the funds). Thus, by using Our platform, You understand that:
-                <ul className="mb-4 ml-6 list-disc">
-                  <li> We are not responsible for the interruption or breakdowns of Our platform; </li>
-                  <li>
-                    We are not Your employer. There is no employment contract between us and the rewards that we
-                    distribute to You must not be considered as a salary;
-                  </li>
-                  <li>
-                    We are not responsible for the amount of funds that is given to You. It is decided by the partners
-                    and the community; and
-                  </li>
-                  <li>
-                    We are not responsible if the partners decide not to give Us funds anymore. If the partner stops the
-                    funding of a project that You are a part of, we will inform You that the Terms and Conditions are
-                    terminated.
-                  </li>
-                </ul>
+                <p className="mb-4">You can use the platform as a project leader or as a contributor.</p>
+                <p className="mb-4">
+                  <u>If you are a contributor</u>, you will provide contributions from among those proposed on the
+                  platform by the projects. You undertake to execute these contributions with the highest level of
+                  diligence, in accordance with the specifications set out by the project. Rewards for this contribution
+                  will not be systematic and will depend in part on how well the contribution is executed. This
+                  evaluation will be carried out by the project leader and, except in cases of fraud, Only Dust will not
+                  be directly involved.
+                </p>
+                <p className="mb-4">
+                  <u>If you are a Project Leader</u>, the project must be open-source and useful for the community. You
+                  will be responsible for the project, and as such, you will have to define the nature of the
+                  contributions required, assess their quality and determine the reward amount to be paid to
+                  contributors. You can receive a grant depending on the merits of your project, which is purely
+                  discretionary (will be taken by OD or by a committee of independent experts)
+                </p>
+                <p className="mb-4">
+                  <u>In both cases</u>, you must: (i) properly use our platform and refrain from all fraudulent
+                  activity; (ii) give us valid information about your status, including whether you act for a company or
+                  not; (iii) comply with the laws and regulations in force in the country in which you are located.
+                </p>
+                <p className="mb-4">
+                  <strong>What are Our responsibilities?</strong> We undertake to provide you with our platform and
+                  ensure its proper operation and transfer to contributors the rewards under the conditions defined by
+                  the project leader.
+                </p>
+                <p className="mb-4">
+                  By using Our platform, You understand that we are not responsible for the interruption or breakdowns
+                  of our platform; we are not your employer and the rewards that we transfer to you must not be
+                  considered as a salary; we are not responsible for the amount of budget that is given to a project nor
+                  for the amount of rewards that is given to contributors; and we are not responsible if the foundations
+                  decide not to give us funds anymore.
+                </p>
               </div>
             </Section>
           </div>

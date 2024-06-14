@@ -467,7 +467,7 @@
         "link": "Create Telegram account"
       }
     },
-    "privateNotice": "These are private information, only visible to you",
+    "privateNotice": "This is private information, only visible to you",
     "backButton": "Back",
     "nextButton": "Next",
     "submitButton": "Submit"

@@ -133,7 +133,6 @@ describe("formatToData", () => {
           visibility: "private",
         },
       ],
-      technologies: { JavaScript: 1 },
       allocatedTimeToContribute: TProfileForm.ALLOCATED_TIME.NONE,
       isLookingForAJob: true,
       ...baseMockData,
@@ -151,7 +150,6 @@ describe("formatToData", () => {
       twitter: { contact: "", isPublic: false },
       discord: { contact: "user#1234", isPublic: false },
       linkedin: { contact: "", isPublic: false },
-      technologies: { JavaScript: 1 },
       weeklyAllocatedTime: TProfileForm.ALLOCATED_TIME.NONE,
       lookingForAJob: true,
     };
@@ -182,7 +180,6 @@ describe("formatToData", () => {
       twitter: { contact: "", isPublic: false },
       discord: { contact: "", isPublic: false },
       linkedin: { contact: "", isPublic: false },
-      technologies: {},
       weeklyAllocatedTime: TProfileForm.ALLOCATED_TIME.NONE,
       lookingForAJob: false,
     };
@@ -206,7 +203,6 @@ describe("formatToSchema", () => {
       twitter: { contact: "contact", isPublic: true },
       discord: { contact: "contact", isPublic: true },
       linkedin: { contact: "contact", isPublic: true },
-      technologies: { JavaScript: 1, TypeScript: 2 },
       weeklyAllocatedTime: TProfileForm.ALLOCATED_TIME.ONE_TO_THREE_DAYS,
       lookingForAJob: true,
     };
@@ -245,7 +241,6 @@ describe("formatToSchema", () => {
           visibility: "public",
         },
       ],
-      technologies: { JavaScript: 1, TypeScript: 2 },
       allocatedTimeToContribute: TProfileForm.ALLOCATED_TIME.ONE_TO_THREE_DAYS,
       isLookingForAJob: true,
     };
@@ -267,7 +262,6 @@ describe("formatToSchema", () => {
       twitter: { contact: "", isPublic: false },
       discord: { contact: "", isPublic: false },
       linkedin: { contact: "", isPublic: false },
-      technologies: {},
       weeklyAllocatedTime: TProfileForm.ALLOCATED_TIME.NONE,
       lookingForAJob: false,
     };
@@ -286,7 +280,6 @@ describe("formatToSchema", () => {
         { channel: "DISCORD", contact: "", visibility: "private" },
         { channel: "LINKEDIN", contact: "", visibility: "private" },
       ],
-      technologies: {},
       allocatedTimeToContribute: TProfileForm.ALLOCATED_TIME.NONE,
       isLookingForAJob: false,
     };

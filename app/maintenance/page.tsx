@@ -5,7 +5,7 @@ import { isInMaintenanceMode } from "utils/maintenance/maintenance";
 
 import { withMaintenanceEnabled } from "app/maintenance/features/guard/maintenance-guard";
 
-import MaintenanceAnimation from "src/assets/animations/Maintenance";
+import { IMAGES } from "src/assets/img";
 
 import { Button } from "components/ds/button/button";
 import { withClientOnly } from "components/layout/client-only/client-only";
@@ -18,7 +18,7 @@ function MaintenancePage() {
   return (
     <div className="flex min-h-[calc(90dvh)] flex-col items-center justify-center px-4 text-center">
       <div className="w-72 stroke-white">
-        <MaintenanceAnimation />
+        <img src={IMAGES.logo.original} alt={"logo"} />
       </div>
 
       <div className={"grid justify-items-center gap-8"}>

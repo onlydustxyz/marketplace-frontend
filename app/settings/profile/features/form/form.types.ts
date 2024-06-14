@@ -1,5 +1,4 @@
 import { components } from "src/__generated/api";
-import { LanguageMap } from "src/types";
 
 export namespace TProfileForm {
   interface ContactProps {
@@ -33,7 +32,6 @@ export namespace TProfileForm {
     twitter: ContactProps;
     discord: ContactProps;
     linkedin: ContactProps;
-    technologies: LanguageMap;
     weeklyAllocatedTime: components["schemas"]["PrivateUserProfileResponse"]["allocatedTimeToContribute"];
     lookingForAJob: boolean;
   }

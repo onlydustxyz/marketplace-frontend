@@ -55,7 +55,6 @@ export function formatToSchema({ oldData, newData }: TApplyForm.FormatToSchemaPr
     bio,
     website,
     contacts,
-    technologies,
     allocatedTimeToContribute,
     isLookingForAJob,
   } = oldData;
@@ -78,7 +77,6 @@ export function formatToSchema({ oldData, newData }: TApplyForm.FormatToSchemaPr
         prefixUrl: "https://t.me/",
       }),
     ],
-    technologies,
     allocatedTimeToContribute,
     isLookingForAJob,
   };

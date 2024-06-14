@@ -49,8 +49,6 @@ export const API_PATH = {
   USERS_SEARCH_BY_LOGIN: BASE_API_V1("users/search"),
   USER_CONTRIBUTIONS: (githubId: string) => BASE_API_V2(`users/${githubId}/contributions`),
 
-  /* ------------------------------ TECHNOLOGIES ------------------------------ */
-  TECHNOLOGIES: BASE_API_V1("technologies"),
   /* ------------------------------ ECOSYSTEM ------------------------------ */
   ECOSYSTEM: BASE_API_V1("ecosystems"),
 
