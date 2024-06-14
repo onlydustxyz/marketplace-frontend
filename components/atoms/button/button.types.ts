@@ -18,5 +18,4 @@ export type TButtonProps<C extends ElementType> = AsProps<C> &
     endIcon?: TIcon.Props;
     startContent?: ReactNode;
     endContent?: ReactNode;
-    isLoading?: boolean;
   };

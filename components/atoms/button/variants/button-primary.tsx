@@ -11,7 +11,7 @@ export function ButtonPrimary<C extends ElementType = "button">({ ...props }: TB
       {...props}
       classNames={{
         base: cn(
-          "border-1 border-container-stroke-separator bg-interactions-white-default data-[state=disabled]:bg-interactions-white-disabled",
+          "border-1 border-container-stroke-separator bg-interactions-white-default data-[disabled=true]:bg-interactions-white-disabled",
           "hover:bg-interactions-white-hover"
         ),
         loaderContainer: "bg-interactions-white-active",

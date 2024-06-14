@@ -19,19 +19,24 @@ export function ButtonCore<C extends ElementType = "button">({
   startContent,
   endContent,
   children,
-  isLoading,
   ...props
 }: TButtonProps<C>) {
   const Component = as || "button";
-  const { state = "default", size, display, ...htmlProps } = props;
+  const { isLoading, isDisabled, size, display, ...htmlProps } = props;
   const slots = ButtonCoreVariants({
-    state: isLoading ? "loading" : state,
+    isLoading,
+    isDisabled,
     display: isLoading ? "loader" : display,
     size,
   });
 
   return (
-    <Component {...htmlProps} data-state={state} className={cn(slots.base(), classNames?.base)}>
+    <Component
+      {...htmlProps}
+      data-loading={isLoading}
+      data-disabled={isDisabled}
+      className={cn(slots.base(), classNames?.base)}
+    >
       <div className={cn(slots.content(), classNames?.content)}>
         {startContent}
         <RenderWithProps

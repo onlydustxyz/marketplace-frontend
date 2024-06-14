@@ -29,12 +29,13 @@ export const ButtonCoreVariants = tv({
         content: "opacity-0",
       },
     },
-    state: {
-      default: "",
-      loading: {
+    isLoading: {
+      true: {
         base: "pointer-events-none cursor-not-allowed",
       },
-      disabled: {
+    },
+    isDisabled: {
+      true: {
         base: "pointer-events-none cursor-not-allowed",
         startIcon: "text-text-3",
         endIcon: "text-text-3",
