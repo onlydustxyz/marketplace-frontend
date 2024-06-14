@@ -10,8 +10,8 @@ import { TAvatarProps } from "./avatar.types";
 import { AvatarCoreVariants } from "./avatar.variants";
 
 export function AvatarCore({ classNames, src, ...props }: TAvatarProps) {
-  const { size, shape, background, ...nextUiProps } = props;
-  const slots = AvatarCoreVariants({ size, shape, background });
+  const { size, shape, bg, ...nextUiProps } = props;
+  const slots = AvatarCoreVariants({ size, shape, bg });
   const imageSize = getAvatarImageSize(props.size);
   const imageSrc = getAvatarSrc(imageSize, src);
 

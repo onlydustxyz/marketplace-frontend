@@ -1,5 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 
+import { AvatarLoading } from "components/atoms/avatar/avatar.loading";
+
 import { AvatarCore } from "./avatar.core";
 import { TAvatarProps } from "./avatar.types";
 import { Avatar } from "./variants/avatar-default";
@@ -7,8 +9,11 @@ import { Avatar } from "./variants/avatar-default";
 type Story = StoryObj<typeof AvatarCore>;
 
 const defaultProps: TAvatarProps = {
-  name: "AB",
+  name: "OD",
 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const sizes = ["xxl", "xl", "l", "ml", "m", "s", "xs"] as any[];
 
 const meta: Meta<typeof AvatarCore> = {
   component: AvatarCore,
@@ -32,22 +37,90 @@ export const Default: Story = {
     return (
       <div className="flex w-full items-center gap-2">
         <Avatar {...defaultProps} {...args} />
-        <Avatar {...defaultProps} {...args} src={"https://avatars.githubusercontent.com/u/17259618?v=4"} />
-        <Avatar {...defaultProps} {...args} src={"https://images.unsplash.com/broken"} />
-        <Avatar {...defaultProps} {...args} src={"https://images.unsplash.com/broken"} name={undefined} />
       </div>
     );
   },
 };
 
-export const Core: Story = {
-  render: args => {
+export const Round: Story = {
+  parameters: {
+    docs: {
+      source: { code: "<Avatar />" },
+    },
+  },
+  render: () => {
     return (
-      <div className="flex w-full items-center gap-2">
-        <AvatarCore {...defaultProps} {...args} />
+      <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-col items-center gap-2">
+          {sizes.map(s => (
+            <Avatar key={s} {...defaultProps} size={s} />
+          ))}
+        </div>
+        <div className="flex flex-col items-center gap-2">
+          {sizes.map(s => (
+            <Avatar key={s} {...defaultProps} size={s} bg="brand" />
+          ))}
+        </div>
+        <div className="flex flex-col items-center gap-2">
+          {sizes.map(s => (
+            <Avatar key={s} {...defaultProps} size={s} name={undefined} src={"a"} />
+          ))}
+        </div>
       </div>
     );
   },
 };
 
+export const Square: Story = {
+  parameters: {
+    docs: {
+      source: { code: "<Avatar shape='square' />" },
+    },
+  },
+  render: () => {
+    return (
+      <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-col items-center gap-2">
+          {sizes.map(s => (
+            <Avatar key={s} {...defaultProps} shape="square" size={s} />
+          ))}
+        </div>
+        <div className="flex flex-col items-center gap-2">
+          {sizes.map(s => (
+            <Avatar key={s} {...defaultProps} shape="square" size={s} bg="brand" />
+          ))}
+        </div>
+        <div className="flex flex-col items-center gap-2">
+          {sizes.map(s => (
+            <Avatar key={s} {...defaultProps} shape="square" size={s} name={undefined} src={"a"} />
+          ))}
+        </div>
+      </div>
+    );
+  },
+};
+
+export const Skeleton: Story = {
+  parameters: {
+    docs: {
+      source: { code: "<AvatarLoading  />" },
+    },
+  },
+  render: () => {
+    return (
+      <div className="flex w-full items-start gap-5">
+        <div className="flex flex-col items-center gap-2">
+          {sizes.map(s => (
+            <AvatarLoading key={s} size={s} />
+          ))}
+        </div>
+        <div className="flex flex-col items-center gap-2">
+          {sizes.map(s => (
+            <AvatarLoading key={s} size={s} shape={"square"} />
+          ))}
+        </div>
+      </div>
+    );
+  },
+};
 export default meta;

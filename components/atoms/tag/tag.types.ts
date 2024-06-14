@@ -1,8 +1,8 @@
 import { ComponentProps, ComponentPropsWithoutRef, ElementType, PropsWithChildren, ReactNode } from "react";
 import { VariantProps } from "tailwind-variants";
 
+import { Avatar } from "components/atoms/avatar";
 import { Typo } from "components/atoms/typo/variants/typo-default";
-import { TAvatar } from "components/ds/avatar/avatar.types";
 import { Icon } from "components/layout/icon/icon";
 import { TIcon } from "components/layout/icon/icon.types";
 import { TTranslate } from "components/layout/translate/translate.types";
@@ -29,5 +29,5 @@ export interface TTagIconProps<C extends ElementType> extends TTagProps<C> {
 
 /** TODO refactor this with new avatar */
 export interface TTagAvatarProps<C extends ElementType> extends TTagProps<C> {
-  avatar: TAvatar.Props;
+  avatar: ComponentProps<typeof Avatar>;
 }

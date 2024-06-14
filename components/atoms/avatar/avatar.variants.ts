@@ -5,7 +5,7 @@ export const AvatarCoreVariants = tv({
     base: "group relative box-content flex flex-shrink-0 items-center justify-center overflow-hidden border-1 border-container-stroke-separator",
     img: "h-full w-full object-cover object-center",
     fallback: "h-full w-full",
-    name: "",
+    name: "font-walsheim text-xs text-text-1",
     icon: "",
   },
   variants: {
@@ -40,15 +40,71 @@ export const AvatarCoreVariants = tv({
         base: "rounded-md",
       },
     },
-    background: {
+    bg: {
       light: {
         base: "bg-container-4",
       },
       brand: {
         // for later
-        base: "bg-container-4",
+        base: "bg-container-3",
       },
     },
   },
-  defaultVariants: {},
+  compoundVariants: [
+    // HIDE TEXT VARIANTS
+    {
+      size: "xxl",
+      shape: "square",
+      class: {
+        base: "rounded-xl",
+      },
+    },
+    {
+      size: "xl",
+      shape: "square",
+      class: {
+        base: "rounded-lg",
+      },
+    },
+    {
+      size: "l",
+      shape: "square",
+      class: {
+        base: "rounded-lg",
+      },
+    },
+    {
+      size: "ml",
+      shape: "square",
+      class: {
+        base: "rounded-md",
+      },
+    },
+    {
+      size: "m",
+      shape: "square",
+      class: {
+        base: "rounded-md",
+      },
+    },
+    {
+      size: "s",
+      shape: "square",
+      class: {
+        base: "rounded",
+      },
+    },
+    {
+      size: "xs",
+      shape: "square",
+      class: {
+        base: "rounded",
+      },
+    },
+  ],
+  defaultVariants: {
+    size: "m",
+    shape: "round",
+    bg: "light",
+  },
 });
