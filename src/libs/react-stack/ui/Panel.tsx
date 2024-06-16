@@ -6,6 +6,8 @@ import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import CloseLine from "src/icons/CloseLine";
 import { cn } from "src/utils/cn";
 
+import { ButtonSecondaryLight } from "components/atoms/button/variants/button-secondary-light";
+
 import { usePlacement } from "../hooks/usePlacement";
 import { Options } from "../types/Stack";
 import { BackClick } from "./BackClick";
@@ -111,6 +113,7 @@ export default function SidePanel({
               className={cn("relative h-full overflow-y-auto", {
                 "pt-6": !option?.noPadding,
                 "bg-white": option?.theme === "light",
+                "bg-container-1": option?.theme === "new",
               })}
             >
               {topLeftComponent ? (
@@ -119,15 +122,26 @@ export default function SidePanel({
               {hasCloseButton && (
                 <div className="absolute right-6 top-6 z-20 flex flex-row gap-2">
                   {action}
-                  <Button
-                    size={ButtonSize.Sm}
-                    type={option?.theme === "light" ? ButtonType.SecondaryDark : ButtonType.Secondary}
-                    iconOnly
-                    onClick={onClose}
-                    data-testid="close-add-work-item-panel-btn"
-                  >
-                    <CloseLine />
-                  </Button>
+                  {option?.theme === "new" ? (
+                    <ButtonSecondaryLight
+                      size="l"
+                      hideText
+                      onClick={onClose}
+                      startIcon={{ remixName: "ri-close-line" }}
+                    >
+                      <CloseLine />
+                    </ButtonSecondaryLight>
+                  ) : (
+                    <Button
+                      size={ButtonSize.Sm}
+                      type={option?.theme === "light" ? ButtonType.SecondaryDark : ButtonType.Secondary}
+                      iconOnly
+                      onClick={onClose}
+                      data-testid="close-add-work-item-panel-btn"
+                    >
+                      <CloseLine />
+                    </Button>
+                  )}
                 </div>
               )}
               {children}
