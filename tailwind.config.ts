@@ -58,6 +58,11 @@ const config: Config = withTV({
         "interactions-black-hover": "var(--interactions-black-hover)",
         "interactions-black-active": "var(--interactions-black-active)",
         "interactions-black-disabled": "var(--interactions-black-disabled)",
+        /**BRAND */
+        brand1: "var(--_Brand1)",
+        brand2: "var(--_Brand2)",
+        brand3: "var(--_Brand3)",
+        brand4: "var(--_Brand4)",
       },
     },
   },
