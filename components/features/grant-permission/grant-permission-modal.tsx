@@ -1,5 +1,6 @@
 import Image from "next/image";
 import githubGrantPermissionImage from "public/images/banners/github-grant-permission-banner.png";
+import { useLocalStorage } from "react-use";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
@@ -10,7 +11,9 @@ import { Modal } from "components/molecules/modal";
 
 import { TGrantPermissionModal } from "./grant-permission-modal.types";
 
-export function GrantPermissionModal({ isOpen, onClose }: TGrantPermissionModal.Props) {
+export function GrantPermission({ isOpen, onClose }: TGrantPermissionModal.Props) {
+  const [scopeStorage, setScopesStorage] = useLocalStorage("auth0-scope");
+  function handleGrantPermission() {}
   return (
     <Modal
       titleProps={{
@@ -24,13 +27,7 @@ export function GrantPermissionModal({ isOpen, onClose }: TGrantPermissionModal.
       footerEndContent={
         <div className="flex gap-4">
           <Button variant="secondary-light" size="l">
-            <Typo
-              variant="default"
-              size="xs"
-              translate={{
-                token: "v2.features.githubGrantPermissions.modal.footerButtons.moreInfo",
-              }}
-            />
+            <Translate token="v2.features.githubGrantPermissions.modal.footerButtons.moreInfo" />
           </Button>
           <Button variant="primary" startContent={<Icon remixName="ri-github-line" />} size="l">
             <Typo

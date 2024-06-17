@@ -91,7 +91,7 @@ export function IssueCard({ issue }: TIssueCard.Props) {
           )}
         </Flex>
 
-        {!isMd ? <ApplyButton url={issue.htmlUrl} /> : null}
+        {!isMd ? <ApplyButton hasApplied={hasApplied} canApply={canApply} /> : null}
 
         <OverviewAccordion body={issue.body} />
       </Flex>

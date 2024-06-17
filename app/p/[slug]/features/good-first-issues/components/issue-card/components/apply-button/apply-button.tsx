@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 
 import { Button } from "components/ds/button/button";
 import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
-import { GrantPermissionModal } from "components/features/grant-permission-modal/grant-permission-modal";
+import { GrantPermission } from "components/features/grant-permission/grant-permission-modal";
 import { Translate } from "components/layout/translate/translate";
 
 import { TApplyButton } from "./apply-button.types";
@@ -21,10 +21,12 @@ export function ApplyButton({ hasApplied, canApply }: TApplyButton.Props) {
       // Open github grant permissions modal
       setIsOpen(true);
     }
+
+    //  Open apply form drawer
   }
 
   function handleConsultApplication() {
-    // Open application consult drawer
+    // Open apply consult drawer
   }
 
   const renderButton = useMemo(() => {
@@ -46,7 +48,7 @@ export function ApplyButton({ hasApplied, canApply }: TApplyButton.Props) {
   return (
     <>
       {renderButton}
-      <GrantPermissionModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <GrantPermission isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </>
   );
 }
