@@ -5,8 +5,21 @@ import { cn } from "src/utils/cn";
 import { TTextareaProps } from "./textarea.types";
 import { TextareaCoreVariants } from "./textarea.variants";
 
-export function TextareaCore({ classNames, ...props }: TTextareaProps) {
-  const slots = TextareaCoreVariants({ isDisabled: props.isDisabled || props.disabled, isInvalid: props.isInvalid });
+export function TextareaCore({
+  classNames,
+  onChange,
+  value,
+  multiple,
+  disabled,
+  isError,
+  startContent,
+  endContent,
+}: TTextareaProps) {
+  const slots = TextareaCoreVariants({ isDisabled: disabled, isInvalid: isError });
+
+  function handleChange(value: string) {
+    onChange?.(value);
+  }
 
   return (
     <NextTextarea
@@ -24,8 +37,13 @@ export function TextareaCore({ classNames, ...props }: TTextareaProps) {
       }}
       variant="bordered"
       labelPlacement="outside-left"
-      {...props}
-      isDisabled={props.isDisabled || props.disabled}
+      isDisabled={disabled}
+      disabled={disabled}
+      onValueChange={handleChange}
+      value={value}
+      multiple={multiple}
+      startContent={startContent}
+      endContent={endContent}
     />
   );
 }

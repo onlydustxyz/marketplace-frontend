@@ -44,13 +44,13 @@ export const Default: Story = {
 export const Disabled: Story = {
   parameters: {
     docs: {
-      source: { code: "<Textarea isDisabled={true} />" },
+      source: { code: "<Textarea disabled={true} />" },
     },
   },
   render: () => {
     return (
       <div className="flex w-[348px] items-center gap-2">
-        <Textarea {...defaultProps} isDisabled={true} />
+        <Textarea {...defaultProps} disabled={true} />
       </div>
     );
   },
@@ -59,13 +59,13 @@ export const Disabled: Story = {
 export const Invalid: Story = {
   parameters: {
     docs: {
-      source: { code: "<Textarea isInvalid={true} />" },
+      source: { code: "<Textarea isError={true} />" },
     },
   },
   render: () => {
     return (
       <div className="flex w-[348px] items-center gap-2">
-        <Textarea {...defaultProps} isInvalid={true} />
+        <Textarea {...defaultProps} isError={true} />
       </div>
     );
   },
