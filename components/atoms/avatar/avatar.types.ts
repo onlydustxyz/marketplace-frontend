@@ -1,12 +1,15 @@
-import type { AvatarProps } from "@nextui-org/react";
+import { ReactNode } from "react";
 import { VariantProps } from "tailwind-variants";
 
 import { AvatarCoreVariants } from "./avatar.variants";
 
 type Variants = VariantProps<typeof AvatarCoreVariants>;
 type classNames = Partial<typeof AvatarCoreVariants["slots"]>;
-interface NextUiProps extends Omit<AvatarProps, "size"> {}
 
-export interface TAvatarProps extends NextUiProps, Variants {
+export interface TAvatarProps extends Variants {
   classNames?: classNames;
+  src?: string;
+  showFallback?: boolean;
+  name?: string;
+  fallback?: ReactNode;
 }

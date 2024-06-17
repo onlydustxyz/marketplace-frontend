@@ -9,14 +9,14 @@ import { getAvatarImageSize, getAvatarSrc } from "components/atoms/avatar/avatar
 import { TAvatarProps } from "./avatar.types";
 import { AvatarCoreVariants } from "./avatar.variants";
 
-export function AvatarCore({ classNames, src, ...props }: TAvatarProps) {
+export function AvatarCore({ classNames, src, name, showFallback = true, fallback, ...props }: TAvatarProps) {
   const { size, shape, bg, ...nextUiProps } = props;
   const slots = AvatarCoreVariants({ size, shape, bg });
   const imageSize = getAvatarImageSize(props.size);
   const imageSrc = getAvatarSrc(imageSize, src);
 
-  const fallback = (() => {
-    if (props.name) {
+  const defaultFallback = (() => {
+    if (name) {
       return undefined;
     }
 
@@ -34,8 +34,9 @@ export function AvatarCore({ classNames, src, ...props }: TAvatarProps) {
 
   return (
     <NextAvatar
-      showFallback={true}
-      fallback={fallback}
+      name={name}
+      showFallback={showFallback}
+      fallback={fallback || defaultFallback}
       classNames={{
         base: cn(slots.base(), classNames?.base),
         fallback: cn(slots.fallback(), classNames?.fallback),
