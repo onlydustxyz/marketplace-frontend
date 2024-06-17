@@ -1,4 +1,4 @@
-import { ModalProps } from "@nextui-org/modal";
+import { ModalProps } from "@nextui-org/react";
 import { ComponentProps, PropsWithChildren, ReactNode } from "react";
 import { VariantProps } from "tailwind-variants";
 

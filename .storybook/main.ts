@@ -23,7 +23,8 @@ const config: StorybookConfig = {
         esModuleInterop: false,
       },
       // Filter out third-party props from node_modules except @mui packages.
-      propFilter: prop => (prop.parent ? !/node_modules\/(?!tailwind-variants)/.test(prop.parent.fileName) : true),
+      propFilter: prop =>
+        prop.parent ? !/node_modules\/(?!tailwind-variants|@nextui-org|@react-types)/.test(prop.parent.fileName) : true,
     },
   },
 };
