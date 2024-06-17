@@ -46,9 +46,9 @@ export const White: Story = {
       <div className="flex w-full items-center gap-2">
         <Checkbox {...defaultProps} />
         <Checkbox {...defaultProps} data-hover="true" />
-        <Checkbox {...defaultProps} isSelected />
-        <Checkbox {...defaultProps} isIndeterminate />
-        <Checkbox {...defaultProps} isDisabled />
+        <Checkbox {...defaultProps} value={true} />
+        <Checkbox {...defaultProps} mixed />
+        <Checkbox {...defaultProps} disabled />
       </div>
     );
   },
@@ -69,9 +69,9 @@ export const Black: Story = {
       <div className="flex w-full items-center gap-2">
         <Checkbox {...defaultProps} color={"black"} />
         <Checkbox {...defaultProps} color={"black"} data-hover="true" />
-        <Checkbox {...defaultProps} color={"black"} isSelected />
-        <Checkbox {...defaultProps} color={"black"} isIndeterminate />
-        <Checkbox {...defaultProps} color={"black"} isDisabled />
+        <Checkbox {...defaultProps} color={"black"} value={true} />
+        <Checkbox {...defaultProps} color={"black"} mixed />
+        <Checkbox {...defaultProps} color={"black"} disabled />
       </div>
     );
   },

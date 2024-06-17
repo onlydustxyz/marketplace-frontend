@@ -5,13 +5,17 @@ import { cn } from "src/utils/cn";
 import { TCheckboxProps } from "./checkbox.types";
 import { CheckboxCoreVariants } from "./checkbox.variants";
 
-export function CheckboxCore({ classNames, ...props }: TCheckboxProps) {
-  const { color, ...nextUiProps } = props;
+export function CheckboxCore({ classNames, onChange, value, ...props }: TCheckboxProps) {
+  const { color, disabled, mixed } = props;
   const slots = CheckboxCoreVariants({
     color,
-    isDisabled: nextUiProps.isDisabled || nextUiProps.disabled,
-    isIndeterminate: nextUiProps.isIndeterminate,
+    disabled,
+    mixed,
   });
+
+  function handleChange(value: boolean) {
+    onChange?.(value);
+  }
 
   return (
     <NextUiCheckbox
@@ -21,7 +25,11 @@ export function CheckboxCore({ classNames, ...props }: TCheckboxProps) {
         wrapper: cn(slots.wrapper(), classNames?.wrapper),
         icon: cn(slots.icon(), classNames?.icon),
       }}
-      {...nextUiProps}
+      isDisabled={disabled}
+      disabled={disabled}
+      isIndeterminate={mixed}
+      isSelected={value}
+      onValueChange={handleChange}
     />
   );
 }

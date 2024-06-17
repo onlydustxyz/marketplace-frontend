@@ -19,23 +19,23 @@ export const CheckboxCoreVariants = tv({
         icon: "text-text-1",
       },
     },
-    isDisabled: {
+    disabled: {
       true: "",
     },
-    isIndeterminate: {
+    mixed: {
       true: "",
     },
   },
   compoundVariants: [
     {
-      isDisabled: true,
+      disabled: true,
       color: "white",
       class: {
         wrapper: "group-data-[hover=true]:before:transparent before:border-interactions-white-disabled",
       },
     },
     {
-      isIndeterminate: true,
+      mixed: true,
       color: "white",
       class: {
         wrapper: "before:border-interactions-white-active after:bg-transparent",
@@ -43,14 +43,14 @@ export const CheckboxCoreVariants = tv({
       },
     },
     {
-      isDisabled: true,
+      disabled: true,
       color: "black",
       class: {
         wrapper: "group-data-[hover=true]:before:transparent before:border-interactions-black-disabled",
       },
     },
     {
-      isIndeterminate: true,
+      mixed: true,
       color: "black",
       class: {
         wrapper: "before:border-interactions-black-active after:bg-transparent",
