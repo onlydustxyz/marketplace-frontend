@@ -14,13 +14,13 @@ export const InputCoreVariants = tv({
     description: "",
   },
   variants: {
-    isDisabled: {
+    disabled: {
       true: {
         base: "!opacity-100",
         inputWrapper: "bg-interactions-white-disabled",
       },
     },
-    isInvalid: {
+    isError: {
       true: {
         inputWrapper: "!border-interactions-error-active !text-interactions-error-active",
         input: "!text-interactions-error-active",

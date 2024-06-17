@@ -5,8 +5,22 @@ import { cn } from "src/utils/cn";
 import { TInputProps } from "./input.types";
 import { InputCoreVariants } from "./input.variants";
 
-export function InputCore({ classNames, ...props }: TInputProps) {
-  const slots = InputCoreVariants({ isDisabled: props.isDisabled || props.disabled, isInvalid: props.isInvalid });
+export function InputCore({
+  classNames,
+  isError,
+  disabled,
+  value,
+  onChange,
+  onValueChange,
+  startContent,
+  endContent,
+  label,
+}: TInputProps) {
+  const slots = InputCoreVariants({ disabled, isError });
+
+  function handleChange(value: string) {
+    onValueChange?.(value);
+  }
 
   return (
     <NextInput
@@ -21,9 +35,16 @@ export function InputCore({ classNames, ...props }: TInputProps) {
         helperWrapper: cn(slots.helperWrapper(), classNames?.helperWrapper),
         description: cn(slots.description(), classNames?.description),
       }}
+      label={label}
       variant="bordered"
       labelPlacement="outside-left"
-      {...props}
+      startContent={startContent}
+      endContent={endContent}
+      isDisabled={disabled}
+      disabled={disabled}
+      onValueChange={handleChange}
+      onChange={onChange}
+      value={value}
     />
   );
 }

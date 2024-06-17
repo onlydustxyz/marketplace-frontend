@@ -1,11 +1,19 @@
-import { InputProps } from "@nextui-org/react";
+import { ChangeEvent, ComponentPropsWithoutRef, ReactNode } from "react";
 import { VariantProps } from "tailwind-variants";
 
 import { InputCoreVariants } from "./input.variants";
 
 type Variants = VariantProps<typeof InputCoreVariants>;
 type classNames = Partial<typeof InputCoreVariants["slots"]>;
-interface NextUiProps extends Omit<InputProps, "color" | "radius" | "variant"> {}
-export interface TInputProps extends NextUiProps, Variants {
+type htmlInputProps = ComponentPropsWithoutRef<"input">;
+export interface TInputProps extends htmlInputProps, Variants {
   classNames?: classNames;
+  value: string;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  onValueChange?: (value: string) => void;
+  isError?: boolean;
+  startContent?: ReactNode;
+  endContent?: ReactNode;
+  disabled?: boolean;
+  label?: ReactNode;
 }

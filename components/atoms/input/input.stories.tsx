@@ -59,13 +59,13 @@ export const Label: Story = {
 export const Disabled: Story = {
   parameters: {
     docs: {
-      source: { code: "<Input isDisabled={true} />" },
+      source: { code: "<Input disabled={true} />" },
     },
   },
   render: () => {
     return (
       <div className="flex w-[348px] items-center gap-2">
-        <Input {...defaultProps} isDisabled={true} />
+        <Input {...defaultProps} disabled={true} />
       </div>
     );
   },
@@ -74,13 +74,13 @@ export const Disabled: Story = {
 export const Invalid: Story = {
   parameters: {
     docs: {
-      source: { code: "<Input isInvalid={true} />" },
+      source: { code: "<Input isError={true} />" },
     },
   },
   render: () => {
     return (
       <div className="flex w-[348px] items-center gap-2">
-        <Input {...defaultProps} isInvalid={true} />
+        <Input {...defaultProps} isError={true} />
       </div>
     );
   },
