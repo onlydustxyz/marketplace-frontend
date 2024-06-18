@@ -2,7 +2,7 @@ import { ElementType } from "react";
 
 import { cn } from "src/utils/cn";
 
-import { ButtonSecondaryLight } from "components/atoms/button/variants/button-secondary-light";
+import { Button } from "components/atoms/button/variants/button-default";
 
 import { TPaginationProps } from "./pagination.types";
 import { PaginationCoreVariants } from "./pagination.variants";
@@ -17,7 +17,7 @@ export function PaginationCore<C extends ElementType = "div">({
   onNext,
   onPrev,
   infinite,
-  buttonProps,
+  buttonProps = {},
   ...props
 }: TPaginationProps<C>) {
   const Component = as || "div";
@@ -26,24 +26,26 @@ export function PaginationCore<C extends ElementType = "div">({
   const label = infinite ? `${current}` : `${current} / ${total}`;
   return (
     <Component {...htmlProps} className={cn(slots.base(), classNames?.base)}>
-      <ButtonSecondaryLight
+      <Button
         size={"l"}
         onClick={onPrev}
         isDisabled={disablePrev}
         hideText
         startIcon={{ remixName: "ri-arrow-left-s-line" }}
-        {...(buttonProps || {})}
+        variant="secondary-light"
+        {...buttonProps}
       />
-      <ButtonSecondaryLight size={"l"} {...(buttonProps || {})} as={"div"}>
+      <Button size={"l"} variant="secondary-light" {...buttonProps} as={"div"}>
         {label}
-      </ButtonSecondaryLight>
-      <ButtonSecondaryLight
+      </Button>
+      <Button
         onClick={onNext}
         size={"l"}
+        variant="secondary-light"
         isDisabled={disableNext}
         hideText
         startIcon={{ remixName: "ri-arrow-right-s-line" }}
-        {...(buttonProps || {})}
+        {...buttonProps}
       />
     </Component>
   );

@@ -1,7 +1,7 @@
-import { ElementType } from "react";
+import { ComponentProps, ElementType } from "react";
 import { VariantProps } from "tailwind-variants";
 
-import { TButtonProps } from "components/atoms/button/button.types";
+import { Button } from "components/atoms/button/variants/button-default";
 
 import { PaginationCoreVariants } from "./pagination.variants";
 
@@ -18,5 +18,5 @@ export interface TPaginationProps<C extends ElementType> extends Variants {
   infinite?: boolean;
   onNext?(): void;
   onPrev?(): void;
-  buttonProps?: Omit<TButtonProps<"button" | "div">, "htmlProps">;
+  buttonProps?: Omit<ComponentProps<typeof Button>, "htmlProps">;
 }
