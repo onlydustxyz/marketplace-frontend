@@ -12,16 +12,16 @@ export const BadgeCoreVariants = tv({
         base: "border border-container-stroke-separator bg-container-stroke-separator",
       },
       brand1: {
-        base: "border border-brand1 bg-brand1 text-text-1",
+        base: "border border-brand-1 bg-brand-1 text-text-1",
       },
       brand2: {
-        base: "border border-brand2 bg-brand2 text-text-1",
+        base: "border border-brand-2 bg-brand-2 text-text-1",
       },
       brand3: {
-        base: "border border-brand3 bg-brand3 text-text-1",
+        base: "border border-brand-3 bg-brand-3 text-text-1",
       },
       brand4: {
-        base: "border border-brand4 bg-brand4 text-text-1",
+        base: "border border-brand-4 bg-brand-4 text-text-1",
       },
     },
     size: {
