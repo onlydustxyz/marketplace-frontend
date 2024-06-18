@@ -7,11 +7,11 @@ import { TLinkProps } from "./link.types";
 import { LinkCoreVariants } from "./link.variants";
 
 export function LinkCore({ classNames, children, ...props }: TLinkProps) {
-  const { color } = props;
+  const { color, ...linkProps } = props;
   const slots = LinkCoreVariants({ color });
 
   return (
-    <BaseLink className={cn(slots.base(), classNames?.base)} {...props}>
+    <BaseLink className={cn(slots.base(), classNames?.base)} {...linkProps}>
       {({ isExternal }) => (
         <>
           {children}
