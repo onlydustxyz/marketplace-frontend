@@ -17,13 +17,13 @@ export function PaginationCore<C extends ElementType = "div">({
   onNext,
   onPrev,
   infinite,
+  buttonProps,
   ...props
 }: TPaginationProps<C>) {
   const Component = as || "div";
   const { ...htmlProps } = props;
   const slots = PaginationCoreVariants();
   const label = infinite ? `${current}` : `${current} / ${total}`;
-
   return (
     <Component {...htmlProps} className={cn(slots.base(), classNames?.base)}>
       <ButtonSecondaryLight
@@ -32,8 +32,9 @@ export function PaginationCore<C extends ElementType = "div">({
         isDisabled={disablePrev}
         hideText
         startIcon={{ remixName: "ri-arrow-left-s-line" }}
+        {...(buttonProps || {})}
       />
-      <ButtonSecondaryLight size={"l"} as={"div"}>
+      <ButtonSecondaryLight size={"l"} {...(buttonProps || {})} as={"div"}>
         {label}
       </ButtonSecondaryLight>
       <ButtonSecondaryLight
@@ -42,6 +43,7 @@ export function PaginationCore<C extends ElementType = "div">({
         isDisabled={disableNext}
         hideText
         startIcon={{ remixName: "ri-arrow-right-s-line" }}
+        {...(buttonProps || {})}
       />
     </Component>
   );
