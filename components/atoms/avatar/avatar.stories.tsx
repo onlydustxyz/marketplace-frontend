@@ -12,8 +12,7 @@ const defaultProps: TAvatarProps = {
   name: "OD",
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const sizes = ["xxl", "xl", "l", "ml", "m", "s", "xs"] as any[];
+const sizes = ["xxl", "xl", "l", "ml", "m", "s", "xs"] as const;
 
 const meta: Meta<typeof AvatarCore> = {
   component: AvatarCore,
@@ -58,7 +57,7 @@ export const Round: Story = {
         </div>
         <div className="flex flex-col items-center gap-2">
           {sizes.map(s => (
-            <Avatar key={s} {...defaultProps} size={s} bg="brand" />
+            <Avatar key={s} {...defaultProps} size={s} containerBackground="brand" />
           ))}
         </div>
         <div className="flex flex-col items-center gap-2">
@@ -87,7 +86,7 @@ export const Square: Story = {
         </div>
         <div className="flex flex-col items-center gap-2">
           {sizes.map(s => (
-            <Avatar key={s} {...defaultProps} shape="square" size={s} bg="brand" />
+            <Avatar key={s} {...defaultProps} shape="square" size={s} containerBackground="brand" />
           ))}
         </div>
         <div className="flex flex-col items-center gap-2">

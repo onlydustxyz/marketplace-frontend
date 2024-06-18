@@ -40,7 +40,7 @@ export const AvatarCoreVariants = tv({
         base: "rounded-md",
       },
     },
-    bg: {
+    containerBackground: {
       light: {
         base: "bg-container-4",
       },
@@ -105,6 +105,6 @@ export const AvatarCoreVariants = tv({
   defaultVariants: {
     size: "m",
     shape: "round",
-    bg: "light",
+    containerBackground: "light",
   },
 });

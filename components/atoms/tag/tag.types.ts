@@ -27,7 +27,6 @@ export interface TTagIconProps<C extends ElementType> extends TTagProps<C> {
   icon: TIcon.Props;
 }
 
-/** TODO refactor this with new avatar */
 export interface TTagAvatarProps<C extends ElementType> extends TTagProps<C> {
   avatar: ComponentProps<typeof Avatar>;
 }
