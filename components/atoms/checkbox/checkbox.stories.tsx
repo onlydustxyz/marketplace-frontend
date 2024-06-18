@@ -48,7 +48,7 @@ export const White: Story = {
         <Checkbox {...defaultProps} data-hover="true" />
         <Checkbox {...defaultProps} value={true} />
         <Checkbox {...defaultProps} mixed />
-        <Checkbox {...defaultProps} disabled />
+        <Checkbox {...defaultProps} isDisabled />
       </div>
     );
   },
@@ -71,7 +71,7 @@ export const Black: Story = {
         <Checkbox {...defaultProps} color={"black"} data-hover="true" />
         <Checkbox {...defaultProps} color={"black"} value={true} />
         <Checkbox {...defaultProps} color={"black"} mixed />
-        <Checkbox {...defaultProps} color={"black"} disabled />
+        <Checkbox {...defaultProps} color={"black"} isDisabled />
       </div>
     );
   },

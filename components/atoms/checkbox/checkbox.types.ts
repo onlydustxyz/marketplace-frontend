@@ -8,6 +8,6 @@ export interface TCheckboxProps extends Variants {
   classNames?: classNames;
   onChange?: (checked: boolean) => void;
   value?: boolean;
-  disabled?: boolean;
+  isDisabled?: boolean;
   mixed?: boolean;
 }

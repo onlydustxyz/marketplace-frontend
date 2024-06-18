@@ -6,10 +6,10 @@ import { TCheckboxProps } from "./checkbox.types";
 import { CheckboxCoreVariants } from "./checkbox.variants";
 
 export function CheckboxCore({ classNames, onChange, value, ...props }: TCheckboxProps) {
-  const { color, disabled, mixed } = props;
+  const { color, isDisabled, mixed } = props;
   const slots = CheckboxCoreVariants({
     color,
-    disabled,
+    isDisabled,
     mixed,
   });
 
@@ -25,8 +25,8 @@ export function CheckboxCore({ classNames, onChange, value, ...props }: TCheckbo
         wrapper: cn(slots.wrapper(), classNames?.wrapper),
         icon: cn(slots.icon(), classNames?.icon),
       }}
-      isDisabled={disabled}
-      disabled={disabled}
+      isDisabled={isDisabled}
+      disabled={isDisabled}
       isIndeterminate={mixed}
       isSelected={value}
       onValueChange={handleChange}
