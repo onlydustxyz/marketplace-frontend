@@ -59,16 +59,16 @@ export const Size: Story = {
 export const FitContent: Story = {
   parameters: {
     docs: {
-      source: { code: "<Badge isFitContent />" },
+      source: { code: "<Badge fitContent />" },
     },
   },
   render: () => {
     return (
       <div className="flex w-full items-center gap-2">
-        <BadgeCore {...defaultProps} size={"s"} isFitContent={true}>
+        <BadgeCore {...defaultProps} size={"s"} fitContent={true}>
           99999
         </BadgeCore>
-        <BadgeCore {...defaultProps} isFitContent={true}>
+        <BadgeCore {...defaultProps} fitContent={true}>
           99999
         </BadgeCore>
       </div>

@@ -32,7 +32,7 @@ export const BadgeCoreVariants = tv({
         base: "h-6 w-6",
       },
     },
-    isFitContent: {
+    fitContent: {
       true: {
         base: "w-fit",
       },
@@ -40,14 +40,14 @@ export const BadgeCoreVariants = tv({
   },
   compoundVariants: [
     {
-      isFitContent: true,
+      fitContent: true,
       size: "m",
       class: {
         base: "px-2",
       },
     },
     {
-      isFitContent: true,
+      fitContent: true,
       size: "s",
       class: {
         base: "px-1",

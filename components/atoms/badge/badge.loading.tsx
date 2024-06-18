@@ -12,5 +12,5 @@ export function BadgeLoading<C extends ElementType = "div">({ size }: TBadgeProp
     return [24, 24];
   })();
 
-  return <SkeletonEl variant="rounded" width={w} height={h} className="rounded" />;
+  return <SkeletonEl width={w} height={h} className="rounded" />;
 }
