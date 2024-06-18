@@ -57,7 +57,7 @@ export const Round: Story = {
         </div>
         <div className="flex flex-col items-center gap-2">
           {sizes.map(s => (
-            <Avatar key={s} {...defaultProps} size={s} containerBackground="brand" />
+            <Avatar key={s} {...defaultProps} size={s} container="brand" />
           ))}
         </div>
         <div className="flex flex-col items-center gap-2">
@@ -86,7 +86,7 @@ export const Square: Story = {
         </div>
         <div className="flex flex-col items-center gap-2">
           {sizes.map(s => (
-            <Avatar key={s} {...defaultProps} shape="square" size={s} containerBackground="brand" />
+            <Avatar key={s} {...defaultProps} shape="square" size={s} container="brand" />
           ))}
         </div>
         <div className="flex flex-col items-center gap-2">
