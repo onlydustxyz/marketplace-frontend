@@ -128,9 +128,7 @@ export default function SidePanel({
                       hideText
                       onClick={onClose}
                       startIcon={{ remixName: "ri-close-line" }}
-                    >
-                      <CloseLine />
-                    </ButtonSecondaryLight>
+                    />
                   ) : (
                     <Button
                       size={ButtonSize.Sm}
