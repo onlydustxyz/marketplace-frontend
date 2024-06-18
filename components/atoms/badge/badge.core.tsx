@@ -17,8 +17,8 @@ export function BadgeCore<C extends ElementType = "div">({
   ...props
 }: TBadgeProps<C>) {
   const Component = as || "div";
-  const { fitContent, size, colors } = props;
-  const slots = BadgeCoreVariants({ fitContent, size, colors });
+  const { fitContent, size, colors, style } = props;
+  const slots = BadgeCoreVariants({ fitContent, size, colors, style });
 
   return (
     <Component {...htmlProps} className={cn(slots.base(), classNames?.base)}>

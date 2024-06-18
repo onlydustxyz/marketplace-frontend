@@ -8,20 +8,20 @@ export const BadgeCoreVariants = tv({
   },
   variants: {
     colors: {
-      outline: {
-        base: "border border-container-stroke-separator",
+      default: {
+        base: "border border-container-stroke-separator bg-container-stroke-separator",
       },
       brand1: {
-        base: "bg-brand1 text-text-1",
+        base: "border border-brand1 bg-brand1 text-text-1",
       },
       brand2: {
-        base: "bg-brand2 text-text-1",
+        base: "border border-brand2 bg-brand2 text-text-1",
       },
       brand3: {
-        base: "bg-brand3 text-text-1",
+        base: "border border-brand3 bg-brand3 text-text-1",
       },
       brand4: {
-        base: "bg-brand4 text-text-1",
+        base: "border border-brand4 bg-brand4 text-text-1",
       },
     },
     size: {
@@ -35,6 +35,14 @@ export const BadgeCoreVariants = tv({
     fitContent: {
       true: {
         base: "w-fit",
+      },
+    },
+    style: {
+      fill: {
+        base: "border-none",
+      },
+      outline: {
+        base: "bg-transparent",
       },
     },
   },
@@ -56,6 +64,7 @@ export const BadgeCoreVariants = tv({
   ],
   defaultVariants: {
     size: "m",
-    colors: "brand1",
+    colors: "default",
+    style: "fill",
   },
 });
