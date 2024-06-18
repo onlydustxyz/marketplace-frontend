@@ -80,7 +80,7 @@ async function createTypes({ name, path, PascalName }) {
     `${path}/${name}.types.ts`,
     prettier.format(
       `
-        import { ElementType } from "react";
+        import { ComponentPropsWithoutRef, ElementType } from "react";
         import { ${PascalName}CoreVariants } from "./${name}.variants";
         import { VariantProps } from "tailwind-variants";
 
@@ -89,6 +89,7 @@ async function createTypes({ name, path, PascalName }) {
 
         export interface T${PascalName}Props<C extends ElementType> extends Variants {
           classNames?: classNames;
+           htmlProps?: ComponentPropsWithoutRef<C>;
           as?: C;
         }
   `,
