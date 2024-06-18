@@ -19,6 +19,9 @@ const config: Config = withTV({
   presets: [legacyPreset],
   theme: {
     extend: {
+      fontSize: {
+        xss: ["11px", "16px"],
+      },
       colors: {
         /** CONTAINER */
         "container-1": "var(--container-1)",

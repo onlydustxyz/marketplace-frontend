@@ -10,12 +10,15 @@ import { ModalCoreVariants } from "./modal.variants";
 type Variants = VariantProps<typeof ModalCoreVariants>;
 type classNames = Partial<typeof ModalCoreVariants["slots"]>;
 
-export type TModalProps = Variants &
-  Pick<ModalProps, "isOpen" | "onOpenChange" | "isDismissable"> &
-  PropsWithChildren<{
-    classNames?: classNames;
-    titleProps: Partial<ComponentProps<typeof Typo>>;
-    closeButtonProps?: ComponentProps<typeof Button>;
-    footerStartContent?: ReactNode;
-    footerEndContent?: ReactNode;
-  }>;
+export interface TModalProps
+  extends Variants,
+    PropsWithChildren,
+    Pick<ModalProps, "isOpen" | "onOpenChange" | "isDismissable"> {
+  classNames?: classNames;
+  title: ReactNode;
+  onClose(): void;
+  titleProps?: Partial<ComponentProps<typeof Typo>>;
+  closeButtonProps?: ComponentProps<typeof Button>;
+  footerStartContent?: ReactNode;
+  footerEndContent?: ReactNode;
+}

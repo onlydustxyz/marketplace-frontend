@@ -12,7 +12,7 @@ const defaultProps: TTypoProps<"span"> = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const sizes = ["xs", "s", "m", "l", "xl", "2xl", "3xl", "4xl", "5xl", "6xl"] as any[];
+const sizes = ["xxs", "xs", "s", "m", "l", "xl", "2xl", "3xl", "4xl", "5xl", "6xl"] as any[];
 
 const meta: Meta<typeof TypoCore> = {
   component: TypoCore,
