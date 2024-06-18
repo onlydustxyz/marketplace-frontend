@@ -44,13 +44,13 @@ export const Default: Story = {
 export const Disabled: Story = {
   parameters: {
     docs: {
-      source: { code: "<Textarea disabled={true} />" },
+      source: { code: "<Textarea isDisabled={true} />" },
     },
   },
   render: () => {
     return (
       <div className="flex w-[348px] items-center gap-2">
-        <Textarea {...defaultProps} disabled={true} />
+        <Textarea {...defaultProps} isDisabled={true} />
       </div>
     );
   },

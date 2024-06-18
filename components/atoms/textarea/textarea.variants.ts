@@ -2,7 +2,7 @@ import { tv } from "tailwind-variants";
 
 export const TextareaCoreVariants = tv({
   slots: {
-    base: "h-fit flex-col items-start gap-2",
+    base: "flex h-fit flex-col items-start gap-2",
     mainWrapper: "",
     inputWrapper:
       "rounded-md border border-container-stroke-separator text-text-1 !outline-none group-data-[focus=true]:border-interactions-white-hover group-data-[hover=true]:border-interactions-white-hover",
@@ -20,7 +20,7 @@ export const TextareaCoreVariants = tv({
         inputWrapper: "bg-interactions-white-disabled",
       },
     },
-    isInvalid: {
+    isError: {
       true: {
         inputWrapper: "!border-interactions-error-active !text-interactions-error-active",
         input: "!text-interactions-error-active",

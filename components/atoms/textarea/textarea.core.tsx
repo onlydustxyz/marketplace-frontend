@@ -9,13 +9,15 @@ export function TextareaCore({
   classNames,
   onChange,
   value,
-  multiple,
-  disabled,
+  minRows,
+  maxRows,
+  disableAutosize,
+  isDisabled,
   isError,
   startContent,
   endContent,
 }: TTextareaProps) {
-  const slots = TextareaCoreVariants({ isDisabled: disabled, isInvalid: isError });
+  const slots = TextareaCoreVariants({ isDisabled, isError });
 
   function handleChange(value: string) {
     onChange?.(value);
@@ -23,7 +25,6 @@ export function TextareaCore({
 
   return (
     <NextTextarea
-      className="h-fit flex-col items-start gap-2"
       classNames={{
         base: cn(slots.base(), classNames?.base),
         mainWrapper: cn(slots.mainWrapper(), classNames?.mainWrapper),
@@ -37,11 +38,13 @@ export function TextareaCore({
       }}
       variant="bordered"
       labelPlacement="outside-left"
-      isDisabled={disabled}
-      disabled={disabled}
+      isDisabled={isDisabled}
+      disabled={isDisabled}
       onValueChange={handleChange}
       value={value}
-      multiple={multiple}
+      minRows={minRows}
+      maxRows={maxRows}
+      disableAutosize={disableAutosize}
       startContent={startContent}
       endContent={endContent}
     />
