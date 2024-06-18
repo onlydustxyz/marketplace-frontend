@@ -18,14 +18,12 @@ export function PaginationCore<C extends ElementType = "div">({
   onPrev,
   infinite,
   buttonProps = {},
-  ...props
 }: TPaginationProps<C>) {
   const Component = as || "div";
-  const { ...htmlProps } = props;
   const slots = PaginationCoreVariants();
   const label = infinite ? `${current}` : `${current} / ${total}`;
   return (
-    <Component {...htmlProps} className={cn(slots.base(), classNames?.base)}>
+    <Component className={cn(slots.base(), classNames?.base)}>
       <Button
         size={"l"}
         onClick={onPrev}
