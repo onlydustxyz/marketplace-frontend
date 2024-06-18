@@ -14,7 +14,7 @@ export const InputCoreVariants = tv({
     description: "",
   },
   variants: {
-    disabled: {
+    isDisabled: {
       true: {
         base: "!opacity-100",
         inputWrapper: "bg-interactions-white-disabled",

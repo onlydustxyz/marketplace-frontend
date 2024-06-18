@@ -10,10 +10,9 @@ export interface TInputProps extends htmlInputProps, Variants {
   classNames?: classNames;
   value: string;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
-  onValueChange?: (value: string) => void;
   isError?: boolean;
   startContent?: ReactNode;
   endContent?: ReactNode;
-  disabled?: boolean;
+  isDisabled?: boolean;
   label?: ReactNode;
 }

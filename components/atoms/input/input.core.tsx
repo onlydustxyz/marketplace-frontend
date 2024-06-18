@@ -8,19 +8,14 @@ import { InputCoreVariants } from "./input.variants";
 export function InputCore({
   classNames,
   isError,
-  disabled,
+  isDisabled,
   value,
   onChange,
-  onValueChange,
   startContent,
   endContent,
   label,
 }: TInputProps) {
-  const slots = InputCoreVariants({ disabled, isError });
-
-  function handleChange(value: string) {
-    onValueChange?.(value);
-  }
+  const slots = InputCoreVariants({ isDisabled, isError });
 
   return (
     <NextInput
@@ -40,9 +35,8 @@ export function InputCore({
       labelPlacement="outside-left"
       startContent={startContent}
       endContent={endContent}
-      isDisabled={disabled}
-      disabled={disabled}
-      onValueChange={handleChange}
+      isDisabled={isDisabled}
+      disabled={isDisabled}
       onChange={onChange}
       value={value}
     />
