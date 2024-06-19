@@ -62,9 +62,7 @@ export const Default: Story = {
     return (
       <div className="flex w-full items-center gap-2">
         <Button onClick={() => setIsOpen(true)}>Open modal</Button>
-        <Drawer {...defaultProps} {...args} isOpen={isOpen} onOpenChange={setIsOpen}>
-          {defaultProps.children}
-        </Drawer>
+        <Drawer {...defaultProps} {...args} isOpen={isOpen} onOpenChange={setIsOpen} />
       </div>
     );
   },
