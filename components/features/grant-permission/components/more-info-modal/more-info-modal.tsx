@@ -24,7 +24,7 @@ export function MoreInfoModal({ isOpen, onClose, onDone }: TMoreInfoModal.Props)
               variant="default"
               size="xs"
               translate={{
-                token: "v2.features.githubGrantPermissions.modals.moreInfos.footerButtons.done",
+                token: "v2.features.githubGrantPermissions.modals.moreInfos.footerButtons.back",
               }}
             />
           </Button>

@@ -16,7 +16,8 @@
       "title": "How to grant permissions",
       "description": "Click on grant permissions, you will be redirected to GitHub, where you will be asked to log in and grant the permissions. Once you have granted the permissions, you will be redirected back to OnlyDust.",
       "footerButtons": {
-        "done": "Done"
+        "grantPermissions": "Grant write permissions",
+        "back": "Back"
       }
     }
   }

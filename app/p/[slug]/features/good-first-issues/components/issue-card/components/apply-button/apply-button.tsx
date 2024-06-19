@@ -3,10 +3,9 @@ import { useMemo, useState } from "react";
 
 import { Button } from "components/ds/button/button";
 import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
-import { GrantPermission } from "components/features/grant-permission/grant-permission-modal";
+import { GrantPermission } from "components/features/grant-permission/grant-permission";
+import { useDynamicScopes } from "components/features/grant-permission/hooks/useDynamicScopes";
 import { Translate } from "components/layout/translate/translate";
-
-import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import { TApplyButton } from "./apply-button.types";
 
@@ -14,11 +13,11 @@ export function ApplyButton({ hasApplied }: TApplyButton.Props) {
   const [isOpenGrantPermission, setIsOpenGrantPermission] = useState(false);
   const { isAuthenticated, loginWithRedirect } = useAuth0();
 
-  const { user } = useCurrentUser();
-  const canApply = user?.isAuthorizedToApplyOnGithubIssues;
+  const { canApply } = useDynamicScopes();
 
   function handleViewApplication() {
     // Open apply consult drawer
+    console?.log("Open apply consult drawer");
   }
 
   function handleApply() {
