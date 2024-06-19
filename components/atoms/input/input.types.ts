@@ -6,7 +6,8 @@ import { InputCoreVariants } from "./input.variants";
 type Variants = VariantProps<typeof InputCoreVariants>;
 type classNames = Partial<typeof InputCoreVariants["slots"]>;
 type htmlInputProps = ComponentPropsWithoutRef<"input">;
-export interface TInputProps extends htmlInputProps, Variants {
+
+export interface InputPort extends htmlInputProps, Variants {
   classNames?: classNames;
   value: string;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
