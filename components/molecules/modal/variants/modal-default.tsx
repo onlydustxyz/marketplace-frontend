@@ -1,12 +1,15 @@
-import { ModalCore } from "../modal.core";
-import { TModalProps } from "../modal.types";
+import { ModalNextUiAdapter } from "components/molecules/modal/adapters/next-ui/next-ui.adapter";
 
-export function Modal({ titleProps, closeButtonProps, ...props }: TModalProps) {
+import { ModalCore } from "../modal.core";
+import { ModalPort } from "../modal.types";
+
+export function Modal({ titleProps, closeButtonProps, ...props }: ModalPort) {
   return (
     <ModalCore
+      Adapter={ModalNextUiAdapter}
       {...props}
       classNames={{
-        base: "bg-container-2 border border-container-stroke-separator",
+        modal: "bg-container-2 border border-container-stroke-separator",
         footer: "border-t border-container-stroke-separator",
       }}
       titleProps={{
