@@ -1,20 +1,18 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { NextUiAdapter } from "components/atoms/input/adapters/next-ui-adapter";
 import { InputLoading } from "components/atoms/input/input.loading";
 import { Icon } from "components/layout/icon/icon";
 
 import { InputCore } from "./input.core";
-import { TInputProps } from "./input.types";
+import { InputPort } from "./input.types";
 import { Input } from "./variants/input-default";
 
 type Story = StoryObj<typeof InputCore>;
 
-const defaultProps: TInputProps = {
+const defaultProps: InputPort = {
   startContent: <Icon remixName="ri-square-line" className={"text-inherit"} />,
   endContent: <Icon remixName="ri-square-line" className={"text-inherit"} />,
   value: "Input text",
-  Component: NextUiAdapter,
 };
 
 const meta: Meta<typeof InputCore> = {
