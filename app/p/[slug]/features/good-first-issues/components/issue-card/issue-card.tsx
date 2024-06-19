@@ -19,7 +19,6 @@ export function IssueCard({ issue }: TIssueCard.Props) {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
   const hasApplied = false;
-  const canApply = false;
 
   return (
     <Card key={issue.id} background="base" hasPadding={false}>
@@ -29,7 +28,7 @@ export function IssueCard({ issue }: TIssueCard.Props) {
             {issue.title}
           </Typography>
 
-          {isMd ? <ApplyButton hasApplied={hasApplied} canApply={canApply} /> : null}
+          {isMd ? <ApplyButton hasApplied={hasApplied} /> : null}
         </Flex>
 
         <Flex alignItems="center" className="gap-3 gap-y-2" wrap="wrap">
@@ -91,7 +90,7 @@ export function IssueCard({ issue }: TIssueCard.Props) {
           )}
         </Flex>
 
-        {!isMd ? <ApplyButton hasApplied={hasApplied} canApply={canApply} /> : null}
+        {!isMd ? <ApplyButton hasApplied={hasApplied} /> : null}
 
         <OverviewAccordion body={issue.body} />
       </Flex>

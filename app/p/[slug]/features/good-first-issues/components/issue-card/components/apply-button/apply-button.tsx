@@ -6,11 +6,20 @@ import { handleLoginWithRedirect } from "components/features/auth0/handlers/hand
 import { GrantPermission } from "components/features/grant-permission/grant-permission-modal";
 import { Translate } from "components/layout/translate/translate";
 
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
+
 import { TApplyButton } from "./apply-button.types";
 
-export function ApplyButton({ hasApplied, canApply }: TApplyButton.Props) {
-  const [isOpen, setIsOpen] = useState(false);
+export function ApplyButton({ hasApplied }: TApplyButton.Props) {
+  const [isOpenGrantPermission, setIsOpenGrantPermission] = useState(false);
   const { isAuthenticated, loginWithRedirect } = useAuth0();
+
+  const { user } = useCurrentUser();
+  const canApply = user?.isAuthorizedToApplyOnGithubIssues;
+
+  function handleViewApplication() {
+    // Open apply consult drawer
+  }
 
   function handleApply() {
     if (!isAuthenticated) {
@@ -19,20 +28,18 @@ export function ApplyButton({ hasApplied, canApply }: TApplyButton.Props) {
 
     if (!canApply) {
       // Open github grant permissions modal
-      setIsOpen(true);
+      setIsOpenGrantPermission(true);
+      return;
     }
 
     //  Open apply form drawer
-  }
-
-  function handleConsultApplication() {
-    // Open apply consult drawer
+    handleViewApplication();
   }
 
   const renderButton = useMemo(() => {
     if (hasApplied) {
       return (
-        <Button variant="secondary" size="s" onClick={handleConsultApplication} className="whitespace-nowrap">
+        <Button variant="secondary" size="s" onClick={handleViewApplication} className="whitespace-nowrap">
           <Translate token="v2.pages.project.overview.goodFirstIssues.button.alreadyApplied" />
         </Button>
       );
@@ -48,7 +55,7 @@ export function ApplyButton({ hasApplied, canApply }: TApplyButton.Props) {
   return (
     <>
       {renderButton}
-      <GrantPermission isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <GrantPermission isOpen={isOpenGrantPermission} onClose={() => setIsOpenGrantPermission(false)} />
     </>
   );
 }
