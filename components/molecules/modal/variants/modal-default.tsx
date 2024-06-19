@@ -3,7 +3,7 @@ import { ModalNextUiAdapter } from "components/molecules/modal/adapters/next-ui/
 import { ModalCore } from "../modal.core";
 import { ModalPort } from "../modal.types";
 
-export function Modal({ titleProps, closeButtonProps, ...props }: ModalPort) {
+export function Modal({ titleProps, closeButtonProps, ...props }: ModalPort<"div">) {
   return (
     <ModalCore
       Adapter={ModalNextUiAdapter}

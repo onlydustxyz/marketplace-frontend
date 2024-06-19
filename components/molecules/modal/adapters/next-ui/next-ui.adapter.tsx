@@ -8,6 +8,8 @@ import { ModalNextUiVariants } from "components/molecules/modal/adapters/next-ui
 import { ModalPort } from "components/molecules/modal/modal.types";
 
 export function ModalNextUiAdapter({
+  htmlProps = {},
+  as,
   children,
   isOpen,
   onOpenChange,
@@ -16,7 +18,8 @@ export function ModalNextUiAdapter({
   closeButtonProps,
   footer,
   canDismiss = true,
-}: ModalPort) {
+}: ModalPort<"div">) {
+  const Inner = as || "div";
   const slots = ModalNextUiVariants();
 
   return (
@@ -33,25 +36,27 @@ export function ModalNextUiAdapter({
       isDismissable={canDismiss}
       hideCloseButton
     >
-      <ModalContent>
-        {onClose => (
-          <>
-            <ModalHeader>
-              <Typo {...titleProps} classNames={{ base: "truncate" }} />
-              {canDismiss ? (
-                <Button {...closeButtonProps} hideText startIcon={{ remixName: "ri-close-line" }} onClick={onClose} />
+      <Inner {...htmlProps}>
+        <ModalContent>
+          {onClose => (
+            <>
+              <ModalHeader>
+                <Typo {...titleProps} classNames={{ base: "truncate" }} />
+                {canDismiss ? (
+                  <Button {...closeButtonProps} hideText startIcon={{ remixName: "ri-close-line" }} onClick={onClose} />
+                ) : null}
+              </ModalHeader>
+              <ModalBody>{children}</ModalBody>
+              {footer?.startContent || footer?.endContent ? (
+                <ModalFooter>
+                  <div>{footer?.startContent}</div>
+                  <div>{footer?.endContent}</div>
+                </ModalFooter>
               ) : null}
-            </ModalHeader>
-            <ModalBody>{children}</ModalBody>
-            {footer?.startContent || footer?.endContent ? (
-              <ModalFooter>
-                <div>{footer?.startContent}</div>
-                <div>{footer?.endContent}</div>
-              </ModalFooter>
-            ) : null}
-          </>
-        )}
-      </ModalContent>
+            </>
+          )}
+        </ModalContent>
+      </Inner>
     </Modal>
   );
 }

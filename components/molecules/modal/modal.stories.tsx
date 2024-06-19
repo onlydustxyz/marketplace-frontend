@@ -8,7 +8,7 @@ import { Modal } from "./variants/modal-default";
 
 type Story = StoryObj<typeof Modal>;
 
-const defaultProps: ModalPort = {
+const defaultProps: ModalPort<"div"> = {
   isOpen: false,
   titleProps: { children: "Modal title" },
   footer: {
