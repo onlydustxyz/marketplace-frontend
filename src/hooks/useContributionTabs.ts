@@ -34,7 +34,7 @@ export function useContributionTabs({ defaultTab }: { defaultTab?: AllTabs }) {
 
   function getActiveTab() {
     const tabNames = {
-      [AllTabs.Applied]: T("contributions.nav.applied").toLowerCase(),
+      [AllTabs.Applied]: T("contributions.applied.title").toLowerCase(),
       [AllTabs.InProgress]: T("contributions.inProgress.title").toLowerCase(),
       [AllTabs.Completed]: T("contributions.completed.title").toLowerCase(),
       [AllTabs.Cancelled]: T("contributions.canceled.title").toLowerCase(),

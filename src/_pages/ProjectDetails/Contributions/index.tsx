@@ -4,14 +4,11 @@ import { useLocalStorage } from "usehooks-ts";
 
 import Title from "src/_pages/ProjectDetails/Title";
 import ProjectApi from "src/api/Project";
-import CancelCircleLine from "src/assets/icons/CancelCircleLine";
-import ProgressCircle from "src/assets/icons/ProgressCircle";
 import { ContributionTabContents } from "src/components/Contribution/ContributionTabContents";
 import { ContributionTable, TableColumns, type TableSort } from "src/components/Contribution/ContributionTable";
 import { Tabs } from "src/components/Tabs/Tabs";
 import Flex from "src/components/Utils/Flex";
 import { AllTabs, useContributionTabs } from "src/hooks/useContributionTabs";
-import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import { ContributionStatus, OrderBy } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
@@ -54,7 +51,7 @@ export default function Contributions() {
   const orgsWithUnauthorizedRepos = project ? getOrgsWithUnauthorizedRepos(project) : [];
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
 
-  const { isActiveTab, updateActiveTab } = useContributionTabs({ defaultTab: AllTabs.InProgress });
+  const { isActiveTab, updateActiveTab } = useContributionTabs({ defaultTab: AllTabs.Applied });
   const { headerCells, bodyRow } = useContributionTable();
 
   const [sortStorage, setSortStorage] = useLocalStorage(
@@ -68,6 +65,19 @@ export default function Contributions() {
   const filterRef = useRef<ProjectContributionsFilterRef>(null);
 
   const tabItems = [
+    {
+      active: isActiveTab(AllTabs.Applied),
+      onClick: () => {
+        updateActiveTab(AllTabs.Applied);
+      },
+      testId: "project-contributions-applied-tab",
+      children: (
+        <ContributionTabContents>
+          <Icon remixName="ri-loader-2-line" />
+          <Translate token="contributions.nav.applied" />
+        </ContributionTabContents>
+      ),
+    },
     {
       active: isActiveTab(AllTabs.InProgress),
       onClick: () => {
@@ -109,12 +119,46 @@ export default function Contributions() {
     },
   ];
 
+  // TODO: Change ContributionStatus.InProgress
   const tableItems: Array<ComponentProps<typeof ContributionTable> & { show: boolean }> = [
+    {
+      id: "applied_contributions_table",
+      title: T("contributions.applied.title"),
+      description: T("contributions.applied.description"),
+      icon: className => <Icon remixName="ri-loader-2-line" className={className} />,
+      show: isActiveTab(AllTabs.Applied),
+      sort: sort[ContributionStatus.InProgress],
+      onSort: sort => {
+        setSort(prevState => {
+          const state = { ...prevState, [ContributionStatus.InProgress]: sort };
+
+          setSortStorage(JSON.stringify(state));
+
+          return state;
+        });
+      },
+      headerCells,
+      bodyRow,
+      query: ProjectApi.queries.useProjectContributionsInfiniteList({
+        params: {
+          projectId: project?.id ?? "",
+          queryParams: {
+            statuses: ContributionStatus.InProgress,
+            ...sort.IN_PROGRESS,
+            ...filterQueryParams,
+          },
+        },
+        options: {
+          enabled: isActiveTab(AllTabs.Applied) && Boolean(filterQueryParams),
+        },
+      }),
+      filterRef,
+    },
     {
       id: "in_progress_contributions_table",
       title: T("contributions.inProgress.title"),
       description: T("contributions.inProgress.description"),
-      icon: className => <ProgressCircle className={className} />,
+      icon: className => <Icon remixName="ri-progress-4-line" className={className} />,
       show: isActiveTab(AllTabs.InProgress),
       sort: sort[ContributionStatus.InProgress],
       onSort: sort => {
@@ -147,7 +191,7 @@ export default function Contributions() {
       id: "completed_contributions_table",
       title: T("contributions.completed.title"),
       description: T("contributions.completed.description"),
-      icon: className => <CheckboxCircleLine className={className} />,
+      icon: className => <Icon remixName="ri-checkbox-circle-line" className={className} />,
       sort: sort[ContributionStatus.Completed],
       onSort: sort => {
         setSort(prevState => {
@@ -180,7 +224,7 @@ export default function Contributions() {
       id: "canceled_contributions_table",
       title: T("contributions.canceled.title"),
       description: T("contributions.canceled.description"),
-      icon: className => <CancelCircleLine className={className} />,
+      icon: className => <Icon remixName="ri-close-circle-line" className={className} />,
       sort: sort[ContributionStatus.Cancelled],
       onSort: sort => {
         setSort(prevState => {

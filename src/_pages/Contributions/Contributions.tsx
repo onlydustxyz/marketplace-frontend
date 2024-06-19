@@ -4,15 +4,12 @@ import { ComponentProps, useEffect, useRef, useState } from "react";
 import { useLocalStorage } from "react-use";
 
 import UsersApi from "src/api/Users";
-import CancelCircleLine from "src/assets/icons/CancelCircleLine";
-import ProgressCircle from "src/assets/icons/ProgressCircle";
 import { ContributionTabContents } from "src/components/Contribution/ContributionTabContents";
 import { ContributionTable, TableColumns, type TableSort } from "src/components/Contribution/ContributionTable";
 import SEO from "src/components/SEO";
 import { Tabs } from "src/components/Tabs/Tabs";
 import { AllTabs, useContributionTabs } from "src/hooks/useContributionTabs";
 import { usePosthog } from "src/hooks/usePosthog";
-import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import { ContributionStatus, OrderBy } from "src/types";
 
 import { Icon } from "components/layout/icon/icon";
@@ -103,7 +100,7 @@ export default function Contributions() {
       id: "in_progress_contributions_table",
       title: T("contributions.inProgress.title"),
       description: T("contributions.inProgress.description"),
-      icon: className => <ProgressCircle className={className} />,
+      icon: className => <Icon remixName="ri-progress-4-line" className={className} />,
       show: isActiveTab(AllTabs.InProgress),
       sort: sort[ContributionStatus.InProgress],
       onSort: sort => {
@@ -137,7 +134,7 @@ export default function Contributions() {
       id: "completed_contributions_table",
       title: T("contributions.completed.title"),
       description: T("contributions.completed.description"),
-      icon: className => <CheckboxCircleLine className={className} />,
+      icon: className => <Icon remixName="ri-checkbox-circle-line" className={className} />,
       sort: sort[ContributionStatus.Completed],
       onSort: sort => {
         setSort(prevState => {
@@ -171,7 +168,7 @@ export default function Contributions() {
       id: "canceled_contributions_table",
       title: T("contributions.canceled.title"),
       description: T("contributions.canceled.description"),
-      icon: className => <CancelCircleLine className={className} />,
+      icon: className => <Icon remixName="ri-close-circle-line" className={className} />,
       sort: sort[ContributionStatus.Cancelled],
       onSort: sort => {
         setSort(prevState => {
