@@ -11,7 +11,7 @@ import { Drawer } from "./variants/drawer-default";
 type Story = StoryObj<typeof Drawer>;
 
 const defaultProps: DrawerPort<"div"> = {
-  children: "MODAL CONTENT",
+  children: "DRAWER CONTENT",
 
   header: {
     startContent: <Typo size={"l"}>Header</Typo>,
@@ -61,7 +61,7 @@ export const Default: Story = {
     const [isOpen, setIsOpen] = useState(false);
     return (
       <div className="flex w-full items-center gap-2">
-        <Button onClick={() => setIsOpen(true)}>Open modal</Button>
+        <Button onClick={() => setIsOpen(true)}>Open drawer</Button>
         <Drawer {...defaultProps} {...args} isOpen={isOpen} onOpenChange={setIsOpen} />
       </div>
     );
