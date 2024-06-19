@@ -31,6 +31,7 @@ const config: Config = withTV({
         "container-action": "var(--container-action)",
         "container-inverse": "var(--container-inverse)",
         "container-stroke-separator": "var(--container-stroke-separator)",
+        "container-backdrop": "var(--container-backdrop)",
         /** TEXT */
         "text-1": "var(--text-1)",
         "text-2": "var(--text-2)",

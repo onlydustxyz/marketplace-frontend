@@ -3,11 +3,10 @@ import { Meta, StoryObj } from "@storybook/react";
 import { InputLoading } from "components/atoms/input/input.loading";
 import { Icon } from "components/layout/icon/icon";
 
-import { InputCore } from "./input.core";
 import { InputPort } from "./input.types";
 import { Input } from "./variants/input-default";
 
-type Story = StoryObj<typeof InputCore>;
+type Story = StoryObj<typeof Input>;
 
 const defaultProps: InputPort = {
   startContent: <Icon remixName="ri-square-line" className={"text-inherit"} />,
@@ -15,8 +14,8 @@ const defaultProps: InputPort = {
   value: "Input text",
 };
 
-const meta: Meta<typeof InputCore> = {
-  component: InputCore,
+const meta: Meta<typeof Input> = {
+  component: Input,
   title: "Atoms/Input",
   tags: ["autodocs"],
   parameters: {

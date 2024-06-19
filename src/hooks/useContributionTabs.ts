@@ -7,7 +7,7 @@ import { useUpdateSearchParams } from "hooks/router/useUpdateSearchParams";
 import { useIntl } from "hooks/translate/use-translate";
 
 export enum AllTabs {
-  All = "ALL_CONTRIBUTIONS",
+  Applied = "APPLIED",
   InProgress = "IN_PROGRESS",
   Completed = "COMPLETED",
   Cancelled = "CANCELLED",
@@ -15,13 +15,13 @@ export enum AllTabs {
 
 const tabValues = Object.values(AllTabs);
 
-export function useContributionTabs() {
+export function useContributionTabs({ defaultTab }: { defaultTab?: AllTabs }) {
   const { T } = useIntl();
   const searchParams = useSearchParams();
   const updateSearchParams = useUpdateSearchParams();
 
   const tab = searchParams.get("tab") as typeof tabValues[number] | null;
-  const [activeTab, setActiveTab] = useState(isInArray(tabValues, tab ?? "") ? tab : AllTabs.All);
+  const [activeTab, setActiveTab] = useState(isInArray(tabValues, tab ?? "") ? tab : defaultTab);
 
   function isActiveTab(tab: AllTabs) {
     return activeTab === tab;
@@ -34,13 +34,13 @@ export function useContributionTabs() {
 
   function getActiveTab() {
     const tabNames = {
-      [AllTabs.All]: T("contributions.nav.allContributions").toLowerCase(),
+      [AllTabs.Applied]: T("contributions.nav.applied").toLowerCase(),
       [AllTabs.InProgress]: T("contributions.inProgress.title").toLowerCase(),
       [AllTabs.Completed]: T("contributions.completed.title").toLowerCase(),
       [AllTabs.Cancelled]: T("contributions.canceled.title").toLowerCase(),
     };
 
-    return tabNames[activeTab ?? AllTabs.All];
+    return tabNames[activeTab ?? AllTabs.InProgress];
   }
 
   return {
