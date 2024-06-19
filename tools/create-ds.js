@@ -121,7 +121,7 @@ async function createIndex({ name, path }) {
         export * from "./variants/${name}-default";
         export * from "./${name}.types";
         export * from "./${name}.loading";
-        export * from "./${name}.variants"
+        export * from "./${name}.variants";
   `,
       { parser: "typescript" }
     )
