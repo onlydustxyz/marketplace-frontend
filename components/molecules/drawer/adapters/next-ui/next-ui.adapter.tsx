@@ -1,5 +1,5 @@
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/modal";
-import React, { ElementType, useMemo } from "react";
+import { ElementType, useMemo } from "react";
 
 import { viewportConfig } from "src/config";
 import { cn } from "src/utils/cn";
@@ -15,11 +15,10 @@ export function DrawerNextUiAdapter<C extends ElementType = "div">({
   as,
   classNames,
   isOpen,
-  onClose,
+  onOpenChange,
   header,
   footer,
   children,
-  hasCloseButton = true,
   size,
 }: DrawerPort<C>) {
   const Inner = as || "div";
@@ -52,7 +51,7 @@ export function DrawerNextUiAdapter<C extends ElementType = "div">({
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onOpenChange={onOpenChange}
       hideCloseButton={true}
       backdrop="opaque"
       portalContainer={(document.getElementById("modal-root") as HTMLElement) || undefined}
@@ -68,28 +67,30 @@ export function DrawerNextUiAdapter<C extends ElementType = "div">({
     >
       <Inner {...(htmlProps || {})}>
         <ModalContent>
-          <ModalHeader>
-            <div>{header?.leftContainer}</div>
-            <div className="flex items-center justify-end gap-2">
-              <div>{header?.rightContainer}</div>
-              {hasCloseButton && (
-                <Button
-                  onClick={onClose}
-                  startIcon={{ remixName: "ri-close-line" }}
-                  hideText
-                  variant="secondary-light"
-                />
+          {onClose => (
+            <>
+              <ModalHeader>
+                <div>{header?.startContent}</div>
+                <div className="flex items-center justify-end gap-2">
+                  <div>{header?.endContent}</div>
+                  <Button
+                    onClick={onClose}
+                    startIcon={{ remixName: "ri-close-line" }}
+                    hideText
+                    variant="secondary-light"
+                  />
+                </div>
+              </ModalHeader>
+
+              <ModalBody>{children}</ModalBody>
+
+              {footer && (
+                <ModalFooter>
+                  <div>{footer?.startContent}</div>
+                  <div>{footer?.endContent}</div>
+                </ModalFooter>
               )}
-            </div>
-          </ModalHeader>
-
-          <ModalBody>{children}</ModalBody>
-
-          {footer && (
-            <ModalFooter>
-              <div>{footer?.leftContainer}</div>
-              <div>{footer?.rightContainer}</div>
-            </ModalFooter>
+            </>
           )}
         </ModalContent>
       </Inner>

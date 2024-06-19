@@ -9,12 +9,10 @@ export const DrawerCoreVariants = tv({
   },
   variants: {
     size: {
-      md: {
-        container: "",
-      },
+      m: {},
     },
   },
   defaultVariants: {
-    size: "md",
+    size: "m",
   },
 });

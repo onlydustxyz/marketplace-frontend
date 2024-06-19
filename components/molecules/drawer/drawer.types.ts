@@ -7,14 +7,13 @@ type Variants = VariantProps<typeof DrawerCoreVariants>;
 type classNames = Partial<typeof DrawerCoreVariants["slots"]>;
 
 interface HeaderProps {
-  leftContainer?: ReactNode;
-  rightContainer?: ReactNode;
-  title?: ReactNode;
+  startContent?: ReactNode;
+  endContent?: ReactNode;
 }
 
 interface FooterProps {
-  leftContainer?: ReactNode;
-  rightContainer?: ReactNode;
+  startContent?: ReactNode;
+  endContent?: ReactNode;
 }
 export interface DrawerPort<C extends ElementType> extends Variants, PropsWithChildren {
   htmlProps?: ComponentPropsWithoutRef<C>;
@@ -22,9 +21,6 @@ export interface DrawerPort<C extends ElementType> extends Variants, PropsWithCh
   classNames?: classNames;
   header?: HeaderProps;
   footer?: FooterProps;
-  hasCloseButton?: boolean;
-  defaultOpen?: boolean;
-  onClose?: () => void;
+  onOpenChange?: (value: boolean) => void;
   isOpen?: boolean;
-  trigger?: ReactNode;
 }

@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
+import { useState } from "react";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Typo } from "components/atoms/typo/variants/typo-default";
@@ -10,15 +11,15 @@ import { Drawer } from "./variants/drawer-default";
 type Story = StoryObj<typeof Drawer>;
 
 const defaultProps: DrawerPort<"div"> = {
-  trigger: <Button>Open Drawer</Button>,
   children: "MODAL CONTENT",
+
   header: {
-    leftContainer: <Typo size={"l"}>Header</Typo>,
-    rightContainer: <Icon remixName={"ri-square-line"} size={16} />,
+    startContent: <Typo size={"l"}>Header</Typo>,
+    endContent: <Icon remixName={"ri-square-line"} size={16} />,
   },
   footer: {
-    leftContainer: <Icon remixName={"ri-square-line"} size={16} />,
-    rightContainer: <Icon remixName={"ri-square-line"} size={16} />,
+    startContent: <Icon remixName={"ri-square-line"} size={16} />,
+    endContent: <Icon remixName={"ri-square-line"} size={16} />,
   },
 };
 
@@ -41,12 +42,12 @@ export const Default: Story = {
         code: `
 <Drawer
   footer={{
-    leftContainer: <div />,
-    rightContainer: <div />
+    startContent: <div />,
+    endContent: <div />
   }}
   header={{
-    leftContainer: <div />,
-    rightContainer: <div />
+    startContent: <div />,
+    endContent: <div />
   }}
   trigger={<Button>Open Drawer</Button>}
 >
@@ -57,9 +58,11 @@ export const Default: Story = {
     },
   },
   render: args => {
+    const [isOpen, setIsOpen] = useState(false);
     return (
       <div className="flex w-full items-center gap-2">
-        <Drawer {...defaultProps} {...args}>
+        <Button onClick={() => setIsOpen(true)}>Open modal</Button>
+        <Drawer {...defaultProps} {...args} isOpen={isOpen} onOpenChange={setIsOpen}>
           {defaultProps.children}
         </Drawer>
       </div>
