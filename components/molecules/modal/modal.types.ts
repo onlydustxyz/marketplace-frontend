@@ -1,4 +1,3 @@
-import { ModalProps } from "@nextui-org/react";
 import { ComponentProps, PropsWithChildren, ReactNode } from "react";
 import { VariantProps } from "tailwind-variants";
 
@@ -10,15 +9,15 @@ import { ModalCoreVariants } from "./modal.variants";
 type Variants = VariantProps<typeof ModalCoreVariants>;
 type classNames = Partial<typeof ModalCoreVariants["slots"]>;
 
-export interface TModalProps
-  extends Variants,
-    PropsWithChildren,
-    Pick<ModalProps, "isOpen" | "onOpenChange" | "isDismissable"> {
+export interface ModalPort extends Variants, PropsWithChildren {
+  isOpen: boolean;
+  onOpenChange?: (isOpen: boolean) => void;
   classNames?: classNames;
-  title: ReactNode;
-  onClose(): void;
   titleProps?: Partial<ComponentProps<typeof Typo>>;
   closeButtonProps?: ComponentProps<typeof Button>;
-  footerStartContent?: ReactNode;
-  footerEndContent?: ReactNode;
+  footer?: {
+    startContent?: ReactNode;
+    endContent?: ReactNode;
+  };
+  canDismiss?: boolean;
 }
