@@ -6,10 +6,10 @@ const { COLORS, kebabToPascal, kebabToCamel, defaultPromptName, exists } = requi
 const { exec } = require("node:child_process");
 const i = require("@inquirer/prompts");
 
-async function createAdapter({ name, path, PascalName, PascalAdapterName, camelAdapterName }) {
+async function createAdapter({ name, path, PascalName, PascalAdapterName, camelAdapterName, adapterName }) {
   await fs.mkdir(`${path}/adapters/${camelAdapterName}`);
   await fs.appendFile(
-    `${path}/adapters/${camelAdapterName}/${camelAdapterName}.adapter.tsx`,
+    `${path}/adapters/${adapterName}/${adapterName}.adapter.tsx`,
     prettier.format(
       `
         import { ElementType } from "react";
@@ -17,7 +17,7 @@ async function createAdapter({ name, path, PascalName, PascalAdapterName, camelA
         import { cn } from "src/utils/cn";
 
         import { ${PascalName}Port } from "../../${name}.types";
-        import { ${PascalName}${PascalAdapterName}Variants } from "./${camelAdapterName}.variants";
+        import { ${PascalName}${PascalAdapterName}Variants } from "./${adapterName}.variants";
 
         export function ${PascalName}${PascalAdapterName}Adapter<C extends ElementType = "div">({classNames, as, ...props}: ${PascalName}Port<C>) {
           const Component = as || "div";
@@ -33,7 +33,7 @@ async function createAdapter({ name, path, PascalName, PascalAdapterName, camelA
     )
   );
   await fs.appendFile(
-    `${path}/adapters/${camelAdapterName}/${camelAdapterName}.variants.ts`,
+    `${path}/adapters/${adapterName}/${adapterName}.variants.ts`,
     prettier.format(
       `
         import { tv } from "tailwind-variants";
@@ -79,6 +79,7 @@ async function createMainComponent() {
     folder,
     name,
     path,
+    adapterName,
     PascalName: kebabToPascal(name),
     camelName: kebabToCamel(name),
     PascalAdapterName: kebabToPascal(adapterName),
