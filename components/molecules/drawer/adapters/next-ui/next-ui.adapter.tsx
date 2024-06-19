@@ -83,12 +83,12 @@ export function DrawerNextUiAdapter<C extends ElementType = "div">({
 
               <ModalBody>{children}</ModalBody>
 
-              {footer && (
+              {footer?.startContent || !footer?.endContent ? (
                 <ModalFooter>
                   <div>{footer?.startContent}</div>
                   <div>{footer?.endContent}</div>
                 </ModalFooter>
-              )}
+              ) : null}
             </>
           )}
         </ModalContent>
