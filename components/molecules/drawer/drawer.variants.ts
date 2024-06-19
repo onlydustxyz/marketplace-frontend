@@ -2,8 +2,19 @@ import { tv } from "tailwind-variants";
 
 export const DrawerCoreVariants = tv({
   slots: {
-    base: "group",
+    container: "group",
+    body: "",
+    header: "",
+    footer: "",
   },
-  variants: {},
-  defaultVariants: {},
+  variants: {
+    size: {
+      md: {
+        container: "",
+      },
+    },
+  },
+  defaultVariants: {
+    size: "md",
+  },
 });

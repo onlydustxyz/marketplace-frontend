@@ -1,12 +1,27 @@
 import { Meta, StoryObj } from "@storybook/react";
 
+import { Button } from "components/atoms/button/variants/button-default";
+import { Typo } from "components/atoms/typo/variants/typo-default";
+import { Icon } from "components/layout/icon/icon";
+
 import { DrawerCore } from "./drawer.core";
-import { TDrawerProps } from "./drawer.types";
+import { DrawerPort } from "./drawer.types";
 import { Drawer } from "./variants/drawer-default";
 
 type Story = StoryObj<typeof DrawerCore>;
 
-const defaultProps: TDrawerProps<"div"> = {};
+const defaultProps: DrawerPort<"div"> = {
+  trigger: <Button>Open Drawer</Button>,
+  children: "MODAL CONTENT",
+  header: {
+    leftContainer: <Typo size={"l"}>Header</Typo>,
+    rightContainer: <Icon remixName={"ri-square-line"} size={16} />,
+  },
+  footer: {
+    leftContainer: <Icon remixName={"ri-square-line"} size={16} />,
+    rightContainer: <Icon remixName={"ri-square-line"} size={16} />,
+  },
+};
 
 const meta: Meta<typeof DrawerCore> = {
   component: DrawerCore,
@@ -23,23 +38,31 @@ const meta: Meta<typeof DrawerCore> = {
 export const Default: Story = {
   parameters: {
     docs: {
-      source: { code: "<Drawer />" },
+      source: {
+        code: `
+<Drawer
+  footer={{
+    leftContainer: <div />,
+    rightContainer: <div />
+  }}
+  header={{
+    leftContainer: <div />,
+    rightContainer: <div />
+  }}
+  trigger={<Button>Open Drawer</Button>}
+>
+  MODAL CONTENT
+</Drawer>
+      `,
+      },
     },
   },
   render: args => {
     return (
       <div className="flex w-full items-center gap-2">
-        <Drawer {...defaultProps} {...args} />
-      </div>
-    );
-  },
-};
-
-export const Core: Story = {
-  render: args => {
-    return (
-      <div className="flex w-full items-center gap-2">
-        <DrawerCore {...defaultProps} {...args} />
+        <Drawer {...defaultProps} {...args}>
+          {defaultProps.children}
+        </Drawer>
       </div>
     );
   },

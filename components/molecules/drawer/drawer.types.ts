@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
+import { ComponentPropsWithoutRef, ElementType, PropsWithChildren, ReactNode } from "react";
 import { VariantProps } from "tailwind-variants";
 
 import { DrawerCoreVariants } from "./drawer.variants";
@@ -16,11 +16,15 @@ interface FooterProps {
   leftContainer?: ReactNode;
   rightContainer?: ReactNode;
 }
-export interface TDrawerProps<C extends ElementType> extends Variants {
-  classNames?: classNames;
+export interface DrawerPort<C extends ElementType> extends Variants, PropsWithChildren {
   htmlProps?: ComponentPropsWithoutRef<C>;
   as?: C;
-  hasCloseButton?: boolean;
+  classNames?: classNames;
   header?: HeaderProps;
   footer?: FooterProps;
+  hasCloseButton?: boolean;
+  defaultOpen?: boolean;
+  onClose?: () => void;
+  isOpen?: boolean;
+  trigger?: ReactNode;
 }

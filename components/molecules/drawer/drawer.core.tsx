@@ -1,21 +1,17 @@
 import { ElementType } from "react";
 
-import { cn } from "src/utils/cn";
+import { useDrawerState } from "components/molecules/drawer/drawer.hooks";
+import { PropsWithAdapter } from "components/types/props-with-adapter";
 
-import { TDrawerProps } from "./drawer.types";
-import { DrawerCoreVariants } from "./drawer.variants";
+import { DrawerPort } from "./drawer.types";
 
-export function DrawerCore<C extends ElementType = "div">({
-  classNames,
-  as,
-  hasCloseButton,
-  header,
-  footer,
-  ...props
-}: TDrawerProps<C>) {
-  const Component = as || "div";
-  const { ...htmlProps } = props;
-  const slots = DrawerCoreVariants();
+export function DrawerCore<C extends ElementType = "div">({ Adapter, ...props }: PropsWithAdapter<DrawerPort<C>>) {
+  const { isOpen, onClose, onOpen } = useDrawerState(props.defaultOpen);
 
-  return <Component {...htmlProps} className={cn(slots.base(), classNames?.base)} />;
+  return (
+    <>
+      {props?.trigger ? <div onClick={onOpen}>{props.trigger}</div> : null}
+      <Adapter {...props} onClose={onClose} isOpen={isOpen} />
+    </>
+  );
 }
