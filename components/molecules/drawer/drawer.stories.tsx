@@ -4,11 +4,10 @@ import { Button } from "components/atoms/button/variants/button-default";
 import { Typo } from "components/atoms/typo/variants/typo-default";
 import { Icon } from "components/layout/icon/icon";
 
-import { DrawerCore } from "./drawer.core";
 import { DrawerPort } from "./drawer.types";
 import { Drawer } from "./variants/drawer-default";
 
-type Story = StoryObj<typeof DrawerCore>;
+type Story = StoryObj<typeof Drawer>;
 
 const defaultProps: DrawerPort<"div"> = {
   trigger: <Button>Open Drawer</Button>,
@@ -23,8 +22,8 @@ const defaultProps: DrawerPort<"div"> = {
   },
 };
 
-const meta: Meta<typeof DrawerCore> = {
-  component: DrawerCore,
+const meta: Meta<typeof Drawer> = {
+  component: Drawer,
   title: "Molecules/Drawer",
   tags: ["autodocs"],
   parameters: {
