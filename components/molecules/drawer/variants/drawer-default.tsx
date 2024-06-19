@@ -6,9 +6,5 @@ import { DrawerCore } from "../drawer.core";
 import { DrawerPort } from "../drawer.types";
 
 export function Drawer<C extends ElementType = "div">({ ...props }: DrawerPort<C>) {
-  return (
-    <DrawerCore {...props} Adapter={DrawerNextUiAdapter}>
-      {props.children}
-    </DrawerCore>
-  );
+  return <DrawerCore {...props} Adapter={DrawerNextUiAdapter} />;
 }

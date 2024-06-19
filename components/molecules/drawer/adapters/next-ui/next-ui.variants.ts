@@ -14,7 +14,7 @@ export const DrawerNextUiVariants = tv({
   },
   variants: {
     size: {
-      md: {
+      m: {
         base: "w-[640px]",
       },
     },
