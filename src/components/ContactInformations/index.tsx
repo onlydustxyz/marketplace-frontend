@@ -1,5 +1,3 @@
-import Telegram from "src/assets/icons/Telegram";
-
 import { Icon } from "components/layout/icon/icon";
 
 import { useIntl } from "hooks/translate/use-translate";
@@ -35,7 +33,7 @@ export default function ContactInformations({ onlyEditable }: Props) {
       <ContactInformation
         name="telegram"
         placeholder={T("profile.form.contactInfo.telegram")}
-        icon={<Telegram size={16} className="fill-greyscale-400" />}
+        icon={<Icon remixName="ri-telegram-2-fill" />}
         visibilityName="isTelegramPublic"
         options={{
           pattern: {

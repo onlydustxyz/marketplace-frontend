@@ -2841,4 +2841,6 @@ export type RemixIconsName =
   | "ri-dice-fill"
   | "ri-flower-fill"
   | "ri-armchair-fill"
-  | "ri-sofa-fill";
+  | "ri-sofa-fill"
+  | "ri-telegram-2-fill"
+  | "ri-telegram-2-line";

@@ -2,7 +2,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 import { SocialIcon } from "src/_pages/ProjectDetails/ProjectEdition/pages/Information/components/SocialIcon";
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
-import Telegram from "src/assets/icons/Telegram";
 
 import { Link } from "components/ds/link/link";
 import { Icon } from "components/layout/icon/icon";
@@ -42,7 +41,7 @@ export const ProjectOverviewMoreInfo = ({ moreInfos }: ProjectOverviewMoreInfoPr
           <Typography variant="body-s" className="flex flex-col gap-2">
             <FakeExternalLink
               text={T("common.channel.telegram")}
-              icon={({ className }) => <Telegram className={className} size={16} />}
+              icon={({ className }) => <Icon remixName="ri-telegram-2-fill" className={className} />}
             />
             <FakeExternalLink
               text={T("common.channel.discord")}
