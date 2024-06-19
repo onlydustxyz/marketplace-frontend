@@ -105,10 +105,10 @@ async function createAdapter({ name, path, PascalName }) {
     prettier.format(
       `
         import { tv } from "tailwind-variants";
-        import { ${PascalName}CoreVariants } from "../${name}.variants";
+        import { ${PascalName}CoreVariants } from "../../${name}.variants";
 
         export const ${PascalName}DefaultVariants = tv({
-          extends: ${PascalName}CoreVariants,
+          extend: ${PascalName}CoreVariants,
           slots: {
             base: "",
           },

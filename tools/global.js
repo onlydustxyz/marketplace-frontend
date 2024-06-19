@@ -77,4 +77,5 @@ module.exports = {
   kebabToPascal,
   kebabToCamel,
   defaultPromptName,
+  exists,
 };
