@@ -8,7 +8,6 @@ import { z } from "zod";
 
 import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
-import Telegram from "src/assets/icons/Telegram";
 import { viewportConfig } from "src/config";
 
 import { Button } from "components/ds/button/button";
@@ -96,7 +95,7 @@ export function ApplyForm({ formDescription, buttonConnected, onApply, profile }
                 isInvalid={!!fieldState.error}
                 errorMessage={fieldState.error?.message ? <Translate token={fieldState.error.message} /> : null}
                 placeholder={T("v2.commons.form.contact.telegram.placeholder")}
-                startContent={<Telegram size={16} />}
+                startContent={<Icon remixName="ri-telegram-2-fill" />}
                 visibilityName="telegram.isPublic"
               />
             )}
