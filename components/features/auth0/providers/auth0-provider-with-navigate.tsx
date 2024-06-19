@@ -14,7 +14,7 @@ const audience = process.env.NEXT_PUBLIC_AUTH0_AUDIENCE;
 
 export function Auth0ProviderWithNavigate({ children }: { children: ReactNode }) {
   const { capture } = usePosthog();
-  const [scopeStorage] = useLocalStorage("auth0-scope");
+  const [scopeStorage] = useLocalStorage("dynamic-github-public-repo-scope");
 
   const onRedirectCallback = (appState: AppState | undefined, user?: User) => {
     if (user) {

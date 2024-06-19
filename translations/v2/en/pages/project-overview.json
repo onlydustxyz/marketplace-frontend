@@ -60,6 +60,10 @@
     "overview": {
       "title": "Overview",
       "empty": "No description provided."
+    },
+    "applicantCount": {
+      "one": "1 applicant",
+      "many": "__count__ applicants"
     }
   },
   "repositories": {
