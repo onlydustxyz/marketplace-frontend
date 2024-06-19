@@ -1,10 +1,12 @@
 import { cn } from "src/utils/cn";
 
-import { TInputProps } from "./input.types";
+import { PropsWithAdapter } from "components/types/props-with-adapter";
+
+import { InputPort } from "./input.types";
 import { InputCoreVariants } from "./input.variants";
 
 export function InputCore({
-  Component,
+  Adapter,
   classNames,
   isError,
   isDisabled,
@@ -13,11 +15,11 @@ export function InputCore({
   startContent,
   endContent,
   label,
-}: TInputProps) {
+}: PropsWithAdapter<InputPort>) {
   const slots = InputCoreVariants({ isDisabled, isError });
 
   return (
-    <Component
+    <Adapter
       classNames={{
         base: cn(slots.base(), classNames?.base),
         mainWrapper: cn(slots.mainWrapper(), classNames?.mainWrapper),

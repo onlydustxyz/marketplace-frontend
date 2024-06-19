@@ -1,8 +1,8 @@
-import { NextUiAdapters } from "components/atoms/input/adapters/next-ui-adapters";
+import { NextUiAdapter } from "components/atoms/input/adapters/next-ui-adapter";
 
 import { InputCore } from "../input.core";
-import { InputInterface } from "../input.types";
+import { InputPort } from "../input.types";
 
-export function Input({ ...props }: InputInterface) {
-  return <InputCore Component={NextUiAdapters} {...props} />;
+export function Input({ ...props }: InputPort) {
+  return <InputCore Adapter={NextUiAdapter} {...props} />;
 }

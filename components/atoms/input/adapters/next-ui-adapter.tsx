@@ -1,8 +1,8 @@
 import { Input } from "@nextui-org/input";
 
-import { InputInterface } from "components/atoms/input/input.types";
+import { InputPort } from "components/atoms/input/input.types";
 
-export function NextUiAdapters({
+export function NextUiAdapter({
   classNames,
   isError,
   isDisabled,
@@ -11,7 +11,7 @@ export function NextUiAdapters({
   startContent,
   endContent,
   label,
-}: InputInterface) {
+}: InputPort) {
   return (
     <Input
       classNames={classNames}
