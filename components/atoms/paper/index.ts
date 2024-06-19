@@ -1,3 +1,4 @@
 export * from "./paper.core";
-export * from "./variants/paper-default";
+export * from "./paper.loading";
 export * from "./paper.types";
+export * from "./variants/paper-default";
