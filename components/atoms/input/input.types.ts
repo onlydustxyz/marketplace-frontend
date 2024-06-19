@@ -6,7 +6,8 @@ import { InputCoreVariants } from "./input.variants";
 type Variants = VariantProps<typeof InputCoreVariants>;
 type classNames = Partial<typeof InputCoreVariants["slots"]>;
 type htmlInputProps = ComponentPropsWithoutRef<"input">;
-export interface TInputProps extends htmlInputProps, Variants {
+
+export interface InputInterface extends htmlInputProps, Variants {
   classNames?: classNames;
   value: string;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -15,4 +16,7 @@ export interface TInputProps extends htmlInputProps, Variants {
   endContent?: ReactNode;
   isDisabled?: boolean;
   label?: ReactNode;
+}
+export interface TInputProps extends InputInterface {
+  Component: (props: InputInterface) => ReactNode;
 }

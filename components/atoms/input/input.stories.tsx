@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 
+import { NextUiAdapters } from "components/atoms/input/adapters/next-ui-adapters";
 import { InputLoading } from "components/atoms/input/input.loading";
 import { Icon } from "components/layout/icon/icon";
 
@@ -13,6 +14,7 @@ const defaultProps: TInputProps = {
   startContent: <Icon remixName="ri-square-line" className={"text-inherit"} />,
   endContent: <Icon remixName="ri-square-line" className={"text-inherit"} />,
   value: "Input text",
+  Component: NextUiAdapters,
 };
 
 const meta: Meta<typeof InputCore> = {

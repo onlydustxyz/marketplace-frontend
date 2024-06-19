@@ -1,6 +1,8 @@
-import { InputCore } from "../input.core";
-import { TInputProps } from "../input.types";
+import { NextUiAdapters } from "components/atoms/input/adapters/next-ui-adapters";
 
-export function Input({ ...props }: TInputProps) {
-  return <InputCore {...props} classNames={{}} />;
+import { InputCore } from "../input.core";
+import { InputInterface } from "../input.types";
+
+export function Input({ ...props }: InputInterface) {
+  return <InputCore Component={NextUiAdapters} {...props} />;
 }
