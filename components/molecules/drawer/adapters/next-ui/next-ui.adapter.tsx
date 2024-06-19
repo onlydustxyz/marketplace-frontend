@@ -53,7 +53,6 @@ export function DrawerNextUiAdapter<C extends ElementType = "div">({
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       hideCloseButton={true}
-      backdrop="opaque"
       portalContainer={(document.getElementById("modal-root") as HTMLElement) || undefined}
       classNames={{
         base: cn(slots.base(), classNames?.container),
