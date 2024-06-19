@@ -13,8 +13,10 @@ import { Tabs } from "src/components/Tabs/Tabs";
 import { AllTabs, useContributionTabs } from "src/hooks/useContributionTabs";
 import { usePosthog } from "src/hooks/usePosthog";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
-import StackLine from "src/icons/StackLine";
 import { ContributionStatus, OrderBy } from "src/types";
+
+import { Icon } from "components/layout/icon/icon";
+import { Translate } from "components/layout/translate/translate";
 
 import { useIntl } from "hooks/translate/use-translate";
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
@@ -42,7 +44,7 @@ export default function Contributions() {
   const { githubUserId } = useCurrentUser();
   const [sortStorage, setSortStorage] = useLocalStorage("contributions-table-sort-v02", JSON.stringify(initialSort));
   const [sort, setSort] = useState<typeof initialSort>(sortStorage ? JSON.parse(sortStorage) : initialSort);
-  const { isActiveTab, updateActiveTab } = useContributionTabs();
+  const { isActiveTab, updateActiveTab } = useContributionTabs({ defaultTab: AllTabs.InProgress });
   const { headerCells, bodyRow } = useContributionTable();
   const { capture } = usePosthog();
 
@@ -56,19 +58,6 @@ export default function Contributions() {
 
   const tabItems = [
     {
-      active: isActiveTab(AllTabs.All),
-      onClick: () => {
-        updateActiveTab(AllTabs.All);
-      },
-      testId: "contributions-all-contributions-tab",
-      children: (
-        <ContributionTabContents>
-          <StackLine className="text-xl leading-none md:hidden" />
-          {T("contributions.nav.allContributions")}
-        </ContributionTabContents>
-      ),
-    },
-    {
       active: isActiveTab(AllTabs.InProgress),
       onClick: () => {
         updateActiveTab(AllTabs.InProgress);
@@ -76,8 +65,8 @@ export default function Contributions() {
       testId: "contributions-in-progress-tab",
       children: (
         <ContributionTabContents>
-          <ProgressCircle className="h-5 w-5 md:h-4 md:w-4" />
-          {T("contributions.nav.inProgress")}
+          <Icon remixName="ri-progress-4-line" />
+          <Translate token="contributions.nav.inProgress" />
         </ContributionTabContents>
       ),
     },
@@ -89,8 +78,8 @@ export default function Contributions() {
       testId: "contributions-completed-tab",
       children: (
         <ContributionTabContents>
-          <CheckboxCircleLine className="text-xl leading-none md:text-base" />
-          {T("contributions.nav.completed")}
+          <Icon remixName="ri-checkbox-circle-line" />
+          <Translate token="contributions.nav.completed" />
         </ContributionTabContents>
       ),
     },
@@ -102,8 +91,8 @@ export default function Contributions() {
       testId: "contributions-canceled-tab",
       children: (
         <ContributionTabContents>
-          <CancelCircleLine className="h-5 w-5 md:h-4 md:w-4" />
-          {T("contributions.nav.canceled")}
+          <Icon remixName="ri-close-circle-line" />
+          <Translate token="contributions.nav.canceled" />
         </ContributionTabContents>
       ),
     },
@@ -115,7 +104,7 @@ export default function Contributions() {
       title: T("contributions.inProgress.title"),
       description: T("contributions.inProgress.description"),
       icon: className => <ProgressCircle className={className} />,
-      show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress),
+      show: isActiveTab(AllTabs.InProgress),
       sort: sort[ContributionStatus.InProgress],
       onSort: sort => {
         setSort(prevState => {
@@ -139,10 +128,7 @@ export default function Contributions() {
           },
         },
         options: {
-          enabled:
-            Boolean(githubUserId) &&
-            (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress)) &&
-            Boolean(filterQueryParams),
+          enabled: Boolean(githubUserId) && isActiveTab(AllTabs.InProgress) && Boolean(filterQueryParams),
         },
       }),
       filterRef,
@@ -162,7 +148,7 @@ export default function Contributions() {
           return state;
         });
       },
-      show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed),
+      show: isActiveTab(AllTabs.Completed),
       headerCells,
       bodyRow,
       query: UsersApi.queries.useUserContributions({
@@ -176,10 +162,7 @@ export default function Contributions() {
           },
         },
         options: {
-          enabled:
-            Boolean(githubUserId) &&
-            (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed)) &&
-            Boolean(filterQueryParams),
+          enabled: Boolean(githubUserId) && isActiveTab(AllTabs.Completed) && Boolean(filterQueryParams),
         },
       }),
       filterRef,
@@ -199,7 +182,7 @@ export default function Contributions() {
           return state;
         });
       },
-      show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled),
+      show: isActiveTab(AllTabs.Cancelled),
       headerCells,
       bodyRow,
       query: UsersApi.queries.useUserContributions({
@@ -213,10 +196,7 @@ export default function Contributions() {
           },
         },
         options: {
-          enabled:
-            Boolean(githubUserId) &&
-            (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled)) &&
-            Boolean(filterQueryParams),
+          enabled: Boolean(githubUserId) && isActiveTab(AllTabs.Cancelled) && Boolean(filterQueryParams),
         },
       }),
       filterRef,
@@ -245,9 +225,7 @@ export default function Contributions() {
               </header>
               <div className="flex flex-col gap-4 px-2 py-3 md:px-4 md:py-6 lg:px-8">
                 {tableItems.map(({ show, ...restProps }) =>
-                  show ? (
-                    <ContributionTable key={restProps.id} {...restProps} fullTable={isActiveTab(AllTabs.All)} />
-                  ) : null
+                  show ? <ContributionTable key={restProps.id} {...restProps} fullTable={false} /> : null
                 )}
               </div>
             </div>

@@ -82,7 +82,7 @@ async function createStories({ name, path, PascalName }) {
 
         const meta: Meta<typeof ${PascalName}> = {
           component: ${PascalName},
-          title: "Design system/${PascalName}",
+          title: "Local components/${PascalName}",
           tags: ["autodocs"],
           parameters: {
             backgrounds: {

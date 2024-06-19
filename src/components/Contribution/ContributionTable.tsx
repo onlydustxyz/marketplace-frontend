@@ -95,7 +95,7 @@ export function ContributionTable({
   // Used for performance optimization, avoid rendering large invisible DOM
   const isLg = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.lg}px)`);
 
-  const { activeTab } = useContributionTabs();
+  const { activeTab } = useContributionTabs({});
 
   const nbColumns = headerCells.length;
   const sortDirection = sort.direction === OrderBy.Asc ? "up" : "down";
