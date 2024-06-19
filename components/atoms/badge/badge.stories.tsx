@@ -2,19 +2,18 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { BadgeLoading } from "components/atoms/badge/badge.loading";
 
-import { BadgeCore } from "./badge.core";
-import { TBadgeProps } from "./badge.types";
+import { BadgePort } from "./badge.types";
 import { Badge } from "./variants/badge-default";
 import { BadgeDot } from "./variants/badge-dot";
 
-type Story = StoryObj<typeof BadgeCore>;
+type Story = StoryObj<typeof Badge>;
 
-const defaultProps: TBadgeProps<"div"> = {
+const defaultProps: BadgePort<"div"> = {
   children: "2",
 };
 
-const meta: Meta<typeof BadgeCore> = {
-  component: BadgeCore,
+const meta: Meta<typeof Badge> = {
+  component: Badge,
   title: "Atoms/Badge",
   tags: ["autodocs"],
   parameters: {
@@ -49,8 +48,8 @@ export const Size: Story = {
   render: () => {
     return (
       <div className="flex w-full items-center gap-2">
-        <BadgeCore {...defaultProps} size={"s"} />
-        <BadgeCore {...defaultProps} size={"m"} />
+        <Badge {...defaultProps} size={"s"} />
+        <Badge {...defaultProps} size={"m"} />
       </div>
     );
   },
@@ -65,12 +64,12 @@ export const FitContent: Story = {
   render: () => {
     return (
       <div className="flex w-full items-center gap-2">
-        <BadgeCore {...defaultProps} size={"s"} fitContent={true}>
+        <Badge {...defaultProps} size={"s"} fitContent={true}>
           99999
-        </BadgeCore>
-        <BadgeCore {...defaultProps} fitContent={true}>
+        </Badge>
+        <Badge {...defaultProps} fitContent={true}>
           99999
-        </BadgeCore>
+        </Badge>
       </div>
     );
   },
@@ -84,11 +83,11 @@ export const Colors: Story = {
   render: () => {
     return (
       <div className="flex w-full items-center gap-2">
-        <BadgeCore {...defaultProps} colors={"default"} />
-        <BadgeCore {...defaultProps} colors={"brand1"} />
-        <BadgeCore {...defaultProps} colors={"brand2"} />
-        <BadgeCore {...defaultProps} colors={"brand3"} />
-        <BadgeCore {...defaultProps} colors={"brand4"} />
+        <Badge {...defaultProps} colors={"default"} />
+        <Badge {...defaultProps} colors={"brand1"} />
+        <Badge {...defaultProps} colors={"brand2"} />
+        <Badge {...defaultProps} colors={"brand3"} />
+        <Badge {...defaultProps} colors={"brand4"} />
       </div>
     );
   },
@@ -103,11 +102,11 @@ export const Outline: Story = {
   render: () => {
     return (
       <div className="flex w-full items-center gap-2">
-        <BadgeCore {...defaultProps} colors={"default"} style={"outline"} />
-        <BadgeCore {...defaultProps} colors={"brand1"} style={"outline"} />
-        <BadgeCore {...defaultProps} colors={"brand2"} style={"outline"} />
-        <BadgeCore {...defaultProps} colors={"brand3"} style={"outline"} />
-        <BadgeCore {...defaultProps} colors={"brand4"} style={"outline"} />
+        <Badge {...defaultProps} colors={"default"} style={"outline"} />
+        <Badge {...defaultProps} colors={"brand1"} style={"outline"} />
+        <Badge {...defaultProps} colors={"brand2"} style={"outline"} />
+        <Badge {...defaultProps} colors={"brand3"} style={"outline"} />
+        <Badge {...defaultProps} colors={"brand4"} style={"outline"} />
       </div>
     );
   },
