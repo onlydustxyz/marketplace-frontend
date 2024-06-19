@@ -37,7 +37,7 @@ export function GrantPermission({ isOpen, onClose }: TGrantPermissionModal.Props
     <>
       <PermissionModal isOpen={isPermissionOpen} onClose={handlePermissionClose} onMoreInfoOpen={handleMoreInfoOpen} />
 
-      <MoreInfoModal isOpen={isMoreInfoOpen} onClose={handleMoreInfoClose} onDone={handleMoreInfoDone} />
+      <MoreInfoModal isOpen={isMoreInfoOpen} onClose={handleMoreInfoClose} onBack={handleMoreInfoDone} />
     </>
   );
 }

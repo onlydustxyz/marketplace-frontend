@@ -17,7 +17,7 @@ export function useDynamicScopes() {
 
   // const { user } = useCurrentUser();
   // const canApply = user?.isAuthorizedToApplyOnGithubIssues;
-  const canApply = true;
+  const canApply = false;
 
   useEffect(() => {
     if (scopeStorage.getValue() && !canApply) {

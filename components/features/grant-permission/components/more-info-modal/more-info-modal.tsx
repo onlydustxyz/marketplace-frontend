@@ -5,13 +5,16 @@ import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
 import { Typo } from "components/atoms/typo/variants/typo-default";
 import { TMoreInfoModal } from "components/features/grant-permission/components/more-info-modal/more-info-modal.types";
+import { useDynamicScopes } from "components/features/grant-permission/hooks/useDynamicScopes";
+import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Modal } from "components/molecules/modal";
 
 import { useIntl } from "hooks/translate/use-translate";
 
-export function MoreInfoModal({ isOpen, onClose, onDone }: TMoreInfoModal.Props) {
+export function MoreInfoModal({ isOpen, onClose, onBack }: TMoreInfoModal.Props) {
   const { T } = useIntl();
+  const { handleAddDynamicScopes } = useDynamicScopes();
   return (
     <Modal
       title={<Translate token="v2.features.githubGrantPermissions.modals.moreInfos.title" />}
@@ -19,12 +22,26 @@ export function MoreInfoModal({ isOpen, onClose, onDone }: TMoreInfoModal.Props)
       onClose={onClose}
       footerEndContent={
         <div className="flex gap-4">
-          <Button variant="primary" size="l" onClick={onDone}>
+          <Button variant="secondary-light" size="l" onClick={onBack}>
             <Typo
               variant="default"
               size="xs"
               translate={{
                 token: "v2.features.githubGrantPermissions.modals.moreInfos.footerButtons.back",
+              }}
+            />
+          </Button>
+          <Button
+            variant="primary"
+            startContent={<Icon remixName="ri-github-line" />}
+            size="l"
+            onClick={handleAddDynamicScopes}
+          >
+            <Typo
+              variant="default"
+              size="xs"
+              translate={{
+                token: "v2.features.githubGrantPermissions.modals.permissions.footerButtons.grantPermissions",
               }}
             />
           </Button>
