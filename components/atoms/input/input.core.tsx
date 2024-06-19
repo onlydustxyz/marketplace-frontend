@@ -1,11 +1,12 @@
-import { Input as NextInput } from "@nextui-org/input";
-
 import { cn } from "src/utils/cn";
 
-import { TInputProps } from "./input.types";
+import { PropsWithAdapter } from "components/types/props-with-adapter";
+
+import { InputPort } from "./input.types";
 import { InputCoreVariants } from "./input.variants";
 
 export function InputCore({
+  Adapter,
   classNames,
   isError,
   isDisabled,
@@ -14,11 +15,11 @@ export function InputCore({
   startContent,
   endContent,
   label,
-}: TInputProps) {
+}: PropsWithAdapter<InputPort>) {
   const slots = InputCoreVariants({ isDisabled, isError });
 
   return (
-    <NextInput
+    <Adapter
       classNames={{
         base: cn(slots.base(), classNames?.base),
         mainWrapper: cn(slots.mainWrapper(), classNames?.mainWrapper),
@@ -31,11 +32,10 @@ export function InputCore({
         description: cn(slots.description(), classNames?.description),
       }}
       label={label}
-      variant="bordered"
-      labelPlacement="outside-left"
       startContent={startContent}
       endContent={endContent}
       isDisabled={isDisabled}
+      isError={isError}
       disabled={isDisabled}
       onChange={onChange}
       value={value}
