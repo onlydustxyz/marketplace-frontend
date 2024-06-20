@@ -17,7 +17,10 @@ export function useDynamicScopes() {
 
   const { mutate: logoutUser } = meApiClient.mutations.useLogoutUser({
     onSuccess: () => {
-      handleLoginWithRedirect(loginWithRedirect, { grantPermissionFLowTriggered: "true" });
+      handleLoginWithRedirect(loginWithRedirect, {
+        queryParam: { grantPermissionFLowTriggered: "true" },
+        connection_scope: process.env.NEXT_PUBLIC_GITHUB_PUBLIC_REPO_SCOPE,
+      });
     },
   });
 
@@ -31,7 +34,10 @@ export function useDynamicScopes() {
         logoutUser({});
       }
       if (hasAskedForPermission === "update-permission") {
-        handleLoginWithRedirect(loginWithRedirect, { grantPermissionFLowTriggered: "true" });
+        handleLoginWithRedirect(loginWithRedirect, {
+          queryParam: { grantPermissionFLowTriggered: "true" },
+          connection_scope: process.env.NEXT_PUBLIC_GITHUB_PUBLIC_REPO_SCOPE,
+        });
       }
     }
   }, [scopeStorage, canApply, hasAskedForPermission]);
