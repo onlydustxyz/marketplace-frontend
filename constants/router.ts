@@ -16,7 +16,12 @@ export const NEXT_ROUTER = {
         new: (slug: string) => `/p/${slug}/rewards/new`,
       },
       edit: (slug: string) => `/p/${slug}/edit`,
-      contributions: (slug: string) => `/p/${slug}/contributions`,
+      contributions: {
+        root: (slug: string) => `/p/${slug}/contributions`,
+        details: {
+          root: (slug: string, contributionId: string) => `/p/${slug}/contributions/${contributionId}`,
+        },
+      },
       insights: (slug: string) => `/p/${slug}/insights`,
     },
     creation: "/p/create",
