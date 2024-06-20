@@ -9,6 +9,7 @@ import { Textarea } from "./variants/textarea-default";
 type Story = StoryObj<typeof TextareaCore>;
 
 const defaultProps: TTextareaProps = {
+  name: "textarea",
   startContent: <Icon remixName="ri-square-line" className={"text-inherit"} />,
   endContent: <Icon remixName="ri-square-line" className={"text-inherit"} />,
   value: "Input text",
