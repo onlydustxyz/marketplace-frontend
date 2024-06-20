@@ -6,15 +6,11 @@ import { BadgeCoreVariants } from "./badge.variants";
 type Variants = VariantProps<typeof BadgeCoreVariants>;
 type classNames = Partial<typeof BadgeCoreVariants["slots"]>;
 
-export interface TBadgeProps<C extends ElementType> extends Variants, PropsWithChildren {
+export interface BadgePort<C extends ElementType> extends Variants, PropsWithChildren {
   htmlProps?: ComponentPropsWithoutRef<C>;
   classNames?: classNames;
   as?: C;
   hideContent?: boolean;
 }
 
-export interface TBadgeDotProps<C extends ElementType> extends Omit<TBadgeProps<C>, "children"> {
-  htmlProps?: ComponentPropsWithoutRef<C>;
-  classNames?: classNames;
-  as?: C;
-}
+export interface BadgeDotPortDot<C extends ElementType> extends Omit<BadgePort<C>, "children"> {}
