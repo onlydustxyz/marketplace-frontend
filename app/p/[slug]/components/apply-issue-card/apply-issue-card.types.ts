@@ -6,7 +6,7 @@ import { TIcon } from "components/layout/icon/icon.types";
 
 export namespace TApplyIssueCard {
   export interface Props extends PropsWithChildren {
-    paperProps: TPaperProps<"article">;
+    container?: TPaperProps<"article">["container"];
     iconProps: TIcon.Props;
     titleProps: TTypoProps<"span">;
   }
