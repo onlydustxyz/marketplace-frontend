@@ -14,7 +14,7 @@
     },
     "moreInfos": {
       "title": "How to grant permissions",
-      "description": "Click on grant permissions, you will be redirected to GitHub, where you will be asked to log in and grant the permissions. Once you have granted the permissions, you will be redirected back to OnlyDust.",
+      "description": "Click on grant permissions, you will see a popup from Github, click on Authorize OnlyDust, and you will be back here to submit your application.",
       "footerButtons": {
         "grantPermissions": "Grant write permissions",
         "back": "Back"

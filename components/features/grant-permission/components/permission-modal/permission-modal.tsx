@@ -14,30 +14,34 @@ export function PermissionModal({ isOpen, onClose, onMoreInfoOpen }: TPermission
   const { handleAddPublicRepoScope } = usePublicRepoScope(onClose);
   return (
     <Modal
-      title={<Translate token="v2.features.githubGrantPermissions.modals.permissions.title" />}
+      titleProps={{
+        translate: { token: "v2.features.githubGrantPermissions.modals.permissions.title" },
+      }}
       isOpen={isOpen}
-      onClose={onClose}
-      footerEndContent={
-        <div className="flex gap-4">
-          <Button variant="secondary-light" size="l" onClick={onMoreInfoOpen}>
-            <Translate token="v2.features.githubGrantPermissions.modals.permissions.footerButtons.moreInfo" />
-          </Button>
-          <Button
-            variant="primary"
-            startContent={<Icon remixName="ri-github-line" />}
-            size="l"
-            onClick={handleAddPublicRepoScope}
-          >
-            <Typo
-              variant="default"
-              size="xs"
-              translate={{
-                token: "v2.features.githubGrantPermissions.modals.permissions.footerButtons.grantPermissions",
-              }}
-            />
-          </Button>
-        </div>
-      }
+      onOpenChange={isModalOpen => (!isModalOpen ? onClose() : null)}
+      footer={{
+        endContent: (
+          <div className="flex gap-4">
+            <Button variant="secondary-light" size="l" onClick={onMoreInfoOpen}>
+              <Translate token="v2.features.githubGrantPermissions.modals.permissions.footerButtons.moreInfo" />
+            </Button>
+            <Button
+              variant="primary"
+              startContent={<Icon remixName="ri-github-line" />}
+              size="l"
+              onClick={handleAddPublicRepoScope}
+            >
+              <Typo
+                variant="default"
+                size="xs"
+                translate={{
+                  token: "v2.features.githubGrantPermissions.modals.permissions.footerButtons.grantPermissions",
+                }}
+              />
+            </Button>
+          </div>
+        ),
+      }}
     >
       <div className="flex flex-col gap-4">
         <Image
