@@ -18,9 +18,7 @@ export const NEXT_ROUTER = {
       edit: (slug: string) => `/p/${slug}/edit`,
       contributions: {
         root: (slug: string) => `/p/${slug}/contributions`,
-        details: {
-          root: (slug: string, contributionId: string) => `/p/${slug}/contributions/${contributionId}`,
-        },
+        details: (slug: string, contributionId: string) => `/p/${slug}/contributions/${contributionId}`,
       },
       insights: (slug: string) => `/p/${slug}/insights`,
     },
