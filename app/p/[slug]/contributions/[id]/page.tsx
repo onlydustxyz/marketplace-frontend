@@ -1,9 +1,7 @@
 "use client";
 
 import { withAuthenticationRequired } from "@auth0/auth0-react";
-import { notFound, useParams } from "next/navigation";
-
-import ProjectApi from "src/api/Project";
+import { useParams } from "next/navigation";
 
 import { withLeadRequired } from "components/features/auth0/guards/lead-guard";
 import { withClientOnly } from "components/layout/client-only/client-only";
@@ -16,24 +14,9 @@ import { ContributorSelect } from "./features/contributor-select/contributor-sel
 function ContributionPage() {
   const { slug = "", contributionId = "" } = useParams<{ slug?: string; contributionId?: string }>();
 
-  const { data: project, isLoading: isLoadingProject } = ProjectApi.queries.useGetProjectBySlug({
-    params: { slug },
-  });
-
-  const { data: contribution, isLoading: isLoadingContribution } = ProjectApi.queries.useGetProjectContributionDetail({
-    params: { projectId: project?.id, contributionId },
-    options: {
-      enabled: !!project,
-    },
-  });
-
-  if (!isLoadingProject && !isLoadingContribution && !contribution) {
-    notFound();
-  }
-
   return (
     <Flex direction="col" className="gap-6">
-      <ContributionHeader title={contribution?.githubTitle} />
+      <ContributionHeader title={`Title to change : ${slug} ${contributionId}`} />
 
       <Flex className="gap-6">
         <ContributorSelect />
