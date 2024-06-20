@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { Button } from "components/ds/button/button";
 import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
 import { GrantPermission } from "components/features/grant-permission/grant-permission";
-import { useDynamicScopes } from "components/features/grant-permission/hooks/useDynamicScopes";
+import { usePublicRepoScope } from "components/features/grant-permission/hooks/use-public-repo-scope";
 import { Translate } from "components/layout/translate/translate";
 
 import { TApplyButton } from "./apply-button.types";
@@ -13,7 +13,7 @@ export function ApplyButton({ hasApplied }: TApplyButton.Props) {
   const [isOpenGrantPermission, setIsOpenGrantPermission] = useState(false);
   const { isAuthenticated, loginWithRedirect } = useAuth0();
 
-  const { canApply, scopeStorage, handleAddDynamicScopes } = useDynamicScopes();
+  const { canApply, scopeStorage, handleAddPublicRepoScope } = usePublicRepoScope();
 
   function handleViewApplication() {
     // Open apply consult drawer
@@ -32,7 +32,7 @@ export function ApplyButton({ hasApplied }: TApplyButton.Props) {
     }
 
     if (!scopeStorage) {
-      handleAddDynamicScopes();
+      handleAddPublicRepoScope();
     }
 
     //  Open apply form drawer

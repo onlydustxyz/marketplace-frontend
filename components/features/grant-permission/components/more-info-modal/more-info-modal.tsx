@@ -5,7 +5,7 @@ import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
 import { Typo } from "components/atoms/typo/variants/typo-default";
 import { TMoreInfoModal } from "components/features/grant-permission/components/more-info-modal/more-info-modal.types";
-import { useDynamicScopes } from "components/features/grant-permission/hooks/useDynamicScopes";
+import { usePublicRepoScope } from "components/features/grant-permission/hooks/use-public-repo-scope";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Modal } from "components/molecules/modal";
@@ -14,7 +14,8 @@ import { useIntl } from "hooks/translate/use-translate";
 
 export function MoreInfoModal({ isOpen, onClose, onBack }: TMoreInfoModal.Props) {
   const { T } = useIntl();
-  const { handleAddDynamicScopes } = useDynamicScopes();
+  const { handleAddPublicRepoScope } = usePublicRepoScope(onClose);
+
   return (
     <Modal
       title={<Translate token="v2.features.githubGrantPermissions.modals.moreInfos.title" />}
@@ -35,7 +36,7 @@ export function MoreInfoModal({ isOpen, onClose, onBack }: TMoreInfoModal.Props)
             variant="primary"
             startContent={<Icon remixName="ri-github-line" />}
             size="l"
-            onClick={handleAddDynamicScopes}
+            onClick={handleAddPublicRepoScope}
           >
             <Typo
               variant="default"

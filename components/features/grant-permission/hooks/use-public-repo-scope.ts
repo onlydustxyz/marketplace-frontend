@@ -1,12 +1,21 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import { PopupConfigOptions, PopupLoginOptions } from "@auth0/auth0-spa-js";
 import { meApiClient } from "api-client/resources/me";
 import { useEffect, useRef, useState } from "react";
 import { useLocalStorage } from "react-use";
 
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
-export function useDynamicScopes() {
-  const { loginWithRedirect, loginWithPopup } = useAuth0();
+async function handleLoginWithPopup(
+  loginWithPopup: (options?: PopupLoginOptions, config?: PopupConfigOptions) => Promise<void>
+) {
+  await loginWithPopup({
+    authorizationParams: { connection_scope: process.env.NEXT_PUBLIC_GITHUB_PUBLIC_REPO_SCOPE },
+  });
+}
+
+export function usePublicRepoScope(onClose?: () => void) {
+  const { loginWithPopup } = useAuth0();
   const hasLogout = useRef(false);
   const [scopeStorage, setScopeStorage] = useLocalStorage("dynamic-github-public-repo-scope");
   const [hasAskedForPermission, setHasAskedForPermission] = useState<false | "update-permission" | "create-permission">(
@@ -15,21 +24,9 @@ export function useDynamicScopes() {
 
   const { mutate: logoutUser } = meApiClient.mutations.useLogoutUser({
     onSuccess: async () => {
-      // handleLoginWithRedirect(loginWithRedirect, {
-      //   queryParam: { grantPermissionFLowTriggered: "true" },
-      //   connection_scope: process.env.NEXT_PUBLIC_GITHUB_PUBLIC_REPO_SCOPE,
-      // });
-      try {
-        await loginWithPopup({
-          authorizationParams: { connection_scope: process.env.NEXT_PUBLIC_GITHUB_PUBLIC_REPO_SCOPE },
-        });
-      } catch {
-        error;
-      }
-      if (error instanceof auth0.PopupTimeoutError) {
-        // custom logic to inform user to retry
-        error.popup.close();
-      }
+      await handleLoginWithPopup(loginWithPopup).then(() => {
+        if (onClose) onClose();
+      });
     },
   });
 
@@ -43,7 +40,9 @@ export function useDynamicScopes() {
         logoutUser({});
       }
       if (hasAskedForPermission === "update-permission") {
-        loginWithPopup({ authorizationParams: { connection_scope: process.env.NEXT_PUBLIC_GITHUB_PUBLIC_REPO_SCOPE } });
+        handleLoginWithPopup(loginWithPopup).then(() => {
+          console?.log("Open apply consult drawer");
+        });
       }
     }
   }, [scopeStorage, canApply, hasAskedForPermission]);
@@ -60,12 +59,12 @@ export function useDynamicScopes() {
     return false;
   }
 
-  function handleAddDynamicScopes() {
+  function handleAddPublicRepoScope() {
     if (process.env.NEXT_PUBLIC_GITHUB_PUBLIC_REPO_SCOPE) {
       setScopeStorage(process.env.NEXT_PUBLIC_GITHUB_PUBLIC_REPO_SCOPE);
       setHasAskedForPermission(createAskForPermission());
     }
   }
 
-  return { handleAddDynamicScopes, scopeStorage, canApply };
+  return { handleAddPublicRepoScope, scopeStorage, canApply };
 }
