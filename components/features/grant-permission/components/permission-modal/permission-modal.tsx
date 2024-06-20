@@ -10,19 +10,19 @@ import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Modal } from "components/molecules/modal";
 
-export function PermissionModal({ isOpen, onClose, onMoreInfoOpen }: TPermissionModal.Props) {
-  const { handleAddPublicRepoScope } = usePublicRepoScope(onClose);
+export function PermissionModal({ isOpen, handleClose, handleMoreInfoOpen }: TPermissionModal.Props) {
+  const { handleAddPublicRepoScope } = usePublicRepoScope(handleClose);
   return (
     <Modal
       titleProps={{
         translate: { token: "v2.features.githubGrantPermissions.modals.permissions.title" },
       }}
       isOpen={isOpen}
-      onOpenChange={isModalOpen => (!isModalOpen ? onClose() : null)}
+      onOpenChange={isModalOpen => (!isModalOpen ? handleClose() : null)}
       footer={{
         endContent: (
           <div className="flex gap-4">
-            <Button variant="secondary-light" size="l" onClick={onMoreInfoOpen}>
+            <Button variant="secondary-light" size="l" onClick={handleMoreInfoOpen}>
               <Translate token="v2.features.githubGrantPermissions.modals.permissions.footerButtons.moreInfo" />
             </Button>
             <Button

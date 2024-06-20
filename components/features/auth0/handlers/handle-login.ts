@@ -7,7 +7,7 @@ export async function handleLoginWithRedirect(
   await loginWithRedirectFunc({
     appState: {
       returnTo: `${window.location.pathname}${
-        options?.queryParam ? `?${new URLSearchParams(options?.queryParam).toString()}` : ""
+        options?.queryParam ? `?${new URLSearchParams(options.queryParam).toString()}` : ""
       }`,
     },
     ...(options?.connection_scope

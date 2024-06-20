@@ -4,7 +4,7 @@ import { MoreInfoModal } from "components/features/grant-permission/components/m
 import { PermissionModal } from "components/features/grant-permission/components/permission-modal/permission-modal";
 import { TGrantPermissionModal } from "components/features/grant-permission/grant-permission.types";
 
-export function GrantPermission({ isOpen, onClose }: TGrantPermissionModal.Props) {
+export function GrantPermission({ isOpen, handleClose }: TGrantPermissionModal.Props) {
   const [isMoreInfoOpen, setIsMoreInfoOpen] = useState(false);
   const [isPermissionOpen, setIsPermissionOpen] = useState(false);
 
@@ -14,18 +14,18 @@ export function GrantPermission({ isOpen, onClose }: TGrantPermissionModal.Props
 
   function handlePermissionClose() {
     setIsPermissionOpen(false);
-    onClose();
+    handleClose();
   }
 
   function handleMoreInfoOpen() {
     setIsPermissionOpen(false);
     setIsMoreInfoOpen(true);
-    onClose();
+    handleClose();
   }
 
   function handleMoreInfoClose() {
     setIsMoreInfoOpen(false);
-    onClose();
+    handleClose();
   }
 
   function handleMoreInfoDone() {
@@ -35,9 +35,13 @@ export function GrantPermission({ isOpen, onClose }: TGrantPermissionModal.Props
 
   return (
     <>
-      <PermissionModal isOpen={isPermissionOpen} onClose={handlePermissionClose} onMoreInfoOpen={handleMoreInfoOpen} />
+      <PermissionModal
+        isOpen={isPermissionOpen}
+        handleClose={handlePermissionClose}
+        handleMoreInfoOpen={handleMoreInfoOpen}
+      />
 
-      <MoreInfoModal isOpen={isMoreInfoOpen} onClose={handleMoreInfoClose} onBack={handleMoreInfoDone} />
+      <MoreInfoModal isOpen={isMoreInfoOpen} handleClose={handleMoreInfoClose} handleBack={handleMoreInfoDone} />
     </>
   );
 }

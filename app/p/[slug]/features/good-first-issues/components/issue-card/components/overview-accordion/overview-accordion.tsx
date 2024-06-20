@@ -1,13 +1,14 @@
 import { Accordion, AccordionItem, Selection } from "@nextui-org/react";
-import { useMemo, useState } from "react";
+import { lazy, useMemo, useState } from "react";
 
 import { TOverviewAccordion } from "app/p/[slug]/features/good-first-issues/components/issue-card/components/overview-accordion/overview-accordion.types";
 
-import MarkdownPreview from "src/components/MarkdownPreview";
 import { cn } from "src/utils/cn";
 
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
+
+const MarkdownPreview = lazy(() => import("src/components/MarkdownPreview"));
 
 export function OverviewAccordion({ body }: TOverviewAccordion.Props) {
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set("1"));

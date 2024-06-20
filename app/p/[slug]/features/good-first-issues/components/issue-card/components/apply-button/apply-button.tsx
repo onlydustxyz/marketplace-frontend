@@ -58,7 +58,7 @@ export function ApplyButton({ hasApplied }: TApplyButton.Props) {
   return (
     <>
       {renderButton}
-      <GrantPermission isOpen={isOpenGrantPermission} onClose={() => setIsOpenGrantPermission(false)} />
+      <GrantPermission isOpen={isOpenGrantPermission} handleClose={() => setIsOpenGrantPermission(false)} />
     </>
   );
 }
