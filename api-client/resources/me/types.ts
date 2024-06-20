@@ -1,5 +1,10 @@
 import { components, operations } from "src/__generated/api";
 
+/* --------------------------------- Me root -------------------------------- */
+
+type LogoutRequest = operations["logoutMe"];
+export interface LogoutUserResponse extends LogoutRequest {}
+
 /* --------------------------------- Me Hackathons -------------------------------- */
 
 export interface UpdateHackathonsRegistrationsParams {
