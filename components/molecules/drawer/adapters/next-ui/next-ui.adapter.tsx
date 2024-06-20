@@ -71,12 +71,13 @@ export function DrawerNextUiAdapter<C extends ElementType = "div">({
               <ModalHeader>
                 <div>{header?.startContent}</div>
                 <div className="flex items-center justify-end gap-2">
-                  <div>{header?.endContent}</div>
+                  {header?.endContent ? <div>{header.endContent}</div> : null}
                   <Button
                     onClick={onClose}
                     startIcon={{ remixName: "ri-close-line" }}
                     hideText
                     variant="secondary-light"
+                    size={"l"}
                   />
                 </div>
               </ModalHeader>
