@@ -1,5 +1,7 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { differenceInDays } from "date-fns";
-import { FormEvent, lazy, useMemo, useState } from "react";
+import { lazy, useMemo, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 
 import { ApplyIssueCard } from "app/p/[slug]/components/apply-issue-card/apply-issue-card";
 import { TApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.types";
@@ -8,6 +10,7 @@ import { Button } from "components/atoms/button/variants/button-default";
 import { Tag } from "components/atoms/tag";
 import { TagAvatar } from "components/atoms/tag/variants/tag-avatar";
 import { TagIcon } from "components/atoms/tag/variants/tag-icon";
+import { Textarea } from "components/atoms/textarea";
 import { Typo } from "components/atoms/typo/variants/typo-default";
 import { BaseLink } from "components/layout/base-link/base-link";
 import { Translate } from "components/layout/translate/translate";
@@ -18,13 +21,18 @@ const MarkdownPreview = lazy(() => import("src/components/MarkdownPreview"));
 export function ApplyIssueDrawer({ issue, hasApplied }: TApplyIssueDrawer.Props) {
   const [isOpen, setIsOpen] = useState(false);
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  const { control, handleSubmit } = useForm<TApplyIssueDrawer.form>({
+    resolver: zodResolver(TApplyIssueDrawer.validation),
+    defaultValues: { motivations: "", problemSolvingApproach: "" },
+  });
 
-    alert("Submitted!");
+  function handleFormSubmission(values: TApplyIssueDrawer.form) {
+    // TODO next @hayden
+    console.log({ values });
   }
 
   function handleCancel() {
+    // TODO @hayden
     alert("Cancel!");
   }
 
@@ -104,7 +112,7 @@ export function ApplyIssueDrawer({ issue, hasApplied }: TApplyIssueDrawer.Props)
         onOpenChange={setIsOpen}
         as={"form"}
         htmlProps={{
-          onSubmit: handleSubmit,
+          onSubmit: handleSubmit(handleFormSubmission),
         }}
         header={header}
         footer={footer}
@@ -234,7 +242,39 @@ export function ApplyIssueDrawer({ issue, hasApplied }: TApplyIssueDrawer.Props)
               }}
               className={"col-span-full"}
             >
-              <div className="pt-3">Form here</div>
+              <div className="grid gap-3 pt-3">
+                <Typo
+                  as={"label"}
+                  htmlProps={{ htmlFor: "motivations" }}
+                  variant={"brand"}
+                  size={"m"}
+                  translate={{ token: "v2.features.projects.applyIssueDrawer.sections.applicationForm.motivations" }}
+                />
+                <Controller
+                  name="motivations"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Textarea id={field.name} isError={!!fieldState.error} {...field} />
+                  )}
+                />
+
+                <Typo
+                  as={"label"}
+                  htmlProps={{ htmlFor: "problemSolvingApproach" }}
+                  variant={"brand"}
+                  size={"m"}
+                  translate={{
+                    token: "v2.features.projects.applyIssueDrawer.sections.applicationForm.problemSolvingApproach",
+                  }}
+                />
+                <Controller
+                  name="problemSolvingApproach"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Textarea id={field.name} isError={!!fieldState.error} {...field} />
+                  )}
+                />
+              </div>
             </ApplyIssueCard>
           </div>
         </div>

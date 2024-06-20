@@ -11,8 +11,8 @@
     "description": "Description",
     "applicationForm": {
       "title": "Application Form",
-      "question1": "Tell us about your background and how it can be leveraged: *",
-      "question2": "How would you approach the problem?"
+      "motivations": "Tell us about your background and how it can be leveraged: *",
+      "problemSolvingApproach": "How would you approach the problem?"
     }
   },
   "footer": {
