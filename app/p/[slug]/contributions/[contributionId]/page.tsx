@@ -4,7 +4,6 @@ import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { useParams } from "next/navigation";
 
 import { withLeadRequired } from "components/features/auth0/guards/lead-guard";
-import { withClientOnly } from "components/layout/client-only/client-only";
 import { Flex } from "components/layout/flex/flex";
 
 import { ContributionHeader } from "./features/contribution-header/contribution-header";
@@ -26,4 +25,4 @@ function ContributionPage() {
   );
 }
 
-export default withClientOnly(withAuthenticationRequired(withLeadRequired(ContributionPage)));
+export default withAuthenticationRequired(withLeadRequired(ContributionPage));
