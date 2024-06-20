@@ -3,8 +3,6 @@ import { meApiClient } from "api-client/resources/me";
 import { useEffect, useRef, useState } from "react";
 import { useLocalStorage } from "react-use";
 
-import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
-
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 export function useDynamicScopes() {
@@ -16,11 +14,22 @@ export function useDynamicScopes() {
   );
 
   const { mutate: logoutUser } = meApiClient.mutations.useLogoutUser({
-    onSuccess: () => {
-      handleLoginWithRedirect(loginWithRedirect, {
-        queryParam: { grantPermissionFLowTriggered: "true" },
-        connection_scope: process.env.NEXT_PUBLIC_GITHUB_PUBLIC_REPO_SCOPE,
-      });
+    onSuccess: async () => {
+      // handleLoginWithRedirect(loginWithRedirect, {
+      //   queryParam: { grantPermissionFLowTriggered: "true" },
+      //   connection_scope: process.env.NEXT_PUBLIC_GITHUB_PUBLIC_REPO_SCOPE,
+      // });
+      try {
+        await loginWithPopup({
+          authorizationParams: { connection_scope: process.env.NEXT_PUBLIC_GITHUB_PUBLIC_REPO_SCOPE },
+        });
+      } catch {
+        error;
+      }
+      if (error instanceof auth0.PopupTimeoutError) {
+        // custom logic to inform user to retry
+        error.popup.close();
+      }
     },
   });
 
