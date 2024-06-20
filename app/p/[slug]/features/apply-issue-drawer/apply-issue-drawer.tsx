@@ -15,15 +15,17 @@ import { Drawer } from "components/molecules/drawer";
 
 const MarkdownPreview = lazy(() => import("src/components/MarkdownPreview"));
 
-export function ApplyIssueDrawer({ issue, hasApplied = true }: TApplyIssueDrawer.Props) {
+export function ApplyIssueDrawer({ issue, hasApplied }: TApplyIssueDrawer.Props) {
   const [isOpen, setIsOpen] = useState(false);
-
-  console.log({ issue });
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     alert("Submitted!");
+  }
+
+  function handleCancel() {
+    alert("Cancel!");
   }
 
   const header = useMemo(() => {
@@ -75,7 +77,7 @@ export function ApplyIssueDrawer({ issue, hasApplied = true }: TApplyIssueDrawer
 
     const EndContent = hasApplied ? (
       <div className={"flex items-center gap-2.5"}>
-        <Button variant={"danger"} size={"l"}>
+        <Button variant={"danger"} size={"l"} onClick={handleCancel}>
           <Translate token={"v2.features.projects.applyIssueDrawer.footer.cancelApplication"} />
         </Button>
         <Button size={"l"} isDisabled>
@@ -122,8 +124,19 @@ export function ApplyIssueDrawer({ issue, hasApplied = true }: TApplyIssueDrawer
               }}
               className={"col-span-3"}
             >
-              {/* TODO @hayden */}
-              <div className="pt-2">Languages</div>
+              <div className="pt-2">
+                {issue.languages ? (
+                  <ul className={"flex flex-wrap gap-2"}>
+                    {issue.languages.map(language => (
+                      <li key={language.id}>
+                        <TagAvatar style={"outline"} color={"grey"} size={"xs"} avatar={{ src: language.logoUrl }}>
+                          {language.name}
+                        </TagAvatar>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+              </div>
             </ApplyIssueCard>
             <ApplyIssueCard
               iconProps={{ remixName: "ri-price-tag-3-line" }}
