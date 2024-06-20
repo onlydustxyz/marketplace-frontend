@@ -8,7 +8,7 @@ import { handleLoginWithRedirect } from "components/features/auth0/handlers/hand
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 export function useDynamicScopes() {
-  const { loginWithRedirect } = useAuth0();
+  const { loginWithRedirect, loginWithPopup } = useAuth0();
   const hasLogout = useRef(false);
   const [scopeStorage, setScopeStorage] = useLocalStorage("dynamic-github-public-repo-scope");
   const [hasAskedForPermission, setHasAskedForPermission] = useState<false | "update-permission" | "create-permission">(
@@ -34,10 +34,7 @@ export function useDynamicScopes() {
         logoutUser({});
       }
       if (hasAskedForPermission === "update-permission") {
-        handleLoginWithRedirect(loginWithRedirect, {
-          queryParam: { grantPermissionFLowTriggered: "true" },
-          connection_scope: process.env.NEXT_PUBLIC_GITHUB_PUBLIC_REPO_SCOPE,
-        });
+        loginWithPopup({ authorizationParams: { connection_scope: process.env.NEXT_PUBLIC_GITHUB_PUBLIC_REPO_SCOPE } });
       }
     }
   }, [scopeStorage, canApply, hasAskedForPermission]);

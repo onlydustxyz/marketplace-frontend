@@ -13,7 +13,7 @@ export function ApplyButton({ hasApplied }: TApplyButton.Props) {
   const [isOpenGrantPermission, setIsOpenGrantPermission] = useState(false);
   const { isAuthenticated, loginWithRedirect } = useAuth0();
 
-  const { canApply } = useDynamicScopes();
+  const { canApply, scopeStorage, handleAddDynamicScopes } = useDynamicScopes();
 
   function handleViewApplication() {
     // Open apply consult drawer
@@ -29,6 +29,10 @@ export function ApplyButton({ hasApplied }: TApplyButton.Props) {
       // Open github grant permissions modal
       setIsOpenGrantPermission(true);
       return;
+    }
+
+    if (!scopeStorage) {
+      handleAddDynamicScopes();
     }
 
     //  Open apply form drawer
