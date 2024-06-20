@@ -1,5 +1,4 @@
-import { ModalProps } from "@nextui-org/modal";
-import { ComponentProps, PropsWithChildren, ReactNode } from "react";
+import { ComponentProps, ComponentPropsWithoutRef, ElementType, PropsWithChildren, ReactNode } from "react";
 import { VariantProps } from "tailwind-variants";
 
 import { Button } from "components/atoms/button/variants/button-default";
@@ -10,15 +9,17 @@ import { ModalCoreVariants } from "./modal.variants";
 type Variants = VariantProps<typeof ModalCoreVariants>;
 type classNames = Partial<typeof ModalCoreVariants["slots"]>;
 
-export interface TModalProps
-  extends Variants,
-    PropsWithChildren,
-    Pick<ModalProps, "isOpen" | "onOpenChange" | "isDismissable"> {
+export interface ModalPort<C extends ElementType> extends Variants, PropsWithChildren {
+  htmlProps?: ComponentPropsWithoutRef<C>;
+  as?: C;
+  isOpen: boolean;
+  onOpenChange?: (isOpen: boolean) => void;
   classNames?: classNames;
-  title: ReactNode;
-  onClose(): void;
   titleProps?: Partial<ComponentProps<typeof Typo>>;
   closeButtonProps?: ComponentProps<typeof Button>;
-  footerStartContent?: ReactNode;
-  footerEndContent?: ReactNode;
+  footer?: {
+    startContent?: ReactNode;
+    endContent?: ReactNode;
+  };
+  canDismiss?: boolean;
 }

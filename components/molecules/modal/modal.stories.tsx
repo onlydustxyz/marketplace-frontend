@@ -1,21 +1,26 @@
 import { Meta, StoryObj } from "@storybook/react";
+import { useState } from "react";
 
-import { ModalCore } from "./modal.core";
-import { TModalProps } from "./modal.types";
+import { Button } from "components/atoms/button/variants/button-default";
+
+import { ModalPort } from "./modal.types";
 import { Modal } from "./variants/modal-default";
 
-type Story = StoryObj<typeof ModalCore>;
+type Story = StoryObj<typeof Modal>;
 
-const defaultProps: TModalProps = {
-  title: "v2.pages.home.recommendedProjects.title",
-  footerStartContent: "Footer start",
-  footerEndContent: "Footer end",
+const defaultProps: ModalPort<"div"> = {
+  isOpen: false,
+  titleProps: { children: "Modal title" },
+  footer: {
+    startContent: "Footer start",
+    endContent: "Footer end",
+  },
   children: "Modal content",
   classNames: {},
 };
 
-const meta: Meta<typeof ModalCore> = {
-  component: ModalCore,
+const meta: Meta<typeof Modal> = {
+  component: Modal,
   title: "Molecules/Modal",
   tags: ["autodocs"],
   parameters: {
@@ -28,19 +33,12 @@ const meta: Meta<typeof ModalCore> = {
 
 export const Default: Story = {
   render: args => {
-    return (
-      <div className="flex w-full items-center gap-2">
-        <Modal {...defaultProps} {...args} />
-      </div>
-    );
-  },
-};
+    const [isOpen, setIsOpen] = useState(false);
 
-export const Core: Story = {
-  render: args => {
     return (
-      <div className="flex w-full items-center gap-2">
-        <ModalCore {...defaultProps} {...args} />
+      <div>
+        <Button onClick={() => setIsOpen(true)}>Open modal</Button>
+        <Modal {...defaultProps} {...args} isOpen={isOpen} onOpenChange={setIsOpen} />
       </div>
     );
   },

@@ -52,7 +52,7 @@ export function JourneyPublic() {
             icon={{ remixName: "ri-user-line" }}
             variant="rainbow"
             endElement={<IconTag icon={{ remixName: "ri-arrow-right-s-line", size: 16 }} size={"s"} />}
-            classNames={{ wrapper: "w-full" }}
+            classNames={{ wrapper: "w-full after:hidden" }}
           />
         </Button>
       </Section>

@@ -42,5 +42,5 @@ export function PageGrid({ children }: TPageGrid.Props) {
     return classes.unauthenticated;
   }, [isAuthenticated, journeyCompleted, isLoadingJourney, classes, isLg]);
 
-  return <div className={cn("px w-full gap-x-6 gap-y-12 py-8", templateArea)}>{children}</div>;
+  return <div className={cn("px w-full gap-x-4 gap-y-12 py-8", templateArea)}>{children}</div>;
 }

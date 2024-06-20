@@ -12,11 +12,12 @@ import { Tabs } from "src/components/Tabs/Tabs";
 import Flex from "src/components/Utils/Flex";
 import { AllTabs, useContributionTabs } from "src/hooks/useContributionTabs";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
-import StackLine from "src/icons/StackLine";
 import { ContributionStatus, OrderBy } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
 import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
+import { Icon } from "components/layout/icon/icon";
+import { Translate } from "components/layout/translate/translate";
 
 import { useIntl } from "hooks/translate/use-translate";
 
@@ -53,7 +54,7 @@ export default function Contributions() {
   const orgsWithUnauthorizedRepos = project ? getOrgsWithUnauthorizedRepos(project) : [];
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
 
-  const { isActiveTab, updateActiveTab } = useContributionTabs();
+  const { isActiveTab, updateActiveTab } = useContributionTabs({ defaultTab: AllTabs.InProgress });
   const { headerCells, bodyRow } = useContributionTable();
 
   const [sortStorage, setSortStorage] = useLocalStorage(
@@ -68,19 +69,6 @@ export default function Contributions() {
 
   const tabItems = [
     {
-      active: isActiveTab(AllTabs.All),
-      onClick: () => {
-        updateActiveTab(AllTabs.All);
-      },
-      testId: "project-contributions-all-contributions-tab",
-      children: (
-        <ContributionTabContents>
-          <StackLine className="text-xl leading-none md:hidden" />
-          {T("contributions.nav.allContributions")}
-        </ContributionTabContents>
-      ),
-    },
-    {
       active: isActiveTab(AllTabs.InProgress),
       onClick: () => {
         updateActiveTab(AllTabs.InProgress);
@@ -88,8 +76,8 @@ export default function Contributions() {
       testId: "project-contributions-in-progress-tab",
       children: (
         <ContributionTabContents>
-          <ProgressCircle className="h-5 w-5 md:h-4 md:w-4" />
-          {T("contributions.nav.inProgress")}
+          <Icon remixName="ri-progress-4-line" />
+          <Translate token="contributions.nav.inProgress" />
         </ContributionTabContents>
       ),
     },
@@ -101,8 +89,8 @@ export default function Contributions() {
       testId: "project-contributions-completed-tab",
       children: (
         <ContributionTabContents>
-          <CheckboxCircleLine className="text-xl leading-none md:text-base" />
-          {T("contributions.nav.completed")}
+          <Icon remixName="ri-checkbox-circle-line" />
+          <Translate token="contributions.nav.completed" />
         </ContributionTabContents>
       ),
     },
@@ -114,8 +102,8 @@ export default function Contributions() {
       testId: "project-contributions-canceled-tab",
       children: (
         <ContributionTabContents>
-          <CancelCircleLine className="h-5 w-5 md:h-4 md:w-4" />
-          {T("contributions.nav.canceled")}
+          <Icon remixName="ri-close-circle-line" />
+          <Translate token="contributions.nav.canceled" />
         </ContributionTabContents>
       ),
     },
@@ -127,7 +115,7 @@ export default function Contributions() {
       title: T("contributions.inProgress.title"),
       description: T("contributions.inProgress.description"),
       icon: className => <ProgressCircle className={className} />,
-      show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress),
+      show: isActiveTab(AllTabs.InProgress),
       sort: sort[ContributionStatus.InProgress],
       onSort: sort => {
         setSort(prevState => {
@@ -150,7 +138,7 @@ export default function Contributions() {
           },
         },
         options: {
-          enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.InProgress)) && Boolean(filterQueryParams),
+          enabled: isActiveTab(AllTabs.InProgress) && Boolean(filterQueryParams),
         },
       }),
       filterRef,
@@ -170,7 +158,7 @@ export default function Contributions() {
           return state;
         });
       },
-      show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed),
+      show: isActiveTab(AllTabs.Completed),
       headerCells,
       bodyRow,
       query: ProjectApi.queries.useProjectContributionsInfiniteList({
@@ -183,7 +171,7 @@ export default function Contributions() {
           },
         },
         options: {
-          enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Completed)) && Boolean(filterQueryParams),
+          enabled: isActiveTab(AllTabs.Completed) && Boolean(filterQueryParams),
         },
       }),
       filterRef,
@@ -203,7 +191,7 @@ export default function Contributions() {
           return state;
         });
       },
-      show: isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled),
+      show: isActiveTab(AllTabs.Cancelled),
       headerCells,
       bodyRow,
       query: ProjectApi.queries.useProjectContributionsInfiniteList({
@@ -216,7 +204,7 @@ export default function Contributions() {
           },
         },
         options: {
-          enabled: (isActiveTab(AllTabs.All) || isActiveTab(AllTabs.Cancelled)) && Boolean(filterQueryParams),
+          enabled: isActiveTab(AllTabs.Cancelled) && Boolean(filterQueryParams),
         },
       }),
       filterRef,
@@ -262,9 +250,7 @@ export default function Contributions() {
               </header>
               <div className="flex flex-col gap-4 px-2 py-3 md:px-3 md:py-6">
                 {tableItems.map(({ show, ...restProps }) =>
-                  show ? (
-                    <ContributionTable key={restProps.id} {...restProps} fullTable={isActiveTab(AllTabs.All)} />
-                  ) : null
+                  show ? <ContributionTable key={restProps.id} {...restProps} fullTable={false} /> : null
                 )}
               </div>
             </div>

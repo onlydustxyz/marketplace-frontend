@@ -1,6 +1,6 @@
 import { ElementType } from "react";
 
-import { Avatar } from "components/ds/avatar/avatar";
+import { Avatar } from "components/atoms/avatar";
 
 import { TagCore } from "../tag.core";
 import { TTagAvatarProps } from "../tag.types";

@@ -1,11 +1,10 @@
-import Telegram from "src/assets/icons/Telegram";
 import Link from "src/icons/Link";
 
 import { Icon } from "components/layout/icon/icon";
 
 const getSocialIcon = (searchString: string, className?: string) => {
   const socialIcons = {
-    ["t.me/"]: <Telegram className={className} />,
+    ["t.me/"]: <Icon remixName="ri-telegram-2-fill" className={className} />,
     ["discord.com/"]: <Icon remixName="ri-discord-fill" className={className} />,
     ["x.com/"]: <Icon remixName="ri-twitter-x-fill" className={className} />,
     ["twitter.com/"]: <Icon remixName="ri-twitter-x-fill" className={className} />,
