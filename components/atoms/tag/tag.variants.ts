@@ -2,7 +2,7 @@ import { tv } from "tailwind-variants";
 
 export const TagCoreVariants = tv({
   slots: {
-    base: "group border-1 border-container-stroke-separator bg-container-4",
+    base: "group block border-1 border-container-stroke-separator bg-container-4",
     content: "flex flex-row items-center justify-center text-text-1",
     label: "text-inherit",
     deletableIcon: "text-inherit",
@@ -28,8 +28,8 @@ export const TagCoreVariants = tv({
     hideText: {
       true: "",
     },
-    display: {
-      rounded: {
+    shape: {
+      round: {
         base: "rounded-full",
       },
       square: {
@@ -120,7 +120,7 @@ export const TagCoreVariants = tv({
   ],
   defaultVariants: {
     size: "m",
-    display: "rounded",
+    shape: "round",
     hideText: false,
     style: "fill",
     deletable: false,
