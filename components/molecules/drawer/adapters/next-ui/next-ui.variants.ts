@@ -9,7 +9,7 @@ export const DrawerNextUiVariants = tv({
     wrapper: "justify-end",
     body: "gap-0 overflow-hidden p-3",
     backdrop: "bg-container-backdrop",
-    footer: "border-t-1 border-container-stroke-separator bg-container-1 p-3",
+    footer: "flex items-center justify-between border-t-1 border-container-stroke-separator bg-container-1 p-3",
     header: "flex items-center justify-between p-3 pb-0",
   },
   variants: {
