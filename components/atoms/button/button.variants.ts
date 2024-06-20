@@ -2,7 +2,7 @@ import { tv } from "tailwind-variants";
 
 export const ButtonCoreVariants = tv({
   slots: {
-    base: "group relative w-fit cursor-pointer overflow-hidden rounded-md bg-container-1 transition-background",
+    base: "group relative w-fit cursor-pointer overflow-hidden rounded-lg bg-container-1 transition-background",
     content: "flex flex-row items-center justify-center gap-2",
     startIcon: "",
     endIcon: "",
