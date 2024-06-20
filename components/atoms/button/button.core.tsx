@@ -23,10 +23,11 @@ export function ButtonCore<C extends ElementType = "button">({
   onClick,
   translate,
   type = "button",
+  htmlProps,
   ...props
 }: TButtonProps<C>) {
   const Component = as || "button";
-  const { isLoading, isDisabled, size, hideText, ...htmlProps } = props;
+  const { isLoading, isDisabled, size, hideText } = props;
   const slots = ButtonCoreVariants({
     isLoading,
     isDisabled,
@@ -38,7 +39,7 @@ export function ButtonCore<C extends ElementType = "button">({
 
   return (
     <Component
-      {...htmlProps}
+      {...(htmlProps || {})}
       data-loading={isLoading}
       data-disabled={isDisabled}
       className={cn(slots.base(), classNames?.base)}
