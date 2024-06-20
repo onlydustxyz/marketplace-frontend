@@ -1,0 +1,24 @@
+{
+  "header": {
+    "seeOnGithub": "See on GitHub"
+  },
+  "sections": {
+    "language": "Language",
+    "labels": "Labels",
+    "applicants": "Applicants",
+    "comments": "Comments",
+    "days": "Days",
+    "description": "Description",
+    "applicationForm": {
+      "title": "Application Form",
+      "question1": "Tell us about your background and how it can be leveraged: *",
+      "question2": "How would you approach the problem?"
+    }
+  },
+  "footer": {
+    "sendAnApplication": "Send an application",
+    "applied": "Applied",
+    "cancelApplication": "Cancel application",
+    "alreadyApplied": "Already applied"
+  }
+}
