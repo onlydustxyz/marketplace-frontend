@@ -14,14 +14,14 @@ import { ContributorDetails } from "./features/contributor-details/contributor-d
 import { ContributorSelect } from "./features/contributor-select/contributor-select";
 
 function ContributionPage() {
-  const { slug = "", id = "" } = useParams<{ slug?: string; id?: string }>();
+  const { slug = "", contributionId = "" } = useParams<{ slug?: string; contributionId?: string }>();
 
   const { data: project, isLoading: isLoadingProject } = ProjectApi.queries.useGetProjectBySlug({
     params: { slug },
   });
 
   const { data: contribution, isLoading: isLoadingContribution } = ProjectApi.queries.useGetProjectContributionDetail({
-    params: { projectId: project?.id, contributionId: id },
+    params: { projectId: project?.id, contributionId },
     options: {
       enabled: !!project,
     },
