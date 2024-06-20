@@ -14,16 +14,16 @@ export const BadgeDefaultVariants = tv({
       default: {
         base: "border border-container-stroke-separator bg-container-stroke-separator",
       },
-      brand1: {
+      "brand-1": {
         base: "border border-brand-1 bg-brand-1 text-text-1",
       },
-      brand2: {
+      "brand-2": {
         base: "border border-brand-2 bg-brand-2 text-text-1",
       },
-      brand3: {
+      "brand-3": {
         base: "border border-brand-3 bg-brand-3 text-text-1",
       },
-      brand4: {
+      "brand-4": {
         base: "border border-brand-4 bg-brand-4 text-text-1",
       },
     },

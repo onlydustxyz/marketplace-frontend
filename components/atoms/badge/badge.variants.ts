@@ -9,10 +9,10 @@ export const BadgeCoreVariants = tv({
   variants: {
     colors: {
       default: {},
-      brand1: {},
-      brand2: {},
-      brand3: {},
-      brand4: {},
+      "brand-1": {},
+      "brand-2": {},
+      "brand-3": {},
+      "brand-4": {},
     },
     size: {
       s: {},

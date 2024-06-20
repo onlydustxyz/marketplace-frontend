@@ -84,10 +84,10 @@ export const Colors: Story = {
     return (
       <div className="flex w-full items-center gap-2">
         <Badge {...defaultProps} colors={"default"} />
-        <Badge {...defaultProps} colors={"brand1"} />
-        <Badge {...defaultProps} colors={"brand2"} />
-        <Badge {...defaultProps} colors={"brand3"} />
-        <Badge {...defaultProps} colors={"brand4"} />
+        <Badge {...defaultProps} colors={"brand-1"} />
+        <Badge {...defaultProps} colors={"brand-2"} />
+        <Badge {...defaultProps} colors={"brand-3"} />
+        <Badge {...defaultProps} colors={"brand-4"} />
       </div>
     );
   },
@@ -103,10 +103,10 @@ export const Outline: Story = {
     return (
       <div className="flex w-full items-center gap-2">
         <Badge {...defaultProps} colors={"default"} style={"outline"} />
-        <Badge {...defaultProps} colors={"brand1"} style={"outline"} />
-        <Badge {...defaultProps} colors={"brand2"} style={"outline"} />
-        <Badge {...defaultProps} colors={"brand3"} style={"outline"} />
-        <Badge {...defaultProps} colors={"brand4"} style={"outline"} />
+        <Badge {...defaultProps} colors={"brand-1"} style={"outline"} />
+        <Badge {...defaultProps} colors={"brand-2"} style={"outline"} />
+        <Badge {...defaultProps} colors={"brand-3"} style={"outline"} />
+        <Badge {...defaultProps} colors={"brand-4"} style={"outline"} />
       </div>
     );
   },
@@ -126,20 +126,20 @@ export const Dot: Story = {
           <BadgeDot {...defaultProps} colors={"default"} style={"outline"} />
         </div>
         <div className="flex flex-col items-center gap-2">
-          <BadgeDot {...defaultProps} colors={"brand1"} />
-          <BadgeDot {...defaultProps} colors={"brand1"} style={"outline"} />
+          <BadgeDot {...defaultProps} colors={"brand-1"} />
+          <BadgeDot {...defaultProps} colors={"brand-1"} style={"outline"} />
         </div>
         <div className="flex flex-col items-center gap-2">
-          <BadgeDot {...defaultProps} colors={"brand2"} />
-          <BadgeDot {...defaultProps} colors={"brand2"} style={"outline"} />
+          <BadgeDot {...defaultProps} colors={"brand-2"} />
+          <BadgeDot {...defaultProps} colors={"brand-2"} style={"outline"} />
         </div>
         <div className="flex flex-col items-center gap-2">
-          <BadgeDot {...defaultProps} colors={"brand3"} />
-          <BadgeDot {...defaultProps} colors={"brand3"} style={"outline"} />
+          <BadgeDot {...defaultProps} colors={"brand-3"} />
+          <BadgeDot {...defaultProps} colors={"brand-3"} style={"outline"} />
         </div>
         <div className="flex flex-col items-center gap-2">
-          <BadgeDot {...defaultProps} colors={"brand4"} />
-          <BadgeDot {...defaultProps} colors={"brand4"} style={"outline"} />
+          <BadgeDot {...defaultProps} colors={"brand-4"} />
+          <BadgeDot {...defaultProps} colors={"brand-4"} style={"outline"} />
         </div>
       </div>
     );

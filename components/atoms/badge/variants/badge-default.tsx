@@ -5,6 +5,6 @@ import { BadgeCore } from "components/atoms/badge/badge.core";
 
 import { BadgePort } from "../badge.types";
 
-export function Badge<C extends ElementType = "div">({ ...props }: BadgePort<C>) {
+export function Badge<C extends ElementType = "div">(props: BadgePort<C>) {
   return <BadgeCore Adapter={BadgeDefaultAdapter} {...props} />;
 }
