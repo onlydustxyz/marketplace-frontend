@@ -1,10 +1,13 @@
 import { tv } from "tailwind-variants";
 
+import { ModalCoreVariants } from "../../modal.variants";
+
 export const ModalNextUiVariants = tv({
+  extend: ModalCoreVariants,
   slots: {
     modal: "group max-w-[500px] rounded-xl p-0",
     body: "p-4",
-    backdrop: "backdrop-blur-sm",
+    backdrop: "bg-container-backdrop",
     header: "flex items-center justify-between gap-4 p-4 pb-0",
     footer: "flex items-center justify-between gap-4 p-4",
   },
