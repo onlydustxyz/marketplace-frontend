@@ -22,6 +22,7 @@ export function ButtonCore<C extends ElementType = "button">({
   children,
   onClick,
   translate,
+  type = "button",
   ...props
 }: TButtonProps<C>) {
   const Component = as || "button";
@@ -42,6 +43,7 @@ export function ButtonCore<C extends ElementType = "button">({
       data-disabled={isDisabled}
       className={cn(slots.base(), classNames?.base)}
       onClick={onClick}
+      type={type}
     >
       <div className={cn(slots.content(), classNames?.content)}>
         {startContent}

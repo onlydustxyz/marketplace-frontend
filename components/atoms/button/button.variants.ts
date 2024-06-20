@@ -37,6 +37,7 @@ export const ButtonCoreVariants = tv({
         startIcon: "text-text-3",
         endIcon: "text-text-3",
         content: "text-text-3",
+        label: "text-text-3",
       },
     },
   },
