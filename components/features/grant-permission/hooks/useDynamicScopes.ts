@@ -1,33 +1,34 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import process from "process";
+import { meApiClient } from "api-client/resources/me";
 import { useEffect } from "react";
-
-// import { useLocalStorage } from "react-use";
-import { useLocalStorage } from "src/hooks/useStorage/useStorage";
+import { useLocalStorage } from "react-use";
 
 import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
 
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
+
 export function useDynamicScopes() {
-  const scopeStorage = useLocalStorage<string>({
-    key: "dynamic-github-public-repo-scope",
-    initialValue: "",
+  const { loginWithRedirect } = useAuth0();
+  const [scopeStorage, setScopeStorage] = useLocalStorage("dynamic-github-public-repo-scope");
+
+  const { mutate: logoutUser } = meApiClient.mutations.useLogoutUser({
+    onSuccess: () => {
+      handleLoginWithRedirect(loginWithRedirect, { grantPermissionFLowTriggered: "true" });
+    },
   });
 
-  const { loginWithRedirect } = useAuth0();
-
-  // const { user } = useCurrentUser();
-  // const canApply = user?.isAuthorizedToApplyOnGithubIssues;
-  const canApply = false;
+  const { user } = useCurrentUser();
+  const canApply = user?.isAuthorizedToApplyOnGithubIssues;
 
   useEffect(() => {
-    if (scopeStorage.getValue() && !canApply) {
-      handleLoginWithRedirect(loginWithRedirect, { grantPermissionFLowTriggered: "true" });
+    if (scopeStorage && !canApply) {
+      logoutUser({});
     }
-  }, [scopeStorage.getValue(), canApply]);
+  }, [scopeStorage, canApply]);
 
   function handleAddDynamicScopes() {
     if (process.env.NEXT_PUBLIC_GITHUB_PUBLIC_REPO_SCOPE) {
-      scopeStorage.setValue(process.env.NEXT_PUBLIC_GITHUB_PUBLIC_REPO_SCOPE);
+      setScopeStorage(process.env.NEXT_PUBLIC_GITHUB_PUBLIC_REPO_SCOPE);
     }
   }
 
