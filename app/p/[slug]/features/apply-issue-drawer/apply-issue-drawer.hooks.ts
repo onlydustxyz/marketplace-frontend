@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { applicationsApiClient } from "api-client/resources/applications";
 import { meApiClient } from "api-client/resources/me";
 import { useParams } from "next/navigation";
 import { useState } from "react";
@@ -24,6 +25,15 @@ export function useApplyIssueDrawer({ issue, state }: Pick<TApplyIssueDrawer.Pro
   });
 
   const { mutateAsync: updateAsync, ...update } = meApiClient.mutations.useUpdateMyApplication(
+    {
+      pathParams: {
+        applicationId: issue.currentUserApplication?.id ?? "",
+      },
+    },
+    project.data?.id ?? ""
+  );
+
+  const { mutateAsync: deleteAsync, ...deleteMutation } = applicationsApiClient.mutations.useDeleteApplication(
     {
       pathParams: {
         applicationId: issue.currentUserApplication?.id ?? "",
@@ -82,8 +92,12 @@ export function useApplyIssueDrawer({ issue, state }: Pick<TApplyIssueDrawer.Pro
   }
 
   function handleCancel() {
-    // TODO @hayden
-    alert("Cancel!");
+    deleteAsync({}).then(() => {
+      setIsOpen(false);
+      setTimeout(() => {
+        form.reset();
+      }, 500);
+    });
   }
 
   return {
@@ -91,6 +105,7 @@ export function useApplyIssueDrawer({ issue, state }: Pick<TApplyIssueDrawer.Pro
     form,
     create,
     update,
+    delete: deleteMutation,
     handleCreate,
     handleUpdate,
     handleCancel,
