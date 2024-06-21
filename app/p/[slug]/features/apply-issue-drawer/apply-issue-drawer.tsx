@@ -107,179 +107,173 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
   }, [hasApplied, createIsPending, updateIsPending]);
 
   return (
-    <>
-      <Drawer
-        isOpen={isOpen}
-        onOpenChange={setIsOpen}
-        as={"form"}
-        htmlProps={{
-          onSubmit: handleSubmit(handleCreate),
-        }}
-        header={header}
-        footer={footer}
-      >
-        <div className={"grid gap-4"}>
-          <Typo size={"2xl"} variant={"brand"} color={"text-1"}>
-            {issue.title}
-          </Typo>
+    <Drawer
+      isOpen={isOpen}
+      onOpenChange={setIsOpen}
+      as={"form"}
+      htmlProps={{
+        onSubmit: handleSubmit(handleCreate),
+      }}
+      header={header}
+      footer={footer}
+    >
+      <div className={"grid gap-4"}>
+        <Typo size={"2xl"} variant={"brand"} color={"text-1"}>
+          {issue.title}
+        </Typo>
 
-          <div className={"grid grid-cols-6 gap-4"}>
-            <ApplyIssueCard
-              iconProps={{ remixName: "ri-code-line" }}
-              titleProps={{
-                translate: {
-                  token: "v2.features.projects.applyIssueDrawer.sections.languages",
-                },
-              }}
-              className={"col-span-3"}
-            >
-              <div className="pt-2">
-                {issue.languages ? (
-                  <ul className={"flex flex-wrap gap-2"}>
-                    {issue.languages.map(language => (
-                      <li key={language.id}>
-                        <TagAvatar style={"outline"} color={"grey"} size={"xs"} avatar={{ src: language.logoUrl }}>
-                          {language.name}
-                        </TagAvatar>
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
-              </div>
-            </ApplyIssueCard>
-            <ApplyIssueCard
-              iconProps={{ remixName: "ri-price-tag-3-line" }}
-              titleProps={{
-                translate: {
-                  token: "v2.features.projects.applyIssueDrawer.sections.labels",
-                },
-              }}
-              className={"col-span-3"}
-            >
-              <div className="pt-2">
-                {issue.labels ? (
-                  <ul className={"flex flex-wrap gap-2"}>
-                    {issue.labels.map(label => (
-                      <li key={label.name}>
-                        <Tag style={"outline"} color={"grey"} size={"xs"}>
-                          {label.name}
-                        </Tag>
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
-              </div>
-            </ApplyIssueCard>
+        <div className={"grid grid-cols-6 gap-4"}>
+          <ApplyIssueCard
+            iconProps={{ remixName: "ri-code-line" }}
+            titleProps={{
+              translate: {
+                token: "v2.features.projects.applyIssueDrawer.sections.languages",
+              },
+            }}
+            className={"col-span-3"}
+          >
+            <div className="pt-2">
+              {issue.languages ? (
+                <ul className={"flex flex-wrap gap-2"}>
+                  {issue.languages.map(language => (
+                    <li key={language.id}>
+                      <TagAvatar style={"outline"} color={"grey"} size={"xs"} avatar={{ src: language.logoUrl }}>
+                        {language.name}
+                      </TagAvatar>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+            </div>
+          </ApplyIssueCard>
+          <ApplyIssueCard
+            iconProps={{ remixName: "ri-price-tag-3-line" }}
+            titleProps={{
+              translate: {
+                token: "v2.features.projects.applyIssueDrawer.sections.labels",
+              },
+            }}
+            className={"col-span-3"}
+          >
+            <div className="pt-2">
+              {issue.labels ? (
+                <ul className={"flex flex-wrap gap-2"}>
+                  {issue.labels.map(label => (
+                    <li key={label.name}>
+                      <Tag style={"outline"} color={"grey"} size={"xs"}>
+                        {label.name}
+                      </Tag>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+            </div>
+          </ApplyIssueCard>
 
-            <ApplyIssueCard
-              iconProps={{ remixName: "ri-discuss-line" }}
-              titleProps={{
-                translate: {
-                  token: "v2.features.projects.applyIssueDrawer.sections.applicants",
-                },
-              }}
-              container={"3"}
-              className={"col-span-2"}
-            >
-              <div className="pt-2">
-                <Typo variant={"brand"} size={"4xl"}>
-                  {issue.applicants.length}
-                </Typo>
-              </div>
-            </ApplyIssueCard>
-            <ApplyIssueCard
-              iconProps={{ remixName: "ri-fire-line" }}
-              titleProps={{
-                translate: {
-                  token: "v2.features.projects.applyIssueDrawer.sections.comments",
-                },
-              }}
-              container={"3"}
-              className={"col-span-2"}
-            >
-              <div className="pt-2">
-                <Typo variant={"brand"} size={"4xl"}>
-                  {issue.commentCount}
-                </Typo>
-              </div>
-            </ApplyIssueCard>
-            <ApplyIssueCard
-              iconProps={{ remixName: "ri-time-line" }}
-              titleProps={{
-                translate: {
-                  token: "v2.features.projects.applyIssueDrawer.sections.days",
-                },
-              }}
-              container={"3"}
-              className={"col-span-2"}
-            >
-              <div className="pt-2">
-                <Typo variant={"brand"} size={"4xl"}>
-                  {differenceInDays(new Date(), new Date(issue.createdAt))}
-                </Typo>
-              </div>
-            </ApplyIssueCard>
+          <ApplyIssueCard
+            iconProps={{ remixName: "ri-discuss-line" }}
+            titleProps={{
+              translate: {
+                token: "v2.features.projects.applyIssueDrawer.sections.applicants",
+              },
+            }}
+            container={"3"}
+            className={"col-span-2"}
+          >
+            <div className="pt-2">
+              <Typo variant={"brand"} size={"4xl"}>
+                {issue.applicants.length}
+              </Typo>
+            </div>
+          </ApplyIssueCard>
+          <ApplyIssueCard
+            iconProps={{ remixName: "ri-fire-line" }}
+            titleProps={{
+              translate: {
+                token: "v2.features.projects.applyIssueDrawer.sections.comments",
+              },
+            }}
+            container={"3"}
+            className={"col-span-2"}
+          >
+            <div className="pt-2">
+              <Typo variant={"brand"} size={"4xl"}>
+                {issue.commentCount}
+              </Typo>
+            </div>
+          </ApplyIssueCard>
+          <ApplyIssueCard
+            iconProps={{ remixName: "ri-time-line" }}
+            titleProps={{
+              translate: {
+                token: "v2.features.projects.applyIssueDrawer.sections.days",
+              },
+            }}
+            container={"3"}
+            className={"col-span-2"}
+          >
+            <div className="pt-2">
+              <Typo variant={"brand"} size={"4xl"}>
+                {differenceInDays(new Date(), new Date(issue.createdAt))}
+              </Typo>
+            </div>
+          </ApplyIssueCard>
 
-            {issue.body ? (
-              <ApplyIssueCard
-                iconProps={{ remixName: "ri-bill-line" }}
-                titleProps={{
-                  translate: {
-                    token: "v2.features.projects.applyIssueDrawer.sections.description",
-                  },
-                }}
-                className={"col-span-full"}
-              >
-                <MarkdownPreview className={"pt-3 text-sm"}>{issue.body}</MarkdownPreview>
-              </ApplyIssueCard>
-            ) : null}
-
+          {issue.body ? (
             <ApplyIssueCard
               iconProps={{ remixName: "ri-bill-line" }}
               titleProps={{
                 translate: {
-                  token: "v2.features.projects.applyIssueDrawer.sections.applicationForm.title",
+                  token: "v2.features.projects.applyIssueDrawer.sections.description",
                 },
               }}
               className={"col-span-full"}
             >
-              <div className="grid gap-3 pt-3">
-                <Typo
-                  as={"label"}
-                  htmlProps={{ htmlFor: "motivations" }}
-                  variant={"brand"}
-                  size={"m"}
-                  translate={{ token: "v2.features.projects.applyIssueDrawer.sections.applicationForm.motivations" }}
-                />
-                <Controller
-                  name="motivations"
-                  control={control}
-                  render={({ field, fieldState }) => (
-                    <Textarea id={field.name} isError={!!fieldState.error} {...field} />
-                  )}
-                />
-
-                <Typo
-                  as={"label"}
-                  htmlProps={{ htmlFor: "problemSolvingApproach" }}
-                  variant={"brand"}
-                  size={"m"}
-                  translate={{
-                    token: "v2.features.projects.applyIssueDrawer.sections.applicationForm.problemSolvingApproach",
-                  }}
-                />
-                <Controller
-                  name="problemSolvingApproach"
-                  control={control}
-                  render={({ field, fieldState }) => (
-                    <Textarea id={field.name} isError={!!fieldState.error} {...field} />
-                  )}
-                />
-              </div>
+              <MarkdownPreview className={"pt-3 text-sm"}>{issue.body}</MarkdownPreview>
             </ApplyIssueCard>
-          </div>
+          ) : null}
+
+          <ApplyIssueCard
+            iconProps={{ remixName: "ri-bill-line" }}
+            titleProps={{
+              translate: {
+                token: "v2.features.projects.applyIssueDrawer.sections.applicationForm.title",
+              },
+            }}
+            className={"col-span-full"}
+          >
+            <div className="grid gap-3 pt-3">
+              <Typo
+                as={"label"}
+                htmlProps={{ htmlFor: "motivations" }}
+                variant={"brand"}
+                size={"m"}
+                translate={{ token: "v2.features.projects.applyIssueDrawer.sections.applicationForm.motivations" }}
+              />
+              <Controller
+                name="motivations"
+                control={control}
+                render={({ field, fieldState }) => <Textarea id={field.name} isError={!!fieldState.error} {...field} />}
+              />
+
+              <Typo
+                as={"label"}
+                htmlProps={{ htmlFor: "problemSolvingApproach" }}
+                variant={"brand"}
+                size={"m"}
+                translate={{
+                  token: "v2.features.projects.applyIssueDrawer.sections.applicationForm.problemSolvingApproach",
+                }}
+              />
+              <Controller
+                name="problemSolvingApproach"
+                control={control}
+                render={({ field, fieldState }) => <Textarea id={field.name} isError={!!fieldState.error} {...field} />}
+              />
+            </div>
+          </ApplyIssueCard>
         </div>
-      </Drawer>
-    </>
+      </div>
+    </Drawer>
   );
 }
