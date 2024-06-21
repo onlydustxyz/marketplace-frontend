@@ -3,7 +3,11 @@ import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 
 export namespace ClaimUtils {
   export const canDisplay = ({ project }: { project?: UseGetProjectBySlugResponse }) => {
-    return project && project.leaders.length === 0 && project.invitedLeaders.length === 0;
+    if (project && project.leaders.length === 0 && project.invitedLeaders.length === 0) {
+      return true;
+    }
+
+    return false;
   };
 
   export const canSubmit = ({
