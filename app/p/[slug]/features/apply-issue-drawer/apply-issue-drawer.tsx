@@ -1,8 +1,9 @@
 import { differenceInDays } from "date-fns";
-import { lazy, useMemo } from "react";
+import { Suspense, useMemo } from "react";
 import { Controller } from "react-hook-form";
 
 import { ApplyIssueCard } from "app/p/[slug]/components/apply-issue-card/apply-issue-card";
+import { ApplyIssueMarkdown } from "app/p/[slug]/components/apply-issue-markdown/apply-issue-markdown";
 import { useApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.hooks";
 import { TApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.types";
 
@@ -12,11 +13,10 @@ import { TagAvatar } from "components/atoms/tag/variants/tag-avatar";
 import { TagIcon } from "components/atoms/tag/variants/tag-icon";
 import { Textarea } from "components/atoms/textarea";
 import { Typo } from "components/atoms/typo/variants/typo-default";
+import { SkeletonEl } from "components/ds/skeleton/skeleton";
 import { BaseLink } from "components/layout/base-link/base-link";
 import { Translate } from "components/layout/translate/translate";
 import { Drawer } from "components/molecules/drawer";
-
-const MarkdownPreview = lazy(() => import("src/components/MarkdownPreview"));
 
 export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer.Props) {
   const [isOpen, setIsOpen] = state;
@@ -220,19 +220,13 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
             </div>
           </ApplyIssueCard>
 
-          {issue.body ? (
-            <ApplyIssueCard
-              iconProps={{ remixName: "ri-bill-line" }}
-              titleProps={{
-                translate: {
-                  token: "v2.features.projects.applyIssueDrawer.sections.description",
-                },
-              }}
-              className={"col-span-full"}
-            >
-              <MarkdownPreview className={"pt-3 text-sm"}>{issue.body}</MarkdownPreview>
-            </ApplyIssueCard>
-          ) : null}
+          <Suspense
+            fallback={<SkeletonEl width={"100%"} height={400} variant={"rounded"} className={"col-span-full"} />}
+          >
+            <div className={"col-span-full"}>
+              <ApplyIssueMarkdown body={issue.body} />
+            </div>
+          </Suspense>
 
           <ApplyIssueCard
             iconProps={{ remixName: "ri-bill-line" }}
