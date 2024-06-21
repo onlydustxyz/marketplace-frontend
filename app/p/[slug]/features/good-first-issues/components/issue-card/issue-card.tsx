@@ -63,6 +63,26 @@ export function IssueCard({ issue }: TIssueCard.Props) {
           </Flex>
         </Flex>
 
+        {issue.applicants.length ? (
+          <Flex direction="row" className="gap-2">
+            <AvatarGroup
+              avatars={issue.applicants.map(applicant => ({
+                src: applicant.avatarUrl,
+                alt: applicant.login,
+              }))}
+              avatarProps={{ size: "xs" }}
+            />
+            <Typography
+              variant="body-xs"
+              className="text-spaceBlue-100"
+              translate={{
+                token: "v2.pages.project.overview.goodFirstIssues.applicantCount",
+                params: { count: issue.applicants.length },
+              }}
+            />
+          </Flex>
+        ) : null}
+
         <Flex wrap="wrap" className="gap-2">
           <Flex alignItems="center" className="gap-1">
             <Icon remixName="ri-price-tag-3-line" className="text-spaceBlue-100" />
@@ -73,25 +93,6 @@ export function IssueCard({ issue }: TIssueCard.Props) {
               translate={{ token: "v2.pages.project.overview.goodFirstIssues.labels.title" }}
             />
           </Flex>
-
-          {issue.applicants.length ? (
-            <Flex direction="row" className="gap-4">
-              <AvatarGroup
-                avatars={issue.applicants.map(applicant => ({
-                  src: applicant.avatarUrl,
-                  alt: applicant.login,
-                }))}
-              />
-              <Typography
-                variant="body-xs"
-                className="text-spaceBlue-100"
-                translate={{
-                  token: "v2.pages.project.overview.goodFirstIssues.applicantCount",
-                  params: { count: issue.applicants.length },
-                }}
-              />
-            </Flex>
-          ) : null}
 
           {issue.labels.length > 0 ? (
             <>
