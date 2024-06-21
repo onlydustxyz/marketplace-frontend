@@ -26,15 +26,28 @@ export default async function Image(props: { params: { githubLogin: string } }) 
           return null;
         }),
       usersApiClient.fetch
-        .getUserPublicLanguages(githubUserId, { pageSize: 2, pageIndex: 0 })
+        .getUserPublicLanguages({
+          pathParams: { githubId: githubUserId },
+          pagination: {
+            pageSize: 2,
+            pageIndex: 0,
+          },
+        })
         .request({ next: { revalidate: 86400 } })
         .then(res => res)
         .catch(e => {
           console.error(e);
           return null;
         }),
+
       usersApiClient.fetch
-        .getUserPublicEcosystems(githubUserId, { pageSize: 2, pageIndex: 0 })
+        .getUserPublicEcosystems({
+          pathParams: { githubId: githubUserId },
+          pagination: {
+            pageSize: 2,
+            pageIndex: 0,
+          },
+        })
         .request({ next: { revalidate: 86400 } })
         .then(res => res)
         .catch(e => {

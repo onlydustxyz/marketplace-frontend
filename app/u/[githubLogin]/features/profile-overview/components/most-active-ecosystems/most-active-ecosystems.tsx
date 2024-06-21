@@ -5,9 +5,12 @@ import { MostActiveSection } from "app/u/[githubLogin]/features/profile-overview
 
 export async function MostActiveEcosystems({ githubUserId }: TMostActiveEcosystems.Props) {
   const ecosystems = await usersApiClient.fetch
-    .getUserPublicEcosystems(githubUserId, {
-      pageSize: 2,
-      pageIndex: 0,
+    .getUserPublicEcosystems({
+      pathParams: { githubId: githubUserId },
+      pagination: {
+        pageSize: 2,
+        pageIndex: 0,
+      },
     })
     .request({
       next: { revalidate: 120 },

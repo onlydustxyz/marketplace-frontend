@@ -1,4 +1,4 @@
-export namespace TContributorDetails {
+export namespace TActivity {
   export interface Props {
     githubId: number;
   }
