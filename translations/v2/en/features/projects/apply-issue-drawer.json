@@ -20,5 +20,8 @@
     "applied": "Applied",
     "cancelApplication": "Cancel application",
     "alreadyApplied": "Already applied"
+  },
+  "toaster": {
+    "success": "Successfully applied"
   }
 }

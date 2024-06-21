@@ -2,6 +2,8 @@ import { useMediaQuery } from "usehooks-ts";
 
 import { OverviewAccordion } from "app/p/[slug]/features/good-first-issues/components/issue-card/components/overview-accordion/overview-accordion";
 
+import { ApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer";
+
 import { viewportConfig } from "src/config";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 
@@ -23,6 +25,7 @@ export function IssueCard({ issue }: TIssueCard.Props) {
 
   return (
     <Card key={issue.id} background="base" hasPadding={false}>
+      <ApplyIssueDrawer issue={issue} />
       <Flex direction="col" className="gap-4 p-5 md:gap-3">
         <Flex justifyContent="between" className="gap-6">
           <Typography variant="body-m-bold" className="line-clamp-2">

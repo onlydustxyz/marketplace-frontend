@@ -1,10 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { meApiClient } from "api-client/resources/me";
 import { differenceInDays } from "date-fns";
+import { useParams } from "next/navigation";
 import { lazy, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import { ApplyIssueCard } from "app/p/[slug]/components/apply-issue-card/apply-issue-card";
 import { TApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.types";
+
+import ProjectApi from "src/api/Project";
+import useMutationAlert from "src/api/useMutationAlert";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Tag } from "components/atoms/tag";
@@ -16,10 +21,30 @@ import { BaseLink } from "components/layout/base-link/base-link";
 import { Translate } from "components/layout/translate/translate";
 import { Drawer } from "components/molecules/drawer";
 
+import { useIntl } from "hooks/translate/use-translate";
+
 const MarkdownPreview = lazy(() => import("src/components/MarkdownPreview"));
 
 export function ApplyIssueDrawer({ issue, hasApplied }: TApplyIssueDrawer.Props) {
+  const { T } = useIntl();
   const [isOpen, setIsOpen] = useState(false);
+
+  const { slug = "" } = useParams<{ slug: string }>();
+  const { data: project } = ProjectApi.queries.useGetProjectBySlug({
+    params: { slug },
+  });
+
+  const { mutate, ...restMutation } = meApiClient.mutations.usePostMyApplication();
+
+  useMutationAlert({
+    mutation: restMutation,
+    success: {
+      message: T("v2.features.projects.applyIssueDrawer.toaster.success"),
+    },
+    error: {
+      default: true,
+    },
+  });
 
   const { control, handleSubmit } = useForm<TApplyIssueDrawer.form>({
     resolver: zodResolver(TApplyIssueDrawer.validation),
@@ -27,8 +52,12 @@ export function ApplyIssueDrawer({ issue, hasApplied }: TApplyIssueDrawer.Props)
   });
 
   function handleFormSubmission(values: TApplyIssueDrawer.form) {
-    // TODO next @hayden
-    console.log({ values });
+    mutate({
+      projectId: project?.id ?? "",
+      issueId: issue.id,
+      motivation: values.motivations,
+      problemSolvingApproach: values.problemSolvingApproach,
+    });
   }
 
   function handleCancel() {
@@ -47,9 +76,16 @@ export function ApplyIssueDrawer({ issue, hasApplied }: TApplyIssueDrawer.Props)
         >
           {issue.author.login}
         </TagAvatar>
-        <TagAvatar shape={"square"} style={"outline"} color={"grey"} avatar={{ src: "", shape: "square" }}>
-          Project name
-        </TagAvatar>
+        {project ? (
+          <TagAvatar
+            shape={"square"}
+            style={"outline"}
+            color={"grey"}
+            avatar={{ src: project.logoUrl, shape: "square" }}
+          >
+            {project.name}
+          </TagAvatar>
+        ) : null}
       </div>
     );
 
@@ -93,7 +129,7 @@ export function ApplyIssueDrawer({ issue, hasApplied }: TApplyIssueDrawer.Props)
         </Button>
       </div>
     ) : (
-      <Button type={"submit"} size={"l"}>
+      <Button type={"submit"} size={"l"} isLoading={restMutation.isPending}>
         <Translate token={"v2.features.projects.applyIssueDrawer.footer.sendAnApplication"} />
       </Button>
     );
