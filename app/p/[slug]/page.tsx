@@ -14,13 +14,11 @@ import { usePosthog } from "src/hooks/usePosthog";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
-import { ApplyCallout } from "components/features/apply-callout/apply-callout";
 import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import { ProjectLeadInvitationBanner } from "components/features/project-lead-invitation-banner/project-lead-invitation-banner";
 import { withClientOnly } from "components/layout/client-only/client-only";
 import { Flex } from "components/layout/flex/flex";
 
-import { useApplication } from "hooks/projects/use-application/use-application";
 import { useIntl } from "hooks/translate/use-translate";
 
 import { ClaimBanner } from "./components/banner/claim-banner/claim-banner";
@@ -50,8 +48,6 @@ function ProjectPage() {
 
   const isProjectLeader = useProjectLeader({ id: project?.id });
 
-  const { applyToProject } = useApplication({ projectId: project?.id ?? "", projectSlug: slug });
-
   const githubUserId = getGithubUserIdFromSub(user?.sub);
 
   const isInvited = useMemo(() => {
@@ -62,8 +58,6 @@ function ProjectPage() {
 
   const orgsWithUnauthorizedRepos = project ? getOrgsWithUnauthorizedRepos(project) : [];
   const hasOrgsWithUnauthorizedRepos = orgsWithUnauthorizedRepos.length > 0;
-
-  const alreadyApplied = project?.me?.hasApplied || false;
 
   const onAcceptInvitation = () => {
     acceptProjectLeadInvitation(null);
@@ -119,23 +113,6 @@ function ProjectPage() {
         <Flex direction="col" className="grow gap-6 md:gap-4">
           <OverviewInformations project={project} />
 
-          {!isMd && project.hiring && !project.me?.isMember ? (
-            <ApplyCallout
-              icon={{ remixName: "ri-user-3-line", size: 20 }}
-              title="v2.pages.project.overview.apply.title"
-              description={
-                alreadyApplied
-                  ? "v2.pages.project.overview.apply.informations.alreadyApply"
-                  : "v2.pages.project.overview.apply.informations.notYetApply"
-              }
-              formDescription="v2.pages.project.overview.apply.contactNeeded"
-              buttonNotConnected="v2.pages.project.overview.apply.button.connectToApply"
-              buttonConnected="v2.pages.project.overview.apply.button.apply"
-              onApply={applyToProject}
-              alreadyApplied={alreadyApplied}
-            />
-          ) : null}
-
           {!isMd ? <ProjectDetails project={project} /> : null}
 
           <GoodFirstIssues
@@ -149,23 +126,6 @@ function ProjectPage() {
 
         {isMd ? (
           <Flex direction="col" className="shrink-0 gap-4 md:w-72 xl:w-80">
-            {project.hiring && !project.me?.isMember ? (
-              <ApplyCallout
-                icon={{ remixName: "ri-user-3-line", size: 20 }}
-                title="v2.pages.project.overview.apply.title"
-                description={
-                  alreadyApplied
-                    ? "v2.pages.project.overview.apply.informations.alreadyApply"
-                    : "v2.pages.project.overview.apply.informations.notYetApply"
-                }
-                formDescription="v2.pages.project.overview.apply.contactNeeded"
-                buttonNotConnected="v2.pages.project.overview.apply.button.connectToApply"
-                buttonConnected="v2.pages.project.overview.apply.button.apply"
-                onApply={applyToProject}
-                alreadyApplied={alreadyApplied}
-              />
-            ) : null}
-
             <ProjectDetails project={project} />
             <Repositories organizations={project.organizations} />
           </Flex>
