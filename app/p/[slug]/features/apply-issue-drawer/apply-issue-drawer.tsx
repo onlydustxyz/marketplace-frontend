@@ -24,8 +24,10 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
   const {
     project: { data: project },
     form: { control, handleSubmit },
-    post: { isPending: postIsPending },
-    handleFormSubmission,
+    create: { isPending: createIsPending },
+    update: { isPending: updateIsPending },
+    handleCreate,
+    handleUpdate,
     handleCancel,
   } = useApplyIssueDrawer({ issue, state });
 
@@ -88,12 +90,12 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
         <Button variant={"danger"} size={"l"} onClick={handleCancel}>
           <Translate token={"v2.features.projects.applyIssueDrawer.footer.cancelApplication"} />
         </Button>
-        <Button size={"l"} isDisabled>
-          <Translate token={"v2.features.projects.applyIssueDrawer.footer.alreadyApplied"} />
+        <Button size={"l"} onClick={handleSubmit(handleUpdate)} isLoading={updateIsPending}>
+          <Translate token={"v2.features.projects.applyIssueDrawer.footer.updateApplication"} />
         </Button>
       </div>
     ) : (
-      <Button type={"submit"} size={"l"} isLoading={postIsPending}>
+      <Button type={"submit"} size={"l"} isLoading={createIsPending}>
         <Translate token={"v2.features.projects.applyIssueDrawer.footer.sendAnApplication"} />
       </Button>
     );
@@ -102,7 +104,7 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
       startContent: StartContent,
       endContent: EndContent,
     };
-  }, [hasApplied, postIsPending]);
+  }, [hasApplied, createIsPending, updateIsPending]);
 
   return (
     <>
@@ -111,7 +113,7 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
         onOpenChange={setIsOpen}
         as={"form"}
         htmlProps={{
-          onSubmit: handleSubmit(handleFormSubmission),
+          onSubmit: handleSubmit(handleCreate),
         }}
         header={header}
         footer={footer}
