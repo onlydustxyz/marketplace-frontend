@@ -1,13 +1,27 @@
-import { ComponentPropsWithoutRef, ElementType } from "react";
-import { VariantProps } from "tailwind-variants";
+import { ComponentProps, ReactNode } from "react";
 
-import { AccordionCoreVariants } from "./accordion.variants";
+import { Typo } from "components/atoms/typo/variants/typo-default";
 
-type Variants = VariantProps<typeof AccordionCoreVariants>;
-type classNames = Partial<typeof AccordionCoreVariants["slots"]>;
+type classNames = Partial<{
+  base: string;
+  heading: string;
+  trigger: string;
+  content: string;
+}>;
 
-export interface AccordionPort<C extends ElementType> extends Variants {
+export interface AccordionItemProps {
+  id: string;
+  titleProps: Partial<ComponentProps<typeof Typo>>;
+  content: ReactNode[];
+}
+
+type SelectionMode = "single" | "multiple";
+
+export interface AccordionPort {
   classNames?: classNames;
-  htmlPort?: ComponentPropsWithoutRef<C>;
-  as?: C;
+  items: AccordionItemProps[];
+  selectionMode?: SelectionMode;
+  defaultSelected?: string[];
+  startContent?: ReactNode;
+  showBadge?: boolean;
 }
