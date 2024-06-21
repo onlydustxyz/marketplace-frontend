@@ -23,14 +23,14 @@ export function useApplyIssueDrawer({ issue, state }: Pick<TApplyIssueDrawer.Pro
     projectId: project.data?.id ?? "",
   });
 
-  const { mutateAsync: updateAsync, ...update } = meApiClient.mutations.useUpdateMyApplication({
-    fetch: {
+  const { mutateAsync: updateAsync, ...update } = meApiClient.mutations.useUpdateMyApplication(
+    {
       pathParams: {
         applicationId: issue.currentUserApplication?.id ?? "",
       },
     },
-    projectId: project.data?.id ?? "",
-  });
+    project.data?.id ?? ""
+  );
 
   const { T } = useIntl();
   useMutationAlert({
