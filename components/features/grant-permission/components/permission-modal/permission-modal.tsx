@@ -11,7 +11,7 @@ import { Translate } from "components/layout/translate/translate";
 import { Modal } from "components/molecules/modal";
 
 export function PermissionModal({ isOpen, handleClose, handleMoreInfoOpen, handleOpenDrawer }: TPermissionModal.Props) {
-  const { handleAddPublicRepoScope, canApply, scopeStorage } = usePublicRepoScope({
+  const { handleAddPublicRepoScope } = usePublicRepoScope({
     onCreateSuccess: () => {
       handleClose();
       handleOpenDrawer();
