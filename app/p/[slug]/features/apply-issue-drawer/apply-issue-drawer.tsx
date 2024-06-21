@@ -224,7 +224,7 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
             fallback={<SkeletonEl width={"100%"} height={400} variant={"rounded"} className={"col-span-full"} />}
           >
             <div className={"col-span-full"}>
-              <ApplyIssueMarkdown body={issue.body} />
+              <ApplyIssueMarkdown>{issue.body}</ApplyIssueMarkdown>
             </div>
           </Suspense>
 

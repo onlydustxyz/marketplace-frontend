@@ -4,8 +4,8 @@ import { ApplyIssueCard } from "app/p/[slug]/components/apply-issue-card/apply-i
 
 const MarkdownPreview = lazy(() => import("src/components/MarkdownPreview"));
 
-export function ApplyIssueMarkdown({ body }: { body?: string }) {
-  if (!body) return null;
+export function ApplyIssueMarkdown({ children }: { children?: string }) {
+  if (!children) return null;
 
   return (
     <ApplyIssueCard
@@ -16,7 +16,7 @@ export function ApplyIssueMarkdown({ body }: { body?: string }) {
         },
       }}
     >
-      <MarkdownPreview className={"pt-3 text-sm"}>{body}</MarkdownPreview>
+      <MarkdownPreview className={"pt-3 text-sm"}>{children}</MarkdownPreview>
     </ApplyIssueCard>
   );
 }
