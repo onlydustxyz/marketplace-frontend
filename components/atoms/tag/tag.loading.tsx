@@ -17,6 +17,7 @@ export function TagLoading<C extends ElementType = "span">({ size, hideText, sha
 
       return [40, 40];
     }
+
     if (size === "s") {
       return [69, 32];
     }
