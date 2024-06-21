@@ -14,14 +14,10 @@ export function PermissionModal({ isOpen, handleClose, handleMoreInfoOpen, handl
   const { handleAddPublicRepoScope, canApply, scopeStorage } = usePublicRepoScope({
     onCreateSuccess: () => {
       handleClose();
-      if (canApply && scopeStorage) {
-        handleOpenDrawer();
-      }
+      handleOpenDrawer();
     },
     onUpdateSuccess: () => {
-      if (canApply && scopeStorage) {
-        handleOpenDrawer();
-      }
+      handleOpenDrawer();
     },
   });
 

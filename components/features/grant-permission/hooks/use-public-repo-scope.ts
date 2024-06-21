@@ -28,10 +28,12 @@ export function usePublicRepoScope({
     false
   );
 
+  const isAuthFlowTerminated = useRef<false | "update-permission-terminated" | "create-permission-terminated">(false);
+
   const { mutate: logoutUser } = meApiClient.mutations.useLogoutUser({
     onSuccess: async () => {
       await handleLoginWithPopup(loginWithPopup).then(() => {
-        onCreateSuccess?.();
+        isAuthFlowTerminated.current = "create-permission-terminated";
       });
     },
   });
@@ -47,11 +49,24 @@ export function usePublicRepoScope({
       }
       if (hasAskedForPermission === "update-permission") {
         handleLoginWithPopup(loginWithPopup).then(() => {
-          onUpdateSuccess?.();
+          isAuthFlowTerminated.current = "update-permission-terminated";
         });
       }
     }
   }, [scopeStorage, canApply, hasAskedForPermission]);
+
+  useEffect(() => {
+    if (canApply) {
+      if (isAuthFlowTerminated.current === "create-permission-terminated") {
+        isAuthFlowTerminated.current = false;
+        onCreateSuccess?.();
+      }
+      if (isAuthFlowTerminated.current === "update-permission-terminated") {
+        isAuthFlowTerminated.current = false;
+        onUpdateSuccess?.();
+      }
+    }
+  }, [canApply]);
 
   function createAskForPermission() {
     if (!canApply) {

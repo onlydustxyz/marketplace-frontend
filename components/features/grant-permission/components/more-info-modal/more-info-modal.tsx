@@ -13,17 +13,13 @@ import { useIntl } from "hooks/translate/use-translate";
 
 export function MoreInfoModal({ isOpen, handleClose, handleBack, handleOpenDrawer }: TMoreInfoModal.Props) {
   const { T } = useIntl();
-  const { handleAddPublicRepoScope, canApply, scopeStorage } = usePublicRepoScope({
+  const { handleAddPublicRepoScope } = usePublicRepoScope({
     onCreateSuccess: () => {
       handleClose();
-      if (canApply && scopeStorage) {
-        handleOpenDrawer();
-      }
+      handleOpenDrawer();
     },
     onUpdateSuccess: () => {
-      if (canApply && scopeStorage) {
-        handleOpenDrawer();
-      }
+      handleOpenDrawer();
     },
   });
 

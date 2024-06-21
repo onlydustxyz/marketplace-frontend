@@ -4,9 +4,9 @@ export const ButtonCoreVariants = tv({
   slots: {
     base: "group relative flex w-fit cursor-pointer overflow-hidden rounded-lg bg-container-1 transition-background",
     content: "flex flex-row items-center justify-center gap-2",
-    startIcon: "",
-    endIcon: "",
-    label: "",
+    startIcon: "transition-color",
+    endIcon: "transition-color",
+    label: "transition-color",
     loaderContainer: "absolute inset-0 flex h-full w-full flex-row items-center justify-center bg-container-1",
     spinnerCircle: "h-4 w-4 border-b-white",
   },
