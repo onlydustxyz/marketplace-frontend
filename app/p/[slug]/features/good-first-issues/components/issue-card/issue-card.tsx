@@ -1,5 +1,7 @@
 import { useMediaQuery } from "usehooks-ts";
 
+import { ApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer";
+import { useApplyIssueDrawerState } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.hooks";
 import { OverviewAccordion } from "app/p/[slug]/features/good-first-issues/components/issue-card/components/overview-accordion/overview-accordion";
 
 import { viewportConfig } from "src/config";
@@ -18,6 +20,7 @@ import { TIssueCard } from "./issue-card.types";
 
 export function IssueCard({ issue }: TIssueCard.Props) {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
+  const applyIssueDrawerState = useApplyIssueDrawerState();
 
   const hasApplied = Boolean(issue.currentUserApplication);
 
@@ -114,6 +117,8 @@ export function IssueCard({ issue }: TIssueCard.Props) {
 
         <OverviewAccordion body={issue.body} />
       </Flex>
+
+      <ApplyIssueDrawer issue={issue} hasApplied={hasApplied} state={applyIssueDrawerState} />
     </Card>
   );
 }

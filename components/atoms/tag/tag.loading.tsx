@@ -4,7 +4,7 @@ import { ElementType } from "react";
 import { TTagProps } from "components/atoms/tag/tag.types";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
 
-export function TagLoading<C extends ElementType = "span">({ size, hideText, display }: TTagProps<C>) {
+export function TagLoading<C extends ElementType = "span">({ size, hideText, shape }: TTagProps<C>) {
   const [w, h] = (() => {
     if (hideText) {
       if (size === "s") {
@@ -33,7 +33,7 @@ export function TagLoading<C extends ElementType = "span">({ size, hideText, dis
       variant="rounded"
       width={w}
       height={h}
-      className={cn("rounded-full", { "rounded-md": display === "square" })}
+      className={cn("rounded-full", { "rounded-md": shape === "square" })}
     />
   );
 }

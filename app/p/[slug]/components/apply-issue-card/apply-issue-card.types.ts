@@ -9,5 +9,6 @@ export namespace TApplyIssueCard {
     container?: TPaperProps<"article">["container"];
     iconProps: TIcon.Props;
     titleProps: TTypoProps<"span">;
+    className?: string;
   }
 }
