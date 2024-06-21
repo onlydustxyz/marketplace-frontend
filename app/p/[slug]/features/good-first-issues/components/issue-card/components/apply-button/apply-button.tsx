@@ -9,15 +9,16 @@ import { Translate } from "components/layout/translate/translate";
 
 import { TApplyButton } from "./apply-button.types";
 
-export function ApplyButton({ hasApplied }: TApplyButton.Props) {
+export function ApplyButton({ hasApplied, state }: TApplyButton.Props) {
   const [isOpenGrantPermission, setIsOpenGrantPermission] = useState(false);
+  const [_, setIsApplyIssueDrawerOpen] = state;
   const { isAuthenticated, loginWithRedirect } = useAuth0();
 
   const { canApply, scopeStorage, handleAddPublicRepoScope } = usePublicRepoScope();
 
   function handleViewApplication() {
     // Open apply consult drawer
-    console?.log("Open apply consult drawer");
+    setIsApplyIssueDrawerOpen(true);
   }
 
   function handleApply() {

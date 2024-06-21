@@ -32,7 +32,7 @@ export function IssueCard({ issue }: TIssueCard.Props) {
             {issue.title}
           </Typography>
 
-          {isMd ? <ApplyButton hasApplied={hasApplied} /> : null}
+          {isMd ? <ApplyButton hasApplied={hasApplied} state={applyIssueDrawerState} /> : null}
         </Flex>
 
         <Flex alignItems="center" className="gap-3 gap-y-2" wrap="wrap">
@@ -113,7 +113,7 @@ export function IssueCard({ issue }: TIssueCard.Props) {
           )}
         </Flex>
 
-        {!isMd ? <ApplyButton hasApplied={hasApplied} /> : null}
+        {!isMd ? <ApplyButton hasApplied={hasApplied} state={applyIssueDrawerState} /> : null}
 
         <OverviewAccordion body={issue.body} />
       </Flex>
