@@ -1,5 +1,5 @@
 import type { DefaultError } from "@tanstack/query-core";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useReactQueryAdapter } from "api-client/adapter/react-query/react-query-adapter";
 import { ParametersInterfaceWithReactQuery } from "api-client/types/parameters-interface";
 
@@ -12,10 +12,16 @@ export function useUpdateMyApplication(
   { options, ...fetch }: ParametersInterfaceWithReactQuery<typeof updateMyApplication>,
   projectId: string
 ) {
-  const { mutation } = useReactQueryAdapter(updateMyApplication(fetch), {
-    ...options,
-    invalidatesTags: [{ queryKey: PROJECT_TAGS.good_first_issues(projectId), exact: false }],
-  });
+  const { mutation } = useReactQueryAdapter(updateMyApplication(fetch), options);
+  const queryClient = useQueryClient();
 
-  return useMutation<unknown, DefaultError, ProjectApplicationUpdateRequest>(mutation);
+  return useMutation<unknown, DefaultError, ProjectApplicationUpdateRequest>({
+    ...mutation,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: PROJECT_TAGS.good_first_issues(projectId),
+        exact: false,
+      });
+    },
+  });
 }
