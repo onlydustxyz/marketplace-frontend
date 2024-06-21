@@ -54,3 +54,6 @@ export interface GetMyJourneyResponse extends MyJourneyResponse {}
 
 export type PostProjectApplicationCreateRequest = components["schemas"]["ProjectApplicationCreateRequest"];
 export type PostProjectApplicationCreateResponse = components["schemas"]["ProjectApplicationCreateResponse"];
+
+export type ProjectApplicationUpdateRequest = components["schemas"]["ProjectApplicationUpdateRequest"];
+export type ProjectApplicationUpdatePathParams = operations["updateProjectApplication"]["parameters"]["path"];

@@ -19,9 +19,10 @@
     "sendAnApplication": "Send an application",
     "applied": "Applied",
     "cancelApplication": "Cancel application",
-    "alreadyApplied": "Already applied"
+    "updateApplication": "Update application"
   },
   "toaster": {
-    "success": "Successfully applied"
+    "createSuccess": "Successfully applied",
+    "updateSuccess": "Successfully updated application"
   }
 }

@@ -19,15 +19,34 @@ export function useApplyIssueDrawer({ issue, state }: Pick<TApplyIssueDrawer.Pro
     params: { slug },
   });
 
-  const { mutateAsync, ...restMutation } = meApiClient.mutations.usePostMyApplication({
+  const { mutateAsync: createAsync, ...create } = meApiClient.mutations.usePostMyApplication({
     projectId: project.data?.id ?? "",
   });
 
+  const { mutateAsync: updateAsync, ...update } = meApiClient.mutations.useUpdateMyApplication(
+    {
+      pathParams: {
+        applicationId: issue.currentUserApplication?.id ?? "",
+      },
+    },
+    project.data?.id ?? ""
+  );
+
   const { T } = useIntl();
   useMutationAlert({
-    mutation: restMutation,
+    mutation: create,
     success: {
-      message: T("v2.features.projects.applyIssueDrawer.toaster.success"),
+      message: T("v2.features.projects.applyIssueDrawer.toaster.createSuccess"),
+    },
+    error: {
+      default: true,
+    },
+  });
+
+  useMutationAlert({
+    mutation: update,
+    success: {
+      message: T("v2.features.projects.applyIssueDrawer.toaster.updateSuccess"),
     },
     error: {
       default: true,
@@ -36,13 +55,25 @@ export function useApplyIssueDrawer({ issue, state }: Pick<TApplyIssueDrawer.Pro
 
   const form = useForm<TApplyIssueDrawer.form>({
     resolver: zodResolver(TApplyIssueDrawer.validation),
-    defaultValues: { motivations: "", problemSolvingApproach: "" },
+    defaultValues: {
+      motivations: issue.currentUserApplication?.motivations ?? "",
+      problemSolvingApproach: issue.currentUserApplication?.problemSolvingApproach ?? "",
+    },
   });
 
-  function handleFormSubmission(values: TApplyIssueDrawer.form) {
-    mutateAsync({
+  function handleCreate(values: TApplyIssueDrawer.form) {
+    createAsync({
       projectId: project.data?.id ?? "",
       issueId: issue.id,
+      motivation: values.motivations,
+      problemSolvingApproach: values.problemSolvingApproach,
+    }).then(() => {
+      setIsOpen(false);
+    });
+  }
+
+  function handleUpdate(values: TApplyIssueDrawer.form) {
+    updateAsync({
       motivation: values.motivations,
       problemSolvingApproach: values.problemSolvingApproach,
     }).then(() => {
@@ -58,8 +89,10 @@ export function useApplyIssueDrawer({ issue, state }: Pick<TApplyIssueDrawer.Pro
   return {
     project,
     form,
-    post: restMutation,
-    handleFormSubmission,
+    create,
+    update,
+    handleCreate,
+    handleUpdate,
     handleCancel,
   };
 }
