@@ -10,8 +10,17 @@ import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Modal } from "components/molecules/modal";
 
-export function PermissionModal({ isOpen, handleClose, handleMoreInfoOpen }: TPermissionModal.Props) {
-  const { handleAddPublicRepoScope } = usePublicRepoScope(handleClose);
+export function PermissionModal({ isOpen, handleClose, handleMoreInfoOpen, handleOpenDrawer }: TPermissionModal.Props) {
+  const { handleAddPublicRepoScope } = usePublicRepoScope({
+    onCreateSuccess: () => {
+      handleClose();
+      handleOpenDrawer();
+    },
+    onUpdateSuccess: () => {
+      handleOpenDrawer();
+    },
+  });
+
   return (
     <Modal
       titleProps={{

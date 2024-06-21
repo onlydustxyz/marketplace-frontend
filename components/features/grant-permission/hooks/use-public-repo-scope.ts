@@ -14,7 +14,13 @@ async function handleLoginWithPopup(
   });
 }
 
-export function usePublicRepoScope(onClose?: () => void) {
+export function usePublicRepoScope({
+  onCreateSuccess,
+  onUpdateSuccess,
+}: {
+  onCreateSuccess?: () => void;
+  onUpdateSuccess?: () => void;
+}) {
   const { loginWithPopup } = useAuth0();
   const hasLogout = useRef(false);
   const [scopeStorage, setScopeStorage] = useLocalStorage("dynamic-github-public-repo-scope");
@@ -25,7 +31,7 @@ export function usePublicRepoScope(onClose?: () => void) {
   const { mutate: logoutUser } = meApiClient.mutations.useLogoutUser({
     onSuccess: async () => {
       await handleLoginWithPopup(loginWithPopup).then(() => {
-        if (onClose) onClose();
+        onCreateSuccess?.();
       });
     },
   });
@@ -41,7 +47,7 @@ export function usePublicRepoScope(onClose?: () => void) {
       }
       if (hasAskedForPermission === "update-permission") {
         handleLoginWithPopup(loginWithPopup).then(() => {
-          console?.log("Open apply consult drawer");
+          onUpdateSuccess?.();
         });
       }
     }
