@@ -106,7 +106,6 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
 
   return (
     <>
-      <Button onClick={() => setIsOpen(true)}>Open drawer</Button>
       <Drawer
         isOpen={isOpen}
         onOpenChange={setIsOpen}

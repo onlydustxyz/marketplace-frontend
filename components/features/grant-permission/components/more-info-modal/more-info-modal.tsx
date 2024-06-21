@@ -11,9 +11,17 @@ import { Modal } from "components/molecules/modal";
 
 import { useIntl } from "hooks/translate/use-translate";
 
-export function MoreInfoModal({ isOpen, handleClose, handleBack }: TMoreInfoModal.Props) {
+export function MoreInfoModal({ isOpen, handleClose, handleBack, handleOpenDrawer }: TMoreInfoModal.Props) {
   const { T } = useIntl();
-  const { handleAddPublicRepoScope } = usePublicRepoScope(handleClose);
+  const { handleAddPublicRepoScope } = usePublicRepoScope({
+    onCreateSuccess: () => {
+      handleClose();
+      handleOpenDrawer();
+    },
+    onUpdateSuccess: () => {
+      handleOpenDrawer();
+    },
+  });
 
   return (
     <Modal

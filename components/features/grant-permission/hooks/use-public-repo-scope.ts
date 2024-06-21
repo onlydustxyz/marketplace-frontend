@@ -4,8 +4,6 @@ import { meApiClient } from "api-client/resources/me";
 import { useEffect, useRef, useState } from "react";
 import { useLocalStorage } from "react-use";
 
-import { useApplyIssueDrawerState } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.hooks";
-
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 async function handleLoginWithPopup(
@@ -16,20 +14,24 @@ async function handleLoginWithPopup(
   });
 }
 
-export function usePublicRepoScope(onClose?: () => void) {
+export function usePublicRepoScope({
+  onCreateSuccess,
+  onUpdateSuccess,
+}: {
+  onCreateSuccess?: () => void;
+  onUpdateSuccess?: () => void;
+}) {
   const { loginWithPopup } = useAuth0();
   const hasLogout = useRef(false);
   const [scopeStorage, setScopeStorage] = useLocalStorage("dynamic-github-public-repo-scope");
   const [hasAskedForPermission, setHasAskedForPermission] = useState<false | "update-permission" | "create-permission">(
     false
   );
-  const [_, setIsApplyIssueDrawerOpen] = useApplyIssueDrawerState();
 
   const { mutate: logoutUser } = meApiClient.mutations.useLogoutUser({
     onSuccess: async () => {
       await handleLoginWithPopup(loginWithPopup).then(() => {
-        if (onClose) onClose();
-        setIsApplyIssueDrawerOpen(true);
+        onCreateSuccess?.();
       });
     },
   });
@@ -45,7 +47,7 @@ export function usePublicRepoScope(onClose?: () => void) {
       }
       if (hasAskedForPermission === "update-permission") {
         handleLoginWithPopup(loginWithPopup).then(() => {
-          setIsApplyIssueDrawerOpen(true);
+          onUpdateSuccess?.();
         });
       }
     }
