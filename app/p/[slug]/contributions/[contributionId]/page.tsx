@@ -19,7 +19,7 @@ function ContributionPage() {
 
       <Flex className="gap-6">
         <ContributorSelect />
-        <ContributorDetails />
+        <ContributorDetails githubId={17259618} />
       </Flex>
     </Flex>
   );
