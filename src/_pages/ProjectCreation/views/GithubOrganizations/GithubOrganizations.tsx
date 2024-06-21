@@ -19,8 +19,10 @@ export const GithubOrganizationPage = () => {
     PoolingFeedback,
   } = useContext(CreateProjectContext);
 
-  const installedOrganizations = organizations.filter(org => org.installed);
-  const availableOrganizations = organizations.filter(org => !org.installed && org.isCurrentUserAdmin);
+  const installedOrganizations = organizations.filter(org => org.installationStatus === "COMPLETE");
+  const availableOrganizations = organizations.filter(
+    org => org.installationStatus !== "COMPLETE" && org.isCurrentUserAdmin
+  );
 
   return (
     <MultiStepsForm

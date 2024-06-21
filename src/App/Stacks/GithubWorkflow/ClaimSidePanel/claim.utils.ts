@@ -3,11 +3,7 @@ import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 
 export namespace ClaimUtils {
   export const canDisplay = ({ project }: { project?: UseGetProjectBySlugResponse }) => {
-    if (project && project.leaders.length === 0 && project.invitedLeaders.length === 0) {
-      return true;
-    }
-
-    return false;
+    return project && project.leaders.length === 0 && project.invitedLeaders.length === 0;
   };
 
   export const canSubmit = ({
@@ -22,11 +18,10 @@ export namespace ClaimUtils {
     }
 
     const isAllOrganizationInstalled = project?.organizations?.every(org => {
-      if (org.installed && organizations?.find(myOrg => myOrg.githubUserId === org.githubUserId && myOrg.installed)) {
-        return true;
-      }
-
-      return false;
+      return !!(
+        org.installationStatus === "COMPLETE" &&
+        organizations?.find(myOrg => myOrg.githubUserId === org.githubUserId && myOrg.installationStatus === "COMPLETE")
+      );
     });
 
     return isAllOrganizationInstalled || false;

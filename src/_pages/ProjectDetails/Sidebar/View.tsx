@@ -24,8 +24,8 @@ import ProjectOption from "./ProjectOption";
 interface Props {
   expandable: boolean;
   currentProject: UseGetProjectBySlugResponse;
-  projects: components["schemas"]["ProjectLedShortResponse"][];
-  pendingProjects: components["schemas"]["ProjectLedShortResponse"][];
+  projects: components["schemas"]["ProjectLinkResponse"][];
+  pendingProjects: components["schemas"]["ProjectLinkResponse"][];
   availableTabs: ProjectDetailsTab[];
   onLinkClick?: () => void;
 }
