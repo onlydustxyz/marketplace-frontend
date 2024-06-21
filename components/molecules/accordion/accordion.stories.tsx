@@ -1,19 +1,77 @@
 import { Meta, StoryObj } from "@storybook/react";
 
+import { Icon } from "components/layout/icon/icon";
+
 import { AccordionLoading } from "./accordion.loading";
-import { AccordionPort } from "./accordion.types";
+import { AccordionPort, AccordionWithBadgePort } from "./accordion.types";
 import { Accordion } from "./variants/accordion-default";
+import { AccordionWithBadge } from "./variants/accordion-with-badge";
 
 type Story = StoryObj<typeof Accordion>;
 
 const defaultPort: AccordionPort = {
   items: [
     {
-      id: "1",
+      id: "id-1",
       titleProps: { children: "Accordion 1" },
-      content: ["Accordion content 1"],
+      content: "Accordion content 1",
     },
-    { id: "2", titleProps: { children: "Accordion 2" }, content: ["Accordion content 1", "Accordion content 2"] },
+    {
+      id: "id-2",
+      titleProps: { children: "Accordion 2" },
+      content: (
+        <div className="flex flex-col gap-1">
+          <p>Accordion content 1</p>
+          <p>Accordion content 2</p>
+        </div>
+      ),
+    },
+  ],
+};
+
+const defaultPortWithBadge: AccordionWithBadgePort = {
+  items: [
+    {
+      id: "id-1",
+      titleProps: { children: "Accordion 1" },
+      content: "Accordion content 1",
+      badgeProps: { children: "1" },
+    },
+    {
+      id: "id-2",
+      titleProps: { children: "Accordion 2" },
+      content: (
+        <div className="flex flex-col gap-1">
+          <p>Accordion content 1</p>
+          <p>Accordion content 2</p>
+        </div>
+      ),
+      badgeProps: { children: "2" },
+    },
+  ],
+};
+
+const defaultPortWithStartAndEndContent: AccordionPort = {
+  items: [
+    {
+      id: "id-1",
+      titleProps: { children: "Accordion 1" },
+      content: "Accordion content 1",
+      startContent: <Icon remixName="ri-square-line" />,
+      endContent: <Icon remixName="ri-square-line" />,
+    },
+    {
+      id: "id-2",
+      titleProps: { children: "Accordion 2" },
+      content: (
+        <div className="flex flex-col gap-1">
+          <p>Accordion content 1</p>
+          <p>Accordion content 2</p>
+        </div>
+      ),
+      startContent: <Icon remixName="ri-square-line" />,
+      endContent: <Icon remixName="ri-square-line" />,
+    },
   ],
 };
 
@@ -37,23 +95,24 @@ export const Default: Story = {
   },
   render: args => {
     return (
-      <div className="flex w-full items-center gap-2">
+      <div className="flex w-full flex-col items-center gap-8">
         <Accordion {...defaultPort} {...args} />
+        <Accordion {...defaultPortWithStartAndEndContent} {...args} />
       </div>
     );
   },
 };
 
-export const Badge: Story = {
+export const WithBadge: Story = {
   parameters: {
     docs: {
-      source: { code: "<Accordion showBadge />" },
+      source: { code: "<AccordionWithBadge />" },
     },
   },
   render: args => {
     return (
       <div className="flex w-full items-center gap-2">
-        <Accordion {...defaultPort} {...args} showBadge />
+        <AccordionWithBadge {...defaultPortWithBadge} {...args} />
       </div>
     );
   },
@@ -62,14 +121,13 @@ export const Badge: Story = {
 export const DefaultSelected: Story = {
   parameters: {
     docs: {
-      source: { code: "<Accordion defaultSelected={['1']} />" },
+      source: { code: "<Accordion defaultSelected={['id-1']} />" },
     },
   },
   render: args => {
     return (
       <div className="flex w-full items-center gap-2">
-        <Accordion {...defaultPort} {...args} defaultSelected={["1"]} />
-        <Accordion {...defaultPort} {...args} defaultSelected={["1", "2"]} />
+        <Accordion {...defaultPort} {...args} defaultSelected={["id-1"]} />
       </div>
     );
   },
