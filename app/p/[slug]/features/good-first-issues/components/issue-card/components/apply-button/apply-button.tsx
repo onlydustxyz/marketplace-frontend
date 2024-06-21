@@ -18,7 +18,9 @@ export function ApplyButton({ hasApplied, drawerState }: TApplyButton.Props) {
 
   function handleViewApplication() {
     // Open apply consult drawer
-    setIsApplyIssueDrawerOpen(true);
+    if (canApply) {
+      setIsApplyIssueDrawerOpen(true);
+    }
   }
 
   function handleApply() {
