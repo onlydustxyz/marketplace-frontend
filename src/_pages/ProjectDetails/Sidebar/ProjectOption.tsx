@@ -10,7 +10,7 @@ import { cn } from "src/utils/cn";
 import { useIntl } from "hooks/translate/use-translate";
 
 interface Props {
-  project: components["schemas"]["ProjectLedShortResponse"];
+  project: components["schemas"]["ProjectLinkResponse"];
   isSelected: boolean;
   isInvited: boolean;
 }
