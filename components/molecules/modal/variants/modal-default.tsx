@@ -15,7 +15,7 @@ export function Modal<C extends ElementType = "div">({ titleProps, closeButtonPr
         footer: "border-t border-container-stroke-separator",
       }}
       titleProps={{
-        variant: "branding",
+        variant: "brand",
         size: "xl",
         as: "h6",
         ...titleProps,

@@ -4,7 +4,6 @@ const fs = require("fs/promises");
 const prettier = require("prettier");
 const { COLORS, kebabToPascal, kebabToCamel, defaultPromptName, exists } = require("./global");
 const { exec } = require("node:child_process");
-const i = require("@inquirer/prompts");
 
 async function createAdapter({ name, path, PascalName, PascalAdapterName, camelAdapterName, adapterName }) {
   await fs.mkdir(`${path}/adapters/${camelAdapterName}`);
@@ -63,7 +62,7 @@ async function createFiles(informations) {
 }
 
 async function promptName() {
-  const { name, folder, path } = await defaultPromptName();
+  const { name, folder } = await defaultPromptName();
 
   /** variant default **/
   /** stories default **/
