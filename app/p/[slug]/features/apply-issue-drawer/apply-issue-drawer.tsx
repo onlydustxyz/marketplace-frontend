@@ -1,15 +1,10 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { meApiClient } from "api-client/resources/me";
 import { differenceInDays } from "date-fns";
-import { useParams } from "next/navigation";
-import { lazy, useMemo, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { lazy, useMemo } from "react";
+import { Controller } from "react-hook-form";
 
 import { ApplyIssueCard } from "app/p/[slug]/components/apply-issue-card/apply-issue-card";
+import { useApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.hooks";
 import { TApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.types";
-
-import ProjectApi from "src/api/Project";
-import useMutationAlert from "src/api/useMutationAlert";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Tag } from "components/atoms/tag";
@@ -21,49 +16,18 @@ import { BaseLink } from "components/layout/base-link/base-link";
 import { Translate } from "components/layout/translate/translate";
 import { Drawer } from "components/molecules/drawer";
 
-import { useIntl } from "hooks/translate/use-translate";
-
 const MarkdownPreview = lazy(() => import("src/components/MarkdownPreview"));
 
-export function ApplyIssueDrawer({ issue, hasApplied }: TApplyIssueDrawer.Props) {
-  const { T } = useIntl();
-  const [isOpen, setIsOpen] = useState(false);
+export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer.Props) {
+  const [isOpen, setIsOpen] = state;
 
-  const { slug = "" } = useParams<{ slug: string }>();
-  const { data: project } = ProjectApi.queries.useGetProjectBySlug({
-    params: { slug },
-  });
-
-  const { mutate, ...restMutation } = meApiClient.mutations.usePostMyApplication();
-
-  useMutationAlert({
-    mutation: restMutation,
-    success: {
-      message: T("v2.features.projects.applyIssueDrawer.toaster.success"),
-    },
-    error: {
-      default: true,
-    },
-  });
-
-  const { control, handleSubmit } = useForm<TApplyIssueDrawer.form>({
-    resolver: zodResolver(TApplyIssueDrawer.validation),
-    defaultValues: { motivations: "", problemSolvingApproach: "" },
-  });
-
-  function handleFormSubmission(values: TApplyIssueDrawer.form) {
-    mutate({
-      projectId: project?.id ?? "",
-      issueId: issue.id,
-      motivation: values.motivations,
-      problemSolvingApproach: values.problemSolvingApproach,
-    });
-  }
-
-  function handleCancel() {
-    // TODO @hayden
-    alert("Cancel!");
-  }
+  const {
+    project: { data: project },
+    form: { control, handleSubmit },
+    post: { isPending: postIsPending },
+    handleFormSubmission,
+    handleCancel,
+  } = useApplyIssueDrawer({ issue, state });
 
   const header = useMemo(() => {
     const StartContent = (
@@ -129,7 +93,7 @@ export function ApplyIssueDrawer({ issue, hasApplied }: TApplyIssueDrawer.Props)
         </Button>
       </div>
     ) : (
-      <Button type={"submit"} size={"l"} isLoading={restMutation.isPending}>
+      <Button type={"submit"} size={"l"} isLoading={postIsPending}>
         <Translate token={"v2.features.projects.applyIssueDrawer.footer.sendAnApplication"} />
       </Button>
     );
@@ -138,7 +102,7 @@ export function ApplyIssueDrawer({ issue, hasApplied }: TApplyIssueDrawer.Props)
       startContent: StartContent,
       endContent: EndContent,
     };
-  }, [hasApplied]);
+  }, [hasApplied, postIsPending]);
 
   return (
     <>

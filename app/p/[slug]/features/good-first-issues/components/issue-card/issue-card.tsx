@@ -1,8 +1,8 @@
 import { useMediaQuery } from "usehooks-ts";
 
-import { OverviewAccordion } from "app/p/[slug]/features/good-first-issues/components/issue-card/components/overview-accordion/overview-accordion";
-
 import { ApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer";
+import { useApplyIssueDrawerState } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.hooks";
+import { OverviewAccordion } from "app/p/[slug]/features/good-first-issues/components/issue-card/components/overview-accordion/overview-accordion";
 
 import { viewportConfig } from "src/config";
 import displayRelativeDate from "src/utils/displayRelativeDate";
@@ -20,12 +20,12 @@ import { TIssueCard } from "./issue-card.types";
 
 export function IssueCard({ issue }: TIssueCard.Props) {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
+  const applyIssueDrawerState = useApplyIssueDrawerState();
 
   const hasApplied = Boolean(issue.currentUserApplication);
 
   return (
     <Card key={issue.id} background="base" hasPadding={false}>
-      <ApplyIssueDrawer issue={issue} />
       <Flex direction="col" className="gap-4 p-5 md:gap-3">
         <Flex justifyContent="between" className="gap-6">
           <Typography variant="body-m-bold" className="line-clamp-2">
@@ -117,6 +117,8 @@ export function IssueCard({ issue }: TIssueCard.Props) {
 
         <OverviewAccordion body={issue.body} />
       </Flex>
+
+      <ApplyIssueDrawer issue={issue} hasApplied={hasApplied} state={applyIssueDrawerState} />
     </Card>
   );
 }
