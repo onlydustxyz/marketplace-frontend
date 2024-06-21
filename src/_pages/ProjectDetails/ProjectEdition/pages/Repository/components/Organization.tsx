@@ -37,7 +37,7 @@ export function RepositoryOrganization({ organization, installedRepos }: Reposit
           id: organization.githubUserId,
           login: organization.login,
           installationId: organization.installationId,
-          installed: organization.installed,
+          installed: organization.installationStatus === "COMPLETE",
           isAPersonalOrganization: organization.isPersonal,
           projectSlug: project?.slug,
         })}

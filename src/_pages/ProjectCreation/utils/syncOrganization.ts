@@ -8,9 +8,10 @@ interface onSyncOrganizationsInterface {
 }
 export const onSyncOrganizations = ({ selectedRepos, organizations }: onSyncOrganizationsInterface) => {
   if (selectedRepos?.length && organizations) {
-    const organizationIds = new Set(organizations?.map(org => (org.installed ? org.githubUserId : null)));
-    const filteredRepos = selectedRepos?.filter(repo => organizationIds.has(repo.orgId));
-    return filteredRepos;
+    const organizationIds = new Set(
+      organizations?.map(org => (org.installationStatus === "COMPLETE" ? org.githubUserId : null))
+    );
+    return selectedRepos?.filter(repo => organizationIds.has(repo.orgId));
   }
 
   return undefined;
