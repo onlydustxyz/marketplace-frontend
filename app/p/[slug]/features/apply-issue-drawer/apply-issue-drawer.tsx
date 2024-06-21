@@ -26,6 +26,7 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
     form: { control, handleSubmit },
     create: { isPending: createIsPending },
     update: { isPending: updateIsPending },
+    delete: { isPending: deleteIsPending },
     handleCreate,
     handleUpdate,
     handleCancel,
@@ -87,7 +88,7 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
 
     const EndContent = hasApplied ? (
       <div className={"flex items-center gap-2.5"}>
-        <Button variant={"danger"} size={"l"} onClick={handleCancel}>
+        <Button variant={"danger"} size={"l"} onClick={handleCancel} isLoading={deleteIsPending}>
           <Translate token={"v2.features.projects.applyIssueDrawer.footer.cancelApplication"} />
         </Button>
         <Button size={"l"} onClick={handleSubmit(handleUpdate)} isLoading={updateIsPending}>
@@ -104,7 +105,7 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
       startContent: StartContent,
       endContent: EndContent,
     };
-  }, [hasApplied, createIsPending, updateIsPending]);
+  }, [hasApplied, createIsPending, updateIsPending, deleteIsPending]);
 
   return (
     <Drawer
