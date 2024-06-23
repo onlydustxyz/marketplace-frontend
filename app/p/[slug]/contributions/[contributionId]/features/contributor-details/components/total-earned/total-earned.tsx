@@ -1,5 +1,5 @@
 import { usersApiClient } from "api-client/resources/users";
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
 
 import { TotalEarnedGraphClient } from "app/u/[githubLogin]/features/total-earned-graph/total-earned-graph.client";
 
@@ -36,9 +36,6 @@ export function TotalEarned({ githubId }: TTotalEarned.Props) {
     return { data, otherData };
   }, [stats]);
 
-  if (isError || !data.length) {
-    return null;
-  }
   return (
     <Flex direction="col" className="flex-1 gap-3">
       <Card background={"light"} border={"light"} className={"flex h-full flex-1 flex-col gap-3"}>
@@ -48,7 +45,11 @@ export function TotalEarned({ githubId }: TTotalEarned.Props) {
           className="text-greyscale-200"
         />
         <div className="flex w-full flex-1 flex-col justify-center">
-          <TotalEarnedGraphClient data={[...data, otherData]} />
+          {!isError ? (
+            <Suspense>
+              <TotalEarnedGraphClient data={[...data, otherData]} />
+            </Suspense>
+          ) : null}
         </div>
       </Card>
     </Flex>
