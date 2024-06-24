@@ -1,11 +1,13 @@
 import { differenceInDays } from "date-fns";
-import { Suspense, useMemo } from "react";
+import { Suspense, useEffect, useMemo } from "react";
 import { Controller } from "react-hook-form";
 
 import { ApplyIssueCard } from "app/p/[slug]/components/apply-issue-card/apply-issue-card";
 import { ApplyIssueMarkdown } from "app/p/[slug]/components/apply-issue-markdown/apply-issue-markdown";
 import { useApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.hooks";
 import { TApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.types";
+
+import { usePosthog } from "src/hooks/usePosthog";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Tag } from "components/atoms/tag";
@@ -20,7 +22,7 @@ import { Drawer } from "components/molecules/drawer";
 
 export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer.Props) {
   const [isOpen, setIsOpen] = state;
-
+  const { capture } = usePosthog();
   const {
     project: { data: project },
     form: { control, handleSubmit },
@@ -31,6 +33,15 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
     handleUpdate,
     handleCancel,
   } = useApplyIssueDrawer({ issue, state });
+
+  useEffect(() => {
+    if (isOpen && project) {
+      capture("issue_application_flow_started", {
+        issue_id: issue.id,
+        project_id: project?.id,
+      });
+    }
+  }, [isOpen, project]);
 
   const header = useMemo(() => {
     const StartContent = (
