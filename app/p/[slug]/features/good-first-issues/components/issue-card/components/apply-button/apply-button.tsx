@@ -9,15 +9,18 @@ import { Translate } from "components/layout/translate/translate";
 
 import { TApplyButton } from "./apply-button.types";
 
-export function ApplyButton({ hasApplied }: TApplyButton.Props) {
+export function ApplyButton({ hasApplied, drawerState }: TApplyButton.Props) {
   const [isOpenGrantPermission, setIsOpenGrantPermission] = useState(false);
+  const [, setIsApplyIssueDrawerOpen] = drawerState;
   const { isAuthenticated, loginWithRedirect } = useAuth0();
 
-  const { canApply, scopeStorage, handleAddPublicRepoScope } = usePublicRepoScope();
+  const { canApply, scopeStorage, handleAddPublicRepoScope } = usePublicRepoScope({});
 
   function handleViewApplication() {
     // Open apply consult drawer
-    console?.log("Open apply consult drawer");
+    if (canApply) {
+      setIsApplyIssueDrawerOpen(true);
+    }
   }
 
   function handleApply() {
@@ -58,7 +61,11 @@ export function ApplyButton({ hasApplied }: TApplyButton.Props) {
   return (
     <>
       {renderButton}
-      <GrantPermission isOpen={isOpenGrantPermission} handleClose={() => setIsOpenGrantPermission(false)} />
+      <GrantPermission
+        isOpen={isOpenGrantPermission}
+        handleClose={() => setIsOpenGrantPermission(false)}
+        handleOpenDrawer={handleViewApplication}
+      />
     </>
   );
 }

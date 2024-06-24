@@ -6,4 +6,5 @@ export enum apiResources {
   ecosystems = "ECOSYSTEMS",
   projects = "PROJECTS",
   activity = "ACTIVITY",
+  applications = "APPLICATIONS",
 }

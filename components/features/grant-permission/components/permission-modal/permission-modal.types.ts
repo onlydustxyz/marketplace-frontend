@@ -3,5 +3,6 @@ export namespace TPermissionModal {
     isOpen: boolean;
     handleClose: () => void;
     handleMoreInfoOpen: () => void;
+    handleOpenDrawer: () => void;
   }
 }

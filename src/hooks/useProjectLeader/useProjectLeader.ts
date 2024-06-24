@@ -24,7 +24,7 @@ const Condition = (user: UseGetUserMeResponse | undefined, { slug, id }: UseProj
   return false;
 };
 
-export const useLeadProjects = (): components["schemas"]["ProjectLedShortResponse"][] => {
+export const useLeadProjects = (): components["schemas"]["ProjectLinkResponse"][] => {
   const { data: userInfo } = MeApi.queries.useGetMe({});
 
   if (userInfo?.projectsLed?.length) {
@@ -69,7 +69,7 @@ const PendingCondition = (user: UseGetUserMeResponse | undefined, { slug, id }: 
   return false;
 };
 
-export const usePendingLeadProjects = (): components["schemas"]["ProjectLedShortResponse"][] => {
+export const usePendingLeadProjects = (): components["schemas"]["ProjectLinkResponse"][] => {
   const { data: userInfo } = MeApi.queries.useGetMe({});
 
   if (userInfo?.pendingProjectsLed?.length) {

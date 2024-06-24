@@ -13,8 +13,8 @@ const defaultProps: TButtonProps<"button"> = {
   children: "Button core",
   startIcon: { remixName: "ri-square-line" },
   endIcon: { remixName: "ri-square-line" },
-  startContent: <Icon remixName={"ri-square-line"} size={16} />,
-  endContent: <Icon remixName={"ri-square-line"} size={16} />,
+  startContent: <Icon remixName={"ri-square-line"} size={16} className="text-inherit" />,
+  endContent: <Icon remixName={"ri-square-line"} size={16} className="text-inherit" />,
 };
 
 const meta: Meta<typeof ButtonCore> = {

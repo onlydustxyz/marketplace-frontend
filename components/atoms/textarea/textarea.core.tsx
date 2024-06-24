@@ -1,22 +1,28 @@
 import { Textarea as NextTextarea } from "@nextui-org/react";
+import { ForwardedRef, forwardRef } from "react";
 
 import { cn } from "src/utils/cn";
 
 import { TTextareaProps } from "./textarea.types";
 import { TextareaCoreVariants } from "./textarea.variants";
 
-export function TextareaCore({
-  classNames,
-  onChange,
-  value,
-  minRows,
-  maxRows,
-  disableAutosize,
-  isDisabled,
-  isError,
-  startContent,
-  endContent,
-}: TTextareaProps) {
+export const TextareaCore = forwardRef(function TextareaCore(
+  {
+    id,
+    name,
+    classNames,
+    onChange,
+    value,
+    minRows,
+    maxRows,
+    disableAutosize,
+    isDisabled,
+    isError,
+    startContent,
+    endContent,
+  }: TTextareaProps,
+  ref: ForwardedRef<HTMLTextAreaElement>
+) {
   const slots = TextareaCoreVariants({ isDisabled, isError });
 
   function handleChange(value: string) {
@@ -25,6 +31,9 @@ export function TextareaCore({
 
   return (
     <NextTextarea
+      ref={ref}
+      id={id}
+      name={name}
       classNames={{
         base: cn(slots.base(), classNames?.base),
         mainWrapper: cn(slots.mainWrapper(), classNames?.mainWrapper),
@@ -49,4 +58,4 @@ export function TextareaCore({
       endContent={endContent}
     />
   );
-}
+});

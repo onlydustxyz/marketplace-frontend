@@ -52,7 +52,7 @@ const mockProject: Parameters<typeof getOrgsWithUnauthorizedRepos>[0] = {
           isAuthorizedInGithubApp: true,
         },
       ],
-      installed: true,
+      installationStatus: "COMPLETE",
       installationId: 44133412,
     },
   ],

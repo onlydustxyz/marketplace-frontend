@@ -14,7 +14,13 @@ async function handleLoginWithPopup(
   });
 }
 
-export function usePublicRepoScope(onClose?: () => void) {
+export function usePublicRepoScope({
+  onCreateSuccess,
+  onUpdateSuccess,
+}: {
+  onCreateSuccess?: () => void;
+  onUpdateSuccess?: () => void;
+}) {
   const { loginWithPopup } = useAuth0();
   const hasLogout = useRef(false);
   const [scopeStorage, setScopeStorage] = useLocalStorage("dynamic-github-public-repo-scope");
@@ -22,10 +28,12 @@ export function usePublicRepoScope(onClose?: () => void) {
     false
   );
 
+  const isAuthFlowTerminated = useRef<false | "update-permission-terminated" | "create-permission-terminated">(false);
+
   const { mutate: logoutUser } = meApiClient.mutations.useLogoutUser({
     onSuccess: async () => {
       await handleLoginWithPopup(loginWithPopup).then(() => {
-        if (onClose) onClose();
+        isAuthFlowTerminated.current = "create-permission-terminated";
       });
     },
   });
@@ -41,11 +49,24 @@ export function usePublicRepoScope(onClose?: () => void) {
       }
       if (hasAskedForPermission === "update-permission") {
         handleLoginWithPopup(loginWithPopup).then(() => {
-          console?.log("Open apply consult drawer");
+          isAuthFlowTerminated.current = "update-permission-terminated";
         });
       }
     }
   }, [scopeStorage, canApply, hasAskedForPermission]);
+
+  useEffect(() => {
+    if (canApply) {
+      if (isAuthFlowTerminated.current === "create-permission-terminated") {
+        isAuthFlowTerminated.current = false;
+        onCreateSuccess?.();
+      }
+      if (isAuthFlowTerminated.current === "update-permission-terminated") {
+        isAuthFlowTerminated.current = false;
+        onUpdateSuccess?.();
+      }
+    }
+  }, [canApply]);
 
   function createAskForPermission() {
     if (!canApply) {

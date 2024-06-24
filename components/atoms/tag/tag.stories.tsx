@@ -34,7 +34,7 @@ const defaultTagAvatarProps: TTagAvatarProps<"div"> = {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const sizes = ["m", "s", "xs"] as any[];
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const display = ["rounded", "square"] as any[];
+const display = ["round", "square"] as any[];
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const style = ["fill", "outline"] as any[];
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -69,7 +69,7 @@ export const Default: Story = {
 export const Rounded: Story = {
   parameters: {
     docs: {
-      source: { code: "<Tag display='rounded' />" },
+      source: { code: "<Tag shape'rounded' />" },
     },
   },
   render: args => {
@@ -79,9 +79,9 @@ export const Rounded: Story = {
           {sizes.map(s => {
             return (
               <div key={s} className="flex flex-col items-start gap-2">
-                <Tag {...defaultProps} {...args} size={s} display="rounded" />
-                <Tag {...defaultProps} {...args} size={s} display="rounded" hideText />
-                <Tag {...defaultProps} {...args} size={s} display="rounded" hideText isDeletable={false} />
+                <Tag {...defaultProps} {...args} size={s} shape="round" />
+                <Tag {...defaultProps} {...args} size={s} shape="round" hideText />
+                <Tag {...defaultProps} {...args} size={s} shape="round" hideText isDeletable={false} />
               </div>
             );
           })}
@@ -94,7 +94,7 @@ export const Rounded: Story = {
 export const Square: Story = {
   parameters: {
     docs: {
-      source: { code: "<Tag display='square' />" },
+      source: { code: "<Tag shape'square' />" },
     },
   },
   render: args => {
@@ -104,9 +104,9 @@ export const Square: Story = {
           {sizes.map(s => {
             return (
               <div key={s} className="flex flex-col items-start gap-2">
-                <Tag {...defaultProps} {...args} size={s} display="square" />
-                <Tag {...defaultProps} {...args} size={s} display="square" hideText />
-                <Tag {...defaultProps} {...args} size={s} display="square" hideText isDeletable={false} />
+                <Tag {...defaultProps} {...args} size={s} shape="square" />
+                <Tag {...defaultProps} {...args} size={s} shape="square" hideText />
+                <Tag {...defaultProps} {...args} size={s} shape="square" hideText isDeletable={false} />
               </div>
             );
           })}
@@ -132,9 +132,9 @@ export const WithIcon: Story = {
                 {sizes.map(s => {
                   return (
                     <div key={s} className="flex flex-col items-start gap-2">
-                      <TagIcon {...defaultTagIconProps} {...args} size={s} display={d} />
-                      <TagIcon {...defaultTagIconProps} {...args} size={s} display={d} hideText />
-                      <TagIcon {...defaultTagIconProps} {...args} size={s} display={d} hideText isDeletable={false} />
+                      <TagIcon {...defaultTagIconProps} {...args} size={s} shape={d} />
+                      <TagIcon {...defaultTagIconProps} {...args} size={s} shape={d} hideText />
+                      <TagIcon {...defaultTagIconProps} {...args} size={s} shape={d} hideText isDeletable={false} />
                     </div>
                   );
                 })}
@@ -162,16 +162,9 @@ export const WithAvatar: Story = {
                 {sizes.map(s => {
                   return (
                     <div key={s} className="flex flex-col items-start gap-2">
-                      <TagAvatar {...defaultTagAvatarProps} {...args} size={s} display={d} />
-                      <TagAvatar {...defaultTagAvatarProps} {...args} size={s} display={d} hideText />
-                      <TagAvatar
-                        {...defaultTagAvatarProps}
-                        {...args}
-                        size={s}
-                        display={d}
-                        hideText
-                        isDeletable={false}
-                      />
+                      <TagAvatar {...defaultTagAvatarProps} {...args} size={s} shape={d} />
+                      <TagAvatar {...defaultTagAvatarProps} {...args} size={s} shape={d} hideText />
+                      <TagAvatar {...defaultTagAvatarProps} {...args} size={s} shape={d} hideText isDeletable={false} />
                     </div>
                   );
                 })}
@@ -218,21 +211,21 @@ export const Skeleton: Story = {
       <div className="flex w-full items-start gap-5">
         <div className="flex flex-col gap-2">
           <TagLoading size={"m"} />
-          <TagLoading size={"m"} display={"square"} />
+          <TagLoading size={"m"} shape={"square"} />
           <TagLoading size={"m"} hideText />
-          <TagLoading size={"m"} hideText display={"square"} />
+          <TagLoading size={"m"} hideText shape={"square"} />
         </div>
         <div className="flex flex-col gap-2">
           <TagLoading size={"s"} />
-          <TagLoading size={"s"} display={"square"} />
+          <TagLoading size={"s"} shape={"square"} />
           <TagLoading size={"s"} hideText />
-          <TagLoading size={"s"} hideText display={"square"} />
+          <TagLoading size={"s"} hideText shape={"square"} />
         </div>
         <div className="flex flex-col gap-2">
           <TagLoading size={"xs"} />
-          <TagLoading size={"xs"} display={"square"} />
+          <TagLoading size={"xs"} shape={"square"} />
           <TagLoading size={"xs"} hideText />
-          <TagLoading size={"xs"} hideText display={"square"} />
+          <TagLoading size={"xs"} hideText shape={"square"} />
         </div>
       </div>
     );

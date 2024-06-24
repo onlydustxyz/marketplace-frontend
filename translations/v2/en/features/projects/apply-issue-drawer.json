@@ -1,0 +1,28 @@
+{
+  "header": {
+    "seeOnGithub": "See on GitHub"
+  },
+  "sections": {
+    "languages": "Languages",
+    "labels": "Labels",
+    "applicants": "Applicants",
+    "comments": "Comments",
+    "days": "Days",
+    "description": "Description",
+    "applicationForm": {
+      "title": "Application Form",
+      "motivations": "Tell us about your background and how it can be leveraged: *",
+      "problemSolvingApproach": "How would you approach the problem?"
+    }
+  },
+  "footer": {
+    "sendAnApplication": "Send an application",
+    "applied": "Applied",
+    "cancelApplication": "Cancel application",
+    "updateApplication": "Update application"
+  },
+  "toaster": {
+    "createSuccess": "Successfully applied",
+    "updateSuccess": "Successfully updated application"
+  }
+}

@@ -1,20 +1,24 @@
 import { Accordion, AccordionItem, Selection } from "@nextui-org/react";
-import { lazy, useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 
 import { TOverviewAccordion } from "app/p/[slug]/features/good-first-issues/components/issue-card/components/overview-accordion/overview-accordion.types";
+import { OverviewMarkdown } from "app/p/[slug]/features/good-first-issues/components/issue-card/components/overview-markdown/overview-markdown";
 
 import { cn } from "src/utils/cn";
 
+import { SkeletonEl } from "components/ds/skeleton/skeleton";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
-
-const MarkdownPreview = lazy(() => import("src/components/MarkdownPreview"));
 
 export function OverviewAccordion({ body }: TOverviewAccordion.Props) {
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set("1"));
   const renderContent = useMemo(() => {
     if (body) {
-      return <MarkdownPreview>{body}</MarkdownPreview>;
+      return (
+        <Suspense fallback={<SkeletonEl width={"100%"} height={400} variant={"rounded"} />}>
+          <OverviewMarkdown>{body}</OverviewMarkdown>
+        </Suspense>
+      );
     }
     return (
       <Typography

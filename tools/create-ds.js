@@ -89,11 +89,11 @@ async function createAdapter({ name, path, PascalName }) {
 
         export function ${PascalName}DefaultAdapter<C extends ElementType = "div">({classNames, as, ...props}: ${PascalName}Port<C>) {
           const Component = as || "div";
-          const { ...htmlPort } = props;
+          const { ...htmlProps } = props;
           const slots = ${PascalName}DefaultVariants();
 
           return (
-            <Component {...htmlPort} className={cn(slots.base(), classNames?.base)} />
+            <Component {...htmlProps} className={cn(slots.base(), classNames?.base)} />
           );
         };
   `,
@@ -135,7 +135,7 @@ async function createTypes({ name, path, PascalName }) {
 
         export interface ${PascalName}Port<C extends ElementType> extends Variants {
           classNames?: classNames;
-           htmlPort?: ComponentPropsWithoutRef<C>;
+          htmlProps?: ComponentPropsWithoutRef<C>;
           as?: C;
         }
   `,
