@@ -1,4 +1,9 @@
 {
+  "select": {
+    "search": "Search for users",
+    "new": "New comers",
+    "project": "Project members"
+  },
   "profile": {
     "stats": {
       "title": "Main KPIs",

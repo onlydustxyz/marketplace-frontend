@@ -1,3 +1,14 @@
+import { GetApplicationPageResponse } from "api-client/resources/applications/types";
+
 export namespace TContributorSelect {
-  export interface Props {}
+  type Applications = GetApplicationPageResponse["applications"];
+
+  export interface Props {
+    search: string;
+    setSearch: (search: string) => void;
+    selectedUser: number | null;
+    handleSelectUser: (githubId: number) => void;
+    newComersApplications?: Applications;
+    projectMembersApplications?: Applications;
+  }
 }

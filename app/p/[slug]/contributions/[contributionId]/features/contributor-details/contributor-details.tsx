@@ -25,7 +25,7 @@ export function ContributorDetails({ githubId }: TContributorDetails.Props) {
   if (!userProfile) return null;
 
   return (
-    <Flex direction="col" className="flex-1 gap-6">
+    <Flex direction="col" className="flex-1 gap-6 overflow-hidden">
       <ProfileCard login={userProfile.login} avatarUrl={userProfile.avatarUrl} {...userProfile.statsSummary} />
       <Card background="base" hasPadding={false} border={false} className="relative">
         <Flex className="w-full flex-col gap-6 p-4">
