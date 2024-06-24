@@ -1058,6 +1058,9 @@
       "contributions": {
         "title": "Contributions"
       },
+      "applications": {
+        "title": "Applications"
+      },
       "insights": {
         "title": "Insights",
         "emptyPlaceholder": "No contributors here.",
