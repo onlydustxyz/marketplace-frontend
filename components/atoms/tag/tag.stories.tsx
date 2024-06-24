@@ -3,15 +3,14 @@ import { Meta, StoryObj } from "@storybook/react";
 import { TagAvatar } from "components/atoms/tag/variants/tag-avatar";
 import { Icon } from "components/layout/icon/icon";
 
-import { TagCore } from "./tag.core";
 import { TagLoading } from "./tag.loading";
-import { TTagAvatarProps, TTagIconProps, TTagProps } from "./tag.types";
+import { TTagAvatarProps, TTagIconProps, TagPort } from "./tag.types";
 import { Tag } from "./variants/tag-default";
 import { TagIcon } from "./variants/tag-icon";
 
-type Story = StoryObj<typeof TagCore>;
+type Story = StoryObj<typeof Tag>;
 
-const defaultProps: TTagProps<"div"> = {
+const defaultProps: TagPort<"div"> = {
   children: "Tag",
   classNames: {},
   htmlProps: {},
@@ -40,8 +39,8 @@ const style = ["fill", "outline"] as any[];
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const colors = ["black", "white", "red", "pink", "grey", "green", "yellow", "orange", "purple", "blue"] as any[];
 
-const meta: Meta<typeof TagCore> = {
-  component: TagCore,
+const meta: Meta<typeof Tag> = {
+  component: Tag,
   title: "Atoms/Tag",
   tags: ["autodocs"],
   parameters: {

@@ -12,7 +12,7 @@ import { TagCoreVariants } from "./tag.variants";
 type Variants = VariantProps<typeof TagCoreVariants>;
 type classNames = Partial<typeof TagCoreVariants["slots"]>;
 
-export interface TTagProps<C extends ElementType> extends Variants, PropsWithChildren {
+export interface TagPort<C extends ElementType> extends Variants, PropsWithChildren {
   htmlProps?: ComponentPropsWithoutRef<C>;
   classNames?: classNames;
   translate?: TTranslate.Props;
@@ -23,10 +23,10 @@ export interface TTagProps<C extends ElementType> extends Variants, PropsWithChi
   deletableIconProps?: Partial<ComponentProps<typeof Icon>>;
 }
 
-export interface TTagIconProps<C extends ElementType> extends TTagProps<C> {
+export interface TTagIconProps<C extends ElementType> extends TagPort<C> {
   icon: TIcon.Props;
 }
 
-export interface TTagAvatarProps<C extends ElementType> extends TTagProps<C> {
+export interface TTagAvatarProps<C extends ElementType> extends TagPort<C> {
   avatar: ComponentProps<typeof Avatar>;
 }
