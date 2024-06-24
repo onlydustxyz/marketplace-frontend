@@ -4,5 +4,7 @@ export namespace TApplicantCard {
   export interface Props {
     user: GetApplicationPageResponse["applications"][0]["applicant"];
     recommandationScore: number;
+    selectedUser: number | null;
+    setSelectedUser: (githubId: number | null) => void;
   }
 }

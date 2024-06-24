@@ -15,6 +15,8 @@ import { TContributorSelect } from "./contributor-select.types";
 export function ContributorSelect({
   search,
   setSearch,
+  selectedUser,
+  setSelectedUser,
   newComersApplications,
   projectMembersApplications,
 }: TContributorSelect.Props) {
@@ -34,6 +36,8 @@ export function ContributorSelect({
                   key={application.id}
                   user={application.applicant}
                   recommandationScore={application.recommandationScore}
+                  selectedUser={selectedUser}
+                  setSelectedUser={setSelectedUser}
                 />
               ))}
             </Flex>
@@ -56,6 +60,8 @@ export function ContributorSelect({
                   key={application.id}
                   user={application.applicant}
                   recommandationScore={application.recommandationScore}
+                  selectedUser={selectedUser}
+                  setSelectedUser={setSelectedUser}
                 />
               ))}
             </Flex>
@@ -74,7 +80,7 @@ export function ContributorSelect({
   }
 
   return (
-    <div className="h-full min-w-[320px]">
+    <div className="h-full min-w-[320px] max-w-[320px]">
       <Card background="base" hasPadding={false} border={false} className="rounded-lg">
         <Flex direction="col" className="gap-4 p-3">
           <Input

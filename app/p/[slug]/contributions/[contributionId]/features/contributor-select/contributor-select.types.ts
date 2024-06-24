@@ -6,6 +6,8 @@ export namespace TContributorSelect {
   export interface Props {
     search: string;
     setSearch: (search: string) => void;
+    selectedUser: number | null;
+    setSelectedUser: (githubId: number | null) => void;
     newComersApplications?: Applications;
     projectMembersApplications?: Applications;
   }

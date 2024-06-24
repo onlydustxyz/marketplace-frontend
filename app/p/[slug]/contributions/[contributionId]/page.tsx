@@ -18,39 +18,24 @@ function ContributionPage() {
   const { slug = "", contributionId = "" } = useParams<{ slug?: string; contributionId?: string }>();
 
   const [search, setSearch] = useState<string>("");
+  const [selectedUser, setSelectedUser] = useState<number | null>(null);
 
   const { data: project } = ProjectApi.queries.useGetProjectBySlug({
     params: { slug },
   });
 
-  const {
-    data: newComersApplicationsData,
-    error: newComersApplicationsError,
-    isFetching: newComersApplicationsIsFetching,
-    hasNextPage: newComersApplicationsHasNextPage,
-  } = applicationsApiClient.queries.useInfiniteGetAllApplications({
-    queryParams: { projectId: project?.id },
-    options: { enabled: !!project?.id },
-  });
+  const { data: newComersApplicationsData, hasNextPage: newComersApplicationsHasNextPage } =
+    applicationsApiClient.queries.useInfiniteGetAllApplications({
+      queryParams: { projectId: project?.id },
+      options: { enabled: !!project?.id },
+    });
 
-  const {
-    data: projectMembersApplicationsData,
-    error: projectMembersApplicationsError,
-    isFetching: projectMembersApplicationsIsFetching,
-    hasNextPage: projectMembersApplicationsHasNextPage,
-  } = applicationsApiClient.queries.useInfiniteGetAllApplications({
-    // queryParams: { projectId: project?.id, issueId: contributionId, isApplicantProjectMember: true },
-    queryParams: { projectId: project?.id, issueId: contributionId },
-    options: { enabled: !!project?.id },
-  });
-
-  if (newComersApplicationsError && !newComersApplicationsIsFetching) {
-    throw newComersApplicationsError;
-  }
-
-  if (projectMembersApplicationsError && !projectMembersApplicationsIsFetching) {
-    throw projectMembersApplicationsError;
-  }
+  const { data: projectMembersApplicationsData, hasNextPage: projectMembersApplicationsHasNextPage } =
+    applicationsApiClient.queries.useInfiniteGetAllApplications({
+      // queryParams: { projectId: project?.id, issueId: contributionId, isApplicantProjectMember: true },
+      queryParams: { projectId: project?.id, issueId: contributionId },
+      options: { enabled: !!project?.id },
+    });
 
   const newComersApplications = useMemo(
     () => newComersApplicationsData?.pages.flatMap(page => page.applications),
@@ -78,10 +63,13 @@ function ContributionPage() {
         <ContributorSelect
           search={search}
           setSearch={setSearch}
+          selectedUser={selectedUser}
+          setSelectedUser={setSelectedUser}
           newComersApplications={newComersApplications}
           projectMembersApplications={projectMembersApplications}
         />
-        <ContributorDetails githubId={17259618} />
+
+        {selectedUser ? <ContributorDetails githubId={selectedUser} /> : null}
       </Flex>
     </Flex>
   );
