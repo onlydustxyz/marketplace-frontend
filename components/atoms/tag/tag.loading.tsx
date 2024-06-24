@@ -1,10 +1,10 @@
 import { cn } from "@nextui-org/react";
 import { ElementType } from "react";
 
-import { TTagProps } from "components/atoms/tag/tag.types";
+import { TagPort } from "components/atoms/tag/tag.types";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
 
-export function TagLoading<C extends ElementType = "span">({ size, hideText, shape }: TTagProps<C>) {
+export function TagLoading<C extends ElementType = "span">({ size, hideText, shape }: TagPort<C>) {
   const [w, h] = (() => {
     if (hideText) {
       if (size === "s") {
