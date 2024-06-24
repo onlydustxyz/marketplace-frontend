@@ -1,15 +1,22 @@
 import { ComponentPropsWithoutRef, ElementType, PropsWithChildren } from "react";
-import { VariantProps } from "tailwind-variants";
 
-import { BadgeCoreVariants } from "./badge.variants";
+interface Variants {
+  size: "s" | "m";
+  colors: "default" | "brand-1" | "brand-2" | "brand-3" | "brand-4";
+  style: "fill" | "outline";
+  fitContent: boolean;
+}
 
-type Variants = VariantProps<typeof BadgeCoreVariants>;
-type classNames = Partial<typeof BadgeCoreVariants["slots"]>;
+interface ClassNames {
+  base: string;
+  contentWrapper: string;
+  content: string;
+}
 
-export interface BadgePort<C extends ElementType> extends Variants, PropsWithChildren {
-  htmlProps?: ComponentPropsWithoutRef<C>;
-  classNames?: classNames;
+export interface BadgePort<C extends ElementType> extends Partial<Variants>, PropsWithChildren {
   as?: C;
+  htmlProps?: ComponentPropsWithoutRef<C>;
+  classNames?: Partial<ClassNames>;
   hideContent?: boolean;
 }
 
