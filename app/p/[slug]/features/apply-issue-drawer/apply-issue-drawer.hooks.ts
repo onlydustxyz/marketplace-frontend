@@ -8,13 +8,17 @@ import { useForm } from "react-hook-form";
 import { TApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.types";
 
 import ProjectApi from "src/api/Project";
+import { FetchError } from "src/api/query.type";
+import { HttpStatusStrings } from "src/api/query.utils";
 import useMutationAlert from "src/api/useMutationAlert";
+
+import { usePublicRepoScope } from "components/features/grant-permission/hooks/use-public-repo-scope";
 
 import { useIntl } from "hooks/translate/use-translate";
 
 export function useApplyIssueDrawer({ issue, state }: Pick<TApplyIssueDrawer.Props, "issue" | "state">) {
   const [, setIsOpen] = state;
-
+  const { getPermissions } = usePublicRepoScope({});
   const { slug = "" } = useParams<{ slug: string }>();
   const project = ProjectApi.queries.useGetProjectBySlug({
     params: { slug },
@@ -71,33 +75,51 @@ export function useApplyIssueDrawer({ issue, state }: Pick<TApplyIssueDrawer.Pro
     },
   });
 
+  async function getPermissionsOnError(err: FetchError) {
+    if (err.errorType === HttpStatusStrings.FORBIDDEN) {
+      await getPermissions();
+    }
+  }
+
   function handleCreate(values: TApplyIssueDrawer.form) {
     createAsync({
       projectId: project.data?.id ?? "",
       issueId: issue.id,
       motivation: values.motivations,
       problemSolvingApproach: values.problemSolvingApproach,
-    }).then(() => {
-      setIsOpen(false);
-    });
+    })
+      .then(() => {
+        setIsOpen(false);
+      })
+      .catch(async (err: FetchError) => {
+        await getPermissionsOnError(err);
+      });
   }
 
   function handleUpdate(values: TApplyIssueDrawer.form) {
     updateAsync({
       motivation: values.motivations,
       problemSolvingApproach: values.problemSolvingApproach,
-    }).then(() => {
-      setIsOpen(false);
-    });
+    })
+      .then(() => {
+        setIsOpen(false);
+      })
+      .catch(async (err: FetchError) => {
+        await getPermissionsOnError(err);
+      });
   }
 
   function handleCancel() {
-    deleteAsync({}).then(() => {
-      setIsOpen(false);
-      setTimeout(() => {
-        form.reset();
-      }, 500);
-    });
+    deleteAsync({})
+      .then(() => {
+        setIsOpen(false);
+        setTimeout(() => {
+          form.reset();
+        }, 500);
+      })
+      .catch(async (err: FetchError) => {
+        await getPermissionsOnError(err);
+      });
   }
 
   return {

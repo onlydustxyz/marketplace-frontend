@@ -30,6 +30,11 @@ export function usePublicRepoScope({ onSuccessCallback }: { onSuccessCallback?: 
 
   const { mutateAsync: logoutUser } = meApiClient.mutations.useLogoutUser({});
 
+  async function getPermissions() {
+    await logoutUser({});
+    await handleLoginWithPopup(loginWithPopup);
+  }
+
   async function handleVerifyPermissions() {
     if (!isAuthenticated) {
       await handleLoginWithRedirect(loginWithRedirect);
@@ -37,13 +42,12 @@ export function usePublicRepoScope({ onSuccessCallback }: { onSuccessCallback?: 
     }
 
     if (!canApply) {
-      await logoutUser({});
-      await handleLoginWithPopup(loginWithPopup);
+      await getPermissions();
       onSuccessCallback?.();
       return;
     }
     onSuccessCallback?.();
   }
 
-  return { handleVerifyPermissions, canApply };
+  return { handleVerifyPermissions, getPermissions, canApply };
 }
