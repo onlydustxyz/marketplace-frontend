@@ -1,6 +1,6 @@
 "use client";
 
-import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useReactInfiniteQueryAdapter } from "api-client/adapter/react-infinite-query/react-infinite-query-adapter";
 import { ParametersInterfaceWithReactQuery } from "api-client/types/parameters-interface";
 
@@ -11,7 +11,7 @@ export const useInfiniteGetAllApplications = ({
   options,
   ...fetch
 }: ParametersInterfaceWithReactQuery<typeof getAllApplications>) => {
-  return useSuspenseInfiniteQuery<GetApplicationPageResponse>(
+  return useInfiniteQuery<GetApplicationPageResponse>(
     useReactInfiniteQueryAdapter<GetApplicationPageResponse>(getAllApplications(fetch), options)
   );
 };
