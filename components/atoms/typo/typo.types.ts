@@ -8,9 +8,9 @@ import { TypoCoreVariants } from "./typo.variants";
 type Variants = VariantProps<typeof TypoCoreVariants>;
 type classNames = Partial<typeof TypoCoreVariants["slots"]>;
 
-export interface TTypoProps<C extends ElementType> extends Variants, PropsWithChildren {
+export interface TypoPort<C extends ElementType> extends Variants, PropsWithChildren {
+  as?: C;
   htmlProps?: ComponentPropsWithoutRef<C>;
   classNames?: classNames;
-  as?: C;
   translate?: TTranslate.Props;
 }

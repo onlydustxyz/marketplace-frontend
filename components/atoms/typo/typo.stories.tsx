@@ -1,21 +1,19 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import "../../../index.css";
-import { TypoCore } from "./typo.core";
-import { TTypoProps } from "./typo.types";
+import { TypoPort } from "./typo.types";
 import { Typo } from "./variants/typo-default";
 
-type Story = StoryObj<typeof TypoCore>;
+type Story = StoryObj<typeof Typo>;
 
-const defaultProps: TTypoProps<"span"> = {
+const defaultProps: TypoPort<"span"> = {
   children: "Lorem ipsum dollor",
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const sizes = ["xxs", "xs", "s", "m", "l", "xl", "2xl", "3xl", "4xl", "5xl", "6xl"] as any[];
+const sizes = ["xxs", "xs", "s", "m", "l", "xl", "2xl", "3xl", "4xl", "5xl", "6xl"] as const;
 
-const meta: Meta<typeof TypoCore> = {
-  component: TypoCore,
+const meta: Meta<typeof Typo> = {
+  component: Typo,
   title: "Atoms/Typo",
   tags: ["autodocs"],
   parameters: {
