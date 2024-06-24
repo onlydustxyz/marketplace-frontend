@@ -15,9 +15,12 @@ export async function LanguagesSection(props: TLanguagesSection.Props) {
   const { githubUserId } = props;
 
   const languages = await usersApiClient.fetch
-    .getUserPublicLanguages(githubUserId, {
-      pageSize: 10,
-      pageIndex: 0,
+    .getUserPublicLanguages({
+      pathParams: { githubId: githubUserId },
+      pagination: {
+        pageSize: 10,
+        pageIndex: 0,
+      },
     })
     .request()
     .then(res =>

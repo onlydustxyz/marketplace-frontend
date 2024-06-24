@@ -1,0 +1,17 @@
+{
+  "profile": {
+    "stats": {
+      "title": "Main KPIs",
+      "activity": "activity",
+      "rewarded": "Rewarded"
+    },
+    "motivations": {
+      "motivation": "How the contributor background can be leveraged",
+      "approach": "How the contributor's will approach the problem"
+    },
+    "buttons": {
+      "assign": "Assign contributor",
+      "reject": "Reject"
+    }
+  }
+}
