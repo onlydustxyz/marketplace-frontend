@@ -7,7 +7,6 @@ import { Typo } from "components/atoms/typo/variants/typo-default";
 import { TPermissionModal } from "components/features/grant-permission/components/permission-modal/permission-modal.types";
 import { usePublicRepoScope } from "components/features/grant-permission/hooks/use-public-repo-scope";
 import { Icon } from "components/layout/icon/icon";
-import { Translate } from "components/layout/translate/translate";
 import { Modal } from "components/molecules/modal";
 
 export function PermissionModal({ isOpen, handleClose, handleMoreInfoOpen, handleOpenDrawer }: TPermissionModal.Props) {
@@ -28,23 +27,23 @@ export function PermissionModal({ isOpen, handleClose, handleMoreInfoOpen, handl
       footer={{
         endContent: (
           <div className="flex gap-4">
-            <Button variant="secondary-light" size="l" onClick={handleMoreInfoOpen}>
-              <Translate token="v2.features.githubGrantPermissions.modals.permissions.footerButtons.moreInfo" />
-            </Button>
+            <Button
+              variant="secondary-light"
+              size="l"
+              onClick={handleMoreInfoOpen}
+              translate={{
+                token: "v2.features.githubGrantPermissions.modals.permissions.footerButtons.moreInfo",
+              }}
+            />
             <Button
               variant="primary"
               startContent={<Icon remixName="ri-github-line" />}
               size="l"
               onClick={handleVerifyPermissions}
-            >
-              <Typo
-                variant="default"
-                size="xs"
-                translate={{
-                  token: "v2.features.githubGrantPermissions.modals.permissions.footerButtons.grantPermissions",
-                }}
-              />
-            </Button>
+              translate={{
+                token: "v2.features.githubGrantPermissions.modals.permissions.footerButtons.grantPermissions",
+              }}
+            />
           </div>
         ),
       }}
