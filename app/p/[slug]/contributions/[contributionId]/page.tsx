@@ -19,19 +19,21 @@ function ContributionPage() {
 
   const [search, setSearch] = useState<string>("");
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
+  const [selectedApplication, setSelectedApplication] = useState<string | null>(null);
 
   const { data: project } = ProjectApi.queries.useGetProjectBySlug({
     params: { slug },
   });
 
-  const handleSelectUser = (githubId: number) => {
+  const handleSelectUser = (githubId: number, applicationId: string) => {
     setSelectedUser(githubId);
+    setSelectedApplication(applicationId);
   };
 
   const { data: newComersApplicationsData, hasNextPage: newComersApplicationsHasNextPage } =
     applicationsApiClient.queries.useInfiniteGetAllApplications({
-      // queryParams: { projectId: project?.id, issueId: contributionId },
-      queryParams: { projectId: project?.id },
+      queryParams: { projectId: project?.id, issueId: contributionId },
+      // queryParams: { projectId: project?.id },
       options: { enabled: !!project?.id },
     });
 
@@ -39,7 +41,8 @@ function ContributionPage() {
     applicationsApiClient.queries.useInfiniteGetAllApplications({
       // queryParams: { projectId: project?.id, issueId: contributionId, isApplicantProjectMember: true },
       queryParams: { projectId: project?.id },
-      options: { enabled: !!project?.id },
+      // options: { enabled: !!project?.id },
+      options: { enabled: false },
     });
 
   const newComersApplications = useMemo(
@@ -64,6 +67,7 @@ function ContributionPage() {
 
     if (applications.length) {
       setSelectedUser(applications[0].applicant.githubUserId);
+      setSelectedApplication(applications[0].id);
     }
   }, [newComersApplications, projectMembersApplications]);
 
@@ -83,7 +87,9 @@ function ContributionPage() {
           projectMembersApplications={projectMembersApplications}
         />
 
-        {selectedUser ? <ContributorDetails githubId={selectedUser} /> : null}
+        {selectedUser && selectedApplication ? (
+          <ContributorDetails githubId={selectedUser} applicationId={selectedApplication} />
+        ) : null}
       </Flex>
     </Flex>
   );
