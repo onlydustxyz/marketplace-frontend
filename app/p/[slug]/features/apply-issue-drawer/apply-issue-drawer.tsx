@@ -67,7 +67,7 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
       </div>
     );
 
-    const EndContent = (
+    const EndContent = hasApplied ? (
       <Button
         as={BaseLink}
         htmlProps={{ href: issue.htmlUrl }}
@@ -77,7 +77,7 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
       >
         <Translate token={"v2.features.projects.applyIssueDrawer.header.seeOnGithub"} />
       </Button>
-    );
+    ) : null;
 
     return {
       startContent: StartContent,
