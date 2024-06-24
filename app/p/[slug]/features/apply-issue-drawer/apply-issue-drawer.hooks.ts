@@ -9,12 +9,13 @@ import { TApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/appl
 
 import ProjectApi from "src/api/Project";
 import useMutationAlert from "src/api/useMutationAlert";
+import { usePosthog } from "src/hooks/usePosthog";
 
 import { useIntl } from "hooks/translate/use-translate";
 
 export function useApplyIssueDrawer({ issue, state }: Pick<TApplyIssueDrawer.Props, "issue" | "state">) {
   const [, setIsOpen] = state;
-
+  const { capture } = usePosthog();
   const { slug = "" } = useParams<{ slug: string }>();
   const project = ProjectApi.queries.useGetProjectBySlug({
     params: { slug },
@@ -78,6 +79,10 @@ export function useApplyIssueDrawer({ issue, state }: Pick<TApplyIssueDrawer.Pro
       motivation: values.motivations,
       problemSolvingApproach: values.problemSolvingApproach,
     }).then(() => {
+      capture("issue_application_sent", {
+        issue_id: issue.id,
+        project_id: project?.data?.id,
+      });
       setIsOpen(false);
     });
   }
