@@ -15,15 +15,6 @@ async function handleLoginWithPopup(
 }
 
 export function usePublicRepoScope({ onSuccessCallback }: { onSuccessCallback?: () => void }) {
-  // 1- Check if user can apply
-
-  // 2- if false :
-  //  a - logout
-  //  b - handleLoginWithPopup and pass the public_repo scope
-  //  c - check if can apply and then do step (3)
-
-  // 3 - if true : Open drawer
-
   const { loginWithPopup, isAuthenticated, loginWithRedirect } = useAuth0();
   const { user } = useCurrentUser();
   const canApply = user?.isAuthorizedToApplyOnGithubIssues;
