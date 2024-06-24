@@ -73,6 +73,7 @@ type Props = {
   sort: TableSort;
   title: string;
   filterRef: ReturnType<typeof useRef<ContributionsFilterRef | ProjectContributionsFilterRef | null>>;
+  canCollapse?: boolean;
 };
 
 export function ContributionTable({
@@ -87,6 +88,7 @@ export function ContributionTable({
   sort,
   title,
   filterRef,
+  canCollapse = true,
 }: Props) {
   const { T } = useIntl();
   const [collapsed, setCollapsed] = useState(false);
@@ -105,6 +107,7 @@ export function ContributionTable({
 
   const contributions = data?.pages?.flatMap(data => data.contributions);
   const hasContributions = Boolean(contributions?.length);
+  const allowCollapse = canCollapse && hasContributions;
 
   function renderMobileContent() {
     if (isError) {
@@ -179,10 +182,10 @@ export function ContributionTable({
       {fullTable ? (
         <header
           className={cn("flex items-start justify-between gap-6 bg-card-background-light px-6 py-4 md:items-center", {
-            "cursor-pointer": hasContributions,
+            "cursor-pointer": allowCollapse,
             "border-b border-card-border-light": !collapsed && hasContributions,
           })}
-          onClick={hasContributions ? () => setCollapsed(prevState => !prevState) : undefined}
+          onClick={allowCollapse ? () => setCollapsed(prevState => !prevState) : undefined}
         >
           <div className="flex items-start gap-3">
             <div className="rounded-lg bg-card-background-medium p-3 leading-none text-greyscale-50">
@@ -193,7 +196,7 @@ export function ContributionTable({
               <p className="text-sm text-spaceBlue-200">{description}</p>
             </div>
           </div>
-          {hasContributions ? (
+          {allowCollapse ? (
             <span
               className={cn("flex h-6 w-6 items-center justify-center", {
                 "rotate-180": !collapsed,
