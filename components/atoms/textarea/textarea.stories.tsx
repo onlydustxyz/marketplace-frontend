@@ -2,8 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { Icon } from "components/layout/icon/icon";
 
-import { TextareaPort } from "./textarea.types";
-import { Textarea } from "./variants/textarea-default";
+import { Textarea, TextareaPort } from "./index";
 
 type Story = StoryObj<typeof Textarea>;
 

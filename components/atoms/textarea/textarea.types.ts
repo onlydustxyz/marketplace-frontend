@@ -1,15 +1,26 @@
 import { ReactNode } from "react";
-import { VariantProps } from "tailwind-variants";
 
-import { TextareaCoreVariants } from "./textarea.variants";
+interface Variants {
+  isDisabled: boolean;
+  isError: boolean;
+}
 
-type Variants = VariantProps<typeof TextareaCoreVariants>;
-type classNames = Partial<typeof TextareaCoreVariants["slots"]>;
+interface ClassNames {
+  base: string;
+  mainWrapper: string;
+  inputWrapper: string;
+  innerWrapper: string;
+  input: string;
+  errorMessage: string;
+  label: string;
+  helperWrapper: string;
+  description: string;
+}
 
-export interface TextareaPort extends Variants {
+export interface TextareaPort extends Partial<Variants> {
   id?: string;
   name: string;
-  classNames?: classNames;
+  classNames?: Partial<ClassNames>;
   isDisabled?: boolean;
   minRows?: number;
   maxRows?: number;
