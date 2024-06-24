@@ -13,12 +13,9 @@ import { useIntl } from "hooks/translate/use-translate";
 
 export function MoreInfoModal({ isOpen, handleClose, handleBack, handleOpenDrawer }: TMoreInfoModal.Props) {
   const { T } = useIntl();
-  const { handleAddPublicRepoScope } = usePublicRepoScope({
-    onCreateSuccess: () => {
+  const { handleVerifyPermissions } = usePublicRepoScope({
+    onSuccessCallback: () => {
       handleClose();
-      handleOpenDrawer();
-    },
-    onUpdateSuccess: () => {
       handleOpenDrawer();
     },
   });
@@ -46,7 +43,7 @@ export function MoreInfoModal({ isOpen, handleClose, handleBack, handleOpenDrawe
               variant="primary"
               startContent={<Icon remixName="ri-github-line" />}
               size="l"
-              onClick={handleAddPublicRepoScope}
+              onClick={handleVerifyPermissions}
             >
               <Typo
                 variant="default"

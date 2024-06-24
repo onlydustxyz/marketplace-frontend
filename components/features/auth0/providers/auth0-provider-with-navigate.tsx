@@ -2,7 +2,6 @@
 
 import { AppState, Auth0Provider, User } from "@auth0/auth0-react";
 import { ReactNode } from "react";
-import { useLocalStorage } from "react-use";
 
 import { usePosthog } from "src/hooks/usePosthog";
 
@@ -14,7 +13,6 @@ const audience = process.env.NEXT_PUBLIC_AUTH0_AUDIENCE;
 
 export function Auth0ProviderWithNavigate({ children }: { children: ReactNode }) {
   const { capture } = usePosthog();
-  const [scopeStorage] = useLocalStorage("dynamic-github-public-repo-scope");
 
   const onRedirectCallback = (appState: AppState | undefined, user?: User) => {
     if (user) {
@@ -36,7 +34,6 @@ export function Auth0ProviderWithNavigate({ children }: { children: ReactNode })
         redirect_uri: redirectUri,
         connection: connectionName,
         audience,
-        connection_scope: scopeStorage,
       }}
       cacheLocation="localstorage"
       useRefreshTokens={true}
