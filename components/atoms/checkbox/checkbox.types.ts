@@ -4,7 +4,8 @@ import { CheckboxCoreVariants } from "./checkbox.variants";
 
 type Variants = VariantProps<typeof CheckboxCoreVariants>;
 type classNames = Partial<typeof CheckboxCoreVariants["slots"]>;
-export interface TCheckboxProps extends Variants {
+
+export interface CheckboxPort extends Variants {
   classNames?: classNames;
   onChange?: (checked: boolean) => void;
   value?: boolean;
