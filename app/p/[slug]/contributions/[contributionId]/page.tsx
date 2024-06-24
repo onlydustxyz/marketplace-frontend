@@ -3,7 +3,7 @@
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { applicationsApiClient } from "api-client/resources/applications";
 import { useParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import ProjectApi from "src/api/Project";
 
@@ -24,8 +24,13 @@ function ContributionPage() {
     params: { slug },
   });
 
+  const handleSelectUser = (githubId: number) => {
+    setSelectedUser(githubId);
+  };
+
   const { data: newComersApplicationsData, hasNextPage: newComersApplicationsHasNextPage } =
     applicationsApiClient.queries.useInfiniteGetAllApplications({
+      // queryParams: { projectId: project?.id, issueId: contributionId },
       queryParams: { projectId: project?.id },
       options: { enabled: !!project?.id },
     });
@@ -33,7 +38,7 @@ function ContributionPage() {
   const { data: projectMembersApplicationsData, hasNextPage: projectMembersApplicationsHasNextPage } =
     applicationsApiClient.queries.useInfiniteGetAllApplications({
       // queryParams: { projectId: project?.id, issueId: contributionId, isApplicantProjectMember: true },
-      queryParams: { projectId: project?.id, issueId: contributionId },
+      queryParams: { projectId: project?.id },
       options: { enabled: !!project?.id },
     });
 
@@ -47,13 +52,22 @@ function ContributionPage() {
     [projectMembersApplicationsData]
   );
 
-  if (!newComersApplications?.length && !projectMembersApplications?.length) return null;
+  const title = useMemo(() => {
+    if (newComersApplications?.length) return newComersApplications[0].issue.title;
+    if (projectMembersApplications?.length) return projectMembersApplications[0].issue.title;
 
-  const { title } = newComersApplications?.length
-    ? newComersApplications[0].issue
-    : projectMembersApplications?.length
-    ? projectMembersApplications[0].issue
-    : { title: "" };
+    return "";
+  }, [newComersApplications, projectMembersApplications]);
+
+  useEffect(() => {
+    const applications = [...(newComersApplications || []), ...(projectMembersApplications || [])];
+
+    if (applications.length) {
+      setSelectedUser(applications[0].applicant.githubUserId);
+    }
+  }, [newComersApplications, projectMembersApplications]);
+
+  if (!newComersApplications?.length && !projectMembersApplications?.length) return null;
 
   return (
     <Flex direction="col" className="gap-6">
@@ -64,7 +78,7 @@ function ContributionPage() {
           search={search}
           setSearch={setSearch}
           selectedUser={selectedUser}
-          setSelectedUser={setSelectedUser}
+          handleSelectUser={handleSelectUser}
           newComersApplications={newComersApplications}
           projectMembersApplications={projectMembersApplications}
         />

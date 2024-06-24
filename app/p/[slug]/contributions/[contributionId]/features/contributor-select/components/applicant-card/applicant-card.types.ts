@@ -5,6 +5,6 @@ export namespace TApplicantCard {
     user: GetApplicationPageResponse["applications"][0]["applicant"];
     recommandationScore: number;
     selectedUser: number | null;
-    setSelectedUser: (githubId: number | null) => void;
+    handleSelectUser: (githubId: number) => void;
   }
 }

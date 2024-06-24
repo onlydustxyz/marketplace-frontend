@@ -7,7 +7,7 @@ export namespace TContributorSelect {
     search: string;
     setSearch: (search: string) => void;
     selectedUser: number | null;
-    setSelectedUser: (githubId: number | null) => void;
+    handleSelectUser: (githubId: number) => void;
     newComersApplications?: Applications;
     projectMembersApplications?: Applications;
   }

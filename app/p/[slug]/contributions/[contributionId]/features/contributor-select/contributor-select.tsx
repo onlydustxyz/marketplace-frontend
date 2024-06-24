@@ -5,6 +5,7 @@ import { Input } from "components/ds/form/input/input";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
+import { AccordionItemWithBadgeProps } from "components/molecules/accordion";
 import { AccordionWithBadge } from "components/molecules/accordion/variants/accordion-with-badge";
 
 import { useIntl } from "hooks/translate/use-translate";
@@ -16,62 +17,64 @@ export function ContributorSelect({
   search,
   setSearch,
   selectedUser,
-  setSelectedUser,
+  handleSelectUser,
   newComersApplications,
   projectMembersApplications,
 }: TContributorSelect.Props) {
   const { T } = useIntl();
 
-  const items = [
-    newComersApplications?.length
-      ? {
-          id: "new-comers",
-          titleProps: {
-            children: <Translate token="v2.pages.project.details.applicationDetails.select.new" />,
-          },
-          content: (
-            <Flex direction="col" className="gap-2">
-              {newComersApplications?.map(application => (
-                <ApplicantCard
-                  key={application.id}
-                  user={application.applicant}
-                  recommandationScore={application.recommandationScore}
-                  selectedUser={selectedUser}
-                  setSelectedUser={setSelectedUser}
-                />
-              ))}
-            </Flex>
-          ),
-          badgeProps: {
-            children: newComersApplications?.length,
-          },
-        }
-      : null,
-    projectMembersApplications?.length
-      ? {
-          id: "project-members",
-          titleProps: {
-            children: <Translate token="v2.pages.project.details.applicationDetails.select.project" />,
-          },
-          content: (
-            <Flex direction="col" className="gap-2">
-              {projectMembersApplications?.map(application => (
-                <ApplicantCard
-                  key={application.id}
-                  user={application.applicant}
-                  recommandationScore={application.recommandationScore}
-                  selectedUser={selectedUser}
-                  setSelectedUser={setSelectedUser}
-                />
-              ))}
-            </Flex>
-          ),
-          badgeProps: {
-            children: projectMembersApplications?.length,
-          },
-        }
-      : null,
-  ].filter(item => item !== null);
+  const items: AccordionItemWithBadgeProps[] = useMemo(() => {
+    return [
+      newComersApplications?.length
+        ? {
+            id: "new-comers",
+            titleProps: {
+              children: <Translate token="v2.pages.project.details.applicationDetails.select.new" />,
+            },
+            content: (
+              <Flex direction="col" className="gap-2">
+                {newComersApplications?.map(application => (
+                  <ApplicantCard
+                    key={application.id}
+                    user={application.applicant}
+                    recommandationScore={application.recommandationScore}
+                    selectedUser={selectedUser}
+                    handleSelectUser={handleSelectUser}
+                  />
+                ))}
+              </Flex>
+            ),
+            badgeProps: {
+              children: newComersApplications?.length,
+            },
+          }
+        : null,
+      projectMembersApplications?.length
+        ? {
+            id: "project-members",
+            titleProps: {
+              children: <Translate token="v2.pages.project.details.applicationDetails.select.project" />,
+            },
+            content: (
+              <Flex direction="col" className="gap-2">
+                {projectMembersApplications?.map(application => (
+                  <ApplicantCard
+                    key={application.id}
+                    user={application.applicant}
+                    recommandationScore={application.recommandationScore}
+                    selectedUser={selectedUser}
+                    handleSelectUser={handleSelectUser}
+                  />
+                ))}
+              </Flex>
+            ),
+            badgeProps: {
+              children: projectMembersApplications?.length,
+            },
+          }
+        : null,
+    ].filter(item => item !== null);
+  }, [newComersApplications, projectMembersApplications, selectedUser, handleSelectUser]);
 
   const defaultSelected = useMemo(() => items.map(item => item.id), [items]);
 
