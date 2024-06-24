@@ -30,14 +30,10 @@ const defaultTagAvatarProps: TTagAvatarProps<"div"> = {
   avatar: { src: undefined },
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const sizes = ["m", "s", "xs"] as any[];
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const display = ["round", "square"] as any[];
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const style = ["fill", "outline"] as any[];
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const colors = ["black", "white", "red", "pink", "grey", "green", "yellow", "orange", "purple", "blue"] as any[];
+const sizes = ["m", "s", "xs"] as const;
+const display = ["round", "square"] as const;
+const style = ["fill", "outline"] as const;
+const colors = ["black", "white", "red", "pink", "grey", "green", "yellow", "orange", "purple", "blue"] as const;
 
 const meta: Meta<typeof Tag> = {
   component: Tag,
