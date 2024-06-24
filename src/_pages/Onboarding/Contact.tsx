@@ -1,4 +1,3 @@
-import Telegram from "src/assets/icons/Telegram";
 import ContactInformation from "src/components/ContactInformations/ContactInformation";
 
 import { Icon } from "components/layout/icon/icon";
@@ -14,7 +13,7 @@ export function Contact() {
       <ContactInformation
         name="telegram"
         placeholder={T("onboarding.contact.telegram.placeholder")}
-        icon={<Telegram size={16} className="fill-greyscale-400" />}
+        icon={<Icon remixName="ri-telegram-2-fill" className="fill-greyscale-400" />}
         visibilityName="isTelegramPublic"
         options={{
           pattern: {

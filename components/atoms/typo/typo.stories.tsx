@@ -12,7 +12,7 @@ const defaultProps: TTypoProps<"span"> = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const sizes = ["xs", "s", "m", "l", "xl", "2xl", "3xl", "4xl", "5xl", "6xl"] as any[];
+const sizes = ["xxs", "xs", "s", "m", "l", "xl", "2xl", "3xl", "4xl", "5xl", "6xl"] as any[];
 
 const meta: Meta<typeof TypoCore> = {
   component: TypoCore,
@@ -64,10 +64,10 @@ export const Branding: Story = {
       <div className="flex w-full flex-col gap-2">
         {sizes.map(size => (
           <div key={size} className="flex w-full flex-row gap-2">
-            <Typo size={size} variant="branding">
+            <Typo size={size} variant="brand">
               {size} -{" "}
             </Typo>
-            <Typo {...defaultProps} variant="branding" size={size} />
+            <Typo {...defaultProps} variant="brand" size={size} />
           </div>
         ))}
       </div>

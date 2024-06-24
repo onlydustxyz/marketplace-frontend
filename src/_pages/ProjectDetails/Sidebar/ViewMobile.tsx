@@ -22,8 +22,8 @@ import View from "./View";
 interface Props {
   expandable: boolean;
   currentProject: UseGetProjectBySlugResponse;
-  projects: components["schemas"]["ProjectLedShortResponse"][];
-  pendingProjects: components["schemas"]["ProjectLedShortResponse"][];
+  projects: components["schemas"]["ProjectLinkResponse"][];
+  pendingProjects: components["schemas"]["ProjectLinkResponse"][];
   availableTabs: ProjectDetailsTab[];
 }
 

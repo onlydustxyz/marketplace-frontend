@@ -4,9 +4,9 @@ import { SkeletonEl } from "components/ds/skeleton/skeleton";
 
 import { TButtonProps } from "./button.types";
 
-export function ButtonLoading<C extends ElementType = "button">({ size, display }: TButtonProps<C>) {
+export function ButtonLoading<C extends ElementType = "button">({ size, hideText }: TButtonProps<C>) {
   const [w, h] = (() => {
-    if (display === "icon") {
+    if (hideText) {
       if (size === "s") {
         return [24, 24];
       }

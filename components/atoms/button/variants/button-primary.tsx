@@ -11,10 +11,11 @@ export function ButtonPrimary<C extends ElementType = "button">({ ...props }: TB
       {...props}
       classNames={{
         base: cn(
-          "border-1 border-container-stroke-separator bg-interactions-white-default data-[state=disabled]:bg-interactions-white-disabled",
-          "hover:bg-interactions-white-hover"
+          "border-1 border-interactions-white-default bg-interactions-white-default data-[disabled=true]:bg-interactions-white-disabled data-[disabled=true]:border-interactions-white-disabled",
+          "hover:bg-interactions-white-hover hover:border-interactions-white-hover",
+          "text-text-4 data-[disabled=true]:text-text-3 hover:text-text-1"
         ),
-        loaderContainer: "bg-interactions-white-active",
+        loaderContainer: "bg-interactions-white-active ",
         spinnerCircle: "border-b-text-4",
       }}
     />
