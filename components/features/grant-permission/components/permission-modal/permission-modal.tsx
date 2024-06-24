@@ -11,12 +11,9 @@ import { Translate } from "components/layout/translate/translate";
 import { Modal } from "components/molecules/modal";
 
 export function PermissionModal({ isOpen, handleClose, handleMoreInfoOpen, handleOpenDrawer }: TPermissionModal.Props) {
-  const { handleAddPublicRepoScope } = usePublicRepoScope({
-    onCreateSuccess: () => {
+  const { handleVerifyPermissions } = usePublicRepoScope({
+    onSuccessCallback: () => {
       handleClose();
-      handleOpenDrawer();
-    },
-    onUpdateSuccess: () => {
       handleOpenDrawer();
     },
   });
@@ -38,7 +35,7 @@ export function PermissionModal({ isOpen, handleClose, handleMoreInfoOpen, handl
               variant="primary"
               startContent={<Icon remixName="ri-github-line" />}
               size="l"
-              onClick={handleAddPublicRepoScope}
+              onClick={handleVerifyPermissions}
             >
               <Typo
                 variant="default"
