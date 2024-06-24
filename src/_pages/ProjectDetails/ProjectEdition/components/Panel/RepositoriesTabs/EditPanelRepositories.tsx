@@ -14,7 +14,10 @@ import { useRepositorySearch } from "./hooks/useRepositorySearch";
 export const EditPanelRepositories = () => {
   const { T } = useIntl();
   const { organizations } = useContext(EditContext);
-  const installedOrganization = useMemo(() => organizations.filter(org => org.installed), [organizations]);
+  const installedOrganization = useMemo(
+    () => organizations.filter(org => org.installationStatus === "COMPLETE"),
+    [organizations]
+  );
   const [search, setSearch] = useState<string>("");
   const filterOrganizationBySearch = useRepositorySearch(search);
   const inputRef = useRef<HTMLInputElement>(null);

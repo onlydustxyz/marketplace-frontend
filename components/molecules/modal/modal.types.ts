@@ -1,4 +1,4 @@
-import { ComponentProps, PropsWithChildren, ReactNode } from "react";
+import { ComponentProps, ComponentPropsWithoutRef, ElementType, PropsWithChildren, ReactNode } from "react";
 import { VariantProps } from "tailwind-variants";
 
 import { Button } from "components/atoms/button/variants/button-default";
@@ -9,7 +9,9 @@ import { ModalCoreVariants } from "./modal.variants";
 type Variants = VariantProps<typeof ModalCoreVariants>;
 type classNames = Partial<typeof ModalCoreVariants["slots"]>;
 
-export interface ModalPort extends Variants, PropsWithChildren {
+export interface ModalPort<C extends ElementType> extends Variants, PropsWithChildren {
+  htmlProps?: ComponentPropsWithoutRef<C>;
+  as?: C;
   isOpen: boolean;
   onOpenChange?: (isOpen: boolean) => void;
   classNames?: classNames;

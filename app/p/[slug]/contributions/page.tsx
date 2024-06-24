@@ -7,8 +7,8 @@ import Contributions from "src/_pages/ProjectDetails/Contributions";
 import { withLeadRequired } from "components/features/auth0/guards/lead-guard";
 import { withClientOnly } from "components/layout/client-only/client-only";
 
-function ContributionPage() {
+function ContributionsPage() {
   return <Contributions />;
 }
 
-export default withClientOnly(withAuthenticationRequired(withLeadRequired(ContributionPage)));
+export default withClientOnly(withAuthenticationRequired(withLeadRequired(ContributionsPage)));

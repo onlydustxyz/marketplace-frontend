@@ -1,5 +1,10 @@
 import { components, operations } from "src/__generated/api";
 
+/* --------------------------------- Me root -------------------------------- */
+
+type LogoutRequest = operations["logoutMe"];
+export interface LogoutUserResponse extends LogoutRequest {}
+
 /* --------------------------------- Me Hackathons -------------------------------- */
 
 export interface UpdateHackathonsRegistrationsParams {
@@ -44,3 +49,11 @@ export type GetRecommendedProjectsPageResponse = components["schemas"]["Recommen
 type MyJourneyResponse = components["schemas"]["JourneyCompletionResponse"];
 
 export interface GetMyJourneyResponse extends MyJourneyResponse {}
+
+/* --------------------------------- My Applications -------------------------------- */
+
+export type PostProjectApplicationCreateRequest = components["schemas"]["ProjectApplicationCreateRequest"];
+export type PostProjectApplicationCreateResponse = components["schemas"]["ProjectApplicationCreateResponse"];
+
+export type ProjectApplicationUpdateRequest = components["schemas"]["ProjectApplicationUpdateRequest"];
+export type ProjectApplicationUpdatePathParams = operations["updateProjectApplication"]["parameters"]["path"];

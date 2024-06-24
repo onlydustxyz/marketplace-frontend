@@ -31,7 +31,7 @@ export const TypoCoreVariants = tv({
     },
     variant: {
       default: { base: "font-walsheim" },
-      branding: { base: "font-belwe" },
+      brand: { base: "font-belwe" },
     },
   },
   defaultVariants: {

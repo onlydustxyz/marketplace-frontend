@@ -1,5 +1,8 @@
+import { Dispatch, SetStateAction } from "react";
+
 export namespace TApplyButton {
   export interface Props {
-    url: string;
+    hasApplied?: boolean;
+    drawerState: [boolean, Dispatch<SetStateAction<boolean>>];
   }
 }

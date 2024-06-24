@@ -3,13 +3,12 @@ import { useState } from "react";
 
 import { Button } from "components/atoms/button/variants/button-default";
 
-import { ModalCore } from "./modal.core";
 import { ModalPort } from "./modal.types";
 import { Modal } from "./variants/modal-default";
 
-type Story = StoryObj<typeof ModalCore>;
+type Story = StoryObj<typeof Modal>;
 
-const defaultProps: ModalPort = {
+const defaultProps: ModalPort<"div"> = {
   isOpen: false,
   titleProps: { children: "Modal title" },
   footer: {
@@ -20,8 +19,8 @@ const defaultProps: ModalPort = {
   classNames: {},
 };
 
-const meta: Meta<typeof ModalCore> = {
-  component: ModalCore,
+const meta: Meta<typeof Modal> = {
+  component: Modal,
   title: "Molecules/Modal",
   tags: ["autodocs"],
   parameters: {

@@ -34,7 +34,7 @@ export default function OrganizationList({
             id: org.githubUserId,
             login: org.login,
             installationId: org.installationId,
-            installed: org.installed,
+            installed: org.installationStatus === "COMPLETE",
             isAPersonalOrganization: org.isPersonal,
             projectSlug: project?.slug,
           });
@@ -56,8 +56,8 @@ export default function OrganizationList({
               title={org.name || org.login || ""}
               linkUrl={linkUrl}
               linkClick={run}
-              linkIcon={org.installed ? <PencilLine /> : <AddLine />}
-              isExternalFlow={org.installed}
+              linkIcon={org.installationStatus === "COMPLETE" ? <PencilLine /> : <AddLine />}
+              isExternalFlow={org.installationStatus === "COMPLETE"}
               disabled={!org.isCurrentUserAdmin}
               tooltip={disabledTooltip}
               {...titleComponentArg}

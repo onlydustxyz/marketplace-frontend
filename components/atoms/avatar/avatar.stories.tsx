@@ -2,20 +2,19 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { AvatarLoading } from "components/atoms/avatar/avatar.loading";
 
-import { AvatarCore } from "./avatar.core";
-import { TAvatarProps } from "./avatar.types";
+import { AvatarPort } from "./avatar.types";
 import { Avatar } from "./variants/avatar-default";
 
-type Story = StoryObj<typeof AvatarCore>;
+type Story = StoryObj<typeof Avatar>;
 
-const defaultProps: TAvatarProps = {
+const defaultProps: AvatarPort = {
   name: "OD",
 };
 
 const sizes = ["xxl", "xl", "l", "ml", "m", "s", "xs"] as const;
 
-const meta: Meta<typeof AvatarCore> = {
-  component: AvatarCore,
+const meta: Meta<typeof Avatar> = {
+  component: Avatar,
   title: "Atoms/Avatar",
   tags: ["autodocs"],
   parameters: {

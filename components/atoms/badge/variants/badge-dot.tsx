@@ -1,11 +1,14 @@
 import { ElementType } from "react";
 
-import { BadgeCore } from "../badge.core";
-import { TBadgeDotProps } from "../badge.types";
+import { BadgeDefaultAdapter } from "components/atoms/badge/adapters/default/default.adapter";
 
-export function BadgeDot<C extends ElementType = "div">({ ...props }: TBadgeDotProps<C>) {
+import { BadgeCore } from "../badge.core";
+import { BadgeDotPortDot } from "../badge.types";
+
+export function BadgeDot<C extends ElementType = "div">(props: BadgeDotPortDot<C>) {
   return (
     <BadgeCore
+      Adapter={BadgeDefaultAdapter}
       {...props}
       hideContent={true}
       classNames={{

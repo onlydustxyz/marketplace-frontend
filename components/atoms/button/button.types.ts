@@ -10,7 +10,7 @@ type Variants = VariantProps<typeof ButtonCoreVariants>;
 type classNames = Partial<typeof ButtonCoreVariants["slots"]>;
 
 export interface TButtonProps<C extends ElementType> extends Variants, PropsWithChildren {
-  htmlProps?: ComponentPropsWithoutRef<C>;
+  htmlProps?: Omit<ComponentPropsWithoutRef<C>, "type">;
   classNames?: classNames;
   translate?: TTranslate.Props;
   as?: C;
@@ -19,4 +19,5 @@ export interface TButtonProps<C extends ElementType> extends Variants, PropsWith
   startContent?: ReactNode;
   endContent?: ReactNode;
   onClick?: () => void;
+  type?: HTMLButtonElement["type"];
 }

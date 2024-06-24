@@ -38,7 +38,10 @@
   "goodFirstIssues": {
     "title": "Good first issues",
     "description": "Apply to a list of curated issues well suited for beginners to kickstart your journey.",
-    "button": "Apply",
+    "button": {
+      "alreadyApplied": "Already applied",
+      "apply": "Apply"
+    },
     "labels": {
       "title": "Labels",
       "none": "None"
@@ -53,6 +56,14 @@
         "lead": "List issues on Github",
         "contributor": "See all issues on Github"
       }
+    },
+    "overview": {
+      "title": "Overview",
+      "empty": "No description provided."
+    },
+    "applicantCount": {
+      "one": "1 applicant",
+      "many": "__count__ applicants"
     }
   },
   "repositories": {
