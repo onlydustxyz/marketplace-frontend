@@ -5,7 +5,8 @@ import { TextareaCoreVariants } from "./textarea.variants";
 
 type Variants = VariantProps<typeof TextareaCoreVariants>;
 type classNames = Partial<typeof TextareaCoreVariants["slots"]>;
-export interface TTextareaProps extends Variants {
+
+export interface TextareaPort extends Variants {
   id?: string;
   name: string;
   classNames?: classNames;

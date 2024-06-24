@@ -2,21 +2,20 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { Icon } from "components/layout/icon/icon";
 
-import { TextareaCore } from "./textarea.core";
-import { TTextareaProps } from "./textarea.types";
+import { TextareaPort } from "./textarea.types";
 import { Textarea } from "./variants/textarea-default";
 
-type Story = StoryObj<typeof TextareaCore>;
+type Story = StoryObj<typeof Textarea>;
 
-const defaultProps: TTextareaProps = {
+const defaultProps: TextareaPort = {
   name: "textarea",
   startContent: <Icon remixName="ri-square-line" className={"text-inherit"} />,
   endContent: <Icon remixName="ri-square-line" className={"text-inherit"} />,
   value: "Input text",
 };
 
-const meta: Meta<typeof TextareaCore> = {
-  component: TextareaCore,
+const meta: Meta<typeof Textarea> = {
+  component: Textarea,
   title: "Atoms/Textarea",
   tags: ["autodocs"],
   parameters: {
