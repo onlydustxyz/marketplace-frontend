@@ -2,11 +2,11 @@ import { tv } from "tailwind-variants";
 
 export const ButtonCoreVariants = tv({
   slots: {
-    base: "group relative flex w-fit cursor-pointer overflow-hidden rounded-lg bg-container-1 transition-background",
+    base: "group relative w-fit cursor-pointer overflow-hidden rounded-md bg-container-1 transition-background",
     content: "flex flex-row items-center justify-center gap-2",
-    startIcon: "transition-color text-inherit",
-    endIcon: "transition-color text-inherit",
-    label: "transition-color text-inherit",
+    startIcon: "",
+    endIcon: "",
+    label: "",
     loaderContainer: "absolute inset-0 flex h-full w-full flex-row items-center justify-center bg-container-1",
     spinnerCircle: "h-4 w-4 border-b-white",
   },
@@ -37,7 +37,6 @@ export const ButtonCoreVariants = tv({
         startIcon: "text-text-3",
         endIcon: "text-text-3",
         content: "text-text-3",
-        label: "text-text-3",
       },
     },
   },

@@ -1,9 +1,9 @@
 import { ElementType } from "react";
 
-import { BadgePort } from "components/atoms/badge/badge.types";
+import { TBadgeProps } from "components/atoms/badge/badge.types";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
 
-export function BadgeLoading<C extends ElementType = "div">({ size }: BadgePort<C>) {
+export function BadgeLoading<C extends ElementType = "div">({ size }: TBadgeProps<C>) {
   const [w, h] = (() => {
     if (size === "s") {
       return [16, 16];

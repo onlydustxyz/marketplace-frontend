@@ -13,10 +13,8 @@ export const EditPanelOrganization = () => {
 
   const { organizations, PoolingFeedback } = useContext(EditContext);
 
-  const installedOrganizations = organizations.filter(org => (org.installationStatus = "COMPLETE"));
-  const availableOrganizations = organizations.filter(
-    org => org.installationStatus !== "COMPLETE" && org.isCurrentUserAdmin
-  );
+  const installedOrganizations = organizations.filter(org => org.installed);
+  const availableOrganizations = organizations.filter(org => !org.installed && org.isCurrentUserAdmin);
 
   return (
     <>

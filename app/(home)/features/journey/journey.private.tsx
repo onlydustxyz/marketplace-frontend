@@ -20,12 +20,11 @@ export function JourneyPrivate() {
   const steps = useMemo(() => {
     if (!data) return [];
     return [
-      { stepName: "step1", completion: data?.billingProfileVerified },
-      { stepName: "step2", completion: data?.companyBillingProfileVerified },
-      { stepName: "step3", completion: data?.descriptionUpdated },
-      { stepName: "step4", completion: data?.telegramAdded },
-      { stepName: "step5", completion: data?.rewardClaimed },
-      { stepName: "step6", completion: data?.rewardReceived },
+      { stepName: "step1", completion: data?.individualBillingProfileSetup },
+      { stepName: "step2", completion: data?.descriptionUpdated },
+      { stepName: "step3", completion: data?.telegramAdded },
+      { stepName: "step4", completion: data?.firstContributionMade },
+      { stepName: "step5", completion: data?.firstRewardClaimed },
     ];
   }, [data]);
 

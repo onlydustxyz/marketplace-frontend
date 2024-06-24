@@ -45,13 +45,11 @@ describe("ClaimUtils", () => {
           leaders: [],
           invitedLeaders: [],
           organizations: [
-            { githubUserId: 1, installationStatus: "COMPLETE" },
+            { githubUserId: 1, installed: true },
             { githubUserId: 2, installed: false },
           ],
         } as unknown as UseGetProjectBySlugResponse,
-        organizations: [
-          { githubUserId: 1, installationStatus: "COMPLETE" },
-        ] as unknown as UseGithubOrganizationsResponse[],
+        organizations: [{ githubUserId: 1, installed: true }] as unknown as UseGithubOrganizationsResponse[],
       });
       expect(result).toBe(false);
     });
@@ -62,13 +60,13 @@ describe("ClaimUtils", () => {
           leaders: [],
           invitedLeaders: [],
           organizations: [
-            { githubUserId: 1, installationStatus: "COMPLETE" },
-            { githubUserId: 2, installationStatus: "COMPLETE" },
+            { githubUserId: 1, installed: true },
+            { githubUserId: 2, installed: true },
           ],
         } as unknown as UseGetProjectBySlugResponse,
         organizations: [
-          { githubUserId: 1, installationStatus: "COMPLETE" },
-          { githubUserId: 2, installationStatus: "COMPLETE" },
+          { githubUserId: 1, installed: true },
+          { githubUserId: 2, installed: true },
         ] as unknown as UseGithubOrganizationsResponse[],
       });
       expect(result).toBe(true);

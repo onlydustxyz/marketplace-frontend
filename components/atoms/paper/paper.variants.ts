@@ -2,7 +2,7 @@ import { tv } from "tailwind-variants";
 
 export const PaperCoreVariants = tv({
   slots: {
-    base: "group rounded-xl",
+    base: "group rounded-xl border-1 border-container-stroke-separator",
   },
   variants: {
     size: {
@@ -18,14 +18,9 @@ export const PaperCoreVariants = tv({
       action: { base: "bg-container-action" },
       inverse: { base: "bg-container-inverse" },
     },
-    border: {
-      none: "border-0",
-      "container-stroke-separator": "border border-container-stroke-separator",
-    },
   },
   defaultVariants: {
     size: "m",
     container: "1",
-    border: "container-stroke-separator",
   },
 });

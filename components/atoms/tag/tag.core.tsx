@@ -23,9 +23,9 @@ export function TagCore<C extends ElementType = "span">({
   deletableIconProps = {},
   ...props
 }: TTagProps<C>) {
-  const { isDeletable, hideText = false, shape, size, color, style } = props;
+  const { isDeletable, hideText = false, display, size, color, style } = props;
   const Component = as || isDeletable ? "button" : "span";
-  const slots = TagCoreVariants({ isDeletable, hideText, shape, size, color, style });
+  const slots = TagCoreVariants({ isDeletable, hideText, display, size, color, style });
 
   const showChildren = !hideText && (!!children || !!translate);
 

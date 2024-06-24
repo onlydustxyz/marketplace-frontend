@@ -22,10 +22,11 @@ export namespace ClaimUtils {
     }
 
     const isAllOrganizationInstalled = project?.organizations?.every(org => {
-      return !!(
-        org.installationStatus === "COMPLETE" &&
-        organizations?.find(myOrg => myOrg.githubUserId === org.githubUserId && myOrg.installationStatus === "COMPLETE")
-      );
+      if (org.installed && organizations?.find(myOrg => myOrg.githubUserId === org.githubUserId && myOrg.installed)) {
+        return true;
+      }
+
+      return false;
     });
 
     return isAllOrganizationInstalled || false;

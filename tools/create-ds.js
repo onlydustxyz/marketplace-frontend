@@ -11,17 +11,19 @@ async function createCoreComponent({ name, path, PascalName }) {
     prettier.format(
       `
         import { ElementType } from "react";
-        import { PropsWithAdapter } from "components/types/props-with-adapter";
 
         import { cn } from "src/utils/cn";
 
-        import { ${PascalName}Port } from "./${name}.types";
+        import { T${PascalName}Props } from "./${name}.types";
         import { ${PascalName}CoreVariants } from "./${name}.variants";
 
-        export function ${PascalName}Core<C extends ElementType = "div">({Adapter, ...props}: PropsWithAdapter<${PascalName}Port<C>>) {
+        export function ${PascalName}Core<C extends ElementType = "div">({classNames, as, ...props}: T${PascalName}Props<C>) {
+          const Component = as || "div";
+          const { ...htmlProps } = props;
+          const slots = ${PascalName}CoreVariants();
 
           return (
-            <Adapter {...props} />
+            <Component {...htmlProps} className={cn(slots.base(), classNames?.base)} />
           );
         };
   `,
@@ -55,66 +57,18 @@ async function createVariants({ name, path, PascalName }) {
       `
         import { ElementType } from "react";
 
-        import { ${PascalName}DefaultAdapter} from "../adapters/default/default.adapter";
-        import { ${PascalName}Core } from "../${name}.core";
-        import { ${PascalName}Port } from "../${name}.types";
+        import { T${PascalName}Props } from "../${name}.types";
 
-        export function ${PascalName}<C extends ElementType = "div">({ ...props }: ${PascalName}Port<C>) {
+        import { ${PascalName}Core } from "../${name}.core";
+
+        export function ${PascalName}<C extends ElementType = "div">({ ...props }: T${PascalName}Props<C>) {
           return (
             <${PascalName}Core
-              Adapter={${PascalName}DefaultAdapter}
               {...props}
+              classNames={{}}
             />
           );
         };
-  `,
-      { parser: "typescript" }
-    )
-  );
-}
-
-async function createAdapter({ name, path, PascalName }) {
-  await fs.mkdir(`${path}/adapters`);
-  await fs.mkdir(`${path}/adapters/default`);
-  await fs.appendFile(
-    `${path}/adapters/default/default.adapter.tsx`,
-    prettier.format(
-      `
-        import { ElementType } from "react";
-
-        import { cn } from "src/utils/cn";
-
-        import { ${PascalName}Port } from "../../${name}.types";
-        import { ${PascalName}DefaultVariants } from "./default.variants";
-
-        export function ${PascalName}DefaultAdapter<C extends ElementType = "div">({classNames, as, ...props}: ${PascalName}Port<C>) {
-          const Component = as || "div";
-          const { ...htmlProps } = props;
-          const slots = ${PascalName}DefaultVariants();
-
-          return (
-            <Component {...htmlProps} className={cn(slots.base(), classNames?.base)} />
-          );
-        };
-  `,
-      { parser: "typescript" }
-    )
-  );
-  await fs.appendFile(
-    `${path}/adapters/default/default.variants.ts`,
-    prettier.format(
-      `
-        import { tv } from "tailwind-variants";
-        import { ${PascalName}CoreVariants } from "../../${name}.variants";
-
-        export const ${PascalName}DefaultVariants = tv({
-          extend: ${PascalName}CoreVariants,
-          slots: {
-            base: "",
-          },
-          variants: {},
-          defaultVariants: {},
-        });
   `,
       { parser: "typescript" }
     )
@@ -133,9 +87,9 @@ async function createTypes({ name, path, PascalName }) {
         type Variants = VariantProps<typeof ${PascalName}CoreVariants>;
         type classNames = Partial<typeof ${PascalName}CoreVariants["slots"]>;
 
-        export interface ${PascalName}Port<C extends ElementType> extends Variants {
+        export interface T${PascalName}Props<C extends ElementType> extends Variants {
           classNames?: classNames;
-          htmlProps?: ComponentPropsWithoutRef<C>;
+           htmlProps?: ComponentPropsWithoutRef<C>;
           as?: C;
         }
   `,
@@ -180,16 +134,17 @@ async function createStories({ name, path, PascalName }) {
     prettier.format(
       `
         import { Meta, StoryObj } from "@storybook/react";
-        import { ${PascalName}Port } from "./${name}.types";
+        import { T${PascalName}Props } from "./${name}.types";
 
+        import { ${PascalName}Core } from "./${name}.core";
         import { ${PascalName} } from "./variants/${name}-default";
 
-        type Story = StoryObj<typeof ${PascalName}>;
+        type Story = StoryObj<typeof ${PascalName}Core>;
 
-        const defaultPort: ${PascalName}Port<"div"> = {};
+        const defaultProps: T${PascalName}Props<"div"> = {};
 
-        const meta: Meta<typeof ${PascalName}> = {
-          component: ${PascalName},
+        const meta: Meta<typeof ${PascalName}Core> = {
+          component: ${PascalName}Core,
           title: "${path.includes("atoms") ? "Atoms" : "Molecules"}/${PascalName}",
           tags: ["autodocs"],
           parameters: {
@@ -209,7 +164,17 @@ async function createStories({ name, path, PascalName }) {
           render: args => {
             return (
               <div className="flex w-full items-center gap-2">
-                <${PascalName} {...defaultPort} {...args} />
+                <${PascalName} {...defaultProps} {...args} />
+              </div>
+            );
+          },
+        };
+
+        export const Core: Story = {
+          render: args => {
+            return (
+              <div className="flex w-full items-center gap-2">
+                <${PascalName}Core {...defaultProps} {...args} />
               </div>
             );
           },
@@ -230,7 +195,6 @@ async function createFiles(informations) {
   await createLoading(informations);
   await createStories(informations);
   await createIndex(informations);
-  await createAdapter(informations);
   await exec(`eslint '${informations.path}/*.{js,jsx,json,ts,tsx}' --max-warnings=0 --fix`);
 }
 

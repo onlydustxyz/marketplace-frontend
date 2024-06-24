@@ -64,10 +64,10 @@ export const Branding: Story = {
       <div className="flex w-full flex-col gap-2">
         {sizes.map(size => (
           <div key={size} className="flex w-full flex-row gap-2">
-            <Typo size={size} variant="brand">
+            <Typo size={size} variant="branding">
               {size} -{" "}
             </Typo>
-            <Typo {...defaultProps} variant="brand" size={size} />
+            <Typo {...defaultProps} variant="branding" size={size} />
           </div>
         ))}
       </div>

@@ -12,15 +12,13 @@ export function TypoCore<C extends ElementType = "span">({
   translate,
   children,
   as,
-  htmlProps,
   ...props
 }: TTypoProps<C>) {
-  const { weight, variant, size, color } = props;
-  const slots = TypoCoreVariants({ weight, variant, size, color });
+  const slots = TypoCoreVariants({ ...props });
   const Component = as || "span";
 
   return (
-    <Component {...htmlProps} className={cn(slots.base(), classNames?.base)}>
+    <Component {...props} className={cn(slots.base(), classNames?.base)}>
       {translate ? <Translate {...translate} /> : children}
     </Component>
   );

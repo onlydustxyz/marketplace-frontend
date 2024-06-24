@@ -6,7 +6,7 @@ import { AvatarCoreVariants } from "./avatar.variants";
 type Variants = VariantProps<typeof AvatarCoreVariants>;
 type classNames = Partial<typeof AvatarCoreVariants["slots"]>;
 
-export interface AvatarPort extends Variants {
+export interface TAvatarProps extends Variants {
   /**
    * Classname to change the classNames of the element. if className is passed, it will be added to the base slot.
    * @default undefined

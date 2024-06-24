@@ -5,7 +5,6 @@ import { viewportConfig } from "src/config";
 import { cn } from "src/utils/cn";
 
 import { Button } from "components/atoms/button/variants/button-default";
-import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 import { DrawerNextUiVariants } from "components/molecules/drawer/adapters/next-ui/next-ui.variants";
 import { DrawerPort } from "components/molecules/drawer/drawer.types";
 
@@ -72,20 +71,17 @@ export function DrawerNextUiAdapter<C extends ElementType = "div">({
               <ModalHeader>
                 <div>{header?.startContent}</div>
                 <div className="flex items-center justify-end gap-2">
-                  {header?.endContent ? <div>{header.endContent}</div> : null}
+                  <div>{header?.endContent}</div>
                   <Button
                     onClick={onClose}
                     startIcon={{ remixName: "ri-close-line" }}
                     hideText
                     variant="secondary-light"
-                    size={"l"}
                   />
                 </div>
               </ModalHeader>
 
-              <ScrollView>
-                <ModalBody>{children}</ModalBody>
-              </ScrollView>
+              <ModalBody>{children}</ModalBody>
 
               {footer?.startContent || footer?.endContent ? (
                 <ModalFooter>

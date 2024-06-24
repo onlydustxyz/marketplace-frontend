@@ -1,8 +1,8 @@
 import process from "process";
 
-import { AvatarPort } from "components/atoms/avatar/avatar.types";
+import { TAvatarProps } from "components/atoms/avatar/avatar.types";
 
-export function getAvatarImageSize(size: AvatarPort["size"]): [number, number] {
+export function getAvatarImageSize(size: TAvatarProps["size"]): [number, number] {
   switch (size) {
     case "xxl":
       return [96, 96];

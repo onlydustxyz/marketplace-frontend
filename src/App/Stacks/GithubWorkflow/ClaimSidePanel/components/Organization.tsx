@@ -36,25 +36,22 @@ export default function ClaimBannerOrganization({
     [myOrganizations, organization]
   );
 
-  const organizationInstalled = organization.installationStatus === "COMPLETE";
-  const myOrganizationInstalled = myOrganization?.installationStatus === "COMPLETE";
-
   const githubLink = getGithubSetupLink({
     id: organization.githubUserId,
     login: organization.login,
     installationId: organization.installationId,
-    installed: organizationInstalled,
+    installed: organization.installed,
     isAPersonalOrganization: organization.isPersonal,
     projectSlug: project?.slug,
     isClaim: true,
   });
 
   const organizationStatus: organizationStatusEnum = useMemo(() => {
-    if (myOrganization && !organizationInstalled && !myOrganizationInstalled && myOrganization.isCurrentUserAdmin) {
+    if (myOrganization && !organization.installed && !myOrganization.installed && myOrganization.isCurrentUserAdmin) {
       return organizationStatusEnum.shouldInstall;
     }
 
-    if (myOrganization && !organizationInstalled && !myOrganizationInstalled && !myOrganization.isCurrentUserAdmin) {
+    if (myOrganization && !organization.installed && !myOrganization.installed && !myOrganization.isCurrentUserAdmin) {
       return organizationStatusEnum.shouldGrant;
     }
 

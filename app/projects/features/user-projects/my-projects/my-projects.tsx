@@ -44,7 +44,9 @@ export function MyProjects({ projectsLead, pendingProjectsLead }: TMyProjects.Pr
                   alt={project.name}
                   size="l"
                   shape="square"
-                  className={cn("border-card-border-light transition-colors hover:border-card-border-heavy")}
+                  className={cn("border-card-border-light transition-colors hover:border-card-border-heavy", {
+                    "border-orange-700 hover:border-orange-500": project.hasMissingGithubAppInstallation,
+                  })}
                 />
               </BaseLink>
             </Tooltip>

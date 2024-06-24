@@ -1,11 +1,9 @@
-import { ElementType } from "react";
-
 import { ModalNextUiAdapter } from "components/molecules/modal/adapters/next-ui/next-ui.adapter";
 
 import { ModalCore } from "../modal.core";
 import { ModalPort } from "../modal.types";
 
-export function Modal<C extends ElementType = "div">({ titleProps, closeButtonProps, ...props }: ModalPort<C>) {
+export function Modal({ titleProps, closeButtonProps, ...props }: ModalPort) {
   return (
     <ModalCore
       Adapter={ModalNextUiAdapter}
@@ -15,7 +13,7 @@ export function Modal<C extends ElementType = "div">({ titleProps, closeButtonPr
         footer: "border-t border-container-stroke-separator",
       }}
       titleProps={{
-        variant: "brand",
+        variant: "branding",
         size: "xl",
         as: "h6",
         ...titleProps,

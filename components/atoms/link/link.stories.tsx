@@ -1,19 +1,21 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import { LinkLoading } from "components/atoms/link/link.loading";
+import { LinkButton } from "components/atoms/link/variants/link-button";
 
-import { LinkPort } from "./link.types";
+import { LinkCore } from "./link.core";
+import { TLinkProps } from "./link.types";
 import { Link } from "./variants/link-default";
 
-type Story = StoryObj<typeof Link>;
+type Story = StoryObj<typeof LinkCore>;
 
-const defaultProps: LinkPort = {
+const defaultProps: TLinkProps = {
   href: "https://www.google.com",
   children: "action link",
 };
 
-const meta: Meta<typeof Link> = {
-  component: Link,
+const meta: Meta<typeof LinkCore> = {
+  component: LinkCore,
   title: "Atoms/Link",
   tags: ["autodocs"],
   parameters: {
@@ -53,6 +55,20 @@ export const Inverse: Story = {
     return (
       <div className="flex w-full items-center gap-2">
         <Link {...defaultProps} color={"inverse"} />
+      </div>
+    );
+  },
+};
+export const Button: Story = {
+  parameters: {
+    docs: {
+      source: { code: "<LinkButton  />" },
+    },
+  },
+  render: () => {
+    return (
+      <div className="flex w-full items-center gap-2">
+        <LinkButton>Action button</LinkButton>
       </div>
     );
   },

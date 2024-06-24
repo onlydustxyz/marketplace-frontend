@@ -10,7 +10,7 @@ import { cn } from "src/utils/cn";
 import { useIntl } from "hooks/translate/use-translate";
 
 interface Props {
-  project: components["schemas"]["ProjectLinkResponse"];
+  project: components["schemas"]["ProjectLedShortResponse"];
   isSelected: boolean;
   isInvited: boolean;
 }
@@ -30,6 +30,9 @@ export default function ProjectOption({ project, isSelected, isInvited }: Props)
           <RoundedImage src={project.logoUrl || IMAGES.logo.original} alt={T("project.details.sidebar.title")} />
           <div className="flex flex-1 flex-col justify-self-start truncate">
             <div className="truncate text-base font-medium">{project.name}</div>
+            <div className="font-regular truncate text-sm text-slate-400">
+              {T("project.details.sidebar.contributors", { count: project.contributorCount })}
+            </div>
           </div>
           <>
             {isInvited ? (

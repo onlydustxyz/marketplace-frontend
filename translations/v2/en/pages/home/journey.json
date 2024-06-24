@@ -3,28 +3,24 @@
   "progressPercentage": "__count__%",
   "steps": {
     "step1": {
-      "title": "Create and validate your first billing profile",
-      "description": "To be able to receive rewards you need to validate a billing profile."
+      "title": "Set up your personal billing profile.",
+      "description": "Verify your personal information and provide your document ID."
     },
     "step2": {
-      "title": "Add and validate a company billing profile",
-      "description": "To be able to receive more than $5k per year you need a company."
+      "title": "Update your description",
+      "description": "To help others find out who you really are."
     },
     "step3": {
-      "title": "Update your description",
-      "description": "To showcase who you are and why your the perfect contributor."
+      "title": "Update your contact methods.",
+      "description": "Make sure that you’re reachable through multiple accounts."
     },
     "step4": {
-      "title": "Update your Telegram contact information",
-      "description": "You can control who has access to this information."
+      "title": "Complete your first contribution.",
+      "description": "Even if it’s not rewarded, we value your work on your profile."
     },
     "step5": {
-      "title": "Get your first reward",
-      "description": "Contribute on a project, create value and get your first reward."
-    },
-    "step6": {
-      "title": "Request your rewards",
-      "description": "To receive the reward on your wallets you need to request the payment."
+      "title": "Claim your first reward",
+      "description": "Go to your reward page and follow the 2 min process."
     }
   },
   "public": {
