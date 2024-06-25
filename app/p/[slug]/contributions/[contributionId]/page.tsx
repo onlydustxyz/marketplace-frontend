@@ -32,8 +32,6 @@ function ContributionPage() {
     }
   }, [newComersApplications, projectMembersApplications]);
 
-  if (!newComersApplications?.length && !projectMembersApplications?.length) return null;
-
   return (
     <Flex direction="col" className="gap-6">
       <ContributionHeader title={title} />
