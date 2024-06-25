@@ -92,13 +92,13 @@ export function ContributorDetails({ githubId, applicationId }: TContributorDeta
             variant="secondary-light"
             size="m"
             translate={{ token: "v2.pages.project.details.applicationDetails.profile.buttons.reject" }}
-            onClick={deleteApplication}
+            onClick={() => deleteApplication({})}
           />
           <Button
             variant="primary"
             size="m"
             translate={{ token: "v2.pages.project.details.applicationDetails.profile.buttons.assign" }}
-            onClick={acceptApplication}
+            onClick={() => acceptApplication({})}
           />
         </div>
       </Card>

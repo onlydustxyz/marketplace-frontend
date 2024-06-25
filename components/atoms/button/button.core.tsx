@@ -43,7 +43,7 @@ export function ButtonCore<C extends ElementType = "button">({
       data-loading={isLoading}
       data-disabled={isDisabled}
       className={cn(slots.base(), classNames?.base)}
-      onClick={() => onClick?.()}
+      onClick={onClick}
       type={type}
     >
       <div className={cn(slots.content(), classNames?.content)}>
