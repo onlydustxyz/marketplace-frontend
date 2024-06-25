@@ -4,6 +4,8 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 
+import { ApplicationsTable } from "app/p/[slug]/applications/features/applications-table/applications-table";
+
 import { MissingGithubAppInstallBanner } from "src/_pages/ProjectDetails/Banners/MissingGithubAppInstallBanner";
 import StillFetchingBanner from "src/_pages/ProjectDetails/Banners/StillFetchingBanner";
 import { useContributionTable } from "src/_pages/ProjectDetails/Contributions/useContributionTable";
@@ -95,6 +97,8 @@ export default function ProjectApplicationsPage() {
       {project && hasOrgsWithUnauthorizedRepos ? (
         <MissingGithubAppInstallBanner slug={project.slug} orgs={orgsWithUnauthorizedRepos} />
       ) : null}
+
+      <ApplicationsTable projectId={project?.id} />
 
       <ScrollView>
         <ContributionTable {...props} />

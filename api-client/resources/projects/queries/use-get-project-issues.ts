@@ -8,8 +8,6 @@ export const useGetProjectIssues = ({
   options,
   ...fetch
 }: ParametersInterfaceWithReactQuery<typeof getProjectIssues>) => {
-  console.log({ options, fetch });
-
   return useInfiniteQuery<GetProjectIssuesPageResponse>(
     useReactInfiniteQueryAdapter<GetProjectIssuesPageResponse>(getProjectIssues(fetch), options)
   );
