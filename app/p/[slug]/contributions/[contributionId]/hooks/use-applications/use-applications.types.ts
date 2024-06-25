@@ -3,15 +3,20 @@ import { GetApplicationPageResponse } from "api-client/resources/applications/ty
 export namespace TUseApplications {
   type Applications = GetApplicationPageResponse["applications"];
 
+  export interface ApplicationItem {
+    applications?: Applications;
+    fetchNextPage: () => void;
+    hasNextPage: boolean;
+    isFetchingNextPage: boolean;
+  }
+
   export interface Props {
     search: string;
   }
 
   export interface Return {
-    newComersApplications?: Applications;
-    projectMembersApplications?: Applications;
+    newComers: ApplicationItem;
+    projectMembers: ApplicationItem;
     title: string;
-    newComersApplicationsHasNextPage: boolean;
-    projectMembersApplicationsHasNextPage: boolean;
   }
 }
