@@ -1,11 +1,7 @@
 "use client";
 
 import { withAuthenticationRequired } from "@auth0/auth0-react";
-import { applicationsApiClient } from "api-client/resources/applications";
-import { useParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
-
-import ProjectApi from "src/api/Project";
+import { useEffect, useState } from "react";
 
 import { withLeadRequired } from "components/features/auth0/guards/lead-guard";
 import { Flex } from "components/layout/flex/flex";
@@ -13,53 +9,19 @@ import { Flex } from "components/layout/flex/flex";
 import { ContributionHeader } from "./features/contribution-header/contribution-header";
 import { ContributorDetails } from "./features/contributor-details/contributor-details";
 import { ContributorSelect } from "./features/contributor-select/contributor-select";
+import { UseApplications } from "./hooks/use-applications/use-applications";
 
 function ContributionPage() {
-  const { slug = "", contributionId = "" } = useParams<{ slug?: string; contributionId?: string }>();
-
   const [search, setSearch] = useState<string>("");
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
   const [selectedApplication, setSelectedApplication] = useState<string | null>(null);
 
-  const { data: project } = ProjectApi.queries.useGetProjectBySlug({
-    params: { slug },
-  });
+  const { newComersApplications, projectMembersApplications, title } = UseApplications({ search });
 
   const handleSelectUser = (githubId: number, applicationId: string) => {
     setSelectedUser(githubId);
     setSelectedApplication(applicationId);
   };
-
-  const { data: newComersApplicationsData, hasNextPage: newComersApplicationsHasNextPage } =
-    applicationsApiClient.queries.useInfiniteGetAllApplications({
-      // queryParams: { projectId: project?.id },
-      queryParams: { projectId: project?.id, issueId: contributionId },
-      options: { enabled: !!project?.id },
-    });
-
-  const { data: projectMembersApplicationsData, hasNextPage: projectMembersApplicationsHasNextPage } =
-    applicationsApiClient.queries.useInfiniteGetAllApplications({
-      queryParams: { projectId: project?.id, issueId: contributionId, isApplicantProjectMember: true },
-      // queryParams: { projectId: project?.id },
-      options: { enabled: !!project?.id },
-    });
-
-  const newComersApplications = useMemo(
-    () => newComersApplicationsData?.pages.flatMap(page => page.applications),
-    [newComersApplicationsData]
-  );
-
-  const projectMembersApplications = useMemo(
-    () => projectMembersApplicationsData?.pages.flatMap(page => page.applications),
-    [projectMembersApplicationsData]
-  );
-
-  const title = useMemo(() => {
-    if (newComersApplications?.length) return newComersApplications[0].issue.title;
-    if (projectMembersApplications?.length) return projectMembersApplications[0].issue.title;
-
-    return "";
-  }, [newComersApplications, projectMembersApplications]);
 
   useEffect(() => {
     const applications = [...(newComersApplications || []), ...(projectMembersApplications || [])];
