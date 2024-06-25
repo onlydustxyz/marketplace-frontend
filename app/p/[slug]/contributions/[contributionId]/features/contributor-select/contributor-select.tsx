@@ -93,7 +93,7 @@ export function ContributorSelect({
             placeholder={T("v2.pages.project.details.applicationDetails.select.search")}
           />
 
-          <AccordionWithBadge items={items} defaultSelected={defaultSelected} />
+          <AccordionWithBadge items={items} defaultSelected={defaultSelected} selectionMode="multiple" />
         </Flex>
       </Card>
     </div>

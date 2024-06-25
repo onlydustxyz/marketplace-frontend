@@ -31,14 +31,14 @@ function ContributionPage() {
   const { data: newComersApplicationsData, hasNextPage: newComersApplicationsHasNextPage } =
     applicationsApiClient.queries.useInfiniteGetAllApplications({
       // queryParams: { projectId: project?.id, issueId: contributionId },
-      queryParams: { projectId: project?.id },
+      queryParams: { projectId: project?.id, applicantLoginSearch: search },
       options: { enabled: !!project?.id },
     });
 
   const { data: projectMembersApplicationsData, hasNextPage: projectMembersApplicationsHasNextPage } =
     applicationsApiClient.queries.useInfiniteGetAllApplications({
       // queryParams: { projectId: project?.id, issueId: contributionId, isApplicantProjectMember: true },
-      queryParams: { projectId: project?.id },
+      queryParams: { projectId: project?.id, applicantLoginSearch: search },
       options: { enabled: !!project?.id },
     });
 
