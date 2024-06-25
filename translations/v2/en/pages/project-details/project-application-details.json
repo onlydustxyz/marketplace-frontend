@@ -20,6 +20,6 @@
     }
   },
   "messages": {
-    "success": "__login__ has been successfully assign on __issue__"
+    "success": "__login__ has been successfully assigned to \"__issue__\""
   }
 }
