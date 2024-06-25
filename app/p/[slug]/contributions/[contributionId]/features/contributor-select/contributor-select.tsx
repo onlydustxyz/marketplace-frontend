@@ -5,6 +5,7 @@ import { Input } from "components/ds/form/input/input";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
+import { Typography } from "components/layout/typography/typography";
 import { AccordionItemWithBadgeProps } from "components/molecules/accordion";
 import { AccordionWithBadge } from "components/molecules/accordion/variants/accordion-with-badge";
 
@@ -95,7 +96,21 @@ export function ContributorSelect({
             placeholder={T("v2.pages.project.details.applicationDetails.select.search")}
           />
 
-          <AccordionWithBadge items={items} defaultSelected={defaultSelected} selectionMode="multiple" />
+          {items.length ? (
+            <AccordionWithBadge items={items} defaultSelected={defaultSelected} selectionMode="multiple" />
+          ) : (
+            <Flex direction="col" alignItems="center" className="gap-1 py-2">
+              <Typography
+                variant="title-s"
+                translate={{ token: "v2.pages.project.details.applicationDetails.select.empty.title" }}
+              />
+
+              <Typography
+                variant="body-s"
+                translate={{ token: "v2.pages.project.details.applicationDetails.select.empty.description" }}
+              />
+            </Flex>
+          )}
         </Flex>
       </Card>
     </div>

@@ -2,7 +2,11 @@
   "select": {
     "search": "Search for users",
     "new": "New comers",
-    "project": "Project members"
+    "project": "Project members",
+    "empty": {
+      "title": "No users found",
+      "description": "No users found with the given search criteria"
+    }
   },
   "profile": {
     "stats": {
