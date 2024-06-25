@@ -32,17 +32,16 @@ function ContributionPage() {
 
   const { data: newComersApplicationsData, hasNextPage: newComersApplicationsHasNextPage } =
     applicationsApiClient.queries.useInfiniteGetAllApplications({
-      queryParams: { projectId: project?.id, issueId: contributionId },
       // queryParams: { projectId: project?.id },
+      queryParams: { projectId: project?.id, issueId: contributionId },
       options: { enabled: !!project?.id },
     });
 
   const { data: projectMembersApplicationsData, hasNextPage: projectMembersApplicationsHasNextPage } =
     applicationsApiClient.queries.useInfiniteGetAllApplications({
-      // queryParams: { projectId: project?.id, issueId: contributionId, isApplicantProjectMember: true },
-      queryParams: { projectId: project?.id },
-      // options: { enabled: !!project?.id },
-      options: { enabled: false },
+      queryParams: { projectId: project?.id, issueId: contributionId, isApplicantProjectMember: true },
+      // queryParams: { projectId: project?.id },
+      options: { enabled: !!project?.id },
     });
 
   const newComersApplications = useMemo(
