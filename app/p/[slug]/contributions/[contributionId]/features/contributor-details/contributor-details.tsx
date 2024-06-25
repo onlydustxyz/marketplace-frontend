@@ -29,7 +29,7 @@ export function ContributorDetails({ githubId, applicationId }: TContributorDeta
     pathParams: { applicationId },
   });
 
-  const { mutate: deleteApplication, ...deleteMutation } = applicationsApiClient.mutations.useDeleteApplication(
+  const { mutate: deleteApplication } = applicationsApiClient.mutations.useDeleteApplication(
     {
       pathParams: {
         applicationId,
