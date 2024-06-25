@@ -41,10 +41,6 @@ const initialSort: Record<ContributionStatus, TableSort> = {
     sort: TableColumns.Date,
     direction: OrderBy.Desc,
   },
-  [ContributionStatus.Applied]: {
-    sort: TableColumns.Date,
-    direction: OrderBy.Desc,
-  },
 };
 
 export default function Contributions() {

@@ -234,7 +234,6 @@ export enum ContributionStatus {
   InProgress = "IN_PROGRESS",
   Completed = "COMPLETED",
   Cancelled = "CANCELLED",
-  Applied = "APPLIED",
 }
 
 export type GithubStatus = Contribution["githubStatus"];
