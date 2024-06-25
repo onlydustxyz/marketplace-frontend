@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 
+import { ShowMore } from "src/components/Table/ShowMore";
+
 import { Card } from "components/ds/card/card";
 import { Input } from "components/ds/form/input/input";
 import { Flex } from "components/layout/flex/flex";
@@ -19,14 +21,14 @@ export function ContributorSelect({
   setSearch,
   selectedUser,
   handleSelectUser,
-  newComersApplications,
-  projectMembersApplications,
+  newComers,
+  projectMembers,
 }: TContributorSelect.Props) {
   const { T } = useIntl();
 
   const items: AccordionItemWithBadgeProps[] = useMemo(() => {
     return [
-      newComersApplications?.length
+      newComers.applications?.length
         ? {
             id: "new-comers",
             titleProps: {
@@ -34,24 +36,28 @@ export function ContributorSelect({
             },
             content: (
               <Flex direction="col" className="gap-2">
-                {newComersApplications?.map(application => (
+                {newComers.applications?.map(application => (
                   <ApplicantCard
-                    applicationId={application.id}
                     key={application.id}
+                    applicationId={application.id}
                     user={application.applicant}
                     recommandationScore={application.recommandationScore}
                     selectedUser={selectedUser}
                     handleSelectUser={handleSelectUser}
                   />
                 ))}
+
+                {newComers.hasNextPage ? (
+                  <ShowMore onClick={newComers.fetchNextPage} loading={newComers.isFetchingNextPage} />
+                ) : null}
               </Flex>
             ),
             badgeProps: {
-              children: newComersApplications?.length,
+              children: newComers.applications?.length,
             },
           }
         : null,
-      projectMembersApplications?.length
+      projectMembers.applications?.length
         ? {
             id: "project-members",
             titleProps: {
@@ -59,25 +65,29 @@ export function ContributorSelect({
             },
             content: (
               <Flex direction="col" className="gap-2">
-                {projectMembersApplications?.map(application => (
+                {projectMembers.applications?.map(application => (
                   <ApplicantCard
-                    applicationId={application.id}
                     key={application.id}
+                    applicationId={application.id}
                     user={application.applicant}
                     recommandationScore={application.recommandationScore}
                     selectedUser={selectedUser}
                     handleSelectUser={handleSelectUser}
                   />
                 ))}
+
+                {projectMembers.hasNextPage ? (
+                  <ShowMore onClick={projectMembers.fetchNextPage} loading={projectMembers.isFetchingNextPage} />
+                ) : null}
               </Flex>
             ),
             badgeProps: {
-              children: projectMembersApplications?.length,
+              children: projectMembers.applications?.length,
             },
           }
         : null,
     ].filter(item => item !== null);
-  }, [newComersApplications, projectMembersApplications, selectedUser, handleSelectUser]);
+  }, [newComers.applications, projectMembers.applications, selectedUser, handleSelectUser]);
 
   const defaultSelected = useMemo(() => items.map(item => item.id), [items]);
 

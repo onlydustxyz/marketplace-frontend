@@ -16,7 +16,7 @@ function ContributionPage() {
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
   const [selectedApplication, setSelectedApplication] = useState<string | null>(null);
 
-  const { newComersApplications, projectMembersApplications, title } = UseApplications({ search });
+  const { newComers, projectMembers, title } = UseApplications({ search });
 
   const handleSelectUser = (githubId: number, applicationId: string) => {
     setSelectedUser(githubId);
@@ -24,13 +24,13 @@ function ContributionPage() {
   };
 
   useEffect(() => {
-    const applications = [...(newComersApplications || []), ...(projectMembersApplications || [])];
+    const applications = [...(newComers.applications || []), ...(projectMembers.applications || [])];
 
     if (applications.length) {
       setSelectedUser(applications[0].applicant.githubUserId);
       setSelectedApplication(applications[0].id);
     }
-  }, [newComersApplications, projectMembersApplications]);
+  }, [newComers.applications, projectMembers.applications]);
 
   return (
     <Flex direction="col" className="gap-6">
@@ -42,8 +42,8 @@ function ContributionPage() {
           setSearch={setSearch}
           selectedUser={selectedUser}
           handleSelectUser={handleSelectUser}
-          newComersApplications={newComersApplications}
-          projectMembersApplications={projectMembersApplications}
+          newComers={newComers}
+          projectMembers={projectMembers}
         />
 
         {selectedUser && selectedApplication ? (

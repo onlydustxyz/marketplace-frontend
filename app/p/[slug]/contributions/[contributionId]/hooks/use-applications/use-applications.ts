@@ -13,22 +13,30 @@ export function UseApplications({ search }: TUseApplications.Props): TUseApplica
     params: { slug },
   });
 
-  const { data: newComersApplicationsData, hasNextPage: newComersApplicationsHasNextPage } =
-    applicationsApiClient.queries.useInfiniteGetAllApplications({
-      queryParams: { projectId: project?.id, issueId: contributionId, applicantLoginSearch: search },
-      options: { enabled: !!project?.id },
-    });
+  const {
+    data: newComersApplicationsData,
+    fetchNextPage: newComersFetchNextPage,
+    hasNextPage: newComersApplicationsHasNextPage,
+    isFetchingNextPage: newComersIsFetchingNextPage,
+  } = applicationsApiClient.queries.useInfiniteGetAllApplications({
+    queryParams: { projectId: project?.id, issueId: contributionId, applicantLoginSearch: search },
+    options: { enabled: !!project?.id },
+  });
 
-  const { data: projectMembersApplicationsData, hasNextPage: projectMembersApplicationsHasNextPage } =
-    applicationsApiClient.queries.useInfiniteGetAllApplications({
-      queryParams: {
-        projectId: project?.id,
-        issueId: contributionId,
-        applicantLoginSearch: search,
-        isApplicantProjectMember: true,
-      },
-      options: { enabled: !!project?.id },
-    });
+  const {
+    data: projectMembersApplicationsData,
+    fetchNextPage: projectMembersFetchNextPage,
+    hasNextPage: projectMembersApplicationsHasNextPage,
+    isFetchingNextPage: projectMembersIsFetchingNextPage,
+  } = applicationsApiClient.queries.useInfiniteGetAllApplications({
+    queryParams: {
+      projectId: project?.id,
+      issueId: contributionId,
+      applicantLoginSearch: search,
+      isApplicantProjectMember: true,
+    },
+    options: { enabled: !!project?.id },
+  });
 
   const newComersApplications = useMemo(
     () => newComersApplicationsData?.pages.flatMap(page => page.applications),
@@ -48,10 +56,18 @@ export function UseApplications({ search }: TUseApplications.Props): TUseApplica
   }, [newComersApplications, projectMembersApplications]);
 
   return {
-    newComersApplications,
-    projectMembersApplications,
+    newComers: {
+      applications: newComersApplications,
+      fetchNextPage: newComersFetchNextPage,
+      hasNextPage: newComersApplicationsHasNextPage,
+      isFetchingNextPage: newComersIsFetchingNextPage,
+    },
+    projectMembers: {
+      applications: projectMembersApplications,
+      fetchNextPage: projectMembersFetchNextPage,
+      hasNextPage: projectMembersApplicationsHasNextPage,
+      isFetchingNextPage: projectMembersIsFetchingNextPage,
+    },
     title,
-    newComersApplicationsHasNextPage,
-    projectMembersApplicationsHasNextPage,
   };
 }
