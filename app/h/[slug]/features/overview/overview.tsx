@@ -88,10 +88,10 @@ export function Overview({ startDate, endDate, totalBudget, sponsors, links, pro
               icon={{ remixName: "ri-folder-2-line" }}
               show={!!projects.length}
             >
-              <div className="flex flex-row flex-wrap gap-4">
+              <div className="flex w-full flex-row flex-wrap gap-4 overflow-hidden">
                 {projects.map(project => (
-                  <div key={project.id}>
-                    <Project slug={project.slug}>
+                  <div key={project.id} className="max-w-full">
+                    <Project slug={project.slug} className={"max-w-full"}>
                       <AvatarLabelled
                         avatarProps={{ shape: "square", size: "s", src: project.logoUrl }}
                         labelProps={{ className: "hover:text-spacePurple-500 transition-all" }}
