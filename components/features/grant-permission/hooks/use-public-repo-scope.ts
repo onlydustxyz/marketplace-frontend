@@ -1,6 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { PopupConfigOptions, PopupLoginOptions } from "@auth0/auth0-spa-js";
 import { meApiClient } from "api-client/resources/me";
+import { useLocalStorage } from "react-use";
 
 import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
 
@@ -15,6 +16,7 @@ async function handleLoginWithPopup(
 }
 
 export function usePublicRepoScope({ onSuccessCallback }: { onSuccessCallback?: () => void }) {
+  const [scopeStorage, setScopeStorage] = useLocalStorage("dynamic-github-public-repo-scope");
   const { loginWithPopup, isAuthenticated, loginWithRedirect } = useAuth0();
   const { user } = useCurrentUser();
   const canApply = user?.isAuthorizedToApplyOnGithubIssues;
@@ -22,6 +24,9 @@ export function usePublicRepoScope({ onSuccessCallback }: { onSuccessCallback?: 
   const { mutateAsync: logoutUser } = meApiClient.mutations.useLogoutUser({});
 
   async function getPermissions() {
+    if (!scopeStorage) {
+      setScopeStorage(process.env.NEXT_PUBLIC_GITHUB_PUBLIC_REPO_SCOPE);
+    }
     await logoutUser({});
     await handleLoginWithPopup(loginWithPopup);
   }
