@@ -1,13 +1,17 @@
 import { ComponentPropsWithoutRef, ElementType, PropsWithChildren } from "react";
-import { VariantProps } from "tailwind-variants";
 
-import { PaperCoreVariants } from "./paper.variants";
+interface Variants {
+  size: "s" | "m" | "l";
+  container: "1" | "2" | "3" | "4" | "action" | "inverse";
+  border: "none" | "container-stroke-separator";
+}
 
-type Variants = VariantProps<typeof PaperCoreVariants>;
-type classNames = Partial<typeof PaperCoreVariants["slots"]>;
+interface ClassNames {
+  base: string;
+}
 
-export interface TPaperProps<C extends ElementType> extends Variants, PropsWithChildren {
-  htmlProps?: ComponentPropsWithoutRef<C>;
-  classNames?: classNames;
+export interface PaperPort<C extends ElementType> extends Partial<Variants>, PropsWithChildren {
   as?: C;
+  htmlProps?: ComponentPropsWithoutRef<C>;
+  classNames?: Partial<ClassNames>;
 }
