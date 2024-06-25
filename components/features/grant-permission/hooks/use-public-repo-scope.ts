@@ -24,15 +24,14 @@ export function usePublicRepoScope({ onSuccessCallback }: { onSuccessCallback?: 
   const { mutateAsync: logoutUser } = meApiClient.mutations.useLogoutUser({});
 
   async function getPermissions() {
+    if (!scopeStorage) {
+      setScopeStorage(process.env.NEXT_PUBLIC_GITHUB_PUBLIC_REPO_SCOPE);
+    }
     await logoutUser({});
     await handleLoginWithPopup(loginWithPopup);
   }
 
   async function handleVerifyPermissions() {
-    if (!scopeStorage) {
-      setScopeStorage(process.env.NEXT_PUBLIC_GITHUB_PUBLIC_REPO_SCOPE);
-    }
-
     if (!isAuthenticated) {
       await handleLoginWithRedirect(loginWithRedirect);
       return;
