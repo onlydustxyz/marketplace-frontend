@@ -1,5 +1,4 @@
-import { applicationsApiClient } from "api-client/resources/applications";
-import { usersApiClient } from "api-client/resources/users";
+import { useContributorDetails } from "app/p/[slug]/contributions/[contributionId]/features/contributor-details/contributor-details.hooks";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
@@ -16,31 +15,10 @@ import { TotalEarned } from "./components/total-earned/total-earned";
 import { TContributorDetails } from "./contributor-details.types";
 
 export function ContributorDetails({ githubId, applicationId }: TContributorDetails.Props) {
-  const { data: userProfile } = usersApiClient.queries.useGetUserPublicProfileByGithubId({
-    pathParams: { githubId },
+  const { userProfile, acceptApplication, deleteApplication, application } = useContributorDetails({
+    githubId,
+    applicationId,
   });
-
-  const { data: application } = applicationsApiClient.queries.useGetApplicationById({
-    pathParams: { applicationId },
-  });
-
-  const { mutate: deleteApplication, ...deleteMutation } = applicationsApiClient.mutations.useDeleteApplication(
-    {
-      pathParams: {
-        applicationId,
-      },
-    },
-    application?.projectId ?? ""
-  );
-
-  const { mutate: acceptApplication, ...acceptMutation } = applicationsApiClient.mutations.useAcceptApplication(
-    {
-      pathParams: {
-        applicationId,
-      },
-    },
-    application?.projectId ?? ""
-  );
 
   if (!userProfile || !application) return null;
 
