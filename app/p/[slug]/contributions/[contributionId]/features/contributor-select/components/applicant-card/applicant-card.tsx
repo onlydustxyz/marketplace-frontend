@@ -8,7 +8,13 @@ import { Typography } from "components/layout/typography/typography";
 
 import { TApplicantCard } from "./applicant-card.types";
 
-export function ApplicantCard({ user, recommandationScore, selectedUser, handleSelectUser }: TApplicantCard.Props) {
+export function ApplicantCard({
+  user,
+  recommandationScore,
+  selectedUser,
+  handleSelectUser,
+  applicationId,
+}: TApplicantCard.Props) {
   const recommandationScoreVariant = useMemo(() => {
     if (recommandationScore >= 80) return "success";
     if (recommandationScore >= 30) return "warning";
@@ -24,7 +30,7 @@ export function ApplicantCard({ user, recommandationScore, selectedUser, handleS
       className={cn("gap-4 rounded-lg border border-transparent p-2 hover:border-spaceBlue-50", {
         "bg-card-background-medium": selectedUser === user.githubUserId,
       })}
-      onClick={() => handleSelectUser(user.githubUserId)}
+      onClick={() => handleSelectUser(user.githubUserId, applicationId)}
     >
       <Flex alignItems="center" className="gap-3">
         <Avatar shape="round" size="s" src={user.avatarUrl} />

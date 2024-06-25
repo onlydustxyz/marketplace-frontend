@@ -35,6 +35,7 @@ export function ContributorSelect({
               <Flex direction="col" className="gap-2">
                 {newComersApplications?.map(application => (
                   <ApplicantCard
+                    applicationId={application.id}
                     key={application.id}
                     user={application.applicant}
                     recommandationScore={application.recommandationScore}
@@ -59,6 +60,7 @@ export function ContributorSelect({
               <Flex direction="col" className="gap-2">
                 {projectMembersApplications?.map(application => (
                   <ApplicantCard
+                    applicationId={application.id}
                     key={application.id}
                     user={application.applicant}
                     recommandationScore={application.recommandationScore}
