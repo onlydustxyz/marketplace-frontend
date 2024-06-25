@@ -18,5 +18,8 @@
       "assign": "Assign contributor",
       "reject": "Reject"
     }
+  },
+  "messages": {
+    "success": "__login__ has been successfully assign on __issue__"
   }
 }
