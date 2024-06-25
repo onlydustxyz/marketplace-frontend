@@ -2,17 +2,16 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { Typo } from "components/atoms/typo/variants/typo-default";
 
-import { PaperCore } from "./paper.core";
 import { PaperLoading } from "./paper.loading";
-import { TPaperProps } from "./paper.types";
+import { PaperPort } from "./paper.types";
 import { Paper } from "./variants/paper-default";
 
-type Story = StoryObj<typeof PaperCore>;
+type Story = StoryObj<typeof Paper>;
 
-const defaultProps: TPaperProps<"div"> = {};
+const defaultProps: PaperPort<"div"> = {};
 
-const meta: Meta<typeof PaperCore> = {
-  component: PaperCore,
+const meta: Meta<typeof Paper> = {
+  component: Paper,
   title: "Atoms/Paper",
   tags: ["autodocs"],
   parameters: {

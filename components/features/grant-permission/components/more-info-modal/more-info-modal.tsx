@@ -30,29 +30,23 @@ export function MoreInfoModal({ isOpen, handleClose, handleBack, handleOpenDrawe
       footer={{
         endContent: (
           <div className="flex gap-4">
-            <Button variant="secondary-light" size="l" onClick={handleBack}>
-              <Typo
-                variant="default"
-                size="xs"
-                translate={{
-                  token: "v2.features.githubGrantPermissions.modals.moreInfos.footerButtons.back",
-                }}
-              />
-            </Button>
+            <Button
+              variant="secondary-light"
+              size="l"
+              onClick={handleBack}
+              translate={{
+                token: "v2.features.githubGrantPermissions.modals.moreInfos.footerButtons.back",
+              }}
+            />
             <Button
               variant="primary"
               startContent={<Icon remixName="ri-github-line" />}
               size="l"
               onClick={handleVerifyPermissions}
-            >
-              <Typo
-                variant="default"
-                size="xs"
-                translate={{
-                  token: "v2.features.githubGrantPermissions.modals.permissions.footerButtons.grantPermissions",
-                }}
-              />
-            </Button>
+              translate={{
+                token: "v2.features.githubGrantPermissions.modals.permissions.footerButtons.grantPermissions",
+              }}
+            />
           </div>
         ),
       }}

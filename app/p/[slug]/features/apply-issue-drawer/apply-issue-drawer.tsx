@@ -25,7 +25,7 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
   const { capture } = usePosthog();
   const {
     project: { data: project },
-    form: { control, handleSubmit },
+    form: { control, handleSubmit, reset, setValue },
     create: { isPending: createIsPending },
     update: { isPending: updateIsPending },
     delete: { isPending: deleteIsPending },
@@ -42,6 +42,17 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
       });
     }
   }, [isOpen, project]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      reset();
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    setValue("motivations", issue.currentUserApplication?.motivations ?? "");
+    setValue("problemSolvingApproach", issue.currentUserApplication?.problemSolvingApproach ?? "");
+  }, [issue]);
 
   const header = useMemo(() => {
     const StartContent = (
@@ -67,7 +78,7 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
       </div>
     );
 
-    const EndContent = hasApplied ? (
+    const EndContent = (
       <Button
         as={BaseLink}
         htmlProps={{ href: issue.htmlUrl }}
@@ -77,7 +88,7 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
       >
         <Translate token={"v2.features.projects.applyIssueDrawer.header.seeOnGithub"} />
       </Button>
-    ) : null;
+    );
 
     return {
       startContent: StartContent,

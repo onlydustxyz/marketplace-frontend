@@ -1,6 +1,6 @@
 import { tv } from "tailwind-variants";
 
-export const TagCoreVariants = tv({
+export const TagDefaultVariants = tv({
   slots: {
     base: "group block border-1 border-container-stroke-separator bg-container-4",
     content: "flex flex-row items-center justify-center text-text-1",
