@@ -87,6 +87,7 @@ export function getRewardsSummaryProps({
   const totalTax = invoiceDetails.totalTax?.amount;
   const totalAfterTax = invoiceDetails.totalAfterTax?.amount;
   const usdToEurConversionRate = invoiceDetails.usdToEurConversionRate;
+  const totalAfterTaxPerCurrency = invoiceDetails.totalAfterTaxPerCurrency;
   const vat = {
     vatRegulationState: invoiceDetails.companyBillingProfile?.vatRegulationState,
     euVATNumber: invoiceDetails.companyBillingProfile?.euVATNumber,
@@ -100,6 +101,7 @@ export function getRewardsSummaryProps({
     totalBeforeTax,
     totalTax,
     totalAfterTax,
+    totalAfterTaxPerCurrency,
     usdToEurConversionRate,
   };
 }
