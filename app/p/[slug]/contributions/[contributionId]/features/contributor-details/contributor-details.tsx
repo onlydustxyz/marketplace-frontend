@@ -1,3 +1,4 @@
+import { applicationsApiClient } from "api-client/resources/applications";
 import { usersApiClient } from "api-client/resources/users";
 
 import { Button } from "components/atoms/button/variants/button-default";
@@ -14,15 +15,34 @@ import { MostActiveLanguages } from "./components/most-active-languages/most-act
 import { TotalEarned } from "./components/total-earned/total-earned";
 import { TContributorDetails } from "./contributor-details.types";
 
-export function ContributorDetails({ githubId }: TContributorDetails.Props) {
+export function ContributorDetails({ githubId, applicationId }: TContributorDetails.Props) {
   const { data: userProfile } = usersApiClient.queries.useGetUserPublicProfileByGithubId({
     pathParams: { githubId },
   });
 
-  const motivation =
-    "I am excited to apply for the Blockchain Developer role for this project. With a strong passion for cutting-edge technology and innovation, I am drawn to the opportunity to contribute to your open source blockchain projects.  Learning and Growth: Working on blockchain technology allows me to stay at the forefront of advancements in cryptography, consensus algorithms, and smart contracts, continuously enhancing my technical skills.  Collaboration: I thrive in a collaborative, open source environment, engaging with a global community of developers. This experience has honed my communication and problem-solving abilities, essential for diverse team dynamics";
+  const { data: application } = applicationsApiClient.queries.useGetApplicationById({
+    pathParams: { applicationId },
+  });
 
-  if (!userProfile) return null;
+  const { mutate: deleteApplication, ...deleteMutation } = applicationsApiClient.mutations.useDeleteApplication(
+    {
+      pathParams: {
+        applicationId,
+      },
+    },
+    application?.projectId ?? ""
+  );
+
+  const { mutate: acceptApplication, ...acceptMutation } = applicationsApiClient.mutations.useAcceptApplication(
+    {
+      pathParams: {
+        applicationId,
+      },
+    },
+    application?.projectId ?? ""
+  );
+
+  if (!userProfile || !application) return null;
 
   return (
     <Flex direction="col" className="flex-1 gap-6 overflow-hidden">
@@ -51,7 +71,7 @@ export function ContributorDetails({ githubId }: TContributorDetails.Props) {
             />
             <Paper size={"m"} container={"3"} border={"none"}>
               <Typography variant="body-m" className="text-greyscale-200">
-                {motivation}
+                {application?.motivation}
               </Typography>
             </Paper>
           </Flex>
@@ -62,7 +82,7 @@ export function ContributorDetails({ githubId }: TContributorDetails.Props) {
             />
             <Paper size={"m"} container={"3"} border={"none"}>
               <Typography variant="body-m" className="text-greyscale-200">
-                {motivation}
+                {application?.problemSolvingApproach}
               </Typography>
             </Paper>
           </Flex>
@@ -72,11 +92,13 @@ export function ContributorDetails({ githubId }: TContributorDetails.Props) {
             variant="secondary-light"
             size="m"
             translate={{ token: "v2.pages.project.details.applicationDetails.profile.buttons.reject" }}
+            onClick={() => deleteApplication({})}
           />
           <Button
             variant="primary"
             size="m"
             translate={{ token: "v2.pages.project.details.applicationDetails.profile.buttons.assign" }}
+            onClick={() => acceptApplication({})}
           />
         </div>
       </Card>
