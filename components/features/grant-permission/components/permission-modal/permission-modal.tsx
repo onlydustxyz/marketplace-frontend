@@ -65,13 +65,6 @@ export function PermissionModal({ isOpen, handleClose, handleMoreInfoOpen, handl
               token: "v2.features.githubGrantPermissions.modals.permissions.description",
             }}
           />
-          <Typo
-            variant="default"
-            size="s"
-            translate={{
-              token: "v2.features.githubGrantPermissions.modals.permissions.specialMention",
-            }}
-          />
         </div>
         <Paper container="3">
           <Typo
