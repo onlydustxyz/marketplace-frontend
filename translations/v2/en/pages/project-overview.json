@@ -39,7 +39,7 @@
     "title": "Good first issues",
     "description": "Apply to a list of curated issues well suited for beginners to kickstart your journey.",
     "button": {
-      "alreadyApplied": "Already applied",
+      "viewApplication": "View application",
       "apply": "Apply"
     },
     "labels": {
