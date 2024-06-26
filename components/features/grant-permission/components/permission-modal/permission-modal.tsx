@@ -60,14 +60,14 @@ export function PermissionModal({ isOpen, handleClose, handleMoreInfoOpen, handl
         <div className="flex flex-col">
           <Typo
             variant="default"
-            size="xs"
+            size="s"
             translate={{
               token: "v2.features.githubGrantPermissions.modals.permissions.description",
             }}
           />
           <Typo
             variant="default"
-            size="xs"
+            size="s"
             translate={{
               token: "v2.features.githubGrantPermissions.modals.permissions.specialMention",
             }}

@@ -55,7 +55,7 @@ export function MoreInfoModal({ isOpen, handleClose, handleBack, handleOpenDrawe
         <div className="flex flex-col gap-4">
           <Typo
             variant="default"
-            size="l"
+            size="s"
             translate={{
               token: "v2.features.githubGrantPermissions.modals.moreInfos.description",
             }}
