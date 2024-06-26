@@ -3,7 +3,7 @@
     "permissions": {
       "title": "Grant permissions",
       "description": "We need permissions to write comments on your behalf & apply to selected issues, directly on OnlyDust.",
-      "specialMention": "*Only need to be accepted ones",
+      "specialMention": "*Only need to be accepted once",
       "claims": {
         "write": "Write all public repository data"
       },

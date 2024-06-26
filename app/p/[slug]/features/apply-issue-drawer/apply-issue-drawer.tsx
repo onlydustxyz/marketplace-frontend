@@ -56,29 +56,6 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
 
   const header = useMemo(() => {
     const StartContent = (
-      <div className={"flex items-center gap-2"}>
-        <TagAvatar
-          shape={"square"}
-          style={"outline"}
-          color={"grey"}
-          avatar={{ src: issue.author.avatarUrl, shape: "square" }}
-        >
-          {issue.author.login}
-        </TagAvatar>
-        {project ? (
-          <TagAvatar
-            shape={"square"}
-            style={"outline"}
-            color={"grey"}
-            avatar={{ src: project.logoUrl, shape: "square" }}
-          >
-            {project.name}
-          </TagAvatar>
-        ) : null}
-      </div>
-    );
-
-    const EndContent = (
       <Button
         as={BaseLink}
         htmlProps={{ href: issue.htmlUrl }}
@@ -86,13 +63,12 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
         variant={"secondary-light"}
         size={"l"}
       >
-        <Translate token={"v2.features.projects.applyIssueDrawer.header.seeOnGithub"} />
+        {issue.repository.name}
       </Button>
     );
 
     return {
       startContent: StartContent,
-      endContent: EndContent,
     };
   }, []);
 
