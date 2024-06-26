@@ -18,7 +18,7 @@ async function handleLoginWithPopup(
 export function usePublicRepoScope({ onSuccessCallback }: { onSuccessCallback?: () => void }) {
   const [scopeStorage, setScopeStorage] = useLocalStorage("dynamic-github-public-repo-scope");
   const { loginWithPopup, isAuthenticated, loginWithRedirect } = useAuth0();
-  const { user } = useCurrentUser();
+  const { user, refetch } = useCurrentUser();
   const canApply = user?.isAuthorizedToApplyOnGithubIssues;
 
   const { mutateAsync: logoutUser } = meApiClient.mutations.useLogoutUser({});
@@ -29,6 +29,7 @@ export function usePublicRepoScope({ onSuccessCallback }: { onSuccessCallback?: 
     }
     await logoutUser({});
     await handleLoginWithPopup(loginWithPopup);
+    await refetch();
   }
 
   async function handleVerifyPermissions() {
