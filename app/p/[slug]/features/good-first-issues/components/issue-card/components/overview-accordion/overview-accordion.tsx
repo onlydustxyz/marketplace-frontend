@@ -11,7 +11,7 @@ import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
 export function OverviewAccordion({ body }: TOverviewAccordion.Props) {
-  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set("1"));
+  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set());
   const renderContent = useMemo(() => {
     if (body) {
       return (
@@ -29,12 +29,7 @@ export function OverviewAccordion({ body }: TOverviewAccordion.Props) {
     );
   }, [body]);
   return (
-    <Accordion
-      className="!p-0"
-      selectedKeys={selectedKeys}
-      onSelectionChange={setSelectedKeys}
-      defaultSelectedKeys={["1"]}
-    >
+    <Accordion className="!p-0" selectedKeys={selectedKeys} onSelectionChange={setSelectedKeys}>
       <AccordionItem
         key="1"
         className="!rounded-2xl !border-1 !border-card-border-light !bg-card-background-medium !px-0 !shadow-none"
