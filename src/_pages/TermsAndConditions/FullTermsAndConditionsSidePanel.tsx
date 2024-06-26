@@ -18,7 +18,7 @@ export default function FullTermsAndConditionsSidePanel({
   showFullTermsAndConditions,
   setShowFullTermsAndConditions,
 }: FullTermsAndConditionsSidePanelProps) {
-  const fileUrl = "terms-conditions/202405_terms-and-conditions.pdf";
+  const fileUrl = `${window.location.origin}/terms-conditions/202405_terms-and-conditions.pdf`;
   return (
     <SidePanel open={showFullTermsAndConditions} setOpen={setShowFullTermsAndConditions}>
       <div className="flex w-full flex-col items-start justify-center px-4">
