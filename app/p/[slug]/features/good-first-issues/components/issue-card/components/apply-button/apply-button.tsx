@@ -32,7 +32,7 @@ export function ApplyButton({ hasApplied, drawerState }: TApplyButton.Props) {
     if (hasApplied) {
       return (
         <Button variant="secondary" size="s" onClick={handleVerifyPermissions} className="whitespace-nowrap">
-          <Translate token="v2.pages.project.overview.goodFirstIssues.button.alreadyApplied" />
+          <Translate token="v2.pages.project.overview.goodFirstIssues.button.viewApplication" />
         </Button>
       );
     }
