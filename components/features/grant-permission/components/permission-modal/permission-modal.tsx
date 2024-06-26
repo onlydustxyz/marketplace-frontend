@@ -66,7 +66,7 @@ export function PermissionModal({ isOpen, handleClose, handleMoreInfoOpen, handl
             }}
           />
         </div>
-        <Paper container="3">
+        <Paper container="3" border="none">
           <Typo
             variant="default"
             size="xs"
