@@ -9,25 +9,35 @@ export namespace TJourney {
   }
 
   export const stepMapping: Record<string, { icon: RemixIconsName; link: string }> = {
+    // billingProfileVerified
     step1: {
-      icon: "ri-building-line",
+      icon: "ri-user-line",
       link: NEXT_ROUTER.settings.payoutPreferences,
     },
+    // companyBillingProfileVerified
     step2: {
-      icon: "ri-stack-line",
+      icon: "ri-suitcase-line",
+      link: NEXT_ROUTER.settings.payoutPreferences,
+    },
+    // descriptionUpdated
+    step3: {
+      icon: "ri-file-edit-line",
+      link: NEXT_ROUTER.settings.profile,
+    },
+    // telegramAdded
+    step4: {
+      icon: "ri-telegram-line",
+      link: NEXT_ROUTER.settings.profile,
+    },
+    // rewardClaimed
+    step5: {
+      icon: "ri-git-pull-request-line",
       link: NEXT_ROUTER.projects.allWithParams({ hasGoodFirstIssues: "true" }),
     },
-    step3: {
+    // rewardReceived
+    step6: {
       icon: "ri-medal-2-fill",
       link: NEXT_ROUTER.rewards.all,
-    },
-    step4: {
-      icon: "ri-user-line",
-      link: NEXT_ROUTER.settings.profile,
-    },
-    step5: {
-      icon: "ri-send-plane-2-line",
-      link: NEXT_ROUTER.settings.profile,
     },
   };
 }

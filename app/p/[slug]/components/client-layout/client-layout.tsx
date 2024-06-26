@@ -20,7 +20,9 @@ import { TClientLayout } from "./client-layout.types";
 
 function ClientLayout({ children }: TClientLayout.Props) {
   const isProjectEdition = useMatchPath(NEXT_ROUTER.projects.details.edit("[slug]"), { exact: true });
-  const isProjectContributions = useMatchPath(NEXT_ROUTER.projects.details.contributions("[slug]"), { exact: true });
+  const isProjectContributions = useMatchPath(NEXT_ROUTER.projects.details.contributions.root("[slug]"), {
+    exact: true,
+  });
 
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const { slug = "" } = useParams<{ slug: string }>();

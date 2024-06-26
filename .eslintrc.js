@@ -27,6 +27,7 @@ module.exports = {
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:@next/next/recommended",
+    "plugin:storybook/recommended",
   ],
   plugins: ["@typescript-eslint", "prettier", "unused-imports"],
   rules: {

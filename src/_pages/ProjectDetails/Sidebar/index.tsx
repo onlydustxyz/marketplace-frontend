@@ -59,17 +59,17 @@ function ProjectsSidebar() {
       label: T("project.details.sidebar.overview"),
       path: NEXT_ROUTER.projects.details.root(slug),
     },
-    contributors: {
-      label: T("project.details.contributors.title"),
-      path: NEXT_ROUTER.projects.details.contributors(slug),
+    contributions: {
+      label: T("project.details.contributions.title"),
+      path: NEXT_ROUTER.projects.details.contributions.root(slug),
     },
     rewards: {
       label: T("project.details.rewards.title"),
       path: NEXT_ROUTER.projects.details.rewards.root(slug),
     },
-    contributions: {
-      label: T("project.details.contributions.title"),
-      path: NEXT_ROUTER.projects.details.contributions(slug),
+    contributors: {
+      label: T("project.details.contributors.title"),
+      path: NEXT_ROUTER.projects.details.contributors(slug),
     },
     insights: {
       label: T("project.details.insights.title"),
@@ -79,9 +79,9 @@ function ProjectsSidebar() {
 
   const availableTabs = [
     AvailableTabs.overview,
-    AvailableTabs.contributors,
     ...(isProjectLeader ? [AvailableTabs.contributions] : []),
     ...(isProjectLeader ? [AvailableTabs.rewards] : []),
+    AvailableTabs.contributors,
     ...(isProjectLeader ? [AvailableTabs.insights] : []),
   ];
 

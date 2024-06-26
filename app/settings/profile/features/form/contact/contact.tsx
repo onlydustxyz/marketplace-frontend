@@ -1,7 +1,5 @@
 import { Controller, useFormContext } from "react-hook-form";
 
-import Telegram from "src/assets/icons/Telegram";
-
 import { Card } from "components/ds/card/card";
 import { ContactInput } from "components/ds/form/contact-input/contact-input";
 import { Flex } from "components/layout/flex/flex";
@@ -39,7 +37,7 @@ export function FormContact() {
                 isInvalid={!!fieldState.error}
                 errorMessage={fieldState.error?.message ? <Translate token={fieldState.error.message} /> : null}
                 placeholder={T("v2.commons.form.contact.telegram.placeholder")}
-                startContent={<Telegram size={16} />}
+                startContent={<Icon remixName="ri-telegram-2-fill" />}
                 visibilityName="telegram.isPublic"
               />
             )}

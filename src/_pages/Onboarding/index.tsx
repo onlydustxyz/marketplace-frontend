@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Controller, FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { useLocalStorage } from "react-use";
 
 import {
@@ -17,7 +17,6 @@ import Background, { BackgroundRoundedBorders } from "src/components/Background"
 import FormSelect, { Size } from "src/components/FormSelect";
 import FormToggle from "src/components/FormToggle";
 import SEO from "src/components/SEO";
-import TechnologiesSelect from "src/components/TechnologiesSelect";
 
 import { ONBOARDING_COMPLETED_STORAGE_KEY } from "constants/onboarding";
 import { NEXT_ROUTER } from "constants/router";
@@ -28,7 +27,7 @@ import Card from "./Card";
 import { Contact } from "./Contact";
 import Intro from "./Intro";
 
-const MAX_STEP = 3;
+const MAX_STEP = 2;
 
 export default function Onboarding() {
   const [step, setStep] = useState(0);
@@ -121,25 +120,6 @@ export default function Onboarding() {
                 <Card
                   step={step}
                   stepCount={MAX_STEP}
-                  title={T("onboarding.technologies.title")}
-                  description={T("onboarding.technologies.description")}
-                  prev={prev}
-                  next={next}
-                >
-                  <div className="flex flex-col gap-4 pb-4">
-                    <Controller
-                      name="technologies"
-                      render={({ field: { value, onChange } }) => (
-                        <TechnologiesSelect technologies={value} setTechnologies={onChange} />
-                      )}
-                    />
-                  </div>
-                </Card>
-              )}
-              {step === 2 && (
-                <Card
-                  step={step}
-                  stepCount={MAX_STEP}
                   title={T("onboarding.timeAllocation.title")}
                   description={T("onboarding.timeAllocation.description")}
                   private
@@ -161,7 +141,7 @@ export default function Onboarding() {
                   </div>
                 </Card>
               )}
-              {step === 3 && (
+              {step === 2 && (
                 <Card
                   step={step}
                   stepCount={MAX_STEP}

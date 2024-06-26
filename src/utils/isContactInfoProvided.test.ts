@@ -84,7 +84,6 @@ const userProfile = {
       totalAmount: 0,
     },
   },
-  technologies: { Rust: 91283, Go: 12388, Java: 1233 },
   website: "string",
   allocatedTimeToContribute: "GREATER_THAN_THREE_DAYS" as const,
   isLookingForAJob: false,

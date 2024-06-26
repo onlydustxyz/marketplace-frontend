@@ -8,6 +8,9 @@ enum Paths {
   get_my_recommended_projects = "get_my_recommended_projects",
   get_my_journey = "get_my_journey",
   get_my_rewards = "get_my_rewards",
+  logout_user = "logout_user",
+  post_my_application = "post_my_application",
+  update_my_application = "update_my_application",
 }
 
 const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
@@ -38,6 +41,18 @@ const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
   get_my_journey: {
     url: "me/journey",
     method: "GET",
+  },
+  logout_user: {
+    url: "me/logout",
+    method: "POST",
+  },
+  post_my_application: {
+    url: "me/applications",
+    method: "POST",
+  },
+  update_my_application: {
+    url: "me/applications/:applicationId",
+    method: "PUT",
   },
 };
 

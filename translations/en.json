@@ -73,7 +73,6 @@
   "contributions": {
     "empty": "No contributions yet",
     "nav": {
-      "allContributions": "All contributions",
       "applied": "Applied",
       "inProgress": "In progress",
       "completed": "Completed",
@@ -467,7 +466,7 @@
         "link": "Create Telegram account"
       }
     },
-    "privateNotice": "These are private information, only visible to you",
+    "privateNotice": "This is private information, only visible to you",
     "backButton": "Back",
     "nextButton": "Next",
     "submitButton": "Submit"

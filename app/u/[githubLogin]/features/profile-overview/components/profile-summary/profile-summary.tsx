@@ -14,7 +14,7 @@ export function ProfileSummary(props: TProfileSummary.Props) {
 
   const contactIconMapping: Record<Partial<PublicProfileChannelsUnion | "GITHUB">, RemixIconsName> = {
     EMAIL: "ri-mail-line",
-    TELEGRAM: "ri-telegram-fill",
+    TELEGRAM: "ri-telegram-2-fill",
     TWITTER: "ri-twitter-x-fill",
     DISCORD: "ri-discord-fill",
     LINKEDIN: "ri-linkedin-box-fill",
