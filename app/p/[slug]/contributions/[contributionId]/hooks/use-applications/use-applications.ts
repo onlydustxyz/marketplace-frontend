@@ -1,6 +1,7 @@
 import { applicationsApiClient } from "api-client/resources/applications";
+import { debounce } from "lodash";
 import { useParams } from "next/navigation";
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import ProjectApi from "src/api/Project";
 
@@ -9,6 +10,19 @@ import { TUseApplications } from "./use-applications.types";
 export function UseApplications({ search }: TUseApplications.Props): TUseApplications.Return {
   const { slug = "", contributionId = "" } = useParams<{ slug?: string; contributionId?: string }>();
 
+  const [debouncedSearch, setDebouncedSearch] = useState<string>(search);
+
+  const debounceSearch = useCallback(
+    debounce(newSearch => {
+      setDebouncedSearch(newSearch);
+    }, 300),
+    []
+  );
+
+  useEffect(() => {
+    debounceSearch(search);
+  }, [search, debounceSearch]);
+
   const { data: project } = ProjectApi.queries.useGetProjectBySlug({
     params: { slug },
   });
@@ -16,15 +30,15 @@ export function UseApplications({ search }: TUseApplications.Props): TUseApplica
   const {
     data: newComersApplicationsData,
     fetchNextPage: newComersFetchNextPage,
-    hasNextPage: newComersApplicationsHasNextPage,
+    hasNextPage: newComersHasNextPage,
     isFetchingNextPage: newComersIsFetchingNextPage,
     isPending: newComersIsPending,
   } = applicationsApiClient.queries.useInfiniteGetAllApplications({
     queryParams: {
       projectId: project?.id,
-      issueId: contributionId,
-      applicantLoginSearch: search,
+      issueId: Number(contributionId),
       isApplicantProjectMember: false,
+      applicantLoginSearch: debouncedSearch,
     },
     options: { enabled: !!project?.id },
   });
@@ -32,15 +46,15 @@ export function UseApplications({ search }: TUseApplications.Props): TUseApplica
   const {
     data: projectMembersApplicationsData,
     fetchNextPage: projectMembersFetchNextPage,
-    hasNextPage: projectMembersApplicationsHasNextPage,
+    hasNextPage: projectMembersHasNextPage,
     isFetchingNextPage: projectMembersIsFetchingNextPage,
     isPending: projectMembersIsPending,
   } = applicationsApiClient.queries.useInfiniteGetAllApplications({
     queryParams: {
       projectId: project?.id,
-      issueId: contributionId,
-      applicantLoginSearch: search,
+      issueId: Number(contributionId),
       isApplicantProjectMember: true,
+      applicantLoginSearch: debouncedSearch,
     },
     options: { enabled: !!project?.id },
   });
@@ -66,14 +80,14 @@ export function UseApplications({ search }: TUseApplications.Props): TUseApplica
     newComers: {
       applications: newComersApplications,
       fetchNextPage: newComersFetchNextPage,
-      hasNextPage: newComersApplicationsHasNextPage,
+      hasNextPage: newComersHasNextPage,
       isFetchingNextPage: newComersIsFetchingNextPage,
       isPending: newComersIsPending,
     },
     projectMembers: {
       applications: projectMembersApplications,
       fetchNextPage: projectMembersFetchNextPage,
-      hasNextPage: projectMembersApplicationsHasNextPage,
+      hasNextPage: projectMembersHasNextPage,
       isFetchingNextPage: projectMembersIsFetchingNextPage,
       isPending: projectMembersIsPending,
     },
