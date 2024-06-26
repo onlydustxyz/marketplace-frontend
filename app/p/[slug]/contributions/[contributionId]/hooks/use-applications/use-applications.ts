@@ -18,8 +18,14 @@ export function UseApplications({ search }: TUseApplications.Props): TUseApplica
     fetchNextPage: newComersFetchNextPage,
     hasNextPage: newComersApplicationsHasNextPage,
     isFetchingNextPage: newComersIsFetchingNextPage,
+    isPending: newComersIsPending,
   } = applicationsApiClient.queries.useInfiniteGetAllApplications({
-    queryParams: { projectId: project?.id, issueId: contributionId, applicantLoginSearch: search },
+    queryParams: {
+      projectId: project?.id,
+      issueId: contributionId,
+      applicantLoginSearch: search,
+      isApplicantProjectMember: false,
+    },
     options: { enabled: !!project?.id },
   });
 
@@ -28,6 +34,7 @@ export function UseApplications({ search }: TUseApplications.Props): TUseApplica
     fetchNextPage: projectMembersFetchNextPage,
     hasNextPage: projectMembersApplicationsHasNextPage,
     isFetchingNextPage: projectMembersIsFetchingNextPage,
+    isPending: projectMembersIsPending,
   } = applicationsApiClient.queries.useInfiniteGetAllApplications({
     queryParams: {
       projectId: project?.id,
@@ -61,12 +68,14 @@ export function UseApplications({ search }: TUseApplications.Props): TUseApplica
       fetchNextPage: newComersFetchNextPage,
       hasNextPage: newComersApplicationsHasNextPage,
       isFetchingNextPage: newComersIsFetchingNextPage,
+      isPending: newComersIsPending,
     },
     projectMembers: {
       applications: projectMembersApplications,
       fetchNextPage: projectMembersFetchNextPage,
       hasNextPage: projectMembersApplicationsHasNextPage,
       isFetchingNextPage: projectMembersIsFetchingNextPage,
+      isPending: projectMembersIsPending,
     },
     title,
   };

@@ -8,6 +8,7 @@ export namespace TUseApplications {
     fetchNextPage: () => void;
     hasNextPage: boolean;
     isFetchingNextPage: boolean;
+    isPending: boolean;
   }
 
   export interface Props {

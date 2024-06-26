@@ -13,7 +13,9 @@ import { AccordionWithBadge } from "components/molecules/accordion/variants/acco
 
 import { useIntl } from "hooks/translate/use-translate";
 
+import { TUseApplications } from "../../hooks/use-applications/use-applications.types";
 import { ApplicantCard } from "./components/applicant-card/applicant-card";
+import { ApplicantCardLoading } from "./components/applicant-card/applicant-card.loading";
 import { TContributorSelect } from "./contributor-select.types";
 
 export function ContributorSelect({
@@ -26,70 +28,65 @@ export function ContributorSelect({
 }: TContributorSelect.Props) {
   const { T } = useIntl();
 
+  function itemContent(applicants: TUseApplications.ApplicationItem) {
+    if (applicants.isPending) {
+      return (
+        <Flex direction="col" className="gap-2">
+          <ApplicantCardLoading />
+          <ApplicantCardLoading />
+          <ApplicantCardLoading />
+        </Flex>
+      );
+    }
+
+    return (
+      <Flex direction="col" className="gap-2">
+        {applicants.applications?.map(application => (
+          <ApplicantCard
+            key={application.id}
+            applicationId={application.id}
+            user={application.applicant}
+            recommandationScore={application.recommandationScore}
+            selectedUser={selectedUser}
+            handleSelectUser={handleSelectUser}
+          />
+        ))}
+
+        {applicants.hasNextPage ? (
+          <ShowMore onClick={applicants.fetchNextPage} loading={applicants.isFetchingNextPage} />
+        ) : null}
+      </Flex>
+    );
+  }
+
   const items: AccordionItemWithBadgeProps[] = useMemo(() => {
     return [
-      newComers.applications?.length
-        ? {
+      !newComers.applications?.length && !newComers.isPending
+        ? null
+        : {
             id: "new-comers",
             titleProps: {
               children: <Translate token="v2.pages.project.details.applicationDetails.select.new" />,
             },
-            content: (
-              <Flex direction="col" className="gap-2">
-                {newComers.applications?.map(application => (
-                  <ApplicantCard
-                    key={application.id}
-                    applicationId={application.id}
-                    user={application.applicant}
-                    recommandationScore={application.recommandationScore}
-                    selectedUser={selectedUser}
-                    handleSelectUser={handleSelectUser}
-                  />
-                ))}
-
-                {newComers.hasNextPage ? (
-                  <ShowMore onClick={newComers.fetchNextPage} loading={newComers.isFetchingNextPage} />
-                ) : null}
-              </Flex>
-            ),
+            content: itemContent(newComers),
             badgeProps: {
               children: newComers.applications?.length,
             },
-          }
-        : null,
-      projectMembers.applications?.length
-        ? {
+          },
+      !projectMembers.applications?.length && !projectMembers.isPending
+        ? null
+        : {
             id: "project-members",
             titleProps: {
               children: <Translate token="v2.pages.project.details.applicationDetails.select.project" />,
             },
-            content: (
-              <Flex direction="col" className="gap-2">
-                {projectMembers.applications?.map(application => (
-                  <ApplicantCard
-                    key={application.id}
-                    applicationId={application.id}
-                    user={application.applicant}
-                    recommandationScore={application.recommandationScore}
-                    selectedUser={selectedUser}
-                    handleSelectUser={handleSelectUser}
-                  />
-                ))}
-
-                {projectMembers.hasNextPage ? (
-                  <ShowMore onClick={projectMembers.fetchNextPage} loading={projectMembers.isFetchingNextPage} />
-                ) : null}
-              </Flex>
-            ),
+            content: itemContent(projectMembers),
             badgeProps: {
               children: projectMembers.applications?.length,
             },
-          }
-        : null,
+          },
     ].filter(item => item !== null);
-  }, [newComers.applications, projectMembers.applications, selectedUser, handleSelectUser]);
-
-  const defaultSelected = useMemo(() => items.map(item => item.id), [items]);
+  }, [newComers.applications, projectMembers.applications]);
 
   function handleSearch(value: string) {
     setSearch(value);
@@ -106,9 +103,7 @@ export function ContributorSelect({
             placeholder={T("v2.pages.project.details.applicationDetails.select.search")}
           />
 
-          {items.length ? (
-            <AccordionWithBadge items={items} defaultSelected={defaultSelected} selectionMode="multiple" />
-          ) : (
+          {!items.length && !newComers.isPending && !projectMembers.isPending ? (
             <Flex direction="col" alignItems="center" className="gap-1 py-2">
               <Typography
                 variant="title-s"
@@ -120,6 +115,12 @@ export function ContributorSelect({
                 translate={{ token: "v2.pages.project.details.applicationDetails.select.empty.description" }}
               />
             </Flex>
+          ) : (
+            <AccordionWithBadge
+              items={items}
+              defaultSelected={["new-comers", "project-members"]}
+              selectionMode="multiple"
+            />
           )}
         </Flex>
       </Card>
