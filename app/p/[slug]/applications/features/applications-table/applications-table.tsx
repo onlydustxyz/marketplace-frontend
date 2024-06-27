@@ -277,7 +277,7 @@ export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
   return (
     <section
       className={
-        "flex h-full flex-col overflow-hidden rounded-2xl border border-card-border-medium bg-card-background-base shadow-heavy"
+        "flex max-h-full flex-col overflow-hidden rounded-2xl border border-card-border-medium bg-card-background-base shadow-heavy"
       }
     >
       <header
