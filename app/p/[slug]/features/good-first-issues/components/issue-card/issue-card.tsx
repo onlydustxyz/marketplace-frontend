@@ -63,9 +63,7 @@ export function IssueCard({ issue }: TIssueCard.Props) {
           </Flex>
         </Flex>
 
-        <Flex direction="row">
-          <Applicants applicants={issue.applicants} />
-        </Flex>
+        <Applicants applicants={issue.applicants} />
 
         <Flex wrap="wrap" className="gap-2">
           <Flex alignItems="center" className="gap-1">

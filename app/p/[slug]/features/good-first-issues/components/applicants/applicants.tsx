@@ -18,25 +18,27 @@ export function Applicants({ applicants }: TApplicants.Props) {
   }
 
   return (
-    <Tooltip content={<ContributorsAvatars.TooltipContent contributors={sortedByLogin} />} canInteract={true}>
-      <div className="flex flex-row items-center gap-1 font-walsheim text-snow">
-        <ContributorsAvatars contributors={sortedByLogin} avatarProps={{ size: "xs" }} enableTooltip={false} />
+    <div className="flex">
+      <Tooltip content={<ContributorsAvatars.TooltipContent contributors={sortedByLogin} />} canInteract={true}>
+        <div className="flex flex-row items-center gap-1 font-walsheim text-snow">
+          <ContributorsAvatars contributors={sortedByLogin} avatarProps={{ size: "xs" }} enableTooltip={false} />
 
-        <div className="flex flex-row items-center gap-1 truncate whitespace-nowrap">
-          <Typo
-            variant="default"
-            color="text-2"
-            size="xs"
-            classNames={{
-              base: "truncate",
-            }}
-            translate={{
-              token: "v2.pages.project.overview.goodFirstIssues.applicantCount",
-              params: { count: sortedByLogin.length },
-            }}
-          />
+          <div className="flex flex-row items-center gap-1 truncate whitespace-nowrap">
+            <Typo
+              variant="default"
+              color="text-2"
+              size="xs"
+              classNames={{
+                base: "truncate",
+              }}
+              translate={{
+                token: "v2.pages.project.overview.goodFirstIssues.applicantCount",
+                params: { count: sortedByLogin.length },
+              }}
+            />
+          </div>
         </div>
-      </div>
-    </Tooltip>
+      </Tooltip>
+    </div>
   );
 }
