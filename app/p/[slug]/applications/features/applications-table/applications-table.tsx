@@ -3,13 +3,13 @@ import { useMemo } from "react";
 
 import { IMAGES } from "src/assets/img";
 import { ContributionCard } from "src/components/Contribution/ContributionCard";
+import { ContributionTableSkeleton } from "src/components/Contribution/ContributionTableSkeleton";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { viewportConfig } from "src/config";
 import { Contribution, GithubContributionType } from "src/types";
 import { cn } from "src/utils/cn";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 
-import { SkeletonEl } from "components/ds/skeleton/skeleton";
 import { Table } from "components/ds/table/table";
 import { TTable } from "components/ds/table/table.types";
 import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
@@ -185,7 +185,7 @@ export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
   }
 
   if (isLoading) {
-    return <SkeletonEl width={"100%"} height={400} variant={"rounded"} />;
+    return <ContributionTableSkeleton />;
   }
 
   return (
