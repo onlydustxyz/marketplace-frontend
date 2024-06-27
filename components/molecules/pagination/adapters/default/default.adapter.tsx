@@ -4,10 +4,10 @@ import { cn } from "src/utils/cn";
 
 import { Button } from "components/atoms/button/variants/button-default";
 
-import { TPaginationProps } from "./pagination.types";
-import { PaginationCoreVariants } from "./pagination.variants";
+import { TPaginationProps } from "../../pagination.types";
+import { PaginationDefaultVariants } from "./default.variants";
 
-export function PaginationCore<C extends ElementType = "div">({
+export function PaginationDefaultAdapter<C extends ElementType = "div">({
   classNames,
   as,
   disablePrev = false,
@@ -20,7 +20,7 @@ export function PaginationCore<C extends ElementType = "div">({
   buttonProps = {},
 }: TPaginationProps<C>) {
   const Component = as || "div";
-  const slots = PaginationCoreVariants();
+  const slots = PaginationDefaultVariants();
   const label = infinite ? `${current}` : `${current} / ${total}`;
   return (
     <Component className={cn(slots.base(), classNames?.base)}>
