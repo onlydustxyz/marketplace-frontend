@@ -7,6 +7,14 @@
     "applicants": "Applicants",
     "contribution": "Contribution"
   },
+  "rows": {
+    "countApplicants": {
+      "many": "__count__ applicants",
+      "one": "__count__ applicant",
+      "zero": "0 applicants"
+    },
+    "assign": "Assign"
+  },
   "empty": {
     "title": "No applications",
     "description": "There are no applications for this project right now."
