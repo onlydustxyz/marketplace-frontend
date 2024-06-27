@@ -175,14 +175,12 @@ export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
             </Link>
           ),
           applicants: (
-            <div>
-              <Tag size={"xs"} style={"outline"} classNames={{ base: "w-max" }}>
-                <Translate
-                  token={"v2.pages.project.applications.table.rows.countApplicants"}
-                  params={{ count: row.applicants.length }}
-                />
-              </Tag>
-            </div>
+            <Tag size={"xs"} style={"outline"} classNames={{ base: "inline-flex" }}>
+              <Translate
+                token={"v2.pages.project.applications.table.rows.countApplicants"}
+                params={{ count: row.applicants.length }}
+              />
+            </Tag>
           ),
           contribution: (
             <div
@@ -194,7 +192,11 @@ export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
           ),
           actions: (
             <div>
-              <Button variant={"secondary-light"} size={"s"}>
+              <Button
+                variant={"secondary-light"}
+                size={"s"}
+                // TODO @hayden add click event
+              >
                 <Translate token={"v2.pages.project.applications.table.rows.assign"} />
               </Button>
             </div>
@@ -229,6 +231,16 @@ export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
               key={`${contribution.id}-${contribution.githubTitle}`}
               contribution={contribution}
               className={"bg-card-background-light"}
+              applicants={issue.applicants.length}
+              action={
+                <Button
+                  variant={"secondary-light"}
+                  size={"s"}
+                  // TODO @hayden add click event
+                >
+                  <Translate token={"v2.pages.project.applications.table.rows.assign"} />
+                </Button>
+              }
             />
           );
         })}
