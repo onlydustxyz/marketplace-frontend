@@ -1,15 +1,14 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { PaginationCore } from "./pagination.core";
-import { TPaginationProps } from "./pagination.types";
+import { PaginationPort } from "./pagination.types";
 import { Pagination } from "./variants/pagination-default";
 
-type Story = StoryObj<typeof PaginationCore>;
+type Story = StoryObj<typeof Pagination>;
 
-const defaultProps: TPaginationProps<"div"> = {};
+const defaultProps: PaginationPort<"div"> = {};
 
-const meta: Meta<typeof PaginationCore> = {
-  component: PaginationCore,
+const meta: Meta<typeof Pagination> = {
+  component: Pagination,
   title: "Molecules/Pagination",
   tags: ["autodocs"],
   parameters: {
@@ -44,7 +43,7 @@ export const DisableNext: Story = {
   render: () => {
     return (
       <div className="flex w-full items-center gap-2">
-        <PaginationCore {...defaultProps} disableNext={true} />
+        <Pagination {...defaultProps} disableNext={true} />
       </div>
     );
   },
@@ -59,7 +58,7 @@ export const DisablePrev: Story = {
   render: () => {
     return (
       <div className="flex w-full items-center gap-2">
-        <PaginationCore {...defaultProps} disablePrev={true} />
+        <Pagination {...defaultProps} disablePrev={true} />
       </div>
     );
   },
@@ -74,7 +73,7 @@ export const Infinite: Story = {
   render: () => {
     return (
       <div className="flex w-full items-center gap-2">
-        <PaginationCore {...defaultProps} infinite={true} />
+        <Pagination {...defaultProps} infinite={true} />
       </div>
     );
   },

@@ -1,15 +1,15 @@
-import { ComponentProps, ElementType } from "react";
-import { VariantProps } from "tailwind-variants";
+import { ElementType } from "react";
 
-import { Button } from "components/atoms/button/variants/button-default";
+import { TButtonProps } from "components/atoms/button/button.types";
 
-import { PaginationCoreVariants } from "./pagination.variants";
+interface Variants {}
 
-type Variants = VariantProps<typeof PaginationCoreVariants>;
-type classNames = Partial<typeof PaginationCoreVariants["slots"]>;
+interface ClassNames {
+  base: string;
+}
 
-export interface TPaginationProps<C extends ElementType> extends Variants {
-  classNames?: classNames;
+export interface PaginationPort<C extends ElementType> extends Partial<Variants> {
+  classNames?: Partial<ClassNames>;
   as?: C;
   disablePrev?: boolean;
   disableNext?: boolean;
@@ -18,5 +18,5 @@ export interface TPaginationProps<C extends ElementType> extends Variants {
   infinite?: boolean;
   onNext?(): void;
   onPrev?(): void;
-  buttonProps?: Omit<ComponentProps<typeof Button>, "htmlProps">;
+  buttonProps?: Omit<TButtonProps<"button">, "htmlProps">;
 }

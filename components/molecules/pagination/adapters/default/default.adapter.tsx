@@ -3,9 +3,9 @@ import { ElementType } from "react";
 import { cn } from "src/utils/cn";
 
 import { Button } from "components/atoms/button/variants/button-default";
+import { PaginationDefaultVariants } from "components/molecules/pagination/adapters/default/default.variants";
 
-import { TPaginationProps } from "../../pagination.types";
-import { PaginationDefaultVariants } from "./default.variants";
+import { PaginationPort } from "../../pagination.types";
 
 export function PaginationDefaultAdapter<C extends ElementType = "div">({
   classNames,
@@ -18,7 +18,7 @@ export function PaginationDefaultAdapter<C extends ElementType = "div">({
   onPrev,
   infinite,
   buttonProps = {},
-}: TPaginationProps<C>) {
+}: PaginationPort<C>) {
   const Component = as || "div";
   const slots = PaginationDefaultVariants();
   const label = infinite ? `${current}` : `${current} / ${total}`;
