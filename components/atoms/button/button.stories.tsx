@@ -3,13 +3,12 @@ import { Meta, StoryObj } from "@storybook/react";
 import { ButtonLoading } from "components/atoms/button/button.loading";
 import { Icon } from "components/layout/icon/icon";
 
-import { ButtonCore } from "./button.core";
-import { TButtonProps } from "./button.types";
+import { ButtonPort } from "./button.types";
 import { Button } from "./variants/button-default";
 
-type Story = StoryObj<typeof ButtonCore>;
+type Story = StoryObj<typeof Button>;
 
-const defaultProps: TButtonProps<"button"> = {
+const defaultProps: ButtonPort<"button"> = {
   children: "Button core",
   startIcon: { remixName: "ri-square-line" },
   endIcon: { remixName: "ri-square-line" },
@@ -17,8 +16,8 @@ const defaultProps: TButtonProps<"button"> = {
   endContent: <Icon remixName={"ri-square-line"} size={16} className="text-inherit" />,
 };
 
-const meta: Meta<typeof ButtonCore> = {
-  component: ButtonCore,
+const meta: Meta<typeof Button> = {
+  component: Button,
   title: "Atoms/Button",
   tags: ["autodocs"],
   parameters: {

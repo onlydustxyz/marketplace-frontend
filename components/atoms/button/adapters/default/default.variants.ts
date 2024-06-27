@@ -1,6 +1,6 @@
 import { tv } from "tailwind-variants";
 
-export const ButtonCoreVariants = tv({
+export const ButtonDefaultVariants = tv({
   slots: {
     base: "group relative flex w-fit overflow-hidden rounded-lg bg-container-1 transition-colors",
     content: "flex flex-row items-center justify-center gap-2",
@@ -71,7 +71,6 @@ export const ButtonCoreVariants = tv({
   ],
   defaultVariants: {
     size: "m",
-    state: "default",
     isDisabled: false,
     isLoading: false,
     canInteract: true,
