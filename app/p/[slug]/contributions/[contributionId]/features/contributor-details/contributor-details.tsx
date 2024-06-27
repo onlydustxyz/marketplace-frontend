@@ -20,11 +20,11 @@ export function ContributorDetails({ githubId, applicationId }: TContributorDeta
     applicationId,
   });
 
-  if (!userProfile || !application) return null;
-
   return (
-    <Flex direction="col" className="flex-1 gap-6 overflow-hidden">
-      <ProfileCard login={userProfile.login} avatarUrl={userProfile.avatarUrl} {...userProfile.statsSummary} />
+    <Flex direction="col" className="flex-1 gap-6">
+      {userProfile && (
+        <ProfileCard login={userProfile.login} avatarUrl={userProfile.avatarUrl} {...userProfile.statsSummary} />
+      )}
       <Card background="base" hasPadding={false} border={false} className="relative">
         <Flex className="w-full flex-col gap-6 p-4">
           <MostActiveLanguages githubId={githubId} />
@@ -37,7 +37,7 @@ export function ContributorDetails({ githubId, applicationId }: TContributorDeta
                 variant="body-m-bold"
               />
             </Flex>
-            <Flex className="w-full items-stretch gap-3">
+            <Flex className="w-full flex-col gap-3 min-[1600px]:flex-row min-[1600px]:items-stretch">
               <Activity githubId={githubId} />
               <TotalEarned githubId={githubId} />
             </Flex>

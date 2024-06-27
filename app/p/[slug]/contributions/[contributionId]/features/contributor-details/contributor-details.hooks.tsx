@@ -1,5 +1,6 @@
 import { applicationsApiClient } from "api-client/resources/applications";
 import { usersApiClient } from "api-client/resources/users";
+import { useParams } from "next/navigation";
 
 import { TContributorDetails } from "app/p/[slug]/contributions/[contributionId]/features/contributor-details/contributor-details.types";
 
@@ -9,6 +10,7 @@ import { useIntl } from "hooks/translate/use-translate";
 
 export const useContributorDetails = ({ githubId, applicationId }: TContributorDetails.Props) => {
   const { T } = useIntl();
+  const { slug = "" } = useParams<{ slug?: string }>();
   const { data: userProfile } = usersApiClient.queries.useGetUserPublicProfileByGithubId({
     pathParams: { githubId },
   });
@@ -32,7 +34,8 @@ export const useContributorDetails = ({ githubId, applicationId }: TContributorD
         applicationId,
       },
     },
-    application?.projectId ?? ""
+    application?.projectId ?? "",
+    slug
   );
 
   useMutationAlert({

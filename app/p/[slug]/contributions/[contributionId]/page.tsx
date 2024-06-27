@@ -26,11 +26,13 @@ function ContributionPage() {
   useEffect(() => {
     const applications = [...(newComers.applications || []), ...(projectMembers.applications || [])];
 
-    if (applications.length) {
+    if (applications.length && !selectedUser && !selectedApplication) {
       setSelectedUser(applications[0].applicant.githubUserId);
       setSelectedApplication(applications[0].id);
     }
   }, [newComers.applications, projectMembers.applications]);
+
+  console.log("REFECT 01");
 
   return (
     <Flex direction="col" className="gap-6">

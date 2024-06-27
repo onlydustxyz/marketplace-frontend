@@ -86,8 +86,8 @@ export function ContributorSelect({
             },
           }
         : null,
-    ].filter(item => item !== null);
-  }, [newComers.applications, projectMembers.applications, selectedUser, handleSelectUser]);
+    ].filter(item => item !== null) as AccordionItemWithBadgeProps[];
+  }, [newComers.applications, projectMembers.applications, selectedUser]);
 
   const defaultSelected = useMemo(() => items.map(item => item.id), [items]);
 

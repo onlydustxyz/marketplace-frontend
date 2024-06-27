@@ -11,11 +11,11 @@ import { TTotalEarned } from "./total-earned.types";
 
 const SHOWED_STATS_NUMBER = 4;
 export function TotalEarned({ githubId }: TTotalEarned.Props) {
-  const { data: stats, isError } = usersApiClient.queries.useGetUserPublicStatsByGithubId(githubId, undefined, {
+  const { data: stats } = usersApiClient.queries.useGetUserPublicStatsByGithubId(githubId, undefined, {
     retry: 0,
   });
 
-  const { data, otherData } = useMemo(() => {
+  const data = useMemo(() => {
     const orderedStats = (stats?.earnings?.perProject || []).sort((a, b) => b.totalEarnedUsd - a.totalEarnedUsd);
     const mainStats = orderedStats.slice(0, SHOWED_STATS_NUMBER);
     const otherStats = orderedStats.slice(SHOWED_STATS_NUMBER);
@@ -33,8 +33,12 @@ export function TotalEarned({ githubId }: TTotalEarned.Props) {
       value: otherStats.reduce((acc, curr) => acc + curr.totalEarnedUsd, 0),
     };
 
-    return { data, otherData };
+    return [...data, otherData];
   }, [stats]);
+
+  const Graph = useMemo(() => {
+    return <TotalEarnedGraphClient data={data} />;
+  }, [data]);
 
   return (
     <Flex direction="col" className="flex-1 gap-3">
@@ -45,11 +49,7 @@ export function TotalEarned({ githubId }: TTotalEarned.Props) {
           className="text-greyscale-200"
         />
         <div className="flex w-full flex-1 flex-col justify-center">
-          {!isError ? (
-            <Suspense>
-              <TotalEarnedGraphClient data={[...data, otherData]} />
-            </Suspense>
-          ) : null}
+          <Suspense>{Graph}</Suspense>
         </div>
       </Card>
     </Flex>
