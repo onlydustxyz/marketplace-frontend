@@ -17,6 +17,7 @@ import { Textarea } from "components/atoms/textarea";
 import { Typo } from "components/atoms/typo/variants/typo-default";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
 import { BaseLink } from "components/layout/base-link/base-link";
+import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Drawer } from "components/molecules/drawer";
 
@@ -86,7 +87,17 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
       >
         <Translate token={"v2.features.projects.applyIssueDrawer.footer.applied"} />
       </TagIcon>
-    ) : null;
+    ) : (
+      <div className={"flex items-center gap-2"}>
+        <Icon remixName="ri-information-line" size={16} />
+        <Typo
+          size={"xs"}
+          variant={"default"}
+          color={"text-1"}
+          translate={{ token: "v2.features.projects.applyIssueDrawer.footer.visibilityInformation" }}
+        />
+      </div>
+    );
 
     const EndContent = hasApplied ? (
       <div className={"flex items-center gap-2.5"}>
