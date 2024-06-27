@@ -11,8 +11,8 @@ export function ButtonSecondaryLight<C extends ElementType = "button">({ ...prop
       {...props}
       classNames={{
         base: cn(
-          "bg-transparent border-1 border-container-stroke-separator data-[disabled=true]:bg-interactions-white-disabled",
-          "hover:bg-interactions-white-hover"
+          "bg-transparent border-1 border-container-stroke-separator data-[loading=true]:border-interactions-white-active data-[disabled=true]:bg-interactions-white-disabled",
+          "hover:border-interactions-white-hover"
         ),
         loaderContainer: "bg-transparent",
       }}
