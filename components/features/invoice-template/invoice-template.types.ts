@@ -1,4 +1,5 @@
 import { InvoicePreviewResponse } from "actions/billing-profiles/billing-profiles-queries.actions";
+import { Money } from "utils/Money/Money";
 
 import { components } from "src/__generated/api";
 
@@ -57,6 +58,7 @@ export namespace TInvoice {
     totalTax: number | undefined;
     totalAfterTax: number | undefined;
     usdToEurConversionRate: number | undefined;
+    totalAfterTaxPerCurrency: { currency: Money.Currency; amount: number }[] | undefined;
   }
 
   export interface FooterProps {
