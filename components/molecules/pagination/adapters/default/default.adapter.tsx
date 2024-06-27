@@ -16,12 +16,11 @@ export function PaginationDefaultAdapter<C extends ElementType = "div">({
   current = 0,
   onNext,
   onPrev,
-  infinite,
-  buttonProps = {},
+  isInfinite,
 }: PaginationPort<C>) {
   const Component = as || "div";
   const slots = PaginationDefaultVariants();
-  const label = infinite ? `${current}` : `${current} / ${total}`;
+  const label = isInfinite ? `${current}` : `${current} / ${total}`;
   return (
     <Component className={cn(slots.base(), classNames?.base)}>
       <Button
@@ -31,9 +30,8 @@ export function PaginationDefaultAdapter<C extends ElementType = "div">({
         hideText
         startIcon={{ remixName: "ri-arrow-left-s-line" }}
         variant="secondary-light"
-        {...buttonProps}
       />
-      <Button size={"l"} variant="secondary-light" {...buttonProps} as={"div"}>
+      <Button as={"div"} size={"l"} variant="secondary-light" canInteract={false}>
         {label}
       </Button>
       <Button
@@ -43,7 +41,6 @@ export function PaginationDefaultAdapter<C extends ElementType = "div">({
         isDisabled={disableNext}
         hideText
         startIcon={{ remixName: "ri-arrow-right-s-line" }}
-        {...buttonProps}
       />
     </Component>
   );

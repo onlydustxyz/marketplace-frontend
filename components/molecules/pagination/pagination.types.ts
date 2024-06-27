@@ -1,7 +1,5 @@
 import { ElementType } from "react";
 
-import { TButtonProps } from "components/atoms/button/button.types";
-
 interface Variants {}
 
 interface ClassNames {
@@ -15,8 +13,7 @@ export interface PaginationPort<C extends ElementType> extends Partial<Variants>
   disableNext?: boolean;
   total?: number;
   current?: number;
-  infinite?: boolean;
+  isInfinite?: boolean;
   onNext?(): void;
   onPrev?(): void;
-  buttonProps?: Omit<TButtonProps<"button">, "htmlProps">;
 }

@@ -67,13 +67,13 @@ export const DisablePrev: Story = {
 export const Infinite: Story = {
   parameters: {
     docs: {
-      source: { code: "<infinite disablePrev={true} />" },
+      source: { code: "<Pagination isInfinite />" },
     },
   },
   render: () => {
     return (
       <div className="flex w-full items-center gap-2">
-        <Pagination {...defaultProps} infinite={true} />
+        <Pagination {...defaultProps} isInfinite />
       </div>
     );
   },

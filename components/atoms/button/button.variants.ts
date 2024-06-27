@@ -2,7 +2,7 @@ import { tv } from "tailwind-variants";
 
 export const ButtonCoreVariants = tv({
   slots: {
-    base: "group relative flex w-fit cursor-pointer overflow-hidden rounded-lg bg-container-1 transition-colors",
+    base: "group relative flex w-fit overflow-hidden rounded-lg bg-container-1 transition-colors",
     content: "flex flex-row items-center justify-center gap-2",
     startIcon: "transition-color text-inherit",
     endIcon: "transition-color text-inherit",
@@ -40,6 +40,11 @@ export const ButtonCoreVariants = tv({
         label: "text-text-3",
       },
     },
+    canInteract: {
+      false: {
+        base: "pointer-events-none",
+      },
+    },
   },
   compoundVariants: [
     {
@@ -69,5 +74,6 @@ export const ButtonCoreVariants = tv({
     state: "default",
     isDisabled: false,
     isLoading: false,
+    canInteract: true,
   },
 });
