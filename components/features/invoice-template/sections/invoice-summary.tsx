@@ -104,7 +104,8 @@ export function InvoiceSummary({
         <Text style={styles.h4}>{InvoiceTokens.rewardSummary.specialMentions}</Text>
         {totalAfterTaxPerCurrency?.map((item, index) => (
           <Text key={index} style={styles.paragraph}>
-            - {Money.format({ amount: item.amount, currency: item.currency }).string}{" "}
+            - {Money.format({ amount: item.amount, currency: item.currency }).string}
+            {vat.vatRegulationState === "VAT_APPLICABLE" ? InvoiceTokens.rewardSummary.includingVat : " "}
             {InvoiceTokens.rewardSummary.itemsReceived}
           </Text>
         ))}
