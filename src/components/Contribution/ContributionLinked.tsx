@@ -31,7 +31,11 @@ export function ContributionLinked({
           {contribution.links.map(link => (
             <ContributionBadge
               key={link.githubNumber}
-              contribution={link}
+              contribution={{
+                // Not unique, but better than nothing ...
+                id: String(link.githubNumber),
+                ...link,
+              }}
               withTooltip={withTooltip}
               asLink={asLink}
               tooltipProps={tooltipProps}

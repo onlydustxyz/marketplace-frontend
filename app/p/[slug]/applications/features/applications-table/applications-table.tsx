@@ -1,21 +1,31 @@
 import { projectsApiClient } from "api-client/resources/projects";
-import { PropsWithChildren, useMemo } from "react";
+import { useMemo } from "react";
 
 import { IMAGES } from "src/assets/img";
+import { ContributionCard } from "src/components/Contribution/ContributionCard";
 import { ShowMore } from "src/components/Table/ShowMore";
 import { viewportConfig } from "src/config";
+import { Contribution, GithubContributionType } from "src/types";
 import { cn } from "src/utils/cn";
+import displayRelativeDate from "src/utils/displayRelativeDate";
 
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
 import { Table } from "components/ds/table/table";
 import { TTable } from "components/ds/table/table.types";
+import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 import { Translate } from "components/layout/translate/translate";
 
 import { useClientMediaQuery } from "hooks/layout/useClientMediaQuery/use-client-media-query";
 import { useIntl } from "hooks/translate/use-translate";
 
-function Message({ children }: PropsWithChildren) {
-  return <p className="whitespace-pre-line text-center font-walsheim text-sm text-greyscale-50">{children}</p>;
+function Error() {
+  return (
+    <div className="py-6">
+      <p className="whitespace-pre-line text-center font-walsheim text-sm text-greyscale-50">
+        <Translate token={"contributions.table.error"} />
+      </p>
+    </div>
+  );
 }
 
 export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
@@ -81,7 +91,7 @@ export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
 
         return {
           key: String(id ?? ""),
-          date: "date",
+          date: displayRelativeDate(row.createdAt),
           repository: "repository",
           applicants: "applicants",
           contribution: "contribution",
@@ -93,61 +103,66 @@ export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
 
   function renderMobileContent() {
     if (isError) {
+      return <Error />;
+    }
+
+    if (!hasIssues) {
       return (
-        <div className="py-6">
-          <Message>{T("contributions.table.error")}</Message>
-        </div>
+        <EmptyState
+          illustrationSrc={IMAGES.global.categories}
+          title={{ token: "v2.pages.project.applications.table.empty.title" }}
+          description={{ token: "v2.pages.project.applications.table.empty.description" }}
+        />
       );
     }
 
-    // if (!hasIssues) {
-    //   return (
-    //     <ContributionEmptyFallBack isMobile={true} nbColumns={nbColumns} activeTab={activeTab} filterRef={filterRef} />
-    //   );
-    // }
+    return (
+      <div className="flex flex-col gap-2">
+        {issues?.map(issue => {
+          const contribution: Contribution = {
+            id: String(issue.id),
+            githubHtmlUrl: issue.htmlUrl,
+            githubStatus: issue.status,
+            githubTitle: issue.title,
+            githubNumber: issue.number,
+            repo: issue.repository,
+            createdAt: issue.createdAt,
+            lastUpdatedAt: issue.createdAt,
 
-    return null;
+            // Should only show open issues
+            status: "IN_PROGRESS",
+            type: GithubContributionType.Issue,
 
-    // return (
-    //   <div className="flex flex-col gap-2">
-    //     {issues?.map(issue => (
-    //       <ContributionCard
-    //         key={`${contribution.id}-${contribution.project.name}`}
-    //         contribution={contribution}
-    //         className={cn({ "bg-card-background-light": fullTable })}
-    //       />
-    //     ))}
-    //
-    //     {hasNextPage ? (
-    //       <div className="py-2">
-    //         <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} isInfinite />
-    //       </div>
-    //     ) : null}
-    //   </div>
-    // );
+            githubAuthor: issue.author,
+            contributor: issue.author,
+            project: { id: "", slug: "", name: "", shortDescription: "" },
+            rewardIds: [],
+            links: [],
+          };
+
+          return (
+            <ContributionCard
+              key={`${contribution.id}-${contribution.githubTitle}`}
+              contribution={contribution}
+              className={"bg-card-background-light"}
+            />
+          );
+        })}
+
+        {hasNextPage ? (
+          <div className="py-2">
+            <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} isInfinite />
+          </div>
+        ) : null}
+      </div>
+    );
   }
 
-  // function renderDesktopContent() {
-  //   if (isError) {
-  //     return <TableText colSpan={nbColumns}>{T("contributions.table.error")}</TableText>;
-  //   }
-  //
-  //   if (!hasIssues) {
-  //     return (
-  //       <ContributionEmptyFallBack
-  //         isMobile={false}
-  //         hasActiveFilters={hasActiveFilters}
-  //         nbColumns={nbColumns}
-  //         // activeTab={activeTab}
-  //         filterRef={filterRef}
-  //       />
-  //     );
-  //   }
-  //
-  //   return issues?.map(bodyRow);
-  // }
-
   function renderDesktopContent() {
+    if (isError) {
+      return <Error />;
+    }
+
     return (
       <Table
         label={T("v2.pages.project.applications.table.title")}
@@ -170,15 +185,12 @@ export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
   }
 
   if (isLoading) {
-    return <SkeletonEl width={"100%"} height={400} />;
+    return <SkeletonEl width={"100%"} height={400} variant={"rounded"} />;
   }
 
   return (
     <section
-      className={cn("overflow-hidden rounded-2xl border-card-border-medium", {
-        // "border bg-card-background-base shadow-heavy": fullTable,
-        // "lg:border lg:bg-card-background-base lg:shadow-heavy": !fullTable,
-      })}
+      className={"overflow-hidden rounded-2xl border border-card-border-medium bg-card-background-base shadow-heavy"}
     >
       <header
         className={cn("flex items-start justify-between gap-6 bg-card-background-light px-6 py-4 md:items-center", {
@@ -204,19 +216,11 @@ export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
         </div>
       </header>
 
-      {
-        //Show the content if we're on a specific tab or if there are contributions
-        hasIssues ? <div className={"p-3 lg:hidden"}>{!isLg ? renderMobileContent() : null}</div> : null
-      }
+      <div className={"p-3 lg:hidden"}>{!isLg ? renderMobileContent() : null}</div>
 
-      {
-        //Show the table if we're on a specific tab or if there are contributions
-        hasIssues ? (
-          <div className={cn("hidden px-4 pt-6 lg:block", isLg && hasNextPage ? "pb-0" : "pb-6")}>
-            {isLg ? renderDesktopContent() : null}
-          </div>
-        ) : null
-      }
+      <div className={cn("hidden px-4 pt-6 lg:block", isLg && hasNextPage ? "pb-0" : "pb-6")}>
+        {isLg ? renderDesktopContent() : null}
+      </div>
     </section>
   );
 }
