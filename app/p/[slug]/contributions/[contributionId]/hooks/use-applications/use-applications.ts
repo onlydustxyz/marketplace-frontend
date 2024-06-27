@@ -1,11 +1,11 @@
 import { applicationsApiClient } from "api-client/resources/applications";
+import { issuesApiClient } from "api-client/resources/issues/index";
 import { debounce } from "lodash";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import ProjectApi from "src/api/Project";
 
-import { issuesApiClient } from "./../../../../../../../api-client/resources/issues/index";
 import { TUseApplications } from "./use-applications.types";
 
 export function UseApplications({ search }: TUseApplications.Props): TUseApplications.Return {
