@@ -7,4 +7,5 @@ export enum apiResources {
   projects = "PROJECTS",
   activity = "ACTIVITY",
   applications = "APPLICATIONS",
+  issues = "ISSUES",
 }

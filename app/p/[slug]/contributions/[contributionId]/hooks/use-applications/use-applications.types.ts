@@ -11,6 +11,11 @@ export namespace TUseApplications {
     isPending: boolean;
   }
 
+  export interface TitleItem {
+    content?: string;
+    isLoading: boolean;
+  }
+
   export interface Props {
     search: string;
   }
@@ -18,6 +23,6 @@ export namespace TUseApplications {
   export interface Return {
     newComers: ApplicationItem;
     projectMembers: ApplicationItem;
-    title: string;
+    title: TitleItem;
   }
 }

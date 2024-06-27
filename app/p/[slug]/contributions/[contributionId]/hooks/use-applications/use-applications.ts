@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import ProjectApi from "src/api/Project";
 
+import { issuesApiClient } from "./../../../../../../../api-client/resources/issues/index";
 import { TUseApplications } from "./use-applications.types";
 
 export function UseApplications({ search }: TUseApplications.Props): TUseApplications.Return {
@@ -59,6 +60,13 @@ export function UseApplications({ search }: TUseApplications.Props): TUseApplica
     options: { enabled: !!project?.id },
   });
 
+  const { data: issueData, isLoading: issueDataIsLoading } = issuesApiClient.queries.useGetIssueById({
+    pathParams: {
+      issueId: Number(contributionId),
+    },
+    options: { enabled: !!contributionId },
+  });
+
   const newComersApplications = useMemo(
     () => newComersApplicationsData?.pages.flatMap(page => page.applications),
     [newComersApplicationsData]
@@ -68,13 +76,6 @@ export function UseApplications({ search }: TUseApplications.Props): TUseApplica
     () => projectMembersApplicationsData?.pages.flatMap(page => page.applications),
     [projectMembersApplicationsData]
   );
-
-  const title = useMemo(() => {
-    if (newComersApplications?.length) return newComersApplications[0].issue.title;
-    if (projectMembersApplications?.length) return projectMembersApplications[0].issue.title;
-
-    return "";
-  }, [newComersApplications, projectMembersApplications]);
 
   return {
     newComers: {
@@ -91,6 +92,9 @@ export function UseApplications({ search }: TUseApplications.Props): TUseApplica
       isFetchingNextPage: projectMembersIsFetchingNextPage,
       isPending: projectMembersIsPending,
     },
-    title,
+    title: {
+      content: issueData?.title,
+      isLoading: issueDataIsLoading,
+    },
   };
 }
