@@ -14,8 +14,7 @@ export function getIssueById({
   const fetchAdapter = new FetchAdapter<GetIssueResponse>(adapters.get_by_id);
 
   if (pathParams) {
-    fetchAdapter.setPathParams(pathParams);
-    fetchAdapter.setTag(tags.by_id(pathParams.issueId.toString()));
+    fetchAdapter.setPathParams(pathParams).setTag(tags.by_id(pathParams.issueId.toString()));
   }
 
   return fetchAdapter;

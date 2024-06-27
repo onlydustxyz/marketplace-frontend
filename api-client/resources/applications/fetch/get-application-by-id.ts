@@ -14,8 +14,7 @@ export function getApplicationById({
   const fetchAdapter = new FetchAdapter<GetApplicationResponse>(adapters.get_by_id);
 
   if (pathParams) {
-    fetchAdapter.setPathParams(pathParams);
-    fetchAdapter.setTag(tags.by_id(pathParams.applicationId));
+    fetchAdapter.setPathParams(pathParams).setTag(tags.by_id(pathParams.applicationId));
   }
 
   return fetchAdapter;
