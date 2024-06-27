@@ -1,5 +1,6 @@
 "use client";
 
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { useParams } from "next/navigation";
 
 import { ApplicationsTable } from "app/p/[slug]/applications/features/applications-table/applications-table";
@@ -13,11 +14,13 @@ import ProjectApi from "src/api/Project";
 import Flex from "src/components/Utils/Flex";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
+import { withLeadRequired } from "components/features/auth0/guards/lead-guard";
 import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
+import { withClientOnly } from "components/layout/client-only/client-only";
 
 import { useIntl } from "hooks/translate/use-translate";
 
-export default function ProjectApplicationsPage() {
+function ProjectApplicationsPage() {
   const { T } = useIntl();
   const { slug = "" } = useParams<{ slug?: string }>();
 
@@ -52,3 +55,5 @@ export default function ProjectApplicationsPage() {
     </>
   );
 }
+
+export default withClientOnly(withAuthenticationRequired(withLeadRequired(ProjectApplicationsPage)));
