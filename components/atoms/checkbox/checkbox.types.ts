@@ -1,7 +1,6 @@
 interface Variants {
   color: "white" | "black";
   isDisabled: boolean;
-  isError: boolean;
 }
 
 interface ClassNames {
