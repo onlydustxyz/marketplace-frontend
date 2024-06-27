@@ -8,10 +8,15 @@ import { Typography } from "components/layout/typography/typography";
 
 import { NEXT_ROUTER } from "constants/router";
 
+import { ContributionHeaderLoading } from "./contribution-header.loading";
 import { TContributionHeader } from "./contribution-header.types";
 
 export function ContributionHeader({ title }: TContributionHeader.Props) {
   const { slug = "" } = useParams<{ slug?: string }>();
+
+  if (title.isLoading) {
+    return <ContributionHeaderLoading />;
+  }
 
   return (
     <Flex alignItems="center" className="gap-2">
@@ -20,7 +25,8 @@ export function ContributionHeader({ title }: TContributionHeader.Props) {
           <Icon remixName="ri-arrow-left-s-line" />
         </Button>
       </BaseLink>
-      <Typography variant="title-m">{title}</Typography>
+
+      <Typography variant="title-m">{title.content}</Typography>
     </Flex>
   );
 }
