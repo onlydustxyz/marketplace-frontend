@@ -4,7 +4,7 @@ import { TagAvatar } from "components/atoms/tag/variants/tag-avatar";
 import { Icon } from "components/layout/icon/icon";
 
 import { TagLoading } from "./tag.loading";
-import { TTagAvatarProps, TTagIconProps, TagPort } from "./tag.types";
+import { TagAvatarPort, TagIconPort, TagPort } from "./tag.types";
 import { Tag } from "./variants/tag-default";
 import { TagIcon } from "./variants/tag-icon";
 
@@ -18,13 +18,13 @@ const defaultProps: TagPort<"div"> = {
   startContent: <Icon remixName="ri-square-line" size={16} className="text-inherit" />,
 };
 
-const defaultTagIconProps: TTagIconProps<"div"> = {
+const defaultTagIconProps: TagIconPort<"div"> = {
   ...defaultProps,
   startContent: undefined,
   icon: { remixName: "ri-fire-line" },
 };
 
-const defaultTagAvatarProps: TTagAvatarProps<"div"> = {
+const defaultTagAvatarProps: TagAvatarPort<"div"> = {
   ...defaultProps,
   startContent: undefined,
   avatar: { src: undefined },
