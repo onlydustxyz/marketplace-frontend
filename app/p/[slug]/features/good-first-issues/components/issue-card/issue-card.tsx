@@ -2,12 +2,12 @@ import { useMediaQuery } from "usehooks-ts";
 
 import { ApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer";
 import { useApplyIssueDrawerState } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.hooks";
+import { Applicants } from "app/p/[slug]/features/good-first-issues/components/applicants/applicants";
 import { OverviewAccordion } from "app/p/[slug]/features/good-first-issues/components/issue-card/components/overview-accordion/overview-accordion";
 
 import { viewportConfig } from "src/config";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 
-import { AvatarGroup } from "components/ds/avatar-group/avatar-group";
 import { Card } from "components/ds/card/card";
 import { Link } from "components/ds/link/link";
 import { Contributor } from "components/features/contributor/contributor";
@@ -63,25 +63,7 @@ export function IssueCard({ issue }: TIssueCard.Props) {
           </Flex>
         </Flex>
 
-        {issue.applicants.length ? (
-          <Flex direction="row" className="gap-2">
-            <AvatarGroup
-              avatars={issue.applicants.map(applicant => ({
-                src: applicant.avatarUrl,
-                alt: applicant.login,
-              }))}
-              avatarProps={{ size: "xs" }}
-            />
-            <Typography
-              variant="body-xs"
-              className="text-spaceBlue-100"
-              translate={{
-                token: "v2.pages.project.overview.goodFirstIssues.applicantCount",
-                params: { count: issue.applicants.length },
-              }}
-            />
-          </Flex>
-        ) : null}
+        <Applicants applicants={issue.applicants} />
 
         <Flex wrap="wrap" className="gap-2">
           <Flex alignItems="center" className="gap-1">
