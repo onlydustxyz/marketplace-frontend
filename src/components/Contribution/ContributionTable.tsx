@@ -73,7 +73,6 @@ type Props = {
   sort: TableSort;
   title: string;
   filterRef: ReturnType<typeof useRef<ContributionsFilterRef | ProjectContributionsFilterRef | null>>;
-  canCollapse?: boolean;
 };
 
 export function ContributionTable({
