@@ -114,7 +114,6 @@ export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
         icon: {
           remixName: "ri-time-line",
         },
-        width: 100,
         allowsSorting: true,
       },
       {
@@ -130,7 +129,6 @@ export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
         icon: {
           remixName: "ri-user-line",
         },
-        width: 100,
       },
       {
         key: "contribution",
@@ -138,7 +136,6 @@ export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
         icon: {
           remixName: "ri-stack-line",
         },
-        width: "50%",
       },
       {
         key: "actions",
@@ -159,17 +156,19 @@ export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
         return {
           key: String(row.id ?? ""),
           CREATED_AT: (
-            <ContributionDate
-              id={String(row.id)}
-              type={GithubContributionType.Issue}
-              status={row.status}
-              contributionStatus={"IN_PROGRESS"}
-              date={new Date(row.createdAt)}
-              tooltipProps={{ variant: TooltipVariant.Default, position: TooltipPosition.Bottom }}
-            />
+            <div className={"whitespace-nowrap"}>
+              <ContributionDate
+                id={String(row.id)}
+                type={GithubContributionType.Issue}
+                status={row.status}
+                contributionStatus={"IN_PROGRESS"}
+                date={new Date(row.createdAt)}
+                tooltipProps={{ variant: TooltipVariant.Default, position: TooltipPosition.Bottom }}
+              />
+            </div>
           ),
           repository: (
-            <Link href={row.repository.htmlUrl} className="whitespace-normal text-left" title={repoName}>
+            <Link href={row.repository.htmlUrl} className="whitespace-nowrap text-left" title={repoName}>
               {truncateLength && repoName.length > truncateLength
                 ? repoName.substring(0, truncateLength) + "..."
                 : repoName}
@@ -185,7 +184,14 @@ export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
               </Tag>
             </div>
           ),
-          contribution: <Contribution contribution={contribution} />,
+          contribution: (
+            <div
+              // TODO @hayden don't know if this a good idea, no simple solution right now to define column width
+              className={"w-[300px]"}
+            >
+              <Contribution contribution={contribution} />
+            </div>
+          ),
           actions: (
             <div>
               <Button variant={"secondary-light"} size={"s"}>
