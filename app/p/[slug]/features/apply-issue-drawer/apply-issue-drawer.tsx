@@ -20,9 +20,12 @@ import { BaseLink } from "components/layout/base-link/base-link";
 import { Translate } from "components/layout/translate/translate";
 import { Drawer } from "components/molecules/drawer";
 
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
+
 export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer.Props) {
   const [isOpen, setIsOpen] = state;
   const { capture } = usePosthog();
+  const { user } = useCurrentUser();
   const {
     project: { data: project },
     form: { control, handleSubmit, reset, setValue },
@@ -36,9 +39,10 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
 
   useEffect(() => {
     if (isOpen && project) {
-      capture("issue_application_flow_started", {
+      capture("issue_viewed", {
         issue_id: issue.id,
         project_id: project?.id,
+        github_user_id: user?.githubUserId,
       });
     }
   }, [isOpen, project]);
@@ -56,29 +60,6 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
 
   const header = useMemo(() => {
     const StartContent = (
-      <div className={"flex items-center gap-2"}>
-        <TagAvatar
-          shape={"square"}
-          style={"outline"}
-          color={"grey"}
-          avatar={{ src: issue.author.avatarUrl, shape: "square" }}
-        >
-          {issue.author.login}
-        </TagAvatar>
-        {project ? (
-          <TagAvatar
-            shape={"square"}
-            style={"outline"}
-            color={"grey"}
-            avatar={{ src: project.logoUrl, shape: "square" }}
-          >
-            {project.name}
-          </TagAvatar>
-        ) : null}
-      </div>
-    );
-
-    const EndContent = (
       <Button
         as={BaseLink}
         htmlProps={{ href: issue.htmlUrl }}
@@ -86,13 +67,12 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
         variant={"secondary-light"}
         size={"l"}
       >
-        <Translate token={"v2.features.projects.applyIssueDrawer.header.seeOnGithub"} />
+        {issue.repository.name}
       </Button>
     );
 
     return {
       startContent: StartContent,
-      endContent: EndContent,
     };
   }, []);
 

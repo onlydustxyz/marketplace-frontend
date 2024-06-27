@@ -1,8 +1,7 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
 import ProjectApi from "src/api/Project";
 import { ShowMore } from "src/components/Table/ShowMore";
-import { usePosthog } from "src/hooks/usePosthog";
 
 import { Badge } from "components/ds/badge/badge";
 import { Card } from "components/ds/card/card";
@@ -15,9 +14,7 @@ import { EmptyState } from "./components/empty-state/empty-state";
 import { IssueCard } from "./components/issue-card/issue-card";
 import { TGoodFirstIssues } from "./good-first-issues.types";
 
-// TODO: Refacto ShowMore
 export function GoodFirstIssues({ projectId, organizations, isProjectLeader }: TGoodFirstIssues.Props) {
-  const { capture } = usePosthog();
   const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } =
     ProjectApi.queries.useProjectGoodFirstIssuesInfiniteList({
       params: { projectId },
@@ -28,15 +25,6 @@ export function GoodFirstIssues({ projectId, organizations, isProjectLeader }: T
   }, [data]);
 
   const totalIssues = data?.pages[0]?.totalItemNumber;
-
-  useEffect(() => {
-    if (data?.pages[0]?.totalItemNumber) {
-      capture("good_first_issues_viewed", {
-        project_id: projectId,
-        issues_count: data?.pages[0]?.totalItemNumber || 0,
-      });
-    }
-  }, [data]);
 
   function renderContent() {
     if (isError) {
