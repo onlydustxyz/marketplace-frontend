@@ -8,6 +8,12 @@ export namespace TUseApplications {
     fetchNextPage: () => void;
     hasNextPage: boolean;
     isFetchingNextPage: boolean;
+    isPending: boolean;
+  }
+
+  export interface TitleItem {
+    content?: string;
+    isLoading: boolean;
   }
 
   export interface Props {
@@ -17,6 +23,6 @@ export namespace TUseApplications {
   export interface Return {
     newComers: ApplicationItem;
     projectMembers: ApplicationItem;
-    title: string;
+    title: TitleItem;
   }
 }

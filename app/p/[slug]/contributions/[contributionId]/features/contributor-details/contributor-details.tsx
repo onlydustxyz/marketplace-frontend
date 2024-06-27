@@ -12,13 +12,19 @@ import { Activity } from "./components/activity/activity";
 import { MostActiveEcosystems } from "./components/most-active-ecosystems/most-active-ecosystems";
 import { MostActiveLanguages } from "./components/most-active-languages/most-active-languages";
 import { TotalEarned } from "./components/total-earned/total-earned";
+import { ContributorDetailsLoading } from "./contributor-details.loading";
 import { TContributorDetails } from "./contributor-details.types";
 
 export function ContributorDetails({ githubId, applicationId }: TContributorDetails.Props) {
-  const { userProfile, acceptApplication, deleteApplication, application } = useContributorDetails({
+  const { userProfile, acceptApplication, deleteApplication, application, isLoading } = useContributorDetails({
     githubId,
     applicationId,
   });
+
+  if (isLoading) {
+    return <ContributorDetailsLoading />;
+  }
+
 
   return (
     <Flex direction="col" className="flex-1 gap-6">

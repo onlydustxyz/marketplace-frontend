@@ -11,11 +11,12 @@ import { useIntl } from "hooks/translate/use-translate";
 export const useContributorDetails = ({ githubId, applicationId }: TContributorDetails.Props) => {
   const { T } = useIntl();
   const { slug = "" } = useParams<{ slug?: string }>();
-  const { data: userProfile } = usersApiClient.queries.useGetUserPublicProfileByGithubId({
-    pathParams: { githubId },
-  });
+  const { data: userProfile, isLoading: userProfileIsLoading } =
+    usersApiClient.queries.useGetUserPublicProfileByGithubId({
+      pathParams: { githubId },
+    });
 
-  const { data: application } = applicationsApiClient.queries.useGetApplicationById({
+  const { data: application, isLoading: applicationIsLoading } = applicationsApiClient.queries.useGetApplicationById({
     pathParams: { applicationId },
   });
 
@@ -56,5 +57,6 @@ export const useContributorDetails = ({ githubId, applicationId }: TContributorD
     application,
     deleteApplication,
     acceptApplication,
+    isLoading: userProfileIsLoading || applicationIsLoading,
   };
 };
