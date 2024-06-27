@@ -86,7 +86,7 @@ export function ContributorSelect({
       return <AccordionLoading />;
     }
 
-    if (!items.length && !newComers.isPending && !projectMembers.isPending) {
+    if (!items.length) {
       return (
         <Flex direction="col" alignItems="center" className="gap-1 py-2">
           <Typography
