@@ -1,20 +1,27 @@
 import { ComponentPropsWithoutRef, ElementType, PropsWithChildren, ReactNode } from "react";
-import { VariantProps } from "tailwind-variants";
 
-import { DrawerCoreVariants } from "./drawer.variants";
+interface Variants {
+  size: "m";
+}
 
-type Variants = VariantProps<typeof DrawerCoreVariants>;
-type classNames = Partial<typeof DrawerCoreVariants["slots"]>;
+interface ClassNames {
+  base: string;
+  wrapper: string;
+  body: string;
+  backdrop: string;
+  footer: string;
+  header: string;
+}
 
 interface BlockProps {
   startContent?: ReactNode;
   endContent?: ReactNode;
 }
 
-export interface DrawerPort<C extends ElementType> extends Variants, PropsWithChildren {
+export interface DrawerPort<C extends ElementType> extends Partial<Variants>, PropsWithChildren {
   htmlProps?: ComponentPropsWithoutRef<C>;
   as?: C;
-  classNames?: classNames;
+  classNames?: Partial<ClassNames>;
   header?: BlockProps;
   footer?: BlockProps;
   onOpenChange?: (value: boolean) => void;
