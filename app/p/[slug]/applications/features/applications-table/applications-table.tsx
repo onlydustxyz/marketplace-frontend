@@ -114,6 +114,7 @@ export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
         icon: {
           remixName: "ri-time-line",
         },
+        width: 120,
         allowsSorting: true,
       },
       {
@@ -129,6 +130,7 @@ export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
         icon: {
           remixName: "ri-user-line",
         },
+        width: 150,
       },
       {
         key: "contribution",
@@ -141,6 +143,7 @@ export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
         key: "actions",
         children: "",
         align: "end",
+        width: 100,
       },
     ],
     []
@@ -184,14 +187,14 @@ export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
           ),
           contribution: (
             <div
-              // TODO @hayden don't know if this a good idea, no simple solution right now to define column width
-              className={"w-[300px]"}
+            // TODO @hayden don't know if this a good idea, no simple solution right now to define column width
+            // className={"w-[300px]"}
             >
               <Contribution contribution={contribution} />
             </div>
           ),
           actions: (
-            <div>
+            <div className={"flex justify-end"}>
               <Button
                 variant={"secondary-light"}
                 size={"s"}
@@ -261,6 +264,7 @@ export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
 
     return (
       <Table
+        layout={"fixed"}
         label={T("v2.pages.project.applications.table.title")}
         columns={columns}
         rows={rows}
