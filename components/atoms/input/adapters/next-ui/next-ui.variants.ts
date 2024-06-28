@@ -7,7 +7,7 @@ export const InputNextUiVariants = tv({
     inputWrapper:
       "rounded-md border border-container-stroke-separator px-4 py-3 text-text-1 !outline-none group-data-[focus=true]:border-interactions-white-hover group-data-[hover=true]:border-interactions-white-hover",
     innerWrapper: "",
-    input: "text-xs text-text-1",
+    input: "text-sm text-text-1",
     errorMessage: "",
     label: "text-xs text-text-1",
     helperWrapper: "",
