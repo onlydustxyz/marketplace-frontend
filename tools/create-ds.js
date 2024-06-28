@@ -5,6 +5,7 @@ const prettier = require("prettier");
 const { COLORS, kebabToPascal, kebabToCamel, defaultPromptName } = require("./global");
 const { exec } = require("node:child_process");
 
+// TODO: Add core component option
 async function createCoreComponent({ name, path, PascalName }) {
   await fs.appendFile(
     `${path}/${name}.core.tsx`,
@@ -16,7 +17,6 @@ async function createCoreComponent({ name, path, PascalName }) {
         import { cn } from "src/utils/cn";
 
         import { ${PascalName}Port } from "./${name}.types";
-        import { ${PascalName}CoreVariants } from "./${name}.variants";
 
         export function ${PascalName}Core<C extends ElementType = "div">({Adapter, ...props}: PropsWithAdapter<${PascalName}Port<C>>) {
 
@@ -33,39 +33,18 @@ async function createCoreComponent({ name, path, PascalName }) {
 async function createVariants({ name, path, PascalName }) {
   await fs.mkdir(`${path}/variants`);
   await fs.appendFile(
-    `${path}/${name}.variants.ts`,
-    prettier.format(
-      `
-        import { tv } from "tailwind-variants";
-
-        export const ${PascalName}CoreVariants = tv({
-          slots: {
-            base: "group",
-          },
-          variants: {},
-          defaultVariants: {},
-        });
-  `,
-      { parser: "typescript" }
-    )
-  );
-  await fs.appendFile(
     `${path}/variants/${name}-default.tsx`,
     prettier.format(
       `
         import { ElementType } from "react";
 
         import { ${PascalName}DefaultAdapter} from "../adapters/default/default.adapter";
-        import { ${PascalName}Core } from "../${name}.core";
+        import { withComponentAdapter } from "components/hocs/with-component-adapter";
+
         import { ${PascalName}Port } from "../${name}.types";
 
-        export function ${PascalName}<C extends ElementType = "div">({ ...props }: ${PascalName}Port<C>) {
-          return (
-            <${PascalName}Core
-              Adapter={${PascalName}DefaultAdapter}
-              {...props}
-            />
-          );
+        export function ${PascalName}<C extends ElementType = "div">(props: ${PascalName}Port<C>) {
+          return withComponentAdapter<${PascalName}Port<C>>(${PascalName}DefaultAdapter)(props);
         };
   `,
       { parser: "typescript" }
@@ -105,10 +84,8 @@ async function createAdapter({ name, path, PascalName }) {
     prettier.format(
       `
         import { tv } from "tailwind-variants";
-        import { ${PascalName}CoreVariants } from "../../${name}.variants";
 
         export const ${PascalName}DefaultVariants = tv({
-          extend: ${PascalName}CoreVariants,
           slots: {
             base: "",
           },
@@ -127,16 +104,17 @@ async function createTypes({ name, path, PascalName }) {
     prettier.format(
       `
         import { ComponentPropsWithoutRef, ElementType } from "react";
-        import { ${PascalName}CoreVariants } from "./${name}.variants";
-        import { VariantProps } from "tailwind-variants";
 
-        type Variants = VariantProps<typeof ${PascalName}CoreVariants>;
-        type classNames = Partial<typeof ${PascalName}CoreVariants["slots"]>;
+        interface Variants {}
 
-        export interface ${PascalName}Port<C extends ElementType> extends Variants {
-          classNames?: classNames;
-          htmlProps?: ComponentPropsWithoutRef<C>;
+        interface ClassNames {
+          base: string;
+        }
+
+        export interface ${PascalName}Port<C extends ElementType> extends Partial<Variants> {
           as?: C;
+          htmlProps?: ComponentPropsWithoutRef<C>;
+          classNames?: Partial<ClassNames>;
         }
   `,
       { parser: "typescript" }
@@ -163,7 +141,6 @@ async function createIndex({ name, path }) {
     `${path}/index.ts`,
     prettier.format(
       `
-        export * from "./${name}.core";
         export * from "./variants/${name}-default";
         export * from "./${name}.types";
         export * from "./${name}.loading";
@@ -190,12 +167,20 @@ async function createStories({ name, path, PascalName }) {
 
         const meta: Meta<typeof ${PascalName}> = {
           component: ${PascalName},
-          title: "${path.includes("atoms") ? "Atoms" : "Molecules"}/${PascalName}",
+          title: "${
+            path.includes("atoms")
+              ? "Atoms"
+              : path.includes("molecules")
+              ? "Molecules"
+              : path.includes("organisms")
+              ? "Organisms"
+              : "Local"
+          }/${PascalName}",
           tags: ["autodocs"],
           parameters: {
             backgrounds: {
               default: "black",
-              values: [{ name: "black", value: "#1E1E1E" }],
+              values: [{ name: "black", value: "#05051E" }],
             },
           },
         };
