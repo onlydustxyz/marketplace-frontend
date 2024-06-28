@@ -11,4 +11,5 @@ export interface ParametersInterface<T extends { QueryParams?: unknown; PathPara
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ParametersInterfaceWithReactQuery<T extends (...args: any) => any> = FunctionTypes<T> & {
   options?: ReactQueryOptions;
+  onSuccess?: () => void;
 };

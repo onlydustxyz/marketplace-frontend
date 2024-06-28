@@ -16,7 +16,7 @@ import { ContributorDetailsLoading } from "./contributor-details.loading";
 import { TContributorDetails } from "./contributor-details.types";
 
 export function ContributorDetails({ githubId, applicationId }: TContributorDetails.Props) {
-  const { userProfile, acceptApplication, deleteApplication, application, isLoading } = useContributorDetails({
+  const { userProfile, acceptApplication, application, isLoading } = useContributorDetails({
     githubId,
     applicationId,
   });
@@ -24,7 +24,6 @@ export function ContributorDetails({ githubId, applicationId }: TContributorDeta
   if (isLoading) {
     return <ContributorDetailsLoading />;
   }
-
 
   return (
     <Flex direction="col" className="flex-1 gap-6">
@@ -72,12 +71,6 @@ export function ContributorDetails({ githubId, applicationId }: TContributorDeta
           </Flex>
         </Flex>
         <div className="sticky bottom-0 left-0 flex flex-row items-center justify-end gap-3 bg-card-background-base px-4 py-3">
-          <Button
-            variant="secondary-light"
-            size="m"
-            translate={{ token: "v2.pages.project.details.applicationDetails.profile.buttons.reject" }}
-            onClick={() => deleteApplication({})}
-          />
           <Button
             variant="primary"
             size="m"
