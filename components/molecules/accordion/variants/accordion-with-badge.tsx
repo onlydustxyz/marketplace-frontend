@@ -1,6 +1,6 @@
 import { Badge } from "components/atoms/badge";
+import { withComponentAdapter } from "components/hocs/with-component-adapter";
 
-import { AccordionCore } from "../accordion.core";
 import { AccordionItemProps, AccordionWithBadgePort } from "../accordion.types";
 import { AccordionNextUiAdapter } from "../adapters/next-ui/next-ui.adapter";
 
@@ -10,5 +10,5 @@ export function AccordionWithBadge({ items, ...props }: AccordionWithBadgePort) 
     endContent: <Badge style="outline" size="s" {...badgeProps} />,
   }));
 
-  return <AccordionCore Adapter={AccordionNextUiAdapter} items={itemsWithBadge} {...props} />;
+  return withComponentAdapter<AccordionWithBadgePort>(AccordionNextUiAdapter)({ ...props, items: itemsWithBadge });
 }
