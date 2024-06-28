@@ -1,8 +1,10 @@
-import { InputNextUiAdapter } from "components/atoms/input/adapters/next-ui/next-ui.adapter";
+import { ForwardedRef, forwardRef } from "react";
 
-import { InputCore } from "../input.core";
+import { InputNextUiAdapter } from "components/atoms/input/adapters/next-ui/next-ui.adapter";
+import { withComponentAdapter } from "components/hocs/with-component-adapter";
+
 import { InputPort } from "../input.types";
 
-export function Input({ ...props }: InputPort) {
-  return <InputCore Adapter={InputNextUiAdapter} {...props} />;
-}
+export const Input = forwardRef(function Input(props: InputPort, ref: ForwardedRef<HTMLInputElement>) {
+  return withComponentAdapter<InputPort, HTMLInputElement>(InputNextUiAdapter)(props, ref);
+});
