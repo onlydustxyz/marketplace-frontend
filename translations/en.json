@@ -80,7 +80,7 @@
     },
     "applied": {
       "title": "Applied",
-      "description": "Unassigned issues you have applied to, from OnlyDust or directly on Github."
+      "description": "Unassigned issues from one of your project repositories with applicants."
     },
     "inProgress": {
       "title": "In progress",
@@ -1057,6 +1057,9 @@
       },
       "contributions": {
         "title": "Contributions"
+      },
+      "applications": {
+        "title": "Applications"
       },
       "insights": {
         "title": "Insights",

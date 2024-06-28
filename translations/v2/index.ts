@@ -28,6 +28,7 @@ import en_ecosystems from "./en/pages/ecosystems";
 import en_hackathons_details from "./en/pages/hackathons-details.json";
 import en_hackathons from "./en/pages/hackathons.json";
 import en_home from "./en/pages/home";
+import en_project_applications_table from "./en/pages/project-applications/project-applications-table.json";
 import en_project_details_application_details from "./en/pages/project-details/project-application-details.json";
 import en_project_details_header from "./en/pages/project-details/project-header.json";
 import en_project_overview from "./en/pages/project-overview.json";
@@ -87,6 +88,9 @@ export const en = {
         details: {
           header: en_project_details_header,
           applicationDetails: en_project_details_application_details,
+        },
+        applications: {
+          table: en_project_applications_table,
         },
       },
       settings: {

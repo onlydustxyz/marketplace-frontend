@@ -6,7 +6,7 @@ import { Contribution } from "src/types";
 export namespace TContributionBadge {
   type contribution = Pick<
     Contribution,
-    "githubNumber" | "githubTitle" | "githubBody" | "githubHtmlUrl" | "githubAuthor" | "githubStatus" | "type"
+    "id" | "githubNumber" | "githubTitle" | "githubBody" | "githubHtmlUrl" | "githubAuthor" | "githubStatus" | "type"
   > & { status?: Contribution["status"] };
   export interface Props {
     contribution: contribution;

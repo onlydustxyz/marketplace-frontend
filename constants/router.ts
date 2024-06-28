@@ -11,6 +11,9 @@ export const NEXT_ROUTER = {
     details: {
       root: (slug: string) => `/p/${slug}`,
       contributors: (slug: string) => `/p/${slug}/contributors`,
+      applications: {
+        root: (slug: string) => `/p/${slug}/applications`,
+      },
       rewards: {
         root: (slug: string) => `/p/${slug}/rewards`,
         new: (slug: string) => `/p/${slug}/rewards/new`,
