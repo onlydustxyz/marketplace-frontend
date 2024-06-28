@@ -4,12 +4,17 @@ import githubGrantPermissionImage from "public/images/banners/github-grant-permi
 import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
 import { Typo } from "components/atoms/typo/variants/typo-default";
-import { TPermissionModal } from "components/features/grant-permission/components/permission-modal/permission-modal.types";
+import { TPublicRepoScopePermissionModal } from "components/features/grant-permission/components/public-repo-scope-permission-modal/public-repo-scope-permission-modal.types";
 import { usePublicRepoScope } from "components/features/grant-permission/hooks/use-public-repo-scope";
 import { Icon } from "components/layout/icon/icon";
 import { Modal } from "components/molecules/modal";
 
-export function PermissionModal({ isOpen, handleClose, handleMoreInfoOpen, handleOpenDrawer }: TPermissionModal.Props) {
+export function PublicRepoScopePermissionModal({
+  isOpen,
+  handleClose,
+  handleMoreInfoOpen,
+  handleOpenDrawer,
+}: TPublicRepoScopePermissionModal.Props) {
   const { handleVerifyPermissions } = usePublicRepoScope({
     onSuccessCallback: () => {
       handleClose();
