@@ -17,16 +17,11 @@ export function getProjectIssues({
 }>): IFetchAdapater<GetProjectIssuesPageResponse> {
   const fetchAdapter = new FetchAdapter<GetProjectIssuesPageResponse>(adapters.get_project_issues);
 
-  if (pathParams) {
-    fetchAdapter.setPathParams(pathParams);
-  }
-
-  if (queryParams) {
-    fetchAdapter.setParams(queryParams);
-  }
-
   if (pathParams && queryParams) {
-    fetchAdapter.setTag(tags.get_project_issues({ pathParams, queryParams }));
+    fetchAdapter
+      .setPathParams(pathParams)
+      .setParams(queryParams)
+      .setTag(tags.get_project_issues({ pathParams, queryParams }));
   }
 
   return PaginationAdapter(fetchAdapter, pagination).fetcher;
