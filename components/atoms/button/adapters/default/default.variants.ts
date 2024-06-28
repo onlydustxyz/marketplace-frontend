@@ -1,25 +1,32 @@
 import { tv } from "tailwind-variants";
 
-export const ButtonCoreVariants = tv({
+export const ButtonDefaultVariants = tv({
   slots: {
-    base: "group relative flex w-fit cursor-pointer overflow-hidden rounded-lg bg-container-1 transition-background",
-    content: "flex flex-row items-center justify-center gap-2",
+    base: "group relative flex w-fit overflow-hidden rounded-lg bg-container-1 transition-colors",
+    content: "flex flex-row items-center justify-center",
     startIcon: "transition-color text-inherit",
     endIcon: "transition-color text-inherit",
-    label: "transition-color text-inherit",
+    label: "transition-color leading-none text-inherit",
     loaderContainer: "absolute inset-0 flex h-full w-full flex-row items-center justify-center bg-container-1",
     spinnerCircle: "h-4 w-4 border-b-white",
   },
   variants: {
     size: {
+      xl: {
+        base: "px-6 py-4",
+        content: "gap-2",
+      },
       l: {
         base: "px-4 py-3",
+        content: "gap-2",
       },
       m: {
         base: "px-3 py-2",
+        content: "gap-2",
       },
       s: {
         base: "px-1 py-1",
+        content: "gap-1",
       },
     },
     hideText: {
@@ -40,8 +47,20 @@ export const ButtonCoreVariants = tv({
         label: "text-text-3",
       },
     },
+    canInteract: {
+      false: {
+        base: "pointer-events-none",
+      },
+    },
   },
   compoundVariants: [
+    {
+      hideText: true,
+      size: "xl",
+      class: {
+        base: "px-4 py-4",
+      },
+    },
     {
       hideText: true,
       size: "l",
@@ -66,8 +85,8 @@ export const ButtonCoreVariants = tv({
   ],
   defaultVariants: {
     size: "m",
-    state: "default",
     isDisabled: false,
     isLoading: false,
+    canInteract: true,
   },
 });

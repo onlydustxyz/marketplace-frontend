@@ -32,6 +32,7 @@ export function InvoiceTemplate({
           totalTax={rewardSummary.totalTax}
           totalAfterTax={rewardSummary.totalAfterTax}
           usdToEurConversionRate={rewardSummary.usdToEurConversionRate}
+          totalAfterTaxPerCurrency={rewardSummary.totalAfterTaxPerCurrency}
         />
         <InvoiceFooter invoiceName={footer.invoiceName} />
         <Text

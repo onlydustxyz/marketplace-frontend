@@ -1,5 +1,4 @@
 import { Text, View } from "@react-pdf/renderer";
-import { InvoicePreviewResponse } from "actions/billing-profiles/billing-profiles-queries.actions";
 import { Money } from "utils/Money/Money";
 
 import { getFormattedDateGB } from "src/utils/date";
@@ -10,25 +9,6 @@ import { InvoiceTokens } from "components/features/invoice-template/invoice-temp
 import { TInvoice } from "components/features/invoice-template/invoice-template.types";
 import { InvoiceVat } from "components/features/invoice-template/sections/invoice-vat";
 
-function calculateTotalAmounts(
-  rewards: InvoicePreviewResponse["rewards"]
-): { currency: Money.Currency; total: number }[] {
-  const totals = rewards?.reduce((acc, reward) => {
-    const { currency, prettyAmount } = reward.amount;
-    if (acc[currency.id]) {
-      acc[currency.id].amount += prettyAmount;
-    } else {
-      acc[currency.id] = { amount: prettyAmount, currency };
-    }
-    return acc;
-  }, {} as Record<Money.Currency["id"], { amount: number; currency: Money.Currency }>);
-
-  if (totals) {
-    return Object.entries(totals).map(([_, value]) => ({ currency: value.currency, total: value.amount }));
-  }
-
-  return [];
-}
 export function InvoiceSummary({
   isUserIndividual,
   rewards,
@@ -37,8 +17,8 @@ export function InvoiceSummary({
   totalTax,
   totalAfterTax,
   usdToEurConversionRate,
+  totalAfterTaxPerCurrency,
 }: TInvoice.RewardsSummaryProps) {
-  const totalAmounts = calculateTotalAmounts(rewards);
   return (
     <View style={styles.flexRow}>
       <View style={{ ...styles.section, ...styles.flexRow, ...styles.invoiceCenter }}>
@@ -122,9 +102,10 @@ export function InvoiceSummary({
       </View>
       <View style={{ ...styles.flexRow, ...styles.paddingHoriz30P }} wrap={false}>
         <Text style={styles.h4}>{InvoiceTokens.rewardSummary.specialMentions}</Text>
-        {totalAmounts?.map((item, index) => (
+        {totalAfterTaxPerCurrency?.map((item, index) => (
           <Text key={index} style={styles.paragraph}>
-            - {Money.format({ amount: item.total, currency: item.currency }).string}{" "}
+            - {Money.format({ amount: item.amount, currency: item.currency }).string}
+            {vat.vatRegulationState === "VAT_APPLICABLE" ? InvoiceTokens.rewardSummary.includingVat : " "}
             {InvoiceTokens.rewardSummary.itemsReceived}
           </Text>
         ))}

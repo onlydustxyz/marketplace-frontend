@@ -1,9 +1,9 @@
-import { ComponentProps, ReactNode } from "react";
+import { ReactNode } from "react";
 
-import { Badge } from "components/atoms/badge";
-import { Typo } from "components/atoms/typo/variants/typo-default";
+import { BadgePort } from "components/atoms/badge";
+import { TypoPort } from "components/atoms/typo/typo.types";
 
-type classNames = Partial<{
+type ClassNames = Partial<{
   base: string;
   heading: string;
   trigger: string;
@@ -12,22 +12,20 @@ type classNames = Partial<{
 
 export interface AccordionItemProps {
   id: string;
-  titleProps: Partial<ComponentProps<typeof Typo>>;
+  titleProps: Partial<TypoPort<"span">>;
   content: ReactNode;
   startContent?: ReactNode;
   endContent?: ReactNode;
 }
 
 export interface AccordionItemWithBadgeProps extends Omit<AccordionItemProps, "endContent"> {
-  badgeProps?: ComponentProps<typeof Badge>;
+  badgeProps?: BadgePort<"div">;
 }
 
-type SelectionMode = "single" | "multiple";
-
 export interface AccordionPort {
-  classNames?: classNames;
+  classNames?: ClassNames;
   items: AccordionItemProps[];
-  selectionMode?: SelectionMode;
+  multiple?: boolean;
   defaultSelected?: string[];
 }
 

@@ -1,11 +1,13 @@
 import { differenceInDays } from "date-fns";
-import { Suspense, useMemo } from "react";
+import { Suspense, useEffect, useMemo } from "react";
 import { Controller } from "react-hook-form";
 
 import { ApplyIssueCard } from "app/p/[slug]/components/apply-issue-card/apply-issue-card";
 import { ApplyIssueMarkdown } from "app/p/[slug]/components/apply-issue-markdown/apply-issue-markdown";
 import { useApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.hooks";
 import { TApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.types";
+
+import { usePosthog } from "src/hooks/usePosthog";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Tag } from "components/atoms/tag";
@@ -15,15 +17,19 @@ import { Textarea } from "components/atoms/textarea";
 import { Typo } from "components/atoms/typo/variants/typo-default";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
 import { BaseLink } from "components/layout/base-link/base-link";
+import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Drawer } from "components/molecules/drawer";
 
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
+
 export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer.Props) {
   const [isOpen, setIsOpen] = state;
-
+  const { capture } = usePosthog();
+  const { user } = useCurrentUser();
   const {
     project: { data: project },
-    form: { control, handleSubmit },
+    form: { control, handleSubmit, reset, setValue },
     create: { isPending: createIsPending },
     update: { isPending: updateIsPending },
     delete: { isPending: deleteIsPending },
@@ -32,31 +38,29 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
     handleCancel,
   } = useApplyIssueDrawer({ issue, state });
 
+  useEffect(() => {
+    if (isOpen && project) {
+      capture("issue_viewed", {
+        issue_id: issue.id,
+        project_id: project?.id,
+        github_user_id: user?.githubUserId,
+      });
+    }
+  }, [isOpen, project]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      reset();
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    setValue("motivations", issue.currentUserApplication?.motivations ?? "");
+    setValue("problemSolvingApproach", issue.currentUserApplication?.problemSolvingApproach ?? "");
+  }, [issue]);
+
   const header = useMemo(() => {
     const StartContent = (
-      <div className={"flex items-center gap-2"}>
-        <TagAvatar
-          shape={"square"}
-          style={"outline"}
-          color={"grey"}
-          avatar={{ src: issue.author.avatarUrl, shape: "square" }}
-        >
-          {issue.author.login}
-        </TagAvatar>
-        {project ? (
-          <TagAvatar
-            shape={"square"}
-            style={"outline"}
-            color={"grey"}
-            avatar={{ src: project.logoUrl, shape: "square" }}
-          >
-            {project.name}
-          </TagAvatar>
-        ) : null}
-      </div>
-    );
-
-    const EndContent = hasApplied ? (
       <Button
         as={BaseLink}
         htmlProps={{ href: issue.htmlUrl }}
@@ -64,13 +68,12 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
         variant={"secondary-light"}
         size={"l"}
       >
-        <Translate token={"v2.features.projects.applyIssueDrawer.header.seeOnGithub"} />
+        {issue.repository.name}
       </Button>
-    ) : null;
+    );
 
     return {
       startContent: StartContent,
-      endContent: EndContent,
     };
   }, []);
 
@@ -84,7 +87,17 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
       >
         <Translate token={"v2.features.projects.applyIssueDrawer.footer.applied"} />
       </TagIcon>
-    ) : null;
+    ) : (
+      <div className={"flex items-center gap-2"}>
+        <Icon remixName="ri-information-line" size={16} />
+        <Typo
+          size={"xs"}
+          variant={"default"}
+          color={"text-1"}
+          translate={{ token: "v2.features.projects.applyIssueDrawer.footer.visibilityInformation" }}
+        />
+      </div>
+    );
 
     const EndContent = hasApplied ? (
       <div className={"flex items-center gap-2.5"}>

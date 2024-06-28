@@ -1,5 +1,5 @@
 import { Spinner } from "@nextui-org/react";
-import { ElementType } from "react";
+import { ComponentProps, ElementType } from "react";
 
 import { cn } from "src/utils/cn";
 
@@ -9,10 +9,10 @@ import { Show } from "components/layout/components-utils/show/show";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 
-import { TButtonProps } from "./button.types";
-import { ButtonCoreVariants } from "./button.variants";
+import { ButtonPort } from "../../button.types";
+import { ButtonDefaultVariants } from "./default.variants";
 
-export function ButtonCore<C extends ElementType = "button">({
+export function ButtonDefaultAdapter<C extends ElementType = "button">({
   classNames,
   as,
   startIcon,
@@ -25,17 +25,25 @@ export function ButtonCore<C extends ElementType = "button">({
   type = "button",
   htmlProps,
   ...props
-}: TButtonProps<C>) {
+}: ButtonPort<C>) {
   const Component = as || "button";
-  const { isLoading, isDisabled, size, hideText } = props;
-  const slots = ButtonCoreVariants({
+  const { isLoading, isDisabled, size, hideText, canInteract } = props;
+  const slots = ButtonDefaultVariants({
     isLoading,
     isDisabled,
     hideText,
     size,
+    canInteract,
   });
 
   const showChildren = !hideText && (!!children || !!translate);
+
+  const typoSize: Record<NonNullable<typeof size>, ComponentProps<typeof Typo>["size"]> = {
+    s: "xs",
+    m: "s",
+    l: "s",
+    xl: "m",
+  };
 
   return (
     <Component
@@ -54,7 +62,11 @@ export function ButtonCore<C extends ElementType = "button">({
           overrideProps={{ className: cn(slots.startIcon(), classNames?.startIcon, startIcon?.className) }}
         />
         <Show show={showChildren}>
-          <Typo size={"xs"} as={"span"} classNames={{ base: cn(slots.label(), classNames?.label) }}>
+          <Typo
+            size={typoSize[props.size || "m"]}
+            as={"span"}
+            classNames={{ base: cn(slots.label(), classNames?.label) }}
+          >
             {children || <RenderWithProps Component={Translate} props={translate} />}
           </Typo>
         </Show>

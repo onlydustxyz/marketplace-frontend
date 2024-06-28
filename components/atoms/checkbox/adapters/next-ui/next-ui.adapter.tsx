@@ -2,12 +2,12 @@ import { Checkbox as NextUiCheckbox } from "@nextui-org/react";
 
 import { cn } from "src/utils/cn";
 
-import { TCheckboxProps } from "./checkbox.types";
-import { CheckboxCoreVariants } from "./checkbox.variants";
+import { CheckboxPort } from "../../checkbox.types";
+import { CheckboxNextUiVariants } from "./next-ui.variants";
 
-export function CheckboxCore({ classNames, onChange, value, ...props }: TCheckboxProps) {
+export function CheckboxNextUiAdapter({ classNames, onChange, value, ...props }: CheckboxPort) {
   const { color, isDisabled, mixed } = props;
-  const slots = CheckboxCoreVariants({
+  const slots = CheckboxNextUiVariants({
     color,
     isDisabled,
     mixed,
