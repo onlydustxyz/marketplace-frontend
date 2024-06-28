@@ -18,16 +18,7 @@ export const useContributorDetails = ({ githubId, applicationId }: TContributorD
     pathParams: { applicationId },
   });
 
-  const { mutate: deleteApplication } = applicationsApiClient.mutations.useDeleteApplication(
-    {
-      pathParams: {
-        applicationId,
-      },
-    },
-    application?.projectId ?? ""
-  );
-
-  const { mutate: acceptApplication, ...acceptMutation } = applicationsApiClient.mutations.useAcceptApplication(
+  const { mutateAsync: acceptApplication, ...acceptMutation } = applicationsApiClient.mutations.useAcceptApplication(
     {
       pathParams: {
         applicationId,
@@ -52,7 +43,6 @@ export const useContributorDetails = ({ githubId, applicationId }: TContributorD
   return {
     userProfile,
     application,
-    deleteApplication,
     acceptApplication,
     isLoading: userProfileIsLoading || applicationIsLoading,
   };
