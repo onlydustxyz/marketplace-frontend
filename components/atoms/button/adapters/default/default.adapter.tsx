@@ -1,5 +1,5 @@
 import { Spinner } from "@nextui-org/react";
-import { ElementType } from "react";
+import { ComponentProps, ElementType } from "react";
 
 import { cn } from "src/utils/cn";
 
@@ -38,12 +38,12 @@ export function ButtonDefaultAdapter<C extends ElementType = "button">({
 
   const showChildren = !hideText && (!!children || !!translate);
 
-  // TODO USE COMPONENT API VARIANTS
-  const typoSize = {
+  const typoSize: Record<NonNullable<typeof size>, ComponentProps<typeof Typo>["size"]> = {
     s: "xs",
     m: "s",
     l: "s",
-  } as const;
+    xl: "m",
+  };
 
   return (
     <Component

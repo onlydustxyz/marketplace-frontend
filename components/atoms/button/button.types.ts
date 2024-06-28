@@ -4,7 +4,7 @@ import { TIcon } from "components/layout/icon/icon.types";
 import { TTranslate } from "components/layout/translate/translate.types";
 
 interface Variants {
-  size: "s" | "m" | "l";
+  size: "s" | "m" | "l" | "xl";
   isLoading: boolean;
   isDisabled: boolean;
   hideText: boolean;
