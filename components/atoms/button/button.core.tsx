@@ -37,6 +37,13 @@ export function ButtonCore<C extends ElementType = "button">({
 
   const showChildren = !hideText && (!!children || !!translate);
 
+  // TODO USE COMPONENT API VARIANTS
+  const typoSize = {
+    s: "xs",
+    m: "s",
+    l: "s",
+  } as const;
+
   return (
     <Component
       {...(htmlProps || {})}
@@ -54,7 +61,11 @@ export function ButtonCore<C extends ElementType = "button">({
           overrideProps={{ className: cn(slots.startIcon(), classNames?.startIcon, startIcon?.className) }}
         />
         <Show show={showChildren}>
-          <Typo size={"xs"} as={"span"} classNames={{ base: cn(slots.label(), classNames?.label) }}>
+          <Typo
+            size={typoSize[props.size || "m"]}
+            as={"span"}
+            classNames={{ base: cn(slots.label(), classNames?.label) }}
+          >
             {children || <RenderWithProps Component={Translate} props={translate} />}
           </Typo>
         </Show>

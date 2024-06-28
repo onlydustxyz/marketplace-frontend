@@ -26,7 +26,7 @@ export function Slide({ project }: { project: EcosystemProject }) {
           alt={project.name}
           width={192}
           height={120}
-          className="aspect-[8/5] flex w-full rounded-xl border  border-card-border-light object-cover object-center"
+          className="flex w-full rounded-xl border border-card-border-light  object-cover object-center aspect-8/5"
           loading={"lazy"}
         />
 

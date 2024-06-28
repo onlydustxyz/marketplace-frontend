@@ -19,7 +19,8 @@
     "sendAnApplication": "Send an application",
     "applied": "Applied",
     "cancelApplication": "Cancel application",
-    "updateApplication": "Update application"
+    "updateApplication": "Update application",
+    "visibilityInformation": "Your application will be publicly visible on GitHub."
   },
   "toaster": {
     "createSuccess": "Successfully applied",

@@ -37,6 +37,7 @@ export const InvoiceTokens = {
     },
     specialMentions: "Special Mentions",
     itemsReceived: "received and accepted as payment for this invoice",
+    includingVat: " (including 20% VAT) ",
     usdToEurConversionRate: (rate: string | undefined) => `1 USD = ${rate ?? "N/A"} EUR at today's rate`,
     tokenRate: {
       title: "*How is the Token Rate For Each Reward Calculated?",
