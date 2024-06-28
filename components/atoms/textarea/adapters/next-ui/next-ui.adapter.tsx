@@ -3,10 +3,10 @@ import { ForwardedRef, forwardRef } from "react";
 
 import { cn } from "src/utils/cn";
 
-import { TTextareaProps } from "./textarea.types";
-import { TextareaCoreVariants } from "./textarea.variants";
+import { TextareaPort } from "../../textarea.types";
+import { TextareaNextUiVariants } from "./next-ui.variants";
 
-export const TextareaCore = forwardRef(function TextareaCore(
+export const TextareaNextUiAdapter = forwardRef(function TextareaNextUiAdapter(
   {
     id,
     name,
@@ -20,10 +20,10 @@ export const TextareaCore = forwardRef(function TextareaCore(
     isError,
     startContent,
     endContent,
-  }: TTextareaProps,
+  }: TextareaPort,
   ref: ForwardedRef<HTMLTextAreaElement>
 ) {
-  const slots = TextareaCoreVariants({ isDisabled, isError });
+  const slots = TextareaNextUiVariants({ isDisabled, isError });
 
   function handleChange(value: string) {
     onChange?.(value);
