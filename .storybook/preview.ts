@@ -6,6 +6,8 @@ import "src/assets/fonts/Alfreda/stylesheet.css";
 import "src/assets/fonts/Belwe/stylesheet.css";
 import "src/assets/fonts/GTWalsheimPro/stylesheet.css";
 
+import withProviders from "./withProviders";
+
 const preview: Preview = {
   parameters: {
     docs: {
@@ -21,5 +23,7 @@ const preview: Preview = {
     },
   },
 };
+
+export const decorators = [withProviders()];
 
 export default preview;

@@ -1,13 +1,18 @@
-import { ElementType } from "react";
+import { formatInTimeZone } from "date-fns-tz";
+import enGB from "date-fns/locale/en-GB";
+import { ElementType, ReactElement } from "react";
 
 import { cn } from "src/utils/cn";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
+import { Tag } from "components/atoms/tag";
 import { TagIcon } from "components/atoms/tag/variants/tag-icon";
 import { Typo } from "components/atoms/typo/variants/typo-default";
 import { BaseLink } from "components/layout/base-link/base-link";
 import { Icon } from "components/layout/icon/icon";
+import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
+import { Translate } from "components/layout/translate/translate";
 
 import { NEXT_ROUTER } from "constants/router";
 
@@ -15,52 +20,117 @@ import { HackathonCardPort } from "../../hackathon-card.types";
 import { HackathonCardDefaultVariants } from "./default.variants";
 
 export function HackathonCardDefaultAdapter<C extends ElementType = "div">({
-  as,
   htmlProps,
   classNames,
   title,
   slug,
-  backgroundUrl,
+  backgroundImage,
   location,
   startDate,
   status,
   projects,
+  hasLayer,
 }: HackathonCardPort<C>) {
-  const Component = as || "article";
+  const Component = slug ? "a" : "article";
   const slots = HackathonCardDefaultVariants();
+
+  function getStatusTag(): {
+    tagIcon?: RemixIconsName;
+    tagText: string | ReactElement;
+  } {
+    switch (status) {
+      case "closed":
+        return {
+          tagText: <Translate token="v2.features.hackathonCard.status.closed" />,
+        };
+      case "open":
+        return {
+          tagText: <Translate token="v2.features.hackathonCard.status.open" />,
+        };
+      case "live":
+        return {
+          tagIcon: "ri-fire-line",
+          tagText: <Translate token="v2.features.hackathonCard.status.live" />,
+        };
+      default:
+        return {
+          tagText: "",
+        };
+    }
+  }
+
+  function getFormattedDate(): {
+    formattedDate: string;
+    formattedTime: string;
+  } {
+    if (!startDate) {
+      return {
+        formattedDate: "",
+        formattedTime: "",
+      };
+    }
+
+    const timeZone = "Europe/Paris";
+
+    const formattedDate = formatInTimeZone(startDate, timeZone, "MMMM dd, yyyy", { locale: enGB });
+    const formattedTime = formatInTimeZone(startDate, timeZone, "hh:mm aa OOO", { locale: enGB });
+
+    return {
+      formattedDate,
+      formattedTime,
+    };
+  }
+
+  const { tagIcon, tagText } = getStatusTag();
+  const { formattedDate, formattedTime } = getFormattedDate();
 
   return (
     <Paper
       as={Component}
-      htmlProps={htmlProps}
+      htmlProps={{
+        style: {
+          backgroundImage: `url(${backgroundImage.src})`,
+          backgroundSize: "cover",
+          backgroundPositionY: -10, // Required because of the border
+        },
+        href: slug ? NEXT_ROUTER.hackathons.details.root(slug) : undefined,
+        ...htmlProps,
+      }}
       size="l"
-      border="container-stroke-separator"
       classNames={{
         base: cn(slots.base(), classNames?.base),
       }}
     >
-      <div className="flex flex-col gap-6">
-        <div className="flex justify-between gap-4">
-          <div className="flex flex-col gap-1">
-            <Typo variant="default" size="l" weight="medium" color="text-1">
-              Hackathon
-            </Typo>
+      {hasLayer ? <span className="absolute left-0 top-0 z-0 h-full w-full rounded-xl bg-black bg-opacity-60" /> : null}
 
-            <Typo variant="brand" size="5xl" color="text-1">
+      <div className="z-1 relative flex flex-col gap-6">
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex flex-col gap-1">
+            <Typo
+              size="l"
+              weight="medium"
+              translate={{
+                token: "v2.features.hackathonCard.title",
+              }}
+            />
+
+            <Typo variant="brand" size="5xl">
               {title}
             </Typo>
           </div>
 
           {status ? (
-            <TagIcon
-              color="blue"
-              style="outline"
-              size="m"
-              shape="round"
-              icon={{ remixName: "ri-fire-line", className: "text-text-1" }}
-            >
-              {status}
-            </TagIcon>
+            <>
+              {tagIcon ? (
+                <TagIcon color="blue" style="outline" icon={{ remixName: tagIcon }}>
+                  {tagText}
+                </TagIcon>
+              ) : (
+                <Tag color="blue" style="outline">
+                  {tagText}
+                </Tag>
+              )}
+            </>
           ) : null}
         </div>
 
@@ -68,11 +138,17 @@ export function HackathonCardDefaultAdapter<C extends ElementType = "div">({
           <div className="flex flex-col gap-2">
             {location ? (
               <div className="flex items-center gap-2">
-                <Paper size="s" border="container-stroke-separator">
-                  <Icon remixName="ri-map-pin-line" className="text-text-1" />
+                <Paper
+                  size="s"
+                  as="div"
+                  classNames={{
+                    base: "inline-flex",
+                  }}
+                >
+                  <Icon remixName="ri-map-pin-line" />
                 </Paper>
 
-                <Typo variant="default" size="s" weight="medium" color="text-1">
+                <Typo size="s" weight="medium">
                   {location}
                 </Typo>
               </div>
@@ -80,17 +156,23 @@ export function HackathonCardDefaultAdapter<C extends ElementType = "div">({
 
             {startDate ? (
               <div className="flex items-center gap-2">
-                <Paper size="s" border="container-stroke-separator">
-                  <Icon remixName="ri-calendar-2-line" className="text-text-1" />
+                <Paper
+                  size="s"
+                  as="div"
+                  classNames={{
+                    base: "inline-flex",
+                  }}
+                >
+                  <Icon remixName="ri-calendar-2-line" />
                 </Paper>
 
                 <div className="flex flex-col">
-                  <Typo variant="default" size="s" weight="medium" color="text-1">
-                    {location}
+                  <Typo size="s" weight="medium">
+                    {formattedDate}
                   </Typo>
 
-                  <Typo variant="default" size="xxs" weight="regular" color="text-2">
-                    {location}
+                  <Typo size="xxs" color="text-2">
+                    {formattedTime}
                   </Typo>
                 </div>
               </div>
@@ -100,18 +182,19 @@ export function HackathonCardDefaultAdapter<C extends ElementType = "div">({
           <div>Projects</div>
         </div>
 
-        <BaseLink href={NEXT_ROUTER.hackathons.details.root(slug)}>
-          <Button
-            variant={status === "closed" ? "secondary-light" : "primary"}
-            size="l"
-            endIcon={{
-              remixName: "ri-arrow-right-line",
-              className: "text-text-1",
-            }}
-          >
-            Explore
-          </Button>
-        </BaseLink>
+        {slug ? (
+          <BaseLink href={NEXT_ROUTER.hackathons.details.root(slug)}>
+            <Button
+              variant={status === "closed" ? "secondary-light" : "primary"}
+              size="l"
+              endIcon={{
+                remixName: "ri-arrow-right-line",
+              }}
+            >
+              <Translate token="v2.features.hackathonCard.button" />
+            </Button>
+          </BaseLink>
+        ) : null}
       </div>
     </Paper>
   );

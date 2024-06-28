@@ -1,0 +1,9 @@
+{
+  "title": "Hackathon",
+  "status": {
+    "live": "Live now",
+    "open": "Application open",
+    "closed": "Closed"
+  },
+  "button": "Explore"
+}
