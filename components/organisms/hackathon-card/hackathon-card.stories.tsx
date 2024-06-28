@@ -4,8 +4,6 @@ import backgroundImage from "public/images/hackathons/cover-1.webp";
 import { HackathonCardPort } from "./hackathon-card.types";
 import { HackathonCard } from "./variants/hackathon-card-default";
 
-// Remplace par le chemin réel de ton image
-
 type Story = StoryObj<typeof HackathonCard>;
 
 const defaultPort: HackathonCardPort<"div"> = {
