@@ -1,9 +1,6 @@
 import { tv } from "tailwind-variants";
 
-import { ModalCoreVariants } from "../../modal.variants";
-
 export const ModalNextUiVariants = tv({
-  extend: ModalCoreVariants,
   slots: {
     modal: "group max-w-[500px] rounded-xl p-0",
     body: "p-4",
