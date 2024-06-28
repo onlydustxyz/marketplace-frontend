@@ -22,6 +22,14 @@ const config: Config = withTV({
       fontSize: {
         xss: ["11px", "16px"],
       },
+      aspectRatio: {
+        "2.16/1": "2.16 / 1",
+        "3.41/1": "3.41 / 1",
+        "302/59": "302 / 59",
+        "0.89/1": "0.89 / 1",
+        "8/5": "8 / 5",
+        "16/9": "16 / 9",
+      },
       colors: {
         /** CONTAINER */
         "container-1": "var(--container-1)",
