@@ -5,27 +5,20 @@ import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
 import { Typo } from "components/atoms/typo/variants/typo-default";
 import { TPublicRepoScopePermissionModal } from "components/features/grant-permission/components/public-repo-scope-permission-modal/public-repo-scope-permission-modal.types";
-import { usePublicRepoScope } from "components/features/grant-permission/hooks/use-public-repo-scope";
 import { Icon } from "components/layout/icon/icon";
 import { Modal } from "components/molecules/modal";
 
-export function PublicRepoScopePermissionModal({
+export function ReadWriteIssuePermissionModal({
   isOpen,
   handleClose,
   handleMoreInfoOpen,
   handleOpenDrawer,
 }: TPublicRepoScopePermissionModal.Props) {
-  const { handleVerifyPermissions } = usePublicRepoScope({
-    onSuccessCallback: () => {
-      handleClose();
-      handleOpenDrawer();
-    },
-  });
-
+  function handleRedirectToGithubFlow() {}
   return (
     <Modal
       titleProps={{
-        translate: { token: "v2.features.githubPermissions.publicRepoScope.modals.permissions.title" },
+        translate: { token: "v2.features.githubPermissions.readWriteIssue.modals.permissions.title" },
       }}
       isOpen={isOpen}
       onOpenChange={isModalOpen => (!isModalOpen ? handleClose() : null)}
@@ -37,17 +30,16 @@ export function PublicRepoScopePermissionModal({
               size="l"
               onClick={handleMoreInfoOpen}
               translate={{
-                token: "v2.features.githubPermissions.publicRepoScope.modals.permissions.footerButtons.moreInfo",
+                token: "v2.features.githubPermissions.readWriteIssue.modals.permissions.footerButtons.moreInfo",
               }}
             />
             <Button
               variant="primary"
               startContent={<Icon remixName="ri-github-line" />}
               size="l"
-              onClick={handleVerifyPermissions}
+              onClick={handleRedirectToGithubFlow}
               translate={{
-                token:
-                  "v2.features.githubPermissions.publicRepoScope.modals.permissions.footerButtons.grantPermissions",
+                token: "v2.features.githubPermissions.readWriteIssue.modals.permissions.footerButtons.grantPermissions",
               }}
             />
           </div>
@@ -68,7 +60,7 @@ export function PublicRepoScopePermissionModal({
             variant="default"
             size="s"
             translate={{
-              token: "v2.features.githubPermissions.publicRepoScope.modals.permissions.description",
+              token: "v2.features.githubPermissions.readWriteIssue.modals.permissions.description",
             }}
           />
         </div>
@@ -77,7 +69,7 @@ export function PublicRepoScopePermissionModal({
             variant="default"
             size="xs"
             translate={{
-              token: "v2.features.githubPermissions.publicRepoScope.modals.permissions.claims.write",
+              token: "v2.features.githubPermissions.readWriteIssue.modals.permissions.claims.write",
             }}
           />
         </Paper>

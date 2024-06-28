@@ -1,7 +1,9 @@
 "use client";
 
 import { withAuthenticationRequired } from "@auth0/auth0-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+
+import { cn } from "src/utils/cn";
 
 import { withLeadRequired } from "components/features/auth0/guards/lead-guard";
 import { Flex } from "components/layout/flex/flex";
@@ -9,14 +11,18 @@ import { Flex } from "components/layout/flex/flex";
 import { ContributionHeader } from "./features/contribution-header/contribution-header";
 import { ContributorDetails } from "./features/contributor-details/contributor-details";
 import { ContributorSelect } from "./features/contributor-select/contributor-select";
-import { UseApplications } from "./hooks/use-applications/use-applications";
+import { useApplications } from "./hooks/use-applications/use-applications";
 
 function ContributionPage() {
   const [search, setSearch] = useState<string>("");
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
   const [selectedApplication, setSelectedApplication] = useState<string | null>(null);
 
-  const { newComers, projectMembers, title } = UseApplications({ search });
+  const { newComers, projectMembers, title, permissions } = useApplications({ search });
+
+  const canInteract = useMemo(() => {
+    return permissions.githubAppInstallationStatus === "COMPLETE";
+  }, [permissions.githubAppInstallationStatus]);
 
   const handleSelectUser = (githubId: number, applicationId: string) => {
     setSelectedUser(githubId);
@@ -36,7 +42,7 @@ function ContributionPage() {
     <Flex direction="col" className="gap-6">
       <ContributionHeader title={title} />
 
-      <Flex className="flex-col gap-6 lg:flex-row">
+      <Flex className={cn("flex-col gap-6 lg:flex-row", { "pointer-events-none blur-sm": !canInteract })}>
         <ContributorSelect
           search={search}
           setSearch={setSearch}
