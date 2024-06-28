@@ -27,12 +27,13 @@ export function ButtonCore<C extends ElementType = "button">({
   ...props
 }: TButtonProps<C>) {
   const Component = as || "button";
-  const { isLoading, isDisabled, size, hideText } = props;
+  const { isLoading, isDisabled, size, hideText, canInteract } = props;
   const slots = ButtonCoreVariants({
     isLoading,
     isDisabled,
     hideText,
     size,
+    canInteract,
   });
 
   const showChildren = !hideText && (!!children || !!translate);

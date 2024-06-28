@@ -1,8 +1,10 @@
 import { ElementType } from "react";
 
-import { PaginationCore } from "../pagination.core";
-import { TPaginationProps } from "../pagination.types";
+import { withComponentAdapter } from "components/hocs/with-component-adapter";
+import { PaginationDefaultAdapter } from "components/molecules/pagination/adapters/default/default.adapter";
 
-export function Pagination<C extends ElementType = "div">({ ...props }: TPaginationProps<C>) {
-  return <PaginationCore {...props} classNames={{}} />;
+import { PaginationPort } from "../pagination.types";
+
+export function Pagination<C extends ElementType = "div">(props: PaginationPort<C>) {
+  return withComponentAdapter<PaginationPort<C>>(PaginationDefaultAdapter)(props);
 }

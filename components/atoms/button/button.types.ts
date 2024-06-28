@@ -20,4 +20,5 @@ export interface TButtonProps<C extends ElementType> extends Variants, PropsWith
   endContent?: ReactNode;
   onClick?: () => void;
   type?: HTMLButtonElement["type"];
+  canInteract?: boolean;
 }
