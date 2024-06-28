@@ -1,19 +1,14 @@
 import { applicationsApiClient } from "api-client/resources/applications";
 import { usersApiClient } from "api-client/resources/users";
-import { useParams, useRouter } from "next/navigation";
 
 import { TContributorDetails } from "app/p/[slug]/contributions/[contributionId]/features/contributor-details/contributor-details.types";
 
 import useMutationAlert from "src/api/useMutationAlert";
 
-import { NEXT_ROUTER } from "constants/router";
-
 import { useIntl } from "hooks/translate/use-translate";
 
 export const useContributorDetails = ({ githubId, applicationId }: TContributorDetails.Props) => {
   const { T } = useIntl();
-  const router = useRouter();
-  const { slug = "" } = useParams<{ slug?: string }>();
   const { data: userProfile, isLoading: userProfileIsLoading } =
     usersApiClient.queries.useGetUserPublicProfileByGithubId({
       pathParams: { githubId },
@@ -23,13 +18,10 @@ export const useContributorDetails = ({ githubId, applicationId }: TContributorD
     pathParams: { applicationId },
   });
 
-  const { mutate: acceptApplication, ...acceptMutation } = applicationsApiClient.mutations.useAcceptApplication(
+  const { mutateAsync: acceptApplication, ...acceptMutation } = applicationsApiClient.mutations.useAcceptApplication(
     {
       pathParams: {
         applicationId,
-      },
-      onSuccess: () => {
-        router.push(NEXT_ROUTER.projects.details.root(slug));
       },
     },
     application?.projectId ?? ""

@@ -1,3 +1,5 @@
+import { useParams, useRouter } from "next/navigation";
+
 import { useContributorDetails } from "app/p/[slug]/contributions/[contributionId]/features/contributor-details/contributor-details.hooks";
 
 import { Button } from "components/atoms/button/variants/button-default";
@@ -8,6 +10,8 @@ import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
+import { NEXT_ROUTER } from "constants/router";
+
 import { Activity } from "./components/activity/activity";
 import { MostActiveEcosystems } from "./components/most-active-ecosystems/most-active-ecosystems";
 import { MostActiveLanguages } from "./components/most-active-languages/most-active-languages";
@@ -16,10 +20,18 @@ import { ContributorDetailsLoading } from "./contributor-details.loading";
 import { TContributorDetails } from "./contributor-details.types";
 
 export function ContributorDetails({ githubId, applicationId }: TContributorDetails.Props) {
+  const router = useRouter();
+  const { slug = "" } = useParams<{ slug?: string }>();
+
   const { userProfile, acceptApplication, application, isLoading } = useContributorDetails({
     githubId,
     applicationId,
   });
+
+  async function handleAcceptApplication() {
+    await acceptApplication({});
+    router.push(NEXT_ROUTER.projects.details.root(slug));
+  }
 
   if (isLoading) {
     return <ContributorDetailsLoading />;
@@ -75,7 +87,7 @@ export function ContributorDetails({ githubId, applicationId }: TContributorDeta
             variant="primary"
             size="m"
             translate={{ token: "v2.pages.project.details.applicationDetails.profile.buttons.assign" }}
-            onClick={() => acceptApplication({})}
+            onClick={handleAcceptApplication}
           />
         </div>
       </Card>
