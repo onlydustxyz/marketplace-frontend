@@ -1,8 +1,10 @@
 import { ElementType } from "react";
 
-import { TypoCore } from "../typo.core";
-import { TTypoProps } from "../typo.types";
+import { TypoDefaultAdapter } from "components/atoms/typo/adapters/default/default.adapter";
+import { withComponentAdapter } from "components/hocs/with-component-adapter";
 
-export function Typo<C extends ElementType = "span">(props: TTypoProps<C>) {
-  return <TypoCore {...props} />;
+import { TypoPort } from "../typo.types";
+
+export function Typo<C extends ElementType = "span">(props: TypoPort<C>) {
+  return withComponentAdapter<TypoPort<C>>(TypoDefaultAdapter)(props);
 }

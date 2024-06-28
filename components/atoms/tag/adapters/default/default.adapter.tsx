@@ -8,10 +8,10 @@ import { Show } from "components/layout/components-utils/show/show";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 
-import { TTagProps } from "./tag.types";
-import { TagCoreVariants } from "./tag.variants";
+import { TagPort } from "../../tag.types";
+import { TagDefaultVariants } from "./default.variants";
 
-export function TagCore<C extends ElementType = "span">({
+export function TagDefaultAdapter<C extends ElementType = "span">({
   classNames,
   startContent,
   as,
@@ -22,10 +22,10 @@ export function TagCore<C extends ElementType = "span">({
   labelProps = {},
   deletableIconProps = {},
   ...props
-}: TTagProps<C>) {
+}: TagPort<C>) {
   const { isDeletable, hideText = false, shape, size, color, style } = props;
   const Component = as || isDeletable ? "button" : "span";
-  const slots = TagCoreVariants({ isDeletable, hideText, shape, size, color, style });
+  const slots = TagDefaultVariants({ isDeletable, hideText, shape, size, color, style });
 
   const showChildren = !hideText && (!!children || !!translate);
 
@@ -33,12 +33,15 @@ export function TagCore<C extends ElementType = "span">({
     <Component {...htmlProps} className={cn(slots.base(), classNames?.base)}>
       <div className={cn(slots.content(), classNames?.content)}>
         {startContent}
+
         <Show show={showChildren}>
           <Typo size={"xs"} as={"span"} {...labelProps} classNames={{ base: cn(slots.label(), classNames?.label) }}>
             {children || <RenderWithProps Component={Translate} props={translate} />}
           </Typo>
         </Show>
+
         {endContent}
+
         <Show show={!!isDeletable}>
           <Icon
             remixName="ri-close-circle-line"

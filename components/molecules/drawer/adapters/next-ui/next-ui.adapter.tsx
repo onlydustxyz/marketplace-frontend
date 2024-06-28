@@ -56,7 +56,7 @@ export function DrawerNextUiAdapter<C extends ElementType = "div">({
       hideCloseButton={true}
       portalContainer={(document.getElementById("modal-root") as HTMLElement) || undefined}
       classNames={{
-        base: cn(slots.base(), classNames?.container),
+        base: cn(slots.base(), classNames?.base),
         body: cn(slots.body(), classNames?.body),
         footer: cn(slots.footer(), classNames?.footer),
         header: cn(slots.header(), classNames?.header),

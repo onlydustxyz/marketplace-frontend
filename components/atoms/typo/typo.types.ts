@@ -1,16 +1,21 @@
 import { ComponentPropsWithoutRef, ElementType, PropsWithChildren } from "react";
-import { VariantProps } from "tailwind-variants";
 
 import { TTranslate } from "components/layout/translate/translate.types";
 
-import { TypoCoreVariants } from "./typo.variants";
+interface Variants {
+  weight: "regular" | "medium";
+  variant: "default" | "brand";
+  size: "xxs" | "xs" | "s" | "m" | "l" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "6xl";
+  color: "text-1" | "text-2" | "text-3" | "text-4";
+}
 
-type Variants = VariantProps<typeof TypoCoreVariants>;
-type classNames = Partial<typeof TypoCoreVariants["slots"]>;
+interface ClassNames {
+  base: string;
+}
 
-export interface TTypoProps<C extends ElementType> extends Variants, PropsWithChildren {
-  htmlProps?: ComponentPropsWithoutRef<C>;
-  classNames?: classNames;
+export interface TypoPort<C extends ElementType> extends Partial<Variants>, PropsWithChildren {
   as?: C;
+  htmlProps?: ComponentPropsWithoutRef<C>;
+  classNames?: Partial<ClassNames>;
   translate?: TTranslate.Props;
 }

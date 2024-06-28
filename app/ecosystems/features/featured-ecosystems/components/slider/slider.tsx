@@ -78,14 +78,14 @@ export function Slider({ children }: TSlider.Props) {
     >
       {!loaded && (
         <div
-          className={cn("aspect-[2.16/1] sm:aspect-[3.41/1] pointer-events-none absolute left-0 top-0 w-full p-1.5", {
+          className={cn("pointer-events-none absolute left-0 top-0 w-full p-1.5 aspect-2.16/1 sm:aspect-3.41/1", {
             "opacity-0": loaded,
           })}
         >
           <SkeletonEl
             width="100%"
             height="auto"
-            className="aspect-[2.16/1] sm:aspect-[3.41/1] min-h-[30vh]"
+            className="min-h-[30vh] aspect-2.16/1 sm:aspect-3.41/1"
             variant="rounded"
           />
         </div>
@@ -94,7 +94,7 @@ export function Slider({ children }: TSlider.Props) {
       <div
         ref={sliderRef}
         className={cn(
-          "keen-slider aspect-[2.16/1] sm:aspect-[3.41/1] !overflow-visible transition-all sm:!overflow-hidden sm:rounded-[32px] sm:outline sm:outline-[6px] sm:outline-card-border-medium",
+          "keen-slider !overflow-visible transition-all aspect-2.16/1 sm:!overflow-hidden sm:rounded-[32px] sm:outline sm:outline-[6px] sm:outline-card-border-medium sm:aspect-3.41/1",
           { "pointer-events-none opacity-0": !loaded }
         )}
       >

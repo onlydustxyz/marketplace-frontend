@@ -1,17 +1,24 @@
 import { ReactNode } from "react";
-import { VariantProps } from "tailwind-variants";
 
-import { AvatarCoreVariants } from "./avatar.variants";
+interface Variants {
+  size: "xs" | "s" | "m" | "ml" | "l" | "xl" | "xxl";
+  shape: "round" | "square";
+  container: "light" | "brand";
+}
 
-type Variants = VariantProps<typeof AvatarCoreVariants>;
-type classNames = Partial<typeof AvatarCoreVariants["slots"]>;
+interface ClassNames {
+  base: string;
+  img: string;
+  fallback: string;
+  name: string;
+}
 
-export interface AvatarPort extends Variants {
+export interface AvatarPort extends Partial<Variants> {
   /**
    * Classname to change the classNames of the element. if className is passed, it will be added to the base slot.
    * @default undefined
    */
-  classNames?: classNames;
+  classNames?: Partial<ClassNames>;
   /**
    * the source of the image
    * @default undefined

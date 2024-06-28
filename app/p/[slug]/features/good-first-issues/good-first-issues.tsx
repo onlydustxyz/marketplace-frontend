@@ -14,7 +14,6 @@ import { EmptyState } from "./components/empty-state/empty-state";
 import { IssueCard } from "./components/issue-card/issue-card";
 import { TGoodFirstIssues } from "./good-first-issues.types";
 
-// TODO: Refacto ShowMore
 export function GoodFirstIssues({ projectId, organizations, isProjectLeader }: TGoodFirstIssues.Props) {
   const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } =
     ProjectApi.queries.useProjectGoodFirstIssuesInfiniteList({
@@ -24,6 +23,7 @@ export function GoodFirstIssues({ projectId, organizations, isProjectLeader }: T
   const issues = useMemo(() => {
     return data?.pages?.flatMap(data => data.issues);
   }, [data]);
+
   const totalIssues = data?.pages[0]?.totalItemNumber;
 
   function renderContent() {

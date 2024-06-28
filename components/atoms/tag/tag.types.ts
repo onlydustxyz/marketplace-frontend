@@ -1,32 +1,42 @@
 import { ComponentProps, ComponentPropsWithoutRef, ElementType, PropsWithChildren, ReactNode } from "react";
-import { VariantProps } from "tailwind-variants";
 
-import { Avatar } from "components/atoms/avatar";
-import { Typo } from "components/atoms/typo/variants/typo-default";
+import { AvatarPort } from "components/atoms/avatar";
+import { TypoPort } from "components/atoms/typo";
 import { Icon } from "components/layout/icon/icon";
 import { TIcon } from "components/layout/icon/icon.types";
 import { TTranslate } from "components/layout/translate/translate.types";
 
-import { TagCoreVariants } from "./tag.variants";
+interface Variants {
+  size: "xs" | "s" | "m";
+  shape: "round" | "square";
+  hideText: boolean;
+  style: "fill" | "outline";
+  isDeletable: boolean;
+  color: "black" | "white" | "red" | "pink" | "grey" | "green" | "yellow" | "orange" | "purple" | "blue";
+}
 
-type Variants = VariantProps<typeof TagCoreVariants>;
-type classNames = Partial<typeof TagCoreVariants["slots"]>;
+interface ClassNames {
+  base: string;
+  content: string;
+  label: string;
+  deletableIcon: string;
+}
 
-export interface TTagProps<C extends ElementType> extends Variants, PropsWithChildren {
-  htmlProps?: ComponentPropsWithoutRef<C>;
-  classNames?: classNames;
-  translate?: TTranslate.Props;
+export interface TagPort<C extends ElementType> extends Partial<Variants>, PropsWithChildren {
   as?: C;
+  htmlProps?: ComponentPropsWithoutRef<C>;
+  classNames?: Partial<ClassNames>;
+  translate?: TTranslate.Props;
   startContent?: ReactNode;
   endContent?: ReactNode;
-  labelProps?: Partial<ComponentProps<typeof Typo>>;
+  labelProps?: Partial<TypoPort<"span">>;
   deletableIconProps?: Partial<ComponentProps<typeof Icon>>;
 }
 
-export interface TTagIconProps<C extends ElementType> extends TTagProps<C> {
+export interface TagIconPort<C extends ElementType> extends TagPort<C> {
   icon: TIcon.Props;
 }
 
-export interface TTagAvatarProps<C extends ElementType> extends TTagProps<C> {
-  avatar: ComponentProps<typeof Avatar>;
+export interface TagAvatarPort<C extends ElementType> extends TagPort<C> {
+  avatar: AvatarPort;
 }

@@ -13,12 +13,9 @@ import { useIntl } from "hooks/translate/use-translate";
 
 export function MoreInfoModal({ isOpen, handleClose, handleBack, handleOpenDrawer }: TMoreInfoModal.Props) {
   const { T } = useIntl();
-  const { handleAddPublicRepoScope } = usePublicRepoScope({
-    onCreateSuccess: () => {
+  const { handleVerifyPermissions } = usePublicRepoScope({
+    onSuccessCallback: () => {
       handleClose();
-      handleOpenDrawer();
-    },
-    onUpdateSuccess: () => {
       handleOpenDrawer();
     },
   });
@@ -33,29 +30,23 @@ export function MoreInfoModal({ isOpen, handleClose, handleBack, handleOpenDrawe
       footer={{
         endContent: (
           <div className="flex gap-4">
-            <Button variant="secondary-light" size="l" onClick={handleBack}>
-              <Typo
-                variant="default"
-                size="xs"
-                translate={{
-                  token: "v2.features.githubGrantPermissions.modals.moreInfos.footerButtons.back",
-                }}
-              />
-            </Button>
+            <Button
+              variant="secondary-light"
+              size="l"
+              onClick={handleBack}
+              translate={{
+                token: "v2.features.githubGrantPermissions.modals.moreInfos.footerButtons.back",
+              }}
+            />
             <Button
               variant="primary"
               startContent={<Icon remixName="ri-github-line" />}
               size="l"
-              onClick={handleAddPublicRepoScope}
-            >
-              <Typo
-                variant="default"
-                size="xs"
-                translate={{
-                  token: "v2.features.githubGrantPermissions.modals.permissions.footerButtons.grantPermissions",
-                }}
-              />
-            </Button>
+              onClick={handleVerifyPermissions}
+              translate={{
+                token: "v2.features.githubGrantPermissions.modals.permissions.footerButtons.grantPermissions",
+              }}
+            />
           </div>
         ),
       }}
@@ -64,7 +55,7 @@ export function MoreInfoModal({ isOpen, handleClose, handleBack, handleOpenDrawe
         <div className="flex flex-col gap-4">
           <Typo
             variant="default"
-            size="l"
+            size="s"
             translate={{
               token: "v2.features.githubGrantPermissions.modals.moreInfos.description",
             }}

@@ -1,7 +1,6 @@
 import { tv } from "tailwind-variants";
 
-export const TypoCoreVariants = tv({
-  base: "",
+export const TypoDefaultVariants = tv({
   slots: {
     base: "text-text-1",
   },

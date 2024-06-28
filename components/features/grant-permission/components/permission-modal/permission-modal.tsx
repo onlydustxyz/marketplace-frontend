@@ -7,16 +7,12 @@ import { Typo } from "components/atoms/typo/variants/typo-default";
 import { TPermissionModal } from "components/features/grant-permission/components/permission-modal/permission-modal.types";
 import { usePublicRepoScope } from "components/features/grant-permission/hooks/use-public-repo-scope";
 import { Icon } from "components/layout/icon/icon";
-import { Translate } from "components/layout/translate/translate";
 import { Modal } from "components/molecules/modal";
 
 export function PermissionModal({ isOpen, handleClose, handleMoreInfoOpen, handleOpenDrawer }: TPermissionModal.Props) {
-  const { handleAddPublicRepoScope } = usePublicRepoScope({
-    onCreateSuccess: () => {
+  const { handleVerifyPermissions } = usePublicRepoScope({
+    onSuccessCallback: () => {
       handleClose();
-      handleOpenDrawer();
-    },
-    onUpdateSuccess: () => {
       handleOpenDrawer();
     },
   });
@@ -31,23 +27,23 @@ export function PermissionModal({ isOpen, handleClose, handleMoreInfoOpen, handl
       footer={{
         endContent: (
           <div className="flex gap-4">
-            <Button variant="secondary-light" size="l" onClick={handleMoreInfoOpen}>
-              <Translate token="v2.features.githubGrantPermissions.modals.permissions.footerButtons.moreInfo" />
-            </Button>
+            <Button
+              variant="secondary-light"
+              size="l"
+              onClick={handleMoreInfoOpen}
+              translate={{
+                token: "v2.features.githubGrantPermissions.modals.permissions.footerButtons.moreInfo",
+              }}
+            />
             <Button
               variant="primary"
               startContent={<Icon remixName="ri-github-line" />}
               size="l"
-              onClick={handleAddPublicRepoScope}
-            >
-              <Typo
-                variant="default"
-                size="xs"
-                translate={{
-                  token: "v2.features.githubGrantPermissions.modals.permissions.footerButtons.grantPermissions",
-                }}
-              />
-            </Button>
+              onClick={handleVerifyPermissions}
+              translate={{
+                token: "v2.features.githubGrantPermissions.modals.permissions.footerButtons.grantPermissions",
+              }}
+            />
           </div>
         ),
       }}
@@ -64,20 +60,13 @@ export function PermissionModal({ isOpen, handleClose, handleMoreInfoOpen, handl
         <div className="flex flex-col">
           <Typo
             variant="default"
-            size="xs"
+            size="s"
             translate={{
               token: "v2.features.githubGrantPermissions.modals.permissions.description",
             }}
           />
-          <Typo
-            variant="default"
-            size="xs"
-            translate={{
-              token: "v2.features.githubGrantPermissions.modals.permissions.specialMention",
-            }}
-          />
         </div>
-        <Paper container="3">
+        <Paper container="3" border="none">
           <Typo
             variant="default"
             size="xs"
