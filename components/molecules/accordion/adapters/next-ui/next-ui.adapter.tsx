@@ -8,13 +8,13 @@ import { Icon } from "components/layout/icon/icon";
 import { AccordionPort } from "../../accordion.types";
 import { AccordionNextUiVariants } from "./next-ui.variants";
 
-export function AccordionNextUiAdapter({ classNames, items, canOpenMultiple = false, defaultSelected }: AccordionPort) {
+export function AccordionNextUiAdapter({ classNames, items, multiple = false, defaultSelected }: AccordionPort) {
   const slots = AccordionNextUiVariants();
 
   return (
     <Accordion
       className={cn(slots.base(), classNames?.base)}
-      selectionMode={canOpenMultiple ? "multiple" : "single"}
+      selectionMode={multiple ? "multiple" : "single"}
       showDivider={false}
       defaultSelectedKeys={defaultSelected}
     >

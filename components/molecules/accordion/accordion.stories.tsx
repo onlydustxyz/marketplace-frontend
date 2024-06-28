@@ -136,13 +136,13 @@ export const DefaultSelected: Story = {
 export const Multiple: Story = {
   parameters: {
     docs: {
-      source: { code: "<Accordion canOpenMultiple />" },
+      source: { code: "<Accordion multiple />" },
     },
   },
   render: args => {
     return (
       <div className="flex w-full items-center gap-2">
-        <Accordion {...defaultPort} {...args} canOpenMultiple />
+        <Accordion {...defaultPort} {...args} multiple />
       </div>
     );
   },

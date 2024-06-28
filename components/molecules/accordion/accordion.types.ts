@@ -25,7 +25,7 @@ export interface AccordionItemWithBadgeProps extends Omit<AccordionItemProps, "e
 export interface AccordionPort {
   classNames?: ClassNames;
   items: AccordionItemProps[];
-  canOpenMultiple?: boolean;
+  multiple?: boolean;
   defaultSelected?: string[];
 }
 
