@@ -32,13 +32,11 @@ function ContributionPage() {
     }
   }, [newComers.applications, projectMembers.applications]);
 
-  console.log("REFECT 01");
-
   return (
     <Flex direction="col" className="gap-6">
       <ContributionHeader title={title} />
 
-      <Flex className="gap-6">
+      <Flex className="flex-col gap-6 lg:flex-row">
         <ContributorSelect
           search={search}
           setSearch={setSearch}

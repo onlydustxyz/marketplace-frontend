@@ -74,7 +74,7 @@ export function ContributorSelect({
             },
           }
         : null,
-    ].filter(item => item !== null);
+    ].filter(item => item !== null) as AccordionItemWithBadgeProps[];
   }, [newComers.applications, projectMembers.applications]);
 
   function handleSearch(value: string) {
@@ -108,7 +108,7 @@ export function ContributorSelect({
   }
 
   return (
-    <div className="h-full min-w-[320px] max-w-[320px]">
+    <div className="h-full w-full lg:min-w-[320px] lg:max-w-[320px]">
       <Card background="base" hasPadding={false} border={false} className="rounded-lg">
         <Flex direction="col" className="gap-4 p-3">
           <Input
