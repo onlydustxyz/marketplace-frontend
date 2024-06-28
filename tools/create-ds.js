@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
+const i = require("@inquirer/prompts");
 const fs = require("fs/promises");
 const prettier = require("prettier");
 const { COLORS, kebabToPascal, kebabToCamel, defaultPromptName } = require("./global");
 const { exec } = require("node:child_process");
 
-// TODO: Add core component option
 async function createCoreComponent({ name, path, PascalName }) {
   await fs.appendFile(
     `${path}/${name}.core.tsx`,
@@ -66,7 +66,7 @@ async function createAdapter({ name, path, PascalName }) {
         import { ${PascalName}Port } from "../../${name}.types";
         import { ${PascalName}DefaultVariants } from "./default.variants";
 
-        export function ${PascalName}DefaultAdapter<C extends ElementType = "div">({classNames, as, ...props}: ${PascalName}Port<C>) {
+        export function ${PascalName}DefaultAdapter<C extends ElementType = "div">({as, classNames, ...props}: ${PascalName}Port<C>) {
           const Component = as || "div";
           const { ...htmlProps } = props;
           const slots = ${PascalName}DefaultVariants();
@@ -144,7 +144,6 @@ async function createIndex({ name, path }) {
         export * from "./variants/${name}-default";
         export * from "./${name}.types";
         export * from "./${name}.loading";
-        export * from "./${name}.variants";
   `,
       { parser: "typescript" }
     )
@@ -209,7 +208,6 @@ async function createStories({ name, path, PascalName }) {
 }
 
 async function createFiles(informations) {
-  await createCoreComponent(informations);
   await createVariants(informations);
   await createTypes(informations);
   await createLoading(informations);
@@ -217,6 +215,10 @@ async function createFiles(informations) {
   await createIndex(informations);
   await createAdapter(informations);
   await exec(`eslint '${informations.path}/*.{js,jsx,json,ts,tsx}' --max-warnings=0 --fix`);
+
+  if (informations.withCore) {
+    await createCoreComponent(informations);
+  }
 }
 
 async function promptName() {
@@ -231,6 +233,8 @@ async function promptName() {
 async function createMainComponent() {
   const { folder, name, path } = await promptName();
 
+  const withCore = await i.confirm({ message: "Do you want core?" });
+
   await fs.mkdir(path);
 
   await createFiles({
@@ -239,6 +243,7 @@ async function createMainComponent() {
     path,
     PascalName: kebabToPascal(name),
     camelName: kebabToCamel(name),
+    withCore,
   });
 
   console.log(`\n${COLORS.GREEN}✅ Component created${COLORS.NC}`);
