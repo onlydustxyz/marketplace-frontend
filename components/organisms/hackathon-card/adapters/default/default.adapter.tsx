@@ -13,6 +13,7 @@ import { BaseLink } from "components/layout/base-link/base-link";
 import { Icon } from "components/layout/icon/icon";
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { Translate } from "components/layout/translate/translate";
+import { AvatarGroup } from "components/molecules/avatar-group";
 
 import { NEXT_ROUTER } from "constants/router";
 
@@ -41,16 +42,18 @@ export function HackathonCardDefaultAdapter<C extends ElementType = "div">({
     switch (status) {
       case "closed":
         return {
-          tagText: <Translate token="v2.features.hackathonCard.status.closed" />,
+          tagText: (
+            <Translate token="v2.features.hackathonCard.status.closed" className="whitespace-nowrap" as="span" />
+          ),
         };
       case "open":
         return {
-          tagText: <Translate token="v2.features.hackathonCard.status.open" />,
+          tagText: <Translate token="v2.features.hackathonCard.status.open" className="whitespace-nowrap" as="span" />,
         };
       case "live":
         return {
           tagIcon: "ri-fire-line",
-          tagText: <Translate token="v2.features.hackathonCard.status.live" />,
+          tagText: <Translate token="v2.features.hackathonCard.status.live" className="whitespace-nowrap" as="span" />,
         };
       default:
         return {
@@ -179,7 +182,9 @@ export function HackathonCardDefaultAdapter<C extends ElementType = "div">({
             ) : null}
           </div>
 
-          <div>Projects</div>
+          {projects?.length ? (
+            <AvatarGroup avatars={projects.map(({ logoUrl }) => ({ src: logoUrl }))} size="xl" maxAvatars={4} />
+          ) : null}
         </div>
 
         {slug ? (

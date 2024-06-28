@@ -6,13 +6,7 @@ import { AvatarGroup } from "./variants/avatar-group-default";
 type Story = StoryObj<typeof AvatarGroup>;
 
 const defaultAvatars: AvatarGroupPort<"div"> = {
-  avatars: [
-    { name: "Avatar 1" },
-    { name: "Avatar 2" },
-    { name: "Avatar 3" },
-    { name: "Avatar 4" },
-    { name: "Avatar 5" },
-  ],
+  avatars: [{ name: "OD" }, { name: "OD" }, { name: "OD" }, { name: "OD" }, { name: "OD" }],
 };
 
 const avatarsWithSrc: AvatarGroupPort<"div"> = {
