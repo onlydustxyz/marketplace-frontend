@@ -1,4 +1,8 @@
 {
+  "originGithub": {
+    "title": "External Application via GitHub Issue",
+    "content": "The candidate has applied through a comment on a GitHub issue. As a result, we cannot retrieve their motivations and some details automatically."
+  },
   "select": {
     "search": "Search for users",
     "new": "New comers",

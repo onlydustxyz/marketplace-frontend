@@ -1,8 +1,10 @@
 import { ElementType } from "react";
 
-import { PaperCore } from "../paper.core";
-import { TPaperProps } from "../paper.types";
+import { PaperDefaultAdapter } from "components/atoms/paper/adapters/default/default.adapter";
+import { withComponentAdapter } from "components/hocs/with-component-adapter";
 
-export function Paper<C extends ElementType = "article">(props: TPaperProps<C>) {
-  return <PaperCore {...props} />;
+import { PaperPort } from "../paper.types";
+
+export function Paper<C extends ElementType = "article">(props: PaperPort<C>) {
+  return withComponentAdapter<PaperPort<C>>(PaperDefaultAdapter)(props);
 }

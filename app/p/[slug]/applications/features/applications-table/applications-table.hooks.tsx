@@ -1,5 +1,6 @@
 import { SortDescriptor } from "@nextui-org/react";
 import { projectsApiClient } from "api-client/resources/projects";
+import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
 
 import { mapIssueToContribution } from "app/p/[slug]/applications/features/applications-table/application-table.utils";
@@ -13,7 +14,10 @@ import { Button } from "components/atoms/button/variants/button-default";
 import { Tag } from "components/atoms/tag";
 import { Link } from "components/ds/link/link";
 import { TTable } from "components/ds/table/table.types";
+import { BaseLink } from "components/layout/base-link/base-link";
 import { Translate } from "components/layout/translate/translate";
+
+import { NEXT_ROUTER } from "constants/router";
 
 type QueryParams = NonNullable<Parameters<typeof projectsApiClient.queries.useGetProjectIssues>[0]["queryParams"]>;
 type QueryParamsSort = QueryParams["sort"];
@@ -24,6 +28,7 @@ const initialFilters: { sort: QueryParamsSort; direction: SortDescriptor["direct
 };
 
 export function useApplicationsTable({ projectId = "" }: { projectId?: string }) {
+  const { slug = "" } = useParams<{ slug?: string }>();
   const [filters, setFilters] = useState(initialFilters);
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
     column: filters.sort,
@@ -140,7 +145,8 @@ export function useApplicationsTable({ projectId = "" }: { projectId?: string })
               <Button
                 variant={"secondary-light"}
                 size={"s"}
-                // TODO @hayden add click event
+                as={BaseLink}
+                htmlProps={{ href: NEXT_ROUTER.projects.details.applications.details(slug, String(row.id)) }}
               >
                 <Translate token={"v2.pages.project.applications.table.rows.assign"} />
               </Button>

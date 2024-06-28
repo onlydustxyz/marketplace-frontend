@@ -1,15 +1,13 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { CheckboxCore } from "./checkbox.core";
-import { TCheckboxProps } from "./checkbox.types";
-import { Checkbox } from "./variants/checkbox-default";
+import { Checkbox, CheckboxPort } from "./index";
 
-type Story = StoryObj<typeof CheckboxCore>;
+type Story = StoryObj<typeof Checkbox>;
 
-const defaultProps: TCheckboxProps = {};
+const defaultProps: CheckboxPort = {};
 
-const meta: Meta<typeof CheckboxCore> = {
-  component: CheckboxCore,
+const meta: Meta<typeof Checkbox> = {
+  component: Checkbox,
   title: "Atoms/Checkbox",
   tags: ["autodocs"],
   parameters: {

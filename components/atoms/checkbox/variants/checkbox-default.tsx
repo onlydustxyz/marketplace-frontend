@@ -1,6 +1,8 @@
-import { CheckboxCore } from "../checkbox.core";
-import { TCheckboxProps } from "../checkbox.types";
+import { CheckboxNextUiAdapter } from "components/atoms/checkbox/adapters/next-ui/next-ui.adapter";
+import { withComponentAdapter } from "components/hocs/with-component-adapter";
 
-export function Checkbox({ ...props }: TCheckboxProps) {
-  return <CheckboxCore {...props} />;
+import { CheckboxPort } from "../checkbox.types";
+
+export function Checkbox(props: CheckboxPort) {
+  return withComponentAdapter<CheckboxPort>(CheckboxNextUiAdapter)(props);
 }

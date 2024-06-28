@@ -1,0 +1,16 @@
+{
+  "modals": {
+    "permissions": {
+      "title": "Grant permissions",
+      "description": "We need your permission to assign contributors on your behalf. Authorizing GitHub permissions may take a moment.",
+      "claims": {
+        "write": "Read and write access to Issues"
+      },
+      "footerButtons": {
+        "moreInfo": "Back",
+        "grantPermissions": "Grant write permissions",
+        "syncOganizations": "Resync organisations"
+      }
+    }
+  }
+}

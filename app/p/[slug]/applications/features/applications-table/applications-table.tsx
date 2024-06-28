@@ -1,3 +1,5 @@
+import { useParams } from "next/navigation";
+
 import { mapIssueToContribution } from "app/p/[slug]/applications/features/applications-table/application-table.utils";
 import { useApplicationsTable } from "app/p/[slug]/applications/features/applications-table/applications-table.hooks";
 
@@ -10,9 +12,12 @@ import { cn } from "src/utils/cn";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Table } from "components/ds/table/table";
+import { BaseLink } from "components/layout/base-link/base-link";
 import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 import { Translate } from "components/layout/translate/translate";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { useClientMediaQuery } from "hooks/layout/useClientMediaQuery/use-client-media-query";
 import { useIntl } from "hooks/translate/use-translate";
@@ -30,6 +35,7 @@ function Error() {
 export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
   const { T } = useIntl();
   const isLg = useClientMediaQuery(`(min-width: ${viewportConfig.breakpoints.lg}px)`);
+  const { slug = "" } = useParams<{ slug?: string }>();
 
   const { query, issues, hasIssues, sortDescriptor, columns, rows, handleSort } = useApplicationsTable({ projectId });
   const { isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } = query;
@@ -64,7 +70,8 @@ export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
                 <Button
                   variant={"secondary-light"}
                   size={"s"}
-                  // TODO @hayden add click event
+                  as={BaseLink}
+                  htmlProps={{ href: NEXT_ROUTER.projects.details.applications.details(slug, String(issue.id)) }}
                 >
                   <Translate token={"v2.pages.project.applications.table.rows.assign"} />
                 </Button>

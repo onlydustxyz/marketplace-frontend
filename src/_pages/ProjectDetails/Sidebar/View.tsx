@@ -99,7 +99,6 @@ export default function View({
         </div>
         <div className="align-start flex flex-col gap-2 pb-2 pt-3 text-xl font-medium">
           {availableTabs.map(tab => (
-            // TODO NEXT : check active tab
             <BaseLink
               onClick={onLinkClick}
               key={tab.path}
@@ -108,6 +107,7 @@ export default function View({
                 "rounded-xl px-4 py-2.5 text-base hover:cursor-pointer",
                 "text-neutral-400 data-[active=true]:bg-white/8 data-[active=true]:text-white"
               )}
+              matchPathOptions={tab.matchPathOptions}
             >
               {tab.label}
             </BaseLink>

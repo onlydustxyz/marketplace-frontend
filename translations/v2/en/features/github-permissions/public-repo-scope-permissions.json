@@ -1,0 +1,23 @@
+{
+  "modals": {
+    "permissions": {
+      "title": "Grant permissions",
+      "description": "We need your permission to write comments on your behalf and apply to selected issues directly on OnlyDust. Only need to be accepted once.",
+      "claims": {
+        "write": "Write all public repository data"
+      },
+      "footerButtons": {
+        "moreInfo": "More info",
+        "grantPermissions": "Grant write permissions"
+      }
+    },
+    "moreInfos": {
+      "title": "How to grant permissions",
+      "description": "Click on \"Grant Permissions\". A GitHub popup will appear. Click on \"Authorize OnlyDust\", and you'll be redirected back here to submit your application.",
+      "footerButtons": {
+        "grantPermissions": "Grant write permissions",
+        "back": "Back"
+      }
+    }
+  }
+}
