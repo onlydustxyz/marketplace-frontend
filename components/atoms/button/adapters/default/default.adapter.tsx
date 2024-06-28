@@ -1,5 +1,5 @@
 import { Spinner } from "@nextui-org/react";
-import { ElementType } from "react";
+import { ComponentProps, ElementType } from "react";
 
 import { cn } from "src/utils/cn";
 
@@ -9,10 +9,10 @@ import { Show } from "components/layout/components-utils/show/show";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 
-import { TButtonProps } from "./button.types";
-import { ButtonCoreVariants } from "./button.variants";
+import { ButtonPort } from "../../button.types";
+import { ButtonDefaultVariants } from "./default.variants";
 
-export function ButtonCore<C extends ElementType = "button">({
+export function ButtonDefaultAdapter<C extends ElementType = "button">({
   classNames,
   as,
   startIcon,
@@ -25,10 +25,10 @@ export function ButtonCore<C extends ElementType = "button">({
   type = "button",
   htmlProps,
   ...props
-}: TButtonProps<C>) {
+}: ButtonPort<C>) {
   const Component = as || "button";
   const { isLoading, isDisabled, size, hideText, canInteract } = props;
-  const slots = ButtonCoreVariants({
+  const slots = ButtonDefaultVariants({
     isLoading,
     isDisabled,
     hideText,
@@ -38,12 +38,12 @@ export function ButtonCore<C extends ElementType = "button">({
 
   const showChildren = !hideText && (!!children || !!translate);
 
-  // TODO USE COMPONENT API VARIANTS
-  const typoSize = {
+  const typoSize: Record<NonNullable<typeof size>, ComponentProps<typeof Typo>["size"]> = {
     s: "xs",
     m: "s",
     l: "s",
-  } as const;
+    xl: "m",
+  };
 
   return (
     <Component
