@@ -1,17 +1,28 @@
 import { ComponentPropsWithoutRef, ElementType, PropsWithChildren, ReactNode } from "react";
-import { VariantProps } from "tailwind-variants";
 
 import { TIcon } from "components/layout/icon/icon.types";
 import { TTranslate } from "components/layout/translate/translate.types";
 
-import { ButtonCoreVariants } from "./button.variants";
+interface Variants {
+  size: "s" | "m" | "l" | "xl";
+  isLoading: boolean;
+  isDisabled: boolean;
+  hideText: boolean;
+}
 
-type Variants = VariantProps<typeof ButtonCoreVariants>;
-type classNames = Partial<typeof ButtonCoreVariants["slots"]>;
+interface ClassNames {
+  base: string;
+  content: string;
+  startIcon: string;
+  endIcon: string;
+  label: string;
+  loaderContainer: string;
+  spinnerCircle: string;
+}
 
-export interface TButtonProps<C extends ElementType> extends Variants, PropsWithChildren {
+export interface ButtonPort<C extends ElementType> extends Partial<Variants>, PropsWithChildren {
   htmlProps?: Omit<ComponentPropsWithoutRef<C>, "type">;
-  classNames?: classNames;
+  classNames?: Partial<ClassNames>;
   translate?: TTranslate.Props;
   as?: C;
   startIcon?: TIcon.Props;
