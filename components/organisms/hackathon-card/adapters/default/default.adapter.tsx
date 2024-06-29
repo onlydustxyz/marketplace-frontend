@@ -104,9 +104,9 @@ export function HackathonCardDefaultAdapter<C extends ElementType = "div">({
         base: cn(slots.base(), classNames?.base),
       }}
     >
-      {hasLayer ? <span className="absolute left-0 top-0 z-0 h-full w-full rounded-xl bg-black bg-opacity-60" /> : null}
+      {hasLayer ? <span className="absolute inset-0 h-full w-full rounded-xl bg-black bg-opacity-60" /> : null}
 
-      <div className="z-1 relative flex flex-col gap-6">
+      <div className="relative flex flex-col gap-6">
         <div className="flex items-start justify-between gap-4">
           <div className="flex flex-col gap-1">
             <Typo

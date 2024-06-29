@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 
+import { AvatarGroupLoading } from "./avatar-group.loading";
 import { AvatarGroupPort } from "./avatar-group.types";
 import { AvatarGroup } from "./variants/avatar-group-default";
 
@@ -54,7 +55,7 @@ export const LimitedAvatars: Story = {
     },
   },
   render: args => (
-    <div className="flex w-full items-center gap-2">
+    <div className="flex w-full items-center gap-4">
       <div className="flex flex-col gap-2">
         {sizes.map(size => (
           <AvatarGroup key={size} {...defaultAvatars} {...args} size={size} maxAvatars={3} />
@@ -81,7 +82,7 @@ export const Square: Story = {
     },
   },
   render: args => (
-    <div className="flex w-full items-center gap-2">
+    <div className="flex w-full items-center gap-4">
       <div className="flex flex-col gap-2">
         {sizes.map(size => (
           <AvatarGroup key={size} {...defaultAvatars} {...args} size={size} shape="square" />
@@ -99,6 +100,31 @@ export const Square: Story = {
       </div>
     </div>
   ),
+};
+
+export const Skeleton: Story = {
+  parameters: {
+    docs: {
+      source: { code: "<AvatarGroupLoading />" },
+    },
+  },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  render: ({ avatars, ...args }) => {
+    return (
+      <div className="flex w-full items-center gap-4">
+        <div className="flex flex-col gap-2">
+          {sizes.map(size => (
+            <AvatarGroupLoading key={size} {...defaultAvatars} {...args} size={size} />
+          ))}
+        </div>
+        <div className="flex flex-col gap-2">
+          {sizes.map(size => (
+            <AvatarGroupLoading key={size} {...defaultAvatars} {...args} size={size} shape="square" />
+          ))}
+        </div>
+      </div>
+    );
+  },
 };
 
 export default meta;

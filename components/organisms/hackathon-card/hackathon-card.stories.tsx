@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import backgroundImage from "public/images/hackathons/cover-1.webp";
 
+import { HackathonCardLoading } from "./hackathon-card.loading";
 import { HackathonCardPort } from "./hackathon-card.types";
 import { HackathonCard } from "./variants/hackathon-card-default";
 
@@ -184,6 +185,25 @@ export const MultipleProjects: Story = {
     return (
       <div className="flex w-full items-center gap-2">
         <HackathonCard {...multipleProjectsPort} {...args} />
+      </div>
+    );
+  },
+};
+
+export const Skeleton: Story = {
+  parameters: {
+    docs: {
+      source: { code: "<HackathonCardLoading />" },
+    },
+  },
+  render: () => {
+    return (
+      <div className="flex w-full items-center gap-2">
+        <HackathonCardLoading
+          classNames={{
+            base: "w-full",
+          }}
+        />
       </div>
     );
   },
