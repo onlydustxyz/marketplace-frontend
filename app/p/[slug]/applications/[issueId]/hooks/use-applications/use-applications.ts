@@ -78,8 +78,11 @@ export function useApplications({ search }: TUseApplications.Props): TUseApplica
   );
 
   const canInteract = useMemo(() => {
+    if (issueDataIsLoading) {
+      return true;
+    }
     return issueData?.githubAppInstallationStatus === "COMPLETE";
-  }, [issueData?.githubAppInstallationStatus]);
+  }, [issueData?.githubAppInstallationStatus, issueDataIsLoading]);
 
   return {
     newComers: {
