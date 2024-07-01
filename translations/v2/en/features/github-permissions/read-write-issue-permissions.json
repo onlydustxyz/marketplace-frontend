@@ -8,7 +8,8 @@
       },
       "footerButtons": {
         "moreInfo": "Back",
-        "grantPermissions": "Grant write permissions"
+        "grantPermissions": "Grant write permissions",
+        "syncOganizations": "Resync organisations"
       }
     }
   }

@@ -11,6 +11,7 @@ export interface UsePoolingFeedbackProps {
 export interface UsePoolingProps {
   delays: number;
   limites: number;
+  enabled?: boolean;
 }
 
 export interface UsePoolingReturn {

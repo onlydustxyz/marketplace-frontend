@@ -77,6 +77,10 @@ export function useApplications({ search }: TUseApplications.Props): TUseApplica
     [projectMembersApplicationsData]
   );
 
+  const canInteract = useMemo(() => {
+    return issueData?.githubAppInstallationStatus === "COMPLETE";
+  }, [issueData?.githubAppInstallationStatus]);
+
   return {
     newComers: {
       applications: newComersApplications,
@@ -96,9 +100,6 @@ export function useApplications({ search }: TUseApplications.Props): TUseApplica
       content: issueData?.title,
       isLoading: issueDataIsLoading,
     },
-    permissions: {
-      githubAppInstallationStatus: issueData?.githubAppInstallationStatus,
-      githubAppInstallationPermissionsUpdateUrl: issueData?.githubAppInstallationPermissionsUpdateUrl,
-    },
+    canInteract,
   };
 }

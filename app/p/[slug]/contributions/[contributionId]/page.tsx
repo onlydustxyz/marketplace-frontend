@@ -1,11 +1,12 @@
 "use client";
 
 import { withAuthenticationRequired } from "@auth0/auth0-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { cn } from "src/utils/cn";
 
 import { withLeadRequired } from "components/features/auth0/guards/lead-guard";
+import { ReadWriteIssuePermissionModal } from "components/features/grant-permission/components/read-write-issue-permission-modal/read-write-issue-permission-modal";
 import { Flex } from "components/layout/flex/flex";
 
 import { ContributionHeader } from "./features/contribution-header/contribution-header";
@@ -18,11 +19,7 @@ function ContributionPage() {
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
   const [selectedApplication, setSelectedApplication] = useState<string | null>(null);
 
-  const { newComers, projectMembers, title, permissions } = useApplications({ search });
-
-  const canInteract = useMemo(() => {
-    return permissions.githubAppInstallationStatus === "COMPLETE";
-  }, [permissions.githubAppInstallationStatus]);
+  const { newComers, projectMembers, title, canInteract } = useApplications({ search });
 
   const handleSelectUser = (githubId: number, applicationId: string) => {
     setSelectedUser(githubId);
@@ -56,6 +53,8 @@ function ContributionPage() {
           <ContributorDetails githubId={selectedUser} applicationId={selectedApplication} />
         ) : null}
       </Flex>
+
+      <ReadWriteIssuePermissionModal />
     </Flex>
   );
 }
