@@ -30,7 +30,7 @@ export const useContributorDetails = ({ githubId, applicationId }: TContributorD
   useMutationAlert({
     mutation: acceptMutation,
     success: {
-      message: T("v2.pages.project.details.applicationDetails.success", {
+      message: T("v2.pages.project.details.applicationDetails.messages.success", {
         login: `${application?.applicant.login}`,
         issue: `${application?.issue.title}`,
       }),
