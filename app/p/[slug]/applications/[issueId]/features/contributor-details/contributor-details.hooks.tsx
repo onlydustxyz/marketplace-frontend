@@ -1,7 +1,7 @@
 import { applicationsApiClient } from "api-client/resources/applications";
 import { usersApiClient } from "api-client/resources/users";
 
-import { TContributorDetails } from "app/p/[slug]/contributions/[contributionId]/features/contributor-details/contributor-details.types";
+import { TContributorDetails } from "app/p/[slug]/applications/[issueId]/features/contributor-details/contributor-details.types";
 
 import useMutationAlert from "src/api/useMutationAlert";
 
@@ -30,7 +30,7 @@ export const useContributorDetails = ({ githubId, applicationId }: TContributorD
   useMutationAlert({
     mutation: acceptMutation,
     success: {
-      message: T("v2.pages.project.details.applicationDetails.success", {
+      message: T("v2.pages.project.details.applicationDetails.messages.success", {
         login: `${application?.applicant.login}`,
         issue: `${application?.issue.title}`,
       }),
@@ -45,5 +45,6 @@ export const useContributorDetails = ({ githubId, applicationId }: TContributorD
     application,
     acceptApplication,
     isLoading: userProfileIsLoading || applicationIsLoading,
+    isPending: acceptMutation.isPending,
   };
 };

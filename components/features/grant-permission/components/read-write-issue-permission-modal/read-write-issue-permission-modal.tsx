@@ -19,18 +19,22 @@ import { NEXT_ROUTER } from "constants/router";
 export function ReadWriteIssuePermissionModal() {
   const router = useRouter();
   const [enablePooling, setEnablePooling] = useState(false);
-  const { slug = "", contributionId = "" } = useParams<{ slug?: string; contributionId?: string }>();
+  const { slug = "", issueId = "" } = useParams<{ slug?: string; issueId?: string }>();
 
   const { refetchOnWindowFocus, refetchInterval, onRefetching } = usePooling({
     limites: 20,
     delays: 3000,
     enabled: enablePooling,
   });
-  const { data: issueData, isRefetching } = issuesApiClient.queries.useGetIssueById({
+  const {
+    data: issueData,
+    isRefetching,
+    isLoading,
+  } = issuesApiClient.queries.useGetIssueById({
     pathParams: {
-      issueId: Number(contributionId),
+      issueId: Number(issueId),
     },
-    options: { enabled: !!contributionId, refetchOnWindowFocus, refetchInterval },
+    options: { enabled: !!issueId, refetchOnWindowFocus, refetchInterval },
   });
 
   useEffect(() => {
@@ -58,7 +62,7 @@ export function ReadWriteIssuePermissionModal() {
       classNames={{
         backdrop: "bg-transparent",
       }}
-      isOpen={issueData?.githubAppInstallationStatus !== "COMPLETE"}
+      isOpen={issueData?.githubAppInstallationStatus !== "COMPLETE" && !isLoading}
       onOpenChange={isModalOpen =>
         !isModalOpen ? router.push(NEXT_ROUTER.projects.details.applications.root(slug)) : null
       }

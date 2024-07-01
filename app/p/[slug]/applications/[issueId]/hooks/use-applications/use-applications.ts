@@ -9,7 +9,7 @@ import ProjectApi from "src/api/Project";
 import { TUseApplications } from "./use-applications.types";
 
 export function useApplications({ search }: TUseApplications.Props): TUseApplications.Return {
-  const { slug = "", contributionId = "" } = useParams<{ slug?: string; contributionId?: string }>();
+  const { slug = "", issueId = "" } = useParams<{ slug?: string; issueId?: string }>();
 
   const [debouncedSearch, setDebouncedSearch] = useState<string>(search);
 
@@ -37,7 +37,7 @@ export function useApplications({ search }: TUseApplications.Props): TUseApplica
   } = applicationsApiClient.queries.useInfiniteGetAllApplications({
     queryParams: {
       projectId: project?.id,
-      issueId: Number(contributionId),
+      issueId: Number(issueId),
       isApplicantProjectMember: false,
       applicantLoginSearch: debouncedSearch,
     },
@@ -53,7 +53,7 @@ export function useApplications({ search }: TUseApplications.Props): TUseApplica
   } = applicationsApiClient.queries.useInfiniteGetAllApplications({
     queryParams: {
       projectId: project?.id,
-      issueId: Number(contributionId),
+      issueId: Number(issueId),
       isApplicantProjectMember: true,
       applicantLoginSearch: debouncedSearch,
     },
@@ -62,9 +62,9 @@ export function useApplications({ search }: TUseApplications.Props): TUseApplica
 
   const { data: issueData, isLoading: issueDataIsLoading } = issuesApiClient.queries.useGetIssueById({
     pathParams: {
-      issueId: Number(contributionId),
+      issueId: Number(issueId),
     },
-    options: { enabled: !!contributionId },
+    options: { enabled: !!issueId },
   });
 
   const newComersApplications = useMemo(
@@ -78,8 +78,11 @@ export function useApplications({ search }: TUseApplications.Props): TUseApplica
   );
 
   const canInteract = useMemo(() => {
+    if (issueDataIsLoading) {
+      return true;
+    }
     return issueData?.githubAppInstallationStatus === "COMPLETE";
-  }, [issueData?.githubAppInstallationStatus]);
+  }, [issueData?.githubAppInstallationStatus, issueDataIsLoading]);
 
   return {
     newComers: {

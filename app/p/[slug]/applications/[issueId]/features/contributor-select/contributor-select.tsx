@@ -102,9 +102,7 @@ export function ContributorSelect({
       );
     }
 
-    return (
-      <AccordionWithBadge items={items} defaultSelected={["new-comers", "project-members"]} selectionMode="multiple" />
-    );
+    return <AccordionWithBadge items={items} defaultSelected={["new-comers", "project-members"]} multiple />;
   }
 
   return (

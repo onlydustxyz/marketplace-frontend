@@ -20,7 +20,7 @@ export function ContributionHeader({ title }: TContributionHeader.Props) {
 
   return (
     <Flex alignItems="center" className="gap-2">
-      <BaseLink href={NEXT_ROUTER.projects.details.contributions.root(slug)} className="flex items-center gap-2">
+      <BaseLink href={NEXT_ROUTER.projects.details.applications.root(slug)} className="flex items-center gap-2">
         <Button iconOnly variant="secondary" size="s">
           <Icon remixName="ri-arrow-left-s-line" />
         </Button>
