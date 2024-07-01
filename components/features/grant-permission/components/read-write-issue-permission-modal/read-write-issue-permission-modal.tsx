@@ -10,17 +10,13 @@ import { usePooling } from "src/hooks/usePooling/usePooling";
 import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
 import { Typo } from "components/atoms/typo/variants/typo-default";
-import { TPublicRepoScopePermissionModal } from "components/features/grant-permission/components/public-repo-scope-permission-modal/public-repo-scope-permission-modal.types";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Modal } from "components/molecules/modal";
 
 import { NEXT_ROUTER } from "constants/router";
 
-import { useIntl } from "hooks/translate/use-translate";
-
-export function ReadWriteIssuePermissionModal(_: TPublicRepoScopePermissionModal.Props) {
-  const { T } = useIntl();
+export function ReadWriteIssuePermissionModal() {
   const router = useRouter();
   const [enablePooling, setEnablePooling] = useState(false);
   const { slug = "", contributionId = "" } = useParams<{ slug?: string; contributionId?: string }>();
@@ -44,13 +40,12 @@ export function ReadWriteIssuePermissionModal(_: TPublicRepoScopePermissionModal
   useEffect(() => {
     if (issueData?.githubAppInstallationStatus === "COMPLETE") {
       setEnablePooling(false);
-      return;
     }
   }, [issueData]);
 
   function handleRedirectToGithubFlow() {
-    setEnablePooling(true);
     if (issueData?.githubAppInstallationPermissionsUpdateUrl) {
+      setEnablePooling(true);
       window.open(issueData?.githubAppInstallationPermissionsUpdateUrl, "_blank");
     }
   }
