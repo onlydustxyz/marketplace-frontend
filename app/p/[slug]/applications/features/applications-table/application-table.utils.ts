@@ -1,8 +1,24 @@
-import { GetProjectIssuesPageResponse } from "api-client/resources/projects/types";
-
 import { Contribution as ContributionT, GithubContributionType } from "src/types";
 
-export function mapIssueToContribution(issue: GetProjectIssuesPageResponse["issues"][number]): ContributionT {
+type Issue = {
+  id: number;
+  number: number;
+  title: string;
+  createdAt: string;
+  htmlUrl: string;
+  status: "OPEN" | "COMPLETED" | "CANCELLED";
+  project?: { id: string; slug: string; name: string; shortDescription: string; logoUrl?: string };
+  repository: {
+    id: number;
+    owner: string;
+    name: string;
+    description?: string;
+    htmlUrl: string;
+  };
+  author: { githubUserId: number; login: string; avatarUrl: string; isRegistered: boolean };
+};
+
+export function mapIssueToContribution(issue: Issue): ContributionT {
   return {
     id: String(issue.id),
     githubHtmlUrl: issue.htmlUrl,
@@ -19,7 +35,7 @@ export function mapIssueToContribution(issue: GetProjectIssuesPageResponse["issu
 
     githubAuthor: issue.author,
     contributor: issue.author,
-    project: { id: "", slug: "", name: "", shortDescription: "" },
+    project: issue.project ?? { id: "", slug: "", name: "", shortDescription: "" },
     rewardIds: [],
     links: [],
   };

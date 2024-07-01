@@ -1,84 +1,67 @@
 "use client";
 
-import { SortDescriptor } from "@nextui-org/react";
-import { projectsApiClient } from "api-client/resources/projects";
-import { useMemo, useState } from "react";
+import { applicationsApiClient } from "api-client/resources/applications";
+import { useMemo } from "react";
 
 import { mapIssueToContribution } from "app/p/[slug]/applications/features/applications-table/application-table.utils";
 
+import { useStackProjectOverview } from "src/App/Stacks/Stacks";
 import { Contribution } from "src/components/Contribution/Contribution";
-import { ContributionDate } from "src/components/Contribution/ContributionDate";
-import { TooltipPosition, Variant as TooltipVariant } from "src/components/Tooltip";
-import { GithubContributionType } from "src/types";
+import displayRelativeDate from "src/utils/displayRelativeDate";
 
 import { Button } from "components/atoms/button/variants/button-default";
-import { Tag } from "components/atoms/tag";
+import { Avatar } from "components/ds/avatar/avatar";
 import { Link } from "components/ds/link/link";
 import { TTable } from "components/ds/table/table.types";
 import { Translate } from "components/layout/translate/translate";
 
-type QueryParams = NonNullable<Parameters<typeof projectsApiClient.queries.useGetProjectIssues>[0]["queryParams"]>;
-type QueryParamsSort = QueryParams["sort"];
-
-const initialFilters: { sort: QueryParamsSort; direction: SortDescriptor["direction"] } = {
-  sort: "CREATED_AT",
-  direction: "descending",
-};
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 export function useApplicationsTable() {
-  const [filters, setFilters] = useState(initialFilters);
-  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-    column: filters.sort,
-    direction: filters.direction,
-  });
+  const { githubUserId } = useCurrentUser();
+  const [openProjectOverview] = useStackProjectOverview();
 
-  const { data, ...query } = projectsApiClient.queries.useGetProjectIssues({
-    pathParams: {
-      projectId: "",
-    },
+  const { data, ...query } = applicationsApiClient.queries.useInfiniteGetAllApplications({
     queryParams: {
-      sort: filters.sort,
-      direction: filters.direction === "ascending" ? "ASC" : "DESC",
-      isAssigned: false,
-      isApplied: true,
+      applicantId: githubUserId,
     },
-    options: {
-      enabled: false,
-    },
+    options: { enabled: Boolean(githubUserId) },
   });
 
-  const issues = useMemo(() => data?.pages?.flatMap(data => data.issues) ?? [], [data]);
-  const hasIssues = Boolean(issues?.length);
+  const applications = useMemo(() => data?.pages?.flatMap(data => data.applications) ?? [], [data]);
+  const hasApplications = Boolean(applications.length);
+
+  function handleProjectClick(slug: string) {
+    openProjectOverview({ slug });
+  }
 
   const columns: TTable.Column[] = useMemo(
     () => [
       {
         key: "CREATED_AT",
-        children: <Translate token={"v2.pages.project.applications.table.columns.date"} />,
+        children: <Translate token={"v2.pages.applications.table.columns.date"} />,
         icon: {
           remixName: "ri-time-line",
         },
         width: 120,
-        allowsSorting: true,
+      },
+      {
+        key: "project",
+        children: <Translate token={"v2.pages.applications.table.columns.project"} />,
+        icon: {
+          remixName: "ri-folder-3-line",
+        },
       },
       {
         key: "repository",
-        children: <Translate token={"v2.pages.project.applications.table.columns.repository"} />,
+        children: <Translate token={"v2.pages.applications.table.columns.repository"} />,
         icon: {
           remixName: "ri-git-repository-line",
         },
       },
       {
-        key: "applicants",
-        children: <Translate token={"v2.pages.project.applications.table.columns.applicants"} />,
-        icon: {
-          remixName: "ri-user-line",
-        },
-        width: 150,
-      },
-      {
         key: "contribution",
-        children: <Translate token={"v2.pages.project.applications.table.columns.contribution"} />,
+        children: <Translate token={"v2.pages.applications.table.columns.contribution"} />,
         icon: {
           remixName: "ri-stack-line",
         },
@@ -87,7 +70,7 @@ export function useApplicationsTable() {
         key: "actions",
         children: "",
         align: "end",
-        width: 100,
+        width: 150,
       },
     ],
     []
@@ -95,39 +78,36 @@ export function useApplicationsTable() {
 
   const rows: TTable.Row[] = useMemo(
     () =>
-      issues.map(row => {
-        const repoName = row.repository.name;
+      applications.map(row => {
+        const repoName = row.issue.repo.name;
         const truncateLength = 200;
-        const contribution = mapIssueToContribution(row);
+        const contribution = mapIssueToContribution({
+          ...row.issue,
+          author: { ...row.issue.author, isRegistered: false },
+          repository: { ...row.issue.repo, owner: "" },
+          createdAt: row.receivedAt,
+        });
 
         return {
           key: String(row.id ?? ""),
-          CREATED_AT: (
-            <div className={"whitespace-nowrap"}>
-              <ContributionDate
-                id={String(row.id)}
-                type={GithubContributionType.Issue}
-                status={row.status}
-                contributionStatus={"IN_PROGRESS"}
-                date={new Date(row.createdAt)}
-                tooltipProps={{ variant: TooltipVariant.Default, position: TooltipPosition.Bottom }}
-              />
-            </div>
+          CREATED_AT: <div className={"whitespace-nowrap"}>{displayRelativeDate(row.receivedAt)}</div>,
+          project: (
+            <Avatar.Labelled avatarProps={{ src: row.project.logoUrl, shape: "square" }}>
+              <Link.Button
+                onClick={() => handleProjectClick(row.project.slug)}
+                className="whitespace-normal text-left"
+                title={row.project.name}
+              >
+                {row.project.name}
+              </Link.Button>
+            </Avatar.Labelled>
           ),
           repository: (
-            <Link href={row.repository.htmlUrl} className="whitespace-nowrap text-left" title={repoName}>
+            <Link href={row.issue.repo.htmlUrl} className="whitespace-nowrap text-left" title={repoName}>
               {truncateLength && repoName.length > truncateLength
                 ? repoName.substring(0, truncateLength) + "..."
                 : repoName}
             </Link>
-          ),
-          applicants: (
-            <Tag size={"xs"} style={"outline"} classNames={{ base: "inline-flex" }}>
-              <Translate
-                token={"v2.pages.project.applications.table.rows.countApplicants"}
-                params={{ count: row.applicants.length }}
-              />
-            </Tag>
           ),
           contribution: <Contribution contribution={contribution} />,
           actions: (
@@ -137,19 +117,14 @@ export function useApplicationsTable() {
                 size={"s"}
                 // TODO @hayden add click event
               >
-                <Translate token={"v2.pages.project.applications.table.rows.assign"} />
+                <Translate token={"v2.pages.applications.table.rows.seeApplication"} />
               </Button>
             </div>
           ),
         };
       }),
-    [issues]
+    [applications]
   );
 
-  function handleSort(sort: SortDescriptor) {
-    setSortDescriptor(sort);
-    setFilters({ sort: sort.column as QueryParamsSort, direction: sort.direction });
-  }
-
-  return { query, issues, hasIssues, sortDescriptor, columns, rows, handleSort };
+  return { query, applications, hasApplications, columns, rows };
 }
