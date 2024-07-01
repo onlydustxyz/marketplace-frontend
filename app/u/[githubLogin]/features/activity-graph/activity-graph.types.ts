@@ -8,5 +8,6 @@ export namespace TActivityGraph {
       name: string;
       logoUrl: string;
     }[];
+    activityGraphOnly?: boolean;
   }
 }

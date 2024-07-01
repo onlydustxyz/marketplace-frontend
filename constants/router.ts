@@ -11,6 +11,10 @@ export const NEXT_ROUTER = {
     details: {
       root: (slug: string) => `/p/${slug}`,
       contributors: (slug: string) => `/p/${slug}/contributors`,
+      applications: {
+        root: (slug: string) => `/p/${slug}/applications`,
+        details: (slug: string, issueId: string) => `/p/${slug}/applications/${issueId}`,
+      },
       rewards: {
         root: (slug: string) => `/p/${slug}/rewards`,
         new: (slug: string) => `/p/${slug}/rewards/new`,
@@ -18,7 +22,6 @@ export const NEXT_ROUTER = {
       edit: (slug: string) => `/p/${slug}/edit`,
       contributions: {
         root: (slug: string) => `/p/${slug}/contributions`,
-        details: (slug: string, contributionId: string) => `/p/${slug}/contributions/${contributionId}`,
       },
       insights: (slug: string) => `/p/${slug}/insights`,
     },

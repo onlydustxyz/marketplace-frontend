@@ -71,10 +71,10 @@ export function ContributionBadge({
   const { T } = useIntl();
   const { githubUserId } = useCurrentUser();
 
-  const { githubNumber, githubTitle, githubBody, githubHtmlUrl, githubAuthor, githubStatus, type } = contribution;
+  const { id, githubNumber, githubTitle, githubBody, githubHtmlUrl, githubAuthor, githubStatus, type } = contribution;
 
   const isExternal = githubAuthor && githubUserId !== githubAuthor.githubUserId;
-  const tooltipId = `${githubNumber}-${type}-${githubStatus}`;
+  const tooltipId = `${id}-${githubNumber}-${type}-${githubStatus}`;
 
   const tokens = {
     [GithubContributionType.PullRequest]: T("contributions.tooltip.badgePullRequest"),

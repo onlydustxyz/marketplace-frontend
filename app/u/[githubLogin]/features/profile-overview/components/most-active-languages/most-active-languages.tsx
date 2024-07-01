@@ -5,9 +5,12 @@ import { MostActiveSection } from "app/u/[githubLogin]/features/profile-overview
 
 export async function MostActiveLanguages({ githubUserId }: TMostActiveLanguages.Props) {
   const languages = await usersApiClient.fetch
-    .getUserPublicLanguages(githubUserId, {
-      pageSize: 4,
-      pageIndex: 0,
+    .getUserPublicLanguages({
+      pathParams: { githubId: githubUserId },
+      pagination: {
+        pageSize: 4,
+        pageIndex: 0,
+      },
     })
     .request({
       next: { revalidate: 120 },
