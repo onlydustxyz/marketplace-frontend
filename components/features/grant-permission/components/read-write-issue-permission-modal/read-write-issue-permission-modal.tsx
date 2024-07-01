@@ -5,8 +5,7 @@ import githubGrantPermissionImage from "public/images/banners/github-grant-permi
 import { useEffect, useState } from "react";
 
 import { Spinner } from "src/components/Spinner/Spinner";
-import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
-import { cn } from "src/utils/cn";
+import { usePooling } from "src/hooks/usePooling/usePooling";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
@@ -26,31 +25,16 @@ export function ReadWriteIssuePermissionModal(_: TPublicRepoScopePermissionModal
   const [enablePooling, setEnablePooling] = useState(false);
   const { slug = "", contributionId = "" } = useParams<{ slug?: string; contributionId?: string }>();
 
-  const { refetchOnWindowFocus, refetchInterval, onRefetching, onForcePooling } = usePooling({
+  const { refetchOnWindowFocus, refetchInterval, onRefetching } = usePooling({
     limites: 20,
     delays: 3000,
     enabled: enablePooling,
   });
-  const {
-    data: issueData,
-    isLoading,
-    isRefetching,
-    refetch,
-  } = issuesApiClient.queries.useGetIssueById({
+  const { data: issueData, isRefetching } = issuesApiClient.queries.useGetIssueById({
     pathParams: {
       issueId: Number(contributionId),
     },
     options: { enabled: !!contributionId, refetchOnWindowFocus, refetchInterval },
-  });
-
-  const PoolingFeedback = usePoolingFeedback({
-    onForcePooling,
-    isLoading,
-    isRefetching,
-    fetch: refetch,
-    ui: {
-      label: T("v2.features.githubPermissions.readWriteIssue.modals.permissions.footerButtons.syncOganizations"),
-    },
   });
 
   useEffect(() => {
@@ -84,6 +68,7 @@ export function ReadWriteIssuePermissionModal(_: TPublicRepoScopePermissionModal
         !isModalOpen ? router.push(NEXT_ROUTER.projects.details.applications.root(slug)) : null
       }
       footer={{
+        startContent: enablePooling ? <Spinner className="h-5 w-5" /> : null,
         endContent: (
           <div className="flex gap-4">
             <Button
@@ -99,12 +84,11 @@ export function ReadWriteIssuePermissionModal(_: TPublicRepoScopePermissionModal
               variant="primary"
               size="l"
               onClick={handleRedirectToGithubFlow}
-              startContent={isRefetching ? <Spinner className="h-4 w-4" /> : <Icon remixName="ri-github-line" />}
+              startContent={<Icon remixName="ri-github-line" />}
             >
               <Translate
                 as="span"
                 token="v2.features.githubPermissions.readWriteIssue.modals.permissions.footerButtons.grantPermissions"
-                className={cn({ "text-label-purple": isRefetching })}
               />
             </Button>
           </div>
