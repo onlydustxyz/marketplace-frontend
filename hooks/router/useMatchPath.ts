@@ -2,7 +2,11 @@
 
 import { useParams, usePathname } from "next/navigation";
 
-const INITIAL_OPTIONS = { exact: true };
+export type MatchPathOptions = {
+  exact?: boolean;
+};
+
+const INITIAL_OPTIONS: MatchPathOptions = { exact: true };
 
 /**
  * Check if the current path matches the route template

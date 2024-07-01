@@ -20,6 +20,7 @@ import { withClientOnly } from "components/layout/client-only/client-only";
 
 import { NEXT_ROUTER } from "constants/router";
 
+import { MatchPathOptions } from "hooks/router/useMatchPath";
 import { useIntl } from "hooks/translate/use-translate";
 
 import View from "./View";
@@ -28,6 +29,7 @@ import ViewMobile from "./ViewMobile";
 export type ProjectDetailsTab = {
   label: string;
   path: string;
+  matchPathOptions?: MatchPathOptions;
 };
 
 function ProjectsSidebar() {
@@ -66,6 +68,7 @@ function ProjectsSidebar() {
     applications: {
       label: T("project.details.applications.title"),
       path: NEXT_ROUTER.projects.details.applications.root(slug),
+      matchPathOptions: { exact: false },
     },
     rewards: {
       label: T("project.details.rewards.title"),
