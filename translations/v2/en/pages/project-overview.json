@@ -37,7 +37,7 @@
   },
   "goodFirstIssues": {
     "title": "Good first issues",
-    "description": "Apply to a list of curated issues well suited for beginners to kickstart your journey.",
+    "description": "Apply to a list of curated issues well suited for those new to the project to kickstart your journey.",
     "button": {
       "viewApplication": "View application",
       "apply": "Apply"
