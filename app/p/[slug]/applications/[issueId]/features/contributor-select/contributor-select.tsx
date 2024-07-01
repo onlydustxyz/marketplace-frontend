@@ -35,7 +35,7 @@ export function ContributorSelect({
             key={application.id}
             applicationId={application.id}
             user={application.applicant}
-            recommandationScore={application.recommandationScore}
+            recommandationScore={application.recommendationScore}
             selectedUser={selectedUser}
             handleSelectUser={handleSelectUser}
           />
