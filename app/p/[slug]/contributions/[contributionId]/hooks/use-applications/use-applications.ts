@@ -1,5 +1,5 @@
 import { applicationsApiClient } from "api-client/resources/applications";
-import { issuesApiClient } from "api-client/resources/issues/index";
+import { issuesApiClient } from "api-client/resources/issues";
 import { debounce } from "lodash";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -8,7 +8,7 @@ import ProjectApi from "src/api/Project";
 
 import { TUseApplications } from "./use-applications.types";
 
-export function UseApplications({ search }: TUseApplications.Props): TUseApplications.Return {
+export function useApplications({ search }: TUseApplications.Props): TUseApplications.Return {
   const { slug = "", contributionId = "" } = useParams<{ slug?: string; contributionId?: string }>();
 
   const [debouncedSearch, setDebouncedSearch] = useState<string>(search);
@@ -77,6 +77,10 @@ export function UseApplications({ search }: TUseApplications.Props): TUseApplica
     [projectMembersApplicationsData]
   );
 
+  const canInteract = useMemo(() => {
+    return issueData?.githubAppInstallationStatus === "COMPLETE";
+  }, [issueData?.githubAppInstallationStatus]);
+
   return {
     newComers: {
       applications: newComersApplications,
@@ -96,5 +100,6 @@ export function UseApplications({ search }: TUseApplications.Props): TUseApplica
       content: issueData?.title,
       isLoading: issueDataIsLoading,
     },
+    canInteract,
   };
 }

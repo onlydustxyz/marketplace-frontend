@@ -4,12 +4,17 @@ import githubGrantPermissionImage from "public/images/banners/github-grant-permi
 import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
 import { Typo } from "components/atoms/typo/variants/typo-default";
-import { TPermissionModal } from "components/features/grant-permission/components/permission-modal/permission-modal.types";
+import { TPublicRepoScopePermissionModal } from "components/features/grant-permission/components/public-repo-scope-permission-modal/public-repo-scope-permission-modal.types";
 import { usePublicRepoScope } from "components/features/grant-permission/hooks/use-public-repo-scope";
 import { Icon } from "components/layout/icon/icon";
 import { Modal } from "components/molecules/modal";
 
-export function PermissionModal({ isOpen, handleClose, handleMoreInfoOpen, handleOpenDrawer }: TPermissionModal.Props) {
+export function PublicRepoScopePermissionModal({
+  isOpen,
+  handleClose,
+  handleMoreInfoOpen,
+  handleOpenDrawer,
+}: TPublicRepoScopePermissionModal.Props) {
   const { handleVerifyPermissions } = usePublicRepoScope({
     onSuccessCallback: () => {
       handleClose();
@@ -20,7 +25,7 @@ export function PermissionModal({ isOpen, handleClose, handleMoreInfoOpen, handl
   return (
     <Modal
       titleProps={{
-        translate: { token: "v2.features.githubGrantPermissions.modals.permissions.title" },
+        translate: { token: "v2.features.githubPermissions.publicRepoScope.modals.permissions.title" },
       }}
       isOpen={isOpen}
       onOpenChange={isModalOpen => (!isModalOpen ? handleClose() : null)}
@@ -32,7 +37,7 @@ export function PermissionModal({ isOpen, handleClose, handleMoreInfoOpen, handl
               size="l"
               onClick={handleMoreInfoOpen}
               translate={{
-                token: "v2.features.githubGrantPermissions.modals.permissions.footerButtons.moreInfo",
+                token: "v2.features.githubPermissions.publicRepoScope.modals.permissions.footerButtons.moreInfo",
               }}
             />
             <Button
@@ -41,7 +46,8 @@ export function PermissionModal({ isOpen, handleClose, handleMoreInfoOpen, handl
               size="l"
               onClick={handleVerifyPermissions}
               translate={{
-                token: "v2.features.githubGrantPermissions.modals.permissions.footerButtons.grantPermissions",
+                token:
+                  "v2.features.githubPermissions.publicRepoScope.modals.permissions.footerButtons.grantPermissions",
               }}
             />
           </div>
@@ -62,7 +68,7 @@ export function PermissionModal({ isOpen, handleClose, handleMoreInfoOpen, handl
             variant="default"
             size="s"
             translate={{
-              token: "v2.features.githubGrantPermissions.modals.permissions.description",
+              token: "v2.features.githubPermissions.publicRepoScope.modals.permissions.description",
             }}
           />
         </div>
@@ -71,7 +77,7 @@ export function PermissionModal({ isOpen, handleClose, handleMoreInfoOpen, handl
             variant="default"
             size="xs"
             translate={{
-              token: "v2.features.githubGrantPermissions.modals.permissions.claims.write",
+              token: "v2.features.githubPermissions.publicRepoScope.modals.permissions.claims.write",
             }}
           />
         </Paper>

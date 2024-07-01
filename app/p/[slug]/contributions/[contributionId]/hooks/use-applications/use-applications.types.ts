@@ -24,5 +24,6 @@ export namespace TUseApplications {
     newComers: ApplicationItem;
     projectMembers: ApplicationItem;
     title: TitleItem;
+    canInteract: boolean;
   }
 }
