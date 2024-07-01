@@ -24,7 +24,7 @@ export function ContributorDetails({ githubId, applicationId }: TContributorDeta
   const router = useRouter();
   const { slug = "" } = useParams<{ slug?: string }>();
 
-  const { userProfile, acceptApplication, application, isLoading } = useContributorDetails({
+  const { userProfile, acceptApplication, application, isLoading, isPending } = useContributorDetails({
     githubId,
     applicationId,
   });
@@ -98,6 +98,7 @@ export function ContributorDetails({ githubId, applicationId }: TContributorDeta
             size="m"
             translate={{ token: "v2.pages.project.details.applicationDetails.profile.buttons.assign" }}
             onClick={handleAcceptApplication}
+            isLoading={isPending}
           />
         </div>
       </Card>

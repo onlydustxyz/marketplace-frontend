@@ -45,5 +45,6 @@ export const useContributorDetails = ({ githubId, applicationId }: TContributorD
     application,
     acceptApplication,
     isLoading: userProfileIsLoading || applicationIsLoading,
+    isPending: acceptMutation.isPending,
   };
 };
