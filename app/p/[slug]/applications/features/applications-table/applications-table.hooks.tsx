@@ -1,3 +1,5 @@
+"use client";
+
 import { SortDescriptor } from "@nextui-org/react";
 import { projectsApiClient } from "api-client/resources/projects";
 import { useParams } from "next/navigation";
