@@ -6,7 +6,7 @@ import { ParametersInterfaceWithReactQuery } from "api-client/types/parameters-i
 import { PROJECT_TAGS } from "src/api/Project/tags";
 
 export function useAcceptApplication(
-  { options, ...fetch }: ParametersInterfaceWithReactQuery<typeof acceptApplication>,
+  { options, onSuccess, ...fetch }: ParametersInterfaceWithReactQuery<typeof acceptApplication>,
   projectId: string
 ) {
   const { mutation } = useReactQueryAdapter(acceptApplication(fetch), options);
@@ -19,6 +19,7 @@ export function useAcceptApplication(
         queryKey: PROJECT_TAGS.good_first_issues(projectId),
         exact: false,
       });
+      onSuccess?.();
     },
   });
 }

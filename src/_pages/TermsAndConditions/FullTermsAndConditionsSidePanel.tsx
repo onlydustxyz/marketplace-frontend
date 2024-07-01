@@ -1,4 +1,5 @@
 // import File from "public/terms-conditions/202405_terms-and-conditions.pdf";
+import { useEffect, useState } from "react";
 import { pdfjs } from "react-pdf";
 
 import SidePanel from "src/components/SidePanel";
@@ -18,7 +19,14 @@ export default function FullTermsAndConditionsSidePanel({
   showFullTermsAndConditions,
   setShowFullTermsAndConditions,
 }: FullTermsAndConditionsSidePanelProps) {
-  const fileUrl = "terms-conditions/202405_terms-and-conditions.pdf";
+  const [fileUrl, setFileUrl] = useState("");
+
+  useEffect(() => {
+    if (showFullTermsAndConditions) {
+      setFileUrl(`${window.location.origin}/terms-conditions/202405_terms-and-conditions.pdf`);
+    }
+  }, [showFullTermsAndConditions]);
+
   return (
     <SidePanel open={showFullTermsAndConditions} setOpen={setShowFullTermsAndConditions}>
       <div className="flex w-full flex-col items-start justify-center px-4">

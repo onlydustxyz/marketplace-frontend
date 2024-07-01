@@ -1,9 +1,6 @@
 import { tv } from "tailwind-variants";
 
-import { AvatarCoreVariants } from "../../avatar.variants";
-
 export const AvatarNextUiVariants = tv({
-  extend: AvatarCoreVariants,
   slots: {
     base: "group relative box-content flex flex-shrink-0 items-center justify-center overflow-hidden border-1 border-container-stroke-separator",
     img: "h-full w-full object-cover object-center",
@@ -105,4 +102,9 @@ export const AvatarNextUiVariants = tv({
       },
     },
   ],
+  defaultVariants: {
+    size: "m",
+    shape: "round",
+    container: "light",
+  },
 });

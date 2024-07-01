@@ -1,6 +1,6 @@
 import { tv } from "tailwind-variants";
 
-export const PaperCoreVariants = tv({
+export const PaperDefaultVariants = tv({
   slots: {
     base: "group rounded-xl",
   },

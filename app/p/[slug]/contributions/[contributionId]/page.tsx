@@ -26,7 +26,7 @@ function ContributionPage() {
   useEffect(() => {
     const applications = [...(newComers.applications || []), ...(projectMembers.applications || [])];
 
-    if (applications.length) {
+    if (applications.length && !selectedUser && !selectedApplication) {
       setSelectedUser(applications[0].applicant.githubUserId);
       setSelectedApplication(applications[0].id);
     }
@@ -36,7 +36,7 @@ function ContributionPage() {
     <Flex direction="col" className="gap-6">
       <ContributionHeader title={title} />
 
-      <Flex className="gap-6">
+      <Flex className="flex-col gap-6 lg:flex-row">
         <ContributorSelect
           search={search}
           setSearch={setSearch}

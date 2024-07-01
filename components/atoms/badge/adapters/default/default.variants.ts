@@ -1,9 +1,6 @@
 import { tv } from "tailwind-variants";
 
-import { BadgeCoreVariants } from "../../badge.variants";
-
 export const BadgeDefaultVariants = tv({
-  extend: BadgeCoreVariants,
   slots: {
     base: "group flex items-center justify-center overflow-hidden rounded",
     contentWrapper: "flex items-center justify-center text-inherit",
@@ -65,4 +62,9 @@ export const BadgeDefaultVariants = tv({
       },
     },
   ],
+  defaultVariants: {
+    size: "m",
+    colors: "default",
+    style: "fill",
+  },
 });

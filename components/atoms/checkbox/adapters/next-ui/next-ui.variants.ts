@@ -1,6 +1,6 @@
 import { tv } from "tailwind-variants";
 
-export const CheckboxCoreVariants = tv({
+export const CheckboxNextUiVariants = tv({
   slots: {
     base: "",
     label: "",

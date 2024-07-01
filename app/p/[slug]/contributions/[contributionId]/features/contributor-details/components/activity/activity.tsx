@@ -15,7 +15,9 @@ export function Activity({ githubId }: TActivity.Props) {
           variant="special-label"
           className="text-greyscale-200"
         />
-        <ActivityGraph githubUserId={githubId} ecosystems={[]} activityGraphOnly={true} />
+        <div className="w-fit self-center">
+          <ActivityGraph githubUserId={githubId} ecosystems={[]} activityGraphOnly={true} />
+        </div>
       </Card>
     </Flex>
   );
