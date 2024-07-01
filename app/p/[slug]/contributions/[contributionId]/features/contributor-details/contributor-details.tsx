@@ -29,6 +29,8 @@ export function ContributorDetails({ githubId, applicationId }: TContributorDeta
     applicationId,
   });
 
+  const isFromGithub = application?.origin === "GITHUB";
+
   async function handleAcceptApplication() {
     await acceptApplication({});
     router.push(NEXT_ROUTER.projects.details.root(slug));
@@ -43,11 +45,13 @@ export function ContributorDetails({ githubId, applicationId }: TContributorDeta
       {userProfile && (
         <ProfileCard login={userProfile.login} avatarUrl={userProfile.avatarUrl} {...userProfile.statsSummary} />
       )}
-      <Helper
-        title={{ translate: { token: "v2.pages.project.details.applicationDetails.originGithub.title" } }}
-        text={{ translate: { token: "v2.pages.project.details.applicationDetails.originGithub.content" } }}
-        container={"brand-2"}
-      />
+      {isFromGithub && (
+        <Helper
+          title={{ translate: { token: "v2.pages.project.details.applicationDetails.originGithub.title" } }}
+          text={{ translate: { token: "v2.pages.project.details.applicationDetails.originGithub.content" } }}
+          container={"brand-2"}
+        />
+      )}
       <Card background="base" hasPadding={false} border={false} className="relative">
         <Flex className="w-full flex-col gap-6 p-4">
           <MostActiveLanguages githubId={githubId} />
