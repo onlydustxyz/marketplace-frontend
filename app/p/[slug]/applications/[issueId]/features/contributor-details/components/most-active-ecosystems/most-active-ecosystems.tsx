@@ -1,6 +1,6 @@
 import { usersApiClient } from "api-client/resources/users";
 
-import { MostActive } from "app/p/[slug]/contributions/[issueId]/features/contributor-details/components/most-active/most-active";
+import { MostActive } from "app/p/[slug]/applications/[issueId]/features/contributor-details/components/most-active/most-active";
 
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";

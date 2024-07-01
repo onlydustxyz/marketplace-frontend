@@ -26,7 +26,11 @@ export function ReadWriteIssuePermissionModal() {
     delays: 3000,
     enabled: enablePooling,
   });
-  const { data: issueData, isRefetching } = issuesApiClient.queries.useGetIssueById({
+  const {
+    data: issueData,
+    isRefetching,
+    isLoading,
+  } = issuesApiClient.queries.useGetIssueById({
     pathParams: {
       issueId: Number(issueId),
     },
@@ -58,7 +62,7 @@ export function ReadWriteIssuePermissionModal() {
       classNames={{
         backdrop: "bg-transparent",
       }}
-      isOpen={issueData?.githubAppInstallationStatus !== "COMPLETE"}
+      isOpen={issueData?.githubAppInstallationStatus !== "COMPLETE" && !isLoading}
       onOpenChange={isModalOpen =>
         !isModalOpen ? router.push(NEXT_ROUTER.projects.details.applications.root(slug)) : null
       }
