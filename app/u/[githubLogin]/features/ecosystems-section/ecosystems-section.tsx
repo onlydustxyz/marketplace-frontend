@@ -15,9 +15,12 @@ export async function EcosystemsSection(props: TEcosystemsSection.Props) {
   const { githubUserId } = props;
 
   const ecosystems = await usersApiClient.fetch
-    .getUserPublicEcosystems(githubUserId, {
-      pageSize: 10,
-      pageIndex: 0,
+    .getUserPublicEcosystems({
+      pathParams: { githubId: githubUserId },
+      pagination: {
+        pageSize: 10,
+        pageIndex: 0,
+      },
     })
     .request()
     .then(res =>

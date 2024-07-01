@@ -20,6 +20,7 @@ import { withClientOnly } from "components/layout/client-only/client-only";
 
 import { NEXT_ROUTER } from "constants/router";
 
+import { MatchPathOptions } from "hooks/router/useMatchPath";
 import { useIntl } from "hooks/translate/use-translate";
 
 import View from "./View";
@@ -28,6 +29,7 @@ import ViewMobile from "./ViewMobile";
 export type ProjectDetailsTab = {
   label: string;
   path: string;
+  matchPathOptions?: MatchPathOptions;
 };
 
 function ProjectsSidebar() {
@@ -63,6 +65,11 @@ function ProjectsSidebar() {
       label: T("project.details.contributions.title"),
       path: NEXT_ROUTER.projects.details.contributions.root(slug),
     },
+    applications: {
+      label: T("project.details.applications.title"),
+      path: NEXT_ROUTER.projects.details.applications.root(slug),
+      matchPathOptions: { exact: false },
+    },
     rewards: {
       label: T("project.details.rewards.title"),
       path: NEXT_ROUTER.projects.details.rewards.root(slug),
@@ -80,6 +87,7 @@ function ProjectsSidebar() {
   const availableTabs = [
     AvailableTabs.overview,
     ...(isProjectLeader ? [AvailableTabs.contributions] : []),
+    ...(isProjectLeader ? [AvailableTabs.applications] : []),
     ...(isProjectLeader ? [AvailableTabs.rewards] : []),
     AvailableTabs.contributors,
     ...(isProjectLeader ? [AvailableTabs.insights] : []),

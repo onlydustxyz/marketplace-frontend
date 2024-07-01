@@ -2,9 +2,9 @@ import { ElementType } from "react";
 
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
 
-import { TButtonProps } from "./button.types";
+import { ButtonPort } from "./button.types";
 
-export function ButtonLoading<C extends ElementType = "button">({ size, hideText }: TButtonProps<C>) {
+export function ButtonLoading<C extends ElementType = "button">({ size, hideText }: ButtonPort<C>) {
   const [w, h] = (() => {
     if (hideText) {
       if (size === "s") {

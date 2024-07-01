@@ -1,3 +1,6 @@
+import en_features_public_repo_scope_permissions from "translations/v2/en/features/github-permissions/public-repo-scope-permissions.json";
+import en_features_read_write_issue_permissions from "translations/v2/en/features/github-permissions/read-write-issue-permissions.json";
+
 import en_base from "../en.json";
 import en_commons from "./en/commons/commons.json";
 import en_commons_enum from "./en/commons/enums.json";
@@ -11,7 +14,6 @@ import en_features_dots_status from "./en/features/dots-status.json";
 import en_features_ecosystems from "./en/features/ecosystems.json";
 import en_features from "./en/features/features.json";
 import en_features_filters from "./en/features/filters.json";
-import en_features_github_grant_permissions from "./en/features/github-grant-permissions.json";
 import en_features_leaders from "./en/features/leaders.json";
 import en_features_menu from "./en/features/menu.json";
 import en_features_payout_status from "./en/features/payout-status.json";
@@ -28,6 +30,8 @@ import en_ecosystems from "./en/pages/ecosystems";
 import en_hackathons_details from "./en/pages/hackathons-details.json";
 import en_hackathons from "./en/pages/hackathons.json";
 import en_home from "./en/pages/home";
+import en_project_applications_table from "./en/pages/project-applications/project-applications-table.json";
+import en_project_details_application_details from "./en/pages/project-details/project-application-details.json";
 import en_project_details_header from "./en/pages/project-details/project-header.json";
 import en_project_overview from "./en/pages/project-overview.json";
 import en_projects from "./en/pages/projects.json";
@@ -74,7 +78,10 @@ export const en = {
       activityGraph: en_features_activity_graph,
       profileCard: en_features_profile_card,
       detailsAccordion: en_features_details_accordion,
-      githubGrantPermissions: en_features_github_grant_permissions,
+      githubPermissions: {
+        publicRepoScope: en_features_public_repo_scope_permissions,
+        readWriteIssue: en_features_read_write_issue_permissions,
+      },
       projects: {
         applyIssueDrawer: en_features_projects_apply_issue_drawer,
       },
@@ -85,6 +92,10 @@ export const en = {
         overview: en_project_overview,
         details: {
           header: en_project_details_header,
+          applicationDetails: en_project_details_application_details,
+        },
+        applications: {
+          table: en_project_applications_table,
         },
       },
       settings: {

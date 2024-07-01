@@ -1,8 +1,10 @@
 import { ForwardedRef, forwardRef } from "react";
 
-import { TextareaCore } from "../textarea.core";
-import { TTextareaProps } from "../textarea.types";
+import { withComponentAdapter } from "components/hocs/with-component-adapter";
 
-export const Textarea = forwardRef(function Textarea(props: TTextareaProps, ref: ForwardedRef<HTMLTextAreaElement>) {
-  return <TextareaCore ref={ref} {...props} />;
+import { TextareaNextUiAdapter } from "../adapters/next-ui/next-ui.adapter";
+import { TextareaPort } from "../textarea.types";
+
+export const Textarea = forwardRef(function Textarea(props: TextareaPort, ref: ForwardedRef<HTMLTextAreaElement>) {
+  return withComponentAdapter<TextareaPort, HTMLTextAreaElement>(TextareaNextUiAdapter)(props, ref);
 });
