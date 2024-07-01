@@ -5,6 +5,5 @@ export namespace TRenderWithProps {
     Component: (props: T) => ReactNode;
     props?: T;
     overrideProps?: Partial<T>;
-    defaultPropsPriority?: boolean;
   }
 }
