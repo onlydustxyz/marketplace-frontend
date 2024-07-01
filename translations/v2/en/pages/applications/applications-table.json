@@ -1,4 +1,18 @@
 {
-  "title": "Applications",
+  "title": "Applied",
+  "description": "Unassigned issues from one of your project repositories with applicants.",
+  "columns": {
+    "date": "Date",
+    "project": "Project",
+    "repository": "Repository",
+    "contribution": "Contribution"
+  },
+  "rows": {
+    "seeApplication": "See application"
+  },
+  "empty": {
+    "title": "No applications",
+    "description": "There are no applications to view right now."
+  },
   "error": "An error occurred, please try again later."
 }
