@@ -9,6 +9,7 @@ import { ProfileCard } from "components/features/profile-card/profile-card";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
+import { Helper } from "components/molecules/helper";
 
 import { NEXT_ROUTER } from "constants/router";
 
@@ -28,6 +29,8 @@ export function ContributorDetails({ githubId, applicationId }: TContributorDeta
     applicationId,
   });
 
+  const isFromGithub = application?.origin === "GITHUB";
+
   async function handleAcceptApplication() {
     await acceptApplication({});
     router.push(NEXT_ROUTER.projects.details.root(slug));
@@ -41,6 +44,13 @@ export function ContributorDetails({ githubId, applicationId }: TContributorDeta
     <Flex direction="col" className="flex-1 gap-6">
       {userProfile && (
         <ProfileCard login={userProfile.login} avatarUrl={userProfile.avatarUrl} {...userProfile.statsSummary} />
+      )}
+      {isFromGithub && (
+        <Helper
+          title={{ translate: { token: "v2.pages.project.details.applicationDetails.originGithub.title" } }}
+          text={{ translate: { token: "v2.pages.project.details.applicationDetails.originGithub.content" } }}
+          container={"brand-2"}
+        />
       )}
       <Card background="base" hasPadding={false} border={false} className="relative">
         <Flex className="w-full flex-col gap-6 p-4">
