@@ -24,7 +24,7 @@ export function ReadWriteIssuePermissionModal(_: TPublicRepoScopePermissionModal
   const { T } = useIntl();
   const router = useRouter();
   const [enablePooling, setEnablePooling] = useState(false);
-  const { contributionId = "" } = useParams<{ slug?: string; contributionId?: string }>();
+  const { slug = "", contributionId = "" } = useParams<{ slug?: string; contributionId?: string }>();
 
   const { refetchOnWindowFocus, refetchInterval, onRefetching, onForcePooling } = usePooling({
     limites: 20,
@@ -80,14 +80,16 @@ export function ReadWriteIssuePermissionModal(_: TPublicRepoScopePermissionModal
         backdrop: "bg-transparent",
       }}
       isOpen={issueData?.githubAppInstallationStatus !== "COMPLETE"}
-      onOpenChange={isModalOpen => (!isModalOpen ? router.push(NEXT_ROUTER.settings.profile) : null)}
+      onOpenChange={isModalOpen =>
+        !isModalOpen ? router.push(NEXT_ROUTER.projects.details.applications.root(slug)) : null
+      }
       footer={{
         endContent: (
           <div className="flex gap-4">
             <Button
               variant="secondary-light"
               size="l"
-              onClick={() => router.push(NEXT_ROUTER.settings.profile)}
+              onClick={() => router.push(NEXT_ROUTER.projects.details.applications.root(slug))}
               translate={{
                 token: "v2.features.githubPermissions.readWriteIssue.modals.permissions.footerButtons.moreInfo",
               }}
@@ -102,7 +104,7 @@ export function ReadWriteIssuePermissionModal(_: TPublicRepoScopePermissionModal
               <Translate
                 as="span"
                 token="v2.features.githubPermissions.readWriteIssue.modals.permissions.footerButtons.grantPermissions"
-                className={cn({ "text-purple-500": isRefetching })}
+                className={cn({ "text-label-purple": isRefetching })}
               />
             </Button>
           </div>
