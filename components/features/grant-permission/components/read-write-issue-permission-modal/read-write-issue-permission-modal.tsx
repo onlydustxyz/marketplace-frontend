@@ -19,7 +19,7 @@ import { NEXT_ROUTER } from "constants/router";
 export function ReadWriteIssuePermissionModal() {
   const router = useRouter();
   const [enablePooling, setEnablePooling] = useState(false);
-  const { slug = "", contributionId = "" } = useParams<{ slug?: string; contributionId?: string }>();
+  const { slug = "", issueId = "" } = useParams<{ slug?: string; issueId?: string }>();
 
   const { refetchOnWindowFocus, refetchInterval, onRefetching } = usePooling({
     limites: 20,
@@ -28,9 +28,9 @@ export function ReadWriteIssuePermissionModal() {
   });
   const { data: issueData, isRefetching } = issuesApiClient.queries.useGetIssueById({
     pathParams: {
-      issueId: Number(contributionId),
+      issueId: Number(issueId),
     },
-    options: { enabled: !!contributionId, refetchOnWindowFocus, refetchInterval },
+    options: { enabled: !!issueId, refetchOnWindowFocus, refetchInterval },
   });
 
   useEffect(() => {

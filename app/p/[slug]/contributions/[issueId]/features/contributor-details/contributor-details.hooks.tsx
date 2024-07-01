@@ -1,7 +1,7 @@
 import { applicationsApiClient } from "api-client/resources/applications";
 import { usersApiClient } from "api-client/resources/users";
 
-import { TContributorDetails } from "app/p/[slug]/contributions/[contributionId]/features/contributor-details/contributor-details.types";
+import { TContributorDetails } from "app/p/[slug]/contributions/[issueId]/features/contributor-details/contributor-details.types";
 
 import useMutationAlert from "src/api/useMutationAlert";
 

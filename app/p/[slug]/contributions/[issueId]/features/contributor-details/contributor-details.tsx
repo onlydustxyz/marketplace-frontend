@@ -1,6 +1,6 @@
 import { useParams, useRouter } from "next/navigation";
 
-import { useContributorDetails } from "app/p/[slug]/contributions/[contributionId]/features/contributor-details/contributor-details.hooks";
+import { useContributorDetails } from "app/p/[slug]/contributions/[issueId]/features/contributor-details/contributor-details.hooks";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";

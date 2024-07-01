@@ -1,7 +1,7 @@
 import { usersApiClient } from "api-client/resources/users";
 
-import { TMostActiveEcosystems } from "app/p/[slug]/contributions/[contributionId]/features/contributor-details/components/most-active-ecosystems/most-active-ecosystems.types";
-import { MostActive } from "app/p/[slug]/contributions/[contributionId]/features/contributor-details/components/most-active/most-active";
+import { TMostActiveEcosystems } from "app/p/[slug]/contributions/[issueId]/features/contributor-details/components/most-active-ecosystems/most-active-ecosystems.types";
+import { MostActive } from "app/p/[slug]/contributions/[issueId]/features/contributor-details/components/most-active/most-active";
 
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
