@@ -7,6 +7,7 @@ import { ProfileCard } from "components/features/profile-card/profile-card";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
+import { Helper } from "components/molecules/helper";
 
 import { Activity } from "./components/activity/activity";
 import { MostActiveEcosystems } from "./components/most-active-ecosystems/most-active-ecosystems";
@@ -30,6 +31,11 @@ export function ContributorDetails({ githubId, applicationId }: TContributorDeta
   return (
     <Flex direction="col" className="flex-1 gap-6 overflow-hidden">
       <ProfileCard login={userProfile.login} avatarUrl={userProfile.avatarUrl} {...userProfile.statsSummary} />
+      <Helper
+        title={{ translate: { token: "v2.pages.project.details.applicationDetails.originGithub.title" } }}
+        text={{ translate: { token: "v2.pages.project.details.applicationDetails.originGithub.content" } }}
+        container={"brand-2"}
+      />
       <Card background="base" hasPadding={false} border={false} className="relative">
         <Flex className="w-full flex-col gap-6 p-4">
           <MostActiveLanguages githubId={githubId} />
