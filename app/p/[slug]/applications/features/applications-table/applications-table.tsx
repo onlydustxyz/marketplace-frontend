@@ -11,9 +11,10 @@ import { viewportConfig } from "src/config";
 import { cn } from "src/utils/cn";
 
 import { Button } from "components/atoms/button/variants/button-default";
+import { Typo } from "components/atoms/typo";
 import { Table } from "components/ds/table/table";
 import { BaseLink } from "components/layout/base-link/base-link";
-import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
+import { TableContainer } from "components/features/table-container/table-container";
 import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 import { Translate } from "components/layout/translate/translate";
 
@@ -24,11 +25,11 @@ import { useIntl } from "hooks/translate/use-translate";
 
 function Error() {
   return (
-    <div className="py-6">
-      <p className="whitespace-pre-line text-center font-walsheim text-sm text-greyscale-50">
-        <Translate token={"contributions.table.error"} />
-      </p>
-    </div>
+    <Typo
+      as={"p"}
+      translate={{ token: "v2.pages.project.applications.table.error" }}
+      classNames={{ base: "py-6 text-greyscale-50 text-center" }}
+    />
   );
 }
 
@@ -123,41 +124,16 @@ export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
   }
 
   return (
-    <section
-      className={
-        "flex max-h-full flex-col overflow-hidden rounded-2xl border border-card-border-medium bg-card-background-base shadow-heavy"
-      }
+    <TableContainer
+      title={"v2.pages.project.applications.table.title"}
+      description={"v2.pages.project.applications.table.description"}
+      icon={<div className={"h-5 w-5 rounded-full border-2 border-dashed"} />}
     >
-      <header
-        className={cn("flex items-start justify-between gap-6 bg-card-background-light px-6 py-4 md:items-center", {
-          "border-b border-card-border-light": hasIssues,
-        })}
-      >
-        <div className="flex items-start gap-3">
-          <div className="rounded-lg bg-card-background-medium p-3 leading-none text-greyscale-50">
-            <div className={"h-5 w-5 rounded-full border-2 border-dashed"} />
-          </div>
-          <div className="font-walsheim">
-            <Translate
-              as={"p"}
-              token={"v2.pages.project.applications.table.title"}
-              className="text-base font-medium text-greyscale-50"
-            />
-            <Translate
-              as={"p"}
-              token={"v2.pages.project.applications.table.description"}
-              className="text-sm text-spaceBlue-200"
-            />
-          </div>
-        </div>
-      </header>
-      <ScrollView>
-        <div className={"p-3 lg:hidden"}>{!isLg ? renderMobileContent() : null}</div>
+      <div className={"p-3 lg:hidden"}>{!isLg ? renderMobileContent() : null}</div>
 
-        <div className={cn("hidden px-4 pt-6 lg:block", isLg && hasNextPage ? "pb-0" : "pb-6")}>
-          {isLg ? renderDesktopContent() : null}
-        </div>
-      </ScrollView>
-    </section>
+      <div className={cn("hidden px-4 pt-6 lg:block", isLg && hasNextPage ? "pb-0" : "pb-6")}>
+        {isLg ? renderDesktopContent() : null}
+      </div>
+    </TableContainer>
   );
 }
