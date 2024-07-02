@@ -25,6 +25,7 @@ export function HackathonCard<C extends ElementType = "div">({
   htmlProps,
   classNames,
   title,
+  upperTitle = <Translate token="v2.features.hackathonCard.title" as="span" />,
   slug,
   backgroundImage,
   location,
@@ -63,13 +64,9 @@ export function HackathonCard<C extends ElementType = "div">({
       <div className="relative flex flex-col gap-6">
         <div className="flex items-start justify-between gap-4">
           <div className="flex flex-col gap-1">
-            <Typo
-              size="l"
-              weight="medium"
-              translate={{
-                token: "v2.features.hackathonCard.title",
-              }}
-            />
+            <Typo size="l" weight="medium">
+              {upperTitle}
+            </Typo>
 
             <Typo variant="brand" size="3xl" classNames={{ base: "md:5xl" }}>
               {title}
