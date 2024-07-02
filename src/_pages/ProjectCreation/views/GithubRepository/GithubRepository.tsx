@@ -31,7 +31,7 @@ export const GithubRepositoryPage = () => {
   const searchInputRef = useRef<HTMLInputElement>(null);
   useSearchHotKey({ inputRef: searchInputRef });
 
-  const installedOrganizations = organizations.filter(org => org.installationStatus === "COMPLETE");
+  const installedOrganizations = organizations.filter(org => org.installationStatus !== "NOT_INSTALLED");
 
   const selectedRepos = form.watch("selectedRepos") || [];
   const search = form.watch("search");
@@ -85,7 +85,7 @@ export const GithubRepositoryPage = () => {
                     id: organization.githubUserId,
                     login: organization.login,
                     installationId: organization.installationId,
-                    installed: organization.installationStatus === "COMPLETE",
+                    installed: organization.installationStatus !== "NOT_INSTALLED",
                     isAPersonalOrganization: organization.isPersonal,
                   });
 
