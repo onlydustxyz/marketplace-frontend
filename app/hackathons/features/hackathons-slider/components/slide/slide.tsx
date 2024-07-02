@@ -1,6 +1,6 @@
+import { HackathonCard } from "components/features/hackathons/hackathon-card";
+import { getHackathonBackground } from "components/features/hackathons/hackathon-card/hackathon-card.utils";
 import { Translate } from "components/layout/translate/translate";
-import { HackathonCard } from "components/organisms/hackathon-card";
-import { getHackathonBackground } from "components/organisms/hackathon-card/hackathon-card.utils";
 
 import { TSlide } from "./slide.types";
 

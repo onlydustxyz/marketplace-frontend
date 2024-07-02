@@ -1,6 +1,6 @@
 import { tv } from "tailwind-variants";
 
-export const HackathonCardDefaultVariants = tv({
+export const HackathonCardVariants = tv({
   slots: {
     base: "relative",
   },

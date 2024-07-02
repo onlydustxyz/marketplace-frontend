@@ -8,9 +8,9 @@ import { MainDescription } from "app/h/[slug]/features/main-description/main-des
 import { Overview } from "app/h/[slug]/features/overview/overview";
 import { Tracks } from "app/h/[slug]/features/tracks/tracks";
 
+import { HackathonStatus } from "components/features/hackathons/hackathon-card";
 import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 import { Flex } from "components/layout/flex/flex";
-import { HackathonStatus } from "components/organisms/hackathon-card";
 
 import { Header } from "./components/header/header";
 import { RegistrationWrapper } from "./features/registration-wrapper/registration-wrapper";

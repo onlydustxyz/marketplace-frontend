@@ -1,11 +1,11 @@
 import { THackathonSection } from "app/hackathons/features/hackathon-section/hackathon-section.types";
 
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
+import { HackathonCard } from "components/features/hackathons/hackathon-card/hackathon-card";
+import { getHackathonBackground } from "components/features/hackathons/hackathon-card/hackathon-card.utils";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
-import { HackathonCard } from "components/organisms/hackathon-card";
-import { getHackathonBackground } from "components/organisms/hackathon-card/hackathon-card.utils";
 
 export function HackathonSection({ title, icon, items, status, startIndex }: THackathonSection.Props) {
   if (!items.length) return null;

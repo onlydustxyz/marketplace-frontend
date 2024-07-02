@@ -4,9 +4,9 @@ import { THeader } from "app/h/[slug]/components/header/header.types";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
+import { HackathonCard } from "components/features/hackathons/hackathon-card";
+import { getHackathonBackground } from "components/features/hackathons/hackathon-card/hackathon-card.utils";
 import { Translate } from "components/layout/translate/translate";
-import { HackathonCard } from "components/organisms/hackathon-card";
-import { getHackathonBackground } from "components/organisms/hackathon-card/hackathon-card.utils";
 
 import { NEXT_ROUTER } from "constants/router";
 

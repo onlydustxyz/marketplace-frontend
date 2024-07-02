@@ -8,7 +8,8 @@ import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
 import { Tag } from "components/atoms/tag";
 import { TagIcon } from "components/atoms/tag/variants/tag-icon";
-import { Typo } from "components/atoms/typo/variants/typo-default";
+import { Typo } from "components/atoms/typo";
+import { HackathonCardPort } from "components/features/hackathons/hackathon-card/hackathon-card.types";
 import { ClientOnly } from "components/layout/client-only/client-only";
 import { Icon } from "components/layout/icon/icon";
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
@@ -17,10 +18,9 @@ import { AvatarGroup } from "components/molecules/avatar-group";
 
 import { NEXT_ROUTER } from "constants/router";
 
-import { HackathonCardPort } from "../../hackathon-card.types";
-import { HackathonCardDefaultVariants } from "./default.variants";
+import { HackathonCardVariants } from "./hackathon-card.variants";
 
-export function HackathonCardDefaultAdapter<C extends ElementType = "div">({
+export function HackathonCard<C extends ElementType = "div">({
   htmlProps,
   classNames,
   title,
@@ -33,7 +33,7 @@ export function HackathonCardDefaultAdapter<C extends ElementType = "div">({
   hasLayer,
 }: HackathonCardPort<C>) {
   const Component = slug ? "a" : "article";
-  const slots = HackathonCardDefaultVariants();
+  const slots = HackathonCardVariants();
 
   function getStatusTag(): {
     tagIcon?: RemixIconsName;

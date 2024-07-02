@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from "@storybook/react";
 import backgroundImage from "public/images/hackathons/cover-1.webp";
 
+import { HackathonCard } from "./hackathon-card";
 import { HackathonCardLoading } from "./hackathon-card.loading";
 import { HackathonCardPort } from "./hackathon-card.types";
-import { HackathonCard } from "./variants/hackathon-card-default";
 
 type Story = StoryObj<typeof HackathonCard>;
 

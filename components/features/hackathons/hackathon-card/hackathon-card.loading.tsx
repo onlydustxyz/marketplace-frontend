@@ -6,15 +6,15 @@ import { ButtonLoading } from "components/atoms/button/button.loading";
 import { Paper, PaperLoading } from "components/atoms/paper";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
 import { TagLoading } from "components/ds/tag/tag.loading";
+import { HackathonCardPort } from "components/features/hackathons/hackathon-card/hackathon-card.types";
 import { AvatarGroupLoading } from "components/molecules/avatar-group";
 
-import { HackathonCardDefaultVariants } from "./adapters/default/default.variants";
-import { HackathonCardPort } from "./hackathon-card.types";
+import { HackathonCardVariants } from "./hackathon-card.variants";
 
 export function HackathonCardLoading<C extends ElementType = "div">({
   classNames,
 }: Pick<HackathonCardPort<C>, "classNames">) {
-  const slots = HackathonCardDefaultVariants();
+  const slots = HackathonCardVariants();
 
   return (
     <Paper
