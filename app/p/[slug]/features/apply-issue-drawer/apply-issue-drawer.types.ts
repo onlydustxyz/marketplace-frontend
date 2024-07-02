@@ -4,7 +4,7 @@ import { z } from "zod";
 import { UseProjectGoodFirstIssuesInfiniteListResponse } from "src/api/Project/queries";
 
 export namespace TApplyIssueDrawer {
-  export type ActionType = "create" | "update" | "cancel";
+  export type ActionType = "create" | "update";
   export interface Props {
     issue: UseProjectGoodFirstIssuesInfiniteListResponse["issues"][0];
     hasApplied?: boolean;

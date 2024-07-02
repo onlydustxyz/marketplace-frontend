@@ -57,8 +57,8 @@ export function IssueCard({ issue }: TIssueCard.Props) {
           <Flex alignItems="center" className="gap-1">
             <Icon remixName="ri-git-repository-line" className="text-spaceBlue-100" />
 
-            <Link href={issue.repository.htmlUrl} className="text-spaceBlue-100">
-              <Typography variant="body-xs">{issue.repository.name}</Typography>
+            <Link href={issue.repo.htmlUrl} className="text-spaceBlue-100">
+              <Typography variant="body-xs">{issue.repo.name}</Typography>
             </Link>
           </Flex>
         </Flex>

@@ -1,3 +1,4 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import { differenceInDays } from "date-fns";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { Controller } from "react-hook-form";
@@ -11,11 +12,11 @@ import { usePosthog } from "src/hooks/usePosthog";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Tag } from "components/atoms/tag";
-import { TagAvatar } from "components/atoms/tag/variants/tag-avatar";
 import { TagIcon } from "components/atoms/tag/variants/tag-icon";
 import { Textarea } from "components/atoms/textarea";
 import { Typo } from "components/atoms/typo/variants/typo-default";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
+import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
 import { GrantPermission } from "components/features/grant-permission/grant-permission";
 import { usePublicRepoScope } from "components/features/grant-permission/hooks/use-public-repo-scope";
 import { BaseLink } from "components/layout/base-link/base-link";
@@ -28,6 +29,7 @@ import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer.Props) {
   const [isOpen, setIsOpen] = state;
   const [isOpenGrantPermission, setIsOpenGrantPermission] = useState(false);
+  const { isAuthenticated, loginWithRedirect } = useAuth0();
   const { capture } = usePosthog();
   const { user } = useCurrentUser();
   const {
@@ -75,9 +77,6 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
         case "update":
           handleUpdate(payload);
           break;
-        case "cancel":
-          handleCancel();
-          break;
         default:
           break;
       }
@@ -85,10 +84,16 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
   });
 
   function handleApplication(actionType: TApplyIssueDrawer.ActionType) {
+    if (!isAuthenticated) {
+      handleLoginWithRedirect(loginWithRedirect);
+      return;
+    }
+
     if (!canApply) {
       setIsOpenGrantPermission(true);
       return;
     }
+
     handleVerifyPermissions(actionType);
   }
 
@@ -101,7 +106,7 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
         variant={"secondary-light"}
         size={"l"}
       >
-        {issue.repository.name}
+        {issue.repo.name}
       </Button>
     );
 
@@ -134,7 +139,7 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
 
     const EndContent = hasApplied ? (
       <div className={"flex items-center gap-2.5"}>
-        <Button variant={"danger"} size={"l"} onClick={() => handleApplication("cancel")} isLoading={deleteIsPending}>
+        <Button variant={"danger"} size={"l"} onClick={handleCancel} isLoading={deleteIsPending}>
           <Translate token={"v2.features.projects.applyIssueDrawer.footer.cancelApplication"} />
         </Button>
         <Button size={"l"} onClick={() => handleApplication("update")} isLoading={updateIsPending}>
@@ -151,7 +156,7 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
       startContent: StartContent,
       endContent: EndContent,
     };
-  }, [hasApplied, createIsPending, updateIsPending, deleteIsPending]);
+  }, [hasApplied, createIsPending, updateIsPending, deleteIsPending, canApply]);
 
   return (
     <>
@@ -171,19 +176,19 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
               }}
               className={"col-span-3"}
             >
-              <div className="pt-2">
-                {issue.languages ? (
-                  <ul className={"flex flex-wrap gap-2"}>
-                    {issue.languages.map(language => (
-                      <li key={language.id}>
-                        <TagAvatar style={"outline"} color={"grey"} size={"xs"} avatar={{ src: language.logoUrl }}>
-                          {language.name}
-                        </TagAvatar>
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
-              </div>
+              {/*<div className="pt-2">*/}
+              {/*  {issue.languages ? (*/}
+              {/*    <ul className={"flex flex-wrap gap-2"}>*/}
+              {/*      {issue.languages.map(language => (*/}
+              {/*        <li key={language.id}>*/}
+              {/*          <TagAvatar style={"outline"} color={"grey"} size={"xs"} avatar={{ src: language.logoUrl }}>*/}
+              {/*            {language.name}*/}
+              {/*          </TagAvatar>*/}
+              {/*        </li>*/}
+              {/*      ))}*/}
+              {/*    </ul>*/}
+              {/*  ) : null}*/}
+              {/*</div>*/}
             </ApplyIssueCard>
             <ApplyIssueCard
               iconProps={{ remixName: "ri-price-tag-3-line" }}
@@ -237,7 +242,7 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
             >
               <div className="pt-2">
                 <Typo variant={"brand"} size={"4xl"}>
-                  {issue.commentCount}
+                  {/*{issue.commentCount}*/}
                 </Typo>
               </div>
             </ApplyIssueCard>

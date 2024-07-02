@@ -1,6 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { PopupConfigOptions, PopupLoginOptions } from "@auth0/auth0-spa-js";
 import { meApiClient } from "api-client/resources/me";
+import { useMemo } from "react";
 import { useLocalStorage } from "react-use";
 
 import { TApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.types";
@@ -25,7 +26,7 @@ export function usePublicRepoScope({
   const [scopeStorage, setScopeStorage] = useLocalStorage("dynamic-github-public-repo-scope");
   const { loginWithPopup, isAuthenticated, loginWithRedirect } = useAuth0();
   const { user, refetch } = useCurrentUser();
-  const canApply = user?.isAuthorizedToApplyOnGithubIssues;
+  const canApply = useMemo(() => user?.isAuthorizedToApplyOnGithubIssues, [user]);
 
   const { mutateAsync: logoutUser } = meApiClient.mutations.useLogoutUser({});
 
