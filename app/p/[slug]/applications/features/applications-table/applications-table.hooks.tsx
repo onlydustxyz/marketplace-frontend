@@ -90,7 +90,7 @@ export function useApplicationsTable({ projectId = "" }: { projectId?: string })
         key: "actions",
         children: "",
         align: "end",
-        width: 100,
+        width: 140,
       },
     ],
     []
@@ -132,14 +132,7 @@ export function useApplicationsTable({ projectId = "" }: { projectId?: string })
               />
             </Tag>
           ),
-          contribution: (
-            <div
-            // TODO @hayden don't know if this a good idea, no simple solution right now to define column width
-            // className={"w-[300px]"}
-            >
-              <Contribution contribution={contribution} />
-            </div>
-          ),
+          contribution: <Contribution contribution={contribution} />,
           actions: (
             <div className={"flex justify-end"}>
               <Button
@@ -148,7 +141,7 @@ export function useApplicationsTable({ projectId = "" }: { projectId?: string })
                 as={BaseLink}
                 htmlProps={{ href: NEXT_ROUTER.projects.details.applications.details(slug, String(row.id)) }}
               >
-                <Translate token={"v2.pages.project.applications.table.rows.assign"} />
+                <Translate token={"v2.pages.project.applications.table.rows.reviewApplication"} />
               </Button>
             </div>
           ),
