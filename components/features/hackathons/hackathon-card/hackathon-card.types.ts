@@ -3,6 +3,11 @@ import { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
 
 import { components } from "src/__generated/api";
 
+import {
+  formatHackathonDate,
+  mapHackathonStatusToTag,
+} from "components/features/hackathons/hackathon-card/hackathon-card.utils";
+
 interface Variants {}
 
 interface ClassNames {
@@ -23,4 +28,6 @@ export interface HackathonCardPort<C extends ElementType> extends Partial<Varian
   status?: HackathonStatus;
   projects?: Project[];
   hasLayer?: boolean;
+  mapStatusToTag?: typeof mapHackathonStatusToTag;
+  formatDate?: typeof formatHackathonDate;
 }

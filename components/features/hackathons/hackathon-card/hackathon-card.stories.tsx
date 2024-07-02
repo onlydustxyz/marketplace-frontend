@@ -11,6 +11,9 @@ const defaultPort: HackathonCardPort<"div"> = {
   title: "Hackathon Example",
   slug: "example",
   backgroundImage,
+  mapStatusToTag: () => ({
+    tagText: "d",
+  }),
   location: "Paris",
   startDate: new Date(),
   status: "open",

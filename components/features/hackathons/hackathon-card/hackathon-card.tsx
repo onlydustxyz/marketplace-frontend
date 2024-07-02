@@ -1,6 +1,4 @@
-import { formatInTimeZone } from "date-fns-tz";
-import enGB from "date-fns/locale/en-GB";
-import { ElementType, ReactElement } from "react";
+import { ElementType } from "react";
 
 import { cn } from "src/utils/cn";
 
@@ -10,9 +8,12 @@ import { Tag } from "components/atoms/tag";
 import { TagIcon } from "components/atoms/tag/variants/tag-icon";
 import { Typo } from "components/atoms/typo";
 import { HackathonCardPort } from "components/features/hackathons/hackathon-card/hackathon-card.types";
+import {
+  formatHackathonDate,
+  mapHackathonStatusToTag,
+} from "components/features/hackathons/hackathon-card/hackathon-card.utils";
 import { ClientOnly } from "components/layout/client-only/client-only";
 import { Icon } from "components/layout/icon/icon";
-import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { Translate } from "components/layout/translate/translate";
 import { AvatarGroup } from "components/molecules/avatar-group";
 
@@ -31,61 +32,14 @@ export function HackathonCard<C extends ElementType = "div">({
   status,
   projects,
   hasLayer,
+  mapStatusToTag = mapHackathonStatusToTag,
+  formatDate = formatHackathonDate,
 }: HackathonCardPort<C>) {
   const Component = slug ? "a" : "article";
   const slots = HackathonCardVariants();
 
-  function getStatusTag(): {
-    tagIcon?: RemixIconsName;
-    tagText: string | ReactElement;
-  } {
-    switch (status) {
-      case "closed":
-        return {
-          tagText: (
-            <Translate token="v2.features.hackathonCard.status.closed" className="whitespace-nowrap" as="span" />
-          ),
-        };
-      case "open":
-        return {
-          tagText: <Translate token="v2.features.hackathonCard.status.open" className="whitespace-nowrap" as="span" />,
-        };
-      case "live":
-        return {
-          tagIcon: "ri-fire-line",
-          tagText: <Translate token="v2.features.hackathonCard.status.live" className="whitespace-nowrap" as="span" />,
-        };
-      default:
-        return {
-          tagText: "",
-        };
-    }
-  }
-
-  function getFormattedDate(): {
-    formattedDate: string;
-    formattedTime: string;
-  } {
-    if (!startDate) {
-      return {
-        formattedDate: "",
-        formattedTime: "",
-      };
-    }
-
-    const timeZone = "Europe/Paris";
-
-    const formattedDate = formatInTimeZone(startDate, timeZone, "MMMM dd, yyyy", { locale: enGB });
-    const formattedTime = formatInTimeZone(startDate, timeZone, "hh:mm aa OOO", { locale: enGB });
-
-    return {
-      formattedDate,
-      formattedTime,
-    };
-  }
-
-  const { tagIcon, tagText } = getStatusTag();
-  const { formattedDate, formattedTime } = getFormattedDate();
+  const { tagIcon, tagText } = mapStatusToTag(status);
+  const { formattedDate, formattedTime } = formatDate(startDate);
 
   return (
     <Paper

@@ -1,3 +1,5 @@
+import { formatInTimeZone } from "date-fns-tz";
+import enGB from "date-fns/locale/en-GB";
 import backgroundImage1 from "public/images/hackathons/cover-1.webp";
 import backgroundImage2 from "public/images/hackathons/cover-2.webp";
 import backgroundImage3 from "public/images/hackathons/cover-3.webp";
@@ -14,6 +16,11 @@ import backgroundImage13 from "public/images/hackathons/cover-13.webp";
 import backgroundImage14 from "public/images/hackathons/cover-14.webp";
 import backgroundImage15 from "public/images/hackathons/cover-15.webp";
 import backgroundImage16 from "public/images/hackathons/cover-16.webp";
+import { ReactElement } from "react";
+
+import { HackathonStatus } from "components/features/hackathons/hackathon-card/hackathon-card.types";
+import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
+import { Translate } from "components/layout/translate/translate";
 
 const backgroundSets = [
   backgroundImage1,
@@ -47,4 +54,51 @@ export function getHackathonBackground(index: number, startIndex?: number) {
   }
 
   return backgroundSets[backgroundIndex];
+}
+
+export function mapHackathonStatusToTag(status?: HackathonStatus): {
+  tagIcon?: RemixIconsName;
+  tagText: string | ReactElement;
+} {
+  switch (status) {
+    case "closed":
+      return {
+        tagText: <Translate token="v2.features.hackathonCard.status.closed" className="whitespace-nowrap" as="span" />,
+      };
+    case "open":
+      return {
+        tagText: <Translate token="v2.features.hackathonCard.status.open" className="whitespace-nowrap" as="span" />,
+      };
+    case "live":
+      return {
+        tagIcon: "ri-fire-line",
+        tagText: <Translate token="v2.features.hackathonCard.status.live" className="whitespace-nowrap" as="span" />,
+      };
+    default:
+      return {
+        tagText: "",
+      };
+  }
+}
+
+export function formatHackathonDate(startDate?: Date): {
+  formattedDate: string;
+  formattedTime: string;
+} {
+  if (!startDate) {
+    return {
+      formattedDate: "",
+      formattedTime: "",
+    };
+  }
+
+  const timeZone = "Europe/Paris";
+
+  const formattedDate = formatInTimeZone(startDate, timeZone, "MMMM dd, yyyy", { locale: enGB });
+  const formattedTime = formatInTimeZone(startDate, timeZone, "hh:mm aa OOO", { locale: enGB });
+
+  return {
+    formattedDate,
+    formattedTime,
+  };
 }
