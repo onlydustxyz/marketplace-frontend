@@ -4,6 +4,7 @@ import { applicationsApiClient } from "api-client/resources/applications";
 import { useMemo } from "react";
 
 import { mapIssueToContribution } from "app/p/[slug]/applications/features/applications-table/application-table.utils";
+import { useApplyIssueDrawerState } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.hooks";
 
 import { useStackProjectOverview } from "src/App/Stacks/Stacks";
 import { Contribution } from "src/components/Contribution/Contribution";
@@ -20,6 +21,8 @@ import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 export function useApplicationsTable() {
   const { githubUserId } = useCurrentUser();
   const [openProjectOverview] = useStackProjectOverview();
+  const applyIssueDrawerState = useApplyIssueDrawerState();
+  const [, setApplyIssueDrawerState] = applyIssueDrawerState;
 
   const { data, ...query } = applicationsApiClient.queries.useInfiniteGetAllApplications({
     queryParams: {
@@ -33,6 +36,10 @@ export function useApplicationsTable() {
 
   function handleProjectClick(slug: string) {
     openProjectOverview({ slug });
+  }
+
+  function handleOpenDrawer({ issueId, applicationId }: { issueId: string; applicationId: string }) {
+    setApplyIssueDrawerState(prevState => ({ ...prevState, isOpen: true, issueId, applicationId }));
   }
 
   const columns: TTable.Column[] = useMemo(
@@ -115,7 +122,7 @@ export function useApplicationsTable() {
               <Button
                 variant={"secondary-light"}
                 size={"s"}
-                // TODO @hayden add click event
+                onClick={() => handleOpenDrawer({ issueId: String(row.issue.id), applicationId: row.id })}
               >
                 <Translate token={"v2.pages.applications.table.rows.seeApplication"} />
               </Button>
@@ -126,5 +133,5 @@ export function useApplicationsTable() {
     [applications]
   );
 
-  return { query, applications, hasApplications, columns, rows };
+  return { query, applications, hasApplications, columns, rows, applyIssueDrawerState, handleOpenDrawer };
 }

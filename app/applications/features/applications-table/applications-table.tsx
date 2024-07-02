@@ -1,6 +1,7 @@
 "use client";
 
 import { mapIssueToContribution } from "app/p/[slug]/applications/features/applications-table/application-table.utils";
+import { ApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer";
 
 import { IMAGES } from "src/assets/img";
 import { ContributionCard } from "src/components/Contribution/ContributionCard";
@@ -34,7 +35,8 @@ export function ApplicationsTable() {
   const { T } = useIntl();
   const isLg = useClientMediaQuery(`(min-width: ${viewportConfig.breakpoints.lg}px)`);
 
-  const { query, applications, hasApplications, columns, rows } = useApplicationsTable();
+  const { query, applications, hasApplications, columns, rows, applyIssueDrawerState, handleOpenDrawer } =
+    useApplicationsTable();
   const { isError, hasNextPage, fetchNextPage, isFetchingNextPage } = query;
 
   function renderMobileContent() {
@@ -72,7 +74,9 @@ export function ApplicationsTable() {
                 <Button
                   variant={"secondary-light"}
                   size={"s"}
-                  // TODO @hayden add click event
+                  onClick={() =>
+                    handleOpenDrawer({ issueId: String(application.issue.id), applicationId: application.id })
+                  }
                 >
                   <Translate token={"v2.pages.applications.table.rows.seeApplication"} />
                 </Button>
@@ -128,6 +132,8 @@ export function ApplicationsTable() {
       <div className={cn("hidden px-4 pt-6 lg:block", isLg && hasNextPage ? "pb-0" : "pb-6")}>
         {isLg ? renderDesktopContent() : null}
       </div>
+
+      <ApplyIssueDrawer state={applyIssueDrawerState} />
     </TableContainer>
   );
 }

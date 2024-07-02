@@ -1,11 +1,12 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { differenceInDays } from "date-fns";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 
 import { ApplyIssueCard } from "app/p/[slug]/components/apply-issue-card/apply-issue-card";
 import { ApplyIssueMarkdown } from "app/p/[slug]/components/apply-issue-markdown/apply-issue-markdown";
 import { useApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.hooks";
+import { ApplyIssueDrawerLoading } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.loading";
 import { TApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.types";
 
 import { usePosthog } from "src/hooks/usePosthog";
@@ -27,8 +28,9 @@ import { Drawer } from "components/molecules/drawer";
 
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
-export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer.Props) {
-  const [isOpen, setIsOpen] = state;
+export function ApplyIssueDrawer({ state }: TApplyIssueDrawer.Props) {
+    const [{ isOpen, issueId, applicationId }, setState] = state;
+    const hasApplied = Boolean(applicationId);
   const [isOpenGrantPermission, setIsOpenGrantPermission] = useState(false);
   const { isAuthenticated, loginWithRedirect } = useAuth0();
   const { capture } = usePosthog();
@@ -36,18 +38,24 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
   const {
     project: { data: project },
     form: { control, reset, setValue, getValues },
-    create: { isPending: createIsPending },
-    update: { isPending: updateIsPending },
-    delete: { isPending: deleteIsPending },
+    issue,
+    getIssue: { isLoading: issueIsLoading },
+    application,
+    getApplication: { isLoading: applicationIsLoading },
+    createApplication: { isPending: createIsPending },
+    updateApplication: { isPending: updateIsPending },
+    deleteApplication: { isPending: deleteIsPending },
     handleCreate,
     handleUpdate,
     handleCancel,
-  } = useApplyIssueDrawer({ issue, state });
+  } = useApplyIssueDrawer({ state });
+
+  const isLoading = issueIsLoading || applicationIsLoading;
 
   useEffect(() => {
     if (isOpen && project) {
       capture("issue_viewed", {
-        issue_id: issue.id,
+        issue_id: issueId,
         project_id: project?.id,
         github_user_id: user?.githubUserId,
       });
@@ -61,9 +69,9 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
   }, [isOpen]);
 
   useEffect(() => {
-    setValue("motivations", issue.currentUserApplication?.motivations ?? "");
-    setValue("problemSolvingApproach", issue.currentUserApplication?.problemSolvingApproach ?? "");
-  }, [issue]);
+    setValue("motivations", application?.motivation ?? "");
+    setValue("problemSolvingApproach", application?.problemSolvingApproach ?? "");
+  }, [application]);
 
   const { canApply, handleVerifyPermissions } = usePublicRepoScope({
     onSuccessCallback: actionType => {
@@ -96,7 +104,9 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
     handleVerifyPermissions(actionType);
   }
 
-  const header = useMemo(() => {
+  function header() {
+      if (isLoading || !issue) return {};
+
     const StartContent = (
       <Button
         as={BaseLink}
@@ -112,9 +122,9 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
     return {
       startContent: StartContent,
     };
-  }, []);
+  }
 
-  const footer = useMemo(() => {
+  function footer() {
     const StartContent = hasApplied ? (
       <TagIcon
         icon={{ remixName: "ri-checkbox-circle-fill" }}
@@ -155,15 +165,20 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
       startContent: StartContent,
       endContent: EndContent,
     };
-  }, [hasApplied, createIsPending, updateIsPending, deleteIsPending, canApply]);
+  }
 
-  return (
-    <>
-      <Drawer isOpen={isOpen} onOpenChange={setIsOpen} as={"form"} header={header} footer={footer}>
-        <div className={"grid gap-4"}>
-          <Typo size={"2xl"} variant={"brand"} color={"text-1"}>
-            {issue.title}
-          </Typo>
+  function renderContent() {
+    if (isLoading) {
+      return <ApplyIssueDrawerLoading />;
+    }
+
+    if (!issue) return null;
+
+    return (
+      <div className={"grid gap-4"}>
+        <Typo size={"2xl"} variant={"brand"} color={"text-1"}>
+          {issue.title}
+        </Typo>
 
           <div className={"grid grid-cols-6 gap-4"}>
             <ApplyIssueCard
@@ -263,7 +278,7 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
             </ApplyIssueCard>
 
             <Suspense
-              fallback={<SkeletonEl width={"100%"} height={400} variant={"rounded"} className={"col-span-full"} />}
+              fallback={<SkeletonEl width={"100%"} height={300} variant={"rounded"} className={"col-span-full"} />}
             >
               <div className={"col-span-full"}>
                 <ApplyIssueMarkdown>{issue.body}</ApplyIssueMarkdown>
@@ -315,11 +330,23 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
             </ApplyIssueCard>
           </div>
         </div>
-      </Drawer>
-      <GrantPermission
+      );
+  }
+
+  return (
+      <>
+    <Drawer
+      isOpen={isOpen}
+      onOpenChange={isOpen => setState(prevState => ({ ...prevState, isOpen }))}
+      as={"form"}
+      header={header()}
+      footer={footer()}
+    >
+      {renderContent()}
+    </Drawer><GrantPermission
         isOpen={isOpenGrantPermission}
         handleClose={() => setIsOpenGrantPermission(false)}
-        handleOpenDrawer={() => setIsOpen(true)}
+        handleOpenDrawer={() => setState(prevState => ({ ...prevState, isOpen: true }))}
       />
     </>
   );
