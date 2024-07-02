@@ -4,7 +4,7 @@ import { isHackathonFuture } from "utils/hackathons/is-future";
 import { isHackathonLive } from "utils/hackathons/is-live";
 
 import { HackathonSection } from "app/hackathons/features/hackathon-section/hackathon-section";
-import { HackathonsSlider } from "app/hackathons/features/hackathons-slider/hackathons-slider";
+import { HackathonsSliderContainer } from "app/hackathons/features/hackathons-slider-container/hackathons-slider-container";
 
 import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 import { Translate } from "components/layout/translate/translate";
@@ -42,7 +42,7 @@ async function HackathonsPage() {
               items={comingSoon}
               startIndex={1}
             />
-            <HackathonsSlider
+            <HackathonsSliderContainer
               status={"closed"}
               title={<Translate token={"v2.pages.hackathons.previous"} />}
               icon={{ remixName: "ri-calendar-event-line" }}
