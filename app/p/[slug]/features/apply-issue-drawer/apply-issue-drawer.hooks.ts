@@ -1,8 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { applicationsApiClient } from "api-client/resources/applications";
+import { issuesApiClient } from "api-client/resources/issues";
 import { meApiClient } from "api-client/resources/me";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { TApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.types";
@@ -16,39 +17,51 @@ import { usePublicRepoScope } from "components/features/grant-permission/hooks/u
 
 import { useIntl } from "hooks/translate/use-translate";
 
-export function useApplyIssueDrawer({ issue, state }: Pick<TApplyIssueDrawer.Props, "issue" | "state">) {
-  const [, setIsOpen] = state;
+export function useApplyIssueDrawer({ state }: Pick<TApplyIssueDrawer.Props, "state">) {
+  const [{ isOpen, issueId, applicationId }, setState] = state;
   const { getPermissions } = usePublicRepoScope({});
   const { slug = "" } = useParams<{ slug: string }>();
   const project = ProjectApi.queries.useGetProjectBySlug({
     params: { slug },
   });
+  const { T } = useIntl();
 
-  const { mutateAsync: createAsync, ...create } = meApiClient.mutations.usePostMyApplication({
+  const { data: issue, ...getIssue } = issuesApiClient.queries.useGetIssueById({
+    pathParams: {
+      issueId: Number(issueId),
+    },
+    options: { enabled: Boolean(issueId) && isOpen },
+  });
+
+  const { data: application, ...getApplication } = applicationsApiClient.queries.useGetApplicationById({
+    pathParams: { applicationId },
+    options: { enabled: Boolean(applicationId) && isOpen },
+  });
+
+  const { mutateAsync: createAsync, ...createApplication } = meApiClient.mutations.usePostMyApplication({
     projectId: project.data?.id ?? "",
   });
 
-  const { mutateAsync: updateAsync, ...update } = meApiClient.mutations.useUpdateMyApplication(
+  const { mutateAsync: updateAsync, ...updateApplication } = meApiClient.mutations.useUpdateMyApplication(
     {
       pathParams: {
-        applicationId: issue.currentUserApplication?.id ?? "",
+        applicationId,
       },
     },
     project.data?.id ?? ""
   );
 
-  const { mutateAsync: deleteAsync, ...deleteMutation } = applicationsApiClient.mutations.useDeleteApplication(
+  const { mutateAsync: deleteAsync, ...deleteApplication } = applicationsApiClient.mutations.useDeleteApplication(
     {
       pathParams: {
-        applicationId: issue.currentUserApplication?.id ?? "",
+        applicationId,
       },
     },
     project.data?.id ?? ""
   );
 
-  const { T } = useIntl();
   useMutationAlert({
-    mutation: create,
+    mutation: createApplication,
     success: {
       message: T("v2.features.projects.applyIssueDrawer.toaster.createSuccess"),
     },
@@ -58,7 +71,7 @@ export function useApplyIssueDrawer({ issue, state }: Pick<TApplyIssueDrawer.Pro
   });
 
   useMutationAlert({
-    mutation: update,
+    mutation: updateApplication,
     success: {
       message: T("v2.features.projects.applyIssueDrawer.toaster.updateSuccess"),
     },
@@ -70,10 +83,19 @@ export function useApplyIssueDrawer({ issue, state }: Pick<TApplyIssueDrawer.Pro
   const form = useForm<TApplyIssueDrawer.form>({
     resolver: zodResolver(TApplyIssueDrawer.validation),
     defaultValues: {
-      motivations: issue.currentUserApplication?.motivations ?? "",
-      problemSolvingApproach: issue.currentUserApplication?.problemSolvingApproach ?? "",
+      motivations: application?.motivation ?? "",
+      problemSolvingApproach: application?.problemSolvingApproach ?? "",
     },
   });
+
+  useEffect(() => {
+    if (application) {
+      form.reset({
+        motivations: application.motivation ?? "",
+        problemSolvingApproach: application.problemSolvingApproach ?? "",
+      });
+    }
+  }, [application]);
 
   async function getPermissionsOnError(err: FetchError) {
     if (err.errorType === HttpStatusStrings.FORBIDDEN) {
@@ -82,14 +104,16 @@ export function useApplyIssueDrawer({ issue, state }: Pick<TApplyIssueDrawer.Pro
   }
 
   function handleCreate(values: TApplyIssueDrawer.form) {
+    if (!project.data?.id || !application?.issue.id) return;
+
     createAsync({
-      projectId: project.data?.id ?? "",
-      issueId: issue.id,
+      projectId: project.data.id,
+      issueId: application.issue.id,
       motivation: values.motivations,
       problemSolvingApproach: values.problemSolvingApproach,
     })
       .then(() => {
-        setIsOpen(false);
+        setState(prevState => ({ ...prevState, isOpen: false }));
       })
       .catch(async (err: FetchError) => {
         await getPermissionsOnError(err);
@@ -102,7 +126,7 @@ export function useApplyIssueDrawer({ issue, state }: Pick<TApplyIssueDrawer.Pro
       problemSolvingApproach: values.problemSolvingApproach,
     })
       .then(() => {
-        setIsOpen(false);
+        setState(prevState => ({ ...prevState, isOpen: false }));
       })
       .catch(async (err: FetchError) => {
         await getPermissionsOnError(err);
@@ -112,7 +136,7 @@ export function useApplyIssueDrawer({ issue, state }: Pick<TApplyIssueDrawer.Pro
   function handleCancel() {
     deleteAsync({})
       .then(() => {
-        setIsOpen(false);
+        setState(prevState => ({ ...prevState, isOpen: false }));
         setTimeout(() => {
           form.reset();
         }, 500);
@@ -125,9 +149,13 @@ export function useApplyIssueDrawer({ issue, state }: Pick<TApplyIssueDrawer.Pro
   return {
     project,
     form,
-    create,
-    update,
-    delete: deleteMutation,
+    issue,
+    getIssue,
+    application,
+    getApplication,
+    createApplication,
+    updateApplication,
+    deleteApplication,
     handleCreate,
     handleUpdate,
     handleCancel,
@@ -135,5 +163,5 @@ export function useApplyIssueDrawer({ issue, state }: Pick<TApplyIssueDrawer.Pro
 }
 
 export function useApplyIssueDrawerState() {
-  return useState(false);
+  return useState({ isOpen: false, issueId: "", applicationId: "" });
 }

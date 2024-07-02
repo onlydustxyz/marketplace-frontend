@@ -30,6 +30,9 @@ export const NEXT_ROUTER = {
   contributions: {
     all: "/contributions",
   },
+  applications: {
+    all: "/applications",
+  },
   rewards: {
     all: "/rewards",
   },

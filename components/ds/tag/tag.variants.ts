@@ -2,7 +2,7 @@ import { tv } from "tailwind-variants";
 
 export const tagVariants = tv({
   slots: {
-    base: "relative flex w-fit items-center justify-center gap-1 font-walsheim font-normal text-white xl:min-h-7",
+    base: "xl:min-h-7 relative flex w-fit items-center justify-center gap-1 font-walsheim font-normal text-white",
     container: "relative isolate w-fit shrink-0 overflow-hidden p-px",
   },
   variants: {

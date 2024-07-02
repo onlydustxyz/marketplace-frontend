@@ -50,7 +50,7 @@ export function AutoAddOrIgnore({ unpaidContributions, workItems, onAutoAdd, onA
         {T("project.details.rewards.quickActions.label")}
       </div>
 
-      <div className="flex min-h-2 grow flex-wrap items-center justify-end gap-1">
+      <div className="min-h-2 flex grow flex-wrap items-center justify-end gap-1">
         <ContributionQuickActions
           remainingCount={remainingPullRequests}
           contributionType={GithubContributionType.PullRequest}
