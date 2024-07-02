@@ -48,7 +48,7 @@ export const Organization: FC<OrganizationProps> = ({ organization }) => {
     id: organization.githubUserId,
     login: organization.login,
     installationId: organization.installationId,
-    installed: organization.installationStatus === "COMPLETE",
+    installed: organization.installationStatus !== "NOT_INSTALLED",
     isAPersonalOrganization: organization.isPersonal,
   });
 
