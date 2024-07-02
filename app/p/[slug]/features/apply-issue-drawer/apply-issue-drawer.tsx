@@ -29,8 +29,8 @@ import { Drawer } from "components/molecules/drawer";
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 export function ApplyIssueDrawer({ state }: TApplyIssueDrawer.Props) {
-    const [{ isOpen, issueId, applicationId }, setState] = state;
-    const hasApplied = Boolean(applicationId);
+  const [{ isOpen, issueId, applicationId }, setState] = state;
+  const hasApplied = Boolean(applicationId);
   const [isOpenGrantPermission, setIsOpenGrantPermission] = useState(false);
   const { isAuthenticated, loginWithRedirect } = useAuth0();
   const { capture } = usePosthog();
@@ -105,7 +105,7 @@ export function ApplyIssueDrawer({ state }: TApplyIssueDrawer.Props) {
   }
 
   function header() {
-      if (isLoading || !issue) return {};
+    if (isLoading || !issue) return {};
 
     const StartContent = (
       <Button
@@ -180,170 +180,167 @@ export function ApplyIssueDrawer({ state }: TApplyIssueDrawer.Props) {
           {issue.title}
         </Typo>
 
-          <div className={"grid grid-cols-6 gap-4"}>
-            <ApplyIssueCard
-              iconProps={{ remixName: "ri-code-line" }}
-              titleProps={{
-                translate: {
-                  token: "v2.features.projects.applyIssueDrawer.sections.languages",
-                },
-              }}
-              className={"col-span-3"}
-            >
-              <div className="pt-2">
-                {issue.languages ? (
-                  <ul className={"flex flex-wrap gap-2"}>
-                    {issue.languages.map(language => (
-                      <li key={language.id}>
-                        <TagAvatar style={"outline"} color={"grey"} size={"xs"} avatar={{ src: language.logoUrl }}>
-                          {language.name}
-                        </TagAvatar>
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
-              </div>
-            </ApplyIssueCard>
-            <ApplyIssueCard
-              iconProps={{ remixName: "ri-price-tag-3-line" }}
-              titleProps={{
-                translate: {
-                  token: "v2.features.projects.applyIssueDrawer.sections.labels",
-                },
-              }}
-              className={"col-span-3"}
-            >
-              <div className="pt-2">
-                {issue.labels ? (
-                  <ul className={"flex flex-wrap gap-2"}>
-                    {issue.labels.map(label => (
-                      <li key={label.name}>
-                        <Tag style={"outline"} color={"grey"} size={"xs"}>
-                          {label.name}
-                        </Tag>
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
-              </div>
-            </ApplyIssueCard>
+        <div className={"grid grid-cols-6 gap-4"}>
+          <ApplyIssueCard
+            iconProps={{ remixName: "ri-code-line" }}
+            titleProps={{
+              translate: {
+                token: "v2.features.projects.applyIssueDrawer.sections.languages",
+              },
+            }}
+            className={"col-span-3"}
+          >
+            <div className="pt-2">
+              {issue.languages ? (
+                <ul className={"flex flex-wrap gap-2"}>
+                  {issue.languages.map(language => (
+                    <li key={language.id}>
+                      <TagAvatar style={"outline"} color={"grey"} size={"xs"} avatar={{ src: language.logoUrl }}>
+                        {language.name}
+                      </TagAvatar>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+            </div>
+          </ApplyIssueCard>
+          <ApplyIssueCard
+            iconProps={{ remixName: "ri-price-tag-3-line" }}
+            titleProps={{
+              translate: {
+                token: "v2.features.projects.applyIssueDrawer.sections.labels",
+              },
+            }}
+            className={"col-span-3"}
+          >
+            <div className="pt-2">
+              {issue.labels ? (
+                <ul className={"flex flex-wrap gap-2"}>
+                  {issue.labels.map(label => (
+                    <li key={label.name}>
+                      <Tag style={"outline"} color={"grey"} size={"xs"}>
+                        {label.name}
+                      </Tag>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+            </div>
+          </ApplyIssueCard>
 
-            <ApplyIssueCard
-              iconProps={{ remixName: "ri-discuss-line" }}
-              titleProps={{
-                translate: {
-                  token: "v2.features.projects.applyIssueDrawer.sections.applicants",
-                },
-              }}
-              container={"3"}
-              className={"col-span-2"}
-            >
-              <div className="pt-2">
-                <Typo variant={"brand"} size={"4xl"}>
-                  {issue.applicants.length}
-                </Typo>
-              </div>
-            </ApplyIssueCard>
-            <ApplyIssueCard
-              iconProps={{ remixName: "ri-fire-line" }}
-              titleProps={{
-                translate: {
-                  token: "v2.features.projects.applyIssueDrawer.sections.comments",
-                },
-              }}
-              container={"3"}
-              className={"col-span-2"}
-            >
-              <div className="pt-2">
-                <Typo variant={"brand"} size={"4xl"}>
-                  {issue.commentCount}
-                </Typo>
-              </div>
-            </ApplyIssueCard>
-            <ApplyIssueCard
-              iconProps={{ remixName: "ri-time-line" }}
-              titleProps={{
-                translate: {
-                  token: "v2.features.projects.applyIssueDrawer.sections.days",
-                },
-              }}
-              container={"3"}
-              className={"col-span-2"}
-            >
-              <div className="pt-2">
-                <Typo variant={"brand"} size={"4xl"}>
-                  {differenceInDays(new Date(), new Date(issue.createdAt))}
-                </Typo>
-              </div>
-            </ApplyIssueCard>
+          <ApplyIssueCard
+            iconProps={{ remixName: "ri-discuss-line" }}
+            titleProps={{
+              translate: {
+                token: "v2.features.projects.applyIssueDrawer.sections.applicants",
+              },
+            }}
+            container={"3"}
+            className={"col-span-2"}
+          >
+            <div className="pt-2">
+              <Typo variant={"brand"} size={"4xl"}>
+                {issue.applicants.length}
+              </Typo>
+            </div>
+          </ApplyIssueCard>
+          <ApplyIssueCard
+            iconProps={{ remixName: "ri-fire-line" }}
+            titleProps={{
+              translate: {
+                token: "v2.features.projects.applyIssueDrawer.sections.comments",
+              },
+            }}
+            container={"3"}
+            className={"col-span-2"}
+          >
+            <div className="pt-2">
+              <Typo variant={"brand"} size={"4xl"}>
+                {issue.commentCount}
+              </Typo>
+            </div>
+          </ApplyIssueCard>
+          <ApplyIssueCard
+            iconProps={{ remixName: "ri-time-line" }}
+            titleProps={{
+              translate: {
+                token: "v2.features.projects.applyIssueDrawer.sections.days",
+              },
+            }}
+            container={"3"}
+            className={"col-span-2"}
+          >
+            <div className="pt-2">
+              <Typo variant={"brand"} size={"4xl"}>
+                {differenceInDays(new Date(), new Date(issue.createdAt))}
+              </Typo>
+            </div>
+          </ApplyIssueCard>
 
-            <Suspense
-              fallback={<SkeletonEl width={"100%"} height={300} variant={"rounded"} className={"col-span-full"} />}
-            >
-              <div className={"col-span-full"}>
-                <ApplyIssueMarkdown>{issue.body}</ApplyIssueMarkdown>
-              </div>
-            </Suspense>
+          <Suspense
+            fallback={<SkeletonEl width={"100%"} height={300} variant={"rounded"} className={"col-span-full"} />}
+          >
+            <div className={"col-span-full"}>
+              <ApplyIssueMarkdown>{issue.body}</ApplyIssueMarkdown>
+            </div>
+          </Suspense>
 
-            <ApplyIssueCard
-              iconProps={{ remixName: "ri-bill-line" }}
-              titleProps={{
-                translate: {
-                  token: "v2.features.projects.applyIssueDrawer.sections.applicationForm.title",
-                },
-              }}
-              className={"col-span-full"}
-            >
-              <div className="grid gap-3 pt-3">
-                <Typo
-                  as={"label"}
-                  htmlProps={{ htmlFor: "motivations" }}
-                  variant={"brand"}
-                  size={"m"}
-                  translate={{ token: "v2.features.projects.applyIssueDrawer.sections.applicationForm.motivations" }}
-                />
-                <Controller
-                  name="motivations"
-                  control={control}
-                  render={({ field, fieldState }) => (
-                    <Textarea id={field.name} isError={!!fieldState.error} {...field} />
-                  )}
-                />
+          <ApplyIssueCard
+            iconProps={{ remixName: "ri-bill-line" }}
+            titleProps={{
+              translate: {
+                token: "v2.features.projects.applyIssueDrawer.sections.applicationForm.title",
+              },
+            }}
+            className={"col-span-full"}
+          >
+            <div className="grid gap-3 pt-3">
+              <Typo
+                as={"label"}
+                htmlProps={{ htmlFor: "motivations" }}
+                variant={"brand"}
+                size={"m"}
+                translate={{ token: "v2.features.projects.applyIssueDrawer.sections.applicationForm.motivations" }}
+              />
+              <Controller
+                name="motivations"
+                control={control}
+                render={({ field, fieldState }) => <Textarea id={field.name} isError={!!fieldState.error} {...field} />}
+              />
 
-                <Typo
-                  as={"label"}
-                  htmlProps={{ htmlFor: "problemSolvingApproach" }}
-                  variant={"brand"}
-                  size={"m"}
-                  translate={{
-                    token: "v2.features.projects.applyIssueDrawer.sections.applicationForm.problemSolvingApproach",
-                  }}
-                />
-                <Controller
-                  name="problemSolvingApproach"
-                  control={control}
-                  render={({ field, fieldState }) => (
-                    <Textarea id={field.name} isError={!!fieldState.error} {...field} />
-                  )}
-                />
-              </div>
-            </ApplyIssueCard>
-          </div>
+              <Typo
+                as={"label"}
+                htmlProps={{ htmlFor: "problemSolvingApproach" }}
+                variant={"brand"}
+                size={"m"}
+                translate={{
+                  token: "v2.features.projects.applyIssueDrawer.sections.applicationForm.problemSolvingApproach",
+                }}
+              />
+              <Controller
+                name="problemSolvingApproach"
+                control={control}
+                render={({ field, fieldState }) => <Textarea id={field.name} isError={!!fieldState.error} {...field} />}
+              />
+            </div>
+          </ApplyIssueCard>
         </div>
-      );
+      </div>
+    );
   }
 
   return (
-      <>
-    <Drawer
-      isOpen={isOpen}
-      onOpenChange={isOpen => setState(prevState => ({ ...prevState, isOpen }))}
-      as={"form"}
-      header={header()}
-      footer={footer()}
-    >
-      {renderContent()}
-    </Drawer><GrantPermission
+    <>
+      <Drawer
+        isOpen={isOpen}
+        onOpenChange={isOpen => setState(prevState => ({ ...prevState, isOpen }))}
+        as={"form"}
+        header={header()}
+        footer={footer()}
+      >
+        {renderContent()}
+      </Drawer>
+      <GrantPermission
         isOpen={isOpenGrantPermission}
         handleClose={() => setIsOpenGrantPermission(false)}
         handleOpenDrawer={() => setState(prevState => ({ ...prevState, isOpen: true }))}
