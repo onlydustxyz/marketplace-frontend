@@ -90,7 +90,7 @@
     --container-4: var(--_Blue500);
     --container-action: var(--_Black);
     --container-inverse: var(--_White);
-    --container-stroke-separator: var(--_White200);
+    --container-stroke-separator: var(--_White100);
     --container-backdrop: var(--_Black400);
 
     /*  --- Text ---  */
