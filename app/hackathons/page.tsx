@@ -33,6 +33,7 @@ async function HackathonsPage() {
               title={<Translate token={"v2.pages.hackathons.liveNow"} />}
               icon={{ remixName: "ri-fire-line" }}
               items={liveNow}
+              startIndex={0}
             />
             <HackathonSection
               status={"open"}
@@ -46,7 +47,6 @@ async function HackathonsPage() {
               title={<Translate token={"v2.pages.hackathons.previous"} />}
               icon={{ remixName: "ri-calendar-event-line" }}
               items={pastHackathon}
-              startIndex={2}
             />
           </div>
         </div>
