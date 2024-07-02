@@ -20,3 +20,6 @@ export type ProjectsGetIssuesQueryParams = Omit<
 >;
 
 export type GetProjectIssuesPageResponse = components["schemas"]["ProjectIssuesPageResponse"];
+
+/* --------------------------------- ProjectLinkResponse -------------------------------- */
+export type ProjectLinkResponse = components["schemas"]["ProjectLinkResponse"];

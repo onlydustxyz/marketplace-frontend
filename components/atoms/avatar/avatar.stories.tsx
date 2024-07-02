@@ -106,7 +106,7 @@ export const Skeleton: Story = {
   },
   render: () => {
     return (
-      <div className="flex w-full items-start gap-5">
+      <div className="flex w-full items-start gap-4">
         <div className="flex flex-col items-center gap-2">
           {sizes.map(s => (
             <AvatarLoading key={s} size={s} />
