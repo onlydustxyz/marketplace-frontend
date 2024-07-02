@@ -16,7 +16,13 @@
     "stats": {
       "title": "Main KPIs",
       "activity": "Activity",
-      "rewarded": "Rewarded"
+      "rewarded": {
+        "title": "Rewarded",
+        "empty": {
+          "title": "No rewards yet",
+          "message": "The user hasn't received any rewards on the platform yet. Once they start earning rewards, they will appear here."
+        }
+      }
     },
     "motivations": {
       "motivation": "How the contributor background can be leveraged",
