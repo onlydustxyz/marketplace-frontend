@@ -13,8 +13,8 @@ import { cn } from "src/utils/cn";
 import { Button } from "components/atoms/button/variants/button-default";
 import { Typo } from "components/atoms/typo";
 import { Table } from "components/ds/table/table";
-import { BaseLink } from "components/layout/base-link/base-link";
 import { TableContainer } from "components/features/table-container/table-container";
+import { BaseLink } from "components/layout/base-link/base-link";
 import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 import { Translate } from "components/layout/translate/translate";
 
