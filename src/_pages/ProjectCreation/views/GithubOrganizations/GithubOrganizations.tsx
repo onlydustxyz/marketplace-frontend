@@ -21,7 +21,7 @@ export const GithubOrganizationPage = () => {
 
   const installedOrganizations = organizations.filter(org => org.installationStatus !== "NOT_INSTALLED");
   const availableOrganizations = organizations.filter(
-    org => org.installationStatus !== "COMPLETE" && org.isCurrentUserAdmin
+    org => org.installationStatus === "NOT_INSTALLED" && org.isCurrentUserAdmin
   );
 
   return (
