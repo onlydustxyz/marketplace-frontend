@@ -12,6 +12,7 @@ import { usePosthog } from "src/hooks/usePosthog";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Tag } from "components/atoms/tag";
+import { TagAvatar } from "components/atoms/tag/variants/tag-avatar";
 import { TagIcon } from "components/atoms/tag/variants/tag-icon";
 import { Textarea } from "components/atoms/textarea";
 import { Typo } from "components/atoms/typo/variants/typo-default";
@@ -174,19 +175,19 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
               }}
               className={"col-span-3"}
             >
-              {/*<div className="pt-2">*/}
-              {/*  {issue.languages ? (*/}
-              {/*    <ul className={"flex flex-wrap gap-2"}>*/}
-              {/*      {issue.languages.map(language => (*/}
-              {/*        <li key={language.id}>*/}
-              {/*          <TagAvatar style={"outline"} color={"grey"} size={"xs"} avatar={{ src: language.logoUrl }}>*/}
-              {/*            {language.name}*/}
-              {/*          </TagAvatar>*/}
-              {/*        </li>*/}
-              {/*      ))}*/}
-              {/*    </ul>*/}
-              {/*  ) : null}*/}
-              {/*</div>*/}
+              <div className="pt-2">
+                {issue.languages ? (
+                  <ul className={"flex flex-wrap gap-2"}>
+                    {issue.languages.map(language => (
+                      <li key={language.id}>
+                        <TagAvatar style={"outline"} color={"grey"} size={"xs"} avatar={{ src: language.logoUrl }}>
+                          {language.name}
+                        </TagAvatar>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+              </div>
             </ApplyIssueCard>
             <ApplyIssueCard
               iconProps={{ remixName: "ri-price-tag-3-line" }}
@@ -240,7 +241,7 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
             >
               <div className="pt-2">
                 <Typo variant={"brand"} size={"4xl"}>
-                  {/*{issue.commentCount}*/}
+                  {issue.commentCount}
                 </Typo>
               </div>
             </ApplyIssueCard>
