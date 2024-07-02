@@ -27,6 +27,7 @@ interface HeaderViewProps {
     [NEXT_ROUTER.ecosystems.root]?: string;
     [NEXT_ROUTER.hackathons.root]?: string;
     [NEXT_ROUTER.contributions.all]?: string;
+    [NEXT_ROUTER.applications.all]?: string;
     [NEXT_ROUTER.rewards.all]?: string;
   };
   impersonating?: boolean;
@@ -88,6 +89,9 @@ export default function HeaderView({ menuItems, impersonating = false }: HeaderV
                 ) : null}
                 {menuItems[NEXT_ROUTER.contributions.all] ? (
                   <MenuItem href={NEXT_ROUTER.contributions.all}>{menuItems[NEXT_ROUTER.contributions.all]}</MenuItem>
+                ) : null}
+                {menuItems[NEXT_ROUTER.applications.all] ? (
+                  <MenuItem href={NEXT_ROUTER.applications.all}>{menuItems[NEXT_ROUTER.applications.all]}</MenuItem>
                 ) : null}
                 {menuItems[NEXT_ROUTER.rewards.all] ? (
                   <MenuItem href={NEXT_ROUTER.rewards.all} badgeContent={rewardBadgeContent}>
