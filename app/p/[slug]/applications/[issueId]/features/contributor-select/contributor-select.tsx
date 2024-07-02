@@ -75,7 +75,7 @@ export function ContributorSelect({
           }
         : null,
     ].filter(item => item !== null) as AccordionItemWithBadgeProps[];
-  }, [newComers.applications, projectMembers.applications]);
+  }, [newComers.applications, projectMembers.applications, selectedUser]);
 
   function handleSearch(value: string) {
     setSearch(value);
