@@ -17,7 +17,7 @@ import { Typography } from "components/layout/typography/typography";
 
 import { TActivityGraph } from "./activity-graph.types";
 
-export function ActivityGraph({ githubUserId, ecosystems }: TActivityGraph.Props) {
+export function ActivityGraph({ githubUserId, ecosystems, activityGraphOnly }: TActivityGraph.Props) {
   const [selectedEcosystemId, setSelectedEcosystemId] = useState<string | undefined>(undefined);
   const { data, isLoading, isRefetching, isError } = usersApiClient.queries.useGetUserPublicStatsByGithubId(
     githubUserId,
@@ -52,6 +52,12 @@ export function ActivityGraph({ githubUserId, ecosystems }: TActivityGraph.Props
     if (!weekData || isError) {
       return <ActivityGraphError />;
     }
+
+    // temporary fix for render only the activity graph in the good first issue section
+    if (activityGraphOnly) {
+      return <ActivityGraphComponent weekData={weekData} isLoading={isLoading || isRefetching} />;
+    }
+
     return (
       <>
         <div className="flex w-full flex-row items-center justify-between gap-10 sm:gap-2">
