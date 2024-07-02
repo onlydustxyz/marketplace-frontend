@@ -1,4 +1,3 @@
-import { CardLoading } from "app/hackathons/components/card/card";
 import { THackathonSection } from "app/hackathons/features/hackathon-section/hackathon-section.types";
 
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
@@ -41,7 +40,7 @@ export function HackathonSectionLoading() {
     <div className="flex w-full flex-col items-start justify-start gap-4">
       <SkeletonEl width="120px" height="32px" variant="rounded" />
       <div className="flex w-full flex-col items-start justify-start gap-8">
-        <CardLoading />
+        <SkeletonEl width="100%" height="300px" variant="rounded" />
       </div>
     </div>
   );
