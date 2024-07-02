@@ -77,8 +77,6 @@ export function ApplyIssueDrawer({ issue, hasApplied, state }: TApplyIssueDrawer
         case "update":
           handleUpdate(payload);
           break;
-        default:
-          break;
       }
     },
   });
