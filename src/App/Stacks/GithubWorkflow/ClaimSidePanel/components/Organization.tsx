@@ -36,8 +36,8 @@ export default function ClaimBannerOrganization({
     [myOrganizations, organization]
   );
 
-  const organizationInstalled = organization.installationStatus === "COMPLETE";
-  const myOrganizationInstalled = myOrganization?.installationStatus === "COMPLETE";
+  const organizationInstalled = organization.installationStatus !== "NOT_INSTALLED";
+  const myOrganizationInstalled = myOrganization?.installationStatus !== "NOT_INSTALLED";
 
   const githubLink = getGithubSetupLink({
     id: organization.githubUserId,

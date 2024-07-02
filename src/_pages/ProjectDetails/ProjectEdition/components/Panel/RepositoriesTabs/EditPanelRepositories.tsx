@@ -15,7 +15,7 @@ export const EditPanelRepositories = () => {
   const { T } = useIntl();
   const { organizations } = useContext(EditContext);
   const installedOrganization = useMemo(
-    () => organizations.filter(org => org.installationStatus === "COMPLETE"),
+    () => organizations.filter(org => org.installationStatus !== "NOT_INSTALLED"),
     [organizations]
   );
   const [search, setSearch] = useState<string>("");

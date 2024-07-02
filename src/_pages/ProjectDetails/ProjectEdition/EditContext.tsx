@@ -192,7 +192,7 @@ export function EditProvider({ children, project }: EditContextProps) {
         return {
           ...findInMe,
           ...projectOrg,
-          installed: findInMe.installationStatus === "COMPLETE",
+          installed: findInMe.installationStatus !== "NOT_INSTALLED",
           installationId: findInMe.installationId,
           isPersonal: findInMe.isPersonal,
           isCurrentUserAdmin: findInMe.isCurrentUserAdmin,
