@@ -26,6 +26,10 @@ export function TotalEarned({ githubId }: TTotalEarned.Props) {
       value: earning.totalEarnedUsd,
     }));
 
+    if (!mainStats.length) {
+      return [];
+    }
+
     const otherData = {
       id: "other",
       // because it's server we can't use translate hook here
@@ -39,6 +43,10 @@ export function TotalEarned({ githubId }: TTotalEarned.Props) {
   const Graph = useMemo(() => {
     return <TotalEarnedGraphClient data={data} />;
   }, [data]);
+
+  if (!data.length) {
+    return null;
+  }
 
   return (
     <Flex direction="col" className="flex-1 gap-3">
