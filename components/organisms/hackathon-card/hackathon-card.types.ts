@@ -1,5 +1,5 @@
 import { StaticImageData } from "next/image";
-import { ComponentPropsWithoutRef, ElementType } from "react";
+import { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
 
 import { components } from "src/__generated/api";
 
@@ -9,7 +9,7 @@ interface ClassNames {
   base: string;
 }
 
-type Status = "closed" | "open" | "live";
+export type HackathonStatus = "closed" | "open" | "live";
 type Project = components["schemas"]["ProjectLinkResponse"];
 
 export interface HackathonCardPort<C extends ElementType> extends Partial<Variants> {
@@ -18,9 +18,9 @@ export interface HackathonCardPort<C extends ElementType> extends Partial<Varian
   title: string;
   slug?: string;
   backgroundImage: StaticImageData;
-  location?: string;
+  location?: ReactNode;
   startDate?: Date;
-  status?: Status;
+  status?: HackathonStatus;
   projects?: Project[];
   hasLayer?: boolean;
 }

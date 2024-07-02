@@ -9,7 +9,7 @@ import { Paper } from "components/atoms/paper";
 import { Tag } from "components/atoms/tag";
 import { TagIcon } from "components/atoms/tag/variants/tag-icon";
 import { Typo } from "components/atoms/typo/variants/typo-default";
-import { BaseLink } from "components/layout/base-link/base-link";
+import { ClientOnly } from "components/layout/client-only/client-only";
 import { Icon } from "components/layout/icon/icon";
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { Translate } from "components/layout/translate/translate";
@@ -94,7 +94,7 @@ export function HackathonCardDefaultAdapter<C extends ElementType = "div">({
         style: {
           backgroundImage: `url(${backgroundImage.src})`,
           backgroundSize: "cover",
-          backgroundPositionY: -10, // Required because of the border
+          backgroundRepeat: "no-repeat",
         },
         href: slug ? NEXT_ROUTER.hackathons.details.root(slug) : undefined,
         ...htmlProps,
@@ -117,7 +117,7 @@ export function HackathonCardDefaultAdapter<C extends ElementType = "div">({
               }}
             />
 
-            <Typo variant="brand" size="5xl">
+            <Typo variant="brand" size="3xl" classNames={{ base: "md:5xl" }}>
               {title}
             </Typo>
           </div>
@@ -137,7 +137,7 @@ export function HackathonCardDefaultAdapter<C extends ElementType = "div">({
           ) : null}
         </div>
 
-        <div className="flex items-end justify-between gap-4">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex flex-col gap-2">
             {location ? (
               <div className="flex items-center gap-2">
@@ -157,48 +157,62 @@ export function HackathonCardDefaultAdapter<C extends ElementType = "div">({
               </div>
             ) : null}
 
-            {startDate ? (
-              <div className="flex items-center gap-2">
-                <Paper
-                  size="s"
-                  as="div"
-                  classNames={{
-                    base: "inline-flex",
-                  }}
-                >
-                  <Icon remixName="ri-calendar-2-line" />
-                </Paper>
+            <ClientOnly>
+              {startDate ? (
+                <div className="flex items-center gap-2">
+                  <Paper
+                    size="s"
+                    as="div"
+                    classNames={{
+                      base: "inline-flex",
+                    }}
+                  >
+                    <Icon remixName="ri-calendar-2-line" />
+                  </Paper>
 
-                <div className="flex flex-col">
-                  <Typo size="s" weight="medium">
-                    {formattedDate}
-                  </Typo>
+                  <div className="flex flex-col">
+                    <Typo size="s" weight="medium">
+                      {formattedDate}
+                    </Typo>
 
-                  <Typo size="xxs" color="text-2">
-                    {formattedTime}
-                  </Typo>
+                    <Typo size="xxs" color="text-2">
+                      {formattedTime}
+                    </Typo>
+                  </div>
                 </div>
-              </div>
-            ) : null}
+              ) : null}
+            </ClientOnly>
           </div>
 
           {projects?.length ? (
-            <AvatarGroup avatars={projects.map(({ logoUrl }) => ({ src: logoUrl }))} size="xl" maxAvatars={4} />
+            <>
+              <AvatarGroup
+                avatars={projects.map(({ logoUrl }) => ({ src: logoUrl }))}
+                size="xl"
+                maxAvatars={4}
+                classNames={{ base: "hidden sm:flex" }}
+              />
+              <AvatarGroup
+                avatars={projects.map(({ logoUrl }) => ({ src: logoUrl }))}
+                size="m"
+                maxAvatars={4}
+                classNames={{ base: "flex sm:hidden" }}
+              />
+            </>
           ) : null}
         </div>
 
         {slug ? (
-          <BaseLink href={NEXT_ROUTER.hackathons.details.root(slug)}>
-            <Button
-              variant={status === "closed" ? "secondary-light" : "primary"}
-              size="l"
-              endIcon={{
-                remixName: "ri-arrow-right-line",
-              }}
-            >
-              <Translate token="v2.features.hackathonCard.button" />
-            </Button>
-          </BaseLink>
+          <Button
+            as={"div"}
+            variant={status === "closed" ? "secondary-light" : "primary"}
+            size="l"
+            endIcon={{
+              remixName: "ri-arrow-right-line",
+            }}
+          >
+            <Translate token="v2.features.hackathonCard.button" />
+          </Button>
         ) : null}
       </div>
     </Paper>

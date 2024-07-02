@@ -4,6 +4,7 @@ import { isHackathonFuture } from "utils/hackathons/is-future";
 import { isHackathonLive } from "utils/hackathons/is-live";
 
 import { HackathonSection } from "app/hackathons/features/hackathon-section/hackathon-section";
+import { HackathonsSlider } from "app/hackathons/features/hackathons-slider/hackathons-slider";
 
 import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 import { Translate } from "components/layout/translate/translate";
@@ -28,19 +29,24 @@ async function HackathonsPage() {
           <Typography variant="title-xl" translate={{ token: "v2.pages.hackathons.title" }} />
           <div className="flex w-full flex-col items-start justify-start gap-12">
             <HackathonSection
+              status={"live"}
               title={<Translate token={"v2.pages.hackathons.liveNow"} />}
               icon={{ remixName: "ri-fire-line" }}
               items={liveNow}
             />
             <HackathonSection
+              status={"open"}
               title={<Translate token={"v2.pages.hackathons.comingSoon"} />}
               icon={{ remixName: "ri-calendar-event-line" }}
               items={comingSoon}
+              startIndex={1}
             />
-            <HackathonSection
+            <HackathonsSlider
+              status={"closed"}
               title={<Translate token={"v2.pages.hackathons.previous"} />}
               icon={{ remixName: "ri-calendar-event-line" }}
               items={pastHackathon}
+              startIndex={2}
             />
           </div>
         </div>
