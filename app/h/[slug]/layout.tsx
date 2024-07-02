@@ -4,6 +4,9 @@ import { PropsWithChildren } from "react";
 
 import { sharedMetadata } from "app/shared-metadata";
 
+import { Container } from "components/layout/container/container";
+import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
+
 export async function generateMetadata(props: { params: { slug: string } }): Promise<Metadata> {
   try {
     const hackathon = await hackathonsApiClient.fetch.getHackathonBySlug(props.params.slug).request();
@@ -28,11 +31,10 @@ export async function generateMetadata(props: { params: { slug: string } }): Pro
 }
 export default function HackathonLayout({ children }: PropsWithChildren) {
   return (
-    <div
-      className="flex w-full flex-1 flex-col overflow-hidden border-0 border-t-0 border-black pt-4 xl:h-0 xl:flex-row xl:border-[24px] xl:border-t-0 xl:pt-0"
-      style={{ boxSizing: "border-box" }}
-    >
-      {children}
-    </div>
+    <ScrollView>
+      <Container>
+        <div className="pt-6">{children}</div>
+      </Container>
+    </ScrollView>
   );
 }
