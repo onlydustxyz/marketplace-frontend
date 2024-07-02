@@ -13,7 +13,7 @@
       "one": "__count__ applicant",
       "zero": "0 applicants"
     },
-    "assign": "Assign"
+    "reviewApplication": "Review application"
   },
   "empty": {
     "title": "No applications",
