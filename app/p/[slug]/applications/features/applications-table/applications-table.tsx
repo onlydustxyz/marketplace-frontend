@@ -77,6 +77,7 @@ export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
                   <Translate token={"v2.pages.project.applications.table.rows.reviewApplication"} />
                 </Button>
               }
+              shouldOpenContributionPanel={false}
             />
           );
         })}

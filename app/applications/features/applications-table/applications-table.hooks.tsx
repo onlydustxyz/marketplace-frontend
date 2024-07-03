@@ -115,7 +115,7 @@ export function useApplicationsTable() {
               {shouldTruncateRepoName ? repoName.substring(0, truncateLength) + "..." : repoName}
             </Link>
           ),
-          contribution: <Contribution contribution={contribution} />,
+          contribution: <Contribution contribution={contribution} shouldOpenContributionPanel={false} />,
           actions: (
             <div className={"flex justify-end"}>
               <Button

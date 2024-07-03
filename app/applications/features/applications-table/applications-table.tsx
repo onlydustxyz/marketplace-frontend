@@ -79,6 +79,7 @@ export function ApplicationsTable() {
                   <Translate token={"v2.pages.applications.table.rows.seeApplication"} />
                 </Button>
               }
+              shouldOpenContributionPanel={false}
             />
           );
         })}

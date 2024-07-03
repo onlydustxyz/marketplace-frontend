@@ -23,11 +23,13 @@ export function ContributionCard({
   className,
   applicants,
   action,
+  shouldOpenContributionPanel = true,
 }: {
   contribution: ContributionT;
   className?: string;
   applicants?: number;
   action?: ReactNode;
+  shouldOpenContributionPanel?: boolean;
 }) {
   const { T } = useIntl();
 
@@ -58,7 +60,7 @@ export function ContributionCard({
         </div>
       )}
 
-      <Contribution contribution={contribution} isMobile />
+      <Contribution contribution={contribution} isMobile shouldOpenContributionPanel={shouldOpenContributionPanel} />
 
       {typeof applicants !== "undefined" ? (
         <div className={"inline-flex"}>
