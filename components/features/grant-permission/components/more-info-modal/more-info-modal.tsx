@@ -42,7 +42,7 @@ export function MoreInfoModal({ isOpen, handleClose, handleBack, handleOpenDrawe
               variant="primary"
               startContent={<Icon remixName="ri-github-line" />}
               size="l"
-              onClick={handleVerifyPermissions}
+              onClick={() => handleVerifyPermissions("create")}
               translate={{
                 token:
                   "v2.features.githubPermissions.publicRepoScope.modals.permissions.footerButtons.grantPermissions",

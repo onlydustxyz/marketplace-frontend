@@ -12,7 +12,7 @@ export const watchInstalledRepoStorage = ({
   if (installedRepo?.length && organizations?.length) {
     const installedOrganizations = new Set(
       organizations
-        ?.filter(org => (org.installationStatus === "COMPLETE" ? org.installationId : null))
+        ?.filter(org => (org.installationStatus !== "NOT_INSTALLED" ? org.installationId : null))
         .map(org => org.installationId)
     );
 

@@ -1,3 +1,5 @@
+"use client";
+
 import { SortDescriptor } from "@nextui-org/react";
 import { projectsApiClient } from "api-client/resources/projects";
 import { useParams } from "next/navigation";
@@ -44,6 +46,7 @@ export function useApplicationsTable({ projectId = "" }: { projectId?: string })
       direction: filters.direction === "ascending" ? "ASC" : "DESC",
       isAssigned: false,
       isApplied: true,
+      status: "OPEN",
     },
     options: {
       enabled: Boolean(projectId),
@@ -90,7 +93,7 @@ export function useApplicationsTable({ projectId = "" }: { projectId?: string })
         key: "actions",
         children: "",
         align: "end",
-        width: 140,
+        width: 180,
       },
     ],
     []
@@ -101,6 +104,7 @@ export function useApplicationsTable({ projectId = "" }: { projectId?: string })
       issues.map(row => {
         const repoName = row.repository.name;
         const truncateLength = 200;
+        const shouldTruncateRepoName = repoName.length > truncateLength;
         const contribution = mapIssueToContribution(row);
 
         return {
@@ -119,9 +123,7 @@ export function useApplicationsTable({ projectId = "" }: { projectId?: string })
           ),
           repository: (
             <Link href={row.repository.htmlUrl} className="whitespace-nowrap text-left" title={repoName}>
-              {truncateLength && repoName.length > truncateLength
-                ? repoName.substring(0, truncateLength) + "..."
-                : repoName}
+              {shouldTruncateRepoName ? repoName.substring(0, truncateLength) + "..." : repoName}
             </Link>
           ),
           applicants: (
@@ -132,16 +134,19 @@ export function useApplicationsTable({ projectId = "" }: { projectId?: string })
               />
             </Tag>
           ),
-          contribution: <Contribution contribution={contribution} />,
+          contribution: <Contribution contribution={contribution} shouldOpenContributionPanel={false} />,
           actions: (
             <div className={"flex justify-end"}>
               <Button
                 variant={"secondary-light"}
-                size={"s"}
+                size={"m"}
                 as={BaseLink}
                 htmlProps={{ href: NEXT_ROUTER.projects.details.applications.details(slug, String(row.id)) }}
               >
-                <Translate token={"v2.pages.project.applications.table.rows.reviewApplication"} />
+                <Translate
+                  token={"v2.pages.project.applications.table.rows.reviewApplication"}
+                  params={{ count: row.applicants.length }}
+                />
               </Button>
             </div>
           ),

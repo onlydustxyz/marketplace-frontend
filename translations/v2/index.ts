@@ -24,6 +24,7 @@ import en_features_roles from "./en/features/roles.json";
 import en_features_sidebar from "./en/features/sidebar.json";
 import en_features_table from "./en/features/table.json";
 import en_features_verify from "./en/features/verify.json";
+import en_applications from "./en/pages/applications";
 import en_billing_create from "./en/pages/billing-create-stacks.json";
 import en_billing_invite_team_member from "./en/pages/billing-invite-team-member-stacks.json";
 import en_page_committees from "./en/pages/committees.json";
@@ -128,6 +129,7 @@ export const en = {
       committees: en_page_committees,
       ecosystems: en_ecosystems,
       home: en_home,
+      applications: en_applications,
     },
   },
 };

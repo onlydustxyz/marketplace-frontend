@@ -1,13 +1,11 @@
-import { Dispatch, SetStateAction } from "react";
 import { z } from "zod";
 
-import { UseProjectGoodFirstIssuesInfiniteListResponse } from "src/api/Project/queries";
+import { useApplyIssueDrawerState } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.hooks";
 
 export namespace TApplyIssueDrawer {
+  export type ActionType = "create" | "update";
   export interface Props {
-    issue: UseProjectGoodFirstIssuesInfiniteListResponse["issues"][0];
-    hasApplied?: boolean;
-    state: [boolean, Dispatch<SetStateAction<boolean>>];
+    state: ReturnType<typeof useApplyIssueDrawerState>;
   }
 
   export const validation = z.object({

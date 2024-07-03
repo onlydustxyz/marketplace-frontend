@@ -9,7 +9,15 @@ import { getAvatarImageSize, getAvatarSrc } from "components/atoms/avatar/avatar
 import { AvatarPort } from "../../avatar.types";
 import { AvatarNextUiVariants } from "./next-ui.variants";
 
-export function AvatarNextUiAdapter({ classNames, src, name, showFallback = true, fallback, ...props }: AvatarPort) {
+export function AvatarNextUiAdapter({
+  classNames,
+  src,
+  alt,
+  name,
+  showFallback = true,
+  fallback,
+  ...props
+}: AvatarPort) {
   const { size, shape, container, ...nextUiProps } = props;
   const slots = AvatarNextUiVariants({ size, shape, container });
   const imageSize = getAvatarImageSize(props.size);
@@ -46,6 +54,7 @@ export function AvatarNextUiAdapter({ classNames, src, name, showFallback = true
       }}
       {...nextUiProps}
       src={imageSrc}
+      alt={alt}
     />
   );
 }

@@ -13,10 +13,15 @@
       "one": "__count__ applicant",
       "zero": "0 applicants"
     },
-    "reviewApplication": "Review application"
+    "reviewApplication": {
+      "many": "Review applications",
+      "one": "Review application",
+      "zero": "No applications"
+    }
   },
   "empty": {
     "title": "No applications",
     "description": "There are no applications for this project right now."
-  }
+  },
+  "error": "An error occurred, please try again later."
 }

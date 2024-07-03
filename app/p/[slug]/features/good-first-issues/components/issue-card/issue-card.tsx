@@ -1,7 +1,7 @@
+import { useAuth0 } from "@auth0/auth0-react";
+import { useMemo } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
-import { ApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer";
-import { useApplyIssueDrawerState } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.hooks";
 import { Applicants } from "app/p/[slug]/features/good-first-issues/components/applicants/applicants";
 import { OverviewAccordion } from "app/p/[slug]/features/good-first-issues/components/issue-card/components/overview-accordion/overview-accordion";
 
@@ -18,11 +18,17 @@ import { Typography } from "components/layout/typography/typography";
 import { ApplyButton } from "./components/apply-button/apply-button";
 import { TIssueCard } from "./issue-card.types";
 
-export function IssueCard({ issue }: TIssueCard.Props) {
+export function IssueCard({ issue, onDrawerOpen }: TIssueCard.Props) {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
-  const applyIssueDrawerState = useApplyIssueDrawerState();
-
+  const { isAuthenticated } = useAuth0();
   const hasApplied = Boolean(issue.currentUserApplication);
+
+  const renderApplyButton = useMemo(() => {
+    if (isAuthenticated) {
+      return <ApplyButton hasApplied={hasApplied} onDrawerOpen={onDrawerOpen} />;
+    }
+    return null;
+  }, [isAuthenticated, hasApplied, onDrawerOpen]);
 
   return (
     <Card key={issue.id} background="base" hasPadding={false}>
@@ -32,7 +38,7 @@ export function IssueCard({ issue }: TIssueCard.Props) {
             {issue.title}
           </Typography>
 
-          {isMd ? <ApplyButton hasApplied={hasApplied} drawerState={applyIssueDrawerState} /> : null}
+          {isMd ? renderApplyButton : null}
         </Flex>
 
         <Flex alignItems="center" className="gap-3 gap-y-2" wrap="wrap">
@@ -57,8 +63,8 @@ export function IssueCard({ issue }: TIssueCard.Props) {
           <Flex alignItems="center" className="gap-1">
             <Icon remixName="ri-git-repository-line" className="text-spaceBlue-100" />
 
-            <Link href={issue.repository.htmlUrl} className="text-spaceBlue-100">
-              <Typography variant="body-xs">{issue.repository.name}</Typography>
+            <Link href={issue.repo.htmlUrl} className="text-spaceBlue-100">
+              <Typography variant="body-xs">{issue.repo.name}</Typography>
             </Link>
           </Flex>
         </Flex>
@@ -80,7 +86,7 @@ export function IssueCard({ issue }: TIssueCard.Props) {
             <>
               {issue.labels.map(label => (
                 <Flex key={label.name} className="rounded-full border border-greyscale-50/8 px-2 py-1">
-                  <Typography variant="body-xs" className="whitespace-nowrap">
+                  <Typography variant="body-xs" className="whitespace-nowrap first-letter:capitalize">
                     {label.name}
                   </Typography>
                 </Flex>
@@ -96,12 +102,10 @@ export function IssueCard({ issue }: TIssueCard.Props) {
           )}
         </Flex>
 
-        {!isMd ? <ApplyButton hasApplied={hasApplied} drawerState={applyIssueDrawerState} /> : null}
+        {!isMd ? renderApplyButton : null}
 
         <OverviewAccordion body={issue.body} />
       </Flex>
-
-      <ApplyIssueDrawer issue={issue} hasApplied={hasApplied} state={applyIssueDrawerState} />
     </Card>
   );
 }

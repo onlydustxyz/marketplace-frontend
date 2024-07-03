@@ -19,9 +19,9 @@ export const GithubOrganizationPage = () => {
     PoolingFeedback,
   } = useContext(CreateProjectContext);
 
-  const installedOrganizations = organizations.filter(org => org.installationStatus === "COMPLETE");
+  const installedOrganizations = organizations.filter(org => org.installationStatus !== "NOT_INSTALLED");
   const availableOrganizations = organizations.filter(
-    org => org.installationStatus !== "COMPLETE" && org.isCurrentUserAdmin
+    org => org.installationStatus === "NOT_INSTALLED" && org.isCurrentUserAdmin
   );
 
   return (
