@@ -1,7 +1,5 @@
 import { useMediaQuery } from "usehooks-ts";
 
-import { ApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer";
-import { useApplyIssueDrawerState } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.hooks";
 import { Applicants } from "app/p/[slug]/features/good-first-issues/components/applicants/applicants";
 import { OverviewAccordion } from "app/p/[slug]/features/good-first-issues/components/issue-card/components/overview-accordion/overview-accordion";
 
@@ -18,10 +16,8 @@ import { Typography } from "components/layout/typography/typography";
 import { ApplyButton } from "./components/apply-button/apply-button";
 import { TIssueCard } from "./issue-card.types";
 
-export function IssueCard({ issue }: TIssueCard.Props) {
+export function IssueCard({ issue, onDrawerOpen }: TIssueCard.Props) {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
-  const applyIssueDrawerState = useApplyIssueDrawerState();
-
   const hasApplied = Boolean(issue.currentUserApplication);
 
   return (
@@ -32,7 +28,7 @@ export function IssueCard({ issue }: TIssueCard.Props) {
             {issue.title}
           </Typography>
 
-          {isMd ? <ApplyButton hasApplied={hasApplied} drawerState={applyIssueDrawerState} /> : null}
+          {isMd ? <ApplyButton hasApplied={hasApplied} onDrawerOpen={onDrawerOpen} /> : null}
         </Flex>
 
         <Flex alignItems="center" className="gap-3 gap-y-2" wrap="wrap">
@@ -96,12 +92,10 @@ export function IssueCard({ issue }: TIssueCard.Props) {
           )}
         </Flex>
 
-        {!isMd ? <ApplyButton hasApplied={hasApplied} drawerState={applyIssueDrawerState} /> : null}
+        {!isMd ? <ApplyButton hasApplied={hasApplied} onDrawerOpen={onDrawerOpen} /> : null}
 
         <OverviewAccordion body={issue.body} />
       </Flex>
-
-      <ApplyIssueDrawer issue={issue} hasApplied={hasApplied} state={applyIssueDrawerState} />
     </Card>
   );
 }

@@ -24,6 +24,7 @@ export interface AvatarPort extends Partial<Variants> {
    * @default undefined
    */
   src?: string;
+  alt?: string;
   /**
    * The name of the person in the avatar. - if src has loaded, the name will be used as the alt attribute of the img
    * @default undefined

@@ -23,15 +23,19 @@ export function ContributionCard({
   className,
   applicants,
   action,
+  shouldOpenContributionPanel = true,
 }: {
   contribution: ContributionT;
   className?: string;
   applicants?: number;
   action?: ReactNode;
+  shouldOpenContributionPanel?: boolean;
 }) {
   const { T } = useIntl();
 
-  const isMyContribution = useMatchPath(NEXT_ROUTER.contributions.all, { exact: false });
+  const matchesMyContributionsPage = useMatchPath(NEXT_ROUTER.contributions.all, { exact: false });
+  const matchesMyApplicationsPage = useMatchPath(NEXT_ROUTER.applications.all, { exact: false });
+  const isMyContribution = matchesMyContributionsPage || matchesMyApplicationsPage;
 
   const date =
     contribution.status === ContributionStatus.InProgress ? contribution.createdAt : contribution.completedAt;
@@ -56,7 +60,7 @@ export function ContributionCard({
         </div>
       )}
 
-      <Contribution contribution={contribution} isMobile />
+      <Contribution contribution={contribution} isMobile shouldOpenContributionPanel={shouldOpenContributionPanel} />
 
       {typeof applicants !== "undefined" ? (
         <div className={"inline-flex"}>

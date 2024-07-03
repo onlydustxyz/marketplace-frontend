@@ -3,21 +3,16 @@
   "description": "Unassigned issues from one of your project repositories with applicants.",
   "columns": {
     "date": "Date",
+    "project": "Project",
     "repository": "Repository",
-    "applicants": "Applicants",
     "contribution": "Contribution"
   },
   "rows": {
-    "countApplicants": {
-      "many": "__count__ applicants",
-      "one": "__count__ applicant",
-      "zero": "0 applicants"
-    },
-    "reviewApplication": "Review application"
+    "seeApplication": "See application"
   },
   "empty": {
     "title": "No applications",
-    "description": "There are no applications for this project right now."
+    "description": "There are no applications to view right now."
   },
   "error": "An error occurred, please try again later."
 }
