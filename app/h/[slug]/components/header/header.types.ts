@@ -1,7 +1,7 @@
 import { ProjectLinkResponse } from "api-client/resources/projects/types";
 import { ReactNode } from "react";
 
-import { HackathonStatus } from "components/features/hackathons/hackathon-card";
+import { HackathonStatus } from "components/features/hackathons/hackathon-card/hackathon-card.types";
 
 export namespace THeader {
   export interface Props {
@@ -10,6 +10,7 @@ export namespace THeader {
     location?: ReactNode;
     startDate: string;
     status: HackathonStatus;
+    index: number;
     projects?: ProjectLinkResponse[];
   }
 }

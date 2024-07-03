@@ -8,7 +8,7 @@ import { MainDescription } from "app/h/[slug]/features/main-description/main-des
 import { Overview } from "app/h/[slug]/features/overview/overview";
 import { Tracks } from "app/h/[slug]/features/tracks/tracks";
 
-import { HackathonStatus } from "components/features/hackathons/hackathon-card";
+import { HackathonStatus } from "components/features/hackathons/hackathon-card/hackathon-card.types";
 import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 import { Flex } from "components/layout/flex/flex";
 
@@ -49,7 +49,14 @@ export default async function HackathonPage({ params }: { params: { slug: string
         params={{ hackathon_id: data.id }}
         paramsReady={Boolean(data.id)}
       />
-      <Header slug={data.slug} title={data.title} startDate={data.startDate} status={status} projects={data.projects} />
+      <Header
+        slug={data.slug}
+        title={data.title}
+        startDate={data.startDate}
+        status={status}
+        projects={data.projects}
+        index={data.index}
+      />
 
       <div className="flex w-full flex-col items-start justify-start gap-6 pb-6 pt-6 md:pt-14">
         <Intro title={data.title} subtitle={data.subtitle} />

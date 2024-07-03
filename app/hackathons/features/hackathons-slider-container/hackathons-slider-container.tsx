@@ -8,13 +8,13 @@ import { THackathonsSliderContainer } from "./hackathons-slider.container.types"
 export function HackathonsSliderContainer({ title, icon, items, status }: THackathonsSliderContainer.Props) {
   return (
     <Slider title={title} icon={icon}>
-      {items.map((item, key) => (
+      {items.map(item => (
         <HackathonCard
           classNames={{ base: "w-full block h-full" }}
           key={item.slug}
           title={item.title}
           slug={item.slug}
-          backgroundImage={getHackathonBackground(key, 2)}
+          backgroundImage={getHackathonBackground(item.index)}
           location={<Translate token={"v2.pages.hackathons.defaultLocation"} />}
           startDate={new Date(item.startDate)}
           status={status}

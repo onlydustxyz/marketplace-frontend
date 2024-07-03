@@ -44,10 +44,8 @@ const backgroundSets = [
 const settings = {
   backgroundNumbers: 16,
 };
-
-// TODO : remove startIndex when backend is ready
-export function getHackathonBackground(index: number, startIndex?: number) {
-  let backgroundIndex = index + (startIndex || 0);
+export function getHackathonBackground(index: number) {
+  let backgroundIndex = index;
 
   if (backgroundIndex >= settings.backgroundNumbers) {
     backgroundIndex = backgroundIndex % settings.backgroundNumbers;

@@ -7,7 +7,7 @@ import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-export function HackathonSection({ title, icon, items, status, startIndex }: THackathonSection.Props) {
+export function HackathonSection({ title, icon, items, status }: THackathonSection.Props) {
   if (!items.length) return null;
 
   return (
@@ -17,13 +17,13 @@ export function HackathonSection({ title, icon, items, status, startIndex }: THa
         <Typography variant="title-m">{title}</Typography>
       </div>
       <div className="flex w-full flex-col items-start justify-start gap-8">
-        {items.map((item, key) => (
+        {items.map(item => (
           <HackathonCard
             classNames={{ base: "w-full" }}
             key={item.slug}
             title={item.title}
             slug={item.slug}
-            backgroundImage={getHackathonBackground(key, startIndex)}
+            backgroundImage={getHackathonBackground(item.index)}
             location={<Translate token={"v2.pages.hackathons.defaultLocation"} />}
             startDate={new Date(item.startDate)}
             status={status}

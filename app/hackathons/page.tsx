@@ -33,14 +33,12 @@ async function HackathonsPage() {
               title={<Translate token={"v2.pages.hackathons.liveNow"} />}
               icon={{ remixName: "ri-fire-line" }}
               items={liveNow}
-              startIndex={0}
             />
             <HackathonSection
               status={"open"}
               title={<Translate token={"v2.pages.hackathons.comingSoon"} />}
               icon={{ remixName: "ri-calendar-event-line" }}
               items={comingSoon}
-              startIndex={1}
             />
             <HackathonsSliderContainer
               status={"closed"}

@@ -10,7 +10,7 @@ import { Translate } from "components/layout/translate/translate";
 
 import { NEXT_ROUTER } from "constants/router";
 
-export function Header({ title, status, startDate, projects }: THeader.Props) {
+export function Header({ title, status, startDate, projects, index }: THeader.Props) {
   return (
     <div className="flex w-full flex-col gap-3">
       <Button
@@ -24,8 +24,7 @@ export function Header({ title, status, startDate, projects }: THeader.Props) {
       <HackathonCard
         classNames={{ base: "w-full block" }}
         title={title}
-        // TODO WHEN BACKGROUND IS READY
-        backgroundImage={getHackathonBackground(8, 0)}
+        backgroundImage={getHackathonBackground(index)}
         location={<Translate token={"v2.pages.hackathons.defaultLocation"} />}
         startDate={new Date(startDate)}
         status={status}
