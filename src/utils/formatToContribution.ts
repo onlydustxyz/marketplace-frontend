@@ -8,6 +8,7 @@ import { RewardItem } from "src/hooks/useInfiniteRewardItems";
 
 export function rewardableItemToContribution(rewardableItem: RewardableItem) {
   return {
+    id: rewardableItem.id,
     githubAuthor: {
       avatarUrl: rewardableItem.author?.avatarUrl ?? "",
       githubUserId: rewardableItem.author?.githubUserId ?? 0,
@@ -28,6 +29,7 @@ export function rewardableItemToContribution(rewardableItem: RewardableItem) {
  */
 export function rewardItemToContribution(rewardItem: RewardItem) {
   return {
+    id: rewardItem.id,
     githubAuthor: {
       avatarUrl: rewardItem.authorAvatarUrl ?? "",
       githubUserId: rewardItem.githubAuthorId ?? 0,

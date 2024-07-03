@@ -1,7 +1,7 @@
 import { ComponentProps, ComponentPropsWithoutRef, ElementType, PropsWithChildren, ReactNode } from "react";
 
-import { Avatar } from "components/atoms/avatar";
-import { Typo } from "components/atoms/typo/variants/typo-default";
+import { AvatarPort } from "components/atoms/avatar";
+import { TypoPort } from "components/atoms/typo";
 import { Icon } from "components/layout/icon/icon";
 import { TIcon } from "components/layout/icon/icon.types";
 import { TTranslate } from "components/layout/translate/translate.types";
@@ -29,14 +29,14 @@ export interface TagPort<C extends ElementType> extends Partial<Variants>, Props
   translate?: TTranslate.Props;
   startContent?: ReactNode;
   endContent?: ReactNode;
-  labelProps?: Partial<ComponentProps<typeof Typo>>;
+  labelProps?: Partial<TypoPort<"span">>;
   deletableIconProps?: Partial<ComponentProps<typeof Icon>>;
 }
 
-export interface TTagIconProps<C extends ElementType> extends TagPort<C> {
+export interface TagIconPort<C extends ElementType> extends TagPort<C> {
   icon: TIcon.Props;
 }
 
-export interface TTagAvatarProps<C extends ElementType> extends TagPort<C> {
-  avatar: ComponentProps<typeof Avatar>;
+export interface TagAvatarPort<C extends ElementType> extends TagPort<C> {
+  avatar: AvatarPort;
 }

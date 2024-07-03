@@ -1,9 +1,12 @@
+import { useMemo } from "react";
+
 import { useStackContribution } from "src/App/Stacks/Stacks";
 import { ContributionReview, ReviewStateStatuses } from "src/components/Contribution/ContributionReview";
 import { ContributionReward } from "src/components/Contribution/ContributionReward";
 import { Contribution as ContributionT, GithubContributionType, GithubPullRequestStatus } from "src/types";
 import { cn } from "src/utils/cn";
 
+import { Typo } from "components/atoms/typo";
 import { Link } from "components/ds/link/link";
 import { ContributionBadge } from "components/features/contribution/contribution-badge/contribution-badge";
 
@@ -13,9 +16,15 @@ type Props = {
   contribution: ContributionT;
   isMobile?: boolean;
   showExternal?: boolean;
+  shouldOpenContributionPanel?: boolean;
 };
 
-export function Contribution({ contribution, isMobile = false, showExternal = false }: Props) {
+export function Contribution({
+  contribution,
+  isMobile = false,
+  showExternal = false,
+  shouldOpenContributionPanel = true,
+}: Props) {
   const { user } = useCurrentUser();
   const [openContributionPanel] = useStackContribution();
 
@@ -55,6 +64,21 @@ export function Contribution({ contribution, isMobile = false, showExternal = fa
     }
   };
 
+  const renderContributionTitle = useMemo(() => {
+    if (shouldOpenContributionPanel) {
+      return (
+        <Link.Button onClick={handleClick} className="truncate break-all text-left">
+          {githubTitle}
+        </Link.Button>
+      );
+    }
+    return (
+      <Typo size={"s"} variant={"default"} color={"text-1"} classNames={{ base: "truncate break-all text-left" }}>
+        {githubTitle}
+      </Typo>
+    );
+  }, [shouldOpenContributionPanel, githubTitle]);
+
   return (
     <div
       className={cn("flex w-full gap-2", {
@@ -64,9 +88,7 @@ export function Contribution({ contribution, isMobile = false, showExternal = fa
     >
       <div className={cn("flex items-center gap-2 font-walsheim", isMobile ? "w-full" : "min-w-0")}>
         <ContributionBadge contribution={contribution} showExternal={showExternal} />
-        <Link.Button onClick={handleClick} className="truncate break-all text-left">
-          {githubTitle}
-        </Link.Button>
+        {renderContributionTitle}
       </div>
       <div className="inline-flex items-center gap-1 empty:hidden">
         {rewardIds?.length ? (

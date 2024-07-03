@@ -1,0 +1,39 @@
+{
+  "originGithub": {
+    "title": "External Application via GitHub Issue",
+    "content": "The candidate has applied through a comment on a GitHub issue. As a result, we cannot retrieve their motivations and some details automatically."
+  },
+  "select": {
+    "search": "Search for users",
+    "new": "New comers",
+    "project": "Project members",
+    "empty": {
+      "title": "No users found",
+      "description": "No users found with the given search criteria"
+    }
+  },
+  "profile": {
+    "stats": {
+      "title": "Main KPIs",
+      "activity": "Activity",
+      "rewarded": {
+        "title": "Rewarded",
+        "empty": {
+          "title": "No rewards yet",
+          "message": "The user hasn't received any rewards on the platform yet. Once they start earning rewards, they will appear here."
+        }
+      }
+    },
+    "motivations": {
+      "motivation": "How the contributor background can be leveraged",
+      "approach": "How the contributor will approach the problem"
+    },
+    "buttons": {
+      "assign": "Assign contributor",
+      "reject": "Reject"
+    }
+  },
+  "messages": {
+    "success": "__login__ has been successfully assigned to \"__issue__\""
+  }
+}

@@ -146,6 +146,17 @@ export function BurgerMenu() {
                   </BaseLink>
                 ) : null}
 
+                {/*{githubUserId ? (*/}
+                {/*  <BaseLink*/}
+                {/*    href={NEXT_ROUTER.applications.all}*/}
+                {/*    onClick={() => setPanelOpen(false)}*/}
+                {/*    className="flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8"*/}
+                {/*  >*/}
+                {/*    <div className={"h-5 w-5 rounded-full border-2 border-dashed"} />*/}
+                {/*    <Translate token="v2.features.menu.applications" />*/}
+                {/*  </BaseLink>*/}
+                {/*) : null}*/}
+
                 {githubUserId ? (
                   <BaseLink
                     href={NEXT_ROUTER.rewards.all}

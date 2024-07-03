@@ -1,20 +1,24 @@
 import { ComponentProps, ComponentPropsWithoutRef, ElementType, PropsWithChildren, ReactNode } from "react";
-import { VariantProps } from "tailwind-variants";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Typo } from "components/atoms/typo/variants/typo-default";
 
-import { ModalCoreVariants } from "./modal.variants";
+interface Variants {}
 
-type Variants = VariantProps<typeof ModalCoreVariants>;
-type classNames = Partial<typeof ModalCoreVariants["slots"]>;
+interface ClassNames {
+  modal: string;
+  body: string;
+  backdrop: string;
+  header: string;
+  footer: string;
+}
 
-export interface ModalPort<C extends ElementType> extends Variants, PropsWithChildren {
+export interface ModalPort<C extends ElementType> extends Partial<Variants>, PropsWithChildren {
   htmlProps?: ComponentPropsWithoutRef<C>;
   as?: C;
   isOpen: boolean;
   onOpenChange?: (isOpen: boolean) => void;
-  classNames?: classNames;
+  classNames?: Partial<ClassNames>;
   titleProps?: Partial<ComponentProps<typeof Typo>>;
   closeButtonProps?: ComponentProps<typeof Button>;
   footer?: {

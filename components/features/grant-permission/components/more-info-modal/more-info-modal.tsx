@@ -23,7 +23,7 @@ export function MoreInfoModal({ isOpen, handleClose, handleBack, handleOpenDrawe
   return (
     <Modal
       titleProps={{
-        translate: { token: "v2.features.githubGrantPermissions.modals.moreInfos.title" },
+        translate: { token: "v2.features.githubPermissions.publicRepoScope.modals.moreInfos.title" },
       }}
       isOpen={isOpen}
       onOpenChange={isModalOpen => (!isModalOpen ? handleClose() : null)}
@@ -35,16 +35,17 @@ export function MoreInfoModal({ isOpen, handleClose, handleBack, handleOpenDrawe
               size="l"
               onClick={handleBack}
               translate={{
-                token: "v2.features.githubGrantPermissions.modals.moreInfos.footerButtons.back",
+                token: "v2.features.githubPermissions.publicRepoScope.modals.moreInfos.footerButtons.back",
               }}
             />
             <Button
               variant="primary"
               startContent={<Icon remixName="ri-github-line" />}
               size="l"
-              onClick={handleVerifyPermissions}
+              onClick={() => handleVerifyPermissions("create")}
               translate={{
-                token: "v2.features.githubGrantPermissions.modals.permissions.footerButtons.grantPermissions",
+                token:
+                  "v2.features.githubPermissions.publicRepoScope.modals.permissions.footerButtons.grantPermissions",
               }}
             />
           </div>
@@ -57,13 +58,13 @@ export function MoreInfoModal({ isOpen, handleClose, handleBack, handleOpenDrawe
             variant="default"
             size="s"
             translate={{
-              token: "v2.features.githubGrantPermissions.modals.moreInfos.description",
+              token: "v2.features.githubPermissions.publicRepoScope.modals.moreInfos.description",
             }}
           />
           <Paper container="4">
             <Image
               src={grantPublicRepoPermission}
-              alt={T("v2.features.githubGrantPermissions.modals.moreInfos.description")}
+              alt={T("v2.features.githubPermissions.publicRepoScope.modals.moreInfos.description")}
               className="rounded-lg"
               priority={false}
             />

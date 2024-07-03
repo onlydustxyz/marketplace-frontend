@@ -1,5 +1,8 @@
 import { useMemo } from "react";
 
+import { ApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer";
+import { useApplyIssueDrawerState } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.hooks";
+
 import ProjectApi from "src/api/Project";
 import { ShowMore } from "src/components/Table/ShowMore";
 
@@ -15,6 +18,9 @@ import { IssueCard } from "./components/issue-card/issue-card";
 import { TGoodFirstIssues } from "./good-first-issues.types";
 
 export function GoodFirstIssues({ projectId, organizations, isProjectLeader }: TGoodFirstIssues.Props) {
+  const applyIssueDrawerState = useApplyIssueDrawerState();
+  const [, setApplyIssueDrawerState] = applyIssueDrawerState;
+
   const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } =
     ProjectApi.queries.useProjectGoodFirstIssuesInfiniteList({
       params: { projectId },
@@ -45,10 +51,22 @@ export function GoodFirstIssues({ projectId, organizations, isProjectLeader }: T
       return (
         <Flex direction="col" className="gap-4 p-6 pt-0">
           {issues.map(issue => (
-            <IssueCard key={issue.id} issue={issue} />
+            <IssueCard
+              key={issue.id}
+              issue={issue}
+              onDrawerOpen={() => {
+                setApplyIssueDrawerState({
+                  isOpen: true,
+                  issueId: issue.id,
+                  applicationId: issue.currentUserApplication?.id ?? "",
+                });
+              }}
+            />
           ))}
 
           {hasNextPage ? <ShowMore onClick={fetchNextPage} loading={isFetchingNextPage} isInfinite /> : null}
+
+          <ApplyIssueDrawer state={applyIssueDrawerState} />
         </Flex>
       );
     }

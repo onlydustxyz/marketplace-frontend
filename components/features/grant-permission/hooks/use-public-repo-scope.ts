@@ -1,7 +1,10 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { PopupConfigOptions, PopupLoginOptions } from "@auth0/auth0-spa-js";
 import { meApiClient } from "api-client/resources/me";
+import { useMemo } from "react";
 import { useLocalStorage } from "react-use";
+
+import { TApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.types";
 
 import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
 
@@ -15,11 +18,15 @@ async function handleLoginWithPopup(
   });
 }
 
-export function usePublicRepoScope({ onSuccessCallback }: { onSuccessCallback?: () => void }) {
+export function usePublicRepoScope({
+  onSuccessCallback,
+}: {
+  onSuccessCallback?: (actionType: TApplyIssueDrawer.ActionType) => void;
+}) {
   const [scopeStorage, setScopeStorage] = useLocalStorage("dynamic-github-public-repo-scope");
   const { loginWithPopup, isAuthenticated, loginWithRedirect } = useAuth0();
   const { user, refetch } = useCurrentUser();
-  const canApply = user?.isAuthorizedToApplyOnGithubIssues;
+  const canApply = useMemo(() => user?.isAuthorizedToApplyOnGithubIssues, [user]);
 
   const { mutateAsync: logoutUser } = meApiClient.mutations.useLogoutUser({});
 
@@ -32,7 +39,7 @@ export function usePublicRepoScope({ onSuccessCallback }: { onSuccessCallback?: 
     await refetch();
   }
 
-  async function handleVerifyPermissions() {
+  async function handleVerifyPermissions(actionType: TApplyIssueDrawer.ActionType) {
     if (!isAuthenticated) {
       await handleLoginWithRedirect(loginWithRedirect);
       return;
@@ -40,10 +47,10 @@ export function usePublicRepoScope({ onSuccessCallback }: { onSuccessCallback?: 
 
     if (!canApply) {
       await getPermissions();
-      onSuccessCallback?.();
+      onSuccessCallback?.(actionType);
       return;
     }
-    onSuccessCallback?.();
+    onSuccessCallback?.(actionType);
   }
 
   return { handleVerifyPermissions, getPermissions, canApply };
