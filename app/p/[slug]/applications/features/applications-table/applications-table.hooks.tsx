@@ -104,6 +104,7 @@ export function useApplicationsTable({ projectId = "" }: { projectId?: string })
       issues.map(row => {
         const repoName = row.repository.name;
         const truncateLength = 200;
+        const shouldTruncateRepoName = repoName.length > truncateLength;
         const contribution = mapIssueToContribution(row);
 
         return {
@@ -122,9 +123,7 @@ export function useApplicationsTable({ projectId = "" }: { projectId?: string })
           ),
           repository: (
             <Link href={row.repository.htmlUrl} className="whitespace-nowrap text-left" title={repoName}>
-              {truncateLength && repoName.length > truncateLength
-                ? repoName.substring(0, truncateLength) + "..."
-                : repoName}
+              {shouldTruncateRepoName ? repoName.substring(0, truncateLength) + "..." : repoName}
             </Link>
           ),
           applicants: (

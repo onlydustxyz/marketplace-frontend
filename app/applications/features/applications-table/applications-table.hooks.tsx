@@ -88,6 +88,7 @@ export function useApplicationsTable() {
       applications.map(row => {
         const repoName = row.issue.repo.name;
         const truncateLength = 200;
+        const shouldTruncateRepoName = repoName.length > truncateLength;
         const contribution = mapIssueToContribution({
           ...row.issue,
           author: { ...row.issue.author, isRegistered: false },
@@ -111,9 +112,7 @@ export function useApplicationsTable() {
           ),
           repository: (
             <Link href={row.issue.repo.htmlUrl} className="whitespace-nowrap text-left" title={repoName}>
-              {truncateLength && repoName.length > truncateLength
-                ? repoName.substring(0, truncateLength) + "..."
-                : repoName}
+              {shouldTruncateRepoName ? repoName.substring(0, truncateLength) + "..." : repoName}
             </Link>
           ),
           contribution: <Contribution contribution={contribution} />,
