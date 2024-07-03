@@ -9,6 +9,7 @@ export namespace THeader {
     slug?: string;
     location?: ReactNode;
     startDate: string;
+    endDate: string;
     status: HackathonStatus;
     index: number;
     projects?: ProjectLinkResponse[];

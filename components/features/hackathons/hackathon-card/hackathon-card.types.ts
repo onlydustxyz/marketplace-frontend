@@ -26,6 +26,7 @@ export interface HackathonCardPort<C extends ElementType> extends Partial<Varian
   backgroundImage: StaticImageData;
   location?: ReactNode;
   startDate?: Date;
+  endDate?: Date;
   status?: HackathonStatus;
   projects?: Project[];
   hasLayer?: boolean;

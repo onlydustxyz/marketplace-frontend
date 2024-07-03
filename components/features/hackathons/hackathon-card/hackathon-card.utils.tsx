@@ -79,24 +79,31 @@ export function mapHackathonStatusToTag(status?: HackathonStatus): {
   }
 }
 
-export function formatHackathonDate(startDate?: Date): {
-  formattedDate: string;
-  formattedTime: string;
+export function formatHackathonDate(
+  startDate?: Date,
+  endDate?: Date
+): {
+  startDate: string;
+  startTime: string;
+  endDate: string | null;
 } {
   if (!startDate) {
     return {
-      formattedDate: "",
-      formattedTime: "",
+      startDate: "",
+      startTime: "",
+      endDate: null,
     };
   }
 
   const timeZone = "Europe/Paris";
 
-  const formattedDate = formatInTimeZone(startDate, timeZone, "MMMM dd, yyyy", { locale: enGB });
-  const formattedTime = formatInTimeZone(startDate, timeZone, "hh:mm aa OOO", { locale: enGB });
+  const formattedEndDate = endDate ? formatInTimeZone(endDate, timeZone, "MMMM dd, yyyy", { locale: enGB }) : null;
+  const formattedStartDate = formatInTimeZone(startDate, timeZone, "MMMM dd, yyyy", { locale: enGB });
+  const formattedStartTime = formatInTimeZone(startDate, timeZone, "hh:mm aa OOO", { locale: enGB });
 
   return {
-    formattedDate,
-    formattedTime,
+    startDate: formattedStartDate,
+    startTime: formattedStartTime,
+    endDate: formattedEndDate,
   };
 }

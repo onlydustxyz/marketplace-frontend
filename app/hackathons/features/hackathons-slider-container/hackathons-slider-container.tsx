@@ -17,6 +17,7 @@ export function HackathonsSliderContainer({ title, icon, items, status }: THacka
           backgroundImage={getHackathonBackground(item.index)}
           location={<Translate token={"v2.pages.hackathons.defaultLocation"} />}
           startDate={new Date(item.startDate)}
+          endDate={new Date(item.endDate)}
           status={status}
           projects={item.projects}
         />

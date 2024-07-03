@@ -30,6 +30,7 @@ export function HackathonCard<C extends ElementType = "div">({
   backgroundImage,
   location,
   startDate,
+  endDate,
   status,
   projects,
   hasLayer,
@@ -40,7 +41,7 @@ export function HackathonCard<C extends ElementType = "div">({
   const slots = HackathonCardVariants();
 
   const { tagIcon, tagText } = adaptMapStatusToTag(status);
-  const { formattedDate, formattedTime } = adaptFormatDate(startDate);
+  const dates = adaptFormatDate(startDate, endDate);
 
   return (
     <Paper
@@ -123,11 +124,11 @@ export function HackathonCard<C extends ElementType = "div">({
 
                   <div className="flex flex-col">
                     <Typo size="s" weight="medium">
-                      {formattedDate}
+                      {dates.startDate} {dates.endDate ? ` - ${dates.endDate}` : ""}
                     </Typo>
 
                     <Typo size="xxs" color="text-2">
-                      {formattedTime}
+                      {dates.startTime}
                     </Typo>
                   </div>
                 </div>

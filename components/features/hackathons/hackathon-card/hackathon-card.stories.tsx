@@ -16,6 +16,7 @@ const defaultPort: HackathonCardPort<"div"> = {
   }),
   location: "Paris",
   startDate: new Date(),
+  endDate: new Date(),
   status: "open",
   projects: [
     {

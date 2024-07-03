@@ -53,6 +53,7 @@ export default async function HackathonPage({ params }: { params: { slug: string
         slug={data.slug}
         title={data.title}
         startDate={data.startDate}
+        endDate={data.endDate}
         status={status}
         projects={data.projects}
         index={data.index}

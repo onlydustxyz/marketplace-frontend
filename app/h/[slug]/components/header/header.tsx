@@ -10,7 +10,7 @@ import { Translate } from "components/layout/translate/translate";
 
 import { NEXT_ROUTER } from "constants/router";
 
-export function Header({ title, status, startDate, projects, index }: THeader.Props) {
+export function Header({ title, status, startDate, endDate, projects, index }: THeader.Props) {
   return (
     <div className="flex w-full flex-col gap-3">
       <Button
@@ -27,6 +27,7 @@ export function Header({ title, status, startDate, projects, index }: THeader.Pr
         backgroundImage={getHackathonBackground(index)}
         location={<Translate token={"v2.pages.hackathons.defaultLocation"} />}
         startDate={new Date(startDate)}
+        endDate={new Date(endDate)}
         status={status}
         projects={projects}
       />
