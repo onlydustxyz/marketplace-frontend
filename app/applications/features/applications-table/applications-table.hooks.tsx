@@ -121,7 +121,7 @@ export function useApplicationsTable() {
             <div className={"flex justify-end"}>
               <Button
                 variant={"secondary-light"}
-                size={"s"}
+                size={"m"}
                 onClick={() => handleOpenDrawer({ issueId: row.issue.id, applicationId: row.id })}
               >
                 <Translate token={"v2.pages.applications.table.rows.seeApplication"} />

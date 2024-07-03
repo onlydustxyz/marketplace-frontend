@@ -93,7 +93,7 @@ export function useApplicationsTable({ projectId = "" }: { projectId?: string })
         key: "actions",
         children: "",
         align: "end",
-        width: 140,
+        width: 180,
       },
     ],
     []
@@ -140,7 +140,7 @@ export function useApplicationsTable({ projectId = "" }: { projectId?: string })
             <div className={"flex justify-end"}>
               <Button
                 variant={"secondary-light"}
-                size={"s"}
+                size={"m"}
                 as={BaseLink}
                 htmlProps={{ href: NEXT_ROUTER.projects.details.applications.details(slug, String(row.id)) }}
               >

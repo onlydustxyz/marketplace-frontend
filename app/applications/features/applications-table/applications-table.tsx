@@ -73,7 +73,7 @@ export function ApplicationsTable() {
               action={
                 <Button
                   variant={"secondary-light"}
-                  size={"s"}
+                  size={"m"}
                   onClick={() => handleOpenDrawer({ issueId: application.issue.id, applicationId: application.id })}
                 >
                   <Translate token={"v2.pages.applications.table.rows.seeApplication"} />

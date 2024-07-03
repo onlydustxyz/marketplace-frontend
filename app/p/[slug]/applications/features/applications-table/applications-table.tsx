@@ -70,7 +70,7 @@ export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
               action={
                 <Button
                   variant={"secondary-light"}
-                  size={"s"}
+                  size={"m"}
                   as={BaseLink}
                   htmlProps={{ href: NEXT_ROUTER.projects.details.applications.details(slug, String(issue.id)) }}
                 >
