@@ -15,6 +15,8 @@ const defaultPort: HackathonCardPort<"div"> = {
     tagText: "Status tags",
   }),
   location: "Paris",
+  upperTitle: "Hackathon",
+  buttonLabel: "Discover",
   startDate: new Date(),
   endDate: new Date(),
   status: "open",

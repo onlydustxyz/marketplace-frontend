@@ -26,6 +26,7 @@ export function HackathonCard<C extends ElementType = "div">({
   classNames,
   title,
   upperTitle = <Translate token="v2.features.hackathonCard.title" as="span" />,
+  buttonLabel = <Translate token="v2.features.hackathonCard.button" />,
   slug,
   backgroundImage,
   location,
@@ -163,7 +164,7 @@ export function HackathonCard<C extends ElementType = "div">({
               remixName: "ri-arrow-right-line",
             }}
           >
-            <Translate token="v2.features.hackathonCard.button" />
+            {buttonLabel}
           </Button>
         ) : null}
       </div>

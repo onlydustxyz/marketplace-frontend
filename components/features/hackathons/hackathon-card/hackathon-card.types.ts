@@ -21,6 +21,7 @@ export interface HackathonCardPort<C extends ElementType> extends Partial<Varian
   htmlProps?: ComponentPropsWithoutRef<C>;
   classNames?: Partial<ClassNames>;
   upperTitle?: ReactNode;
+  buttonLabel?: ReactNode;
   title: string;
   slug?: string;
   backgroundImage: StaticImageData;
