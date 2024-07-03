@@ -15,7 +15,7 @@ export function useApplications({ search }: TUseApplications.Props): TUseApplica
 
   const debounceSearch = useCallback(
     debounce(newSearch => {
-      setDebouncedSearch(newSearch);
+      setDebouncedSearch(newSearch.trim());
     }, 300),
     []
   );

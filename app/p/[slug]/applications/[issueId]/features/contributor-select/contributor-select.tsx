@@ -6,6 +6,7 @@ import { Card } from "components/ds/card/card";
 import { Input } from "components/ds/form/input/input";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
+import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 import { AccordionItemWithBadgeProps, AccordionLoading } from "components/molecules/accordion";
@@ -75,7 +76,7 @@ export function ContributorSelect({
           }
         : null,
     ].filter(item => item !== null) as AccordionItemWithBadgeProps[];
-  }, [newComers.applications, projectMembers.applications]);
+  }, [newComers.applications, projectMembers.applications, selectedUser]);
 
   function handleSearch(value: string) {
     setSearch(value);
@@ -107,17 +108,19 @@ export function ContributorSelect({
 
   return (
     <div className="h-full w-full lg:min-w-[320px] lg:max-w-[320px]">
-      <Card background="base" hasPadding={false} border={false} className="rounded-lg">
-        <Flex direction="col" className="gap-4 p-3">
-          <Input
-            value={search}
-            onChange={e => handleSearch(e.target.value)}
-            startContent={<Icon remixName="ri-search-line" className="text-spaceBlue-200" />}
-            placeholder={T("v2.pages.project.details.applicationDetails.select.search")}
-          />
+      <Card background="base" hasPadding={false} border={false} className="h-full rounded-lg">
+        <ScrollView>
+          <Flex direction="col" className="gap-4 p-3">
+            <Input
+              value={search}
+              onChange={e => handleSearch(e.target.value)}
+              startContent={<Icon remixName="ri-search-line" className="text-spaceBlue-200" />}
+              placeholder={T("v2.pages.project.details.applicationDetails.select.search")}
+            />
 
-          {renderAccordion()}
-        </Flex>
+            {renderAccordion()}
+          </Flex>
+        </ScrollView>
       </Card>
     </div>
   );

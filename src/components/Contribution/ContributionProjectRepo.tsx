@@ -1,7 +1,7 @@
 import { useStackProjectOverview } from "src/App/Stacks/Stacks";
-import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { ShortProject, ShortRepo } from "src/types";
 
+import { Avatar } from "components/ds/avatar/avatar";
 import { Link } from "components/ds/link/link";
 import { Typography } from "components/layout/typography/typography";
 
@@ -22,13 +22,7 @@ export function ContributionProjectRepo({
 
   return (
     <div className="flex items-center gap-3">
-      <RoundedImage
-        src={project.logoUrl}
-        alt={project.name}
-        rounding={Rounding.Corners}
-        size={ImageSize.Sm}
-        useLogoFallback
-      />
+      <Avatar src={project.logoUrl} alt={project.name} size={"s"} shape={"square"} />
 
       <div className="w-full">
         <Link.Button onClick={onClickProject} className="whitespace-normal text-left" title={project.name}>

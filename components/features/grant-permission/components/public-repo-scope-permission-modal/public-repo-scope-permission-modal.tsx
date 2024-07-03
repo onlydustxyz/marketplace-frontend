@@ -44,7 +44,7 @@ export function PublicRepoScopePermissionModal({
               variant="primary"
               startContent={<Icon remixName="ri-github-line" />}
               size="l"
-              onClick={handleVerifyPermissions}
+              onClick={() => handleVerifyPermissions("create")}
               translate={{
                 token:
                   "v2.features.githubPermissions.publicRepoScope.modals.permissions.footerButtons.grantPermissions",

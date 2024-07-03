@@ -36,10 +36,14 @@ function ContributionPage() {
   }, [newComers.applications, projectMembers.applications]);
 
   return (
-    <Flex direction="col" className="gap-6">
+    <Flex direction="col" className="gap-6 overflow-hidden">
       <ContributionHeader title={title} />
 
-      <Flex className={cn("flex-col gap-6 lg:flex-row", { "pointer-events-none blur-sm": !canInteract })}>
+      <Flex
+        className={cn("h-full flex-col gap-6 overflow-hidden lg:flex-row", {
+          "pointer-events-none blur-sm": !canInteract,
+        })}
+      >
         <ContributorSelect
           search={search}
           setSearch={setSearch}
