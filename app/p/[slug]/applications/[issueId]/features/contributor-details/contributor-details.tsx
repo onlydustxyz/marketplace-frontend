@@ -75,7 +75,7 @@ export function ContributorDetails({ githubId, applicationId }: TContributorDeta
               translate={{ token: "v2.pages.project.details.applicationDetails.profile.motivations.motivation" }}
             />
             <Paper size={"m"} container={"3"} border={"none"}>
-              <Typography variant="body-m" className="text-greyscale-200">
+              <Typography variant="body-m" className="min-h-5 text-greyscale-200">
                 {application?.motivation}
               </Typography>
             </Paper>
@@ -86,7 +86,7 @@ export function ContributorDetails({ githubId, applicationId }: TContributorDeta
               translate={{ token: "v2.pages.project.details.applicationDetails.profile.motivations.approach" }}
             />
             <Paper size={"m"} container={"3"} border={"none"}>
-              <Typography variant="body-m" className="text-greyscale-200">
+              <Typography variant="body-m" className="min-h-5 text-greyscale-200">
                 {application?.problemSolvingApproach}
               </Typography>
             </Paper>
