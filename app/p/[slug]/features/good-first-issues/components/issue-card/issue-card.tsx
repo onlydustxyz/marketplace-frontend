@@ -86,7 +86,7 @@ export function IssueCard({ issue, onDrawerOpen }: TIssueCard.Props) {
             <>
               {issue.labels.map(label => (
                 <Flex key={label.name} className="rounded-full border border-greyscale-50/8 px-2 py-1">
-                  <Typography variant="body-xs" className="whitespace-nowrap">
+                  <Typography variant="body-xs" className="whitespace-nowrap first-letter:capitalize">
                     {label.name}
                   </Typography>
                 </Flex>
