@@ -38,8 +38,8 @@ export function ContributorSelect({
             user={application.applicant}
             selectedUser={selectedUser}
             handleSelectUser={handleSelectUser}
-            rankCategory="F"
-            rank={452}
+            rankCategory={application.applicant.globalRankCategory}
+            rank={application.applicant.globalRank}
           />
         ))}
 
