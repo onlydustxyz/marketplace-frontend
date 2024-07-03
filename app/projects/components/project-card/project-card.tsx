@@ -78,7 +78,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
         background="base"
       >
         <Flex direction="row" className="origin-center gap-5">
-          <div className="relative hidden flex-shrink-0 pt-4 md:block lg:pt-6">
+          <div className="relative hidden h-fit flex-shrink-0 pt-4 md:block lg:pt-6">
             <Avatar src={logoUrl} alt={T("v2.pages.projects.highlights.thumbnail")} size="xl" shape="square" />
             {isPrivate && (
               <div className="absolute -bottom-2.5 -right-2.5">
@@ -88,7 +88,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
           </div>
           <Flex direction="col" className="w-full flex-1 gap-1 overflow-hidden pr-4 pt-4 lg:pr-6 lg:pt-6">
             <Flex direction="row" className="mb-4 items-center gap-4 md:mb-0 md:items-start md:gap-2">
-              <div className="relative block flex-shrink-0 md:hidden">
+              <div className="relative block h-fit flex-shrink-0 md:hidden">
                 <Avatar
                   src={logoUrl}
                   alt={T("v2.pages.projects.highlights.thumbnail")}
