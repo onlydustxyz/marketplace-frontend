@@ -57,7 +57,7 @@ export function GoodFirstIssues({ projectId, organizations, isProjectLeader }: T
               onDrawerOpen={() => {
                 setApplyIssueDrawerState({
                   isOpen: true,
-                  issueId: String(issue.id),
+                  issueId: issue.id,
                   applicationId: issue.currentUserApplication?.id ?? "",
                 });
               }}

@@ -18,7 +18,7 @@ import { usePublicRepoScope } from "components/features/grant-permission/hooks/u
 import { useIntl } from "hooks/translate/use-translate";
 
 export function useApplyIssueDrawer({ state }: Pick<TApplyIssueDrawer.Props, "state">) {
-  const [{ isOpen, issueId, applicationId }, setState] = state;
+  const [{ isOpen, issueId, applicationId = "" }, setState] = state;
   const { getPermissions } = usePublicRepoScope({});
   const { slug = "" } = useParams<{ slug: string }>();
   const project = ProjectApi.queries.useGetProjectBySlug({
@@ -28,7 +28,7 @@ export function useApplyIssueDrawer({ state }: Pick<TApplyIssueDrawer.Props, "st
 
   const { data: issue, ...getIssue } = issuesApiClient.queries.useGetIssueById({
     pathParams: {
-      issueId: Number(issueId),
+      issueId: issueId ?? 0,
     },
     options: { enabled: Boolean(issueId) && isOpen },
   });
@@ -104,11 +104,11 @@ export function useApplyIssueDrawer({ state }: Pick<TApplyIssueDrawer.Props, "st
   }
 
   function handleCreate(values: TApplyIssueDrawer.form) {
-    if (!project.data?.id || !application?.issue.id) return;
+    if (!project.data?.id || !issueId) return;
 
     createAsync({
       projectId: project.data.id,
-      issueId: application.issue.id,
+      issueId,
       motivation: values.motivations,
       problemSolvingApproach: values.problemSolvingApproach,
     })
@@ -163,5 +163,7 @@ export function useApplyIssueDrawer({ state }: Pick<TApplyIssueDrawer.Props, "st
 }
 
 export function useApplyIssueDrawerState() {
-  return useState({ isOpen: false, issueId: "", applicationId: "" });
+  return useState<{ isOpen: boolean; issueId?: number; applicationId?: string }>({
+    isOpen: false,
+  });
 }

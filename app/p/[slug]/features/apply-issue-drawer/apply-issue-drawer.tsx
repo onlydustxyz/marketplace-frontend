@@ -37,7 +37,7 @@ export function ApplyIssueDrawer({ state }: TApplyIssueDrawer.Props) {
   const { user } = useCurrentUser();
   const {
     project: { data: project },
-    form: { control, reset, setValue, getValues },
+    form: { control, reset, setValue, getValues, handleSubmit },
     issue,
     getIssue: { isLoading: issueIsLoading },
     application,
@@ -151,12 +151,12 @@ export function ApplyIssueDrawer({ state }: TApplyIssueDrawer.Props) {
         <Button variant={"danger"} size={"l"} onClick={handleCancel} isLoading={deleteIsPending}>
           <Translate token={"v2.features.projects.applyIssueDrawer.footer.cancelApplication"} />
         </Button>
-        <Button size={"l"} onClick={() => handleApplication("update")} isLoading={updateIsPending}>
+        <Button size={"l"} onClick={handleSubmit(() => handleApplication("update"))} isLoading={updateIsPending}>
           <Translate token={"v2.features.projects.applyIssueDrawer.footer.updateApplication"} />
         </Button>
       </div>
     ) : (
-      <Button onClick={() => handleApplication("create")} size={"l"} isLoading={createIsPending}>
+      <Button onClick={handleSubmit(() => handleApplication("create"))} size={"l"} isLoading={createIsPending}>
         <Translate token={"v2.features.projects.applyIssueDrawer.footer.sendAnApplication"} />
       </Button>
     );

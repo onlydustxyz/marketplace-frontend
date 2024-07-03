@@ -74,9 +74,7 @@ export function ApplicationsTable() {
                 <Button
                   variant={"secondary-light"}
                   size={"s"}
-                  onClick={() =>
-                    handleOpenDrawer({ issueId: String(application.issue.id), applicationId: application.id })
-                  }
+                  onClick={() => handleOpenDrawer({ issueId: application.issue.id, applicationId: application.id })}
                 >
                   <Translate token={"v2.pages.applications.table.rows.seeApplication"} />
                 </Button>

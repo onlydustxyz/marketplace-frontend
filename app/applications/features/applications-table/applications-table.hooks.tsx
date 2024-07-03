@@ -38,7 +38,7 @@ export function useApplicationsTable() {
     openProjectOverview({ slug });
   }
 
-  function handleOpenDrawer({ issueId, applicationId }: { issueId: string; applicationId: string }) {
+  function handleOpenDrawer({ issueId, applicationId }: { issueId: number; applicationId: string }) {
     setApplyIssueDrawerState(prevState => ({ ...prevState, isOpen: true, issueId, applicationId }));
   }
 
@@ -122,7 +122,7 @@ export function useApplicationsTable() {
               <Button
                 variant={"secondary-light"}
                 size={"s"}
-                onClick={() => handleOpenDrawer({ issueId: String(row.issue.id), applicationId: row.id })}
+                onClick={() => handleOpenDrawer({ issueId: row.issue.id, applicationId: row.id })}
               >
                 <Translate token={"v2.pages.applications.table.rows.seeApplication"} />
               </Button>
