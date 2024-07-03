@@ -44,6 +44,7 @@ export function useApplicationsTable({ projectId = "" }: { projectId?: string })
       direction: filters.direction === "ascending" ? "ASC" : "DESC",
       isAssigned: false,
       isApplied: true,
+      status: "OPEN",
     },
     options: {
       enabled: Boolean(projectId),
