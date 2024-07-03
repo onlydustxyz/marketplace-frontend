@@ -133,7 +133,7 @@ export function useApplicationsTable({ projectId = "" }: { projectId?: string })
               />
             </Tag>
           ),
-          contribution: <Contribution contribution={contribution} />,
+          contribution: <Contribution contribution={contribution} shouldOpenContributionPanel={false} />,
           actions: (
             <div className={"flex justify-end"}>
               <Button
