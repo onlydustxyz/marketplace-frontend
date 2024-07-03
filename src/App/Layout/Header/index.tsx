@@ -32,7 +32,7 @@ function HeaderClient() {
   const ecosystemsMenuItem = T("v2.features.menu.ecosystems");
   const hackathonsMenuItem = T("v2.features.menu.hackathons");
   const contributionsMenuItem = githubUserId && !onboardingInProgress ? T("v2.features.menu.contributions") : undefined;
-  const applicationsMenuItem = githubUserId && !onboardingInProgress ? T("v2.features.menu.applications") : undefined;
+  // const applicationsMenuItem = githubUserId && !onboardingInProgress ? T("v2.features.menu.applications") : undefined;
   const rewardsMenuItem = githubUserId && !onboardingInProgress ? T("v2.features.menu.rewards") : undefined;
 
   const isMatchMaintenance = useMatchPath(NEXT_ROUTER.maintenance, { exact: false });
@@ -51,7 +51,7 @@ function HeaderClient() {
         [NEXT_ROUTER.ecosystems.root]: ecosystemsMenuItem,
         [NEXT_ROUTER.hackathons.root]: hackathonsMenuItem,
         [NEXT_ROUTER.contributions.all]: contributionsMenuItem,
-        [NEXT_ROUTER.applications.all]: applicationsMenuItem,
+        // [NEXT_ROUTER.applications.all]: applicationsMenuItem,
         [NEXT_ROUTER.rewards.all]: rewardsMenuItem,
       }}
       impersonating={isImpersonating}
