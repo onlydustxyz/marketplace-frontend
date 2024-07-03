@@ -1,3 +1,5 @@
+import { useAuth0 } from "@auth0/auth0-react";
+import { useMemo } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
 import { Applicants } from "app/p/[slug]/features/good-first-issues/components/applicants/applicants";
@@ -18,7 +20,15 @@ import { TIssueCard } from "./issue-card.types";
 
 export function IssueCard({ issue, onDrawerOpen }: TIssueCard.Props) {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
+  const { isAuthenticated } = useAuth0();
   const hasApplied = Boolean(issue.currentUserApplication);
+
+  const renderApplyButton = useMemo(() => {
+    if (isAuthenticated) {
+      return <ApplyButton hasApplied={hasApplied} onDrawerOpen={onDrawerOpen} />;
+    }
+    return null;
+  }, [isAuthenticated, hasApplied, onDrawerOpen]);
 
   return (
     <Card key={issue.id} background="base" hasPadding={false}>
@@ -28,7 +38,7 @@ export function IssueCard({ issue, onDrawerOpen }: TIssueCard.Props) {
             {issue.title}
           </Typography>
 
-          {isMd ? <ApplyButton hasApplied={hasApplied} onDrawerOpen={onDrawerOpen} /> : null}
+          {isMd ? renderApplyButton : null}
         </Flex>
 
         <Flex alignItems="center" className="gap-3 gap-y-2" wrap="wrap">
@@ -76,7 +86,7 @@ export function IssueCard({ issue, onDrawerOpen }: TIssueCard.Props) {
             <>
               {issue.labels.map(label => (
                 <Flex key={label.name} className="rounded-full border border-greyscale-50/8 px-2 py-1">
-                  <Typography variant="body-xs" className="whitespace-nowrap">
+                  <Typography variant="body-xs" className="whitespace-nowrap first-letter:capitalize">
                     {label.name}
                   </Typography>
                 </Flex>
@@ -92,7 +102,7 @@ export function IssueCard({ issue, onDrawerOpen }: TIssueCard.Props) {
           )}
         </Flex>
 
-        {!isMd ? <ApplyButton hasApplied={hasApplied} onDrawerOpen={onDrawerOpen} /> : null}
+        {!isMd ? renderApplyButton : null}
 
         <OverviewAccordion body={issue.body} />
       </Flex>

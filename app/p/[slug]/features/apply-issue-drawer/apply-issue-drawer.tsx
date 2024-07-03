@@ -218,7 +218,12 @@ export function ApplyIssueDrawer({ state }: TApplyIssueDrawer.Props) {
                 <ul className={"flex flex-wrap gap-2"}>
                   {issue.labels.map(label => (
                     <li key={label.name}>
-                      <Tag style={"outline"} color={"grey"} size={"xs"}>
+                      <Tag
+                        style={"outline"}
+                        color={"grey"}
+                        size={"xs"}
+                        classNames={{ label: "first-letter:capitalize" }}
+                      >
                         {label.name}
                       </Tag>
                     </li>
