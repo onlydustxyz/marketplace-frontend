@@ -11,7 +11,7 @@ const defaultPort: HackathonCardPort<"div"> = {
   title: "Hackathon Example",
   slug: "example",
   backgroundImage,
-  mapStatusToTag: () => ({
+  adaptMapStatusToTag: () => ({
     tagText: "Status tags",
   }),
   location: "Paris",
@@ -93,7 +93,7 @@ const multipleProjectsPort: HackathonCardPort<"div"> = {
 
 const meta: Meta<typeof HackathonCard> = {
   component: HackathonCard,
-  title: "Organisms/HackathonCard",
+  title: "Local/HackathonCard",
   tags: ["autodocs"],
   parameters: {
     backgrounds: {

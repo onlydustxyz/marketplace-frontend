@@ -29,6 +29,6 @@ export interface HackathonCardPort<C extends ElementType> extends Partial<Varian
   status?: HackathonStatus;
   projects?: Project[];
   hasLayer?: boolean;
-  mapStatusToTag?: typeof mapHackathonStatusToTag;
-  formatDate?: typeof formatHackathonDate;
+  adaptMapStatusToTag?: typeof mapHackathonStatusToTag;
+  adaptFormatDate?: typeof formatHackathonDate;
 }

@@ -33,14 +33,14 @@ export function HackathonCard<C extends ElementType = "div">({
   status,
   projects,
   hasLayer,
-  mapStatusToTag = mapHackathonStatusToTag,
-  formatDate = formatHackathonDate,
+  adaptMapStatusToTag = mapHackathonStatusToTag,
+  adaptFormatDate = formatHackathonDate,
 }: HackathonCardPort<C>) {
   const Component = slug ? "a" : "article";
   const slots = HackathonCardVariants();
 
-  const { tagIcon, tagText } = mapStatusToTag(status);
-  const { formattedDate, formattedTime } = formatDate(startDate);
+  const { tagIcon, tagText } = adaptMapStatusToTag(status);
+  const { formattedDate, formattedTime } = adaptFormatDate(startDate);
 
   return (
     <Paper
