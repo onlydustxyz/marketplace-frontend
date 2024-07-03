@@ -2,7 +2,7 @@ import SkeletonEl from "../New/Skeleton/Skeleton";
 
 export default function SkeletonProjectOverviewPanel() {
   return (
-    <div className="flex h-full w-full flex-col items-start justify-start gap-4 px-6">
+    <div className="flex h-full w-full flex-col items-start justify-start gap-4 px-6 pt-12">
       <div className="flex w-full flex-row items-start justify-between gap-2">
         <div className="flex w-full flex-row items-center justify-start gap-4">
           <SkeletonEl variant="rounded" color="grey" width={80} height={80} />
