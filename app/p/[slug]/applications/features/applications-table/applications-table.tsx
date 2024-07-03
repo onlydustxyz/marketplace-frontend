@@ -74,7 +74,10 @@ export function ApplicationsTable({ projectId = "" }: { projectId?: string }) {
                   as={BaseLink}
                   htmlProps={{ href: NEXT_ROUTER.projects.details.applications.details(slug, String(issue.id)) }}
                 >
-                  <Translate token={"v2.pages.project.applications.table.rows.reviewApplication"} />
+                  <Translate
+                    token={"v2.pages.project.applications.table.rows.reviewApplication"}
+                    params={{ count: issue.applicants.length }}
+                  />
                 </Button>
               }
               shouldOpenContributionPanel={false}

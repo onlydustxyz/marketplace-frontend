@@ -1,26 +1,23 @@
-import { useMemo } from "react";
+import { rankCategoryEmojiMapping } from "api-client/resources/users/types";
+import { getOrdinalSuffix } from "utils/profile/ordinal-position-suffix";
 
 import { cn } from "src/utils/cn";
 
 import { Avatar } from "components/atoms/avatar";
+import { Typo } from "components/atoms/typo";
+import { Emoji } from "components/layout/emoji/emoji";
 import { Flex } from "components/layout/flex/flex";
-import { Typography } from "components/layout/typography/typography";
 
 import { TApplicantCard } from "./applicant-card.types";
 
 export function ApplicantCard({
   user,
-  recommandationScore,
   selectedUser,
   handleSelectUser,
   applicationId,
+  rankCategory,
+  rank,
 }: TApplicantCard.Props) {
-  const recommandationScoreVariant = useMemo(() => {
-    if (recommandationScore >= 80) return "success";
-    if (recommandationScore >= 30) return "warning";
-    return "danger";
-  }, [recommandationScore]);
-
   return (
     <Flex
       as="button"
@@ -35,21 +32,17 @@ export function ApplicantCard({
       <Flex alignItems="center" className="gap-3">
         <Avatar shape="round" size="s" src={user.avatarUrl} />
 
-        <Typography variant="title-s" className="line-clamp-1 text-left text-spaceBlue-100">
+        <Typo size={"m"} variant={"brand"} classNames={{ base: "line-clamp-1 text-left" }}>
           {user.login}
-        </Typography>
+        </Typo>
       </Flex>
 
-      <Typography
-        variant="body-m-bold"
-        className={cn({
-          "text-struggleBadge-bar-solid-green": recommandationScoreVariant === "success",
-          "text-orange-500": recommandationScoreVariant === "warning",
-          "text-github-red-light": recommandationScoreVariant === "danger",
-        })}
-      >
-        {recommandationScore}%
-      </Typography>
+      <Flex alignItems={"center"} justifyContent={"end"} className="gap-1">
+        <Emoji symbol={rankCategoryEmojiMapping[rankCategory]} label="rank emoji" />
+        <Typo size={"m"} variant={"brand"} classNames={{ base: "line-clamp-1 text-left text-spaceBlue-100" }}>
+          {getOrdinalSuffix(rank)}
+        </Typo>
+      </Flex>
     </Flex>
   );
 }

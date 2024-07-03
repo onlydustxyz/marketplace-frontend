@@ -143,7 +143,10 @@ export function useApplicationsTable({ projectId = "" }: { projectId?: string })
                 as={BaseLink}
                 htmlProps={{ href: NEXT_ROUTER.projects.details.applications.details(slug, String(row.id)) }}
               >
-                <Translate token={"v2.pages.project.applications.table.rows.reviewApplication"} />
+                <Translate
+                  token={"v2.pages.project.applications.table.rows.reviewApplication"}
+                  params={{ count: row.applicants.length }}
+                />
               </Button>
             </div>
           ),

@@ -36,9 +36,10 @@ export function ContributorSelect({
             key={application.id}
             applicationId={application.id}
             user={application.applicant}
-            recommandationScore={application.recommendationScore}
             selectedUser={selectedUser}
             handleSelectUser={handleSelectUser}
+            rankCategory={application.applicant.globalRankCategory}
+            rank={application.applicant.globalRank}
           />
         ))}
 

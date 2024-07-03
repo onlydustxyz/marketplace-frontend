@@ -25,7 +25,7 @@ export function MostActiveEcosystems({ githubId }: TMostActiveEcosystems.Props) 
         <Icon remixName="ri-global-line" size={20} />
         <Typography translate={{ token: "v2.pages.publicProfile.header.ecosystems.title" }} variant="body-m-bold" />
       </Flex>
-      <div className="flex w-full gap-3">
+      <div className="grid grid-cols-3 gap-3">
         {data.ecosystems.map(ecosystem => (
           <MostActive
             key={ecosystem.ecosystem.name}
