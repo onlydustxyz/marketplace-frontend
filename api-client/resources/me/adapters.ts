@@ -11,6 +11,7 @@ enum Paths {
   logout_user = "logout_user",
   post_my_application = "post_my_application",
   update_my_application = "update_my_application",
+  delete_banner_by_id = "delete_banner_by_id",
 }
 
 const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
@@ -53,6 +54,10 @@ const Adapters: { [key in Paths]: FetchAdapaterConstructor } = {
   update_my_application: {
     url: "me/applications/:applicationId",
     method: "PUT",
+  },
+  delete_banner_by_id: {
+    url: "me/banners/:bannerId",
+    method: "DELETE",
   },
 };
 

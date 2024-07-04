@@ -1,13 +1,17 @@
 "use client";
 
 import { bannerApiClient } from "api-client/resources/banner";
-import { ComponentProps } from "react";
+import { meApiClient } from "api-client/resources/me";
+import { ComponentProps, useState } from "react";
 
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { PageBanner as PageBannerOrganism } from "components/organisms/page-banner/page-banner";
 
 export function PageBanner() {
+  const [showBanner, setShowBanner] = useState(true);
+
   const { data } = bannerApiClient.queries.useGetBanner();
+  const { mutate } = meApiClient.mutations.useDeleteBannerById({ bannerId: data.id });
 
   function getCta(): ComponentProps<typeof PageBannerOrganism>["cta"] {
     if (!data.buttonText || !data.buttonLinkUrl) return undefined;
@@ -25,10 +29,12 @@ export function PageBanner() {
   }
 
   function handleClose() {
-    alert(data.id);
+    setShowBanner(false);
+    // TODO test
+    // mutate({});
   }
 
-  if (!data.text) return null;
+  if (!data.text || !showBanner) return null;
 
   return <PageBannerOrganism message={data.text} cta={getCta()} onClose={handleClose} />;
 }
