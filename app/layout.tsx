@@ -3,8 +3,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import "index.css";
 import "keen-slider/keen-slider.min.css";
 import type { Metadata } from "next";
-import { PropsWithChildren, Suspense } from "react";
-import { ErrorBoundary } from "react-error-boundary";
+import { PropsWithChildren } from "react";
 import "remixicon/fonts/remixicon.css";
 
 import { PageBanner } from "app/features/page-banner/page-banner";
@@ -31,11 +30,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
       <body>
         <Providers>
           <div className="z-[1] flex h-[calc(100dvh)] w-screen flex-col bg-space-gradient xl:fixed">
-            <ErrorBoundary fallback={null}>
-              <Suspense>
-                <PageBanner />
-              </Suspense>
-            </ErrorBoundary>
+            <PageBanner />
             <Header />
             <SpaceBackground />
             {children}

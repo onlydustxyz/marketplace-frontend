@@ -50,14 +50,14 @@ export function PageBanner({ message, cta, onClose }: PageBannerProps) {
       <Image
         src={PageBannerBackgroundDesktop}
         alt={""}
-        className={"absolute hidden object-cover object-center md:flex"}
+        className={"pointer-events-none absolute hidden object-cover object-center md:flex"}
         fill
         priority
       />
       <Image
         src={PageBannerBackgroundMobile}
         alt={""}
-        className={"absolute object-cover object-center md:hidden"}
+        className={"pointer-events-none absolute object-cover object-center md:hidden"}
         fill
         priority
       />
