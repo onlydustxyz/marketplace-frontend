@@ -1,12 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useReactQueryAdapter } from "api-client/adapter/react-query/react-query-adapter";
-import { ParametersInterfaceWithReactQuery } from "api-client/types/parameters-interface";
+import { ReactQueryOptions } from "api-client/types/react-query-options";
 
 import { getBanner } from "../fetch";
 import { GetBannerResponse } from "../types";
 
-export const useGetIssueById = ({ options }: ParametersInterfaceWithReactQuery<typeof getBanner>) => {
+export const useGetBanner = ({ options }: { options?: ReactQueryOptions } = {}) => {
   const { query } = useReactQueryAdapter<GetBannerResponse>(getBanner(), options);
 
-  return useQuery<GetBannerResponse>(query);
+  return useSuspenseQuery<GetBannerResponse>(query);
 };
