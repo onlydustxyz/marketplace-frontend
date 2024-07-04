@@ -5,7 +5,6 @@ import { InvoiceTokens } from "components/features/invoice-template/invoice-temp
 import { TInvoice } from "components/features/invoice-template/invoice-template.types";
 
 export function InvoiceInfo({ senderInfos, recipientInfos, legalInfos, isUserIndividual }: TInvoice.InvoiceInfoProps) {
-  const [senderStreetAddress, ...senderRestAdress] = senderInfos.address.split(/,(.+)/);
   const [recipientStreetAddress, ...recipientRestAdress] = recipientInfos.address.split(/,(.+)/);
   return (
     <View style={{ ...styles.section, ...styles.flexRow }}>
@@ -15,8 +14,7 @@ export function InvoiceInfo({ senderInfos, recipientInfos, legalInfos, isUserInd
             {isUserIndividual ? InvoiceTokens.invoiceInfos.individualName : InvoiceTokens.invoiceInfos.companyName}
           </Text>
           <Text style={styles.paragraph}>{senderInfos.name}</Text>
-          <Text style={styles.paragraph}>{senderStreetAddress}</Text>
-          <Text style={styles.paragraph}>{senderRestAdress.join("").trim()}</Text>
+          <Text style={{ ...styles.paragraph, maxWidth: "350px" }}>{senderInfos.address}</Text>
           {senderInfos.euVATNumber ? (
             <Text style={styles.paragraph}>
               {InvoiceTokens.invoiceInfos.vatNumber}: {senderInfos.euVATNumber}

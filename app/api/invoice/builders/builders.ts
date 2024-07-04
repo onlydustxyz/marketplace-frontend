@@ -60,7 +60,7 @@ export function getInvoiceInfoProps({
     const billingProfile = invoiceDetails.individualBillingProfile;
     return {
       senderInfos: {
-        name: `${billingProfile?.firstName} ${billingProfile?.lastName}`,
+        name: `${billingProfile?.firstName ?? ""} ${billingProfile?.lastName ?? ""}`,
         address: billingProfile?.address ?? "",
       },
       ...restInfos,
