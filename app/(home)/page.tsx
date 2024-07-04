@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
+import { ClientError } from "app/(home)/client-error";
 import { PageGrid } from "app/(home)/components/page-grid/page-grid";
 import { Activity } from "app/(home)/features/activity/activity";
 import { ActivityLoading } from "app/(home)/features/activity/activity.loading";
@@ -23,13 +24,11 @@ import { Container } from "components/layout/container/container";
 import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 
 export default function HomePage() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const fakeErrorObject = undefined as any;
   return (
     <ScrollView>
       <Container>
         <PosthogOnMount eventName={"home_dashboard_viewed"} />
-        <p>{fakeErrorObject.test.test}</p>
+        <ClientError />
         <PageGrid>
           <RequiredAuthGuard>
             <Profile />
