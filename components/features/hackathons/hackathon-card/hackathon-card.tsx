@@ -56,13 +56,10 @@ export function HackathonCard<C extends ElementType = "div">({
         base: cn(slots.base(), classNames?.base),
       }}
     >
-      <span
-        className="absolute -left-[5px] -top-[5px] h-[calc(100%_+_10px)] w-[calc(100%_+_10px)]"
-        style={{
-          backgroundImage: `url(${backgroundImage.src})`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-        }}
+      <img
+        src={backgroundImage.src}
+        alt={title}
+        className="absolute -left-[5px] -top-[5px] h-[calc(100%_+_10px)] w-[calc(100%_+_10px)] max-w-[initial] object-cover object-center"
       />
       {hasLayer ? <span className="absolute inset-0 h-full w-full rounded-xl bg-black bg-opacity-60" /> : null}
 
