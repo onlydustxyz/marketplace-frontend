@@ -7,6 +7,11 @@ type Story = StoryObj<typeof PageBanner>;
 
 const defaultPort: PageBannerProps = {
   message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget",
+  cta: {
+    text: "CTA",
+    href: "https://app.onlydust.com",
+    icon: "ri-fire-line",
+  },
 };
 
 const meta: Meta<typeof PageBanner> = {
@@ -24,38 +29,6 @@ const meta: Meta<typeof PageBanner> = {
 export const Default: Story = {
   render: args => {
     return <PageBanner {...defaultPort} {...args} />;
-  },
-};
-
-export const WithCtaHref: Story = {
-  render: args => {
-    return (
-      <PageBanner
-        {...defaultPort}
-        {...args}
-        cta={{
-          text: "CTA",
-          href: "https://app.onlydust.com",
-          icon: "ri-fire-line",
-        }}
-      />
-    );
-  },
-};
-
-export const WithCtaOnClick: Story = {
-  render: args => {
-    return (
-      <PageBanner
-        {...defaultPort}
-        {...args}
-        cta={{
-          text: "CTA",
-          onClick: () => alert("Clicked"),
-          icon: "ri-fire-line",
-        }}
-      />
-    );
   },
 };
 

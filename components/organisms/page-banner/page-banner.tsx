@@ -18,27 +18,17 @@ export function PageBanner({ message, cta, onClose }: PageBannerProps) {
         }
       : undefined;
 
-    if (cta.href) {
-      return (
-        <div>
-          <Button
-            as={"a"}
-            htmlProps={{
-              href: cta.href,
-              target: cta.isExternal ? "_blank" : undefined,
-              rel: cta.isExternal ? "noopener noreferrer" : undefined,
-            }}
-            startIcon={startIcon}
-          >
-            {cta.text}
-          </Button>
-        </div>
-      );
-    }
-
     return (
       <div>
-        <Button onClick={cta.onClick} startIcon={startIcon}>
+        <Button
+          as={"a"}
+          htmlProps={{
+            href: cta.href,
+            target: cta.isExternal ? "_blank" : undefined,
+            rel: cta.isExternal ? "noopener noreferrer" : undefined,
+          }}
+          startIcon={startIcon}
+        >
           {cta.text}
         </Button>
       </div>
