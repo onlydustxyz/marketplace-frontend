@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { projectsApiClient } from "api-client/resources/projects";
 import { uniqWith } from "lodash";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createContext, useEffect, useMemo, useRef, useState } from "react";
@@ -40,6 +41,7 @@ type Edit = {
   organizations: UseGithubOrganizationsResponse[];
   PoolingFeedback: React.ReactElement;
   ecosystems: TSelectAutocomplete.Item[];
+  projectCategories: TSelectAutocomplete.Item[];
   githubWorklow: {
     run: () => void;
     inGithubWorkflow: boolean;
@@ -62,6 +64,7 @@ export interface EditFormDataRepos {
 export type EditFormData = Omit<components["schemas"]["UpdateProjectRequest"], "moreInfos"> & {
   projectLeads: FieldProjectLeadValue;
   ecosystems: TSelectAutocomplete.Item[];
+  projectCategories: TSelectAutocomplete.Item[];
   selectedRepos: EditFormDataRepos[];
   githubRepos: Array<{ id: number; isAuthorizedInGithubApp?: boolean }>;
   moreInfos: MoreInfosField[];
@@ -73,6 +76,7 @@ export const EditContext = createContext<Edit>({
   organizations: [],
   PoolingFeedback: <></>,
   ecosystems: [],
+  projectCategories: [],
   formHelpers: {
     resetBeforLeave: () => null,
     triggerSubmit: () => null,
@@ -121,6 +125,7 @@ export function EditProvider({ children, project }: EditContextProps) {
   });
 
   const { data: ecosystemsData } = EcosystemApi.queries.useGetEcosystems({});
+  const { data: categoriesData } = projectsApiClient.queries.useGetProjectCategories({});
 
   const PoolingFeedback = usePoolingFeedback({
     onForcePooling,
@@ -176,7 +181,14 @@ export function EditProvider({ children, project }: EditContextProps) {
           value: id,
           image: logoUrl,
         })),
+        projectCategories: (project?.categories || []).map(({ name, id, iconSlug }) => ({
+          id,
+          label: name,
+          value: id,
+          iconSlug,
+        })),
         ecosystemIds: (project?.ecosystems || []).map(({ id }) => id),
+        categoryIds: (project?.categories || []).map(({ id }) => id),
         rewardSettings: {
           ...project.rewardSettings,
           ignoreContributionsBefore: project.rewardSettings?.ignoreContributionsBefore ?? project.createdAt,
@@ -302,13 +314,14 @@ export function EditProvider({ children, project }: EditContextProps) {
   });
 
   const onSubmit = (formData: EditFormData) => {
-    const { githubRepos, moreInfos, ecosystems, ...rest } = formData;
+    const { githubRepos, moreInfos, ecosystems, projectCategories, ...rest } = formData;
     const githubRepoIds = githubRepos.map(repo => repo.id);
     updateProject({
       ...rest,
       githubRepoIds,
       moreInfos: (moreInfos || []).filter(info => info.url !== "").map(info => ({ url: info.url, value: info.value })),
       ecosystemIds: ecosystems?.map(ecosystem => `${ecosystem.id}`),
+      categoryIds: projectCategories?.map(cat => `${cat.id}`),
     }).then(() => {
       capture("project_information_changed");
     });
@@ -327,6 +340,15 @@ export function EditProvider({ children, project }: EditContextProps) {
     }));
   }, [ecosystemsData]);
 
+  const projectCategories: TSelectAutocomplete.Item[] = useMemo(() => {
+    return (categoriesData?.categories || []).map(({ name, id, iconSlug }) => ({
+      id,
+      label: name,
+      value: id,
+      iconSlug,
+    }));
+  }, [categoriesData]);
+
   return (
     <EditContext.Provider
       value={{
@@ -334,6 +356,7 @@ export function EditProvider({ children, project }: EditContextProps) {
         project,
         organizations: mergeOrganization,
         ecosystems: EcoSystems,
+        projectCategories,
         PoolingFeedback,
         formHelpers: {
           addRepository: onAddRepository,

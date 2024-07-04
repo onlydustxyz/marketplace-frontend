@@ -17,6 +17,15 @@
     "one": "__count__ ecosystem",
     "many": "__count__ ecosystems"
   },
+  "categories": {
+    "title": "Categories",
+    "all": "All categories",
+    "some": "Categories",
+    "zero": "Categories",
+    "empty": "No categories found",
+    "one": "__count__ category",
+    "many": "__count__ categories"
+  },
   "transactions": {
     "title": "Transactions",
     "all": "All transactions",
