@@ -46,18 +46,20 @@ export function PageBanner({ message, cta, onClose }: PageBannerProps) {
   }
 
   return (
-    <section className={"relative flex justify-center px-4 py-3 md:pr-14"}>
+    <div className={"relative mx-auto flex w-full max-w-[1920px] justify-center px-4 py-3 md:pr-14"}>
       <Image
         src={PageBannerBackgroundDesktop}
         alt={""}
-        className={"absolute hidden object-cover object-center md:block"}
+        className={"absolute hidden object-cover object-center md:flex"}
         fill
+        priority
       />
       <Image
         src={PageBannerBackgroundMobile}
         alt={""}
         className={"absolute object-cover object-center md:hidden"}
         fill
+        priority
       />
       <div className={"relative z-10 flex items-center gap-4"}>
         <Typo size={"m"} weight={"medium"} color={"text-1"}>
@@ -68,6 +70,6 @@ export function PageBanner({ message, cta, onClose }: PageBannerProps) {
       </div>
 
       {renderCloseButton()}
-    </section>
+    </div>
   );
 }

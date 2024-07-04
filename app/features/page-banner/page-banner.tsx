@@ -36,5 +36,9 @@ export function PageBanner() {
 
   if (!data.text || !showBanner) return null;
 
-  return <PageBannerOrganism message={data.text} cta={getCta()} onClose={handleClose} />;
+  return (
+    <section className={"bg-black"}>
+      <PageBannerOrganism message={data.text} cta={getCta()} onClose={handleClose} />
+    </section>
+  );
 }
