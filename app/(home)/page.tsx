@@ -23,7 +23,15 @@ import { PosthogOnMount } from "components/features/posthog/components/posthog-o
 import { Container } from "components/layout/container/container";
 import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 
-export default function HomePage() {
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  // function creyarateAsyncError() {
+  //   throw new Error("This is an async error");
+  // }
+  //
+  // await createAsyncError();
+
   return (
     <ScrollView>
       <Container>
