@@ -23,10 +23,13 @@ import { Container } from "components/layout/container/container";
 import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 
 export default function HomePage() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const fakeErrorObject = undefined as any;
   return (
     <ScrollView>
       <Container>
         <PosthogOnMount eventName={"home_dashboard_viewed"} />
+        <p>{fakeErrorObject.test.test}</p>
         <PageGrid>
           <RequiredAuthGuard>
             <Profile />
