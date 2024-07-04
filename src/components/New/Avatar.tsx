@@ -52,7 +52,12 @@ export function Avatar({ src, alt, shape = "circle", size = "6", className }: Av
       )}
     >
       {src ? (
-        <img src={src || IMAGES.logo.space} alt={alt} className="h-full w-full bg-white object-cover" loading="lazy" />
+        <img
+          src={src || IMAGES.logo.space}
+          alt={alt}
+          className="h-full w-full bg-greyscale-900 object-cover"
+          loading="lazy"
+        />
       ) : (
         <GalleryLine className="h-4 w-4 text-spaceBlue-300" />
       )}
