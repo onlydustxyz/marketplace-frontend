@@ -62,6 +62,7 @@ export function PublicRepoScopePermissionModal({
           loading={"lazy"}
           width={320}
           height={50}
+          quality={100}
         />
         <div className="flex flex-col">
           <Typo
