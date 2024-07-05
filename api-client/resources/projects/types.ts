@@ -23,3 +23,9 @@ export type GetProjectIssuesPageResponse = components["schemas"]["ProjectIssuesP
 
 /* --------------------------------- ProjectLinkResponse -------------------------------- */
 export type ProjectLinkResponse = components["schemas"]["ProjectLinkResponse"];
+
+/* --------------------------------- Project Categories -------------------------------- */
+
+export type GetProjectCategories = components["schemas"]["ProjectCategoriesResponse"];
+
+export type ProjectCategoriesItem = components["schemas"]["ProjectCategoryResponse"];

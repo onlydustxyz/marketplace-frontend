@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { projectsCategoriesApiClient } from "api-client/resources/project-categories";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
@@ -54,6 +55,7 @@ type CreateProject = {
   organizationsLoading: boolean;
   PoolingFeedback: React.ReactElement;
   ecosystems: TSelectAutocomplete.Item[];
+  projectCategories: TSelectAutocomplete.Item[];
   formFn: {
     addRepository: (data: CreateFormDataRepos) => void;
     removeRepository: (data: CreateFormDataRepos) => void;
@@ -71,6 +73,7 @@ export const CreateProjectContext = createContext<CreateProject>({
   currentStep: ProjectCreationSteps.ORGANIZATIONS,
   installedRepos: [],
   ecosystems: [],
+  projectCategories: [],
   organizations: [],
   organizationsLoading: false,
   PoolingFeedback: <></>,
@@ -92,6 +95,7 @@ const validationSchema = z.object({
   isLookingForContributors: z.boolean().nullish().optional(),
   longDescription: z.string().min(1),
   ecosystems: z.array(z.object({ id: z.number().or(z.string()) })).optional(),
+  projectCategories: z.array(z.object({ id: z.number().or(z.string()) })).optional(),
   moreInfos: z
     .array(
       z
@@ -154,6 +158,7 @@ export function CreateProjectProvider({
     },
   });
   const { data: ecosystemsData } = EcosystemApi.queries.useGetEcosystems({});
+  const { data: categoriesData } = projectsCategoriesApiClient.queries.useGetProjectCategories({});
 
   const PoolingFeedback = usePoolingFeedback({
     onForcePooling,
@@ -198,6 +203,8 @@ export function CreateProjectProvider({
           moreInfos: initialProject?.moreInfos?.length > 0 ? initialProject.moreInfos : [{ url: "", value: "" }],
           ecosystems: initialProject?.ecosystems,
           ecosystemIds: (initialProject?.ecosystems || []).map(({ id }) => `${id}`),
+          projectCategories: initialProject?.projectCategories,
+          categoryIds: (initialProject?.projectCategories || []).map(({ id }) => `${id}`),
         }
       : {
           moreInfos: [{ url: "", value: "" }],
@@ -212,12 +219,14 @@ export function CreateProjectProvider({
   const onSubmit = () => {
     setEnableAutoSaved(false);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { search, projectLeads, selectedRepos, ecosystems, moreInfos, ...formData } = form.getValues();
+    const { search, projectLeads, selectedRepos, ecosystems, projectCategories, moreInfos, ...formData } =
+      form.getValues();
     createProject({
       ...formData,
       isLookingForContributors: formData.isLookingForContributors || false,
       githubRepoIds: selectedRepos.map(repo => repo.repoId),
       ecosystemIds: ecosystems?.map(ecosystem => `${ecosystem.id}`),
+      categoryIds: projectCategories?.map(cat => `${cat.id}`),
       moreInfos: (moreInfos || []).filter(info => info.url !== "").map(info => ({ url: info.url, value: info.value })),
     });
   };
@@ -280,6 +289,15 @@ export function CreateProjectProvider({
     }));
   }, [ecosystemsData]);
 
+  const projectCategories: TSelectAutocomplete.Item[] = useMemo(() => {
+    return (categoriesData?.categories || []).map(({ name, id, iconSlug }) => ({
+      id,
+      label: name,
+      value: id,
+      iconSlug,
+    }));
+  }, [categoriesData]);
+
   useEffect(() => {
     if (installation_id) {
       const newInstalledRepoStorage = watchInstalledRepoStorage({
@@ -310,6 +328,7 @@ export function CreateProjectProvider({
         currentStep,
         installedRepos,
         ecosystems: EcoSystems,
+        projectCategories,
         organizationsLoading: isLoading && !organizationsData?.length,
         organizations: (organizationsData || []).sort((a, b) => a.login.localeCompare(b.login)),
         PoolingFeedback,

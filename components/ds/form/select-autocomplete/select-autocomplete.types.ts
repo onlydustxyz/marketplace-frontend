@@ -6,6 +6,7 @@ export namespace TSelectAutocomplete {
     label?: string | JSX.Element;
     value: string;
     image?: string | null;
+    iconSlug?: string | null;
   }
 
   export type avatarType = "circle" | "square";
