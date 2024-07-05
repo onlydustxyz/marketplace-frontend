@@ -1,3 +1,4 @@
+import { GithubOrganization } from "core/domain/models/github-organization";
 import { useMemo } from "react";
 
 import { useStackGithubWorkflowTutorial } from "src/App/Stacks/Stacks";
@@ -25,36 +26,48 @@ enum organizationStatusEnum {
 }
 
 export default function ClaimBannerOrganization({
-  organization,
+  organization: org,
   myOrganizations,
   project,
 }: ClaimBannerOrganizationProps) {
   const { T } = useIntl();
   const [openTutorial] = useStackGithubWorkflowTutorial();
-  const myOrganization = useMemo(
-    () => myOrganizations.find(org => org.githubUserId === organization.githubUserId),
-    [myOrganizations, organization]
-  );
 
-  const organizationInstalled = organization.installationStatus !== "NOT_INSTALLED";
-  const myOrganizationInstalled = myOrganization?.installationStatus !== "NOT_INSTALLED";
+  const organization = new GithubOrganization(org);
+  const myOrganization = useMemo(() => {
+    const myOrg = myOrganizations.find(org => org.githubUserId === organization.githubUserId);
+
+    if (myOrg) {
+      return new GithubOrganization(myOrg);
+    }
+  }, [myOrganizations, organization]);
 
   const githubLink = getGithubSetupLink({
     id: organization.githubUserId,
     login: organization.login,
     installationId: organization.installationId,
-    installed: organizationInstalled,
+    installed: organization.isInstalled,
     isAPersonalOrganization: organization.isPersonal,
     projectSlug: project?.slug,
     isClaim: true,
   });
 
   const organizationStatus: organizationStatusEnum = useMemo(() => {
-    if (myOrganization && !organizationInstalled && !myOrganizationInstalled && myOrganization.isCurrentUserAdmin) {
+    if (
+      myOrganization &&
+      !organization.isInstalled &&
+      !myOrganization.isInstalled &&
+      myOrganization.isCurrentUserAdmin
+    ) {
       return organizationStatusEnum.shouldInstall;
     }
 
-    if (myOrganization && !organizationInstalled && !myOrganizationInstalled && !myOrganization.isCurrentUserAdmin) {
+    if (
+      myOrganization &&
+      !organization.isInstalled &&
+      !myOrganization.isInstalled &&
+      !myOrganization.isCurrentUserAdmin
+    ) {
       return organizationStatusEnum.shouldGrant;
     }
 
