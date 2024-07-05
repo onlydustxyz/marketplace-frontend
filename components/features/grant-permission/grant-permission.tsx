@@ -4,7 +4,7 @@ import { MoreInfoModal } from "components/features/grant-permission/components/m
 import { PublicRepoScopePermissionModal } from "components/features/grant-permission/components/public-repo-scope-permission-modal/public-repo-scope-permission-modal";
 import { TGrantPermissionModal } from "components/features/grant-permission/grant-permission.types";
 
-export function GrantPermission({ isOpen, handleClose, handleOpenDrawer }: TGrantPermissionModal.Props) {
+export function GrantPermission({ isOpen, handleClose }: TGrantPermissionModal.Props) {
   const [isMoreInfoOpen, setIsMoreInfoOpen] = useState(false);
   const [isPermissionOpen, setIsPermissionOpen] = useState(false);
 
@@ -39,15 +39,9 @@ export function GrantPermission({ isOpen, handleClose, handleOpenDrawer }: TGran
         isOpen={isPermissionOpen}
         handleClose={handlePermissionClose}
         handleMoreInfoOpen={handleMoreInfoOpen}
-        handleOpenDrawer={handleOpenDrawer}
       />
 
-      <MoreInfoModal
-        isOpen={isMoreInfoOpen}
-        handleClose={handleMoreInfoClose}
-        handleBack={handleMoreInfoDone}
-        handleOpenDrawer={handleOpenDrawer}
-      />
+      <MoreInfoModal isOpen={isMoreInfoOpen} handleClose={handleMoreInfoClose} handleBack={handleMoreInfoDone} />
     </>
   );
 }
