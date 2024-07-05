@@ -13,12 +13,10 @@ export function PublicRepoScopePermissionModal({
   isOpen,
   handleClose,
   handleMoreInfoOpen,
-  handleOpenDrawer,
 }: TPublicRepoScopePermissionModal.Props) {
   const { handleVerifyPermissions } = usePublicRepoScope({
     onSuccessCallback: () => {
       handleClose();
-      handleOpenDrawer();
     },
   });
 
