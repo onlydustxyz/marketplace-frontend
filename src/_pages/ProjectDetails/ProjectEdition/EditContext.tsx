@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { projectsApiClient } from "api-client/resources/projects";
+import { projectsCategoriesApiClient } from "api-client/resources/project-categories";
 import { uniqWith } from "lodash";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createContext, useEffect, useMemo, useRef, useState } from "react";
@@ -125,7 +125,7 @@ export function EditProvider({ children, project }: EditContextProps) {
   });
 
   const { data: ecosystemsData } = EcosystemApi.queries.useGetEcosystems({});
-  const { data: categoriesData } = projectsApiClient.queries.useGetProjectCategories({});
+  const { data: categoriesData } = projectsCategoriesApiClient.queries.useGetProjectCategories({});
 
   const PoolingFeedback = usePoolingFeedback({
     onForcePooling,
