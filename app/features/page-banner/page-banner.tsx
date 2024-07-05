@@ -12,22 +12,17 @@ import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 export function PageBanner() {
   const [showBanner, setShowBanner] = useState(true);
   const { user } = useCurrentUser();
-  const { data } = bannerApiClient.queries.useGetBanner();
+  const { data } = bannerApiClient.queries.useGetBanner({});
   const { mutate } = meApiClient.mutations.useDeleteBannerById({ bannerId: data?.id ?? "" });
 
   function getCta(): ComponentProps<typeof PageBannerOrganism>["cta"] {
-    if (!data || !data.buttonText || !data.buttonLinkUrl) return undefined;
+    if (!data?.buttonText || !data?.buttonLinkUrl) return undefined;
 
-    const cta: NonNullable<ComponentProps<typeof PageBannerOrganism>["cta"]> = {
+    return {
       text: data.buttonText,
       href: data.buttonLinkUrl,
+      icon: (data.buttonIconSlug as RemixIconsName) || undefined,
     };
-
-    if (data.buttonIconSlug) {
-      cta.icon = data.buttonIconSlug as RemixIconsName;
-    }
-
-    return cta;
   }
 
   function handleClose() {

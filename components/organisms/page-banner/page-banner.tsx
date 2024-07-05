@@ -8,55 +8,55 @@ import { Icon } from "components/layout/icon/icon";
 
 import { PageBannerProps } from "./page-banner.types";
 
+function Cta({ cta }: { cta: PageBannerProps["cta"] }) {
+  if (!cta) return null;
+
+  const startIcon = cta.icon
+    ? {
+        remixName: cta.icon,
+      }
+    : undefined;
+
+  return (
+    <div>
+      <Button
+        as={"a"}
+        htmlProps={{
+          href: cta.href,
+          target: cta.isExternal ? "_blank" : undefined,
+          rel: cta.isExternal ? "noopener noreferrer" : undefined,
+        }}
+        startIcon={startIcon}
+      >
+        {cta.text}
+      </Button>
+    </div>
+  );
+}
+
+function CloseButton({ onClick }: { onClick: PageBannerProps["onClose"] }) {
+  if (typeof onClick !== "function") return null;
+
+  return (
+    <button className={"absolute right-4 top-1/2 hidden -translate-y-1/2 md:flex"} onClick={onClick}>
+      <Icon remixName={"ri-close-line"} size={24} />
+    </button>
+  );
+}
+
 export function PageBanner({ message, cta, onClose }: PageBannerProps) {
-  function renderCTA() {
-    if (!cta) return null;
-
-    const startIcon = cta.icon
-      ? {
-          remixName: cta.icon,
-        }
-      : undefined;
-
-    return (
-      <div>
-        <Button
-          as={"a"}
-          htmlProps={{
-            href: cta.href,
-            target: cta.isExternal ? "_blank" : undefined,
-            rel: cta.isExternal ? "noopener noreferrer" : undefined,
-          }}
-          startIcon={startIcon}
-        >
-          {cta.text}
-        </Button>
-      </div>
-    );
-  }
-
-  function renderCloseButton() {
-    if (typeof onClose !== "function") return null;
-
-    return (
-      <button className={"absolute right-4 top-1/2 hidden -translate-y-1/2 md:flex"} onClick={onClose}>
-        <Icon remixName={"ri-close-line"} size={24} />
-      </button>
-    );
-  }
-
   return (
     <div className={"relative mx-auto flex w-full max-w-[1920px] justify-center px-4 py-3 md:pr-14"}>
       <Image
         src={PageBannerBackgroundDesktop}
-        alt={""}
+        alt={message}
         className={"pointer-events-none absolute hidden object-cover object-center md:flex"}
         fill
         priority
       />
       <Image
         src={PageBannerBackgroundMobile}
-        alt={""}
+        alt={message}
         className={"pointer-events-none absolute object-cover object-center md:hidden"}
         fill
         priority
@@ -66,10 +66,10 @@ export function PageBanner({ message, cta, onClose }: PageBannerProps) {
           {message}
         </Typo>
 
-        {renderCTA()}
+        <Cta cta={cta} />
       </div>
 
-      {renderCloseButton()}
+      <CloseButton onClick={onClose} />
     </div>
   );
 }

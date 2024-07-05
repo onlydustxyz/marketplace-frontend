@@ -1,12 +1,14 @@
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 
+interface Cta {
+  text: string;
+  href: string;
+  isExternal?: boolean;
+  icon?: RemixIconsName;
+}
+
 export interface PageBannerProps {
   message: string;
-  cta?: {
-    text: string;
-    href: string;
-    isExternal?: boolean;
-    icon?: RemixIconsName;
-  };
+  cta?: Cta;
   onClose?: () => void;
 }
