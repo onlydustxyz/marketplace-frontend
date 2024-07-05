@@ -3,9 +3,9 @@ import { useMemo } from "react";
 import { Typography } from "components/layout/typography/typography";
 
 import { Section } from "../section/section";
-import { TEcosystems } from "./ecosystems.types";
+import { TCategories } from "./categories.types";
 
-export function Categories({ categories }: TEcosystems.Props) {
+export function Categories({ categories }: TCategories.Props) {
   const categoriesName = useMemo(() => {
     return [...categories].sort((a, b) => a.name.localeCompare(b.name)).map(({ name }) => name);
   }, [categories]);

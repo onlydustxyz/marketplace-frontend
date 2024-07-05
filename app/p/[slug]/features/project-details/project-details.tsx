@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { Categories } from "app/p/[slug]/features/project-details/components/categories/ecosystems";
+import { Categories } from "app/p/[slug]/features/project-details/components/categories/categories";
 import { Languages } from "app/p/[slug]/features/project-details/components/languages/languages";
 
 import { IMAGES } from "src/assets/img";
