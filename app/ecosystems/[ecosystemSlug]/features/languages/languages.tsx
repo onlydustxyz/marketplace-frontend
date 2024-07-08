@@ -32,7 +32,6 @@ export async function Languages({ ecosystemSlug }: TLanguages.Props) {
           as={"a"}
           href={NEXT_ROUTER.projects.allWithParams({ ecosystems: ecosystemSlug, languages: language.slug })}
           key={language.id}
-          // icon={<img src={language.logoUrl} alt={language.name} className="h-6 w-6 object-contain object-center" />}
           icon={<Avatar src={language.logoUrl} alt={language.name} size={"s"} />}
         >
           {language.name}
