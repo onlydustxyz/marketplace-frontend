@@ -84,7 +84,7 @@ export function Avatar(props: TAvatar.Props) {
       }}
       classNames={{
         fallback: "w-full",
-        img: "bg-white !opacity-100",
+        img: "bg-greyscale-900 !opacity-100",
       }}
       {...restProps}
       src={optimizeSrc}
