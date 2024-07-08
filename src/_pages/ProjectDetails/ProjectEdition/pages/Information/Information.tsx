@@ -27,6 +27,7 @@ export function Information() {
   const { T } = useIntl();
   const showToaster = useShowToaster();
   const { form, ecosystems, projectCategories } = useContext(EditContext);
+  const suggested = form?.watch("categorySuggestions") || [];
 
   const {
     mutate: uploadProjectLogo,
@@ -156,11 +157,15 @@ export function Information() {
           control={form?.control}
           render={({ field: { value, name } }) => (
             <ProjectCategoriesSelect
+              suggested={suggested}
               categories={projectCategories}
               name={name}
               selected={value}
               onChange={selected => {
                 form?.setValue("projectCategories", selected, { shouldDirty: true });
+              }}
+              onChangeSuggestion={selected => {
+                form?.setValue("categorySuggestions", selected, { shouldDirty: true });
               }}
             />
           )}

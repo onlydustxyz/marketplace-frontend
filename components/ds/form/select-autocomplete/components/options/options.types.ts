@@ -8,7 +8,9 @@ export namespace TOptions {
     filteredItems: TSelectAutocomplete.Item[];
     type: TSelectAutocomplete.avatarType;
     emptyMessage?: string;
+    query?: string;
     onNextPage?: () => void;
     loadingNextPage?: boolean;
+    suggestAction?: TSelectAutocomplete.Props<unknown>["suggestAction"];
   }
 }

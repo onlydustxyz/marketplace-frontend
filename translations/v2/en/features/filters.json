@@ -24,7 +24,8 @@
     "zero": "Categories",
     "empty": "No categories found",
     "one": "__count__ category",
-    "many": "__count__ categories"
+    "many": "__count__ categories",
+    "suggest": "Suggest"
   },
   "transactions": {
     "title": "Transactions",

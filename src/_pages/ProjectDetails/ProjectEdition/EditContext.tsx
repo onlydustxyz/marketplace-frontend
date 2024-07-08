@@ -65,6 +65,7 @@ export type EditFormData = Omit<components["schemas"]["UpdateProjectRequest"], "
   projectLeads: FieldProjectLeadValue;
   ecosystems: TSelectAutocomplete.Item[];
   projectCategories: TSelectAutocomplete.Item[];
+  categorySuggestions: string[];
   selectedRepos: EditFormDataRepos[];
   githubRepos: Array<{ id: number; isAuthorizedInGithubApp?: boolean }>;
   moreInfos: MoreInfosField[];
@@ -187,6 +188,7 @@ export function EditProvider({ children, project }: EditContextProps) {
           value: id,
           iconSlug,
         })),
+        categorySuggestions: project.categorySuggestions || [],
         ecosystemIds: (project?.ecosystems || []).map(({ id }) => id),
         categoryIds: (project?.categories || []).map(({ id }) => id),
         rewardSettings: {
