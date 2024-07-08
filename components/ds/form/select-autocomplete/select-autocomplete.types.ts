@@ -1,11 +1,14 @@
 import { ReactElement } from "react";
 
+import { TIcon } from "components/layout/icon/icon.types";
+
 export namespace TSelectAutocomplete {
   export interface Item {
     id: number | string;
     label?: string | JSX.Element;
     value: string;
     image?: string | null;
+    iconSlug?: string | null;
   }
 
   export type avatarType = "circle" | "square";
@@ -21,6 +24,11 @@ export namespace TSelectAutocomplete {
     onNextPage?: () => void;
     loadingNextPage?: boolean;
     isBlueBackground?: boolean;
+    suggestAction?: {
+      label: string;
+      icon: TIcon.Props;
+      onClick: (query: string) => void;
+    };
     controlledSearch?: {
       value: string;
       onChange: (value: string) => void;

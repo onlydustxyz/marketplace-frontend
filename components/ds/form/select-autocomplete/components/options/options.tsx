@@ -3,6 +3,7 @@ import { InView } from "react-intersection-observer";
 
 import { Spinner } from "src/components/Spinner/Spinner";
 
+import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
 import { Option } from "../option/option";
@@ -11,7 +12,9 @@ import { TOptions } from "./options.types";
 export function Options({
   selectedItems,
   filteredItems,
+  query,
   type,
+  suggestAction,
   emptyMessage,
   loadingNextPage,
   onNextPage,
@@ -48,12 +51,24 @@ export function Options({
           </>
         ))}
         {filteredItems.length === 0 && (
-          <Typography
-            variant="body-s"
-            as="p"
-            className="px-2 py-2 italic text-greyscale-100"
-            translate={{ token: emptyMessage || "filters.noResults" }}
-          />
+          <>
+            <Typography
+              variant="body-s"
+              as="p"
+              className="px-2 py-2 italic text-greyscale-100"
+              translate={{ token: emptyMessage || "filters.noResults" }}
+            />
+            {!!suggestAction && (
+              <button
+                type="button"
+                onClick={query ? () => suggestAction.onClick(query) : undefined}
+                className={"flex cursor-pointer items-center gap-3 rounded-md px-2 py-2"}
+              >
+                <Icon {...suggestAction.icon} />
+                <span className="flex-1 truncate text-left font-walsheim text-sm text-greyscale-50">{`${suggestAction.label} "${query}"`}</span>
+              </button>
+            )}
+          </>
         )}
       </div>
     </>

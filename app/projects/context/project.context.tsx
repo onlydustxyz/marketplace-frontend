@@ -25,6 +25,7 @@ export const ProjectsContext = createContext<TProjectContext.Return>({
     options: {
       languages: [],
       ecosystems: [],
+      categories: [],
     },
   },
 });
@@ -40,6 +41,7 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
     const tags = urlParams.getAll("tags");
     const languages = urlParams.getAll("languages");
     const ecosystems = urlParams.getAll("ecosystems");
+    const categories = urlParams.getAll("categories");
     const search = urlParams.get("search");
     const sort = urlParams.get("sort");
     const hasGoodFirstIssues = urlParams.get("hasGoodFirstIssues");
@@ -64,6 +66,13 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
       }));
     }
 
+    if (categories.length > 0) {
+      // We have to map the categories to the correct format, because of the type of the filter - TSelectAutocomplete.Item[]
+      filters.categories = categories.map(value => ({
+        id: value,
+        value,
+      }));
+    }
     if (search) {
       filters.search = search!;
     }
@@ -87,6 +96,7 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
   const [filtersOptions, setFiltersOptions] = useState<TProjectContext.FiltersOptions>({
     languages: [],
     ecosystems: [],
+    categories: [],
   });
 
   const updateURLWithFilters = (filters: TProjectContext.Filter) => {
@@ -94,6 +104,7 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
 
     filters.tags.forEach(tag => urlParams.append("tags", tag));
     filters.ecosystems.forEach(({ value }) => urlParams.append("ecosystems", value));
+    filters.categories.forEach(({ value }) => urlParams.append("categories", value));
     filters.languages.forEach(({ value }) => urlParams.append("languages", value));
 
     if (filters.search) {
@@ -101,7 +112,11 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
     }
 
     const hasOtherFilters =
-      filters.tags.length > 0 || filters.ecosystems.length > 0 || filters.languages.length > 0 || filters.search;
+      filters.tags.length > 0 ||
+      filters.ecosystems.length > 0 ||
+      filters.categories.length > 0 ||
+      filters.languages.length > 0 ||
+      filters.search;
 
     if (filters.sorting && (hasOtherFilters || filters.sorting !== TProjectContext.DEFAULT_SORTING)) {
       urlParams.set("sort", filters.sorting);
@@ -120,6 +135,7 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
       filters.tags.length > 0 ? ["tags", filters.tags.join(",")] : null,
       filters.languages.length > 0 ? ["languageSlugs", filters.languages.map(({ value }) => value).join(",")] : null,
       filters.ecosystems.length > 0 ? ["ecosystemSlugs", filters.ecosystems.map(({ value }) => value).join(",")] : null,
+      filters.categories.length > 0 ? ["categorySlugs", filters.categories.map(({ value }) => value).join(",")] : null,
       filters.search ? ["search", filters.search] : null,
       filters.sorting ? ["sort", filters.sorting] : null,
       filters.hasGoodFirstIssues ? ["hasGoodFirstIssues", filters.hasGoodFirstIssues] : null,
@@ -139,7 +155,7 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
 
   const projects = useMemo(() => data?.pages?.flatMap(({ projects }) => projects) ?? [], [data]);
   const filtersCount = useMemo(() => {
-    return filters.tags.length + filters.ecosystems.length + filters.languages.length;
+    return filters.tags.length + filters.ecosystems.length + filters.languages.length + filters.categories.length;
   }, [filters]);
 
   function onFilterChange(newFilter: Partial<TProjectContext.Filter>) {
@@ -153,6 +169,7 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
       ...filters,
       tags: [],
       ecosystems: [],
+      categories: [],
       languages: [],
     };
 
@@ -164,6 +181,7 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
     if (data?.pages[0]) {
       const newLanguages = data?.pages[0]?.languages;
       const newEcosystems = data?.pages[0]?.ecosystems;
+      const newCategories = data?.pages[0]?.categories;
       setFiltersOptions(prevOptions => ({
         ...prevOptions,
         languages: newLanguages?.length
@@ -182,6 +200,14 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
               image: logoUrl,
             }))
           : prevOptions.ecosystems,
+        categories: newCategories?.length
+          ? newCategories.map(({ name, id, iconSlug, slug }) => ({
+              id,
+              label: name,
+              value: slug,
+              iconSlug,
+            }))
+          : prevOptions.categories,
       }));
     }
   }, [data]);
