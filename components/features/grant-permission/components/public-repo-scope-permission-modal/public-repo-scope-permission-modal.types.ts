@@ -3,6 +3,5 @@ export namespace TPublicRepoScopePermissionModal {
     isOpen: boolean;
     handleClose: () => void;
     handleMoreInfoOpen: () => void;
-    handleOpenDrawer: () => void;
   }
 }
