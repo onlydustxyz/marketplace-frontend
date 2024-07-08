@@ -48,11 +48,6 @@ export function HackathonCard<C extends ElementType = "div">({
     <Paper
       as={Component}
       htmlProps={{
-        style: {
-          backgroundImage: `url(${backgroundImage.src})`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-        },
         href: slug ? NEXT_ROUTER.hackathons.details.root(slug) : undefined,
         ...htmlProps,
       }}
@@ -61,6 +56,12 @@ export function HackathonCard<C extends ElementType = "div">({
         base: cn(slots.base(), classNames?.base),
       }}
     >
+      <img
+        src={backgroundImage.src}
+        alt={title}
+        loading="lazy"
+        className="pointer-events-none absolute -left-[5px] -top-[5px] h-[calc(100%_+_10px)] w-[calc(100%_+_10px)] max-w-[initial] object-cover object-center"
+      />
       {hasLayer ? <span className="absolute inset-0 h-full w-full rounded-xl bg-black bg-opacity-60" /> : null}
 
       <div className="relative flex flex-col gap-6">

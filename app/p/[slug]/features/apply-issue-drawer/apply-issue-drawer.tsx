@@ -345,11 +345,7 @@ export function ApplyIssueDrawer({ state }: TApplyIssueDrawer.Props) {
       >
         {renderContent()}
       </Drawer>
-      <GrantPermission
-        isOpen={isOpenGrantPermission}
-        handleClose={() => setIsOpenGrantPermission(false)}
-        handleOpenDrawer={() => setState(prevState => ({ ...prevState, isOpen: true }))}
-      />
+      <GrantPermission isOpen={isOpenGrantPermission} handleClose={() => setIsOpenGrantPermission(false)} />
     </>
   );
 }

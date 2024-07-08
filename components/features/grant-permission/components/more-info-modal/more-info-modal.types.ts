@@ -3,6 +3,5 @@ export namespace TMoreInfoModal {
     isOpen: boolean;
     handleClose: () => void;
     handleBack: () => void;
-    handleOpenDrawer: () => void;
   }
 }
