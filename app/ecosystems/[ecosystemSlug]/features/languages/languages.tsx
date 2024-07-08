@@ -3,6 +3,8 @@ import { ecosystemsApiClient } from "api-client/resources/ecosystems";
 import { Slider } from "app/ecosystems/[ecosystemSlug]/features/languages/components/slider/slider";
 import { FilterCard } from "app/ecosystems/components/filter-card/filter-card";
 
+import { Avatar } from "components/ds/avatar/avatar";
+
 import { NEXT_ROUTER } from "constants/router";
 
 import { TLanguages } from "./languages.types";
@@ -30,7 +32,8 @@ export async function Languages({ ecosystemSlug }: TLanguages.Props) {
           as={"a"}
           href={NEXT_ROUTER.projects.allWithParams({ ecosystems: ecosystemSlug, languages: language.slug })}
           key={language.id}
-          icon={<img src={language.logoUrl} alt={language.name} className="h-6 w-6 object-contain object-center" />}
+          // icon={<img src={language.logoUrl} alt={language.name} className="h-6 w-6 object-contain object-center" />}
+          icon={<Avatar src={language.logoUrl} alt={language.name} size={"s"} />}
         >
           {language.name}
         </FilterCard>
