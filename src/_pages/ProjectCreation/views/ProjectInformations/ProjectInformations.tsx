@@ -15,6 +15,8 @@ import { Flex } from "src/components/New/Layout/Flex";
 import CheckLine from "src/icons/CheckLine";
 import InformationLine from "src/icons/InformationLine";
 
+import { ProjectCategoriesSelect } from "components/features/project-categories/project-categories-select/project-categories-select";
+
 import { useIntl } from "hooks/translate/use-translate";
 
 import { CreateProjectContext } from "../../ProjectCreation.context";
@@ -25,9 +27,10 @@ export const ProjectInformationsPage = () => {
   const {
     form,
     ecosystems,
+    projectCategories,
     helpers: { prev },
   } = useContext(CreateProjectContext);
-
+  const suggested = form?.watch("categorySuggestions") || [];
   const {
     mutate: uploadProjectLogo,
     isSuccess: successUploadLogo,
@@ -156,6 +159,24 @@ export const ProjectInformationsPage = () => {
                 selected={value}
                 onChange={selected => {
                   form?.setValue("ecosystems", selected, { shouldDirty: true });
+                }}
+              />
+            )}
+          />
+          <Controller
+            name="projectCategories"
+            control={form?.control}
+            render={({ field: { value, name } }) => (
+              <ProjectCategoriesSelect
+                suggested={suggested}
+                categories={projectCategories}
+                name={name}
+                selected={value}
+                onChange={selected => {
+                  form?.setValue("projectCategories", selected, { shouldDirty: true });
+                }}
+                onChangeSuggestion={selected => {
+                  form?.setValue("categorySuggestions", selected, { shouldDirty: true });
                 }}
               />
             )}

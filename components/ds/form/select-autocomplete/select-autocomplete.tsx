@@ -23,6 +23,7 @@ export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
   loadingNextPage,
   controlledSearch,
   isBlueBackground,
+  suggestAction,
   isElevated = true,
   ...comboProps
 }: TSelectAutocomplete.Props<T>) {
@@ -126,6 +127,8 @@ export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
                       selectedItems={selectedItems}
                       filteredItems={isControlledItems}
                       type={type}
+                      suggestAction={suggestAction}
+                      query={query}
                       emptyMessage={tokens.empty}
                       onNextPage={onNextPage}
                       loadingNextPage={loadingNextPage}
@@ -162,10 +165,12 @@ export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
 
                 <Combobox.Options className="h-80 overflow-auto p-1">
                   <Options
+                    suggestAction={suggestAction}
                     selectedItems={selectedItems}
                     filteredItems={isControlledItems}
                     type={type}
                     emptyMessage={tokens.empty}
+                    query={query}
                     onNextPage={onNextPage}
                     loadingNextPage={loadingNextPage}
                   />
