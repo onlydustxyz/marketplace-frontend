@@ -36,7 +36,7 @@ export function PageBanner() {
   if (!data || !data.text || !showBanner) return null;
 
   return (
-    <section className={"bg-black"}>
+    <section className={"bg-black md:p-6"}>
       <PageBannerOrganism message={data.text} cta={getCta()} onClose={handleClose} />
     </section>
   );
