@@ -65,6 +65,7 @@ export type EditFormData = Omit<components["schemas"]["UpdateProjectRequest"], "
   projectLeads: FieldProjectLeadValue;
   ecosystems: TSelectAutocomplete.Item[];
   projectCategories: TSelectAutocomplete.Item[];
+  suggestedProjectCategories: string[];
   selectedRepos: EditFormDataRepos[];
   githubRepos: Array<{ id: number; isAuthorizedInGithubApp?: boolean }>;
   moreInfos: MoreInfosField[];
@@ -187,6 +188,8 @@ export function EditProvider({ children, project }: EditContextProps) {
           value: id,
           iconSlug,
         })),
+        // TODO WHEN BACKEND WILL BE READY
+        suggestedProjectCategories: [],
         ecosystemIds: (project?.ecosystems || []).map(({ id }) => id),
         categoryIds: (project?.categories || []).map(({ id }) => id),
         rewardSettings: {
@@ -314,7 +317,7 @@ export function EditProvider({ children, project }: EditContextProps) {
   });
 
   const onSubmit = (formData: EditFormData) => {
-    const { githubRepos, moreInfos, ecosystems, projectCategories, ...rest } = formData;
+    const { githubRepos, moreInfos, ecosystems, projectCategories, suggestedProjectCategories, ...rest } = formData;
     const githubRepoIds = githubRepos.map(repo => repo.id);
     updateProject({
       ...rest,
@@ -322,6 +325,8 @@ export function EditProvider({ children, project }: EditContextProps) {
       moreInfos: (moreInfos || []).filter(info => info.url !== "").map(info => ({ url: info.url, value: info.value })),
       ecosystemIds: ecosystems?.map(ecosystem => `${ecosystem.id}`),
       categoryIds: projectCategories?.map(cat => `${cat.id}`),
+      // TODO WHEN BACKEND WILL BE READY
+      // suggestedCategories: suggestedProjectCategories,
     }).then(() => {
       capture("project_information_changed");
     });
