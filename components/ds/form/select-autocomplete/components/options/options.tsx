@@ -2,7 +2,6 @@ import { Combobox } from "@headlessui/react";
 import { InView } from "react-intersection-observer";
 
 import { Spinner } from "src/components/Spinner/Spinner";
-import { cn } from "src/utils/cn";
 
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
@@ -63,7 +62,7 @@ export function Options({
               <button
                 type="button"
                 onClick={query ? () => suggestAction.onClick(query) : undefined}
-                className={cn("flex cursor-pointer items-center gap-3 rounded-md px-2 py-2")}
+                className={"flex cursor-pointer items-center gap-3 rounded-md px-2 py-2"}
               >
                 <Icon {...suggestAction.icon} />
                 <span className="flex-1 truncate text-left font-walsheim text-sm text-greyscale-50">{`${suggestAction.label} "${query}"`}</span>
