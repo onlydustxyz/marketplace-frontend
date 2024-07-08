@@ -46,7 +46,11 @@ function CloseButton({ onClick }: { onClick: PageBannerProps["onClose"] }) {
 
 export function PageBanner({ message, cta, onClose }: PageBannerProps) {
   return (
-    <div className={"relative mx-auto flex w-full max-w-[1920px] justify-center px-4 py-3 md:pr-14"}>
+    <div
+      className={
+        "relative mx-auto flex w-full max-w-[1920px] justify-center overflow-hidden px-4 py-3 md:rounded-2xl md:pr-14"
+      }
+    >
       <Image
         src={PageBannerBackgroundDesktop}
         alt={message}
