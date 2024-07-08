@@ -57,3 +57,7 @@ export type PostProjectApplicationCreateResponse = components["schemas"]["Projec
 
 export type ProjectApplicationUpdateRequest = components["schemas"]["ProjectApplicationUpdateRequest"];
 export type ProjectApplicationUpdatePathParams = operations["updateProjectApplication"]["parameters"]["path"];
+
+/* --------------------------------- My Banners -------------------------------- */
+
+export type CloseBannerPathParams = operations["closeBanner"]["parameters"]["path"];
