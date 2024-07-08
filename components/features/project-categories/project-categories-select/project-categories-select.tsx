@@ -58,7 +58,6 @@ export function ProjectCategoriesSelect({
             multiple
             selected={selected || []}
             onChange={onChange}
-            disabled={categories.length <= 1}
             suggestAction={suggestAction}
           />
         </div>

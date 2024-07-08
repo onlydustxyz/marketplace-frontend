@@ -65,7 +65,9 @@ export function Options({
                 className={"flex cursor-pointer items-center gap-3 rounded-md px-2 py-2"}
               >
                 <Icon {...suggestAction.icon} />
-                <span className="flex-1 truncate text-left font-walsheim text-sm text-greyscale-50">{`${suggestAction.label} "${query}"`}</span>
+                <span className="flex-1 truncate text-left font-walsheim text-sm text-greyscale-50">{`${
+                  suggestAction.label
+                } ${query ? `"${query}"` : ""}`}</span>
               </button>
             )}
           </>
