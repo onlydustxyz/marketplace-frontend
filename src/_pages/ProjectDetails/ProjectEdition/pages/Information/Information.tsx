@@ -27,7 +27,7 @@ export function Information() {
   const { T } = useIntl();
   const showToaster = useShowToaster();
   const { form, ecosystems, projectCategories } = useContext(EditContext);
-  const suggested = form?.watch("suggestedProjectCategories") || [];
+  const suggested = form?.watch("categorySuggestions") || [];
 
   const {
     mutate: uploadProjectLogo,
@@ -165,7 +165,7 @@ export function Information() {
                 form?.setValue("projectCategories", selected, { shouldDirty: true });
               }}
               onChangeSuggestion={selected => {
-                form?.setValue("suggestedProjectCategories", selected, { shouldDirty: true });
+                form?.setValue("categorySuggestions", selected, { shouldDirty: true });
               }}
             />
           )}
@@ -200,34 +200,3 @@ export function Information() {
     </Flex>
   );
 }
-
-interface TestModel {
-  id: string;
-  // Add other properties if needed
-}
-
-interface TestInterface extends TestModel {
-  id: string;
-  getTheId(): string;
-  getTheId2(): string;
-}
-
-export class Test implements TestInterface {
-  constructor(data: TestModel) {
-    Object.assign(this, data);
-  }
-
-  getTheId(): string {
-    return this.id;
-  }
-
-  getTheId2(): string {
-    return this.id;
-  }
-}
-
-const testClass = new Test({ id: "coucou" });
-
-console.log(testClass.getTheId()); // should work
-console.log(testClass); // should work
-// console.log(testClass.name); // should not work, this will cause a TypeScript error

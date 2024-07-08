@@ -96,6 +96,7 @@ const validationSchema = z.object({
   longDescription: z.string().min(1),
   ecosystems: z.array(z.object({ id: z.number().or(z.string()) })).optional(),
   projectCategories: z.array(z.object({ id: z.number().or(z.string()) })).optional(),
+  categorySuggestions: z.array(z.string()),
   moreInfos: z
     .array(
       z
@@ -203,6 +204,7 @@ export function CreateProjectProvider({
           moreInfos: initialProject?.moreInfos?.length > 0 ? initialProject.moreInfos : [{ url: "", value: "" }],
           ecosystems: initialProject?.ecosystems,
           ecosystemIds: (initialProject?.ecosystems || []).map(({ id }) => `${id}`),
+          categorySuggestions: [],
           projectCategories: initialProject?.projectCategories,
           categoryIds: (initialProject?.projectCategories || []).map(({ id }) => `${id}`),
         }

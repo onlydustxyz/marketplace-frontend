@@ -30,7 +30,7 @@ export const ProjectInformationsPage = () => {
     projectCategories,
     helpers: { prev },
   } = useContext(CreateProjectContext);
-
+  const suggested = form?.watch("categorySuggestions") || [];
   const {
     mutate: uploadProjectLogo,
     isSuccess: successUploadLogo,
@@ -168,11 +168,15 @@ export const ProjectInformationsPage = () => {
             control={form?.control}
             render={({ field: { value, name } }) => (
               <ProjectCategoriesSelect
+                suggested={suggested}
                 categories={projectCategories}
                 name={name}
                 selected={value}
                 onChange={selected => {
                   form?.setValue("projectCategories", selected, { shouldDirty: true });
+                }}
+                onChangeSuggestion={selected => {
+                  form?.setValue("categorySuggestions", selected, { shouldDirty: true });
                 }}
               />
             )}

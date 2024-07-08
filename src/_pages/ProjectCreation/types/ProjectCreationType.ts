@@ -17,4 +17,5 @@ export type CreateFormData = Omit<components["schemas"]["CreateProjectRequest"],
   search: string;
   ecosystems: TSelectAutocomplete.Item[];
   projectCategories: TSelectAutocomplete.Item[];
+  categorySuggestions: string[];
 };
