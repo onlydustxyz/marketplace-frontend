@@ -1,10 +1,10 @@
 "use client";
 
+import { useGetProjectBySlug } from "core/application/react-query-adapter/project-react-query-adapter";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
-import ProjectApi from "src/api/Project";
 import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
 import Skeleton from "src/components/Skeleton";
@@ -35,9 +35,21 @@ function ProjectPage() {
   const { capture } = usePosthog();
 
   const { slug = "" } = useParams<{ slug: string }>();
-  const { data: project, isLoading } = ProjectApi.queries.useGetProjectBySlug({
-    params: { slug },
+  // const { data: project, isLoading } = ProjectApi.queries.useGetProjectBySlug({
+  //   params: { slug },
+  // });
+
+  // const { data: project, isLoading } = ProjectQueryAdapter.useGetProjectBySlug(bootstrap.projectService, {
+  //   pathParams: { slug },
+  // });
+
+  // client : useGetProjectBySlug
+  // server : getProjectBySlug
+
+  const { data: project, isLoading } = useGetProjectBySlug({
+    pathParams: { slug },
   });
+
   const { mutate: acceptProjectLeadInvitation, ...restAcceptProjectLeadInvitation } =
     MeApi.mutations.useAcceptProjectLeaderInvitation({
       params: { projectId: project?.id || "", projectSlug: slug },
