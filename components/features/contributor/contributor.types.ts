@@ -13,5 +13,6 @@ export namespace TContributor {
     hasPendingInvite?: boolean;
     typograhy?: TTypography.Props;
     avatarProps?: TAvatar.Props;
+    hasPopover?: boolean;
   }
 }

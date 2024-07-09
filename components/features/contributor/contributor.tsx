@@ -27,6 +27,7 @@ export function Contributor({
   hasPendingInvite,
   typograhy,
   avatarProps,
+  hasPopover = true,
 }: TContributor.Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPreload, setIsPreload] = useState(false);
@@ -49,15 +50,8 @@ export function Contributor({
     }
   }
 
-  return (
-    <ProfileCardPopover
-      githubId={githubUserId}
-      isOpen={isOpen}
-      isPreload={isPreload}
-      onMouseEnter={() => toggleCard(true)}
-      onMouseLeave={() => toggleCard(false)}
-      onClick={() => toggleCard(false)}
-    >
+  function contributorContent() {
+    return (
       <Component
         type={clickable ? "button" : undefined}
         className={cn("group/contributor flex flex-row items-center gap-1", className)}
@@ -95,6 +89,23 @@ export function Contributor({
           </Tooltip>
         ) : null}
       </Component>
+    );
+  }
+
+  if (!hasPopover) {
+    return contributorContent();
+  }
+
+  return (
+    <ProfileCardPopover
+      githubId={githubUserId}
+      isOpen={isOpen}
+      isPreload={isPreload}
+      onMouseEnter={() => toggleCard(true)}
+      onMouseLeave={() => toggleCard(false)}
+      onClick={() => toggleCard(false)}
+    >
+      {contributorContent()}
     </ProfileCardPopover>
   );
 }
