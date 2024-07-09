@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { Money } from "utils/Money/Money";
 
 import { cn } from "src/utils/cn";
@@ -12,8 +11,9 @@ import { Typography } from "components/layout/typography/typography";
 
 import { TAmountCounter } from "./amount-counter.types";
 
-export function AmountCounter({ limit = 5000, total, isCompany }: TAmountCounter.Props) {
-  const isOverLimit = useMemo(() => total > limit, [limit, total]);
+export function AmountCounter({ limit, total, isCompany, isOverLimit }: TAmountCounter.Props) {
+  // const isOverLimit = useMemo(() => total > limit, [limit, total]);
+  if (!limit) return null;
 
   if (isCompany) {
     return (

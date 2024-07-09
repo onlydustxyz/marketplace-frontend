@@ -26,10 +26,9 @@ interface IShortBillingProfile extends ShortBillingProfileResponse {
   token(tokens: Tokens): string;
   formatedPaymentLimit: number | null;
   paymentLimitCounter(amount?: number): {
-    current: number;
-    limit: number | null;
-    hasReached: boolean;
-    remaining: number;
+    currentAmount: number;
+    limitedAmount: number | null;
+    hasReachedLimit: boolean;
   };
 }
 
@@ -72,10 +71,9 @@ class ShortBillingProfile extends mapApiToClass<ShortBillingProfileResponse>() i
   paymentLimitCounter(amount?: number) {
     const current = (this.currentYearPaymentAmount || 0) + (amount || 0);
     return {
-      current,
-      limit: this.formatedPaymentLimit,
-      hasReached: this.isIndividualLimitReached(amount),
-      remaining: (this.formatedPaymentLimit || 0) - current,
+      currentAmount: current,
+      limitedAmount: this.formatedPaymentLimit,
+      hasReachedLimit: this.currentYearPaymentLimit ? current >= (this.currentYearPaymentLimit || 0) : false,
     };
   }
 }

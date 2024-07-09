@@ -64,13 +64,12 @@ describe("ShortBillingProfile", () => {
       ...defaultBillingProfile,
       currentYearPaymentLimit: 5001,
       currentYearPaymentAmount: 4500,
-      individualLimitReached: false,
+      individualLimitReached: true,
     });
     expect(profile.paymentLimitCounter(300)).toEqual({
-      current: 4800,
-      limit: 5000,
-      hasReached: false,
-      remaining: 200,
+      currentAmount: 4800,
+      limitedAmount: 5000,
+      hasReachedLimit: false,
     });
   });
 });
