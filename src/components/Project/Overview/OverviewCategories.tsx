@@ -28,7 +28,7 @@ export const ProjectOverviewCategories = ({ categories }: Props) => {
   }
   return sortedCategories?.length ? (
     <Section
-      icon={SectionIcon.Global}
+      icon={SectionIcon.Categories}
       title={T("v2.pages.project.overview.projectDetails.categories", { count: sortedCategories.length })}
     >
       <Flex wrap="wrap" className="gap-1">
