@@ -27,6 +27,7 @@ export interface HttpClient {
   version?: MarketplaceApiVersion;
   tag: string;
   body?: HttpClientBody;
+  impersonationHeaders: HttpImpersonationHeaders;
   setUrl(url: string): this;
   setMethod(method: HttpClientMethod): this;
   setPathParams(pathParams: HttpClientPathParams): this;
@@ -34,6 +35,7 @@ export interface HttpClient {
   setVersion(version: MarketplaceApiVersion): this;
   setTag(tag: string): this;
   setBody(body: HttpClientBody): this;
+  setImpersonationHeaders(headers: HttpImpersonationHeaders): this;
   send<R>(): Promise<R>;
 }
 
@@ -47,3 +49,5 @@ export enum HttpStatusString {
   NOT_IMPLEMENTED = "NOT_IMPLEMENTED",
   UNHANDLED_ERROR = "UNHANDLED_ERROR",
 }
+
+export type HttpImpersonationHeaders = Record<string, string>;

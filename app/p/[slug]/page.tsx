@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetProjectBySlug } from "core/application/react-query-adapter/project-react-query-adapter";
+import { useGetProjectBySlug } from "core/application/react-query-adapter/project-react-query.adapter";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import { useMediaQuery } from "usehooks-ts";

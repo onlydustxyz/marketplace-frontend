@@ -1,3 +1,4 @@
+import { AuthProvider } from "core/infrastructure/marketplace-api-client-adapter/auth/auth-provider";
 import { marketplaceApiConfig } from "core/infrastructure/marketplace-api-client-adapter/config";
 import { MarketplaceApiVersion } from "core/infrastructure/marketplace-api-client-adapter/config/api-version";
 import {
@@ -6,6 +7,7 @@ import {
   HttpClientMethod,
   HttpClientPathParams,
   HttpClientQueryParams,
+  HttpImpersonationHeaders,
   HttpStatusString,
 } from "core/infrastructure/marketplace-api-client-adapter/http/http-client";
 
@@ -13,31 +15,16 @@ interface IFetchHttpClient extends HttpClient {
   setDebug(enabled: boolean): this;
 }
 
+type Constructor = Pick<
+  IFetchHttpClient,
+  "url" | "method" | "pathParams" | "queryParams" | "version" | "tag" | "body" | "impersonationHeaders"
+>;
+
 interface FetchError extends Error {
   status: number;
   message: string;
   errorType: HttpStatusString;
 }
-
-type Constructor = Pick<IFetchHttpClient, "url" | "method" | "pathParams" | "queryParams" | "version" | "tag" | "body">;
-
-// interface AuthenticationProvider {
-//   getAccessToken(): string;
-// }
-//
-// class Auth0AuthenticationProvider implements AuthenticationProvider {
-//   getAccessToken() {
-//     return "test";
-//   }
-// }
-//
-// class Auth0AuthenticationDecoratorProvider implements AuthenticationProvider {
-//   constructor(private readonly authProvider: AuthenticationProvider) {}
-//
-//   getAccessToken() {
-//     return this.authProvider.getAccessToken();
-//   }
-// }
 
 export class FetchHttpClient implements IFetchHttpClient {
   url: string = "";
@@ -47,9 +34,12 @@ export class FetchHttpClient implements IFetchHttpClient {
   version: MarketplaceApiVersion = MarketplaceApiVersion.v1;
   tag: string = "";
   body?: HttpClientBody;
+  impersonationHeaders: HttpImpersonationHeaders = {};
   private debug: boolean = false;
+  private authProvider: AuthProvider;
 
-  constructor(props?: Constructor) {
+  constructor(authProvider: AuthProvider, props?: Constructor) {
+    this.authProvider = authProvider;
     this.url = props?.url ?? this.url;
     this.method = props?.method ?? this.method;
     this.pathParams = props?.pathParams ?? this.pathParams;
@@ -57,6 +47,7 @@ export class FetchHttpClient implements IFetchHttpClient {
     this.version = props?.version ?? this.version;
     this.tag = props?.tag ?? this.tag;
     this.body = props?.body;
+    this.impersonationHeaders = props?.impersonationHeaders ?? this.impersonationHeaders;
     this.debug = false;
   }
 
@@ -95,12 +86,17 @@ export class FetchHttpClient implements IFetchHttpClient {
     return this;
   }
 
+  public setImpersonationHeaders(impersonationHeaders: HttpImpersonationHeaders) {
+    this.impersonationHeaders = impersonationHeaders;
+    return this;
+  }
+
   setDebug(enabled: boolean) {
     this.debug = enabled;
     return this;
   }
 
-  private debugLog(...messages: unknown[]) {
+  private logDebug(...messages: unknown[]) {
     if (this.debug) {
       console.log(...messages);
     }
@@ -110,14 +106,14 @@ export class FetchHttpClient implements IFetchHttpClient {
     const defaultHeaders = {
       "Content-Type": "application/json",
       accept: "application/json",
-      // ...(this.impersonationHeaders || {}),
+      ...this.impersonationHeaders,
     };
 
     try {
-      // const accessToken = await this.authAdapter?.getAccessToken();
+      const accessToken = await this.authProvider?.getAccessToken();
       return {
         ...defaultHeaders,
-        // ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
       };
     } catch {
       return defaultHeaders;
@@ -176,10 +172,10 @@ export class FetchHttpClient implements IFetchHttpClient {
       errorType: mapHttpStatusToString(res.status),
     };
 
-    this.debugLog(" Error");
-    this.debugLog(`   --- With status : ${error.status}`);
-    this.debugLog(`   --- With message : ${error.message}`);
-    this.debugLog(`   --- With type : ${error.errorType}`);
+    this.logDebug(" Error");
+    this.logDebug(`   --- With status : ${error.status}`);
+    this.logDebug(`   --- With message : ${error.message}`);
+    this.logDebug(`   --- With type : ${error.errorType}`);
 
     return error;
   }
@@ -188,18 +184,18 @@ export class FetchHttpClient implements IFetchHttpClient {
     if (res.ok) {
       if (res.headers.get("Content-Type") === "application/pdf") {
         const blob = await res.blob();
-        this.debugLog(" Success");
-        this.debugLog("   --- with response", blob);
+        this.logDebug(" Success");
+        this.logDebug("   --- with response", blob);
         return blob as R;
       }
 
       try {
         const json = await res.json();
-        this.debugLog(" Success");
-        this.debugLog("   --- with response", json);
+        this.logDebug(" Success");
+        this.logDebug("   --- with response", json);
         return json as R;
       } catch {
-        this.debugLog(" Unknown content type");
+        this.logDebug(" Unknown content type");
         return {} as R;
       }
     }
@@ -216,11 +212,11 @@ export class FetchHttpClient implements IFetchHttpClient {
     const next = { ...params?.next, tags };
     const cache = !params?.next?.revalidate ? "no-cache" : undefined;
 
-    this.debugLog(`fetching ${url}`);
-    this.debugLog(" --- with method :", method);
-    this.debugLog(" --- with query params :", this.queryParams);
-    this.debugLog(" --- with body :", body);
-    this.debugLog(" --- with tags :", tags);
+    this.logDebug(`fetching ${url}`);
+    this.logDebug(" --- with method :", method);
+    this.logDebug(" --- with query params :", this.queryParams);
+    this.logDebug(" --- with body :", body);
+    this.logDebug(" --- with tags :", tags);
 
     const response = await fetch(url, {
       method,
