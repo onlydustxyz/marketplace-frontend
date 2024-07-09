@@ -17,13 +17,8 @@ type ShortBillingProfileResponse = Omit<
   "role" | "requestableRewardCount" | "rewardCount" | "invoiceableRewardCount"
 >;
 
-type Tokens = {
-  default: string;
-  fallback: string;
-};
 interface IShortBillingProfile extends ShortBillingProfileResponse {
-  isIndividualLimitReached(amount?: number): boolean;
-  token(tokens: Tokens): string;
+  isIndividualLimitReached(): boolean;
   formatedPaymentLimit: number | null;
   paymentLimitCounter(amount?: number): {
     currentAmount: number;
@@ -37,20 +32,8 @@ class ShortBillingProfile extends mapApiToClass<ShortBillingProfileResponse>() i
     super(billingProfile);
   }
 
-  isIndividualLimitReached(amount?: number) {
-    if (this.individualLimitReached) {
-      return this.individualLimitReached;
-    }
-
-    if (!this.currentYearPaymentLimit) {
-      return false;
-    }
-
-    if (amount) {
-      return (this.currentYearPaymentAmount || 0) + amount >= this.currentYearPaymentLimit;
-    }
-
-    return false;
+  isIndividualLimitReached() {
+    return this.individualLimitReached || false;
   }
 
   get formatedPaymentLimit() {
@@ -59,13 +42,6 @@ class ShortBillingProfile extends mapApiToClass<ShortBillingProfileResponse>() i
     }
 
     return this.currentYearPaymentLimit > 0 ? this.currentYearPaymentLimit - 1 : this.currentYearPaymentLimit;
-  }
-
-  token(tokens: Tokens) {
-    if (this.currentYearPaymentLimit) {
-      return tokens.default;
-    }
-    return tokens.fallback;
   }
 
   paymentLimitCounter(amount?: number) {

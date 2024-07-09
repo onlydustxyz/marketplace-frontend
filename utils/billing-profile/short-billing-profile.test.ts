@@ -26,24 +26,6 @@ describe("ShortBillingProfile", () => {
     expect(profile.isIndividualLimitReached()).toEqual(true);
   });
 
-  it("should return true when individual limit is reached by a dynamic amount", () => {
-    const profile = new ShortBillingProfile({
-      ...defaultBillingProfile,
-      currentYearPaymentLimit: 5001,
-      currentYearPaymentAmount: 2000,
-    });
-    expect(profile.isIndividualLimitReached(3001)).toEqual(true);
-  });
-
-  it("should return fallback token if payment limit is not set", () => {
-    const profile = new ShortBillingProfile({
-      ...defaultBillingProfile,
-      currentYearPaymentLimit: undefined,
-    });
-
-    expect(profile.token({ default: "default", fallback: "fallback" })).toEqual("fallback");
-  });
-
   it("should return payment progression", () => {
     const profile = new ShortBillingProfile({
       ...defaultBillingProfile,

@@ -40,9 +40,7 @@ export function LimitReachedHeader() {
     if (findInPayoutPreference && findInPayoutPreference.billingProfile) {
       return {
         type: "payout-preferences",
-        instance: new ShortBillingProfile({
-          ...findInPayoutPreference.billingProfile,
-        }),
+        instance: new ShortBillingProfile(findInPayoutPreference.billingProfile),
       };
     }
     return undefined;
@@ -51,7 +49,7 @@ export function LimitReachedHeader() {
   function findIndividualProfile(): ProfileWithLimitReached | undefined {
     if (profiles.length === 1 && profiles[0].data.type === "INDIVIDUAL") {
       const individualProfile = new ShortBillingProfile(profiles[0].data);
-      if (individualProfile.individualLimitReached) {
+      if (individualProfile.isIndividualLimitReached()) {
         return {
           type: "individual",
           instance: individualProfile,
