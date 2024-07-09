@@ -1,6 +1,5 @@
-import { API_CLIENT_BASE_URL } from "api-client/config/base-url";
-import { GetProjectBySlugResponse } from "api-client/resources/projects/types";
 import { ProjectStoragePort } from "core/domain/ports/output/project-storage.port";
+import { GetProjectBySlugResponse } from "core/domain/types/project.types";
 import { HttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/http-client";
 
 export class ProjectClientAdapter implements ProjectStoragePort {
@@ -9,7 +8,7 @@ export class ProjectClientAdapter implements ProjectStoragePort {
   getProjectBySlug({ pathParams, queryParams }: Parameters<ProjectStoragePort["getProjectBySlug"]>[0]) {
     const fetchAdapter = this.client;
 
-    fetchAdapter.setUrl(`${API_CLIENT_BASE_URL}/api/v1/projects/slug/${pathParams?.slug}`);
+    fetchAdapter.setUrl("projects/slug/:slug");
 
     if (pathParams) {
       fetchAdapter.setPathParams(pathParams);

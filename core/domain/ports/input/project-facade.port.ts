@@ -2,14 +2,14 @@ import {
   GetProjectBySlugPathParams,
   GetProjectBySlugQueryParams,
   GetProjectBySlugResponse,
-} from "api-client/resources/projects/types";
-import { ParametersInterface } from "api-client/types/parameters-interface";
+} from "core/domain/types/project.types";
+import { HttpClientParameters } from "core/infrastructure/marketplace-api-client-adapter/http/http-client";
 
 export interface ProjectFacadePort {
   getProjectBySlug({
     pathParams,
     queryParams,
-  }: ParametersInterface<{
+  }: HttpClientParameters<{
     PathParams: GetProjectBySlugPathParams;
     QueryParams: GetProjectBySlugQueryParams;
   }>): Promise<GetProjectBySlugResponse>;
