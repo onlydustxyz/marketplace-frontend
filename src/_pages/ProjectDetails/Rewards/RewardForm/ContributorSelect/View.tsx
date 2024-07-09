@@ -312,6 +312,8 @@ function VirtualizedContributorSubList({
                 login={contributor.login}
                 avatarUrl={contributor.avatarUrl}
                 isRegistered={contributor.isRegistered}
+                clickable={false}
+                hasPopover={false}
               />
               {contributor.unpaidCompletedContributions > 0 && (
                 <>
