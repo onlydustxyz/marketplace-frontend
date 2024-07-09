@@ -7,7 +7,14 @@ import { Typography } from "components/layout/typography/typography";
 
 import { TSettingsHeader } from "./settings-header.types";
 
-export function SettingsHeader({ icon, tokenTitle, title, subtitle, children }: TSettingsHeader.Props) {
+export function SettingsHeader({
+  icon,
+  tokenTitle,
+  title,
+  subtitle,
+  children,
+  individualLimit,
+}: TSettingsHeader.Props) {
   return (
     <Card background="base">
       <div className="grid gap-4 lg:grid-cols-3 lg:items-center">
@@ -22,7 +29,11 @@ export function SettingsHeader({ icon, tokenTitle, title, subtitle, children }: 
           </Flex>
 
           {subtitle ? (
-            <Typography variant="body-s" translate={{ token: subtitle }} className="text-spaceBlue-200" />
+            <Typography
+              variant="body-s"
+              translate={{ token: subtitle, params: { count: individualLimit || 0 } }}
+              className="text-spaceBlue-200"
+            />
           ) : null}
         </Flex>
 
