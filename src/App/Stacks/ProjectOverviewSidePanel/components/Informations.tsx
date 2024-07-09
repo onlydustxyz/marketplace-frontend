@@ -1,5 +1,6 @@
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 import { IMAGES } from "src/assets/img";
+import { ProjectOverviewCategories } from "src/components/Project/Overview/OverviewCategories";
 import { ProjectOverviewContributor } from "src/components/Project/Overview/OverviewContributors";
 import { ProjectOverviewEcosystem } from "src/components/Project/Overview/OverviewEcosystem";
 import { ProjectOverviewLanguages } from "src/components/Project/Overview/OverviewLanguages";
@@ -17,8 +18,17 @@ export interface ProjectOverviewInformationsProps {
 }
 
 export const ProjectOverviewInformations = ({ project }: ProjectOverviewInformationsProps) => {
-  const { contributorCount, topContributors, leaders, invitedLeaders, moreInfos, ecosystems, sponsors, languages } =
-    project;
+  const {
+    contributorCount,
+    topContributors,
+    leaders,
+    invitedLeaders,
+    moreInfos,
+    ecosystems,
+    sponsors,
+    languages,
+    categories,
+  } = project;
   const projectLeads = leaders?.filter(lead => isDefined(lead?.login)) || [];
   const projectInvited = invitedLeaders?.filter(lead => isDefined(lead?.login)) || [];
 
@@ -39,6 +49,7 @@ export const ProjectOverviewInformations = ({ project }: ProjectOverviewInformat
       <ProjectOverviewEcosystem ecosystems={ecosystems} />
       <ProjectOverviewSponsors sponsors={sponsors} />
       <ProjectOverviewLanguages languages={languages} />
+      <ProjectOverviewCategories categories={categories} />
       <ProjectOverviewMoreInfo moreInfos={moreInfos} />
     </div>
   );
