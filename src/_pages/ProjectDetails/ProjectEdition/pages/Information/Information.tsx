@@ -15,6 +15,8 @@ import { Flex } from "src/components/New/Layout/Flex";
 import { useShowToaster } from "src/hooks/useToaster";
 import InformationLine from "src/icons/InformationLine";
 
+import { ProjectCategoriesSelect } from "components/features/project-categories/project-categories-select/project-categories-select";
+
 import { useIntl } from "hooks/translate/use-translate";
 
 import { EditContext, EditFormData } from "../../EditContext";
@@ -24,7 +26,8 @@ import { MoreInfosField } from "./components/MoreInfosField";
 export function Information() {
   const { T } = useIntl();
   const showToaster = useShowToaster();
-  const { form, ecosystems } = useContext(EditContext);
+  const { form, ecosystems, projectCategories } = useContext(EditContext);
+  const suggested = form?.watch("categorySuggestions") || [];
 
   const {
     mutate: uploadProjectLogo,
@@ -145,6 +148,24 @@ export function Information() {
               selected={value}
               onChange={selected => {
                 form?.setValue("ecosystems", selected, { shouldDirty: true });
+              }}
+            />
+          )}
+        />
+        <Controller
+          name="projectCategories"
+          control={form?.control}
+          render={({ field: { value, name } }) => (
+            <ProjectCategoriesSelect
+              suggested={suggested}
+              categories={projectCategories}
+              name={name}
+              selected={value}
+              onChange={selected => {
+                form?.setValue("projectCategories", selected, { shouldDirty: true });
+              }}
+              onChangeSuggestion={selected => {
+                form?.setValue("categorySuggestions", selected, { shouldDirty: true });
               }}
             />
           )}

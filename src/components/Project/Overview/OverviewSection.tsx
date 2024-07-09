@@ -8,6 +8,7 @@ export enum SectionIcon {
   Link = "ri-link",
   Global = "ri-global-line",
   Code = "ri-code-s-slash-line",
+  Categories = "ri-box-3-line",
 }
 
 type Props = {

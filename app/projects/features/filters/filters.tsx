@@ -13,6 +13,7 @@ import { Typography } from "components/layout/typography/typography";
 
 import { ProjectsContext } from "../../context/project.context";
 import { FiltersClearAll } from "./clear-all/clear-all";
+import { FiltersCategories } from "./filters-categories/filters-categories";
 import { FiltersEcosystems } from "./filters-ecosystems/filters-ecosystems";
 import { FiltersLanguages } from "./filters-languages/filters-languages";
 import { FiltersTags } from "./filters-tags/filters-tags";
@@ -49,6 +50,9 @@ export function ProjectsFilters({ showOn }: { showOn: "mobile" | "desktop" }) {
             <div className="py-4">
               <FiltersLanguages />
             </div>
+            <div className="py-4">
+              <FiltersCategories />
+            </div>
           </div>
         </BottomSheet>
       </>
@@ -73,6 +77,9 @@ export function ProjectsFilters({ showOn }: { showOn: "mobile" | "desktop" }) {
       </div>
       <div className="px-6 py-4">
         <FiltersLanguages />
+      </div>
+      <div className="px-6 py-4">
+        <FiltersCategories />
       </div>
     </Card>
   );

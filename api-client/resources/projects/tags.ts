@@ -8,6 +8,7 @@ import {
 
 export default {
   get_all: (queryParams?: ProjectsGetAllQueryParams) => createTag(apiResources.projects, "get-all", null, queryParams),
+  get_all_categories: () => createTag(apiResources.projects, "get-all-categories", null),
   get_project_issues: ({
     pathParams,
     queryParams,

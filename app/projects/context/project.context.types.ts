@@ -28,6 +28,7 @@ export namespace TProjectContext {
   export interface Filter {
     languages: TSelectAutocomplete.Item[];
     ecosystems: TSelectAutocomplete.Item[];
+    categories: TSelectAutocomplete.Item[];
     search?: string;
     sorting: ProjectTypes.Sorting;
     tags: ProjectTypes.Tags[];
@@ -37,6 +38,7 @@ export namespace TProjectContext {
   export interface FiltersOptions {
     languages: TSelectAutocomplete.Item[];
     ecosystems: TSelectAutocomplete.Item[];
+    categories: TSelectAutocomplete.Item[];
   }
 
   export const DEFAULT_SORTING = ProjectTypes.Sorting.Trending;
@@ -44,6 +46,7 @@ export namespace TProjectContext {
   export const DEFAULT_FILTER: Filter = {
     languages: [],
     ecosystems: [],
+    categories: [],
     tags: [],
     sorting: DEFAULT_SORTING,
   };

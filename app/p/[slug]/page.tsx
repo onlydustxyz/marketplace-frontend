@@ -1,6 +1,5 @@
 "use client";
 
-import { useAuth0 } from "@auth0/auth0-react";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import { useMediaQuery } from "usehooks-ts";
@@ -14,12 +13,12 @@ import { usePosthog } from "src/hooks/usePosthog";
 import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
-import { getGithubUserIdFromSub } from "components/features/auth0/utils/getGithubUserIdFromSub.utils";
 import { ProjectLeadInvitationBanner } from "components/features/project-lead-invitation-banner/project-lead-invitation-banner";
 import { withClientOnly } from "components/layout/client-only/client-only";
 import { Flex } from "components/layout/flex/flex";
 
 import { useIntl } from "hooks/translate/use-translate";
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import { ClaimBanner } from "./components/banner/claim-banner/claim-banner";
 import { MissingGithubAppInstallBanner } from "./components/banner/missing-github-app-install-banner/missing-github-app-install-banner";
@@ -44,11 +43,9 @@ function ProjectPage() {
       params: { projectId: project?.id || "", projectSlug: slug },
     });
 
-  const { user } = useAuth0();
+  const { githubUserId } = useCurrentUser();
 
   const isProjectLeader = useProjectLeader({ id: project?.id });
-
-  const githubUserId = getGithubUserIdFromSub(user?.sub);
 
   const isInvited = useMemo(() => {
     return !!project?.invitedLeaders.find(invite => invite.githubUserId === githubUserId);

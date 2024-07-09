@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { Categories } from "app/p/[slug]/features/project-details/components/categories/categories";
 import { Languages } from "app/p/[slug]/features/project-details/components/languages/languages";
 
 import { IMAGES } from "src/assets/img";
@@ -19,8 +20,17 @@ import { Sponsors } from "./components/sponsors/sponsors";
 import { TProjectDetails } from "./project-details.types";
 
 export function ProjectDetails({ project }: TProjectDetails.Props) {
-  const { contributorCount, topContributors, leaders, invitedLeaders, moreInfos, ecosystems, sponsors, languages } =
-    project;
+  const {
+    contributorCount,
+    topContributors,
+    leaders,
+    invitedLeaders,
+    moreInfos,
+    ecosystems,
+    categories,
+    sponsors,
+    languages,
+  } = project;
 
   const projectLeads = useMemo(() => {
     return leaders?.filter(lead => isDefined(lead?.login)) || [];
@@ -53,6 +63,7 @@ export function ProjectDetails({ project }: TProjectDetails.Props) {
         <ProjectLeads projectId={project.id} projectLeads={projectLeads} projectInvited={projectInvited} />
         <Contributors contributorCount={contributorCount} topContributors={topContributors} />
         <Ecosystems ecosystems={ecosystems} />
+        <Categories categories={categories} />
         <Sponsors sponsors={sponsors} />
         <Languages languages={languages} />
         <MoreInfos moreInfos={moreInfos} />
