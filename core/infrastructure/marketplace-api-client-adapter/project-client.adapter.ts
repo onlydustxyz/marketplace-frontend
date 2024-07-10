@@ -1,5 +1,5 @@
-import { ProjectStoragePort } from "core/domain/ports/output/project-storage.port";
-import { GetProjectBySlugResponse } from "core/domain/types/project.types";
+import { ProjectStoragePort } from "core/domain/project/output/project-storage.port";
+import { GetProjectBySlugResponse } from "core/domain/project/project.types";
 import { HttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/http-client";
 
 export class ProjectClientAdapter implements ProjectStoragePort {
@@ -17,7 +17,7 @@ export class ProjectClientAdapter implements ProjectStoragePort {
     const tag = HttpClient.buildTag({ path, pathParams, queryParams });
 
     return {
-      send: this.client.send<GetProjectBySlugResponse>({
+      request: this.client.request<GetProjectBySlugResponse>({
         path,
         method,
         tag,

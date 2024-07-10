@@ -40,7 +40,7 @@ interface HttpClientError extends Error {
 }
 
 export class HttpClient {
-  send<R>(args: {
+  request<R>(args: {
     path: string;
     method: HttpClientMethod;
     tag: string;
@@ -52,7 +52,7 @@ export class HttpClient {
     next?: NextFetchRequestConfig;
   }): Promise<R>;
 
-  send<R>(): Promise<R> {
+  request<R>(): Promise<R> {
     return Promise.resolve({} as R);
   }
 

@@ -4,10 +4,12 @@ import { components } from "src/__generated/api";
 
 type ProjectResponse = components["schemas"]["ProjectResponse"];
 
-export interface IProject extends ProjectResponse {}
+interface ProjectInterface extends ProjectResponse {}
 
-export class Project extends mapApiToClass<ProjectResponse>() implements IProject {
+class Project extends mapApiToClass<ProjectResponse>() implements ProjectInterface {
   constructor(readonly props: ProjectResponse) {
     super(props);
   }
 }
+
+export { Project };

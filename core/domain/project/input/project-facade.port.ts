@@ -2,7 +2,7 @@ import {
   GetProjectBySlugPathParams,
   GetProjectBySlugQueryParams,
   GetProjectBySlugResponse,
-} from "core/domain/types/project.types";
+} from "core/domain/project/project.types";
 import { HttpClientParameters } from "core/infrastructure/marketplace-api-client-adapter/http/http-client";
 
 export interface ProjectFacadePort {
@@ -13,7 +13,7 @@ export interface ProjectFacadePort {
     PathParams: GetProjectBySlugPathParams;
     QueryParams: GetProjectBySlugQueryParams;
   }>): {
-    send: Promise<GetProjectBySlugResponse>;
+    request: Promise<GetProjectBySlugResponse>;
     tag: string;
   };
 }

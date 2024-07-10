@@ -7,7 +7,7 @@ export class FetchHttpClient extends HttpClient implements IFetchHttpClient {
     super();
   }
 
-  async send<R>({
+  async request<R>({
     path,
     method,
     tag,
@@ -17,7 +17,7 @@ export class FetchHttpClient extends HttpClient implements IFetchHttpClient {
     body,
     impersonationHeaders,
     next: nextParams = {},
-  }: Parameters<IFetchHttpClient["send"]>[0]): Promise<R> {
+  }: Parameters<IFetchHttpClient["request"]>[0]): Promise<R> {
     const url = this.buildUrl({ path, pathParams, queryParams, version });
     const headers = await this.getHeaders({ impersonationHeaders });
     const tags = tag ? [tag] : undefined;

@@ -1,15 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { bootstrap } from "core/bootstrap";
-import { ProjectFacadePort } from "core/domain/ports/input/project-facade.port";
-import { GetProjectBySlugResponse } from "core/domain/types/project.types";
+import { ProjectFacadePort } from "core/domain/project/input/project-facade.port";
+import { GetProjectBySlugResponse } from "core/domain/project/project.types";
 
 export function useGetProjectBySlug({ pathParams, queryParams }: Parameters<ProjectFacadePort["getProjectBySlug"]>[0]) {
   const projectStoragePort = bootstrap.getProjectStoragePortForClient();
 
-  const { send, tag } = projectStoragePort.getProjectBySlug({ pathParams, queryParams });
+  const { request, tag } = projectStoragePort.getProjectBySlug({ pathParams, queryParams });
 
   return useQuery<GetProjectBySlugResponse>({
-    queryFn: () => send,
+    queryFn: () => request,
     queryKey: [tag],
   });
 }

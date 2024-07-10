@@ -4,11 +4,11 @@ import { components } from "src/__generated/api";
 
 type GithubOrganizationResponse = components["schemas"]["GithubOrganizationResponse"];
 
-interface IGithubOrganization extends GithubOrganizationResponse {
+interface GithubOrganizationInterface extends GithubOrganizationResponse {
   isInstalled: boolean;
 }
 
-export class GithubOrganization extends mapApiToClass<GithubOrganizationResponse>() implements IGithubOrganization {
+class GithubOrganization extends mapApiToClass<GithubOrganizationResponse>() implements GithubOrganizationInterface {
   constructor(readonly props: GithubOrganizationResponse) {
     super(props);
   }
@@ -17,3 +17,5 @@ export class GithubOrganization extends mapApiToClass<GithubOrganizationResponse
     return this.installationStatus !== "NOT_INSTALLED";
   }
 }
+
+export { GithubOrganization };

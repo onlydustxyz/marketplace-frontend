@@ -1,4 +1,4 @@
-import { ProjectStoragePort } from "core/domain/ports/output/project-storage.port";
+import { ProjectStoragePort } from "core/domain/project/output/project-storage.port";
 import { AuthProvider } from "core/infrastructure/marketplace-api-client-adapter/auth/auth-provider";
 import { FetchHttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/fetch-http-client";
 import { ProjectClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/project-client.adapter";
