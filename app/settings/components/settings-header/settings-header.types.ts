@@ -8,6 +8,7 @@ export namespace TSettingsHeader {
   interface BaseProps extends PropsWithChildren {
     icon?: RemixIconsName;
     subtitle: Key;
+    individualLimit?: number | null;
   }
 
   interface TitleProps extends BaseProps {
