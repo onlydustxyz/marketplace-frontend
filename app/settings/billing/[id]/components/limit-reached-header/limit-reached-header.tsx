@@ -36,11 +36,14 @@ export function LimitReachedHeader() {
   }
 
   function findPayoutPreference(): ProfileWithLimitReached | undefined {
-    const findInPayoutPreference = payoutPreferences?.find(p => p?.billingProfile?.individualLimitReached);
-    if (findInPayoutPreference && findInPayoutPreference.billingProfile) {
+    const findInPayoutPreference = payoutPreferences
+      ?.map(p => (p?.billingProfile ? new ShortBillingProfile(p.billingProfile) : undefined))
+      .find(p => p?.isIndividualLimitReached());
+
+    if (findInPayoutPreference) {
       return {
         type: "payout-preferences",
-        instance: new ShortBillingProfile(findInPayoutPreference.billingProfile),
+        instance: findInPayoutPreference,
       };
     }
     return undefined;
@@ -93,7 +96,7 @@ export function LimitReachedHeader() {
 
   return useMemo(() => {
     if (profileWithLimitReached) {
-      const limit = profileWithLimitReached.instance.formatedPaymentLimit || 0;
+      const limit = profileWithLimitReached.instance.getLimitAmount() || 0;
       return (
         <Banner
           title={<Translate token={"v2.features.banners.limitReached.title"} params={{ count: limit }} />}

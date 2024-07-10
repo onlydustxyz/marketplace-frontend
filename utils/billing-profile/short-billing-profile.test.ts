@@ -33,12 +33,11 @@ describe("ShortBillingProfile", () => {
       currentYearPaymentAmount: 4500,
       individualLimitReached: false,
     });
-    expect(profile.paymentLimitCounter()).toEqual({
-      current: 4500,
-      limit: 5000,
-      hasReached: false,
-      remaining: 500,
-    });
+
+    expect(profile.getCurrentYearPaymentAmount()).toEqual(4500);
+    expect(profile.getLimitAmount()).toEqual(5000);
+    expect(profile.getCurrentProgressionAmount(0)).toEqual(4500);
+    expect(profile.getHasReachedProgressionLimit()).toEqual(false);
   });
 
   it("should return payment progression with dynamic value", () => {
@@ -48,10 +47,22 @@ describe("ShortBillingProfile", () => {
       currentYearPaymentAmount: 4500,
       individualLimitReached: true,
     });
-    expect(profile.paymentLimitCounter(300)).toEqual({
-      currentAmount: 4800,
-      limitedAmount: 5000,
-      hasReachedLimit: false,
+
+    const profileReached = new ShortBillingProfile({
+      ...defaultBillingProfile,
+      currentYearPaymentLimit: 5001,
+      currentYearPaymentAmount: 4500,
+      individualLimitReached: true,
     });
+
+    expect(profile.getCurrentYearPaymentAmount()).toEqual(4500);
+    expect(profile.getLimitAmount()).toEqual(5000);
+    expect(profile.getHasReachedProgressionLimit(300)).toEqual(false);
+    expect(profile.getCurrentProgressionAmount(300)).toEqual(4800);
+
+    expect(profileReached.getCurrentYearPaymentAmount()).toEqual(4500);
+    expect(profileReached.getLimitAmount()).toEqual(5000);
+    expect(profileReached.getHasReachedProgressionLimit(501)).toEqual(true);
+    expect(profileReached.getCurrentProgressionAmount(501)).toEqual(5001);
   });
 });

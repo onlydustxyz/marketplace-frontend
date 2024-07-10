@@ -1,6 +1,6 @@
 import { useParams } from "next/navigation";
 import { useMemo } from "react";
-import { ShortBillingProfile, useInstance } from "utils/billing-profile/short-billing-profile.model";
+import { ShortBillingProfile, useClientInstance } from "utils/billing-profile/short-billing-profile.model";
 
 import { SettingsHeader } from "app/settings/components/settings-header/settings-header";
 
@@ -21,7 +21,7 @@ export function BillingHeader() {
 
   const role = profile?.data.me.role;
 
-  const shortBillingProfile = useInstance(ShortBillingProfile, profile?.data);
+  const shortBillingProfile = useClientInstance(ShortBillingProfile, profile?.data);
   const isAdmin = role === BillingProfilesTypes.ROLE.ADMIN;
   const isInvited = profile?.data.me?.invitation;
   const isIndividual = profile?.data?.type === MeTypes.billingProfileType.Individual;
@@ -58,7 +58,7 @@ export function BillingHeader() {
     }
 
     return profile?.data?.type ?? MeTypes.billingProfileType.Individual;
-  }, [role, profile, shortBillingProfile]);
+  }, [role, profile]);
 
   const renderValue = useMemo(() => {
     if (isInvited && !isAdmin) {
@@ -90,7 +90,7 @@ export function BillingHeader() {
   }
 
   return (
-    <SettingsHeader {...headerArgs[getHeaderArg]} individualLimit={shortBillingProfile?.formatedPaymentLimit}>
+    <SettingsHeader {...headerArgs[getHeaderArg]} individualLimit={shortBillingProfile?.getLimitAmount()}>
       {renderValue}
     </SettingsHeader>
   );
