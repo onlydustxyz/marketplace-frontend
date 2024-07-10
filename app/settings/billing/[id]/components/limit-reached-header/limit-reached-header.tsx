@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useMemo } from "react";
+import { IShortBillingProfile, ShortBillingProfile } from "utils/billing-profile/short-billing-profile.model";
 
 import { useStackBillingCreate } from "src/App/Stacks/Stacks";
 import MeApi from "src/api/me";
@@ -13,6 +14,11 @@ import { Translate } from "components/layout/translate/translate";
 import { NEXT_ROUTER } from "constants/router";
 
 import { useBillingProfiles } from "hooks/billings-profiles/use-billing-profiles/use-billing-profiles";
+
+interface ProfileWithLimitReached {
+  type: "payout-preferences" | "individual";
+  instance: IShortBillingProfile;
+}
 
 export function LimitReachedHeader() {
   const router = useRouter();
@@ -29,9 +35,35 @@ export function LimitReachedHeader() {
     router.push(NEXT_ROUTER.settings.payoutPreferences);
   }
 
-  const hasPayoutPreferencesLimitReached = payoutPreferences?.some(p => p?.billingProfile?.individualLimitReached);
-  const hasOnlyIndividualProfile = profiles.length === 1 && profiles[0].data.type === "INDIVIDUAL";
-  const hasIndividualLimitReached = hasOnlyIndividualProfile && profiles[0].data.individualLimitReached;
+  function findPayoutPreference(): ProfileWithLimitReached | undefined {
+    const findInPayoutPreference = payoutPreferences
+      ?.map(p => (p?.billingProfile ? new ShortBillingProfile(p.billingProfile) : undefined))
+      .find(p => p?.isIndividualLimitReached());
+
+    if (findInPayoutPreference) {
+      return {
+        type: "payout-preferences",
+        instance: findInPayoutPreference,
+      };
+    }
+    return undefined;
+  }
+
+  function findIndividualProfile(): ProfileWithLimitReached | undefined {
+    if (profiles.length === 1 && profiles[0].data.type === "INDIVIDUAL") {
+      const individualProfile = new ShortBillingProfile(profiles[0].data);
+      if (individualProfile.isIndividualLimitReached()) {
+        return {
+          type: "individual",
+          instance: individualProfile,
+        };
+      }
+    }
+    return undefined;
+  }
+
+  const profileWithLimitReached: ProfileWithLimitReached | undefined =
+    findPayoutPreference() || findIndividualProfile();
 
   const additionalArgs = useMemo(() => {
     if (pathname.includes("payout-preferences")) {
@@ -40,7 +72,7 @@ export function LimitReachedHeader() {
         endElement: null,
       };
     }
-    if (hasIndividualLimitReached) {
+    if (profileWithLimitReached?.type === "individual") {
       return {
         description: <Translate token={"v2.features.banners.limitReached.hasIndividualLimitReachedDescription"} />,
         endElement: (
@@ -50,7 +82,7 @@ export function LimitReachedHeader() {
         ),
       };
     }
-    if (hasPayoutPreferencesLimitReached) {
+    if (profileWithLimitReached?.type === "payout-preferences") {
       return {
         description: <Translate token={"v2.features.banners.limitReached.hasToSwitchPayoutPreferencesDescription"} />,
         endElement: (
@@ -60,13 +92,14 @@ export function LimitReachedHeader() {
         ),
       };
     }
-  }, [profiles, pathname, hasPayoutPreferencesLimitReached, hasIndividualLimitReached]);
+  }, [profiles, pathname, profileWithLimitReached]);
 
   return useMemo(() => {
-    if (hasPayoutPreferencesLimitReached || hasIndividualLimitReached) {
+    if (profileWithLimitReached) {
+      const limit = profileWithLimitReached.instance.getLimitAmount() || 0;
       return (
         <Banner
-          title={<Translate token={"v2.features.banners.limitReached.title"} />}
+          title={<Translate token={"v2.features.banners.limitReached.title"} params={{ count: limit }} />}
           variant={"red"}
           hasBorder={false}
           size={"m"}
@@ -75,5 +108,5 @@ export function LimitReachedHeader() {
       );
     }
     return null;
-  }, [hasPayoutPreferencesLimitReached, hasIndividualLimitReached, profiles]);
+  }, [profileWithLimitReached, profiles]);
 }

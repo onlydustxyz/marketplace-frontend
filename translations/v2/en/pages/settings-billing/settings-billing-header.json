@@ -1,7 +1,11 @@
 {
   "individual": {
     "title": "Personal",
-    "subtitle": "As an individual, when you reach 5,000 USD / year you’ll need to create a dedicated entity."
+    "subtitle": {
+      "zero": "As an individual, when you reach the annual reward amount limited by your tax residency you’ll need to create a dedicated entity",
+      "one": "As an individual, when you reach __count__ USD / year you’ll need to create a dedicated entity.",
+      "many": "As an individual, when you reach __count__ USD / year you’ll need to create a dedicated entity."
+    }
   },
   "company": {
     "title": "Company",

@@ -21,7 +21,11 @@
     "button": "Claim project"
   },
   "limitReached": {
-    "title": "Some of your pending rewards have been blocked because they will cause you to exceed the limit of 5,000 USD / year as an individual.",
+    "title": {
+      "zero": "Some of your pending rewards have been blocked because they will cause you to exceed the annual reward amount limited by your tax residency",
+      "one": "Some of your pending rewards have been blocked because they will cause you to exceed the limit of __count__ USD / year as an individual.",
+      "many": "Some of your pending rewards have been blocked because they will cause you to exceed the limit of __count__ USD / year as an individual."
+    },
     "hasIndividualLimitReachedDescription": "Please add a new billing profile (self-employed or organisation) to receive new rewards.",
     "hasToSwitchPayoutPreferencesDescription": "Please switch your payout preferences to another billing profile (self-employed or organisation) to receive new rewards.",
     "hasToUpdatePayoutPreferencesDescription": "Please update your payout preferences to another billing profile (self-employed or organisation) to receive new rewards.",
