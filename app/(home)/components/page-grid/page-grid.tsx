@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth0 } from "@auth0/auth0-react";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import { useMemo } from "react";
 
 import { useJourney } from "app/(home)/features/journey/journey.hooks";
@@ -17,6 +18,8 @@ export function PageGrid({ children }: TPageGrid.Props) {
   const isLg = useClientMediaQuery(`(max-width: ${viewportConfig.breakpoints.lg}px)`);
   const { isAuthenticated } = useAuth0();
   const { completed: journeyCompleted, isLoading: isLoadingJourney } = useJourney();
+  const { user } = useUser();
+  console.log("user", user);
 
   const classes = useMemo(() => {
     if (isLg) {

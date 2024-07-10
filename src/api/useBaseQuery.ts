@@ -40,8 +40,11 @@ export function useBaseQuery<R = unknown>({
   const queryClient = useQueryClient();
 
   const { enabled, ...restQueryOptions } = queryOptions;
-  const { isAuthenticated, getAccessTokenSilently, logout } = useAuth0();
+  const { isAuthenticated, logout, getAccessTokenSilently } = useAuth0();
   const { getImpersonateHeaders, isImpersonating } = useImpersonation();
+  // const getAccessTokenSilently = async () => {
+  //   return fetch("/api/auth/getAccessToken").then(res => res.json());
+  // };
 
   return useQuery<R>({
     queryKey: [...(tags || []), resourcePath, queryParams, isAuthenticated, isImpersonating],

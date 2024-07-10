@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth0 } from "@auth0/auth0-react";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import { useMemo } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
@@ -42,7 +43,7 @@ export default function HeaderView({ menuItems, impersonating = false }: HeaderV
   const isMatchProjectDetail = useMatchPath(NEXT_ROUTER.projects.details.root("[slug]"), { exact: false });
   const isMatchSettings = useMatchPath(NEXT_ROUTER.settings.all, { exact: false });
   const hideHeader = (isMatchProjectDetail || isMatchSettings) && !isXl;
-
+  const { user } = useUser();
   const rewardSum = useMemo(
     () => billingProfile?.billingProfiles?.reduce((acc, profile) => acc + profile.requestableRewardCount, 0),
     [billingProfile]
@@ -111,7 +112,7 @@ export default function HeaderView({ menuItems, impersonating = false }: HeaderV
               </>
             )}
             <div className="flex flex-row items-center justify-end gap-4">
-              <ProfileButtonDisplay isLoading={isLoading} isAuthenticated={isAuthenticated} />
+              <ProfileButtonDisplay isLoading={isLoading} isAuthenticated={!!user} />
             </div>
           </div>
         </div>

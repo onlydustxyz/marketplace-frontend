@@ -1,4 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import Link from "next/link";
 
 import GithubLogo, { Size } from "src/icons/GithubLogo";
 import { cn } from "src/utils/cn";
@@ -21,12 +22,13 @@ export default function GithubLink({
 }) {
   const { T } = useIntl();
   const { loginWithRedirect } = useAuth0();
+
   const loginHandler = () => {
     handleLoginWithRedirect(loginWithRedirect);
   };
 
   return (
-    <button className="z-10" onClick={loginHandler} data-testid="github-signin-button">
+    <Link className="z-10" href="/api/auth/login">
       <div className="m-px w-fit overflow-hidden rounded-full p-px blur-0 transition duration-300 hover:m-0 hover:p-0.5">
         <div
           className={cn(
@@ -47,6 +49,6 @@ export default function GithubLink({
           </div>
         </div>
       </div>
-    </button>
+    </Link>
   );
 }
