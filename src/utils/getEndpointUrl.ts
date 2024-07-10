@@ -35,8 +35,10 @@ export function getEndpointUrl({
 
   const urlSearchParamsStr = urlSearchParams.toString();
 
-  return new URL(
-    `${finalResourcePath}${urlSearchParamsStr ? `?${urlSearchParamsStr}` : ""}`,
-    `https://${process.env.NEXT_PUBLIC_ONLYDUST_API_BASEPATH}`
-  ).toString();
+  const baseUrl = "http://localhost:5173/api/proxy";
+  return `${baseUrl}${finalResourcePath}${urlSearchParamsStr ? `?${urlSearchParamsStr}` : ""}`;
+  // return new URL(
+  //   `${finalResourcePath}${urlSearchParamsStr ? `?${urlSearchParamsStr}` : ""}`,
+  //   `https://${process.env.NEXT_PUBLIC_ONLYDUST_API_BASEPATH}`
+  // ).toString();
 }

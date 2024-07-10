@@ -1,4 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 import { components } from "src/__generated/api";
 
@@ -10,13 +11,14 @@ import { ME_TAGS } from "./tags";
 export type UseGetUserMeResponse = components["schemas"]["GetMeResponse"];
 
 const useGetMe = ({ options = {} }: UseQueryProps<UseGetUserMeResponse, undefined>) => {
-  const { isAuthenticated } = useAuth0();
+  const { user } = useUser();
 
   return useBaseQuery<UseGetUserMeResponse>({
     resourcePath: ME_PATH.ROOT,
     tags: ME_TAGS.user,
+    retry: 0,
     ...options,
-    enabled: isAuthenticated && (options.enabled === undefined ? true : options.enabled),
+    enabled: !!user && (options.enabled === undefined ? true : options.enabled),
     // Current user doesn't need to be refreshed automatically, otherwise some components could re-render unexpectedly (ex:lead-guard)
     refetchOnWindowFocus: false,
     staleTime: Infinity,

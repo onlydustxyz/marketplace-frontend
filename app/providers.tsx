@@ -1,5 +1,6 @@
 "use client";
 
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { NextUIProvider } from "@nextui-org/react";
 import { NavigationStateProvider } from "providers/navigation-state/navigation-state";
 import { PropsWithChildren } from "react";
@@ -29,28 +30,30 @@ export default function Providers({ children }: PropsWithChildren) {
     <PosthogProvider>
       <ImpersonationProvider>
         <Auth0ProviderWithNavigate>
-          <IntlProvider>
-            <QueryProvider>
-              <NextUIProvider>
-                <OnboardingProvider>
-                  <NavigationStateProvider>
-                    <StackProvider>
-                      <SidePanelStackProvider>
-                        <SidePanelProvider>
-                          <ToasterProvider>
-                            {children}
-                            <Stacks />
-                            <Toaster />
-                            {/* Hide tooltips on mobile */ isSm && <Tooltip />}
-                          </ToasterProvider>
-                        </SidePanelProvider>
-                      </SidePanelStackProvider>
-                    </StackProvider>
-                  </NavigationStateProvider>
-                </OnboardingProvider>
-              </NextUIProvider>
-            </QueryProvider>
-          </IntlProvider>
+          <UserProvider>
+            <IntlProvider>
+              <QueryProvider>
+                <NextUIProvider>
+                  <OnboardingProvider>
+                    <NavigationStateProvider>
+                      <StackProvider>
+                        <SidePanelStackProvider>
+                          <SidePanelProvider>
+                            <ToasterProvider>
+                              {children}
+                              <Stacks />
+                              <Toaster />
+                              {/* Hide tooltips on mobile */ isSm && <Tooltip />}
+                            </ToasterProvider>
+                          </SidePanelProvider>
+                        </SidePanelStackProvider>
+                      </StackProvider>
+                    </NavigationStateProvider>
+                  </OnboardingProvider>
+                </NextUIProvider>
+              </QueryProvider>
+            </IntlProvider>
+          </UserProvider>
         </Auth0ProviderWithNavigate>
       </ImpersonationProvider>
     </PosthogProvider>
