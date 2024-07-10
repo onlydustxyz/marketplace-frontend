@@ -21,11 +21,7 @@ async function apiProxy(request: NextRequest): Promise<Response> {
     headers.set("Authorization", `Bearer ${accessToken}`);
   }
 
-  console.log("BASE PATH", process.env.NEXT_PUBLIC_ONLYDUST_API_BASEPATH);
-  console.log("PATHNAME", request.nextUrl.pathname);
-  console.log("SEARCH", request.nextUrl.search);
-  console.log("headers", accessToken);
-  return fetch(
+  const doFetch = await fetch(
     `https://${process.env.NEXT_PUBLIC_ONLYDUST_API_BASEPATH}${request.nextUrl.pathname.replace(proxyUrl, "")}${
       request.nextUrl.search
     }`,
@@ -35,5 +31,7 @@ async function apiProxy(request: NextRequest): Promise<Response> {
       headers,
       method: request.method,
     }
-  );
+  ).then(res => res.json());
+
+  return NextResponse.json(doFetch);
 }
