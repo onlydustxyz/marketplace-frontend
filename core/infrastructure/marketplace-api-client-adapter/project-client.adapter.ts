@@ -5,19 +5,26 @@ import { HttpClient } from "core/infrastructure/marketplace-api-client-adapter/h
 export class ProjectClientAdapter implements ProjectStoragePort {
   constructor(private readonly client: HttpClient) {}
 
+  // static routes() {
+  //   return {
+  //     "get-project-by-slug": "projects/slug/:slug"
+  //   } as const
+  // }
+
   getProjectBySlug({ pathParams, queryParams }: Parameters<ProjectStoragePort["getProjectBySlug"]>[0]) {
-    const fetchAdapter = this.client;
+    const path = "projects/slug/:slug";
+    const method = "GET";
+    const tag = HttpClient.buildTag({ path, pathParams, queryParams });
 
-    fetchAdapter.setUrl("projects/slug/:slug");
-
-    if (pathParams) {
-      fetchAdapter.setPathParams(pathParams);
-    }
-
-    if (queryParams) {
-      fetchAdapter.setQueryParams(queryParams);
-    }
-
-    return fetchAdapter.send<GetProjectBySlugResponse>();
+    return {
+      send: this.client.send<GetProjectBySlugResponse>({
+        path,
+        method,
+        tag,
+        pathParams,
+        queryParams,
+      }),
+      tag,
+    };
   }
 }

@@ -1,17 +1,51 @@
 import { ProjectStoragePort } from "core/domain/ports/output/project-storage.port";
+import { AuthProvider } from "core/infrastructure/marketplace-api-client-adapter/auth/auth-provider";
 import { FetchHttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/fetch-http-client";
 import { ProjectClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/project-client.adapter";
 
-export type Bootstrap = {
-  getProjectStoragePortForClient(): ProjectStoragePort;
-  getProjectStoragePortForServer(): ProjectStoragePort;
-};
+interface BootstrapConstructor {
+  projectStoragePortForClient: ProjectStoragePort;
+  projectStoragePortForServer: ProjectStoragePort;
+}
 
-export const bootstrap: Bootstrap = {
-  getProjectStoragePortForClient: () => {
-    return new ProjectClientAdapter(new FetchHttpClient());
-  },
-  getProjectStoragePortForServer: () => {
-    return new ProjectClientAdapter(new FetchHttpClient());
-  },
-};
+export class Bootstrap {
+  static #instance: Bootstrap;
+  private authProvider?: AuthProvider;
+  projectStoragePortForClient: ProjectStoragePort;
+  projectStoragePortForServer: ProjectStoragePort;
+
+  constructor({ projectStoragePortForClient, projectStoragePortForServer }: BootstrapConstructor) {
+    this.projectStoragePortForClient = projectStoragePortForClient;
+    this.projectStoragePortForServer = projectStoragePortForServer;
+  }
+
+  getProjectStoragePortForClient() {
+    return this.projectStoragePortForClient;
+  }
+
+  getAuthProvider() {
+    return this.authProvider;
+  }
+
+  setAuthProvider(authProvider: AuthProvider) {
+    this.authProvider = authProvider;
+  }
+
+  public static get getBootstrap(): Bootstrap {
+    if (!Bootstrap.#instance) {
+      this.newBootstrap({
+        projectStoragePortForClient: new ProjectClientAdapter(new FetchHttpClient()),
+        projectStoragePortForServer: new ProjectClientAdapter(new FetchHttpClient()),
+      });
+    }
+
+    return Bootstrap.#instance;
+  }
+
+  public static newBootstrap(constructor: BootstrapConstructor): Bootstrap {
+    Bootstrap.#instance = new Bootstrap(constructor);
+    return Bootstrap.#instance;
+  }
+}
+
+export const bootstrap = Bootstrap.getBootstrap;

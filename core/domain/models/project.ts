@@ -7,7 +7,7 @@ type ProjectResponse = components["schemas"]["ProjectResponse"];
 export interface IProject extends ProjectResponse {}
 
 export class Project extends mapApiToClass<ProjectResponse>() implements IProject {
-  constructor(props: ProjectResponse) {
+  constructor(readonly props: ProjectResponse) {
     super(props);
   }
 }

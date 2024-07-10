@@ -6,8 +6,24 @@ import { GetProjectBySlugResponse } from "core/domain/types/project.types";
 export function useGetProjectBySlug({ pathParams, queryParams }: Parameters<ProjectFacadePort["getProjectBySlug"]>[0]) {
   const projectStoragePort = bootstrap.getProjectStoragePortForClient();
 
+  const { send, tag } = projectStoragePort.getProjectBySlug({ pathParams, queryParams });
+
   return useQuery<GetProjectBySlugResponse>({
-    queryFn: () => projectStoragePort.getProjectBySlug({ pathParams, queryParams }),
-    queryKey: ["getProjectBySlug", pathParams?.slug],
+    queryFn: () => send,
+    queryKey: [tag],
   });
 }
+
+// 1ere connexion
+// const authProvider = useAuthProvider();
+// bootstrap.setAuthProvider(authProvider);
+//
+// function useAuthProvider(): AuthProvider {
+//   const { isAuthenticated, getAccessTokenSilently: getAccessToken, logout } = useAuth0();
+//
+//   return new (class implements AuthProvider {
+//     isAuthenticated = isAuthenticated;
+//     getAccessToken = getAccessToken;
+//     logout = logout;
+//   })();
+// }

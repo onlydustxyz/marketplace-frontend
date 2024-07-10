@@ -12,5 +12,8 @@ export interface ProjectStoragePort {
   }: HttpClientParameters<{
     PathParams: GetProjectBySlugPathParams;
     QueryParams: GetProjectBySlugQueryParams;
-  }>): Promise<GetProjectBySlugResponse>;
+  }>): {
+    send: Promise<GetProjectBySlugResponse>;
+    tag: string;
+  };
 }
