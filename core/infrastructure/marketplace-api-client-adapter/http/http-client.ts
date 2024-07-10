@@ -33,6 +33,11 @@ export interface HttpClientParameters<
   pagination?: HttpClientPagination;
 }
 
+export interface HttpStorageResponse<R> {
+  request(): Promise<R>;
+  tag: string;
+}
+
 interface HttpClientError extends Error {
   status: number;
   message: string;

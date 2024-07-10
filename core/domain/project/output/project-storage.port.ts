@@ -3,17 +3,17 @@ import {
   GetProjectBySlugQueryParams,
   GetProjectBySlugResponse,
 } from "core/domain/project/project.types";
-import { HttpClientParameters } from "core/infrastructure/marketplace-api-client-adapter/http/http-client";
+import {
+  HttpClientParameters,
+  HttpStorageResponse,
+} from "core/infrastructure/marketplace-api-client-adapter/http/http-client";
 
 export interface ProjectStoragePort {
-  getProjectBySlug({
-    pathParams,
-    queryParams,
-  }: HttpClientParameters<{
-    PathParams: GetProjectBySlugPathParams;
-    QueryParams: GetProjectBySlugQueryParams;
-  }>): {
-    request: Promise<GetProjectBySlugResponse>;
-    tag: string;
-  };
+  routes: Record<string, string>;
+  getProjectBySlug(
+    params: HttpClientParameters<{
+      PathParams: GetProjectBySlugPathParams;
+      QueryParams: GetProjectBySlugQueryParams;
+    }>
+  ): HttpStorageResponse<GetProjectBySlugResponse>;
 }

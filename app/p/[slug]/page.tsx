@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetProjectBySlug } from "core/application/react-query-adapter/project-react-query.adapter";
+import { ProjectReactQueryAdapter } from "core/application/react-query-adapter/project-react-query.adapter";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import { useMediaQuery } from "usehooks-ts";
@@ -35,18 +35,8 @@ function ProjectPage() {
   const { capture } = usePosthog();
 
   const { slug = "" } = useParams<{ slug: string }>();
-  // const { data: project, isLoading } = ProjectApi.queries.useGetProjectBySlug({
-  //   params: { slug },
-  // });
 
-  // const { data: project, isLoading } = ProjectQueryAdapter.useGetProjectBySlug(bootstrap.projectService, {
-  //   pathParams: { slug },
-  // });
-
-  // client : useGetProjectBySlug
-  // server : getProjectBySlug
-
-  const { data: project, isLoading } = useGetProjectBySlug({
+  const { data: project, isLoading } = ProjectReactQueryAdapter.useGetProjectBySlug({
     pathParams: { slug },
   });
 

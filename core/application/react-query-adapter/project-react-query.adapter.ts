@@ -3,16 +3,20 @@ import { bootstrap } from "core/bootstrap";
 import { ProjectFacadePort } from "core/domain/project/input/project-facade.port";
 import { GetProjectBySlugResponse } from "core/domain/project/project.types";
 
-export function useGetProjectBySlug({ pathParams, queryParams }: Parameters<ProjectFacadePort["getProjectBySlug"]>[0]) {
+function useGetProjectBySlug({ pathParams, queryParams }: Parameters<ProjectFacadePort["getProjectBySlug"]>[0]) {
   const projectStoragePort = bootstrap.getProjectStoragePortForClient();
 
-  const { request, tag } = projectStoragePort.getProjectBySlug({ pathParams, queryParams });
+  const { request: queryFn, tag } = projectStoragePort.getProjectBySlug({ pathParams, queryParams });
 
   return useQuery<GetProjectBySlugResponse>({
-    queryFn: () => request,
+    queryFn,
     queryKey: [tag],
   });
 }
+
+export const ProjectReactQueryAdapter = {
+  useGetProjectBySlug,
+};
 
 // 1ere connexion
 // const authProvider = useAuthProvider();
