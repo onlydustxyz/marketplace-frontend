@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { ShortBillingProfile, useClientInstance } from "utils/billing-profile/short-billing-profile.model";
 
 import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import { IMAGES } from "src/assets/img";
@@ -34,26 +35,24 @@ export function SelectRewards({
   const { capture } = usePosthog();
 
   const { profile } = useBillingProfileById({ id: billingProfileId, enabledPooling: false });
+  const shortBillingProfile = useClientInstance(ShortBillingProfile, profile?.data);
 
   const isIndividual = profile?.data?.type === BillingProfilesTypes.type.Individual;
   const isMandateAccepted = profile?.data?.invoiceMandateAccepted;
-
-  const currentYearPaymentLimit = profile?.data?.currentYearPaymentLimit ?? 5000;
-  const currentYearPaymentAmount = profile?.data?.currentYearPaymentAmount ?? 0;
 
   const totalAmountSelectedRewards = useMemo(
     () => includedRewards.reduce((count, reward) => (count += reward.amount.usdEquivalent || 0), 0),
     [includedRewards]
   );
 
-  const totalAmountCumulated = useMemo(
-    () => totalAmountSelectedRewards + currentYearPaymentAmount,
-    [totalAmountSelectedRewards, currentYearPaymentAmount]
+  const hasReachedLimit = useMemo(
+    () => shortBillingProfile?.getHasReachedProgressionLimit(totalAmountSelectedRewards),
+    [totalAmountSelectedRewards, shortBillingProfile]
   );
 
   const isDisabled = useMemo(
-    () => includedRewards.length < 1 || (isIndividual && totalAmountCumulated > currentYearPaymentLimit),
-    [includedRewards, currentYearPaymentLimit, totalAmountCumulated, isIndividual]
+    () => includedRewards.length < 1 || (isIndividual && hasReachedLimit),
+    [includedRewards, hasReachedLimit, isIndividual]
   );
 
   const onSubmit = () => {
@@ -138,7 +137,14 @@ export function SelectRewards({
           </div>
         </ScrollView>
         <div className="w-full bg-greyscale-900">
-          <AmountCounter total={totalAmountCumulated} isCompany={!isIndividual} limit={currentYearPaymentLimit} />
+          {!!shortBillingProfile && (
+            <AmountCounter
+              total={shortBillingProfile.getCurrentProgressionAmount(totalAmountSelectedRewards)}
+              isOverLimit={hasReachedLimit}
+              isCompany={!isIndividual}
+              limit={shortBillingProfile.getLimitAmount()}
+            />
+          )}
           <div className="flex h-auto w-full items-center justify-end gap-5 border-t border-card-border-light bg-card-background-light px-8 py-6">
             <div className="flex items-center justify-end gap-5 ">
               <Button

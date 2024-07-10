@@ -1,5 +1,6 @@
 import { useParams } from "next/navigation";
 import { useMemo } from "react";
+import { ShortBillingProfile, useClientInstance } from "utils/billing-profile/short-billing-profile.model";
 
 import { SettingsHeader } from "app/settings/components/settings-header/settings-header";
 
@@ -20,6 +21,7 @@ export function BillingHeader() {
 
   const role = profile?.data.me.role;
 
+  const shortBillingProfile = useClientInstance(ShortBillingProfile, profile?.data);
   const isAdmin = role === BillingProfilesTypes.ROLE.ADMIN;
   const isInvited = profile?.data.me?.invitation;
   const isIndividual = profile?.data?.type === MeTypes.billingProfileType.Individual;
@@ -66,8 +68,8 @@ export function BillingHeader() {
     if (isIndividual) {
       return (
         <IndividualProgression
-          amount={profile?.data.currentYearPaymentAmount}
-          limit={profile?.data.currentYearPaymentLimit}
+          amount={shortBillingProfile?.currentYearPaymentAmount}
+          limit={shortBillingProfile?.currentYearPaymentLimit}
         />
       );
     }
@@ -81,11 +83,15 @@ export function BillingHeader() {
         />
       </AdminContentWrapper>
     );
-  }, [isInvited, isAdmin, isIndividual, profile, role, id]);
+  }, [isInvited, isAdmin, isIndividual, profile, role, id, shortBillingProfile]);
 
   if (!profile) {
     return null;
   }
 
-  return <SettingsHeader {...headerArgs[getHeaderArg]}>{renderValue}</SettingsHeader>;
+  return (
+    <SettingsHeader {...headerArgs[getHeaderArg]} individualLimit={shortBillingProfile?.getLimitAmount()}>
+      {renderValue}
+    </SettingsHeader>
+  );
 }
