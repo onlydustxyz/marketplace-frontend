@@ -1,6 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { QueryClient } from "@tanstack/react-query";
 import { meApiClient } from "api-client/resources/me";
+import { bootstrap } from "core/bootstrap";
 
 import { usePosthog } from "src/hooks/usePosthog";
 
@@ -20,6 +21,7 @@ export function useLogout() {
 
     if (isImpersonating) {
       clearImpersonateClaim();
+      bootstrap.setImpersonationProvider(null);
       queryClient.invalidateQueries();
       window.location.reload();
     } else {
