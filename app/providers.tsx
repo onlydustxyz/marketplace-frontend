@@ -1,10 +1,9 @@
 "use client";
 
-import { useAuth0 } from "@auth0/auth0-react";
 import { NextUIProvider } from "@nextui-org/react";
-import { bootstrap } from "core/bootstrap";
+import { InitBootstrapAuth } from "core/bootstrap/init-bootstrap-auth";
 import { NavigationStateProvider } from "providers/navigation-state/navigation-state";
-import { PropsWithChildren, useEffect } from "react";
+import { PropsWithChildren } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
 import OnboardingProvider from "src/App/OnboardingProvider";
@@ -24,20 +23,6 @@ import { PosthogProvider } from "components/features/posthog/providers/posthog.p
 
 import { IntlProvider } from "hooks/translate/use-translate";
 
-function InitBootstrapAuth() {
-  const { isAuthenticated, getAccessTokenSilently: getAccessToken, logout } = useAuth0();
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      bootstrap.setAuthProvider({ isAuthenticated, getAccessToken, logout });
-    } else {
-      bootstrap.setAuthProvider(null);
-    }
-  }, [isAuthenticated]);
-
-  return null;
-}
-
 export default function Providers({ children }: PropsWithChildren) {
   const isSm = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
 
@@ -45,6 +30,7 @@ export default function Providers({ children }: PropsWithChildren) {
     <PosthogProvider>
       <ImpersonationProvider>
         <Auth0ProviderWithNavigate>
+          <InitBootstrapAuth />
           <IntlProvider>
             <QueryProvider>
               <NextUIProvider>
@@ -67,7 +53,6 @@ export default function Providers({ children }: PropsWithChildren) {
               </NextUIProvider>
             </QueryProvider>
           </IntlProvider>
-          <InitBootstrapAuth />
         </Auth0ProviderWithNavigate>
       </ImpersonationProvider>
     </PosthogProvider>
