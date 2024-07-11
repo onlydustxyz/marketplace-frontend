@@ -5,22 +5,19 @@ type UseQueryAdapterParameters<T> = HttpStorageResponse<T> & {
   options?: Partial<ReactQueryOptions>;
 };
 
-interface UseQueryAdapterInterface<T> extends Partial<ReactQueryOptions> {
+interface UseQueryAdapterReturn<T> extends Partial<ReactQueryOptions> {
   queryKey: string[];
   queryFn: () => Promise<T>;
 }
 
-function useQueryAdapter<T>({
+export function useQueryAdapter<T>({
   tag = "",
   request: queryFn,
   options,
-}: UseQueryAdapterParameters<T>): UseQueryAdapterInterface<T> {
+}: UseQueryAdapterParameters<T>): UseQueryAdapterReturn<T> {
   return {
     queryKey: [tag],
     queryFn,
     ...options,
   };
 }
-
-export type { UseQueryAdapterInterface };
-export { useQueryAdapter };

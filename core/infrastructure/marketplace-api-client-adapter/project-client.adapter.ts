@@ -15,16 +15,17 @@ export class ProjectClientAdapter implements ProjectStoragePort {
     const path = this.routes["getProjectBySlug"];
     const method = "GET";
     const tag = HttpClient.buildTag({ path, pathParams, queryParams });
+    const request = () =>
+      this.client.request<GetProjectBySlugResponse>({
+        path,
+        method,
+        tag,
+        pathParams,
+        queryParams,
+      });
 
     return {
-      request: () =>
-        this.client.request<GetProjectBySlugResponse>({
-          path,
-          method,
-          tag,
-          pathParams,
-          queryParams,
-        }),
+      request,
       tag,
     };
   }
@@ -33,16 +34,17 @@ export class ProjectClientAdapter implements ProjectStoragePort {
     const path = this.routes["getProjectRewards"];
     const method = "GET";
     const tag = HttpClient.buildTag({ path, pathParams, queryParams });
+    const request = () =>
+      this.client.request<GetProjectRewardsResponse>({
+        path,
+        method,
+        tag,
+        pathParams,
+        queryParams,
+      });
 
     return {
-      request: () =>
-        this.client.request<GetProjectRewardsResponse>({
-          path,
-          method,
-          tag,
-          pathParams,
-          queryParams,
-        }),
+      request,
       tag,
     };
   }

@@ -1,4 +1,4 @@
-import { ProjectReactQueryAdapter } from "core/application/react-query-adapter/project-react-query.adapter";
+import { ProjectReactQueryAdapter } from "core/application/react-query-adapter/project";
 import { useParams } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
 import { Money } from "utils/Money/Money";
