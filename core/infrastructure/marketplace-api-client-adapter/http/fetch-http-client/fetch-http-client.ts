@@ -16,11 +16,10 @@ export class FetchHttpClient extends HttpClient implements IFetchHttpClient {
     queryParams,
     version,
     body,
-    impersonationHeaders,
     next: nextParams = {},
   }: FirstParameter<IFetchHttpClient["request"]>): Promise<R> {
     const url = this.buildUrl({ path, pathParams, queryParams, version });
-    const headers = await this.getHeaders({ impersonationHeaders });
+    const headers = await this.getHeaders();
     const tags = tag ? [tag] : undefined;
     const next = { ...nextParams, tags };
     const cache = !nextParams?.revalidate ? "no-cache" : undefined;
