@@ -57,7 +57,7 @@ const RewardList: React.FC = () => {
     error,
     isFetchingNextPage,
     refetch,
-  } = ProjectReactQueryAdapter.useGetProjectRewards({
+  } = ProjectReactQueryAdapter.client.useGetProjectRewards({
     pathParams: { projectId: project?.id ?? "" },
     queryParams: {
       ...(queryParams as Record<string, string>),

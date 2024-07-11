@@ -11,7 +11,7 @@ export class ProjectClientAdapter implements ProjectStoragePort {
     getProjectRewards: "projects/:projectId/rewards",
   } as const;
 
-  getProjectBySlug({ pathParams, queryParams }: FirstParameter<ProjectStoragePort["getProjectBySlug"]>) {
+  getProjectBySlug = ({ pathParams, queryParams }: FirstParameter<ProjectStoragePort["getProjectBySlug"]>) => {
     const path = this.routes["getProjectBySlug"];
     const method = "GET";
     const tag = HttpClient.buildTag({ path, pathParams, queryParams });
@@ -28,9 +28,9 @@ export class ProjectClientAdapter implements ProjectStoragePort {
       request,
       tag,
     };
-  }
+  };
 
-  getProjectRewards({ pathParams, queryParams }: FirstParameter<ProjectStoragePort["getProjectRewards"]>) {
+  getProjectRewards = ({ pathParams, queryParams }: FirstParameter<ProjectStoragePort["getProjectRewards"]>) => {
     const path = this.routes["getProjectRewards"];
     const method = "GET";
     const tag = HttpClient.buildTag({ path, pathParams, queryParams });
@@ -47,5 +47,5 @@ export class ProjectClientAdapter implements ProjectStoragePort {
       request,
       tag,
     };
-  }
+  };
 }

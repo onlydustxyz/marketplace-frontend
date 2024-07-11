@@ -1,7 +1,5 @@
-import { useGetProjectBySlug } from "./use-get-project-by-slug";
-import { useGetProjectRewards } from "./use-get-project-rewards";
+import * as client from "./client";
 
 export const ProjectReactQueryAdapter = {
-  useGetProjectBySlug,
-  useGetProjectRewards,
+  client,
 };

@@ -36,7 +36,7 @@ function ProjectPage() {
 
   const { slug = "" } = useParams<{ slug: string }>();
 
-  const { data: project, isLoading } = ProjectReactQueryAdapter.useGetProjectBySlug({
+  const { data: project, isLoading } = ProjectReactQueryAdapter.client.useGetProjectBySlug({
     pathParams: { slug },
   });
 
