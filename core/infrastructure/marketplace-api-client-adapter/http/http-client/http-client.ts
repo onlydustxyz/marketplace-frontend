@@ -5,7 +5,6 @@ import {
   HttpClientBody,
   HttpClientError,
   HttpClientErrorStatus,
-  HttpClientImpersonationHeaders,
   HttpClientMethod,
   HttpClientPathParams,
   HttpClientQueryParams,
@@ -20,7 +19,6 @@ export class HttpClient {
     queryParams?: HttpClientQueryParams;
     version?: MarketplaceApiVersion;
     body?: HttpClientBody;
-    impersonationHeaders?: HttpClientImpersonationHeaders;
     next?: NextFetchRequestConfig;
   }): Promise<R>;
 
@@ -28,12 +26,10 @@ export class HttpClient {
     return Promise.resolve({} as R);
   }
 
-  async getHeaders({
-    impersonationHeaders = {},
-  }: {
-    accessToken?: string;
-    impersonationHeaders?: HttpClientImpersonationHeaders;
-  }) {
+  async getHeaders() {
+    const impersonationProvider = bootstrap.getImpersonationProvider();
+    const impersonationHeaders = impersonationProvider?.getImpersonationHeaders() ?? {};
+
     const defaultHeaders = {
       "Content-Type": "application/json",
       accept: "application/json",
@@ -43,9 +39,11 @@ export class HttpClient {
     try {
       const authProvider = bootstrap.getAuthProvider();
       const accessToken = await authProvider?.getAccessToken();
+      const authHeaders = accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
+
       return {
         ...defaultHeaders,
-        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+        ...authHeaders,
       };
     } catch {
       return defaultHeaders;

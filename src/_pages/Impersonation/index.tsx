@@ -1,5 +1,7 @@
 "use client";
 
+import { bootstrap } from "core/bootstrap";
+import { buildImpersonationHeaders } from "core/infrastructure/marketplace-api-client-adapter/impersonation/impersonation-helpers";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -30,6 +32,9 @@ const ImpersonationPage = () => {
       // Reset Posthog before refetching to so once refetch completes Posthog can update with impersonated user
       reset();
       setImpersonateClaim({ sub: `github|${userId}` });
+      bootstrap.setImpersonationProvider({
+        getImpersonationHeaders: () => buildImpersonationHeaders({ githubUserId: String(userId) }),
+      });
       refetch()
         .then(response => {
           const { data: userInfo, isFetching, isError } = response;
@@ -37,6 +42,7 @@ const ImpersonationPage = () => {
 
           if (isError) {
             clearImpersonateClaim();
+            bootstrap.setImpersonationProvider(null);
             reset(); // Return to initial user
             router.push(NEXT_ROUTER.notFound);
           }
@@ -46,6 +52,7 @@ const ImpersonationPage = () => {
               router.push(NEXT_ROUTER.home.all);
             } else {
               clearImpersonateClaim();
+              bootstrap.setImpersonationProvider(null);
               reset(); // Return to initial user
               router.push(NEXT_ROUTER.notFound);
             }
@@ -53,6 +60,7 @@ const ImpersonationPage = () => {
         })
         .catch(() => {
           clearImpersonateClaim();
+          bootstrap.setImpersonationProvider(null);
           reset(); // Return to initial user
           router.push(NEXT_ROUTER.notFound);
         });

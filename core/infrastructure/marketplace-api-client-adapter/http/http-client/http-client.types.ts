@@ -4,7 +4,6 @@ type HttpClientMethod = HTTP_METHOD;
 type HttpClientPathParams = Record<string, string | number>;
 type HttpClientQueryParams = Record<string, string | number | string[] | number[] | boolean>;
 type HttpClientBody = BodyInit;
-type HttpClientImpersonationHeaders = Record<string, string>;
 
 enum HttpClientErrorStatus {
   BAD_REQUEST = "BAD_REQUEST",
@@ -38,7 +37,6 @@ export type {
   HttpClientPathParams,
   HttpClientQueryParams,
   HttpClientBody,
-  HttpClientImpersonationHeaders,
   HttpClientParameters,
   HttpStorageResponse,
   HttpClientError,

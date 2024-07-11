@@ -1,6 +1,7 @@
 import { ProjectStoragePort } from "core/domain/project/outputs/project-storage.port";
 import { AuthProvider } from "core/infrastructure/marketplace-api-client-adapter/auth/auth-provider";
 import { FetchHttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/fetch-http-client/fetch-http-client";
+import { ImpersonationProvider } from "core/infrastructure/marketplace-api-client-adapter/impersonation/impersonation-provider";
 import { ProjectClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/project-client.adapter";
 
 interface BootstrapConstructor {
@@ -11,6 +12,7 @@ interface BootstrapConstructor {
 export class Bootstrap {
   static #instance: Bootstrap;
   private authProvider?: AuthProvider | null = null;
+  private impersonationProvider?: ImpersonationProvider | null = null;
   projectStoragePortForClient: ProjectStoragePort;
   projectStoragePortForServer: ProjectStoragePort;
 
@@ -29,6 +31,14 @@ export class Bootstrap {
 
   setAuthProvider(authProvider: AuthProvider | null) {
     this.authProvider = authProvider;
+  }
+
+  getImpersonationProvider() {
+    return this.impersonationProvider;
+  }
+
+  setImpersonationProvider(impersonationProvider: ImpersonationProvider | null) {
+    this.impersonationProvider = impersonationProvider;
   }
 
   public static get getBootstrap(): Bootstrap {
