@@ -1,9 +1,9 @@
 import { FirstParameter } from "core/helpers/types";
 import { HttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/http-client/http-client";
 
-interface IFetchHttpClient extends HttpClient {}
+interface FetchHttpClientInterface extends HttpClient {}
 
-export class FetchHttpClient extends HttpClient implements IFetchHttpClient {
+export class FetchHttpClient extends HttpClient implements FetchHttpClientInterface {
   constructor() {
     super();
   }
@@ -17,7 +17,7 @@ export class FetchHttpClient extends HttpClient implements IFetchHttpClient {
     version,
     body,
     next: nextParams = {},
-  }: FirstParameter<IFetchHttpClient["request"]>): Promise<R> {
+  }: FirstParameter<FetchHttpClientInterface["request"]>): Promise<R> {
     const url = this.buildUrl({ path, pathParams, queryParams, version });
     const headers = await this.getHeaders();
     const tags = tag ? [tag] : undefined;
