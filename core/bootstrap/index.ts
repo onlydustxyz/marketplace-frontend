@@ -1,8 +1,8 @@
-import { ProjectStoragePort } from "core/domain/project/outputs/project-storage.port";
+import { ProjectStoragePort } from "core/domain/project/outputs/project-storage-port";
 import { AuthProvider } from "core/infrastructure/marketplace-api-client-adapter/auth/auth-provider";
 import { FetchHttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/fetch-http-client/fetch-http-client";
 import { ImpersonationProvider } from "core/infrastructure/marketplace-api-client-adapter/impersonation/impersonation-provider";
-import { ProjectClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/project-client.adapter";
+import { ProjectClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/project-client-adapter";
 
 interface BootstrapConstructor {
   projectStoragePortForClient: ProjectStoragePort;

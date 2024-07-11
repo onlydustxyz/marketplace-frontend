@@ -1,4 +1,4 @@
-import { ProjectStoragePort } from "core/domain/project/outputs/project-storage.port";
+import { ProjectStoragePort } from "core/domain/project/outputs/project-storage-port";
 import { GetProjectBySlugResponse, GetProjectRewardsResponse } from "core/domain/project/project.types";
 import { FirstParameter } from "core/helpers/types";
 import { HttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/http-client/http-client";

@@ -1,4 +1,4 @@
-import { GithubOrganization } from "core/domain/github-organization/models/github-organization.model";
+import { GithubOrganization } from "core/domain/github-organization/models/github-organization-model";
 import { useMemo } from "react";
 
 import { useStackGithubWorkflowTutorial } from "src/App/Stacks/Stacks";
