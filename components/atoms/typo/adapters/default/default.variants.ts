@@ -6,7 +6,7 @@ export const TypoDefaultVariants = tv({
   },
   variants: {
     size: {
-      xxs: { base: "text-xxs" },
+      xxs: { base: "text-[11px]" },
       xs: { base: "text-xs" },
       s: { base: "text-sm" },
       m: { base: "text-base" },

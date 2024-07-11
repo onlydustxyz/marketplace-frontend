@@ -22,7 +22,7 @@ interface ClassNames {
   deletableIcon: string;
 }
 
-export interface TagPort<C extends ElementType> extends Partial<Variants>, PropsWithChildren {
+export interface TagBasePort<C extends ElementType> extends Partial<Variants>, PropsWithChildren {
   as?: C;
   htmlProps?: ComponentPropsWithoutRef<C>;
   classNames?: Partial<ClassNames>;
@@ -33,10 +33,24 @@ export interface TagPort<C extends ElementType> extends Partial<Variants>, Props
   deletableIconProps?: Partial<ComponentProps<typeof Icon>>;
 }
 
-export interface TagIconPort<C extends ElementType> extends TagPort<C> {
+export interface TagIconPort<C extends ElementType> extends TagBasePort<C> {
   icon: TIcon.Props;
 }
 
-export interface TagAvatarPort<C extends ElementType> extends TagPort<C> {
+export interface TagAvatarPort<C extends ElementType> extends TagBasePort<C> {
   avatar: AvatarPort;
+}
+
+export type TagPort<C extends ElementType> = TagBasePort<C> | TagIconPort<C> | TagAvatarPort<C>;
+
+export function isTagAvatarPort<C extends ElementType>(
+  tag: TagAvatarPort<C> | TagIconPort<C> | TagPort<C>
+): tag is TagAvatarPort<C> {
+  return (tag as TagAvatarPort<C>).avatar !== undefined;
+}
+
+export function isTagIconPort<C extends ElementType>(
+  tag: TagAvatarPort<C> | TagIconPort<C> | TagPort<C>
+): tag is TagIconPort<C> {
+  return (tag as TagIconPort<C>).icon !== undefined;
 }
