@@ -42,15 +42,3 @@ export interface TagAvatarPort<C extends ElementType> extends TagBasePort<C> {
 }
 
 export type TagPort<C extends ElementType> = TagBasePort<C> | TagIconPort<C> | TagAvatarPort<C>;
-
-export function isTagAvatarPort<C extends ElementType>(
-  tag: TagAvatarPort<C> | TagIconPort<C> | TagPort<C>
-): tag is TagAvatarPort<C> {
-  return (tag as TagAvatarPort<C>).avatar !== undefined;
-}
-
-export function isTagIconPort<C extends ElementType>(
-  tag: TagAvatarPort<C> | TagIconPort<C> | TagPort<C>
-): tag is TagIconPort<C> {
-  return (tag as TagIconPort<C>).icon !== undefined;
-}
