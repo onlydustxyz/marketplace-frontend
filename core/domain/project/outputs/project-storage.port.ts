@@ -2,11 +2,14 @@ import {
   GetProjectBySlugPathParams,
   GetProjectBySlugQueryParams,
   GetProjectBySlugResponse,
+  GetProjectRewardsPathParams,
+  GetProjectRewardsQueryParams,
+  GetProjectRewardsResponse,
 } from "core/domain/project/project.types";
 import {
   HttpClientParameters,
   HttpStorageResponse,
-} from "core/infrastructure/marketplace-api-client-adapter/http/http-client";
+} from "core/infrastructure/marketplace-api-client-adapter/http/http-client/http-client.types";
 
 export interface ProjectStoragePort {
   routes: Record<string, string>;
@@ -16,4 +19,10 @@ export interface ProjectStoragePort {
       QueryParams: GetProjectBySlugQueryParams;
     }>
   ): HttpStorageResponse<GetProjectBySlugResponse>;
+  getProjectRewards(
+    params: HttpClientParameters<{
+      PathParams: GetProjectRewardsPathParams;
+      QueryParams: GetProjectRewardsQueryParams;
+    }>
+  ): HttpStorageResponse<GetProjectRewardsResponse>;
 }

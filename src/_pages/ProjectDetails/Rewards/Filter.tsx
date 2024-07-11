@@ -33,8 +33,8 @@ const initialFilters: Filters = {
 export type FilterQueryParams = {
   fromDate?: string;
   toDate?: string;
-  contributors?: string;
-  currencies?: string;
+  contributors?: number[];
+  currencies?: string[];
 };
 
 export type ProjectRewardsFilterRef = {
@@ -84,10 +84,10 @@ export const ProjectRewardsFilter = forwardRef(function ProjectRewardsFilter(
     const filterQueryParams: FilterQueryParams = {};
 
     if (contributors?.length) {
-      filterQueryParams.contributors = contributors?.map(({ id }) => String(id)).join(",");
+      filterQueryParams.contributors = contributors?.map(({ id }) => Number(id));
     }
     if (currency?.length) {
-      filterQueryParams.currencies = currency.map(({ value }) => String(value)).join(",");
+      filterQueryParams.currencies = currency.map(({ value }) => value);
     }
 
     // If a predefined period is selected, use the predefined period's date range

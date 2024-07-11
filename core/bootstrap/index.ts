@@ -1,6 +1,6 @@
-import { ProjectStoragePort } from "core/domain/project/output/project-storage.port";
+import { ProjectStoragePort } from "core/domain/project/outputs/project-storage.port";
 import { AuthProvider } from "core/infrastructure/marketplace-api-client-adapter/auth/auth-provider";
-import { FetchHttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/fetch-http-client";
+import { FetchHttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/fetch-http-client/fetch-http-client";
 import { ProjectClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/project-client.adapter";
 
 interface BootstrapConstructor {
@@ -10,7 +10,7 @@ interface BootstrapConstructor {
 
 export class Bootstrap {
   static #instance: Bootstrap;
-  private authProvider?: AuthProvider;
+  private authProvider?: AuthProvider | null = null;
   projectStoragePortForClient: ProjectStoragePort;
   projectStoragePortForServer: ProjectStoragePort;
 
@@ -27,7 +27,7 @@ export class Bootstrap {
     return this.authProvider;
   }
 
-  setAuthProvider(authProvider: AuthProvider) {
+  setAuthProvider(authProvider: AuthProvider | null) {
     this.authProvider = authProvider;
   }
 

@@ -1,33 +1,41 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQueryAdapter } from "core/application/react-query-adapter/infinite-query-adapter";
+import { useQueryAdapter } from "core/application/react-query-adapter/query-adapters";
+import {
+  ReactQueryInfiniteParameters,
+  ReactQueryParameters,
+} from "core/application/react-query-adapter/react-query-adapter.types";
 import { bootstrap } from "core/bootstrap";
-import { ProjectFacadePort } from "core/domain/project/input/project-facade.port";
-import { GetProjectBySlugResponse } from "core/domain/project/project.types";
+import { ProjectFacadePort } from "core/domain/project/inputs/project-facade.port";
 
-function useGetProjectBySlug({ pathParams, queryParams }: Parameters<ProjectFacadePort["getProjectBySlug"]>[0]) {
+function useGetProjectBySlug({
+  pathParams,
+  queryParams,
+  options,
+}: ReactQueryParameters<ProjectFacadePort["getProjectBySlug"]>) {
   const projectStoragePort = bootstrap.getProjectStoragePortForClient();
 
-  const { request: queryFn, tag } = projectStoragePort.getProjectBySlug({ pathParams, queryParams });
+  return useQuery(useQueryAdapter({ ...projectStoragePort.getProjectBySlug({ pathParams, queryParams }), options }));
+}
 
-  return useQuery<GetProjectBySlugResponse>({
-    queryFn,
-    queryKey: [tag],
-  });
+function useGetProjectRewards({
+  pathParams,
+  queryParams,
+  options,
+}: ReactQueryInfiniteParameters<ProjectFacadePort["getProjectRewards"]>) {
+  const projectStoragePort = bootstrap.getProjectStoragePortForClient();
+
+  return useInfiniteQuery(
+    useInfiniteQueryAdapter({
+      pathParams,
+      queryParams,
+      options,
+      initFn: projectStoragePort.getProjectRewards,
+    })
+  );
 }
 
 export const ProjectReactQueryAdapter = {
   useGetProjectBySlug,
+  useGetProjectRewards,
 };
-
-// 1ere connexion
-// const authProvider = useAuthProvider();
-// bootstrap.setAuthProvider(authProvider);
-//
-// function useAuthProvider(): AuthProvider {
-//   const { isAuthenticated, getAccessTokenSilently: getAccessToken, logout } = useAuth0();
-//
-//   return new (class implements AuthProvider {
-//     isAuthenticated = isAuthenticated;
-//     getAccessToken = getAccessToken;
-//     logout = logout;
-//   })();
-// }
