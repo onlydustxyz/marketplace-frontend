@@ -20,11 +20,10 @@ export function CardProjectDefaultAdapter<C extends ElementType = "div">({
   topTags,
   paperProps = {},
   bottomTags = [],
-  primaryAction,
-  secondaryAction,
-  ...props
+  primaryActionProps,
+  secondaryActionProps,
+  htmlProps,
 }: CardProjectPort<C>) {
-  const { ...htmlProps } = props;
   const slots = CardProjectDefaultVariants();
 
   return (
@@ -52,11 +51,13 @@ export function CardProjectDefaultAdapter<C extends ElementType = "div">({
             ))}
           </div>
         </div>
-        <div className="w-full">
-          <Typo size={"xxs"} as={"div"} color="text-2">
-            {description}
-          </Typo>
-        </div>
+        {!!description && (
+          <div className="w-full">
+            <Typo size={"xxs"} as={"div"} color="text-2">
+              {description}
+            </Typo>
+          </div>
+        )}
         <div className="flex w-full flex-row items-center justify-between pt-2">
           <div className="flex items-center justify-start gap-1">
             {bottomTags?.map((t, key) => (
@@ -64,8 +65,8 @@ export function CardProjectDefaultAdapter<C extends ElementType = "div">({
             ))}
           </div>
           <div className="flex items-center justify-end gap-1">
-            {!!secondaryAction && <Button variant="secondary-light" size={"s"} {...primaryAction} />}
-            {!!primaryAction && <Button variant="primary" size={"s"} {...primaryAction} />}
+            {!!secondaryActionProps && <Button variant="secondary-light" size={"s"} {...secondaryActionProps} />}
+            {!!primaryActionProps && <Button variant="primary" size={"s"} {...primaryActionProps} />}
           </div>
         </div>
       </div>

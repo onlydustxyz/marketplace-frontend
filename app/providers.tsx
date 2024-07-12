@@ -1,6 +1,7 @@
 "use client";
 
 import { NextUIProvider } from "@nextui-org/react";
+import { InitBootstrapAuth } from "core/bootstrap/init-bootstrap-auth";
 import { NavigationStateProvider } from "providers/navigation-state/navigation-state";
 import { PropsWithChildren } from "react";
 import { useMediaQuery } from "usehooks-ts";
@@ -29,6 +30,7 @@ export default function Providers({ children }: PropsWithChildren) {
     <PosthogProvider>
       <ImpersonationProvider>
         <Auth0ProviderWithNavigate>
+          <InitBootstrapAuth />
           <IntlProvider>
             <QueryProvider>
               <NextUIProvider>
