@@ -6,17 +6,17 @@ import { cn } from "src/utils/cn";
 
 import { Icon } from "components/layout/icon/icon";
 
-import { RadioItemPort, RadioPort } from "../../radio.types";
+import { RadioGroupPort, RadioPort } from "../../radio-group.types";
 import { RadioDefaultVariants } from "./next-ui.variants";
 
-function RadioItem<V extends string, C extends ElementType = "div">({
+function Radio<V extends string, C extends ElementType = "div">({
   as,
   value,
   mixed,
   color = "white",
   classNames,
   componentProps,
-}: RadioItemPort<V, C>) {
+}: RadioPort<V, C>) {
   const InnerComponent = as || "div";
   const { Component, isSelected, getBaseProps, getInputProps, isDisabled } = useRadio({ value });
   const slots = RadioDefaultVariants({ isDisabled, isActive: isSelected, mixed, color });
@@ -45,14 +45,14 @@ function RadioItem<V extends string, C extends ElementType = "div">({
   );
 }
 
-export function RadioNextUiAdapter<V extends string, C extends ElementType = "div">({
+export function RadioGroupNextUiAdapter<V extends string, C extends ElementType = "div">({
   as,
   classNames,
   onChange,
   items,
   value,
   ...props
-}: RadioPort<V, C>) {
+}: RadioGroupPort<V, C>) {
   const Component = as || "div";
   const slots = RadioDefaultVariants();
 
@@ -68,7 +68,7 @@ export function RadioNextUiAdapter<V extends string, C extends ElementType = "di
       value={value}
     >
       {items.map(item => (
-        <RadioItem key={item.value} as={Component} {...props} {...item} />
+        <Radio key={item.value} as={Component} {...props} {...item} />
       ))}
     </NextRadioGroup>
   );

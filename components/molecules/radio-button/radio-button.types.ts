@@ -2,9 +2,9 @@ import { ComponentProps, FunctionComponent } from "react";
 
 import { ButtonDefaultPort } from "../../atoms/button/button.types";
 import { Button } from "../../atoms/button/variants/button-default";
-import { RadioPort } from "../../atoms/radio";
+import { RadioGroupPort } from "../../atoms/radio-group";
 
-type Radio<V extends string> = RadioPort<V, FunctionComponent<CustomButtonProps>>;
+type Radio<V extends string> = RadioGroupPort<V, FunctionComponent<CustomButtonProps>>;
 
 export type CustomButtonProps = ComponentProps<typeof Button> & { label: string };
 export type ButtonProps = Pick<ButtonDefaultPort<"div">, "variant" | "size">;

@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 import { Button } from "components/atoms/button/variants/button-default";
-import { Radio } from "components/atoms/radio";
+import { RadioGroup } from "components/atoms/radio-group";
 
 import { CustomButtonProps, RadioButtonPort } from "../../radio-button.types";
 
@@ -20,7 +20,7 @@ export function RadioButtonDefaultAdapter<V extends string>({
   ...props
 }: RadioButtonPort<V>) {
   return (
-    <Radio
+    <RadioGroup
       {...props}
       isDisabled={isDisabled}
       as={CustomButton}

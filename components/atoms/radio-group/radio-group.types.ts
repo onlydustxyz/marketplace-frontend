@@ -12,18 +12,18 @@ interface ClassNames {
   indicatorIcon: string;
 }
 
-export interface RadioItemPort<V extends string | null, C extends ElementType> extends Partial<Variants> {
+export interface RadioPort<V extends string | null, C extends ElementType> extends Partial<Variants> {
   as?: C;
   classNames?: Partial<ClassNames>;
   componentProps?: ComponentPropsWithoutRef<C>;
   value: V;
 }
 
-export interface RadioPort<V extends string, C extends ElementType> extends Partial<Variants> {
+export interface RadioGroupPort<V extends string, C extends ElementType> extends Partial<Variants> {
   classNames?: Partial<ClassNames>;
   componentProps?: ComponentPropsWithoutRef<C>;
   value: V;
   as?: C;
   onChange?: (value: V) => void;
-  items: RadioItemPort<V, C>[];
+  items: RadioPort<V, C>[];
 }
