@@ -1,4 +1,5 @@
 import { GetHackathonBySlugResponse, GetHackathonsResponse } from "core/domain/hackathon/hackathon.types";
+import { Hackathon } from "core/domain/hackathon/models/hackathon-model";
 import { HackathonStoragePort } from "core/domain/hackathon/outputs/hackathon-storage-port";
 import { FirstParameter } from "core/helpers/types";
 import { HttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/http-client/http-client";
@@ -32,14 +33,16 @@ export class HackathonClientAdapter implements HackathonStoragePort {
     const path = this.routes["getHackathonBySlug"];
     const method = "GET";
     const tag = HttpClient.buildTag({ path, pathParams });
-    const request = () =>
-      this.client.request<GetHackathonBySlugResponse>({
+    const request = async () => {
+      const data = await this.client.request<GetHackathonBySlugResponse>({
         path,
         method,
         tag,
         pathParams,
       });
 
+      return new Hackathon(data);
+    };
     return {
       request,
       tag,
