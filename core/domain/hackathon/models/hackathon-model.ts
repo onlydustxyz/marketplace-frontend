@@ -5,7 +5,7 @@ import { components } from "src/__generated/api";
 
 type HackathonsDetailsResponse = components["schemas"]["HackathonsDetailsResponse"];
 
-type HackathonStatus = "closed" | "open" | "live";
+type HackathonStatus = "live" | "open" | "closed";
 
 interface HackathonInterface extends HackathonsDetailsResponse {
   isComingSoon(): boolean;

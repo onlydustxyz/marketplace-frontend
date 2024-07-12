@@ -2,6 +2,9 @@ import { bootstrap } from "core/bootstrap";
 import { notFound } from "next/navigation";
 
 import { Header } from "app/hackathons/[hackathonSlug]/components/header/header";
+import { Description } from "app/hackathons/[hackathonSlug]/features/description/description";
+import { Info } from "app/hackathons/[hackathonSlug]/features/info/info";
+import { Projects } from "app/hackathons/[hackathonSlug]/features/projects/projects";
 
 import { Paper } from "components/atoms/paper";
 import { HackathonCard } from "components/features/hackathons/hackathon-card";
@@ -31,9 +34,8 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
       <div className={"flex gap-4"}>
         <div className={"flex-1"}>
           <Header hackathonSlug={hackathon.slug} />
-          <Paper size={"m"} container={"2"}>
+          <Paper size={"m"} container={"2"} classNames={{ base: "grid gap-4" }}>
             <HackathonCard
-              classNames={{ base: "w-full block" }}
               title={hackathon.title}
               backgroundImage={getHackathonBackground(hackathon.index)}
               location={<Translate token={"v2.pages.hackathons.defaultLocation"} />}
@@ -42,6 +44,9 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
               status={hackathon.getStatus()}
               projects={hackathon.projects}
             />
+            <Info />
+            <Description />
+            <Projects />
           </Paper>
         </div>
         {/*<aside>Sidebar</aside>*/}
