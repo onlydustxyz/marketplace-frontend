@@ -1,5 +1,7 @@
+import { HackathonStoragePort } from "core/domain/hackathon/outputs/hackathon-storage-port";
 import { ProjectStoragePort } from "core/domain/project/outputs/project-storage-port";
 import { AuthProvider } from "core/infrastructure/marketplace-api-client-adapter/auth/auth-provider";
+import { HackathonClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/hackathon-client-adapter";
 import { FetchHttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/fetch-http-client/fetch-http-client";
 import { ImpersonationProvider } from "core/infrastructure/marketplace-api-client-adapter/impersonation/impersonation-provider";
 import { ProjectClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/project-client-adapter";
@@ -7,6 +9,7 @@ import { ProjectClientAdapter } from "core/infrastructure/marketplace-api-client
 interface BootstrapConstructor {
   projectStoragePortForClient: ProjectStoragePort;
   projectStoragePortForServer: ProjectStoragePort;
+  hackathonStoragePortForServer: HackathonStoragePort;
 }
 
 export class Bootstrap {
@@ -15,14 +18,12 @@ export class Bootstrap {
   private impersonationProvider?: ImpersonationProvider | null = null;
   projectStoragePortForClient: ProjectStoragePort;
   projectStoragePortForServer: ProjectStoragePort;
+  hackathonStoragePortForServer: HackathonStoragePort;
 
-  constructor({ projectStoragePortForClient, projectStoragePortForServer }: BootstrapConstructor) {
-    this.projectStoragePortForClient = projectStoragePortForClient;
-    this.projectStoragePortForServer = projectStoragePortForServer;
-  }
-
-  getProjectStoragePortForClient() {
-    return this.projectStoragePortForClient;
+  constructor(constructor: BootstrapConstructor) {
+    this.projectStoragePortForClient = constructor.projectStoragePortForClient;
+    this.projectStoragePortForServer = constructor.projectStoragePortForServer;
+    this.hackathonStoragePortForServer = constructor.hackathonStoragePortForServer;
   }
 
   getAuthProvider() {
@@ -41,11 +42,20 @@ export class Bootstrap {
     this.impersonationProvider = impersonationProvider;
   }
 
+  getProjectStoragePortForClient() {
+    return this.projectStoragePortForClient;
+  }
+
+  getHackathonStoragePortForServer() {
+    return this.hackathonStoragePortForServer;
+  }
+
   public static get getBootstrap(): Bootstrap {
     if (!Bootstrap.#instance) {
       this.newBootstrap({
         projectStoragePortForClient: new ProjectClientAdapter(new FetchHttpClient()),
         projectStoragePortForServer: new ProjectClientAdapter(new FetchHttpClient()),
+        hackathonStoragePortForServer: new HackathonClientAdapter(new FetchHttpClient()),
       });
     }
 
