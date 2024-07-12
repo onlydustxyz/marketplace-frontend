@@ -2,9 +2,8 @@ import Link from "next/link";
 
 import { THeader } from "app/hackathons/[hackathonSlug]/components/header/header.types";
 
+import { Breadcrumbs } from "components/atoms/breadcrumbs";
 import { Button } from "components/atoms/button/variants/button-default";
-import { Typo } from "components/atoms/typo";
-import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 
 import { NEXT_ROUTER } from "constants/router";
@@ -21,11 +20,20 @@ export function Header({ hackathonSlug }: THeader.Props) {
         translate={{ token: "v2.pages.hackathons.details.header.back" }}
       />
 
-      <Typo as={"div"} size={"m"} color={"text-3"} classNames={{ base: "flex items-center" }}>
-        <Translate token={"v2.pages.hackathons.details.header.hackathon"} />
-        <Icon remixName={"ri-arrow-right-s-line"} />
-        <span className={"text-text-1"}>{hackathonSlug}</span>
-      </Typo>
+      <Breadcrumbs
+        items={[
+          {
+            id: "hackathons_list",
+            label: <Translate token={"v2.pages.hackathons.details.header.hackathons"} />,
+            href: NEXT_ROUTER.hackathons.root,
+          },
+
+          {
+            id: "current_hackathon",
+            label: hackathonSlug,
+          },
+        ]}
+      />
     </header>
   );
 }
