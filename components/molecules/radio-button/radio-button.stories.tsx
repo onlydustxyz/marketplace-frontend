@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
+import { useState } from "react";
 
 import { RadioButtonPort } from "./radio-button.types";
 import { RadioButton } from "./variants/radio-button-default";
@@ -38,9 +39,10 @@ export const Default: Story = {
     },
   },
   render: args => {
+    const [value, setValue] = useState<string>("");
     return (
       <div className="flex w-full items-center gap-2">
-        <RadioButton {...defaultProps} {...args} />
+        <RadioButton {...defaultProps} {...args} value={value} onChange={v => setValue(v)} />
       </div>
     );
   },
