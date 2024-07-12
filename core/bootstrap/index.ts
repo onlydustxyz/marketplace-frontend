@@ -9,6 +9,7 @@ import { ProjectClientAdapter } from "core/infrastructure/marketplace-api-client
 interface BootstrapConstructor {
   projectStoragePortForClient: ProjectStoragePort;
   projectStoragePortForServer: ProjectStoragePort;
+  hackathonStoragePortForClient: HackathonStoragePort;
   hackathonStoragePortForServer: HackathonStoragePort;
 }
 
@@ -18,11 +19,13 @@ export class Bootstrap {
   private impersonationProvider?: ImpersonationProvider | null = null;
   projectStoragePortForClient: ProjectStoragePort;
   projectStoragePortForServer: ProjectStoragePort;
+  hackathonStoragePortForClient: HackathonStoragePort;
   hackathonStoragePortForServer: HackathonStoragePort;
 
   constructor(constructor: BootstrapConstructor) {
     this.projectStoragePortForClient = constructor.projectStoragePortForClient;
     this.projectStoragePortForServer = constructor.projectStoragePortForServer;
+    this.hackathonStoragePortForClient = constructor.hackathonStoragePortForClient;
     this.hackathonStoragePortForServer = constructor.hackathonStoragePortForServer;
   }
 
@@ -46,6 +49,10 @@ export class Bootstrap {
     return this.projectStoragePortForClient;
   }
 
+  getHackathonStoragePortForClient() {
+    return this.hackathonStoragePortForClient;
+  }
+
   getHackathonStoragePortForServer() {
     return this.hackathonStoragePortForServer;
   }
@@ -56,6 +63,7 @@ export class Bootstrap {
         projectStoragePortForClient: new ProjectClientAdapter(new FetchHttpClient()),
         projectStoragePortForServer: new ProjectClientAdapter(new FetchHttpClient()),
         hackathonStoragePortForServer: new HackathonClientAdapter(new FetchHttpClient()),
+        hackathonStoragePortForClient: new HackathonClientAdapter(new FetchHttpClient()),
       });
     }
 
