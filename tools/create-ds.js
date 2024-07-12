@@ -162,7 +162,7 @@ async function createStories({ name, path, PascalName }) {
 
         type Story = StoryObj<typeof ${PascalName}>;
 
-        const defaultPort: ${PascalName}Port<"div"> = {};
+        const defaultProps: ${PascalName}Port<"div"> = {};
 
         const meta: Meta<typeof ${PascalName}> = {
           component: ${PascalName},
@@ -193,7 +193,7 @@ async function createStories({ name, path, PascalName }) {
           render: args => {
             return (
               <div className="flex w-full items-center gap-2">
-                <${PascalName} {...defaultPort} {...args} />
+                <${PascalName} {...defaultProps} {...args} />
               </div>
             );
           },
