@@ -6,13 +6,13 @@ import { CardEvent } from "./variants/card-event-default";
 
 type Story = StoryObj<typeof CardEvent>;
 
-const defaultPort: CardEventPort<"div"> = {
+const defaultProps: CardEventPort<"div"> = {
   title: "Hylé & Stellar conference",
-  titleIcon: { remixName: "ri-live-line" },
-  tag: { children: "Live", icon: { remixName: "ri-live-line" } },
+  titleIconProps: { remixName: "ri-live-line" },
+  tagProps: { children: "Live", icon: { remixName: "ri-live-line" } },
   text: "You will get to meet project leads from Influence, Hylé and the Stellar projects!",
-  primaryAction: { children: "Access to the live" },
-  secondaryAction: { children: "Access to the live" },
+  primaryActionProps: { children: "Access to the live" },
+  secondaryActionProps: { children: "Access to the live" },
 };
 
 const meta: Meta<typeof CardEvent> = {
@@ -36,7 +36,7 @@ export const Default: Story = {
   render: args => {
     return (
       <div className="flex w-[330px] items-center gap-2">
-        <CardEvent {...defaultPort} {...args} />
+        <CardEvent {...defaultProps} {...args} />
       </div>
     );
   },
@@ -45,13 +45,13 @@ export const Default: Story = {
 export const Planned: Story = {
   parameters: {
     docs: {
-      source: { code: "<CardEvent display='planned' />" },
+      source: { code: "<CardEvent status='planned' />" },
     },
   },
   render: args => {
     return (
       <div className="flex w-[330px] items-center gap-2">
-        <CardEvent {...defaultPort} {...args} display={"planned"} />
+        <CardEvent {...defaultProps} {...args} status={"planned"} />
       </div>
     );
   },
@@ -60,13 +60,13 @@ export const Planned: Story = {
 export const Terminated: Story = {
   parameters: {
     docs: {
-      source: { code: "<CardEvent display='terminated' />" },
+      source: { code: "<CardEvent status='terminated' />" },
     },
   },
   render: args => {
     return (
       <div className="flex w-[330px] items-center gap-2">
-        <CardEvent {...defaultPort} {...args} display={"terminated"} />
+        <CardEvent {...defaultProps} {...args} status={"terminated"} />
       </div>
     );
   },
@@ -75,13 +75,13 @@ export const Terminated: Story = {
 export const Highlight: Story = {
   parameters: {
     docs: {
-      source: { code: "<CardEvent display='highlight' />" },
+      source: { code: "<CardEvent status='highlight' />" },
     },
   },
   render: args => {
     return (
       <div className="flex w-[330px] items-center gap-2">
-        <CardEvent {...defaultPort} {...args} display={"highlight"} />
+        <CardEvent {...defaultProps} {...args} status={"highlight"} />
       </div>
     );
   },

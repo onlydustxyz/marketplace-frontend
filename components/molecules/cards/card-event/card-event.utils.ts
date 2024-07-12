@@ -2,9 +2,9 @@ import { ComponentProps } from "react";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Tag } from "components/atoms/tag";
-import { CardEventDisplay } from "components/molecules/cards/card-event/card-event.types";
+import { CardEventStatus } from "components/molecules/cards/card-event/card-event.types";
 
-export function getComponentsVariants(display: CardEventDisplay): {
+export function getComponentsVariants(status: CardEventStatus): {
   buttonVariant: ComponentProps<typeof Button>["variant"];
   tagColor: ComponentProps<typeof Tag>["color"];
 } {
@@ -23,5 +23,5 @@ export function getComponentsVariants(display: CardEventDisplay): {
     },
   } as const;
 
-  return map[display];
+  return map[status];
 }

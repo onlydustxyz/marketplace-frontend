@@ -5,7 +5,7 @@ export const CardEventDefaultVariants = tv({
     base: "flex w-full flex-col justify-start gap-2 p-3",
   },
   variants: {
-    display: {
+    status: {
       planned: {
         base: "bg-container-4",
       },
@@ -17,5 +17,7 @@ export const CardEventDefaultVariants = tv({
       },
     },
   },
-  defaultVariants: {},
+  defaultVariants: {
+    status: "planned",
+  },
 });
