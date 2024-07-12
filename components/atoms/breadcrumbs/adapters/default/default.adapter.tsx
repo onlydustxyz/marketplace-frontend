@@ -14,7 +14,7 @@ import { BreadcrumbsDefaultVariants } from "./default.variants";
 function Segment({ label, href, onClick, className }: Item) {
   const styles = cn("text-inherit hover:underline", className);
 
-  if (typeof href === "string") {
+  if (href) {
     return (
       <BaseLink href={href} className={styles}>
         {label}
@@ -22,7 +22,7 @@ function Segment({ label, href, onClick, className }: Item) {
     );
   }
 
-  if (typeof onClick === "function") {
+  if (onClick) {
     return (
       <button type={"button"} onClick={onClick} className={styles}>
         {label}
