@@ -1,5 +1,7 @@
 import { HackathonStoragePort } from "core/domain/hackathon/outputs/hackathon-storage-port";
 import { ProjectStoragePort } from "core/domain/project/outputs/project-storage-port";
+import { DateFacadePort } from "core/helpers/date/date-facade-port";
+import { DateFnsAdapter } from "core/helpers/date/date-fns-adapter";
 import { AuthProvider } from "core/infrastructure/marketplace-api-client-adapter/auth/auth-provider";
 import { HackathonClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/hackathon-client-adapter";
 import { FetchHttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/fetch-http-client/fetch-http-client";
@@ -11,6 +13,7 @@ interface BootstrapConstructor {
   projectStoragePortForServer: ProjectStoragePort;
   hackathonStoragePortForClient: HackathonStoragePort;
   hackathonStoragePortForServer: HackathonStoragePort;
+  dateHelperPort: DateFacadePort;
 }
 
 export class Bootstrap {
@@ -21,12 +24,14 @@ export class Bootstrap {
   projectStoragePortForServer: ProjectStoragePort;
   hackathonStoragePortForClient: HackathonStoragePort;
   hackathonStoragePortForServer: HackathonStoragePort;
+  dateHelperPort: DateFacadePort;
 
   constructor(constructor: BootstrapConstructor) {
     this.projectStoragePortForClient = constructor.projectStoragePortForClient;
     this.projectStoragePortForServer = constructor.projectStoragePortForServer;
     this.hackathonStoragePortForClient = constructor.hackathonStoragePortForClient;
     this.hackathonStoragePortForServer = constructor.hackathonStoragePortForServer;
+    this.dateHelperPort = constructor.dateHelperPort;
   }
 
   getAuthProvider() {
@@ -57,6 +62,10 @@ export class Bootstrap {
     return this.hackathonStoragePortForServer;
   }
 
+  getDateHelperPort() {
+    return this.dateHelperPort;
+  }
+
   public static get getBootstrap(): Bootstrap {
     if (!Bootstrap.#instance) {
       this.newBootstrap({
@@ -64,6 +73,7 @@ export class Bootstrap {
         projectStoragePortForServer: new ProjectClientAdapter(new FetchHttpClient()),
         hackathonStoragePortForServer: new HackathonClientAdapter(new FetchHttpClient()),
         hackathonStoragePortForClient: new HackathonClientAdapter(new FetchHttpClient()),
+        dateHelperPort: DateFnsAdapter,
       });
     }
 
