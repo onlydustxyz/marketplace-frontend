@@ -7,14 +7,14 @@ import { CardProject } from "./variants/card-project-default";
 
 type Story = StoryObj<typeof CardProject>;
 
-const defaultPort: CardProjectPort<"div"> = {
+const defaultProps: CardProjectPort<"div"> = {
   avatarProps: {},
   title: "Starknet dart",
   description: "The goal of this SDK is to be able to interact with StarkNet smart contracts in a type-safe way.",
   bottomTags: [{ children: "Starknet", avatar: { src: "" } }],
   topTags: [{ children: "Top Project" }],
-  primaryAction: { children: "Button" },
-  secondaryAction: { children: "Button" },
+  primaryActionProps: { children: "Button" },
+  secondaryActionProps: { children: "Button" },
 };
 
 const meta: Meta<typeof CardProject> = {
@@ -38,7 +38,7 @@ export const Default: Story = {
   render: args => {
     return (
       <div className="flex w-[370px] items-center gap-2">
-        <CardProject {...defaultPort} {...args} />
+        <CardProject {...defaultProps} {...args} />
       </div>
     );
   },

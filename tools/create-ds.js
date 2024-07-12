@@ -66,9 +66,8 @@ async function createAdapter({ name, path, PascalName }) {
         import { ${PascalName}Port } from "../../${name}.types";
         import { ${PascalName}DefaultVariants } from "./default.variants";
 
-        export function ${PascalName}DefaultAdapter<C extends ElementType = "div">({as, classNames, ...props}: ${PascalName}Port<C>) {
+        export function ${PascalName}DefaultAdapter<C extends ElementType = "div">({as, classNames, htmlProps, ...props}: ${PascalName}Port<C>) {
           const Component = as || "div";
-          const { ...htmlProps } = props;
           const slots = ${PascalName}DefaultVariants();
 
           return (

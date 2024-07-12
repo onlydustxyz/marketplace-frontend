@@ -1,3 +1,4 @@
+import { ProjectReactQueryAdapter } from "core/application/react-query-adapter/project";
 import { useParams } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
 import { Money } from "utils/Money/Money";
@@ -13,7 +14,6 @@ import RewardTable from "src/components/RewardTable/RewardTable";
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import Skeleton from "src/components/Skeleton";
 import Flex from "src/components/Utils/Flex";
-import useInfiniteRewardsList from "src/hooks/useInfiniteRewardsList";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
 import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
@@ -57,12 +57,14 @@ const RewardList: React.FC = () => {
     error,
     isFetchingNextPage,
     refetch,
-  } = useInfiniteRewardsList({
-    projectId: project?.id || "",
-    enabled: !!project?.id,
+  } = ProjectReactQueryAdapter.client.useGetProjectRewards({
+    pathParams: { projectId: project?.id ?? "" },
     queryParams: {
-      ...(queryParams as URLSearchParams),
+      ...(queryParams as Record<string, string>),
       ...filterQueryParams,
+    },
+    options: {
+      enabled: !!project?.id,
     },
   });
 

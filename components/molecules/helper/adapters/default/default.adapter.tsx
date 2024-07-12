@@ -12,6 +12,7 @@ import { HelperDefaultVariants } from "./default.variants";
 
 export function HelperDefaultAdapter<C extends ElementType = "div">({
   as,
+  htmlProps,
   classNames,
   title,
   avatar,
@@ -23,7 +24,7 @@ export function HelperDefaultAdapter<C extends ElementType = "div">({
   ...props
 }: HelperPort<C>) {
   const Component = as || "div";
-  const { container, size, layout, ...htmlProps } = props;
+  const { container, size, layout } = props;
   const slots = HelperDefaultVariants({ container, size, layout });
 
   return (
