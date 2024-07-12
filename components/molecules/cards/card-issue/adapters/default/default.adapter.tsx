@@ -63,11 +63,10 @@ export function CardIssueDefaultAdapter<C extends ElementType = "div">({
   tokens,
   status = "open",
   paperProps = {},
-  applicantsTotalCount,
+  applicantsCount,
   classNames,
-  ...props
+  ...htmlProps
 }: CardIssuePort<C>) {
-  const { ...htmlProps } = props;
   const slots = CardIssueDefaultVariants();
   const actions = useCardIssue.useActions({ applyActionProps, viewActionProps, status, githubLink, assignee, tokens });
   const _createdAt = useCardIssue.useCreatedAt({ createdAt });
@@ -102,18 +101,20 @@ export function CardIssueDefaultAdapter<C extends ElementType = "div">({
           <div className="flex flex-row items-center justify-start gap-1">
             <AvatarGroup avatars={applicants.map(({ avatarUrl }) => ({ src: avatarUrl }))} size="xs" maxAvatars={4} />
             <Typo size={"xs"} weight="medium" color="text-2">
-              {applicantsTotalCount || applicants.length}
+              {applicantsCount || applicants.length}
               &nbsp;
               {tokens.applicantsCount}
             </Typo>
           </div>
         )}
       </div>
-      <div className="flex w-full justify-start gap-1">
-        {tags?.map((t, key) => (
-          <Tag key={key} size={"xs"} shape={"round"} style={"outline"} color="grey" {...t} />
-        ))}
-      </div>
+      {!!tags?.length && (
+        <div className="flex w-full justify-start gap-1">
+          {tags?.map((t, key) => (
+            <Tag key={key} size={"xs"} shape={"round"} style={"outline"} color="grey" {...t} />
+          ))}
+        </div>
+      )}
     </Paper>
   );
 }

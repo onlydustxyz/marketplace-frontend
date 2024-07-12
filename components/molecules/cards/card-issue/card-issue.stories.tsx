@@ -1,5 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 
+import { CardIssueLoading } from "components/molecules/cards/card-issue/card-issue.loading";
+
 import { CardIssuePort } from "./card-issue.types";
 import { CardIssue } from "./variants/card-issue-default";
 
@@ -10,7 +12,7 @@ const defaultProps: CardIssuePort<"div"> = {
   createdAt: new Date("Fri, 11 Jul 2024 09:17:46 GMT"),
   title: "Fix UI Bug on Transaction History Page",
   tags: [{ children: "React" }, { children: "OD hack" }, { children: "GFI" }],
-  applicantsTotalCount: 10,
+  applicantsCount: 10,
   applyActionProps: {
     children: "Apply",
   },
@@ -106,6 +108,21 @@ export const Assigned: Story = {
     return (
       <div className="flex w-[544px] items-center gap-2">
         <CardIssue {...defaultProps} {...args} status={"assigned"} />
+      </div>
+    );
+  },
+};
+
+export const Loading: Story = {
+  parameters: {
+    docs: {
+      source: { code: "<CardProjectLoading />" },
+    },
+  },
+  render: () => {
+    return (
+      <div className="flex w-[370px] items-center gap-2">
+        <CardIssueLoading />
       </div>
     );
   },

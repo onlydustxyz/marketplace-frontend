@@ -1,11 +1,9 @@
 import { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
 
-import { AvatarPort } from "components/atoms/avatar";
-import { ButtonPort } from "components/atoms/button/button.types";
-import { PaperPort } from "components/atoms/paper";
-import { TagPort } from "components/atoms/tag";
-
-interface Variants {}
+import { AvatarPort } from "../../../atoms/avatar";
+import { ButtonPort } from "../../../atoms/button/button.types";
+import { PaperPort } from "../../../atoms/paper";
+import { TagPort } from "../../../atoms/tag";
 
 interface ClassNames {
   base: string;
@@ -41,7 +39,7 @@ interface Tokens {
 
 export type CardIssueStatus = "applied" | "open" | "assigned";
 
-export interface CardIssuePort<C extends ElementType> extends Partial<Variants> {
+export interface CardIssuePort<C extends ElementType> {
   as?: C;
   htmlProps?: ComponentPropsWithoutRef<C>;
   classNames?: Partial<ClassNames>;
@@ -58,5 +56,5 @@ export interface CardIssuePort<C extends ElementType> extends Partial<Variants> 
   createdBy?: CreatedBy;
   repo?: Repo;
   applicants?: Applicants[];
-  applicantsTotalCount?: number;
+  applicantsCount?: number;
 }
