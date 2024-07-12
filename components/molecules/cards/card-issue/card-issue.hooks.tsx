@@ -104,24 +104,10 @@ const useCreatedAt = ({ createdAt }: Pick<CardIssuePort<"div">, "createdAt">): s
   return null;
 };
 
-const useCreatedBy = ({ createdBy }: Pick<CardIssuePort<"div">, "createdBy">): ReactNode => {
-  if (createdBy) {
-    return (
-      <div className={"flex flex-row items-center justify-start"}>
-        <Avatar {...createdBy.avatar} />
-        <span>{createdBy.name}</span>
-      </div>
-    );
-  }
-
-  return null;
-};
-
 export const useCardIssue = {
   useAssigneeComponent,
   usePrimaryActionComponent,
   useGithubLinkComponent,
   useActions,
   useCreatedAt,
-  useCreatedBy,
 };
