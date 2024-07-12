@@ -1,8 +1,5 @@
-import {
-  GetHackathonBySlugPathParams,
-  GetHackathonBySlugResponse,
-  GetHackathonsResponse,
-} from "core/domain/hackathon/hackathon.types";
+import { GetHackathonBySlugPathParams, GetHackathonsResponse } from "core/domain/hackathon/hackathon.types";
+import { Hackathon } from "core/domain/hackathon/models/hackathon-model";
 import {
   HttpClientParameters,
   HttpStorageResponse,
@@ -15,5 +12,5 @@ export interface HackathonStoragePort {
     params: HttpClientParameters<{
       PathParams: GetHackathonBySlugPathParams;
     }>
-  ): HttpStorageResponse<GetHackathonBySlugResponse>;
+  ): HttpStorageResponse<Hackathon>;
 }

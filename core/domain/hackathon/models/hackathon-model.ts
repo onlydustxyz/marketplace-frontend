@@ -20,18 +20,18 @@ export class Hackathon extends mapApiToClass<HackathonsDetailsResponse>() implem
   }
 
   isComingSoon() {
-    return bootstrap.dateHelperPort.isFuture(new Date(this.startDate));
+    return bootstrap.getDateHelperPort().isFuture(new Date(this.startDate));
   }
 
   isLive() {
     return (
-      bootstrap.dateHelperPort.isPast(new Date(this.startDate)) &&
-      bootstrap.dateHelperPort.isFuture(new Date(this.endDate))
+      bootstrap.getDateHelperPort().isPast(new Date(this.startDate)) &&
+      bootstrap.getDateHelperPort().isFuture(new Date(this.endDate))
     );
   }
 
   isPast() {
-    return bootstrap.dateHelperPort.isPast(new Date(this.endDate));
+    return bootstrap.getDateHelperPort().isPast(new Date(this.endDate));
   }
 
   getStatus() {
