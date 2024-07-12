@@ -5,9 +5,9 @@ import { Radio } from "components/atoms/radio";
 
 import { CustomButtonProps, RadioButtonPort } from "../../radio-button.types";
 
-export function CustomButton({ label, children, variant, ...props }: CustomButtonProps): ReactNode {
+export function CustomButton({ label, children, variant = "secondary-light", ...props }: CustomButtonProps): ReactNode {
   return (
-    <Button as={"div"} variant={variant || "secondary-light"} {...props} startContent={children}>
+    <Button as={"div"} variant={variant} {...props} startContent={children}>
       {label}
     </Button>
   );

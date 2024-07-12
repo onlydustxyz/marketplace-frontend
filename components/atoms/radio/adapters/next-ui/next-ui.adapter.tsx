@@ -28,19 +28,17 @@ function RadioItem<V extends string, C extends ElementType = "div">({
           <input {...getInputProps()} />
         </VisuallyHidden>
         <div className={cn(slots.indicator(), classNames?.indicator)}>
-          {isSelected && !mixed && (
-            <Icon
-              remixName={"ri-check-fill"}
-              size={16}
-              className={cn(
-                slots.indicatorIcon(),
-                {
-                  "opacity-100": isSelected && !mixed,
-                },
-                classNames?.indicatorIcon
-              )}
-            />
-          )}
+          <Icon
+            remixName={"ri-check-fill"}
+            size={16}
+            className={cn(
+              slots.indicatorIcon(),
+              {
+                "opacity-100": isSelected && !mixed,
+              },
+              classNames?.indicatorIcon
+            )}
+          />
         </div>
       </InnerComponent>
     </Component>
