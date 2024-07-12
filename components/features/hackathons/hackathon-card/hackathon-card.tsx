@@ -65,20 +65,14 @@ export function HackathonCard<C extends ElementType = "div">({
       {hasLayer ? <span className="absolute inset-0 h-full w-full rounded-xl bg-black bg-opacity-60" /> : null}
 
       <div className="relative flex flex-col gap-6">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex flex-col gap-1">
+        <div>
+          <div className="flex items-center justify-between gap-4">
             <Typo size="l" weight="medium">
               {upperTitle}
             </Typo>
 
-            <Typo variant="brand" size="3xl" classNames={{ base: "md:5xl" }}>
-              {title}
-            </Typo>
-          </div>
-
-          {status ? (
-            <>
-              {tagIcon ? (
+            {status ? (
+              tagIcon ? (
                 <TagIcon color="blue" style="outline" icon={{ remixName: tagIcon }}>
                   {tagText}
                 </TagIcon>
@@ -86,9 +80,13 @@ export function HackathonCard<C extends ElementType = "div">({
                 <Tag color="blue" style="outline">
                   {tagText}
                 </Tag>
-              )}
-            </>
-          ) : null}
+              )
+            ) : null}
+          </div>
+
+          <Typo variant="brand" size="3xl" classNames={{ base: "md:5xl" }}>
+            {title}
+          </Typo>
         </div>
 
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
