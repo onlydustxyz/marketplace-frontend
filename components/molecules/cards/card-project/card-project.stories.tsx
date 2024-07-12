@@ -13,8 +13,8 @@ const defaultProps: CardProjectPort<"div"> = {
   description: "The goal of this SDK is to be able to interact with StarkNet smart contracts in a type-safe way.",
   bottomTags: [{ children: "Starknet", avatar: { src: "" } }],
   topTags: [{ children: "Top Project" }],
-  primaryAction: { children: "Button" },
-  secondaryAction: { children: "Button" },
+  primaryActionProps: { children: "Button" },
+  secondaryActionProps: { children: "Button" },
 };
 
 const meta: Meta<typeof CardProject> = {
