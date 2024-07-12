@@ -7,7 +7,7 @@ import { cn } from "src/utils/cn";
 import { Icon } from "components/layout/icon/icon";
 
 import { RadioGroupPort, RadioPort } from "../../radio-group.types";
-import { RadioDefaultVariants } from "./next-ui.variants";
+import { RadioGroupNextUiVariants } from "./next-ui.variants";
 
 function Radio<V extends string, C extends ElementType = "div">({
   as,
@@ -19,7 +19,7 @@ function Radio<V extends string, C extends ElementType = "div">({
 }: RadioPort<V, C>) {
   const InnerComponent = as || "div";
   const { Component, isSelected, getBaseProps, getInputProps, isDisabled } = useRadio({ value });
-  const slots = RadioDefaultVariants({ isDisabled, isActive: isSelected, mixed, color });
+  const slots = RadioGroupNextUiVariants({ isDisabled, isActive: isSelected, mixed, color });
 
   return (
     <Component {...getBaseProps()} className={cn(slots.item(), { "pointer-events-none": isDisabled })}>
@@ -54,7 +54,7 @@ export function RadioGroupNextUiAdapter<V extends string, C extends ElementType 
   ...props
 }: RadioGroupPort<V, C>) {
   const Component = as || "div";
-  const slots = RadioDefaultVariants();
+  const slots = RadioGroupNextUiVariants();
 
   const handleChange = (value: string) => {
     onChange?.(value as V);

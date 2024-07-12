@@ -1,6 +1,6 @@
 import { tv } from "tailwind-variants";
 
-export const RadioDefaultVariants = tv({
+export const RadioGroupNextUiVariants = tv({
   slots: {
     base: "flex flex-row gap-1",
     item: "group cursor-pointer !select-all",

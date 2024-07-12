@@ -1,12 +1,12 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 
-import { RadioButtonPort } from "./radio-button.types";
-import { RadioButton } from "./variants/radio-button-default";
+import { RadioGroupButtonPort } from "./radio-button-group.types";
+import { RadioButtonGroup } from "./variants/radio-button-group-default";
 
-type Story = StoryObj<typeof RadioButton>;
+type Story = StoryObj<typeof RadioButtonGroup>;
 
-const defaultProps: RadioButtonPort<string> = {
+const defaultProps: RadioGroupButtonPort<string> = {
   value: "Option 1",
   items: [
     {
@@ -20,9 +20,9 @@ const defaultProps: RadioButtonPort<string> = {
   ],
 };
 
-const meta: Meta<typeof RadioButton> = {
-  component: RadioButton,
-  title: "Molecules/RadioButton",
+const meta: Meta<typeof RadioButtonGroup> = {
+  component: RadioButtonGroup,
+  title: "Molecules/RadioButtonGroup",
   tags: ["autodocs"],
   parameters: {
     backgrounds: {
@@ -35,14 +35,14 @@ const meta: Meta<typeof RadioButton> = {
 export const Default: Story = {
   parameters: {
     docs: {
-      source: { code: "<RadioButton />" },
+      source: { code: "<RadioButtonGroup />" },
     },
   },
   render: args => {
     const [value, setValue] = useState<string>("");
     return (
       <div className="flex w-full items-center gap-2">
-        <RadioButton {...defaultProps} {...args} value={value} onChange={v => setValue(v)} />
+        <RadioButtonGroup {...defaultProps} {...args} value={value} onChange={v => setValue(v)} />
       </div>
     );
   },

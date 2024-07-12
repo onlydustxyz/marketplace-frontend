@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 import { Button } from "components/atoms/button/variants/button-default";
 import { RadioGroup } from "components/atoms/radio-group";
 
-import { CustomButtonProps, RadioButtonPort } from "../../radio-button.types";
+import { CustomButtonProps, RadioGroupButtonPort } from "../../radio-button-group.types";
 
 export function CustomButton({ label, children, variant = "secondary-light", ...props }: CustomButtonProps): ReactNode {
   return (
@@ -12,13 +12,13 @@ export function CustomButton({ label, children, variant = "secondary-light", ...
     </Button>
   );
 }
-export function RadioButtonDefaultAdapter<V extends string>({
+export function RadioButtonGroupDefaultAdapter<V extends string>({
   items,
   variant,
   size,
   isDisabled,
   ...props
-}: RadioButtonPort<V>) {
+}: RadioGroupButtonPort<V>) {
   return (
     <RadioGroup
       {...props}
