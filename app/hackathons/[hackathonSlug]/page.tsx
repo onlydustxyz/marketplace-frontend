@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { Header } from "app/hackathons/[hackathonSlug]/components/header/header";
 
 import { Paper } from "components/atoms/paper";
+import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 
 async function getHackathon(hackathonSlug: string) {
   try {
@@ -20,12 +21,19 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
   const hackathon = new Hackathon(data);
 
   return (
-    <div className={"flex gap-4"}>
-      <div className={"flex-1"}>
-        <Header hackathonSlug={params.hackathonSlug} />
-        <Paper size={"m"}>{hackathon.title}</Paper>
+    <>
+      <PosthogOnMount
+        eventName={"hackathon_viewed"}
+        params={{ hackathon_id: hackathon.id }}
+        paramsReady={Boolean(hackathon.id)}
+      />
+      <div className={"flex gap-4"}>
+        <div className={"flex-1"}>
+          <Header hackathonSlug={hackathon.slug} />
+          <Paper size={"m"}>{hackathon.title}</Paper>
+        </div>
+        {/*<aside>Sidebar</aside>*/}
       </div>
-      {/*<aside>Sidebar</aside>*/}
-    </div>
+    </>
   );
 }
