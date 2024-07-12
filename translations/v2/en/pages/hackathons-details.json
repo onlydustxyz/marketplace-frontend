@@ -1,4 +1,8 @@
 {
+  "header": {
+    "hackathon": "Hackathon",
+    "back": "Back"
+  },
   "back": "Back",
   "navigation": {
     "overview": "Overview",
