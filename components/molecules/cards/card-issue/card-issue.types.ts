@@ -18,11 +18,6 @@ interface Assignee {
   href?: string;
 }
 
-interface GithubLink {
-  href: string;
-  label: ReactNode;
-}
-
 interface Repo {
   name: string;
   href?: string;
@@ -35,25 +30,33 @@ interface CreatedBy {
 
 interface Applicants {
   name: string;
-  avatarUrl: string;
+  avatarUrl?: string;
 }
 
-export type CardIssueState = "applied" | "open" | "assigned";
+interface Tokens {
+  githubLink: ReactNode;
+  createdBy: ReactNode;
+  applicantsCount: ReactNode;
+}
+
+export type CardIssueStatus = "applied" | "open" | "assigned";
 
 export interface CardIssuePort<C extends ElementType> extends Partial<Variants> {
   as?: C;
   htmlProps?: ComponentPropsWithoutRef<C>;
   classNames?: Partial<ClassNames>;
   paperProps?: Partial<PaperPort<C>>;
-  state?: CardIssueState;
+  status?: CardIssueStatus;
   title: ReactNode;
+  tokens: Tokens;
   tags?: Array<TagPort<"div">>;
   applyActionProps?: ButtonPort<"button">;
   viewActionProps?: ButtonPort<"button">;
-  githubLink?: GithubLink;
+  githubLink?: string;
   assignee?: Assignee;
   createdAt?: Date;
   createdBy?: CreatedBy;
   repo?: Repo;
   applicants?: Applicants[];
+  applicantsTotalCount?: number;
 }
