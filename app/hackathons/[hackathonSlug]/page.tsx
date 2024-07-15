@@ -41,10 +41,16 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
               location={<Translate token={"v2.pages.hackathons.defaultLocation"} />}
               startDate={new Date(hackathon.startDate)}
               endDate={new Date(hackathon.endDate)}
-              status={hackathon.getStatus()}
+              status={hackathon.status}
               projects={hackathon.projects}
             />
-            <Info />
+            <Info
+              status={hackathon.status}
+              communityLinks={hackathon.communityLinks}
+              links={hackathon.links}
+              totalBudget={hackathon.totalBudget}
+              sponsors={hackathon.sponsors}
+            />
             <Description
               // TODO @hayden is the hackathon subtitle what we want to display here ?
               title={hackathon.subtitle}

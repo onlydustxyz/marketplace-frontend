@@ -5,7 +5,7 @@ import { components } from "src/__generated/api";
 
 type HackathonsDetailsResponse = components["schemas"]["HackathonsDetailsResponse"];
 
-type HackathonStatus = "live" | "open" | "closed";
+export type HackathonStatus = "live" | "open" | "closed";
 
 interface HackathonInterface extends HackathonsDetailsResponse {
   isComingSoon: boolean;
@@ -34,7 +34,7 @@ export class Hackathon extends mapApiToClass<HackathonsDetailsResponse>() implem
     return bootstrap.getDateHelperPort().isPast(new Date(this.endDate));
   }
 
-  public get status() {
+  get status() {
     if (this.isLive) {
       return "live";
     }

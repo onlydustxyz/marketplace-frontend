@@ -3,6 +3,16 @@
     "hackathons": "Hackathons",
     "back": "Back"
   },
+  "info": {
+    "register": "Register",
+    "seeEvents": "See events",
+    "eventOverTooltip": "The event is over",
+    "communityLinks": "Community links",
+    "links": "Links",
+    "totalBudget": "Total budget",
+    "sponsors": "Sponsors",
+    "link": "Link"
+  },
   "back": "Back",
   "navigation": {
     "overview": "Overview",
