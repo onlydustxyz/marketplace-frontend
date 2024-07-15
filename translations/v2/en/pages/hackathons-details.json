@@ -11,7 +11,17 @@
     "links": "Links",
     "totalBudget": "Total budget",
     "sponsors": "Sponsors",
-    "link": "Link"
+    "countLinks": {
+      "zero": "0 links",
+      "one": "1 link",
+      "many": "__count__ links"
+    },
+    "countSponsors": {
+      "zero": "0 sponsors",
+      "one": "1 sponsor",
+      "many": "__count__ sponsors"
+    },
+    "close": "Close"
   },
   "back": "Back",
   "navigation": {

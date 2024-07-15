@@ -1,3 +1,4 @@
+import { InfoDropdown } from "app/hackathons/[hackathonSlug]/components/info-dropdown/info-dropdown";
 import { TInfo } from "app/hackathons/[hackathonSlug]/features/info/info.types";
 
 import { Button } from "components/atoms/button/variants/button-default";
@@ -10,8 +11,15 @@ import { Translate } from "components/layout/translate/translate";
 
 function Links({ links }: { links: TInfo.Link[] }) {
   if (links.length > 2) {
-    // TODO @hayden
-    return null;
+    return (
+      <InfoDropdown
+        targetLabel={
+          <Translate token={"v2.pages.hackathons.details.info.countLinks"} params={{ count: links.length }} />
+        }
+        dropdownTitleToken={"v2.pages.hackathons.details.info.links"}
+        links={links}
+      />
+    );
   }
 
   return links.map(l => (
@@ -24,15 +32,22 @@ function Links({ links }: { links: TInfo.Link[] }) {
       size={"s"}
       icon={{ remixName: "ri-link" }}
     >
-      {l.value ?? <Translate token={"v2.pages.hackathons.details.info.link"} />}
+      {l.value ?? l.url}
     </Tag>
   ));
 }
 
 function Sponsors({ sponsors }: { sponsors: TInfo.Sponsor[] }) {
   if (sponsors.length > 2) {
-    // TODO @hayden
-    return null;
+    return (
+      <InfoDropdown
+        targetLabel={
+          <Translate token={"v2.pages.hackathons.details.info.countSponsors"} params={{ count: sponsors.length }} />
+        }
+        dropdownTitleToken={"v2.pages.hackathons.details.info.sponsors"}
+        links={sponsors}
+      />
+    );
   }
 
   return sponsors.map(s => (
@@ -59,28 +74,40 @@ export function Info({ status, communityLinks, links, totalBudget, sponsors }: T
       container={"2"}
       classNames={{ base: "flex flex-col md:flex-row md:items-center justify-between gap-4" }}
     >
-      <div className={"flex gap-3"}>
-        <div className={"grid gap-1"}>
-          <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.pages.hackathons.details.info.communityLinks" }} />
-          <Links links={communityLinks} />
-        </div>
+      <div className={"flex flex-wrap gap-3"}>
+        {communityLinks.length ? (
+          <div className={"grid gap-1"}>
+            <Typo
+              size={"xs"}
+              color={"text-2"}
+              translate={{ token: "v2.pages.hackathons.details.info.communityLinks" }}
+            />
+            <Links links={communityLinks} />
+          </div>
+        ) : null}
 
-        <div className={"grid gap-1"}>
-          <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.pages.hackathons.details.info.links" }} />
-          <Links links={links} />
-        </div>
+        {links.length ? (
+          <div className={"grid gap-1"}>
+            <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.pages.hackathons.details.info.links" }} />
+            <Links links={links} />
+          </div>
+        ) : null}
 
-        <div className={"grid gap-1"}>
-          <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.pages.hackathons.details.info.totalBudget" }} />
-          <Tag style={"outline"} color={"white"} size={"s"} icon={{ remixName: "ri-coin-line" }}>
-            {totalBudget}
-          </Tag>
-        </div>
+        {totalBudget ? (
+          <div className={"grid gap-1"}>
+            <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.pages.hackathons.details.info.totalBudget" }} />
+            <Tag style={"outline"} color={"white"} size={"s"} icon={{ remixName: "ri-coin-line" }}>
+              {totalBudget}
+            </Tag>
+          </div>
+        ) : null}
 
-        <div className={"grid gap-1"}>
-          <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.pages.hackathons.details.info.sponsors" }} />
-          <Sponsors sponsors={sponsors} />
-        </div>
+        {sponsors.length ? (
+          <div className={"grid gap-1"}>
+            <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.pages.hackathons.details.info.sponsors" }} />
+            <Sponsors sponsors={sponsors} />
+          </div>
+        ) : null}
       </div>
 
       <div className={"hidden md:block"}>
