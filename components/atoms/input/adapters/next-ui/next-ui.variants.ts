@@ -3,7 +3,7 @@ import { tv } from "tailwind-variants";
 export const InputNextUiVariants = tv({
   slots: {
     base: "h-fit flex-col items-start gap-2",
-    mainWrapper: "",
+    mainWrapper: "w-full",
     inputWrapper:
       "rounded-md border border-container-stroke-separator px-4 py-3 text-text-1 !outline-none group-data-[focus=true]:border-interactions-white-hover group-data-[hover=true]:border-interactions-white-hover",
     innerWrapper: "",
