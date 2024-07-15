@@ -4,6 +4,4 @@ export const CheckboxButtonDefaultVariants = tv({
   slots: {
     base: "",
   },
-  variants: {},
-  defaultVariants: {},
 });
