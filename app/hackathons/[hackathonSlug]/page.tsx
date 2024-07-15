@@ -14,7 +14,7 @@ import { Projects } from "./features/projects/projects";
 
 async function getHackathon(hackathonSlug: string) {
   try {
-    const hackathonStorage = bootstrap.getHackathonStoragePortForClient();
+    const hackathonStorage = bootstrap.getHackathonStoragePortForServer();
     return await hackathonStorage.getHackathonBySlug({ pathParams: { hackathonSlug } }).request();
   } catch {
     notFound();
