@@ -36,7 +36,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
         <div className={"flex-1"}>
           <Header hackathonSlug={hackathon.slug} />
           <div>
-            <Register />
+            <Register hackathonId={hackathon.id} hackathonSlug={hackathon.slug} />
           </div>
           <Paper size={"m"} container={"2"} classNames={{ base: "grid gap-4" }}>
             <HackathonCard
