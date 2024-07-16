@@ -11,6 +11,7 @@ import { Header } from "./components/header/header";
 import { Description } from "./features/description/description";
 import { Info } from "./features/info/info";
 import { Projects } from "./features/projects/projects";
+import { Register } from "./features/register/register";
 
 async function getHackathon(hackathonSlug: string) {
   try {
@@ -34,6 +35,9 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
       <div className={"flex gap-4"}>
         <div className={"flex-1"}>
           <Header hackathonSlug={hackathon.slug} />
+          <div>
+            <Register hackathonId={hackathon.id} hackathonSlug={hackathon.slug} />
+          </div>
           <Paper size={"m"} container={"2"} classNames={{ base: "grid gap-4" }}>
             <HackathonCard
               title={hackathon.title}
@@ -51,11 +55,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
               totalBudget={hackathon.totalBudget}
               sponsors={hackathon.sponsors}
             />
-            <Description
-              // TODO @hayden is the hackathon subtitle what we want to display here ?
-              title={hackathon.subtitle}
-              description={hackathon.description}
-            />
+            <Description description={hackathon.description} />
             <Projects />
           </Paper>
         </div>
