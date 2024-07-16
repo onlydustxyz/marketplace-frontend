@@ -55,11 +55,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
               totalBudget={hackathon.totalBudget}
               sponsors={hackathon.sponsors}
             />
-            <Description
-              // TODO @hayden is the hackathon subtitle what we want to display here ?
-              title={hackathon.subtitle}
-              description={hackathon.description}
-            />
+            <Description description={hackathon.description} />
             <Projects />
           </Paper>
         </div>
