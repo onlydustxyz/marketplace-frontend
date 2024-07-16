@@ -1,3 +1,4 @@
+import { ReactElement } from "react";
 import { z } from "zod";
 
 import { REGEX } from "app/settings/profile/features/form/form.regex";
@@ -6,6 +7,7 @@ export namespace TRegister {
   export interface Props {
     hackathonId: string;
     hackathonSlug: string;
+    button: ReactElement;
   }
 
   export const validation = z.object({

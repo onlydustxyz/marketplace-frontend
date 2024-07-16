@@ -14,6 +14,8 @@ export namespace TInfo {
   }
 
   export interface Props {
+    hackathonId: string;
+    hackathonSlug: string;
     status: HackathonStatus;
     communityLinks: Link[];
     links: Link[];

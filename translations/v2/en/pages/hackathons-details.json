@@ -5,6 +5,7 @@
   },
   "info": {
     "register": "Register",
+    "connectToRegister": "Connect to register",
     "seeEvents": "See events",
     "eventOverTooltip": "The event is over",
     "communityLinks": "Community links",

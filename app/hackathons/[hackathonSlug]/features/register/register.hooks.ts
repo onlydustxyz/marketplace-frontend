@@ -7,14 +7,14 @@ import { useForm } from "react-hook-form";
 import { TRegister } from "app/hackathons/[hackathonSlug]/features/register/register.types";
 
 import useMutationAlert from "src/api/useMutationAlert";
+import { usePosthog } from "src/hooks/usePosthog";
 
-// import { usePosthog } from "src/hooks/usePosthog";
 import { useIntl } from "hooks/translate/use-translate";
 
 export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps) {
   const { T } = useIntl();
   const [isOpen, setIsOpen] = useState(false);
-  // const { capture } = usePosthog();
+  const { capture } = usePosthog();
 
   const {
     clientBootstrap: { authProvider },
@@ -58,7 +58,7 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
     // TODO @hayden submit
 
     // register();
-    // capture("hackathon_registration", { hackathon_id: hackathonId });
+    capture("hackathon_registration", { hackathon_id: hackathonId });
   }
 
   return {

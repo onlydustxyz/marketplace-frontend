@@ -1,5 +1,6 @@
 import { InfoDropdown } from "app/hackathons/[hackathonSlug]/components/info-dropdown/info-dropdown";
 import { TInfo } from "app/hackathons/[hackathonSlug]/features/info/info.types";
+import { Register } from "app/hackathons/[hackathonSlug]/features/register/register";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
@@ -65,7 +66,15 @@ function Sponsors({ sponsors }: { sponsors: TInfo.Sponsor[] }) {
   ));
 }
 
-export function Info({ status, communityLinks, links, totalBudget, sponsors }: TInfo.Props) {
+export function Info({
+  hackathonId,
+  hackathonSlug,
+  status,
+  communityLinks,
+  links,
+  totalBudget,
+  sponsors,
+}: TInfo.Props) {
   const isClosed = status === "closed";
 
   return (
@@ -116,17 +125,21 @@ export function Info({ status, communityLinks, links, totalBudget, sponsors }: T
           placement={"left"}
           enabled={isClosed}
         >
-          <Button size={"xl"} isDisabled={isClosed}>
-            <Translate token={"v2.pages.hackathons.details.info.register"} />
-          </Button>
+          <Register
+            hackathonId={hackathonId}
+            hackathonSlug={hackathonSlug}
+            button={<Button size={"xl"} isDisabled={isClosed} />}
+          />
         </Tooltip>
       </div>
 
       <div className={"grid w-full gap-4 md:hidden"}>
         <Tooltip content={<Translate token={"v2.pages.hackathons.details.info.eventOverTooltip"} />} enabled={isClosed}>
-          <Button size={"l"} classNames={{ base: "w-full" }} isDisabled={isClosed}>
-            <Translate token={"v2.pages.hackathons.details.info.register"} />
-          </Button>
+          <Register
+            hackathonId={hackathonId}
+            hackathonSlug={hackathonSlug}
+            button={<Button size={"l"} classNames={{ base: "w-full" }} isDisabled={isClosed} />}
+          />
         </Tooltip>
 
         {/*<Button variant={"secondary-light"} size={"l"} classNames={{ base: "w-full" }}>*/}

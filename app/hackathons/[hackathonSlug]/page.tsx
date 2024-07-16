@@ -11,7 +11,6 @@ import { Header } from "./components/header/header";
 import { Description } from "./features/description/description";
 import { Info } from "./features/info/info";
 import { Projects } from "./features/projects/projects";
-import { Register } from "./features/register/register";
 
 async function getHackathon(hackathonSlug: string) {
   try {
@@ -35,9 +34,6 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
       <div className={"flex gap-4"}>
         <div className={"flex-1"}>
           <Header hackathonSlug={hackathon.slug} />
-          <div>
-            <Register hackathonId={hackathon.id} hackathonSlug={hackathon.slug} />
-          </div>
           <Paper size={"m"} container={"2"} classNames={{ base: "grid gap-4" }}>
             <HackathonCard
               title={hackathon.title}
@@ -49,6 +45,8 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
               projects={hackathon.projects}
             />
             <Info
+              hackathonId={hackathon.id}
+              hackathonSlug={hackathon.slug}
               status={hackathon.status}
               communityLinks={hackathon.communityLinks}
               links={hackathon.links}

@@ -3,6 +3,7 @@
 import { Auth0ClientAdapter } from "core/application/auth0-client-adapter";
 import Image from "next/image";
 import githubGrantPermissionImage from "public/images/banners/github-grant-permission-banner.png";
+import { cloneElement } from "react";
 import { Controller } from "react-hook-form";
 
 import { Button } from "components/atoms/button/variants/button-default";
@@ -16,48 +17,43 @@ import { useIntl } from "hooks/translate/use-translate";
 import { useRegister } from "./register.hooks";
 import { TRegister } from "./register.types";
 
-export function Register({ hackathonId, hackathonSlug }: TRegister.Props) {
+export function Register({ hackathonId, hackathonSlug, button }: TRegister.Props) {
   const { T } = useIntl();
   const { authProvider, modal, mutation, form } = useRegister({ hackathonId, hackathonSlug });
   const { isAuthenticated = false, loginWithRedirect } = authProvider ?? {};
 
-  /**
-   * TODO @hayden
-   *
-   * 1. If user not logged in, log them in first and redirect to the same page
-   * 2. If user has no Telegram account, show them the modal
-   * 3. Otherwise register them to the hackathon
-   *
-   */
-
   function renderButton() {
     if (!isAuthenticated) {
-      return (
-        <button
-          type={"button"}
-          onClick={() =>
-            loginWithRedirect ? Auth0ClientAdapter.helpers.handleLoginWithRedirect(loginWithRedirect) : undefined
-          }
-        >
-          Connect to register
-        </button>
+      return cloneElement(
+        button,
+        {
+          type: "button",
+          onClick: () =>
+            loginWithRedirect ? Auth0ClientAdapter.helpers.handleLoginWithRedirect(loginWithRedirect) : undefined,
+        },
+        <Translate token={"v2.pages.hackathons.details.info.connectToRegister"} />
       );
     }
 
-    const hasTelegram = true;
+    // TODO @hayden handle this
+    const hasTelegram = false;
 
     if (!hasTelegram) {
-      return (
-        <button type={"button"} onClick={() => modal.setIsOpen(true)}>
-          Register
-        </button>
+      return cloneElement(
+        button,
+        {
+          type: "button",
+          onClick: () => modal.setIsOpen(true),
+        },
+        <Translate token={"v2.pages.hackathons.details.info.register"} />
       );
     }
 
-    return (
-      <button type={"button"} onClick={form.handleSubmit}>
-        Register
-      </button>
+    return cloneElement(
+      button,
+      // TODO @hayden handle this
+      { type: "button", onClick: form.handleSubmit },
+      <Translate token={"v2.pages.hackathons.details.info.register"} />
     );
   }
 
@@ -84,6 +80,7 @@ export function Register({ hackathonId, hackathonSlug }: TRegister.Props) {
         }}
       >
         <div className="grid gap-4">
+          {/* TODO @hayden handle this */}
           <Image
             src={githubGrantPermissionImage}
             alt="github grant permission"
