@@ -25,7 +25,7 @@ export interface ReactQueryMutationOptions {
 
 export type ReactQueryMutationParameters<
   T extends GenericFunction,
-  I extends Record<string, HttpClientParameters<object>>
+  I extends Record<string, HttpClientParameters<object>> | undefined = undefined
 > = FirstParameter<T> & {
   options?: Partial<ReactQueryMutationOptions>;
   invalidateTagParams?: I;

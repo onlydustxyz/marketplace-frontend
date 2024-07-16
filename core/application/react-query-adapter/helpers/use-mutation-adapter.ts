@@ -10,17 +10,17 @@ type UseMutationAdapterParameters<T> = HttpStorageResponse<T> & {
 
 interface UseMutationAdapterReturn<T> extends Partial<ReactQueryOptions> {
   queryKey: string[];
-  queryFn: () => Promise<T>;
+  mutationFn: (body?: Record<string, unknown>) => Promise<T>;
 }
 
 export function useMutationAdapter<T>({
   tag = "",
-  request: queryFn,
+  request: mutationFn,
   options,
 }: UseMutationAdapterParameters<T>): UseMutationAdapterReturn<T> {
   return {
     queryKey: [tag],
-    queryFn,
+    mutationFn,
     ...options,
   };
 }

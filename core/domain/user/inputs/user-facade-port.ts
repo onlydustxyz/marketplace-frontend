@@ -1,3 +1,4 @@
+import { UserProfile } from "core/domain/user/models/user-profile-model";
 import { RegisterToHackathonPathParams } from "core/domain/user/user.types";
 import {
   HttpClientParameters,
@@ -10,4 +11,5 @@ export interface UserFacadePort {
       PathParams: RegisterToHackathonPathParams;
     }>
   ): HttpStorageResponse<never>;
+  setMyProfile(params: HttpClientParameters<object>): HttpStorageResponse<UserProfile>;
 }
