@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
+import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -14,6 +15,10 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
   const { T } = useIntl();
   const [isOpen, setIsOpen] = useState(false);
   const { capture } = usePosthog();
+
+  const {
+    clientBootstrap: { authProvider },
+  } = useClientBootstrapContext();
 
   const { mutate: register, ...restMutation } = UserReactQueryAdapter.client.useRegisterToHackathon({
     pathParams: {
@@ -52,11 +57,12 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
     console.log({ data });
     // TODO @hayden submit
 
-    register(undefined);
-    capture("hackathon_registration", { hackathon_id: hackathonId });
+    // register();
+    // capture("hackathon_registration", { hackathon_id: hackathonId });
   }
 
   return {
+    authProvider,
     modal: {
       isOpen,
       setIsOpen,

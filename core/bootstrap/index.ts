@@ -22,7 +22,7 @@ interface BootstrapConstructor {
 
 export class Bootstrap {
   static #instance: Bootstrap;
-  private authProvider?: AuthProvider | null = null;
+  private authProvider?: AuthProvider;
   private impersonationProvider?: ImpersonationProvider | null = null;
   projectStoragePortForClient: ProjectStoragePort;
   projectStoragePortForServer: ProjectStoragePort;
@@ -46,7 +46,7 @@ export class Bootstrap {
     return this.authProvider;
   }
 
-  setAuthProvider(authProvider: AuthProvider | null) {
+  setAuthProvider(authProvider: AuthProvider) {
     this.authProvider = authProvider;
   }
 

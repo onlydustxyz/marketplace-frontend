@@ -1,5 +1,6 @@
 "use client";
 
+import { Auth0ClientAdapter } from "core/application/auth0-client-adapter";
 import Image from "next/image";
 import githubGrantPermissionImage from "public/images/banners/github-grant-permission-banner.png";
 import { Controller } from "react-hook-form";
@@ -17,13 +18,52 @@ import { TRegister } from "./register.types";
 
 export function Register({ hackathonId, hackathonSlug }: TRegister.Props) {
   const { T } = useIntl();
-  const { modal, mutation, form } = useRegister({ hackathonId, hackathonSlug });
+  const { authProvider, modal, mutation, form } = useRegister({ hackathonId, hackathonSlug });
+  const { isAuthenticated = false, loginWithRedirect } = authProvider ?? {};
+
+  /**
+   * TODO @hayden
+   *
+   * 1. If user not logged in, log them in first and redirect to the same page
+   * 2. If user has no Telegram account, show them the modal
+   * 3. Otherwise register them to the hackathon
+   *
+   */
+
+  function renderButton() {
+    if (!isAuthenticated) {
+      return (
+        <button
+          type={"button"}
+          onClick={() =>
+            loginWithRedirect ? Auth0ClientAdapter.helpers.handleLoginWithRedirect(loginWithRedirect) : undefined
+          }
+        >
+          Connect to register
+        </button>
+      );
+    }
+
+    const hasTelegram = true;
+
+    if (!hasTelegram) {
+      return (
+        <button type={"button"} onClick={() => modal.setIsOpen(true)}>
+          Register
+        </button>
+      );
+    }
+
+    return (
+      <button type={"button"} onClick={form.handleSubmit}>
+        Register
+      </button>
+    );
+  }
 
   return (
     <>
-      <button type={"button"} onClick={() => modal.setIsOpen(true)}>
-        Register
-      </button>
+      {renderButton()}
 
       <Modal
         as={"form"}
