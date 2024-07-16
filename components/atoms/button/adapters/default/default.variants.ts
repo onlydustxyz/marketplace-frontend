@@ -28,7 +28,7 @@ export const ButtonDefaultVariants = tv({
         label: "leading-5",
       },
       s: {
-        base: "px-1 py-1",
+        base: "rounded px-1 py-1",
         content: "gap-1",
         label: "leading-4",
       },

@@ -25,5 +25,9 @@
       "alreadyApplied": "Registered"
     },
     "confirmationToaster": "You have registered successfully."
+  },
+  "projects": {
+    "title": "Projects",
+    "button": "See project"
   }
 }

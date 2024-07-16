@@ -46,7 +46,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
             />
             <Info />
             <Description />
-            <Projects />
+            <Projects projects={hackathon.projects} />
           </Paper>
         </div>
         {/*<aside>Sidebar</aside>*/}
