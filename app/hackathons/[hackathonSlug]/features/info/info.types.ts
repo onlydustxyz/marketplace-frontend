@@ -21,5 +21,6 @@ export namespace TInfo {
     links: Link[];
     totalBudget: string;
     sponsors: Sponsor[];
+    hasRegistered: boolean;
   }
 }

@@ -74,6 +74,7 @@ export function Info({
   links,
   totalBudget,
   sponsors,
+  hasRegistered,
 }: TInfo.Props) {
   const isClosed = status === "closed";
 
@@ -120,27 +121,42 @@ export function Info({
       </div>
 
       <div className={"hidden md:block"}>
-        <Tooltip
-          content={<Translate token={"v2.pages.hackathons.details.info.eventOverTooltip"} />}
-          placement={"left"}
-          enabled={isClosed}
-        >
-          <Register
-            hackathonId={hackathonId}
-            hackathonSlug={hackathonSlug}
-            button={<Button size={"xl"} isDisabled={isClosed} />}
-          />
-        </Tooltip>
+        {hasRegistered ? (
+          <Button size={"xl"} isDisabled>
+            <Translate token={"v2.pages.hackathons.details.info.registered"} />
+          </Button>
+        ) : (
+          <Tooltip
+            content={<Translate token={"v2.pages.hackathons.details.info.eventOverTooltip"} />}
+            placement={"left"}
+            enabled={isClosed}
+          >
+            <Register
+              hackathonId={hackathonId}
+              hackathonSlug={hackathonSlug}
+              button={<Button size={"xl"} isDisabled={isClosed} />}
+            />
+          </Tooltip>
+        )}
       </div>
 
       <div className={"grid w-full gap-4 md:hidden"}>
-        <Tooltip content={<Translate token={"v2.pages.hackathons.details.info.eventOverTooltip"} />} enabled={isClosed}>
-          <Register
-            hackathonId={hackathonId}
-            hackathonSlug={hackathonSlug}
-            button={<Button size={"l"} classNames={{ base: "w-full" }} isDisabled={isClosed} />}
-          />
-        </Tooltip>
+        {hasRegistered ? (
+          <Button size={"l"} classNames={{ base: "w-full" }} isDisabled>
+            <Translate token={"v2.pages.hackathons.details.info.registered"} />
+          </Button>
+        ) : (
+          <Tooltip
+            content={<Translate token={"v2.pages.hackathons.details.info.eventOverTooltip"} />}
+            enabled={isClosed}
+          >
+            <Register
+              hackathonId={hackathonId}
+              hackathonSlug={hackathonSlug}
+              button={<Button size={"l"} classNames={{ base: "w-full" }} isDisabled={isClosed} />}
+            />
+          </Tooltip>
+        )}
 
         {/*<Button variant={"secondary-light"} size={"l"} classNames={{ base: "w-full" }}>*/}
         {/*  <Translate token={"v2.pages.hackathons.details.info.seeEvents"} />*/}

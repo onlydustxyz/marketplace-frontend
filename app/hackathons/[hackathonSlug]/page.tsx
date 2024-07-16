@@ -52,6 +52,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
               links={hackathon.links}
               totalBudget={hackathon.totalBudget}
               sponsors={hackathon.sponsors}
+              hasRegistered={hackathon.me?.hasRegistered}
             />
             <Description description={hackathon.description} />
             <Projects />
