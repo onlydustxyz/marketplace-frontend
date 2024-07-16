@@ -1,7 +1,8 @@
 import { ComponentPropsWithoutRef, ElementType, PropsWithChildren, ReactNode } from "react";
 
 interface ClassNames {
-  base: string;
+  wrapper: string;
+  tooltip: string;
 }
 
 export interface TooltipPort<C extends ElementType> extends PropsWithChildren {
@@ -11,4 +12,5 @@ export interface TooltipPort<C extends ElementType> extends PropsWithChildren {
   enabled?: boolean;
   canInteract?: boolean;
   content: ReactNode;
+  placement?: "top" | "bottom" | "left" | "right";
 }
