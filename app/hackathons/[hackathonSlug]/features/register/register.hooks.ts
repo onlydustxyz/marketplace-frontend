@@ -19,6 +19,13 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
   const {
     clientBootstrap: { authProvider },
   } = useClientBootstrapContext();
+  const { isAuthenticated = false } = authProvider ?? {};
+
+  const { data: userProfile } = UserReactQueryAdapter.client.useGetMyProfile({
+    options: {
+      enabled: isAuthenticated,
+    },
+  });
 
   const { mutate: register, ...restMutation } = UserReactQueryAdapter.client.useRegisterToHackathon({
     pathParams: {
@@ -63,6 +70,7 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
 
   return {
     authProvider,
+    userProfile,
     modal: {
       isOpen,
       setIsOpen,
