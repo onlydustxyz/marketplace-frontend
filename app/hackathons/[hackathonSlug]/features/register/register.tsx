@@ -1,16 +1,8 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import Image from "next/image";
 import githubGrantPermissionImage from "public/images/banners/github-grant-permission-banner.png";
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-
-import { TRegister } from "app/hackathons/[hackathonSlug]/features/register/register.types";
-
-import useMutationAlert from "src/api/useMutationAlert";
-import { usePosthog } from "src/hooks/usePosthog";
+import { Controller } from "react-hook-form";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Input } from "components/atoms/input";
@@ -20,75 +12,32 @@ import { Modal } from "components/molecules/modal";
 
 import { useIntl } from "hooks/translate/use-translate";
 
+import { useRegister } from "./register.hooks";
+import { TRegister } from "./register.types";
+
 export function Register({ hackathonId, hackathonSlug }: TRegister.Props) {
   const { T } = useIntl();
-  const [isOpen, setIsOpen] = useState(false);
-  const { capture } = usePosthog();
-
-  const {
-    mutate: register,
-    isPending: registerIsPending,
-    ...restRegister
-  } = UserReactQueryAdapter.client.useRegisterToHackathon({
-    pathParams: {
-      hackathonId,
-    },
-    invalidateTagParams: {
-      getHackathonBySlug: {
-        pathParams: {
-          hackathonSlug,
-        },
-      },
-    },
-  });
-
-  // const { data } = hackathonsApiClient.queries.useGetHackathonBySlug(hackathonSlug);
-  // const hasRegistered = data?.me?.hasRegistered;
-
-  useMutationAlert({
-    mutation: restRegister,
-    success: {
-      message: T("v2.pages.hackathons.details.application.confirmationToaster"),
-    },
-    error: {
-      default: true,
-    },
-  });
-
-  const { control, handleSubmit } = useForm<TRegister.form>({
-    resolver: zodResolver(TRegister.validation),
-    defaultValues: {
-      telegram: "",
-    },
-  });
-
-  function handleFormSubmit(data: TRegister.form) {
-    console.log({ data });
-    // TODO @hayden submit
-
-    register(undefined);
-    capture("hackathon_registration", { hackathon_id: hackathonId });
-  }
+  const { modal, mutation, form } = useRegister({ hackathonId, hackathonSlug });
 
   return (
     <>
-      <button type={"button"} onClick={() => setIsOpen(true)}>
+      <button type={"button"} onClick={() => modal.setIsOpen(true)}>
         Register
       </button>
 
       <Modal
         as={"form"}
         htmlProps={{
-          onSubmit: handleSubmit(handleFormSubmit),
+          onSubmit: form.handleSubmit,
         }}
         titleProps={{
           translate: { token: "v2.pages.hackathons.details.registerModal.title" },
         }}
-        isOpen={isOpen}
-        onOpenChange={setIsOpen}
+        isOpen={modal.isOpen}
+        onOpenChange={modal.setIsOpen}
         footer={{
           endContent: (
-            <Button type={"submit"} variant="primary" size="l" isLoading={registerIsPending}>
+            <Button type={"submit"} variant="primary" size="l" isLoading={mutation.isPending}>
               <Translate token="v2.pages.hackathons.details.registerModal.submit" />
             </Button>
           ),
@@ -106,7 +55,7 @@ export function Register({ hackathonId, hackathonSlug }: TRegister.Props) {
 
           <Controller
             name="telegram"
-            control={control}
+            control={form.control}
             render={({ field, fieldState }) => (
               <Input
                 {...field}

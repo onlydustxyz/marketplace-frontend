@@ -13,4 +13,9 @@ export namespace TRegister {
   });
 
   export type form = z.infer<typeof validation>;
+
+  export interface HookProps {
+    hackathonId: string;
+    hackathonSlug: string;
+  }
 }
