@@ -60,12 +60,16 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
     },
   });
 
+  function registerForHackathon() {
+    register({});
+    capture("hackathon_registration", { hackathon_id: hackathonId });
+  }
+
   function handleFormSubmit(data: TRegister.form) {
     console.log({ data });
-    // TODO @hayden submit
+    // TODO @hayden update user profile with telegram, then register for hackathon
 
-    // register();
-    capture("hackathon_registration", { hackathon_id: hackathonId });
+    registerForHackathon();
   }
 
   return {
@@ -80,5 +84,6 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
       control,
       handleSubmit: handleSubmit(handleFormSubmit),
     },
+    registerForHackathon,
   };
 }

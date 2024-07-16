@@ -1,6 +1,7 @@
 "use client";
 
 import { Auth0ClientAdapter } from "core/application/auth0-client-adapter";
+import { UserProfileContactChannel } from "core/domain/user/models/user-profile-model";
 import Image from "next/image";
 import githubGrantPermissionImage from "public/images/banners/github-grant-permission-banner.png";
 import { cloneElement } from "react";
@@ -19,7 +20,10 @@ import { TRegister } from "./register.types";
 
 export function Register({ hackathonId, hackathonSlug, button }: TRegister.Props) {
   const { T } = useIntl();
-  const { authProvider, modal, mutation, form } = useRegister({ hackathonId, hackathonSlug });
+  const { userProfile, authProvider, modal, mutation, form, registerForHackathon } = useRegister({
+    hackathonId,
+    hackathonSlug,
+  });
   const { isAuthenticated = false, loginWithRedirect } = authProvider ?? {};
 
   function renderButton() {
@@ -35,10 +39,7 @@ export function Register({ hackathonId, hackathonSlug, button }: TRegister.Props
       );
     }
 
-    // TODO @hayden handle this
-    const hasTelegram = false;
-
-    if (!hasTelegram) {
+    if (!userProfile?.hasContact(UserProfileContactChannel.Telegram)) {
       return cloneElement(
         button,
         {
@@ -51,8 +52,7 @@ export function Register({ hackathonId, hackathonSlug, button }: TRegister.Props
 
     return cloneElement(
       button,
-      // TODO @hayden handle this
-      { type: "button", onClick: form.handleSubmit },
+      { type: "button", onClick: registerForHackathon },
       <Translate token={"v2.pages.hackathons.details.info.register"} />
     );
   }
