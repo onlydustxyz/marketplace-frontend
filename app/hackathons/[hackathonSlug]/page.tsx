@@ -44,16 +44,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
               status={hackathon.status}
               projects={hackathon.projects}
             />
-            <Info
-              hackathonId={hackathon.id}
-              hackathonSlug={hackathon.slug}
-              status={hackathon.status}
-              communityLinks={hackathon.communityLinks}
-              links={hackathon.links}
-              totalBudget={hackathon.totalBudget}
-              sponsors={hackathon.sponsors}
-              hasRegistered={hackathon.me?.hasRegistered}
-            />
+            <Info hackathon={hackathon} />
             <Description description={hackathon.description} />
             <Projects />
           </Paper>

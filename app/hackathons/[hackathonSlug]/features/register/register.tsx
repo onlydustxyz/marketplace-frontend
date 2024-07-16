@@ -2,13 +2,13 @@
 
 import { Auth0ClientAdapter } from "core/application/auth0-client-adapter";
 import { UserProfileContactChannel } from "core/domain/user/models/user-profile-model";
-import Image from "next/image";
-import githubGrantPermissionImage from "public/images/banners/github-grant-permission-banner.png";
 import { cloneElement } from "react";
 import { Controller } from "react-hook-form";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Input } from "components/atoms/input";
+import { HackathonCardMini } from "components/features/hackathons/hackathon-card/hackathon-card.mini";
+import { getHackathonBackground } from "components/features/hackathons/hackathon-card/hackathon-card.utils";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Modal } from "components/molecules/modal";
@@ -18,7 +18,7 @@ import { useIntl } from "hooks/translate/use-translate";
 import { useRegister } from "./register.hooks";
 import { TRegister } from "./register.types";
 
-export function Register({ hackathonId, hackathonSlug, button }: TRegister.Props) {
+export function Register({ hackathonId, hackathonSlug, hackathonTitle, hackathonIndex, button }: TRegister.Props) {
   const { T } = useIntl();
   const { userProfile, authProvider, modal, mutation, form, registerForHackathon } = useRegister({
     hackathonId,
@@ -80,15 +80,7 @@ export function Register({ hackathonId, hackathonSlug, button }: TRegister.Props
         }}
       >
         <div className="grid gap-4">
-          {/* TODO @hayden handle this */}
-          <Image
-            src={githubGrantPermissionImage}
-            alt="github grant permission"
-            className="h-full w-full object-cover object-center"
-            loading={"lazy"}
-            width={320}
-            height={50}
-          />
+          <HackathonCardMini title={hackathonTitle} backgroundImage={getHackathonBackground(hackathonIndex)} />
 
           <Controller
             name="telegram"

@@ -66,17 +66,8 @@ function Sponsors({ sponsors }: { sponsors: TInfo.Sponsor[] }) {
   ));
 }
 
-export function Info({
-  hackathonId,
-  hackathonSlug,
-  status,
-  communityLinks,
-  links,
-  totalBudget,
-  sponsors,
-  hasRegistered,
-}: TInfo.Props) {
-  const isClosed = status === "closed";
+export function Info({ hackathon }: TInfo.Props) {
+  const isClosed = hackathon.status === "closed";
 
   return (
     <Paper
@@ -85,43 +76,43 @@ export function Info({
       classNames={{ base: "flex flex-col md:flex-row md:items-center justify-between gap-4" }}
     >
       <div className={"flex flex-wrap gap-3"}>
-        {communityLinks.length ? (
+        {hackathon.communityLinks.length ? (
           <div className={"grid gap-1"}>
             <Typo
               size={"xs"}
               color={"text-2"}
               translate={{ token: "v2.pages.hackathons.details.info.communityLinks" }}
             />
-            <Links links={communityLinks} />
+            <Links links={hackathon.communityLinks} />
           </div>
         ) : null}
 
-        {links.length ? (
+        {hackathon.links.length ? (
           <div className={"grid gap-1"}>
             <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.pages.hackathons.details.info.links" }} />
-            <Links links={links} />
+            <Links links={hackathon.links} />
           </div>
         ) : null}
 
-        {totalBudget ? (
+        {hackathon.totalBudget ? (
           <div className={"grid gap-1"}>
             <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.pages.hackathons.details.info.totalBudget" }} />
             <Tag style={"outline"} color={"white"} size={"s"} icon={{ remixName: "ri-coin-line" }}>
-              {totalBudget}
+              {hackathon.totalBudget}
             </Tag>
           </div>
         ) : null}
 
-        {sponsors.length ? (
+        {hackathon.sponsors.length ? (
           <div className={"grid gap-1"}>
             <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.pages.hackathons.details.info.sponsors" }} />
-            <Sponsors sponsors={sponsors} />
+            <Sponsors sponsors={hackathon.sponsors} />
           </div>
         ) : null}
       </div>
 
       <div className={"hidden md:block"}>
-        {hasRegistered ? (
+        {hackathon.me?.hasRegistered ? (
           <Button size={"xl"} isDisabled>
             <Translate token={"v2.pages.hackathons.details.info.registered"} />
           </Button>
@@ -132,8 +123,10 @@ export function Info({
             enabled={isClosed}
           >
             <Register
-              hackathonId={hackathonId}
-              hackathonSlug={hackathonSlug}
+              hackathonId={hackathon.id}
+              hackathonSlug={hackathon.slug}
+              hackathonTitle={hackathon.title}
+              hackathonIndex={hackathon.index}
               button={<Button size={"xl"} isDisabled={isClosed} />}
             />
           </Tooltip>
@@ -141,7 +134,7 @@ export function Info({
       </div>
 
       <div className={"grid w-full gap-4 md:hidden"}>
-        {hasRegistered ? (
+        {hackathon.me?.hasRegistered ? (
           <Button size={"l"} classNames={{ base: "w-full" }} isDisabled>
             <Translate token={"v2.pages.hackathons.details.info.registered"} />
           </Button>
@@ -151,8 +144,10 @@ export function Info({
             enabled={isClosed}
           >
             <Register
-              hackathonId={hackathonId}
-              hackathonSlug={hackathonSlug}
+              hackathonId={hackathon.id}
+              hackathonSlug={hackathon.slug}
+              hackathonTitle={hackathon.title}
+              hackathonIndex={hackathon.index}
               button={<Button size={"l"} classNames={{ base: "w-full" }} isDisabled={isClosed} />}
             />
           </Tooltip>

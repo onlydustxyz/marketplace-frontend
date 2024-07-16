@@ -7,6 +7,8 @@ export namespace TRegister {
   export interface Props {
     hackathonId: string;
     hackathonSlug: string;
+    hackathonTitle: string;
+    hackathonIndex: number;
     button: ReactElement;
   }
 

@@ -1,4 +1,4 @@
-import { HackathonStatus } from "core/domain/hackathon/models/hackathon-model";
+import { Hackathon } from "core/domain/hackathon/models/hackathon-model";
 
 export namespace TInfo {
   export interface Link {
@@ -14,13 +14,6 @@ export namespace TInfo {
   }
 
   export interface Props {
-    hackathonId: string;
-    hackathonSlug: string;
-    status: HackathonStatus;
-    communityLinks: Link[];
-    links: Link[];
-    totalBudget: string;
-    sponsors: Sponsor[];
-    hasRegistered: boolean;
+    hackathon: Hackathon;
   }
 }
