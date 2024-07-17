@@ -7,7 +7,10 @@ import { Paper } from "components/atoms/paper";
 import { Tag } from "components/atoms/tag";
 import { TagIcon } from "components/atoms/tag/variants/tag-icon";
 import { Typo } from "components/atoms/typo";
-import { HackathonCardPort } from "components/features/hackathons/hackathon-card/hackathon-card.types";
+import {
+  HackathonCardPort,
+  HackathonCardStatusProps,
+} from "components/features/hackathons/hackathon-card/hackathon-card.types";
 import {
   formatHackathonDate,
   mapHackathonStatusToTag,
@@ -20,6 +23,83 @@ import { AvatarGroup } from "components/molecules/avatar-group";
 import { NEXT_ROUTER } from "constants/router";
 
 import { HackathonCardVariants } from "./hackathon-card.variants";
+
+function HackathonCardStatus({
+  status,
+  applicantCount,
+  openIssueCount,
+  issueCount,
+  adaptMapStatusToTag = mapHackathonStatusToTag,
+}: HackathonCardStatusProps) {
+  const { tagIcon, tagText } = adaptMapStatusToTag(status);
+
+  if (!status) return null;
+
+  if (status === "live" && (applicantCount || (openIssueCount && issueCount))) {
+    return (
+      <>
+        <div className="hidden items-center gap-3 sm:flex">
+          {applicantCount ? (
+            <div className="flex min-w-40 flex-col gap-2 rounded-xl border border-container-stroke-separator bg-interactions-white-disabled p-3">
+              <div className="flex items-center gap-1">
+                <Icon remixName="ri-user-3-line" />
+
+                <Typo size="xs" weight="medium" translate={{ token: "v2.features.hackathonCard.applicants" }} />
+              </div>
+
+              <Typo size="2xl" weight="medium">
+                {applicantCount}
+              </Typo>
+            </div>
+          ) : null}
+
+          {openIssueCount && issueCount ? (
+            <div className="flex min-w-40 flex-col gap-2 rounded-xl border border-container-stroke-separator bg-interactions-white-disabled p-3">
+              <div className="flex items-center gap-1">
+                <Icon remixName="ri-code-line" />
+
+                <Typo size="xs" weight="medium" translate={{ token: "v2.features.hackathonCard.issuesOpen" }} />
+              </div>
+
+              <Typo size="2xl" weight="medium">
+                {openIssueCount} <span className="text-text-2">/ {issueCount}</span>
+              </Typo>
+            </div>
+          ) : null}
+        </div>
+
+        {tagIcon ? (
+          <TagIcon
+            color="blue"
+            style="outline"
+            icon={{ remixName: tagIcon }}
+            classNames={{ base: "h-fit block sm:hidden" }}
+          >
+            {tagText}
+          </TagIcon>
+        ) : (
+          <Tag color="blue" style="outline" classNames={{ base: "h-fit block sm:hidden" }}>
+            {tagText}
+          </Tag>
+        )}
+      </>
+    );
+  }
+
+  if (tagIcon) {
+    return (
+      <TagIcon color="blue" style="outline" icon={{ remixName: tagIcon }} classNames={{ base: "h-fit" }}>
+        {tagText}
+      </TagIcon>
+    );
+  }
+
+  return (
+    <Tag color="blue" style="outline" classNames={{ base: "h-fit" }}>
+      {tagText}
+    </Tag>
+  );
+}
 
 export function HackathonCard<C extends ElementType = "div">({
   htmlProps,
@@ -35,13 +115,15 @@ export function HackathonCard<C extends ElementType = "div">({
   status,
   projects,
   hasLayer,
+  applicantCount,
+  openIssueCount,
+  issueCount,
   adaptMapStatusToTag = mapHackathonStatusToTag,
   adaptFormatDate = formatHackathonDate,
 }: HackathonCardPort<C>) {
   const Component = slug ? "a" : "article";
   const slots = HackathonCardVariants();
 
-  const { tagIcon, tagText } = adaptMapStatusToTag(status);
   const dates = adaptFormatDate(startDate, endDate);
 
   return (
@@ -65,28 +147,24 @@ export function HackathonCard<C extends ElementType = "div">({
       {hasLayer ? <span className="absolute inset-0 h-full w-full rounded-xl bg-black bg-opacity-60" /> : null}
 
       <div className="relative flex flex-col gap-6">
-        <div>
-          <div className="flex items-center justify-between gap-4">
+        <div className="flex justify-between gap-4">
+          <div className="flex flex-col gap-1">
             <Typo size="l" weight="medium">
               {upperTitle}
             </Typo>
 
-            {status ? (
-              tagIcon ? (
-                <TagIcon color="blue" style="outline" icon={{ remixName: tagIcon }}>
-                  {tagText}
-                </TagIcon>
-              ) : (
-                <Tag color="blue" style="outline">
-                  {tagText}
-                </Tag>
-              )
-            ) : null}
+            <Typo variant="brand" size="4xl">
+              {title}
+            </Typo>
           </div>
 
-          <Typo variant="brand" size="3xl" classNames={{ base: "md:5xl" }}>
-            {title}
-          </Typo>
+          <HackathonCardStatus
+            status={status}
+            applicantCount={applicantCount}
+            openIssueCount={openIssueCount}
+            issueCount={issueCount}
+            adaptMapStatusToTag={adaptMapStatusToTag}
+          />
         </div>
 
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">

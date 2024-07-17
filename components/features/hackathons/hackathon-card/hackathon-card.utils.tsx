@@ -1,3 +1,4 @@
+import { HackathonStatus } from "core/domain/hackathon/models/hackathon-model";
 import { formatInTimeZone } from "date-fns-tz";
 import enGB from "date-fns/locale/en-GB";
 import backgroundImage1 from "public/images/hackathons/cover-1.webp";
@@ -18,7 +19,6 @@ import backgroundImage15 from "public/images/hackathons/cover-15.webp";
 import backgroundImage16 from "public/images/hackathons/cover-16.webp";
 import { ReactElement } from "react";
 
-import { HackathonStatus } from "components/features/hackathons/hackathon-card/hackathon-card.types";
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { Translate } from "components/layout/translate/translate";
 
