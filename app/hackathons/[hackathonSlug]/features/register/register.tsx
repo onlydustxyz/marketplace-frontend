@@ -32,6 +32,7 @@ export function Register({
     isAuthenticated,
     loginWithRedirect,
     registerForHackathon,
+    isLoading,
     isPending,
     hasTelegram,
     hasRegistered,
@@ -64,14 +65,14 @@ export function Register({
 
     if (!hasTelegram) {
       return (
-        <Button onClick={() => modal.setIsOpen(true)} {...buttonProps}>
+        <Button onClick={() => modal.setIsOpen(true)} isLoading={isLoading || isPending} {...buttonProps}>
           <Translate token={"v2.pages.hackathons.details.info.register"} />
         </Button>
       );
     }
 
     return (
-      <Button onClick={registerForHackathon} isLoading={isPending} {...buttonProps}>
+      <Button onClick={registerForHackathon} isLoading={isLoading || isPending} {...buttonProps}>
         <Translate token={"v2.pages.hackathons.details.info.register"} />
       </Button>
     );
