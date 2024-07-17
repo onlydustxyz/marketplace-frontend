@@ -2,10 +2,17 @@ import { z } from "zod";
 
 import { REGEX } from "app/settings/profile/features/form/form.regex";
 
+import { ButtonDefaultPort } from "components/atoms/button/button.types";
+import { TooltipPort } from "components/atoms/tooltip";
+
 export namespace TRegister {
   export interface Props {
     hackathonId: string;
     hackathonSlug: string;
+    hackathonTitle: string;
+    hackathonIndex: number;
+    buttonProps: ButtonDefaultPort<"button">;
+    tooltipProps: TooltipPort<"div">;
   }
 
   export const validation = z.object({

@@ -8,3 +8,7 @@ export type RegisterToHackathonPathParams = operations["registerToHackathon"]["p
 
 export type SetMyProfileBody = components["schemas"]["UserProfileRequest"];
 export type SetMyProfileResponse = components["schemas"]["PrivateUserProfileResponse"];
+
+/* --------------------------------- Get my profile -------------------------------- */
+
+export type GetMyProfileResponse = components["schemas"]["PrivateUserProfileResponse"];

@@ -290,7 +290,7 @@ const useProjectContributorsChurnedInfiniteList = ({
   );
 };
 
-export type UseProjectGoodFirstIssuesInfiniteListResponse = components["schemas"]["GoodFirstIssuesPageResponse"];
+export type UseProjectGoodFirstIssuesInfiniteListResponse = components["schemas"]["GithubIssuePageResponse"];
 
 const useProjectGoodFirstIssuesInfiniteList = ({
   params,

@@ -12,7 +12,6 @@ import { Header } from "./components/header/header";
 import { Description } from "./features/description/description";
 import { Info } from "./features/info/info";
 import { Projects } from "./features/projects/projects";
-import { Register } from "./features/register/register";
 
 async function getHackathon(hackathonSlug: string) {
   try {
@@ -36,9 +35,6 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
       <div className={"flex gap-4"}>
         <div className={"flex-1"}>
           <Header hackathonSlug={hackathon.slug} />
-          <div>
-            <Register hackathonId={hackathon.id} hackathonSlug={hackathon.slug} />
-          </div>
           <Paper size={"m"} container={"2"} classNames={{ base: "grid gap-4" }}>
             <HackathonCard
               title={hackathon.title}
@@ -46,19 +42,13 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
               location={<Translate token={"v2.pages.hackathons.defaultLocation"} />}
               startDate={new Date(hackathon.startDate)}
               endDate={new Date(hackathon.endDate)}
-              status={hackathon.status}
+              status={hackathon.getStatus()}
               projects={hackathon.projects}
               applicantCount={hackathon.applicantCount}
               openIssueCount={hackathon.openIssueCount}
               issueCount={hackathon.issueCount}
             />
-            <Info
-              status={hackathon.status}
-              communityLinks={hackathon.communityLinks}
-              links={hackathon.links}
-              totalBudget={hackathon.totalBudget}
-              sponsors={hackathon.sponsors}
-            />
+            <Info hackathon={hackathon} />
             <Description description={hackathon.description} />
             <Projects projects={hackathon.projects.map(project => new ShortProject(project))} />
           </Paper>

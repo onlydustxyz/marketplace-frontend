@@ -12,4 +12,5 @@ export interface UserFacadePort {
     }>
   ): HttpStorageResponse<never>;
   setMyProfile(params: HttpClientParameters<object>): HttpStorageResponse<UserProfile>;
+  getMyProfile(params: HttpClientParameters<object>): HttpStorageResponse<UserProfile>;
 }
