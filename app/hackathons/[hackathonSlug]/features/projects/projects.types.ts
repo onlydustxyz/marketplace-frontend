@@ -1,9 +1,7 @@
-import { components } from "src/__generated/api";
+import { ShortProject } from "core/domain/project/models/short-project-model";
 
 export namespace TProjects {
-  type Project = components["schemas"]["ProjectShortResponse"];
-
   export interface Props {
-    projects: Project[];
+    projects: ShortProject[];
   }
 }

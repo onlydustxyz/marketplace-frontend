@@ -1,4 +1,5 @@
 import { bootstrap } from "core/bootstrap";
+import { ShortProject } from "core/domain/project/models/short-project-model";
 import { notFound } from "next/navigation";
 
 import { Paper } from "components/atoms/paper";
@@ -56,7 +57,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
               sponsors={hackathon.sponsors}
             />
             <Description description={hackathon.description} />
-            <Projects projects={hackathon.projects} />
+            <Projects projects={hackathon.projects.map(project => new ShortProject(project))} />
           </Paper>
         </div>
         {/*<aside>Sidebar</aside>*/}

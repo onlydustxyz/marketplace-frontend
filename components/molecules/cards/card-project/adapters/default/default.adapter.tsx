@@ -29,12 +29,40 @@ export function CardProjectDefaultAdapter<C extends ElementType = "div">({
   const Component = as || "div";
   const slots = CardProjectDefaultVariants();
 
-  const nbBottomTags = useMemo(() => bottomTags?.length ?? 0, [bottomTags]);
-  const isMaxBottomTags = useMemo(() => nbBottomTags > (maxBottomTags ?? 0), [nbBottomTags, maxBottomTags]);
-  const bottomTagsToDisplay = useMemo(
-    () => (isMaxBottomTags ? bottomTags?.slice(0, maxBottomTags) : bottomTags),
-    [bottomTags, isMaxBottomTags, maxBottomTags]
-  );
+  const renderBottomTags = useMemo(() => {
+    if (!bottomTags.length) {
+      return null;
+    }
+
+    if (maxBottomTags) {
+      const nbBottomTags = bottomTags.length || 0;
+      const reachedMaxBottomTags = nbBottomTags > maxBottomTags;
+      const bottomTagsToDisplay = bottomTags.slice(0, maxBottomTags);
+
+      return (
+        <Tooltip
+          content={
+            <ul className="flex flex-col gap-1">
+              {bottomTags.map((t, key) => (
+                <li key={key}>
+                  <Typo size="xs">{t.children}</Typo>
+                </li>
+              ))}
+            </ul>
+          }
+        >
+          <Tag size={"xs"} shape={"round"} style={"outline"} color="grey" {...bottomTagsToDisplay[0]}>
+            {bottomTagsToDisplay.map(t => t.children).join(", ")}
+            {reachedMaxBottomTags ? ` +${nbBottomTags - maxBottomTags}` : ""}
+          </Tag>
+        </Tooltip>
+      );
+    }
+
+    return bottomTags.map((t, key) => (
+      <Tag key={key} size={"xs"} shape={"round"} style={"outline"} color="grey" {...t} />
+    ));
+  }, [bottomTags, maxBottomTags]);
 
   return (
     <Paper
@@ -45,7 +73,7 @@ export function CardProjectDefaultAdapter<C extends ElementType = "div">({
         base: cn(slots.base(), classNames?.base),
       }}
       {...paperProps}
-      htmlProps={{ ...htmlProps }}
+      htmlProps={htmlProps}
     >
       <div className="flex w-fit">
         <Avatar size={"xxl"} shape="square" {...avatarProps} />
@@ -75,30 +103,7 @@ export function CardProjectDefaultAdapter<C extends ElementType = "div">({
         </div>
 
         <div className="flex w-full flex-row items-end justify-between gap-4 pt-2">
-          <div className="flex flex-wrap items-center justify-start gap-1">
-            {maxBottomTags && bottomTagsToDisplay.length ? (
-              <Tooltip
-                content={
-                  <ul className="flex flex-col gap-1">
-                    {bottomTags.map((t, key) => (
-                      <li key={key}>
-                        <Typo size="xs">{t.children}</Typo>
-                      </li>
-                    ))}
-                  </ul>
-                }
-              >
-                <Tag size={"xs"} shape={"round"} style={"outline"} color="grey" {...bottomTagsToDisplay[0]}>
-                  {bottomTagsToDisplay?.map(t => t.children).join(", ")}
-                  {isMaxBottomTags ? ` +${nbBottomTags - maxBottomTags}` : ""}
-                </Tag>
-              </Tooltip>
-            ) : (
-              bottomTags?.map((t, key) => (
-                <Tag key={key} size={"xs"} shape={"round"} style={"outline"} color="grey" {...t} />
-              ))
-            )}
-          </div>
+          <div className="flex flex-wrap items-center justify-start gap-1">{renderBottomTags}</div>
 
           <div className="flex items-center justify-end gap-1 whitespace-nowrap">
             {!!secondaryActionProps && <Button variant="secondary-light" size={"s"} {...secondaryActionProps} />}
