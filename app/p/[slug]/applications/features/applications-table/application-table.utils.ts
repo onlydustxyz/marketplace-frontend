@@ -7,7 +7,15 @@ type Issue = {
   createdAt: string;
   htmlUrl: string;
   status: "OPEN" | "COMPLETED" | "CANCELLED";
-  project?: { id: string; slug: string; name: string; shortDescription: string; logoUrl?: string };
+  project?: {
+    id: string;
+    slug: string;
+    name: string;
+    shortDescription: string;
+    logoUrl?: string;
+    visibility: "PUBLIC" | "PRIVATE";
+    languages: { id: string; slug: string; name: string; logoUrl: string; bannerUrl?: string }[];
+  };
   repository: {
     id: number;
     owner: string;
@@ -35,7 +43,21 @@ export function mapIssueToContribution(issue: Issue): ContributionT {
 
     githubAuthor: issue.author,
     contributor: issue.author,
-    project: issue.project ?? { id: "", slug: "", name: "", shortDescription: "" },
+    project: issue.project ?? {
+      id: "",
+      slug: "",
+      name: "",
+      shortDescription: "",
+      visibility: "PRIVATE",
+      languages: [
+        {
+          id: "",
+          slug: "",
+          name: "",
+          logoUrl: "",
+        },
+      ],
+    },
     rewardIds: [],
     links: [],
   };
