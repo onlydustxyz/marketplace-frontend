@@ -29,6 +29,9 @@ export function HackathonSection({ title, icon, items, status }: THackathonSecti
             endDate={new Date(item.endDate)}
             status={status}
             projects={item.projects}
+            applicantCount={item.applicantCount}
+            openIssueCount={item.openIssueCount}
+            issueCount={item.issueCount}
           />
         ))}
       </div>

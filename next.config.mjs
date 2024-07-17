@@ -36,10 +36,10 @@ const nextConfig = {
         source: "/:all*(ttf|otf|woff|woff2)",
         headers: [
           {
-            key: 'Cache-Control',
-            value: 'public, max-age=2628000, immutable'
-          }
-        ]
+            key: "Cache-Control",
+            value: "public, max-age=2628000, immutable",
+          },
+        ],
       },
     ];
   },
@@ -53,6 +53,11 @@ const nextConfig = {
       {
         source: "/settings/billing/:id",
         destination: "/settings/billing/:id/general-information",
+        permanent: true,
+      },
+      {
+        source: "/h/:slug",
+        destination: "/hackathons/:slug",
         permanent: true,
       },
     ];
@@ -70,7 +75,8 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "onlydust-app-images.s3.eu-west-1.amazonaws.com",
-      },      {
+      },
+      {
         protocol: "https",
         hostname: "od-metadata-assets-develop.s3.eu-west-1.amazonaws.com",
       },
@@ -84,7 +90,7 @@ const nextConfig = {
       },
     ],
     // ordered list of acceptable optimized image formats (mime types)
-    formats: ['image/webp','image/avif'],
+    formats: ["image/webp", "image/avif"],
   },
 };
 

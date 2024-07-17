@@ -1,8 +1,12 @@
 {
   "title": "Hackathon",
   "status": {
-    "live": "Live now",
-    "open": "Application open",
+    "live": {
+      "tag": "Live now",
+      "applicants": "Applicants",
+      "issuesOpen": "Issues open"
+    },
+    "open": "Coming soon",
     "closed": "Closed"
   },
   "button": "Explore"

@@ -1,3 +1,4 @@
+import { HackathonStatus } from "core/domain/hackathon/models/hackathon-model";
 import { StaticImageData } from "next/image";
 import { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
 
@@ -14,7 +15,6 @@ interface ClassNames {
   base: string;
 }
 
-export type HackathonStatus = "closed" | "open" | "live";
 type Project = components["schemas"]["ProjectLinkResponse"];
 
 export interface HackathonCardPort<C extends ElementType> extends Partial<Variants> {
@@ -31,6 +31,9 @@ export interface HackathonCardPort<C extends ElementType> extends Partial<Varian
   status?: HackathonStatus;
   projects?: Project[];
   hasLayer?: boolean;
+  applicantCount?: number;
+  openIssueCount?: number;
+  issueCount?: number;
   adaptMapStatusToTag?: typeof mapHackathonStatusToTag;
   adaptFormatDate?: typeof formatHackathonDate;
 }

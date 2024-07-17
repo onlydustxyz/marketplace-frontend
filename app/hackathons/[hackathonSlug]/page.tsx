@@ -48,6 +48,9 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
               endDate={new Date(hackathon.endDate)}
               status={hackathon.status}
               projects={hackathon.projects}
+              applicantCount={hackathon.applicantCount}
+              openIssueCount={hackathon.openIssueCount}
+              issueCount={hackathon.issueCount}
             />
             <Info
               status={hackathon.status}
