@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 import { UserProfileContactChannel } from "core/domain/user/models/user-profile-model";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { TRegister } from "app/hackathons/[hackathonSlug]/features/register/register.types";
@@ -60,12 +60,20 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
     },
   });
 
-  const { control, handleSubmit } = useForm<TRegister.form>({
+  const { control, handleSubmit, reset } = useForm<TRegister.form>({
     resolver: zodResolver(TRegister.validation),
     defaultValues: {
       telegram: "",
     },
   });
+
+  useEffect(() => {
+    if (!isOpen) {
+      setTimeout(() => {
+        reset();
+      }, 500);
+    }
+  }, [isOpen]);
 
   async function registerForHackathon() {
     await register({});
