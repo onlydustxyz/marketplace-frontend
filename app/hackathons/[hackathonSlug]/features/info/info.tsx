@@ -21,19 +21,23 @@ function Links({ links }: { links: TInfo.Link[] }) {
     );
   }
 
-  return links.map(l => (
-    <Tag
-      key={l.url}
-      as={BaseLink}
-      htmlProps={{ href: l.url }}
-      style={"outline"}
-      color={"white"}
-      size={"s"}
-      icon={{ remixName: "ri-link" }}
-    >
-      {l.value ?? l.url}
-    </Tag>
-  ));
+  return (
+    <div className={"flex flex-wrap gap-2"}>
+      {links.map(l => (
+        <Tag
+          key={l.url}
+          as={BaseLink}
+          htmlProps={{ href: l.url }}
+          style={"outline"}
+          color={"white"}
+          size={"s"}
+          icon={{ remixName: "ri-link" }}
+        >
+          {l.value ?? l.url}
+        </Tag>
+      ))}
+    </div>
+  );
 }
 
 function Sponsors({ sponsors }: { sponsors: TInfo.Sponsor[] }) {
@@ -49,19 +53,23 @@ function Sponsors({ sponsors }: { sponsors: TInfo.Sponsor[] }) {
     );
   }
 
-  return sponsors.map(s => (
-    <Tag
-      key={s.id}
-      as={s.url ? BaseLink : "span"}
-      htmlProps={{ href: s.url ?? "" }}
-      avatar={{ src: s.logoUrl, alt: s.name }}
-      style={"outline"}
-      color={"white"}
-      size={"s"}
-    >
-      {s.name}
-    </Tag>
-  ));
+  return (
+    <div className={"flex flex-wrap gap-2"}>
+      {sponsors.map(s => (
+        <Tag
+          key={s.id}
+          as={s.url ? BaseLink : "span"}
+          htmlProps={{ href: s.url ?? "" }}
+          avatar={{ src: s.logoUrl, alt: s.name }}
+          style={"outline"}
+          color={"white"}
+          size={"s"}
+        >
+          {s.name}
+        </Tag>
+      ))}
+    </div>
+  );
 }
 
 export function Info({ hackathon }: TInfo.Props) {
