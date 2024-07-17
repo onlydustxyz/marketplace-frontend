@@ -26,7 +26,7 @@ import { HackathonCardVariants } from "./hackathon-card.variants";
 
 function HackathonCardStatus({
   status,
-  applicantCount,
+  subscriberCount,
   openIssueCount,
   issueCount,
   adaptMapStatusToTag = mapHackathonStatusToTag,
@@ -35,12 +35,12 @@ function HackathonCardStatus({
 
   if (!status) return null;
 
-  if (status === "live" && (applicantCount || (openIssueCount && issueCount))) {
+  if (status === "live" && (subscriberCount || (openIssueCount && issueCount))) {
     return (
       <>
         <div className="hidden items-center gap-3 sm:flex">
-          {applicantCount ? (
-            <div className="flex min-w-40 flex-col gap-2 rounded-xl border border-container-stroke-separator bg-interactions-white-disabled p-3">
+          {subscriberCount ? (
+            <div className="min-w-40 flex flex-col gap-2 rounded-xl border border-container-stroke-separator bg-interactions-white-disabled p-3">
               <div className="flex items-center gap-1">
                 <Icon remixName="ri-user-3-line" />
 
@@ -48,13 +48,13 @@ function HackathonCardStatus({
               </div>
 
               <Typo size="2xl" weight="medium">
-                {applicantCount}
+                {subscriberCount}
               </Typo>
             </div>
           ) : null}
 
           {openIssueCount && issueCount ? (
-            <div className="flex min-w-40 flex-col gap-2 rounded-xl border border-container-stroke-separator bg-interactions-white-disabled p-3">
+            <div className="min-w-40 flex flex-col gap-2 rounded-xl border border-container-stroke-separator bg-interactions-white-disabled p-3">
               <div className="flex items-center gap-1">
                 <Icon remixName="ri-code-line" />
 
@@ -115,7 +115,7 @@ export function HackathonCard<C extends ElementType = "div">({
   status,
   projects,
   hasLayer,
-  applicantCount,
+  subscriberCount,
   openIssueCount,
   issueCount,
   adaptMapStatusToTag = mapHackathonStatusToTag,
@@ -160,7 +160,7 @@ export function HackathonCard<C extends ElementType = "div">({
 
           <HackathonCardStatus
             status={status}
-            applicantCount={applicantCount}
+            subscriberCount={subscriberCount}
             openIssueCount={openIssueCount}
             issueCount={issueCount}
             adaptMapStatusToTag={adaptMapStatusToTag}
