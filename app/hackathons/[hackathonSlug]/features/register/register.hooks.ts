@@ -23,13 +23,13 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
   } = useClientBootstrapContext();
   const { isAuthenticated = false, loginWithRedirect } = authProvider ?? {};
 
-  const { data: userProfile } = UserReactQueryAdapter.client.useGetMyProfile({
+  const { data: userProfile, isLoading: userProfileIsLoading } = UserReactQueryAdapter.client.useGetMyProfile({
     options: {
       enabled: isAuthenticated,
     },
   });
 
-  const { data: hackathon } = HackathonReactQueryAdapter.client.useGetHackathonBySlug({
+  const { data: hackathon, isLoading: hackathonIsLoading } = HackathonReactQueryAdapter.client.useGetHackathonBySlug({
     pathParams: { hackathonSlug },
     options: {
       enabled: isAuthenticated,
@@ -129,6 +129,7 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
     isAuthenticated,
     loginWithRedirect,
     registerForHackathon,
+    isLoading: userProfileIsLoading || hackathonIsLoading,
     isPending: restRegister.isPending || restSetMyProfile.isPending,
     hasTelegram: userProfile?.hasContact(UserProfileContactChannel.Telegram),
     hasRegistered: hackathon?.me.hasRegistered,
