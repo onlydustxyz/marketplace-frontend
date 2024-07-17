@@ -50,10 +50,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
             />
             <Info hackathon={hackathon} />
             <Description description={hackathon.description} />
-
-            {hackathon.projects.length > 0 ? (
-              <Projects projects={hackathon.projects.map(project => new ShortProject(project))} />
-            ) : null}
+            <Projects projects={hackathon.projects.map(project => new ShortProject(project))} />
           </Paper>
         </div>
         {/*<aside>Sidebar</aside>*/}
