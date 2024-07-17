@@ -7,7 +7,7 @@ import { ButtonPrimary } from "./button-primary";
 import { ButtonSecondaryDark } from "./button-secondary-dark";
 import { ButtonSecondaryLight } from "./button-secondary-light";
 
-export function Button<C extends ElementType = "button">({ ...props }: ButtonDefaultPort<C>) {
+export function Button<C extends ElementType = "button">(props: ButtonDefaultPort<C>) {
   switch (props.variant) {
     case "secondary-light":
       return <ButtonSecondaryLight {...props} />;

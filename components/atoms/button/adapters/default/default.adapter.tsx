@@ -24,10 +24,13 @@ export function ButtonDefaultAdapter<C extends ElementType = "button">({
   translate,
   type = "button",
   htmlProps,
-  ...props
+  isLoading,
+  isDisabled,
+  size,
+  hideText,
+  canInteract,
 }: ButtonPort<C>) {
   const Component = as || "button";
-  const { isLoading, isDisabled, size, hideText, canInteract } = props;
   const slots = ButtonDefaultVariants({
     isLoading,
     isDisabled,
@@ -62,11 +65,7 @@ export function ButtonDefaultAdapter<C extends ElementType = "button">({
           overrideProps={{ className: cn(slots.startIcon(), classNames?.startIcon, startIcon?.className) }}
         />
         <Show show={showChildren}>
-          <Typo
-            size={typoSize[props.size || "m"]}
-            as={"span"}
-            classNames={{ base: cn(slots.label(), classNames?.label) }}
-          >
+          <Typo size={typoSize[size || "m"]} as={"span"} classNames={{ base: cn(slots.label(), classNames?.label) }}>
             {children || <RenderWithProps Component={Translate} props={translate} />}
           </Typo>
         </Show>

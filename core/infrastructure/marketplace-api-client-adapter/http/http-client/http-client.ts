@@ -50,7 +50,7 @@ export class HttpClient {
     }
   }
 
-  private buildSearchParams(queryParams: HttpClientQueryParams = {}) {
+  protected buildSearchParams(queryParams: HttpClientQueryParams = {}) {
     return Object.entries(queryParams)
       .reduce((acc, [key, value]) => {
         if (value === undefined) {
@@ -104,7 +104,7 @@ export class HttpClient {
     return `${path}-${pathParams ? JSON.stringify(pathParams) : ""}-${queryParams ? JSON.stringify(queryParams) : ""}`;
   }
 
-  private mapHttpStatusToString(statusCode: number): HttpClientErrorStatus {
+  protected mapHttpStatusToString(statusCode: number): HttpClientErrorStatus {
     const statusMap: { [key: number]: HttpClientErrorStatus } = {
       400: HttpClientErrorStatus.BAD_REQUEST,
       401: HttpClientErrorStatus.UNAUTHORIZED,
@@ -118,7 +118,7 @@ export class HttpClient {
     return statusMap[statusCode] || HttpClientErrorStatus.UNHANDLED_ERROR;
   }
 
-  private buildHttpError(res: Response): HttpClientError {
+  protected buildHttpError(res: Response): HttpClientError {
     return {
       name: "Fetch Error",
       status: res.status,

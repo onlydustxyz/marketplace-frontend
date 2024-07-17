@@ -14,13 +14,14 @@ export function TooltipNextUiAdapter<C extends ElementType = "div">({
   enabled = true,
   canInteract = false,
   children,
+  placement = "top",
 }: TooltipPort<C>) {
   const Component = as || "div";
   const slots = TooltipNextUiVariants();
 
   if (!enabled) {
     return (
-      <Component {...htmlProps} className={cn(slots.base(), classNames?.base)}>
+      <Component {...htmlProps} className={cn(slots.wrapper(), classNames?.wrapper)}>
         {children}
       </Component>
     );
@@ -28,16 +29,16 @@ export function TooltipNextUiAdapter<C extends ElementType = "div">({
 
   return (
     <NextUiTooltip
-      showArrow
       content={content}
       closeDelay={50}
       shouldCloseOnBlur
       classNames={{
         base: cn("before:bg-container-action", { "pointer-events-none": !canInteract }),
-        content: cn("p-2 bg-container-action shadow-none text-xs text-1"),
+        content: cn(slots.tooltip(), classNames?.tooltip),
       }}
+      placement={placement}
     >
-      <Component {...htmlProps} className={cn(slots.base(), classNames?.base)}>
+      <Component {...htmlProps} className={cn(slots.wrapper(), classNames?.wrapper)}>
         {children}
       </Component>
     </NextUiTooltip>

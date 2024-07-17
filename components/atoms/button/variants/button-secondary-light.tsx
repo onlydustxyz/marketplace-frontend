@@ -7,13 +7,14 @@ import { withComponentAdapter } from "components/hocs/with-component-adapter";
 
 import { ButtonPort } from "../button.types";
 
-export function ButtonSecondaryLight<C extends ElementType = "button">({ ...props }: ButtonPort<C>) {
+export function ButtonSecondaryLight<C extends ElementType = "button">(props: ButtonPort<C>) {
   return withComponentAdapter<ButtonPort<C>>(ButtonDefaultAdapter)({
     ...props,
     classNames: {
       base: cn(
         "bg-transparent border-1 border-container-stroke-separator data-[loading=true]:border-interactions-white-active data-[disabled=true]:bg-interactions-white-disabled",
-        "hover:border-interactions-white-hover"
+        "hover:border-interactions-white-hover",
+        props.classNames?.base
       ),
       loaderContainer: "bg-transparent",
     },
