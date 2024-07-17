@@ -9,7 +9,7 @@ export namespace TInfo {
   export interface Sponsor {
     id: string;
     name: string;
-    url: string;
+    url?: string | null;
     logoUrl: string;
   }
 
