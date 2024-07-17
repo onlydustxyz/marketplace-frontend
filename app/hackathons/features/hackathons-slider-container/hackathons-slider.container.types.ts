@@ -1,7 +1,7 @@
 import { ListHackathonsItemResponse } from "api-client/resources/hackathons/types";
+import { HackathonStatus } from "core/domain/hackathon/models/hackathon-model";
 import { ReactNode } from "react";
 
-import { HackathonStatus } from "components/features/hackathons/hackathon-card/hackathon-card.types";
 import { TIcon } from "components/layout/icon/icon.types";
 
 export namespace THackathonsSliderContainer {
