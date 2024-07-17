@@ -34,3 +34,13 @@ export interface HackathonCardPort<C extends ElementType> extends Partial<Varian
   adaptMapStatusToTag?: typeof mapHackathonStatusToTag;
   adaptFormatDate?: typeof formatHackathonDate;
 }
+
+export interface HackathonCardMiniPort<C extends ElementType> extends Partial<Variants> {
+  htmlProps?: ComponentPropsWithoutRef<C>;
+  classNames?: Partial<ClassNames>;
+  upperTitle?: ReactNode;
+  title: string;
+  slug?: string;
+  backgroundImage: StaticImageData;
+  hasLayer?: boolean;
+}

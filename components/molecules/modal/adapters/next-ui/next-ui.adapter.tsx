@@ -35,12 +35,13 @@ export function ModalNextUiAdapter<C extends ElementType = "div">({
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       isDismissable={canDismiss}
+      isKeyboardDismissDisabled={!canDismiss}
       hideCloseButton
     >
-      <Inner {...(htmlProps ?? {})}>
-        <ModalContent>
-          {onClose => (
-            <>
+      <ModalContent>
+        {onClose => (
+          <>
+            <Inner {...(htmlProps ?? {})}>
               <ModalHeader>
                 <Typo {...titleProps} classNames={{ base: "truncate" }} />
                 {canDismiss ? (
@@ -54,10 +55,10 @@ export function ModalNextUiAdapter<C extends ElementType = "div">({
                   <div>{footer?.endContent}</div>
                 </ModalFooter>
               ) : null}
-            </>
-          )}
-        </ModalContent>
-      </Inner>
+            </Inner>
+          </>
+        )}
+      </ModalContent>
     </Modal>
   );
 }

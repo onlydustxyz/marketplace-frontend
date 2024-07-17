@@ -1,10 +1,9 @@
 import { InfoDropdown } from "app/hackathons/[hackathonSlug]/components/info-dropdown/info-dropdown";
 import { TInfo } from "app/hackathons/[hackathonSlug]/features/info/info.types";
+import { Register } from "app/hackathons/[hackathonSlug]/features/register/register";
 
-import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
 import { Tag } from "components/atoms/tag";
-import { Tooltip } from "components/atoms/tooltip";
 import { Typo } from "components/atoms/typo";
 import { BaseLink } from "components/layout/base-link/base-link";
 import { Translate } from "components/layout/translate/translate";
@@ -65,8 +64,8 @@ function Sponsors({ sponsors }: { sponsors: TInfo.Sponsor[] }) {
   ));
 }
 
-export function Info({ status, communityLinks, links, totalBudget, sponsors }: TInfo.Props) {
-  const isClosed = status === "closed";
+export function Info({ hackathon }: TInfo.Props) {
+  const isClosed = hackathon.getStatus() === "closed";
 
   return (
     <Paper
@@ -75,59 +74,75 @@ export function Info({ status, communityLinks, links, totalBudget, sponsors }: T
       classNames={{ base: "flex flex-col md:flex-row md:items-center justify-between gap-4" }}
     >
       <div className={"flex flex-wrap gap-3"}>
-        {communityLinks.length ? (
+        {hackathon.communityLinks.length ? (
           <div className={"grid gap-1"}>
             <Typo
               size={"xs"}
               color={"text-2"}
               translate={{ token: "v2.pages.hackathons.details.info.communityLinks" }}
             />
-            <Links links={communityLinks} />
+            <Links links={hackathon.communityLinks} />
           </div>
         ) : null}
 
-        {links.length ? (
+        {hackathon.links.length ? (
           <div className={"grid gap-1"}>
             <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.pages.hackathons.details.info.links" }} />
-            <Links links={links} />
+            <Links links={hackathon.links} />
           </div>
         ) : null}
 
-        {totalBudget ? (
+        {hackathon.totalBudget ? (
           <div className={"grid gap-1"}>
             <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.pages.hackathons.details.info.totalBudget" }} />
             <Tag style={"outline"} color={"white"} size={"s"} icon={{ remixName: "ri-coin-line" }}>
-              {totalBudget}
+              {hackathon.totalBudget}
             </Tag>
           </div>
         ) : null}
 
-        {sponsors.length ? (
+        {hackathon.sponsors.length ? (
           <div className={"grid gap-1"}>
             <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.pages.hackathons.details.info.sponsors" }} />
-            <Sponsors sponsors={sponsors} />
+            <Sponsors sponsors={hackathon.sponsors} />
           </div>
         ) : null}
       </div>
 
       <div className={"hidden md:block"}>
-        <Tooltip
-          content={<Translate token={"v2.pages.hackathons.details.info.eventOverTooltip"} />}
-          placement={"left"}
-          enabled={isClosed}
-        >
-          <Button size={"xl"} isDisabled={isClosed}>
-            <Translate token={"v2.pages.hackathons.details.info.register"} />
-          </Button>
-        </Tooltip>
+        <Register
+          hackathonId={hackathon.id}
+          hackathonSlug={hackathon.slug}
+          hackathonTitle={hackathon.title}
+          hackathonIndex={hackathon.index}
+          buttonProps={{
+            size: "xl",
+            isDisabled: isClosed,
+          }}
+          tooltipProps={{
+            content: <Translate token={"v2.pages.hackathons.details.info.eventOverTooltip"} />,
+            enabled: isClosed,
+            placement: "left",
+          }}
+        />
       </div>
 
       <div className={"grid w-full gap-4 md:hidden"}>
-        <Tooltip content={<Translate token={"v2.pages.hackathons.details.info.eventOverTooltip"} />} enabled={isClosed}>
-          <Button size={"l"} classNames={{ base: "w-full" }} isDisabled={isClosed}>
-            <Translate token={"v2.pages.hackathons.details.info.register"} />
-          </Button>
-        </Tooltip>
+        <Register
+          hackathonId={hackathon.id}
+          hackathonSlug={hackathon.slug}
+          hackathonTitle={hackathon.title}
+          hackathonIndex={hackathon.index}
+          buttonProps={{
+            size: "l",
+            isDisabled: isClosed,
+            classNames: { base: "w-full" },
+          }}
+          tooltipProps={{
+            content: <Translate token={"v2.pages.hackathons.details.info.eventOverTooltip"} />,
+            enabled: isClosed,
+          }}
+        />
 
         {/*<Button variant={"secondary-light"} size={"l"} classNames={{ base: "w-full" }}>*/}
         {/*  <Translate token={"v2.pages.hackathons.details.info.seeEvents"} />*/}

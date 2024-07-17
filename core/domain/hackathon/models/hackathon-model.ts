@@ -8,10 +8,10 @@ type HackathonsDetailsResponse = components["schemas"]["HackathonsDetailsRespons
 export type HackathonStatus = "live" | "open" | "closed";
 
 interface HackathonInterface extends HackathonsDetailsResponse {
-  isComingSoon: boolean;
-  isLive: boolean;
-  isPast: boolean;
-  status: HackathonStatus;
+  isComingSoon(): boolean;
+  isLive(): boolean;
+  isPast(): boolean;
+  getStatus(): HackathonStatus;
 }
 
 export class Hackathon extends mapApiToClass<HackathonsDetailsResponse>() implements HackathonInterface {
@@ -19,27 +19,27 @@ export class Hackathon extends mapApiToClass<HackathonsDetailsResponse>() implem
     super(props);
   }
 
-  get isComingSoon() {
+  isComingSoon() {
     return bootstrap.getDateHelperPort().isFuture(new Date(this.startDate));
   }
 
-  get isLive() {
+  isLive() {
     return (
       bootstrap.getDateHelperPort().isPast(new Date(this.startDate)) &&
       bootstrap.getDateHelperPort().isFuture(new Date(this.endDate))
     );
   }
 
-  get isPast() {
+  isPast() {
     return bootstrap.getDateHelperPort().isPast(new Date(this.endDate));
   }
 
-  get status() {
-    if (this.isLive) {
+  getStatus() {
+    if (this.isLive()) {
       return "live";
     }
 
-    if (this.isComingSoon) {
+    if (this.isComingSoon()) {
       return "open";
     }
 

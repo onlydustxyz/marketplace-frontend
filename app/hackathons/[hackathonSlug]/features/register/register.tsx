@@ -1,12 +1,13 @@
 "use client";
 
 import { Auth0ClientAdapter } from "core/application/auth0-client-adapter";
-import Image from "next/image";
-import githubGrantPermissionImage from "public/images/banners/github-grant-permission-banner.png";
 import { Controller } from "react-hook-form";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Input } from "components/atoms/input";
+import { Tooltip } from "components/atoms/tooltip";
+import { HackathonCardMini } from "components/features/hackathons/hackathon-card/hackathon-card.mini";
+import { getHackathonBackground } from "components/features/hackathons/hackathon-card/hackathon-card.utils";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Modal } from "components/molecules/modal";
@@ -16,54 +17,69 @@ import { useIntl } from "hooks/translate/use-translate";
 import { useRegister } from "./register.hooks";
 import { TRegister } from "./register.types";
 
-export function Register({ hackathonId, hackathonSlug }: TRegister.Props) {
+export function Register({
+  hackathonId,
+  hackathonSlug,
+  hackathonTitle,
+  hackathonIndex,
+  buttonProps,
+  tooltipProps,
+}: TRegister.Props) {
   const { T } = useIntl();
-  const { authProvider, modal, mutation, form } = useRegister({ hackathonId, hackathonSlug });
-  const { isAuthenticated = false, loginWithRedirect } = authProvider ?? {};
-
-  /**
-   * TODO @hayden
-   *
-   * 1. If user not logged in, log them in first and redirect to the same page
-   * 2. If user has no Telegram account, show them the modal
-   * 3. Otherwise register them to the hackathon
-   *
-   */
+  const {
+    modal,
+    form,
+    isAuthenticated,
+    loginWithRedirect,
+    registerForHackathon,
+    isPending,
+    hasTelegram,
+    hasRegistered,
+  } = useRegister({
+    hackathonId,
+    hackathonSlug,
+  });
 
   function renderButton() {
-    if (!isAuthenticated) {
+    if (hasRegistered) {
       return (
-        <button
-          type={"button"}
-          onClick={() =>
-            loginWithRedirect ? Auth0ClientAdapter.helpers.handleLoginWithRedirect(loginWithRedirect) : undefined
-          }
-        >
-          Connect to register
-        </button>
+        <Button {...buttonProps} isDisabled>
+          <Translate token={"v2.pages.hackathons.details.info.registered"} />
+        </Button>
       );
     }
 
-    const hasTelegram = true;
+    if (!isAuthenticated) {
+      return (
+        <Button
+          onClick={
+            loginWithRedirect ? () => Auth0ClientAdapter.helpers.handleLoginWithRedirect(loginWithRedirect) : undefined
+          }
+          {...buttonProps}
+        >
+          <Translate token={"v2.pages.hackathons.details.info.connectToRegister"} />
+        </Button>
+      );
+    }
 
     if (!hasTelegram) {
       return (
-        <button type={"button"} onClick={() => modal.setIsOpen(true)}>
-          Register
-        </button>
+        <Button onClick={() => modal.setIsOpen(true)} {...buttonProps}>
+          <Translate token={"v2.pages.hackathons.details.info.register"} />
+        </Button>
       );
     }
 
     return (
-      <button type={"button"} onClick={form.handleSubmit}>
-        Register
-      </button>
+      <Button onClick={registerForHackathon} isLoading={isPending} {...buttonProps}>
+        <Translate token={"v2.pages.hackathons.details.info.register"} />
+      </Button>
     );
   }
 
   return (
     <>
-      {renderButton()}
+      <Tooltip {...tooltipProps}>{renderButton()}</Tooltip>
 
       <Modal
         as={"form"}
@@ -77,21 +93,14 @@ export function Register({ hackathonId, hackathonSlug }: TRegister.Props) {
         onOpenChange={modal.setIsOpen}
         footer={{
           endContent: (
-            <Button type={"submit"} variant="primary" size="l" isLoading={mutation.isPending}>
+            <Button type={"submit"} variant="primary" size="l" isLoading={isPending}>
               <Translate token="v2.pages.hackathons.details.registerModal.submit" />
             </Button>
           ),
         }}
       >
         <div className="grid gap-4">
-          <Image
-            src={githubGrantPermissionImage}
-            alt="github grant permission"
-            className="h-full w-full object-cover object-center"
-            loading={"lazy"}
-            width={320}
-            height={50}
-          />
+          <HackathonCardMini title={hackathonTitle} backgroundImage={getHackathonBackground(hackathonIndex)} />
 
           <Controller
             name="telegram"
