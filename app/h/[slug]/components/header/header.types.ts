@@ -1,7 +1,6 @@
 import { ProjectLinkResponse } from "api-client/resources/projects/types";
+import { HackathonStatus } from "core/domain/hackathon/models/hackathon-model";
 import { ReactNode } from "react";
-
-import { HackathonStatus } from "components/features/hackathons/hackathon-card/hackathon-card.types";
 
 export namespace THeader {
   export interface Props {

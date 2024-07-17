@@ -1,4 +1,5 @@
 import { hackathonsApiClient } from "api-client/resources/hackathons";
+import { HackathonStatus } from "core/domain/hackathon/models/hackathon-model";
 import { notFound } from "next/navigation";
 import { isHackathonFuture } from "utils/hackathons/is-future";
 import { isHackathonLive } from "utils/hackathons/is-live";
@@ -7,7 +8,6 @@ import { Intro } from "app/h/[slug]/features/intro/intro";
 import { MainDescription } from "app/h/[slug]/features/main-description/main-description";
 import { Overview } from "app/h/[slug]/features/overview/overview";
 
-import { HackathonStatus } from "components/features/hackathons/hackathon-card/hackathon-card.types";
 import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 import { Flex } from "components/layout/flex/flex";
 
