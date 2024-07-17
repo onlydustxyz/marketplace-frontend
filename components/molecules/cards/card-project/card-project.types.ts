@@ -21,4 +21,5 @@ export interface CardProjectPort<C extends ElementType> {
   bottomTags?: Array<TagPort<"div">>;
   primaryActionProps?: ButtonPort<"button"> | ButtonPort<"a">;
   secondaryActionProps?: ButtonPort<"button"> | ButtonPort<"a">;
+  maxBottomTags?: number;
 }

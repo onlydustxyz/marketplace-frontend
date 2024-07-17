@@ -42,6 +42,7 @@ export function Projects({ projects }: TProjects.Props) {
               bottomTags={project.languages.map(language => ({
                 children: language.name,
               }))}
+              maxBottomTags={1}
               primaryActionProps={{
                 children: <Translate token="v2.pages.hackathons.details.projects.button" />,
               }}
