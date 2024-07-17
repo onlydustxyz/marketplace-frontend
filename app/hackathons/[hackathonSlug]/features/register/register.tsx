@@ -20,7 +20,7 @@ import { TRegister } from "./register.types";
 
 export function Register({ hackathonId, hackathonSlug, hackathonTitle, hackathonIndex, button }: TRegister.Props) {
   const { T } = useIntl();
-  const { userProfile, authProvider, modal, mutation, form, registerForHackathon } = useRegister({
+  const { userProfile, authProvider, modal, form, registerForHackathon, isPending } = useRegister({
     hackathonId,
     hackathonSlug,
   });
@@ -52,7 +52,7 @@ export function Register({ hackathonId, hackathonSlug, hackathonTitle, hackathon
 
     return cloneElement(
       button,
-      { type: "button", onClick: registerForHackathon },
+      { type: "button", onClick: registerForHackathon, isLoading: isPending },
       <Translate token={"v2.pages.hackathons.details.info.register"} />
     );
   }
@@ -73,7 +73,7 @@ export function Register({ hackathonId, hackathonSlug, hackathonTitle, hackathon
         onOpenChange={modal.setIsOpen}
         footer={{
           endContent: (
-            <Button type={"submit"} variant="primary" size="l" isLoading={mutation.isPending}>
+            <Button type={"submit"} variant="primary" size="l" isLoading={isPending}>
               <Translate token="v2.pages.hackathons.details.registerModal.submit" />
             </Button>
           ),

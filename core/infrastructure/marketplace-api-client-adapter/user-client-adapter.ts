@@ -1,6 +1,6 @@
 import { UserProfile } from "core/domain/user/models/user-profile-model";
 import { UserStoragePort } from "core/domain/user/outputs/user-storage-port";
-import { GetMyProfileResponse, SetMyProfileResponse } from "core/domain/user/user.types";
+import { GetMyProfileResponse, SetMyProfileBody, SetMyProfileResponse } from "core/domain/user/user.types";
 import { FirstParameter } from "core/helpers/types";
 import { HttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/http-client/http-client";
 
@@ -37,11 +37,12 @@ export class UserClientAdapter implements UserStoragePort {
     const method = "PUT";
     const tag = HttpClient.buildTag({ path });
 
-    const request = async () => {
+    const request = async (body: SetMyProfileBody) => {
       const data = await this.client.request<SetMyProfileResponse>({
         path,
         method,
         tag,
+        body: JSON.stringify(body),
       });
 
       return new UserProfile(data);

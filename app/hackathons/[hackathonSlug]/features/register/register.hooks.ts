@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
+import { UserProfileContactChannel } from "core/domain/user/models/user-profile-model";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -27,7 +28,7 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
     },
   });
 
-  const { mutate: register, ...restMutation } = UserReactQueryAdapter.client.useRegisterToHackathon({
+  const { mutateAsync: register, ...restRegister } = UserReactQueryAdapter.client.useRegisterToHackathon({
     pathParams: {
       hackathonId,
     },
@@ -40,14 +41,20 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
     },
   });
 
-  // const { data } = hackathonsApiClient.queries.useGetHackathonBySlug(hackathonSlug);
-  // const hasRegistered = data?.me?.hasRegistered;
-
   useMutationAlert({
-    mutation: restMutation,
+    mutation: restRegister,
     success: {
       message: T("v2.pages.hackathons.details.application.confirmationToaster"),
     },
+    error: {
+      default: true,
+    },
+  });
+
+  const { mutateAsync: setMyProfile, ...restSetMyProfile } = UserReactQueryAdapter.client.useSetMyProfile();
+
+  useMutationAlert({
+    mutation: restSetMyProfile,
     error: {
       default: true,
     },
@@ -60,16 +67,38 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
     },
   });
 
-  function registerForHackathon() {
-    register({});
+  async function registerForHackathon() {
+    await register({});
     capture("hackathon_registration", { hackathon_id: hackathonId });
   }
 
-  function handleFormSubmit(data: TRegister.form) {
-    console.log({ data });
-    // TODO @hayden update user profile with telegram, then register for hackathon
+  async function handleTelegramSubmit(data: TRegister.form) {
+    if (!userProfile) return;
 
-    registerForHackathon();
+    const currentUserProfileTelegram = userProfile.getContact(UserProfileContactChannel.Telegram);
+
+    userProfile.setContact({
+      channel: UserProfileContactChannel.Telegram,
+      contact: data.telegram,
+      visibility: currentUserProfileTelegram?.visibility,
+    });
+
+    await setMyProfile({
+      avatarUrl: userProfile.avatarUrl,
+      location: userProfile.location,
+      bio: userProfile.bio,
+      website: userProfile.website,
+      technologies: userProfile.technologies,
+      contacts: userProfile.contacts,
+      allocatedTimeToContribute: userProfile.allocatedTimeToContribute,
+      isLookingForAJob: userProfile.isLookingForAJob,
+      firstName: userProfile.firstName,
+      lastName: userProfile.lastName,
+    });
+
+    await registerForHackathon();
+
+    setIsOpen(false);
   }
 
   return {
@@ -79,11 +108,11 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
       isOpen,
       setIsOpen,
     },
-    mutation: restMutation,
     form: {
       control,
-      handleSubmit: handleSubmit(handleFormSubmit),
+      handleSubmit: handleSubmit(handleTelegramSubmit),
     },
     registerForHackathon,
+    isPending: restRegister.isPending || restSetMyProfile.isPending,
   };
 }
