@@ -62,7 +62,13 @@ export function ApplicationsTable() {
             author: { ...application.issue.author, isRegistered: false },
             repository: { ...application.issue.repo, owner: "" },
             createdAt: application.receivedAt,
-            project: { ...application.project, shortDescription: "" },
+            project: {
+              ...application.project,
+              // Unused, just to make Typescript happy ❤️
+              shortDescription: "",
+              visibility: "PRIVATE",
+              languages: [],
+            },
           });
 
           return (
