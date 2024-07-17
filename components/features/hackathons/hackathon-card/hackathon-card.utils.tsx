@@ -70,9 +70,7 @@ export function mapHackathonStatusToTag(status?: HackathonStatus): {
     case "live":
       return {
         tagIcon: "ri-fire-line",
-        tagText: (
-          <Translate token="v2.features.hackathonCard.status.live.tag" className="whitespace-nowrap" as="span" />
-        ),
+        tagText: <Translate token="v2.features.hackathonCard.status.live" className="whitespace-nowrap" as="span" />,
       };
     default:
       return {

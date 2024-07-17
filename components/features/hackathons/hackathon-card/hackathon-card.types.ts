@@ -17,6 +17,14 @@ interface ClassNames {
 
 type Project = components["schemas"]["ProjectLinkResponse"];
 
+export interface HackathonCardStatusProps {
+  status?: HackathonStatus;
+  applicantCount?: number;
+  openIssueCount?: number;
+  issueCount?: number;
+  adaptMapStatusToTag?: typeof mapHackathonStatusToTag;
+}
+
 export interface HackathonCardPort<C extends ElementType> extends Partial<Variants> {
   htmlProps?: ComponentPropsWithoutRef<C>;
   classNames?: Partial<ClassNames>;
