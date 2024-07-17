@@ -11,7 +11,7 @@ const defaultProps: CardProjectPort<"div"> = {
   avatarProps: {},
   title: "Starknet dart",
   description: "The goal of this SDK is to be able to interact with StarkNet smart contracts in a type-safe way.",
-  bottomTags: [{ children: "Starknet", avatar: { src: "" } }],
+  bottomTags: [{ children: "Starknet", avatar: { src: "" } }, { children: "Dart" }],
   topTags: [{ children: "Top Project" }],
   primaryActionProps: { children: "Button" },
   secondaryActionProps: { children: "Button" },
@@ -37,7 +37,25 @@ export const Default: Story = {
   },
   render: args => {
     return (
-      <div className="flex w-[370px] items-center gap-2">
+      <div className="flex w-[450px] items-center gap-2">
+        <CardProject {...defaultProps} {...args} />
+      </div>
+    );
+  },
+};
+
+export const WithMaxBottomTags: Story = {
+  args: {
+    maxBottomTags: 1,
+  },
+  parameters: {
+    docs: {
+      source: { code: "<CardProject maxBottomTags={1} />" },
+    },
+  },
+  render: args => {
+    return (
+      <div className="flex w-[450px] items-center gap-2">
         <CardProject {...defaultProps} {...args} />
       </div>
     );
@@ -52,7 +70,7 @@ export const Loading: Story = {
   },
   render: () => {
     return (
-      <div className="flex w-[370px] items-center gap-2">
+      <div className="flex w-[450px] items-center gap-2">
         <CardProjectLoading />
       </div>
     );
