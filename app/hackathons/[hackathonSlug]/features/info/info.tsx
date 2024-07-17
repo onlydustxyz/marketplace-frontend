@@ -52,8 +52,8 @@ function Sponsors({ sponsors }: { sponsors: TInfo.Sponsor[] }) {
   return sponsors.map(s => (
     <Tag
       key={s.id}
-      as={BaseLink}
-      htmlProps={{ href: s.url }}
+      as={s.url ? BaseLink : "span"}
+      htmlProps={{ href: s.url ?? "" }}
       avatar={{ src: s.logoUrl, alt: s.name }}
       style={"outline"}
       color={"white"}

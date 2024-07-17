@@ -6,6 +6,6 @@ export namespace TInfoDropdown {
   export interface Props {
     targetLabel: ReactNode;
     dropdownTitleToken: Key;
-    links: { url: string; value?: string }[];
+    links: { url?: string | null; value?: string }[];
   }
 }

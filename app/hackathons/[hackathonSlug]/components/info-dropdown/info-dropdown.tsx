@@ -38,11 +38,25 @@ export function InfoDropdown({ targetLabel, dropdownTitleToken, links }: TInfoDr
               </Button>
             </div>
 
-            {links.map(l => (
-              <Link key={l.url} href={l.url}>
-                {l.value ?? l.url}
-              </Link>
-            ))}
+            {links.map(l => {
+              if (l.url) {
+                return (
+                  <Link key={l.url} href={l.url}>
+                    {l.value ?? l.url}
+                  </Link>
+                );
+              }
+
+              if (l.value) {
+                return (
+                  <Typo key={l.value} size={"xs"}>
+                    {l.value}
+                  </Typo>
+                );
+              }
+
+              return null;
+            })}
           </div>
         )}
       </Popover.Content>
