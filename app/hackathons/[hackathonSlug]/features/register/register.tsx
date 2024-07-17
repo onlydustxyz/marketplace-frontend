@@ -1,12 +1,11 @@
 "use client";
 
 import { Auth0ClientAdapter } from "core/application/auth0-client-adapter";
-import { UserProfileContactChannel } from "core/domain/user/models/user-profile-model";
-import { cloneElement } from "react";
 import { Controller } from "react-hook-form";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Input } from "components/atoms/input";
+import { Tooltip } from "components/atoms/tooltip";
 import { HackathonCardMini } from "components/features/hackathons/hackathon-card/hackathon-card.mini";
 import { getHackathonBackground } from "components/features/hackathons/hackathon-card/hackathon-card.utils";
 import { Icon } from "components/layout/icon/icon";
@@ -18,48 +17,69 @@ import { useIntl } from "hooks/translate/use-translate";
 import { useRegister } from "./register.hooks";
 import { TRegister } from "./register.types";
 
-export function Register({ hackathonId, hackathonSlug, hackathonTitle, hackathonIndex, button }: TRegister.Props) {
+export function Register({
+  hackathonId,
+  hackathonSlug,
+  hackathonTitle,
+  hackathonIndex,
+  buttonProps,
+  tooltipProps,
+}: TRegister.Props) {
   const { T } = useIntl();
-  const { userProfile, authProvider, modal, form, registerForHackathon, isPending } = useRegister({
+  const {
+    modal,
+    form,
+    isAuthenticated,
+    loginWithRedirect,
+    registerForHackathon,
+    isPending,
+    hasTelegram,
+    hasRegistered,
+  } = useRegister({
     hackathonId,
     hackathonSlug,
   });
-  const { isAuthenticated = false, loginWithRedirect } = authProvider ?? {};
 
   function renderButton() {
+    if (hasRegistered) {
+      return (
+        <Button {...buttonProps} isDisabled>
+          <Translate token={"v2.pages.hackathons.details.info.registered"} />
+        </Button>
+      );
+    }
+
     if (!isAuthenticated) {
-      return cloneElement(
-        button,
-        {
-          type: "button",
-          onClick: () =>
-            loginWithRedirect ? Auth0ClientAdapter.helpers.handleLoginWithRedirect(loginWithRedirect) : undefined,
-        },
-        <Translate token={"v2.pages.hackathons.details.info.connectToRegister"} />
+      return (
+        <Button
+          onClick={
+            loginWithRedirect ? () => Auth0ClientAdapter.helpers.handleLoginWithRedirect(loginWithRedirect) : undefined
+          }
+          {...buttonProps}
+        >
+          <Translate token={"v2.pages.hackathons.details.info.connectToRegister"} />
+        </Button>
       );
     }
 
-    if (!userProfile?.hasContact(UserProfileContactChannel.Telegram)) {
-      return cloneElement(
-        button,
-        {
-          type: "button",
-          onClick: () => modal.setIsOpen(true),
-        },
+    if (!hasTelegram) {
+      return (
+        <Button onClick={() => modal.setIsOpen(true)} {...buttonProps}>
+          <Translate token={"v2.pages.hackathons.details.info.register"} />
+        </Button>
+      );
+    }
+
+    return (
+      <Button onClick={registerForHackathon} isLoading={isPending} {...buttonProps}>
         <Translate token={"v2.pages.hackathons.details.info.register"} />
-      );
-    }
-
-    return cloneElement(
-      button,
-      { type: "button", onClick: registerForHackathon, isLoading: isPending },
-      <Translate token={"v2.pages.hackathons.details.info.register"} />
+      </Button>
     );
   }
 
   return (
     <>
-      {renderButton()}
+      <Tooltip {...tooltipProps}>{renderButton()}</Tooltip>
 
       <Modal
         as={"form"}

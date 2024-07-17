@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { HackathonReactQueryAdapter } from "core/application/react-query-adapter/hackathon";
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 import { UserProfileContactChannel } from "core/domain/user/models/user-profile-model";
@@ -20,9 +21,16 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
   const {
     clientBootstrap: { authProvider },
   } = useClientBootstrapContext();
-  const { isAuthenticated = false } = authProvider ?? {};
+  const { isAuthenticated = false, loginWithRedirect } = authProvider ?? {};
 
   const { data: userProfile } = UserReactQueryAdapter.client.useGetMyProfile({
+    options: {
+      enabled: isAuthenticated,
+    },
+  });
+
+  const { data: hackathon } = HackathonReactQueryAdapter.client.useGetHackathonBySlug({
+    pathParams: { hackathonSlug },
     options: {
       enabled: isAuthenticated,
     },
@@ -110,8 +118,6 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
   }
 
   return {
-    authProvider,
-    userProfile,
     modal: {
       isOpen,
       setIsOpen,
@@ -120,7 +126,11 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
       control,
       handleSubmit: handleSubmit(handleTelegramSubmit),
     },
+    isAuthenticated,
+    loginWithRedirect,
     registerForHackathon,
     isPending: restRegister.isPending || restSetMyProfile.isPending,
+    hasTelegram: userProfile?.hasContact(UserProfileContactChannel.Telegram),
+    hasRegistered: hackathon?.me.hasRegistered,
   };
 }

@@ -2,10 +2,8 @@ import { InfoDropdown } from "app/hackathons/[hackathonSlug]/components/info-dro
 import { TInfo } from "app/hackathons/[hackathonSlug]/features/info/info.types";
 import { Register } from "app/hackathons/[hackathonSlug]/features/register/register";
 
-import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
 import { Tag } from "components/atoms/tag";
-import { Tooltip } from "components/atoms/tooltip";
 import { Typo } from "components/atoms/typo";
 import { BaseLink } from "components/layout/base-link/base-link";
 import { Translate } from "components/layout/translate/translate";
@@ -67,7 +65,7 @@ function Sponsors({ sponsors }: { sponsors: TInfo.Sponsor[] }) {
 }
 
 export function Info({ hackathon }: TInfo.Props) {
-  const isClosed = hackathon.status === "closed";
+  const isClosed = hackathon.getStatus() === "closed";
 
   return (
     <Paper
@@ -112,46 +110,39 @@ export function Info({ hackathon }: TInfo.Props) {
       </div>
 
       <div className={"hidden md:block"}>
-        {hackathon.me?.hasRegistered ? (
-          <Button size={"xl"} isDisabled>
-            <Translate token={"v2.pages.hackathons.details.info.registered"} />
-          </Button>
-        ) : (
-          <Tooltip
-            content={<Translate token={"v2.pages.hackathons.details.info.eventOverTooltip"} />}
-            placement={"left"}
-            enabled={isClosed}
-          >
-            <Register
-              hackathonId={hackathon.id}
-              hackathonSlug={hackathon.slug}
-              hackathonTitle={hackathon.title}
-              hackathonIndex={hackathon.index}
-              button={<Button size={"xl"} isDisabled={isClosed} />}
-            />
-          </Tooltip>
-        )}
+        <Register
+          hackathonId={hackathon.id}
+          hackathonSlug={hackathon.slug}
+          hackathonTitle={hackathon.title}
+          hackathonIndex={hackathon.index}
+          buttonProps={{
+            size: "xl",
+            isDisabled: isClosed,
+          }}
+          tooltipProps={{
+            content: <Translate token={"v2.pages.hackathons.details.info.eventOverTooltip"} />,
+            enabled: isClosed,
+            placement: "left",
+          }}
+        />
       </div>
 
       <div className={"grid w-full gap-4 md:hidden"}>
-        {hackathon.me?.hasRegistered ? (
-          <Button size={"l"} classNames={{ base: "w-full" }} isDisabled>
-            <Translate token={"v2.pages.hackathons.details.info.registered"} />
-          </Button>
-        ) : (
-          <Tooltip
-            content={<Translate token={"v2.pages.hackathons.details.info.eventOverTooltip"} />}
-            enabled={isClosed}
-          >
-            <Register
-              hackathonId={hackathon.id}
-              hackathonSlug={hackathon.slug}
-              hackathonTitle={hackathon.title}
-              hackathonIndex={hackathon.index}
-              button={<Button size={"l"} classNames={{ base: "w-full" }} isDisabled={isClosed} />}
-            />
-          </Tooltip>
-        )}
+        <Register
+          hackathonId={hackathon.id}
+          hackathonSlug={hackathon.slug}
+          hackathonTitle={hackathon.title}
+          hackathonIndex={hackathon.index}
+          buttonProps={{
+            size: "l",
+            isDisabled: isClosed,
+            classNames: { base: "w-full" },
+          }}
+          tooltipProps={{
+            content: <Translate token={"v2.pages.hackathons.details.info.eventOverTooltip"} />,
+            enabled: isClosed,
+          }}
+        />
 
         {/*<Button variant={"secondary-light"} size={"l"} classNames={{ base: "w-full" }}>*/}
         {/*  <Translate token={"v2.pages.hackathons.details.info.seeEvents"} />*/}
