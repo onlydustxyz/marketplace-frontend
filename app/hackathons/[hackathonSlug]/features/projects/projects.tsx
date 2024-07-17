@@ -8,6 +8,8 @@ import { NEXT_ROUTER } from "constants/router";
 import { TProjects } from "./projects.types";
 
 export function Projects({ projects }: TProjects.Props) {
+  if (!projects.length) return null;
+
   return (
     <Paper
       size="m"
