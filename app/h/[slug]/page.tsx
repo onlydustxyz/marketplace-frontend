@@ -6,7 +6,6 @@ import { isHackathonLive } from "utils/hackathons/is-live";
 import { Intro } from "app/h/[slug]/features/intro/intro";
 import { MainDescription } from "app/h/[slug]/features/main-description/main-description";
 import { Overview } from "app/h/[slug]/features/overview/overview";
-import { Tracks } from "app/h/[slug]/features/tracks/tracks";
 
 import { HackathonStatus } from "components/features/hackathons/hackathon-card/hackathon-card.types";
 import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
@@ -78,9 +77,6 @@ export default async function HackathonPage({ params }: { params: { slug: string
           </div>
           <div className="flex h-auto w-full flex-1 flex-col items-start justify-start gap-6">
             <MainDescription description={data.description} />
-            <div className="w-full" id={"tracks"}>
-              <Tracks data={data.tracks} />
-            </div>
           </div>
         </div>
       </div>
