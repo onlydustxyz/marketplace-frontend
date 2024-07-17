@@ -1,15 +1,14 @@
-import { mapApiToClass } from "core/infrastructure/marketplace-api-client-adapter/mappers/map-api-to-class";
-
 import { components } from "src/__generated/api";
+
+import { ShortProject, ShortProjectInterface } from "./short-project-model";
 
 type ProjectResponse = components["schemas"]["ProjectResponse"];
 
-interface ProjectInterface extends ProjectResponse {}
+interface ProjectInterface extends ProjectResponse, ShortProjectInterface {}
 
-class Project extends mapApiToClass<ProjectResponse>() implements ProjectInterface {
+export class Project extends ShortProject implements ProjectInterface {
   constructor(readonly props: ProjectResponse) {
     super(props);
+    Object.assign(this, props);
   }
 }
-
-export { Project };

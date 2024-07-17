@@ -19,6 +19,7 @@ export interface CardProjectPort<C extends ElementType> {
   description?: ReactNode;
   topTags?: Array<TagPort<"div">>;
   bottomTags?: Array<TagPort<"div">>;
-  primaryActionProps?: ButtonPort<"button">;
-  secondaryActionProps?: ButtonPort<"button">;
+  primaryActionProps?: ButtonPort<"button"> | ButtonPort<"a">;
+  secondaryActionProps?: ButtonPort<"button"> | ButtonPort<"a">;
+  maxBottomTags?: number;
 }
