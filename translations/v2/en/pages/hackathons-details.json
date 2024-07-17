@@ -23,6 +23,14 @@
     },
     "close": "Close"
   },
+  "registerModal": {
+    "title": "Register",
+    "telegram": {
+      "label": "We need your Telegram handle",
+      "placeholder": "Telegram"
+    },
+    "submit": "Register"
+  },
   "back": "Back",
   "navigation": {
     "overview": "Overview",

@@ -1,5 +1,7 @@
 export interface AuthProvider {
+  isAuthenticated: boolean;
   getAccessToken: () => Promise<string>;
   logout: () => void;
-  isAuthenticated: boolean;
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  loginWithRedirect: (...args: any) => Promise<void>;
 }

@@ -7,13 +7,27 @@ import { InputNextUiVariants } from "components/atoms/input/adapters/next-ui/nex
 import { InputPort } from "components/atoms/input/input.types";
 
 export const InputNextUiAdapter = forwardRef(function InputNextUiAdapter(
-  { classNames, isError, isDisabled, value, onChange, startContent, endContent, label }: InputPort,
+  {
+    id,
+    name,
+    classNames,
+    isError,
+    isDisabled,
+    value,
+    onChange,
+    startContent,
+    endContent,
+    label,
+    placeholder,
+  }: InputPort,
   ref: ForwardedRef<HTMLInputElement>
 ) {
   const slots = InputNextUiVariants({ isDisabled, isError });
   return (
     <Input
       ref={ref}
+      id={id}
+      name={name}
       classNames={{
         base: cn(slots.base(), classNames?.container),
         mainWrapper: cn(slots.mainWrapper()),
@@ -35,6 +49,7 @@ export const InputNextUiAdapter = forwardRef(function InputNextUiAdapter(
       isInvalid={isError}
       onChange={onChange}
       value={value}
+      placeholder={placeholder}
     />
   );
 });

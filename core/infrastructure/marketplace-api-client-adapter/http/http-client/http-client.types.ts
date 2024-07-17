@@ -22,7 +22,7 @@ interface HttpClientParameters<T extends { PathParams?: HttpClientPathParams; Qu
 }
 
 interface HttpStorageResponse<R> {
-  request(): Promise<R>;
+  request(body?: Record<string, unknown>): Promise<R>;
   tag: string;
 }
 

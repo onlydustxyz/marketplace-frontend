@@ -1,6 +1,7 @@
 "use client";
 
 import { NextUIProvider } from "@nextui-org/react";
+import { ClientBootstrapProvider } from "core/bootstrap/client-bootstrap-context";
 import { InitBootstrapAuth } from "core/bootstrap/init-bootstrap-auth";
 import { NavigationStateProvider } from "providers/navigation-state/navigation-state";
 import { PropsWithChildren } from "react";
@@ -27,34 +28,36 @@ export default function Providers({ children }: PropsWithChildren) {
   const isSm = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.sm}px)`);
 
   return (
-    <PosthogProvider>
-      <ImpersonationProvider>
-        <Auth0ProviderWithNavigate>
-          <InitBootstrapAuth />
-          <IntlProvider>
-            <QueryProvider>
-              <NextUIProvider>
-                <OnboardingProvider>
-                  <NavigationStateProvider>
-                    <StackProvider>
-                      <SidePanelStackProvider>
-                        <SidePanelProvider>
-                          <ToasterProvider>
-                            {children}
-                            <Stacks />
-                            <Toaster />
-                            {/* Hide tooltips on mobile */ isSm && <Tooltip />}
-                          </ToasterProvider>
-                        </SidePanelProvider>
-                      </SidePanelStackProvider>
-                    </StackProvider>
-                  </NavigationStateProvider>
-                </OnboardingProvider>
-              </NextUIProvider>
-            </QueryProvider>
-          </IntlProvider>
-        </Auth0ProviderWithNavigate>
-      </ImpersonationProvider>
-    </PosthogProvider>
+    <ClientBootstrapProvider>
+      <PosthogProvider>
+        <ImpersonationProvider>
+          <Auth0ProviderWithNavigate>
+            <InitBootstrapAuth />
+            <IntlProvider>
+              <QueryProvider>
+                <NextUIProvider>
+                  <OnboardingProvider>
+                    <NavigationStateProvider>
+                      <StackProvider>
+                        <SidePanelStackProvider>
+                          <SidePanelProvider>
+                            <ToasterProvider>
+                              {children}
+                              <Stacks />
+                              <Toaster />
+                              {/* Hide tooltips on mobile */ isSm && <Tooltip />}
+                            </ToasterProvider>
+                          </SidePanelProvider>
+                        </SidePanelStackProvider>
+                      </StackProvider>
+                    </NavigationStateProvider>
+                  </OnboardingProvider>
+                </NextUIProvider>
+              </QueryProvider>
+            </IntlProvider>
+          </Auth0ProviderWithNavigate>
+        </ImpersonationProvider>
+      </PosthogProvider>
+    </ClientBootstrapProvider>
   );
 }
