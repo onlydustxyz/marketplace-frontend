@@ -41,7 +41,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
               location={<Translate token={"v2.pages.hackathons.defaultLocation"} />}
               startDate={new Date(hackathon.startDate)}
               endDate={new Date(hackathon.endDate)}
-              status={hackathon.status}
+              status={hackathon.getStatus()}
               projects={hackathon.projects}
             />
             <Info hackathon={hackathon} />
