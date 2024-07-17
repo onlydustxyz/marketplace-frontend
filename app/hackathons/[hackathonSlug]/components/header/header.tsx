@@ -20,20 +20,22 @@ export function Header({ hackathonSlug }: THeader.Props) {
         translate={{ token: "v2.pages.hackathons.details.header.back" }}
       />
 
-      <Breadcrumbs
-        items={[
-          {
-            id: "hackathons_list",
-            label: <Translate token={"v2.pages.hackathons.details.header.hackathons"} />,
-            href: NEXT_ROUTER.hackathons.root,
-          },
+      {hackathonSlug ? (
+        <Breadcrumbs
+          items={[
+            {
+              id: "hackathons_list",
+              label: <Translate token={"v2.pages.hackathons.details.header.hackathons"} />,
+              href: NEXT_ROUTER.hackathons.root,
+            },
 
-          {
-            id: "current_hackathon",
-            label: hackathonSlug,
-          },
-        ]}
-      />
+            {
+              id: "current_hackathon",
+              label: hackathonSlug,
+            },
+          ]}
+        />
+      ) : null}
     </header>
   );
 }
