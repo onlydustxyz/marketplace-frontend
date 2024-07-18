@@ -2,7 +2,6 @@ import { HackathonStoragePort } from "core/domain/hackathon/outputs/hackathon-st
 import { FirstParameter } from "core/helpers/types";
 
 export class HackathonClientAdapterMock implements HackathonStoragePort {
-  //constructor(private readonly client: HttpClient) {}
   constructor() {}
 
   routes = {};
@@ -10,6 +9,7 @@ export class HackathonClientAdapterMock implements HackathonStoragePort {
   getHackathons = () => {
     return {
       request: () => Promise.resolve({}),
+
       tag: "",
     } as ReturnType<HackathonStoragePort["getHackathons"]>;
   };
@@ -19,5 +19,12 @@ export class HackathonClientAdapterMock implements HackathonStoragePort {
       request: () => Promise.resolve({}),
       tag: "",
     } as ReturnType<HackathonStoragePort["getHackathonBySlug"]>;
+  };
+
+  getHackathonByIdProjectIssues = (_: FirstParameter<HackathonStoragePort["getHackathonByIdProjectIssues"]>) => {
+    return {
+      request: () => Promise.resolve({}),
+      tag: "",
+    } as ReturnType<HackathonStoragePort["getHackathonByIdProjectIssues"]>;
   };
 }

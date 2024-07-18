@@ -2,7 +2,6 @@ import { ProjectStoragePort } from "core/domain/project/outputs/project-storage-
 import { FirstParameter } from "core/helpers/types";
 
 export class ProjectClientAdapterMock implements ProjectStoragePort {
-  // constructor(private readonly client: HttpClient) {}
   constructor() {}
 
   routes = {};
@@ -19,5 +18,12 @@ export class ProjectClientAdapterMock implements ProjectStoragePort {
       request: () => Promise.resolve({}),
       tag: "",
     } as ReturnType<ProjectStoragePort["getProjectRewards"]>;
+  };
+
+  getProjectPublicIssues = (_: FirstParameter<ProjectStoragePort["getProjectPublicIssues"]>) => {
+    return {
+      request: () => Promise.resolve({}),
+      tag: "",
+    } as ReturnType<ProjectStoragePort["getProjectPublicIssues"]>;
   };
 }
