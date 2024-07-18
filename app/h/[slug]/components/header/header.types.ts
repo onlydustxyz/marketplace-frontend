@@ -1,5 +1,5 @@
 import { ProjectLinkResponse } from "api-client/resources/projects/types";
-import { HackathonStatus } from "core/domain/hackathon/models/hackathon-model";
+import { HackathonStatus } from "core/domain/hackathon/models/hackathon.types";
 import { ReactNode } from "react";
 
 export namespace THeader {

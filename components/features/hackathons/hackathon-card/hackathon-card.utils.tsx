@@ -1,4 +1,4 @@
-import { HackathonStatus } from "core/domain/hackathon/models/hackathon-model";
+import { HackathonStatus } from "core/domain/hackathon/models/hackathon.types";
 import { formatInTimeZone } from "date-fns-tz";
 import enGB from "date-fns/locale/en-GB";
 import backgroundImage1 from "public/images/hackathons/cover-1.webp";
