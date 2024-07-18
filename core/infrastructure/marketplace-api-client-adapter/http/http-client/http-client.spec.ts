@@ -1,8 +1,14 @@
-import { describe, expect, it } from "vitest";
+import { Bootstrap } from "core/bootstrap";
+import { bootstrapConstructorMock } from "core/bootstrap/bootstrap-constructor-mock";
+import { beforeAll, describe, expect, it } from "vitest";
 
 import { HttpClient } from "./http-client";
 
 describe("HttpClient.buildTag", () => {
+  beforeAll(() => {
+    Bootstrap.newBootstrap(bootstrapConstructorMock);
+  });
+
   it("builds tag with only path", () => {
     const tag = HttpClient.buildTag({ path: "/users", pathParams: undefined, queryParams: undefined });
     expect(tag).toEqual("/users--");

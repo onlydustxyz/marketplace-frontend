@@ -3,14 +3,14 @@ import { ProjectStoragePort } from "core/domain/project/outputs/project-storage-
 import { UserStoragePort } from "core/domain/user/outputs/user-storage-port";
 import { DateFacadePort } from "core/helpers/date/date-facade-port";
 import { DateFnsAdapter } from "core/helpers/date/date-fns-adapter";
+import { HackathonClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/hackathon-client-adapter";
+import { ProjectClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/project-client-adapter";
+import { UserClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/user-client-adapter";
 import { AuthProvider } from "core/infrastructure/marketplace-api-client-adapter/auth/auth-provider";
-import { HackathonClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/hackathon-client-adapter";
 import { FetchHttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/fetch-http-client/fetch-http-client";
 import { ImpersonationProvider } from "core/infrastructure/marketplace-api-client-adapter/impersonation/impersonation-provider";
-import { ProjectClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/project-client-adapter";
-import { UserClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/user-client-adapter";
 
-interface BootstrapConstructor {
+export interface BootstrapConstructor {
   projectStoragePortForClient: ProjectStoragePort;
   projectStoragePortForServer: ProjectStoragePort;
   hackathonStoragePortForClient: HackathonStoragePort;
