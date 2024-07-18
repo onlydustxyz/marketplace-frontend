@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useContext } from "react";
 
 import { HackathonContext } from "app/hackathons/[hackathonSlug]/context/hackathon.context";
@@ -13,10 +13,12 @@ export function OverviewWrapper({ children }: TOverviewWrapper.Props) {
   } = useContext(HackathonContext);
 
   return (
-    <AnimatePresence>
-      <motion.div className="w-full" animate={{ width: isOpen ? "60%" : "100%" }} transition={{ duration: 0.5 }}>
-        {children}
-      </motion.div>
-    </AnimatePresence>
+    <motion.div
+      className="w-full"
+      animate={{ width: isOpen ? "60%" : "100%" }}
+      transition={{ duration: 0.3, type: "tween" }}
+    >
+      {children}
+    </motion.div>
   );
 }
