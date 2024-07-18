@@ -74,6 +74,14 @@ export function useApplicationsTable({ projectId = "" }: { projectId?: string })
         },
       },
       {
+        key: "label",
+        children: <Translate token={"v2.pages.project.applications.table.columns.label"} />,
+        icon: {
+          remixName: "ri-price-tag-line",
+        },
+        width: 150,
+      },
+      {
         key: "applicants",
         children: <Translate token={"v2.pages.project.applications.table.columns.applicants"} />,
         icon: {
@@ -124,6 +132,15 @@ export function useApplicationsTable({ projectId = "" }: { projectId?: string })
             <Link href={row.repo.htmlUrl} className="whitespace-nowrap text-left" title={repoName}>
               {shouldTruncateRepoName ? repoName.substring(0, truncateLength) + "..." : repoName}
             </Link>
+          ),
+          label: (
+            <div className="flex flex-wrap gap-1">
+              {row.labels.map(label => (
+                <Tag key={label.name} size={"xs"} style={"outline"} classNames={{ base: "inline-flex" }}>
+                  {label.name}
+                </Tag>
+              ))}
+            </div>
           ),
           applicants: (
             <Tag size={"xs"} style={"outline"} classNames={{ base: "inline-flex" }}>
