@@ -11,6 +11,6 @@ export type GetHackathonBySlugResponse = components["schemas"]["HackathonsDetail
 
 /* --------------------------------- Get hackathon project issues -------------------------------- */
 
-export type GetHackathonProjectIssuesPathParams = operations["getHackathonIssues"]["parameters"]["path"];
-export type GetHackathonProjectIssuesQueryParams = operations["getHackathonIssues"]["parameters"]["query"];
-export type GetHackathonProjectIssuesResponse = components["schemas"]["HackathonProjectsIssuesResponse"];
+export type GetHackathonByIdProjectIssuesPathParams = operations["getHackathonIssues"]["parameters"]["path"];
+export type GetHackathonByIdProjectIssuesQueryParams = operations["getHackathonIssues"]["parameters"]["query"];
+export type GetHackathonByIdProjectIssuesResponse = components["schemas"]["HackathonProjectsIssuesResponse"];
