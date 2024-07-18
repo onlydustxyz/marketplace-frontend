@@ -1,5 +1,10 @@
+import { ListIssue } from "core/domain/issue/models/list-issue-model";
 import { ProjectStoragePort } from "core/domain/project/outputs/project-storage-port";
-import { GetProjectBySlugResponse, GetProjectRewardsResponse } from "core/domain/project/project.types";
+import {
+  GetProjectBySlugResponse,
+  GetProjectIssuesResponse,
+  GetProjectRewardsResponse,
+} from "core/domain/project/project-contract.types";
 import { FirstParameter } from "core/helpers/types";
 import { HttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/http-client/http-client";
 
@@ -9,6 +14,7 @@ export class ProjectClientAdapter implements ProjectStoragePort {
   routes = {
     getProjectBySlug: "projects/slug/:slug",
     getProjectRewards: "projects/:projectId/rewards",
+    getProjectPublicIssues: "projects/:projectId/public-issues",
   } as const;
 
   getProjectBySlug = ({ pathParams, queryParams }: FirstParameter<ProjectStoragePort["getProjectBySlug"]>) => {
@@ -42,6 +48,34 @@ export class ProjectClientAdapter implements ProjectStoragePort {
         pathParams,
         queryParams,
       });
+
+    return {
+      request,
+      tag,
+    };
+  };
+
+  getProjectPublicIssues = ({
+    pathParams,
+    queryParams,
+  }: FirstParameter<ProjectStoragePort["getProjectPublicIssues"]>) => {
+    const path = this.routes["getProjectPublicIssues"];
+    const method = "GET";
+    const tag = HttpClient.buildTag({ path, pathParams, queryParams });
+    const request = async () => {
+      const data = await this.client.request<GetProjectIssuesResponse>({
+        path,
+        method,
+        tag,
+        pathParams,
+        queryParams,
+      });
+
+      return {
+        ...data,
+        issues: data.issues.map(i => new ListIssue(i)),
+      };
+    };
 
     return {
       request,
