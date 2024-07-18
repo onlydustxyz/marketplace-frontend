@@ -8,3 +8,9 @@ export type GetHackathonsResponse = components["schemas"]["HackathonsListRespons
 
 export type GetHackathonBySlugPathParams = operations["getHackathonBySlug"]["parameters"]["path"];
 export type GetHackathonBySlugResponse = components["schemas"]["HackathonsDetailsResponse"];
+
+/* --------------------------------- Get hackathon project issues -------------------------------- */
+
+export type GetHackathonBySlugPathParams = operations["getHackathonBySlug"]["parameters"]["path"];
+export type GetHackathonBySlugResponse = components["schemas"]["HackathonsDetailsResponse"];
+

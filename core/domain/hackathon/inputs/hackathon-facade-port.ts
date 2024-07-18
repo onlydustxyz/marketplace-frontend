@@ -16,4 +16,9 @@ export interface HackathonFacadePort {
       PathParams: GetHackathonBySlugPathParams;
     }>
   ): HttpStorageResponse<GetHackathonBySlugResponse>;
+  getHackathonProjectIssues(
+    params: HttpClientParameters<{
+      PathParams: GetHackathonBySlugPathParams;
+    }>
+  ): HttpStorageResponse<GetHackathonBySlugResponse>;
 }
