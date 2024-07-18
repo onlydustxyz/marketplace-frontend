@@ -2,6 +2,8 @@ import {
   GetProjectBySlugPathParams,
   GetProjectBySlugQueryParams,
   GetProjectBySlugResponse,
+  GetProjectIssuesPathParams,
+  GetProjectIssuesQueryParams,
   GetProjectRewardsPathParams,
   GetProjectRewardsQueryParams,
   GetProjectRewardsResponse,
@@ -24,4 +26,10 @@ export interface ProjectFacadePort {
       QueryParams: GetProjectRewardsQueryParams;
     }>
   ): HttpStorageResponse<GetProjectRewardsResponse>;
+  getProjectPublicIssues(
+    params: HttpClientParameters<{
+      PathParams: GetProjectIssuesPathParams;
+      QueryParams: GetProjectIssuesQueryParams;
+    }>
+  ): HttpStorageResponse<GetProjectIssuesPortResponse>;
 }
