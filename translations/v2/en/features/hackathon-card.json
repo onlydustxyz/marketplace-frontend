@@ -2,8 +2,10 @@
   "title": "Hackathon",
   "status": {
     "live": "Live now",
-    "open": "Application open",
+    "open": "Coming soon",
     "closed": "Closed"
   },
-  "button": "Explore"
+  "button": "Explore",
+  "applicants": "Applicants",
+  "issuesOpen": "Issues open"
 }

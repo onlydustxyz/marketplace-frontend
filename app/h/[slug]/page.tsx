@@ -1,4 +1,5 @@
 import { hackathonsApiClient } from "api-client/resources/hackathons";
+import { HackathonStatus } from "core/domain/hackathon/models/hackathon.types";
 import { notFound } from "next/navigation";
 import { isHackathonFuture } from "utils/hackathons/is-future";
 import { isHackathonLive } from "utils/hackathons/is-live";
@@ -6,9 +7,7 @@ import { isHackathonLive } from "utils/hackathons/is-live";
 import { Intro } from "app/h/[slug]/features/intro/intro";
 import { MainDescription } from "app/h/[slug]/features/main-description/main-description";
 import { Overview } from "app/h/[slug]/features/overview/overview";
-import { Tracks } from "app/h/[slug]/features/tracks/tracks";
 
-import { HackathonStatus } from "components/features/hackathons/hackathon-card/hackathon-card.types";
 import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 import { Flex } from "components/layout/flex/flex";
 
@@ -60,7 +59,7 @@ export default async function HackathonPage({ params }: { params: { slug: string
       />
 
       <div className="flex w-full flex-col items-start justify-start gap-6 pb-6 pt-6 md:pt-14">
-        <Intro title={data.title} subtitle={data.subtitle} />
+        <Intro title={data.title} />
         <div className="flex w-full flex-col items-start justify-start gap-6 md:flex-row">
           <div className="w-full md:w-[400px]">
             <Flex direction="col" className="gap-6">
@@ -78,9 +77,6 @@ export default async function HackathonPage({ params }: { params: { slug: string
           </div>
           <div className="flex h-auto w-full flex-1 flex-col items-start justify-start gap-6">
             <MainDescription description={data.description} />
-            <div className="w-full" id={"tracks"}>
-              <Tracks data={data.tracks} />
-            </div>
           </div>
         </div>
       </div>

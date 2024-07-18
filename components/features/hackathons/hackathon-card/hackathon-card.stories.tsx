@@ -1,9 +1,11 @@
 import { Meta, StoryObj } from "@storybook/react";
 import backgroundImage from "public/images/hackathons/cover-1.webp";
 
+import { HackathonCardLoading } from "components/features/hackathons/hackathon-card/hackathon-card.loading";
+import { HackathonCardMini } from "components/features/hackathons/hackathon-card/hackathon-card.mini";
+
 import { HackathonCard } from "./hackathon-card";
-import { HackathonCardLoading } from "./hackathon-card.loading";
-import { HackathonCardPort } from "./hackathon-card.types";
+import { HackathonCardMiniPort, HackathonCardPort } from "./hackathon-card.types";
 
 type Story = StoryObj<typeof HackathonCard>;
 
@@ -92,6 +94,16 @@ const multipleProjectsPort: HackathonCardPort<"div"> = {
       slug: "project-5",
     },
   ],
+};
+
+const miniPort: HackathonCardMiniPort<"article"> = {
+  title: "Hackathon Example",
+  slug: "example",
+  backgroundImage,
+  upperTitle: "Hackathon",
+  classNames: {
+    base: "w-full",
+  },
 };
 
 const meta: Meta<typeof HackathonCard> = {
@@ -210,6 +222,21 @@ export const Skeleton: Story = {
             base: "w-full",
           }}
         />
+      </div>
+    );
+  },
+};
+
+export const Mini: Story = {
+  parameters: {
+    docs: {
+      source: { code: "<HackathonCardMini />" },
+    },
+  },
+  render: args => {
+    return (
+      <div className="flex w-full items-center gap-2">
+        <HackathonCardMini {...miniPort} {...args} />
       </div>
     );
   },

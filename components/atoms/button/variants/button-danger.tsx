@@ -7,13 +7,14 @@ import { withComponentAdapter } from "components/hocs/with-component-adapter";
 
 import { ButtonPort } from "../button.types";
 
-export function ButtonDanger<C extends ElementType = "button">({ ...props }: ButtonPort<C>) {
+export function ButtonDanger<C extends ElementType = "button">(props: ButtonPort<C>) {
   return withComponentAdapter<ButtonPort<C>>(ButtonDefaultAdapter)({
     ...props,
     classNames: {
       base: cn(
         "bg-interactions-error-active data-[disabled=true]:bg-interactions-error-disabled",
-        "hover:bg-interactions-error-hover"
+        "hover:bg-interactions-error-hover",
+        props.classNames?.base
       ),
       loaderContainer: "bg-interactions-error-active",
     },

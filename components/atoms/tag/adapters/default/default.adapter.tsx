@@ -24,7 +24,8 @@ export function TagDefaultAdapter<C extends ElementType = "span">({
   ...props
 }: TagPort<C>) {
   const { isDeletable, hideText = false, shape, size, color, style } = props;
-  const Component = as || isDeletable ? "button" : "span";
+  const DefaultComponent = isDeletable ? "button" : "span";
+  const Component = as || DefaultComponent;
   const slots = TagDefaultVariants({ isDeletable, hideText, shape, size, color, style });
 
   const showChildren = !hideText && (!!children || !!translate);

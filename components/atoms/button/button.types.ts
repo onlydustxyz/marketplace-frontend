@@ -33,3 +33,7 @@ export interface ButtonPort<C extends ElementType> extends Partial<Variants>, Pr
   type?: HTMLButtonElement["type"];
   canInteract?: boolean;
 }
+
+export type ButtonDefaultPort<C extends ElementType> = ButtonPort<C> & {
+  variant?: "primary" | "danger" | "secondary-light" | "secondary-dark";
+};

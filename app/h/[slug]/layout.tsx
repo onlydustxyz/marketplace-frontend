@@ -13,15 +13,15 @@ export async function generateMetadata(props: { params: { slug: string } }): Pro
     return {
       ...sharedMetadata,
       title: `${hackathon.title}`,
-      description: `${hackathon.subtitle}`,
+      description: `${hackathon.description}`,
       openGraph: {
         ...sharedMetadata.openGraph,
         title: `${hackathon.title}`,
-        description: `${hackathon.subtitle}`,
+        description: `${hackathon.description}`,
       },
       twitter: {
         title: `${hackathon.title}`,
-        description: `${hackathon.subtitle}`,
+        description: `${hackathon.description}`,
         ...sharedMetadata.twitter,
       },
     };

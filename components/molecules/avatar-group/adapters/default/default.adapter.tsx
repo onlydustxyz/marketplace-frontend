@@ -9,6 +9,7 @@ import { AvatarGroupDefaultVariants } from "./default.variants";
 
 export function AvatarGroupDefaultAdapter<C extends ElementType = "div">({
   as,
+  htmlProps,
   classNames,
   avatars,
   maxAvatars,
@@ -16,10 +17,8 @@ export function AvatarGroupDefaultAdapter<C extends ElementType = "div">({
   shape,
   container,
   showFallback = true,
-  ...props
 }: AvatarGroupPort<C>) {
   const Component = as || "div";
-  const { ...htmlProps } = props;
   const slots = AvatarGroupDefaultVariants({
     size,
   });
