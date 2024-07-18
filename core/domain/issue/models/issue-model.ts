@@ -5,8 +5,9 @@ import { mapApiToClass } from "core/infrastructure/marketplace-api-client-adapte
 
 export interface IssueInterface extends ListIssueInterface, GithubIssueResponse {}
 
-const MixedIssue = extendMultipleClasses(mapApiToClass<GithubIssueResponse>(), ListIssue);
-export class Issue extends MixedIssue implements IssueInterface {
+const ExtendedWithListIssue = extendMultipleClasses(mapApiToClass<GithubIssueResponse>(), ListIssue);
+
+export class Issue extends ExtendedWithListIssue implements IssueInterface {
   constructor(readonly props: GithubIssueResponse) {
     super(props);
   }

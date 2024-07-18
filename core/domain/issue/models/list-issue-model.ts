@@ -8,7 +8,6 @@ export interface ListIssueInterface extends GithubIssueListItemResponse {
 export class ListIssue extends mapApiToClass<GithubIssueListItemResponse>() implements ListIssueInterface {
   constructor(readonly props: GithubIssueListItemResponse) {
     super(props);
-    Object.assign(this, props);
   }
 
   getApplicationStatus(): ApplicationStatus {
