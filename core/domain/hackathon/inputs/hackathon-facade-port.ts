@@ -1,6 +1,9 @@
 import {
   GetHackathonBySlugPathParams,
   GetHackathonBySlugResponse,
+  GetHackathonProjectIssuesPathParams,
+  GetHackathonProjectIssuesQueryParams,
+  GetHackathonProjectIssuesResponse,
   GetHackathonsResponse,
 } from "core/domain/hackathon/hackathon-contract.types";
 import { ListHackathon } from "core/domain/hackathon/models/list-hackathon-model";
@@ -18,7 +21,8 @@ export interface HackathonFacadePort {
   ): HttpStorageResponse<GetHackathonBySlugResponse>;
   getHackathonProjectIssues(
     params: HttpClientParameters<{
-      PathParams: GetHackathonBySlugPathParams;
+      PathParams: GetHackathonProjectIssuesPathParams;
+      QueryParams: GetHackathonProjectIssuesQueryParams;
     }>
-  ): HttpStorageResponse<GetHackathonBySlugResponse>;
+  ): HttpStorageResponse<GetHackathonProjectIssuesResponse>;
 }

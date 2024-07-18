@@ -1,6 +1,7 @@
 import { GetHackathonBySlugPathParams, GetHackathonsResponse } from "core/domain/hackathon/hackathon-contract.types";
 import { Hackathon } from "core/domain/hackathon/models/hackathon-model";
 import { ListHackathon } from "core/domain/hackathon/models/list-hackathon-model";
+import { GetProjectRewardsQueryParams } from "core/domain/project/project.types";
 import {
   HttpClientParameters,
   HttpStorageResponse,
@@ -12,6 +13,12 @@ export interface HackathonStoragePort {
   getHackathonBySlug(
     params: HttpClientParameters<{
       PathParams: GetHackathonBySlugPathParams;
+    }>
+  ): HttpStorageResponse<Hackathon>;
+  getHackathonProjectIssues(
+    params: HttpClientParameters<{
+      PathParams: GetHackathonBySlugPathParams;
+      QueryParams: GetProjectRewardsQueryParams;
     }>
   ): HttpStorageResponse<Hackathon>;
 }
