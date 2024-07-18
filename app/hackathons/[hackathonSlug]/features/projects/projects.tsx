@@ -31,6 +31,9 @@ export function Projects({ projects }: TProjects.Props) {
           <li key={project.id}>
             <CardProject
               as="a"
+              classNames={{
+                base: "h-full",
+              }}
               htmlProps={{
                 href: NEXT_ROUTER.projects.details.root(project.slug),
               }}
