@@ -3,7 +3,7 @@ import { useInfiniteQueryAdapter } from "core/application/react-query-adapter/he
 import { ReactQueryInfiniteParameters } from "core/application/react-query-adapter/react-query-adapter.types";
 import { bootstrap } from "core/bootstrap";
 import { ProjectFacadePort } from "core/domain/project/inputs/project-facade-port";
-import { GetProjectIssuesResponse } from "core/domain/project/project.types";
+import { GetProjectIssuesModel } from "core/domain/project/project-contract.types";
 
 export function useGetProjectPublicIssues({
   pathParams,
@@ -13,7 +13,7 @@ export function useGetProjectPublicIssues({
   const projectStoragePort = bootstrap.getProjectStoragePortForClient();
 
   return useInfiniteQuery(
-    useInfiniteQueryAdapter<GetProjectIssuesResponse>({
+    useInfiniteQueryAdapter<GetProjectIssuesModel>({
       pathParams,
       queryParams,
       options,

@@ -3,7 +3,7 @@ import { useInfiniteQueryAdapter } from "core/application/react-query-adapter/he
 import { ReactQueryInfiniteParameters } from "core/application/react-query-adapter/react-query-adapter.types";
 import { bootstrap } from "core/bootstrap";
 import { ProjectFacadePort } from "core/domain/project/inputs/project-facade-port";
-import { GetProjectRewardsResponse } from "core/domain/project/project.types";
+import { GetProjectRewardsResponse } from "core/domain/project/project-contract.types";
 
 export function useGetProjectRewards({
   pathParams,

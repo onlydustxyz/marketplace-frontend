@@ -1,30 +1,15 @@
 import {
-  GetProjectBySlugPathParams,
-  GetProjectBySlugQueryParams,
-  GetProjectBySlugResponse,
+  GetProjectBySlugPortParams,
+  GetProjectBySlugPortResponse,
+  GetProjectIssuesPortParams,
   GetProjectIssuesPortResponse,
-  GetProjectRewardsPathParams,
-  GetProjectRewardsQueryParams,
-  GetProjectRewardsResponse,
-} from "core/domain/project/project.types";
-import {
-  HttpClientParameters,
-  HttpStorageResponse,
-} from "core/infrastructure/marketplace-api-client-adapter/http/http-client/http-client.types";
+  GetProjectRewardsPortParams,
+  GetProjectRewardsPortResponse,
+} from "core/domain/project/project-contract.types";
 
 export interface ProjectStoragePort {
   routes: Record<string, string>;
-  getProjectBySlug(
-    params: HttpClientParameters<{
-      PathParams: GetProjectBySlugPathParams;
-      QueryParams: GetProjectBySlugQueryParams;
-    }>
-  ): HttpStorageResponse<GetProjectBySlugResponse>;
-  getProjectRewards(
-    params: HttpClientParameters<{
-      PathParams: GetProjectRewardsPathParams;
-      QueryParams: GetProjectRewardsQueryParams;
-    }>
-  ): HttpStorageResponse<GetProjectRewardsResponse>;
+  getProjectBySlug(params: GetProjectBySlugPortParams): GetProjectBySlugPortResponse;
+  getProjectRewards(params: GetProjectRewardsPortParams): GetProjectRewardsPortResponse;
   getProjectPublicIssues(params: GetProjectIssuesPortParams): GetProjectIssuesPortResponse;
 }

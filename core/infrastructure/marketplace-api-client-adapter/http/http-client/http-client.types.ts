@@ -26,6 +26,8 @@ interface HttpStorageResponse<R> {
   tag: string;
 }
 
+// export type HttpStorageResponseType<R extends HttpStorageResponse<R>> = Awaited<ReturnType<Awaited<R["request"]>>>;
+
 interface HttpClientError extends Error {
   status: number;
   message: string;

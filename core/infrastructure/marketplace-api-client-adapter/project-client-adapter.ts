@@ -4,7 +4,7 @@ import {
   GetProjectBySlugResponse,
   GetProjectIssuesResponse,
   GetProjectRewardsResponse,
-} from "core/domain/project/project.types";
+} from "core/domain/project/project-contract.types";
 import { FirstParameter } from "core/helpers/types";
 import { HttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/http-client/http-client";
 
