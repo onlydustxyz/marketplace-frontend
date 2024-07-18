@@ -1,4 +1,4 @@
-import { Hackathon } from "core/domain/hackathon/models/hackathon-model";
+import { HackathonInterface } from "core/domain/hackathon/models/hackathon-model";
 
 export namespace TInfo {
   export interface Link {
@@ -14,6 +14,6 @@ export namespace TInfo {
   }
 
   export interface Props {
-    hackathon: Hackathon;
+    hackathon: HackathonInterface;
   }
 }

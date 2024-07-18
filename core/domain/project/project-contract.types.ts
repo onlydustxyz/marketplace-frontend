@@ -12,18 +12,23 @@ type GetProjectBySlugPathParams = operations["getProjectBySlug"]["parameters"]["
 type GetProjectBySlugQueryParams = operations["getProjectBySlug"]["parameters"]["query"];
 
 export type GetProjectBySlugResponse = components["schemas"]["ProjectResponse"];
+
 export type GetProjectBySlugPortResponse = HttpStorageResponse<GetProjectBySlugResponse>;
+
 export type GetProjectBySlugPortParams = HttpClientParameters<{
   PathParams: GetProjectBySlugPathParams;
   QueryParams: GetProjectBySlugQueryParams;
 }>;
+
 /* --------------------------------- Get project rewards -------------------------------- */
 
 type GetProjectRewardsPathParams = operations["getProjectRewards"]["parameters"]["path"];
 type GetProjectRewardsQueryParams = operations["getProjectRewards"]["parameters"]["query"];
+
 export type GetProjectRewardsResponse = components["schemas"]["RewardsPageResponse"];
 
 export type GetProjectRewardsPortResponse = HttpStorageResponse<GetProjectRewardsResponse>;
+
 export type GetProjectRewardsPortParams = HttpClientParameters<{
   PathParams: GetProjectRewardsPathParams;
   QueryParams: GetProjectRewardsQueryParams;
