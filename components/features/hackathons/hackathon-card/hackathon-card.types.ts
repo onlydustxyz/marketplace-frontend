@@ -1,4 +1,4 @@
-import { HackathonStatus } from "core/domain/hackathon/models/hackathon-model";
+import { HackathonStatus } from "core/domain/hackathon/models/hackathon.types";
 import { StaticImageData } from "next/image";
 import { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
 

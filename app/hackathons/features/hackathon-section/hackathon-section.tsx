@@ -7,7 +7,7 @@ import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-export function HackathonSection({ title, icon, items, status }: THackathonSection.Props) {
+export function HackathonSection({ title, icon, items }: THackathonSection.Props) {
   if (!items.length) return null;
 
   return (
@@ -27,9 +27,9 @@ export function HackathonSection({ title, icon, items, status }: THackathonSecti
             location={<Translate token={"v2.pages.hackathons.defaultLocation"} />}
             startDate={new Date(item.startDate)}
             endDate={new Date(item.endDate)}
-            status={status}
+            status={item.getStatus()}
             projects={item.projects}
-            applicantCount={item.applicantCount}
+            subscriberCount={item.subscriberCount}
             openIssueCount={item.openIssueCount}
             issueCount={item.issueCount}
           />
