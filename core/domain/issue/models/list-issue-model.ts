@@ -6,27 +6,29 @@ import { components } from "src/__generated/api";
 export type GithubIssueListItemResponse = components["schemas"]["GithubIssuePageItemResponse"];
 
 export interface ListIssueInterface extends GithubIssueListItemResponse {
-  getIssueApplicationStatus(): IssueApplicationStatus;
+  getApplicationStatus(): IssueApplicationStatus;
+  isAssigned(): boolean;
+  isApplied(): boolean;
 }
 export class ListIssue extends mapApiToClass<GithubIssueListItemResponse>() implements ListIssueInterface {
   constructor(readonly props: GithubIssueListItemResponse) {
     super(props);
   }
 
-  getIsAssigned(): boolean {
+  isAssigned(): boolean {
     return this.assignees.length > 0;
   }
 
-  getIsApplied(): boolean {
+  isApplied(): boolean {
     return !!this.currentUserApplication;
   }
 
-  getIssueApplicationStatus(): IssueApplicationStatus {
-    if (this.getIsAssigned()) {
+  getApplicationStatus(): IssueApplicationStatus {
+    if (this.isAssigned()) {
       return "assigned";
     }
 
-    if (this.getIsApplied()) {
+    if (this.isApplied()) {
       return "applied";
     }
 
