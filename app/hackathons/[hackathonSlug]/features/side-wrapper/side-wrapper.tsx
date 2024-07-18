@@ -16,11 +16,11 @@ export function SideWrapper({ children }: TSideWrapper.Props) {
     <AnimatePresence>
       {isOpen ? (
         <motion.aside
-          className="flex-1"
+          className="w-0 overflow-hidden"
           initial={{ width: 0 }}
           animate={{ width: "40%" }}
           exit={{ width: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.3, type: "tween" }}
         >
           <motion.div>{children}</motion.div>
         </motion.aside>
