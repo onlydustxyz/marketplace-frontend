@@ -32,30 +32,8 @@
       "label": "We need your Telegram handle",
       "placeholder": "Telegram"
     },
-    "submit": "Register"
-  },
-  "back": "Back",
-  "navigation": {
-    "overview": "Overview",
-    "tracks": "Tracks"
-  },
-  "overview": {
-    "startDate": "Start date",
-    "endDate": "End date",
-    "totalBudget": "Total budget",
-    "sponsors": "Sponsors",
-    "links": "Links",
-    "projects": "Projects"
-  },
-  "application": {
-    "title": "Applications open",
-    "description": "Please share your telegram handle first so we can reach out to you.",
-    "button": {
-      "apply": "Register now",
-      "connectToApply": "Connect to register",
-      "alreadyApplied": "Registered"
-    },
-    "confirmationToaster": "You have registered successfully."
+    "submit": "Register",
+    "success": "You have registered successfully"
   },
   "projects": {
     "title": "Projects",
