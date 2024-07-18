@@ -33,6 +33,7 @@ export async function generateMetadata(props: { params: { hackathonSlug: string 
     return sharedMetadata;
   }
 }
+
 export default function HackathonLayout({ children }: PropsWithChildren) {
   return (
     <ScrollView>

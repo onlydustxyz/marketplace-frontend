@@ -2,6 +2,8 @@ import { bootstrap } from "core/bootstrap";
 import { ShortProject } from "core/domain/project/models/short-project-model";
 import { notFound } from "next/navigation";
 
+import { HACKATHON_LAYOUT_ID } from "app/hackathons/[hackathonSlug]/constants";
+
 import { Paper } from "components/atoms/paper";
 import { HackathonCard } from "components/features/hackathons/hackathon-card";
 import { getHackathonBackground } from "components/features/hackathons/hackathon-card/hackathon-card.utils";
@@ -40,7 +42,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
       <div className="flex w-full flex-col gap-4 pb-6 pt-4">
         <Header hackathonSlug={hackathon.slug} />
 
-        <div className="flex w-full gap-4">
+        <div className="relative flex w-full gap-4" id={HACKATHON_LAYOUT_ID}>
           <OverviewWrapper>
             <Paper size="m" container="2" classNames={{ base: "grid gap-4" }}>
               <HackathonCard

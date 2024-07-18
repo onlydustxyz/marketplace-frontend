@@ -2,6 +2,8 @@
 
 import { createContext, useState } from "react";
 
+import { HackathonUtils } from "app/hackathons/[hackathonSlug]/utils";
+
 import { THackathonContext } from "./hackathon.context.types";
 
 export const HackathonContext = createContext<THackathonContext.Return>({
@@ -9,6 +11,10 @@ export const HackathonContext = createContext<THackathonContext.Return>({
     isOpen: false,
     open: () => null,
     close: () => null,
+  },
+  panelSize: {
+    container: "100%",
+    panel: "0px",
   },
 });
 
@@ -18,6 +24,11 @@ export function HackathonContextProvider({ children }: THackathonContext.Props) 
   return (
     <HackathonContext.Provider
       value={{
+        panelSize: HackathonUtils.getContainerSize({
+          isTimelineOpen: !isIssuesOpen,
+          isIssueOpen: isIssuesOpen,
+          isProjectOpen: false,
+        }),
         issues: {
           isOpen: isIssuesOpen,
           open: () => setIsIssuesOpen(true),
