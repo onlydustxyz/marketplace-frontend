@@ -5,9 +5,6 @@ import { Controller } from "react-hook-form";
 
 import { ApplyIssueCard } from "app/p/[slug]/components/apply-issue-card/apply-issue-card";
 import { ApplyIssueMarkdown } from "app/p/[slug]/components/apply-issue-markdown/apply-issue-markdown";
-import { useApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.hooks";
-import { ApplyIssueDrawerLoading } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.loading";
-import { TApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.types";
 
 import { usePosthog } from "src/hooks/usePosthog";
 
@@ -18,6 +15,9 @@ import { TagIcon } from "components/atoms/tag/variants/tag-icon";
 import { Textarea } from "components/atoms/textarea";
 import { Typo } from "components/atoms/typo/variants/typo-default";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
+import { useApplyIssueDrawer } from "components/features/apply-issue-drawer/apply-issue-drawer.hooks";
+import { ApplyIssueDrawerLoading } from "components/features/apply-issue-drawer/apply-issue-drawer.loading";
+import { TApplyIssueDrawer } from "components/features/apply-issue-drawer/apply-issue-drawer.types";
 import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
 import { GrantPermission } from "components/features/grant-permission/grant-permission";
 import { usePublicRepoScope } from "components/features/grant-permission/hooks/use-public-repo-scope";

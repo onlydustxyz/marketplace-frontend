@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { useApplyIssueDrawerState } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.hooks";
+import { useApplyIssueDrawerState } from "components/features/apply-issue-drawer/apply-issue-drawer.hooks";
 
 export namespace TApplyIssueDrawer {
   export type ActionType = "create" | "update";
