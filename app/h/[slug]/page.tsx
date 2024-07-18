@@ -1,5 +1,5 @@
 import { hackathonsApiClient } from "api-client/resources/hackathons";
-import { HackathonStatus } from "core/domain/hackathon/models/hackathon-model";
+import { HackathonStatus } from "core/domain/hackathon/models/hackathon.types";
 import { notFound } from "next/navigation";
 import { isHackathonFuture } from "utils/hackathons/is-future";
 import { isHackathonLive } from "utils/hackathons/is-live";
