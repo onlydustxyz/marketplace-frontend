@@ -1,4 +1,4 @@
-import { Constructor, anyType } from "core/helpers/types";
+import { AnyType, Constructor } from "core/helpers/types";
 
 export function extendMultipleClasses<TBase extends Constructor, TMixins extends Constructor[]>(
   Base: TBase,
@@ -6,7 +6,7 @@ export function extendMultipleClasses<TBase extends Constructor, TMixins extends
 ) {
   return mixins.reduce(acc => {
     return class extends acc {
-      constructor(...args: anyType[]) {
+      constructor(...args: AnyType[]) {
         super(...args);
 
         // TODO : @alexbeno keep this for try if it works before remove
