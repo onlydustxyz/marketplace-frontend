@@ -6,13 +6,12 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { TApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.types";
-
 import ProjectApi from "src/api/Project";
 import { FetchError } from "src/api/query.type";
 import { HttpStatusStrings } from "src/api/query.utils";
 import useMutationAlert from "src/api/useMutationAlert";
 
+import { TApplyIssueDrawer } from "components/features/apply-issue-drawer/apply-issue-drawer.types";
 import { usePublicRepoScope } from "components/features/grant-permission/hooks/use-public-repo-scope";
 
 import { useIntl } from "hooks/translate/use-translate";

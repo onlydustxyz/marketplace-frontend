@@ -4,7 +4,6 @@ import { applicationsApiClient } from "api-client/resources/applications";
 import { useMemo } from "react";
 
 import { mapIssueToContribution } from "app/p/[slug]/applications/features/applications-table/application-table.utils";
-import { useApplyIssueDrawerState } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.hooks";
 
 import { useStackProjectOverview } from "src/App/Stacks/Stacks";
 import { Contribution } from "src/components/Contribution/Contribution";
@@ -14,6 +13,7 @@ import { Button } from "components/atoms/button/variants/button-default";
 import { Avatar } from "components/ds/avatar/avatar";
 import { Link } from "components/ds/link/link";
 import { TTable } from "components/ds/table/table.types";
+import { useApplyIssueDrawerState } from "components/features/apply-issue-drawer/apply-issue-drawer.hooks";
 import { Translate } from "components/layout/translate/translate";
 
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";

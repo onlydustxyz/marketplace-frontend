@@ -1,7 +1,6 @@
 "use client";
 
 import { mapIssueToContribution } from "app/p/[slug]/applications/features/applications-table/application-table.utils";
-import { ApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer";
 
 import { IMAGES } from "src/assets/img";
 import { ContributionCard } from "src/components/Contribution/ContributionCard";
@@ -12,6 +11,7 @@ import { cn } from "src/utils/cn";
 import { Button } from "components/atoms/button/variants/button-default";
 import { Typo } from "components/atoms/typo";
 import { Table } from "components/ds/table/table";
+import { ApplyIssueDrawer } from "components/features/apply-issue-drawer/apply-issue-drawer";
 import { TableContainer } from "components/features/table-container/table-container";
 import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 import { Translate } from "components/layout/translate/translate";
