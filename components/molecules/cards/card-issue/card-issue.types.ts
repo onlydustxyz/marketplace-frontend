@@ -1,3 +1,4 @@
+import { ApplicationStatus } from "core/domain/issue/models/issue.type";
 import { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
 
 import { AvatarPort } from "../../../atoms/avatar";
@@ -37,14 +38,12 @@ interface Tokens {
   applicantsCount: ReactNode;
 }
 
-export type CardIssueStatus = "applied" | "open" | "assigned";
-
 export interface CardIssuePort<C extends ElementType> {
   as?: C;
   htmlProps?: ComponentPropsWithoutRef<C>;
   classNames?: Partial<ClassNames>;
   paperProps?: Partial<PaperPort<C>>;
-  status?: CardIssueStatus;
+  status?: ApplicationStatus;
   title: ReactNode;
   tokens: Tokens;
   tags?: Array<TagPort<"div">>;
