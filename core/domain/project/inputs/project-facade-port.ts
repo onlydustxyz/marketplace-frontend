@@ -11,6 +11,4 @@ export interface ProjectFacadePort {
   getProjectBySlug(params: GetProjectBySlugPortParams): GetProjectBySlugPortResponse;
   getProjectRewards(params: GetProjectRewardsPortParams): GetProjectRewardsPortResponse;
   getProjectPublicIssues(params: GetProjectIssuesPortParams): GetProjectIssuesPortResponse;
-  getProjectRewards(params: GetProjectRewardsPortParams): GetProjectRewardsPortResponse;
-  getProjectPublicIssues(params: GetProjectIssuesPortParams): GetProjectIssuesPortResponse;
 }
