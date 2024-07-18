@@ -1,4 +1,4 @@
-import { ApplicationStatus } from "core/domain/issue/models/issue.type";
+import { IssueApplicationStatus } from "core/domain/issue/models/issue.types";
 import { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
 
 import { AvatarPort } from "../../../atoms/avatar";
@@ -43,7 +43,7 @@ export interface CardIssuePort<C extends ElementType> {
   htmlProps?: ComponentPropsWithoutRef<C>;
   classNames?: Partial<ClassNames>;
   paperProps?: Partial<PaperPort<C>>;
-  status?: ApplicationStatus;
+  status?: IssueApplicationStatus;
   title: ReactNode;
   tokens: Tokens;
   tags?: Array<TagPort<"div">>;

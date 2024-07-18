@@ -1,16 +1,16 @@
 import { GithubIssueListItemResponse } from "core/domain/issue/issue-contract.types";
-import { ApplicationStatus } from "core/domain/issue/models/issue.type";
+import { IssueApplicationStatus } from "core/domain/issue/models/issue.types";
 import { mapApiToClass } from "core/infrastructure/marketplace-api-client-adapter/mappers/map-api-to-class";
 
 export interface ListIssueInterface extends GithubIssueListItemResponse {
-  getApplicationStatus(): ApplicationStatus;
+  getIssueApplicationStatus(): IssueApplicationStatus;
 }
 export class ListIssue extends mapApiToClass<GithubIssueListItemResponse>() implements ListIssueInterface {
   constructor(readonly props: GithubIssueListItemResponse) {
     super(props);
   }
 
-  getApplicationStatus(): ApplicationStatus {
+  getIssueApplicationStatus(): IssueApplicationStatus {
     if (this.assignees.length > 0) {
       return "assigned";
     }
