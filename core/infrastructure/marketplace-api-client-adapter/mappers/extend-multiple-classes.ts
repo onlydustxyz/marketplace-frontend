@@ -1,6 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type anyType = any;
-type Constructor<T = anyType> = new (...args: anyType[]) => T;
+import { Constructor, anyType } from "core/helpers/types";
 
 export function extendMultipleClasses<TBase extends Constructor, TMixins extends Constructor[]>(
   Base: TBase,
