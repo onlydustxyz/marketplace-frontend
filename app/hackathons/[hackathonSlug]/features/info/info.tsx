@@ -123,6 +123,7 @@ export function Info({ hackathon }: TInfo.Props) {
           hackathonSlug={hackathon.slug}
           hackathonTitle={hackathon.title}
           hackathonIndex={hackathon.index}
+          hackathonIsLive={hackathon.isLive()}
           buttonProps={{
             size: "xl",
             isDisabled: isClosed,
@@ -141,6 +142,7 @@ export function Info({ hackathon }: TInfo.Props) {
           hackathonSlug={hackathon.slug}
           hackathonTitle={hackathon.title}
           hackathonIndex={hackathon.index}
+          hackathonIsLive={hackathon.isLive()}
           buttonProps={{
             size: "l",
             isDisabled: isClosed,

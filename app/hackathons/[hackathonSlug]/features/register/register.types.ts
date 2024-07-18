@@ -13,6 +13,7 @@ export namespace TRegister {
     hackathonIndex: number;
     buttonProps: ButtonDefaultPort<"button">;
     tooltipProps: TooltipPort<"div">;
+    hackathonIsLive: boolean;
   }
 
   export const validation = z.object({

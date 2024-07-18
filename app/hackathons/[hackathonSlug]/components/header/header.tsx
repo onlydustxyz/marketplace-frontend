@@ -10,7 +10,7 @@ import { NEXT_ROUTER } from "constants/router";
 
 export function Header({ hackathonSlug }: THeader.Props) {
   return (
-    <header className={"flex items-center justify-between py-4"}>
+    <header className={"flex items-center justify-between"}>
       <Button
         as={Link}
         htmlProps={{ href: NEXT_ROUTER.hackathons.root }}
