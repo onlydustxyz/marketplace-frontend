@@ -15,7 +15,7 @@ export interface ListHackathonInterface extends HackathonsListResponse {
 }
 
 export class ListHackathon extends mapApiToClass<HackathonsListResponse>() implements ListHackathonInterface {
-  constructor(readonly props: HackathonsListResponse) {
+  constructor(protected props: HackathonsListResponse) {
     super(props);
   }
 

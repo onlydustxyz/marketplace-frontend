@@ -11,7 +11,7 @@ export class ShortProject extends LinkProject implements ShortProjectInterface {
   shortDescription!: ProjectShortResponse["shortDescription"];
   visibility!: ProjectShortResponse["visibility"];
 
-  constructor(readonly props: ProjectShortResponse) {
+  constructor(protected readonly props: ProjectShortResponse) {
     super(props);
     Object.assign(this, props);
   }

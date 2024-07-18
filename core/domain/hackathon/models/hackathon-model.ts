@@ -18,7 +18,7 @@ export class Hackathon extends ListHackathon implements HackathonInterface {
   sponsors!: HackathonsDetailsResponse["sponsors"];
   totalBudget!: HackathonsDetailsResponse["totalBudget"];
 
-  constructor(readonly props: HackathonsDetailsResponse) {
+  constructor(protected readonly props: HackathonsDetailsResponse) {
     super(props);
     Object.assign(this, props);
   }
