@@ -59,7 +59,7 @@ export default async function HackathonPage({ params }: { params: { slug: string
       />
 
       <div className="flex w-full flex-col items-start justify-start gap-6 pb-6 pt-6 md:pt-14">
-        <Intro title={data.title} subtitle={data.subtitle} />
+        <Intro title={data.title} />
         <div className="flex w-full flex-col items-start justify-start gap-6 md:flex-row">
           <div className="w-full md:w-[400px]">
             <Flex direction="col" className="gap-6">

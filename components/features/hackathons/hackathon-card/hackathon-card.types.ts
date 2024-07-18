@@ -19,7 +19,7 @@ type Project = components["schemas"]["ProjectLinkResponse"];
 
 export interface HackathonCardStatusProps {
   status?: HackathonStatus;
-  applicantCount?: number;
+  subscriberCount?: number;
   openIssueCount?: number;
   issueCount?: number;
   adaptMapStatusToTag?: typeof mapHackathonStatusToTag;
@@ -39,7 +39,7 @@ export interface HackathonCardPort<C extends ElementType> extends Partial<Varian
   status?: HackathonStatus;
   projects?: Project[];
   hasLayer?: boolean;
-  applicantCount?: number;
+  subscriberCount?: number;
   openIssueCount?: number;
   issueCount?: number;
   adaptMapStatusToTag?: typeof mapHackathonStatusToTag;

@@ -1,5 +1,5 @@
 export namespace THeader {
   export interface Props {
-    hackathonSlug: string;
+    hackathonSlug?: string;
   }
 }
