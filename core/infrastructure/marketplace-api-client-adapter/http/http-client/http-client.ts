@@ -101,7 +101,23 @@ export class HttpClient {
     pathParams?: HttpClientPathParams;
     queryParams?: HttpClientQueryParams;
   }) {
-    return `${path}-${pathParams ? JSON.stringify(pathParams) : ""}-${queryParams ? JSON.stringify(queryParams) : ""}`;
+    function getObjectUniqueKey(obj: HttpClientPathParams | HttpClientQueryParams) {
+      return Object.keys(obj)
+        .sort()
+        .reduce((acc, key, i, arr) => {
+          acc += key + ":" + obj[key];
+
+          if (arr.length != i + 1) {
+            acc += "|";
+          }
+
+          return acc;
+        }, "");
+    }
+
+    return `${path}-${pathParams ? getObjectUniqueKey(pathParams) : ""}-${
+      queryParams ? getObjectUniqueKey(queryParams) : ""
+    }`;
   }
 
   protected mapHttpStatusToString(statusCode: number): HttpClientErrorStatus {
