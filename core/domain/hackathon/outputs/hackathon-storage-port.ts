@@ -1,6 +1,13 @@
-import { GetHackathonBySlugPathParams, GetHackathonsResponse } from "core/domain/hackathon/hackathon-contract.types";
+import {
+  GetHackathonByIdProjectIssuesPathParams,
+  GetHackathonByIdProjectIssuesQueryParams,
+  GetHackathonByIdProjectIssuesResponse,
+  GetHackathonBySlugPathParams,
+  GetHackathonsResponse,
+} from "core/domain/hackathon/hackathon-contract.types";
 import { Hackathon } from "core/domain/hackathon/models/hackathon-model";
 import { ListHackathon } from "core/domain/hackathon/models/list-hackathon-model";
+import { LinkProject } from "core/domain/project/models/link-project-model";
 import {
   HttpClientParameters,
   HttpStorageResponse,
@@ -14,4 +21,17 @@ export interface HackathonStoragePort {
       PathParams: GetHackathonBySlugPathParams;
     }>
   ): HttpStorageResponse<Hackathon>;
+  getHackathonByIdProjectIssues(
+    params: HttpClientParameters<{
+      PathParams: GetHackathonByIdProjectIssuesPathParams;
+      QueryParams: GetHackathonByIdProjectIssuesQueryParams;
+    }>
+  ): HttpStorageResponse<
+    Omit<GetHackathonByIdProjectIssuesResponse, "projects"> & {
+      projects: Omit<GetHackathonByIdProjectIssuesResponse["projects"][number], "project"> &
+        {
+          project: LinkProject;
+        }[];
+    }
+  >;
 }

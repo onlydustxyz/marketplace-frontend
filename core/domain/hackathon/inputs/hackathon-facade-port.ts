@@ -1,9 +1,13 @@
 import {
+  GetHackathonByIdProjectIssuesPathParams,
+  GetHackathonByIdProjectIssuesQueryParams,
+  GetHackathonByIdProjectIssuesResponse,
   GetHackathonBySlugPathParams,
   GetHackathonBySlugResponse,
   GetHackathonsResponse,
 } from "core/domain/hackathon/hackathon-contract.types";
 import { ListHackathon } from "core/domain/hackathon/models/list-hackathon-model";
+import { LinkProject } from "core/domain/project/models/link-project-model";
 import {
   HttpClientParameters,
   HttpStorageResponse,
@@ -16,4 +20,17 @@ export interface HackathonFacadePort {
       PathParams: GetHackathonBySlugPathParams;
     }>
   ): HttpStorageResponse<GetHackathonBySlugResponse>;
+  getHackathonByIdProjectIssues(
+    params: HttpClientParameters<{
+      PathParams: GetHackathonByIdProjectIssuesPathParams;
+      QueryParams: GetHackathonByIdProjectIssuesQueryParams;
+    }>
+  ): HttpStorageResponse<
+    Omit<GetHackathonByIdProjectIssuesResponse, "projects"> & {
+      projects: Omit<GetHackathonByIdProjectIssuesResponse["projects"][number], "project"> &
+        {
+          project: LinkProject;
+        }[];
+    }
+  >;
 }
