@@ -2,8 +2,8 @@ import { tv } from "tailwind-variants";
 
 export const ButtonDefaultVariants = tv({
   slots: {
-    base: "group relative flex w-fit overflow-hidden rounded-lg bg-container-1 transition-colors",
-    content: "flex flex-row items-center justify-center",
+    base: "group relative flex w-fit cursor-pointer overflow-hidden rounded-lg bg-container-1 transition-colors",
+    content: "flex w-full flex-row items-center justify-center",
     startIcon: "transition-color text-inherit",
     endIcon: "transition-color text-inherit",
     label: "transition-color leading-none text-inherit",
@@ -15,18 +15,22 @@ export const ButtonDefaultVariants = tv({
       xl: {
         base: "px-6 py-4",
         content: "gap-2",
+        label: "leading-6",
       },
       l: {
         base: "px-4 py-3",
         content: "gap-2",
+        label: "leading-5",
       },
       m: {
         base: "px-3 py-2",
         content: "gap-2",
+        label: "leading-5",
       },
       s: {
-        base: "px-1 py-1",
+        base: "rounded px-1 py-1",
         content: "gap-1",
+        label: "leading-4",
       },
     },
     hideText: {

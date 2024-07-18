@@ -66,9 +66,8 @@ async function createAdapter({ name, path, PascalName }) {
         import { ${PascalName}Port } from "../../${name}.types";
         import { ${PascalName}DefaultVariants } from "./default.variants";
 
-        export function ${PascalName}DefaultAdapter<C extends ElementType = "div">({as, classNames, ...props}: ${PascalName}Port<C>) {
+        export function ${PascalName}DefaultAdapter<C extends ElementType = "div">({as, classNames, htmlProps, ...props}: ${PascalName}Port<C>) {
           const Component = as || "div";
-          const { ...htmlProps } = props;
           const slots = ${PascalName}DefaultVariants();
 
           return (
@@ -162,7 +161,7 @@ async function createStories({ name, path, PascalName }) {
 
         type Story = StoryObj<typeof ${PascalName}>;
 
-        const defaultPort: ${PascalName}Port<"div"> = {};
+        const defaultProps: ${PascalName}Port<"div"> = {};
 
         const meta: Meta<typeof ${PascalName}> = {
           component: ${PascalName},
@@ -193,7 +192,7 @@ async function createStories({ name, path, PascalName }) {
           render: args => {
             return (
               <div className="flex w-full items-center gap-2">
-                <${PascalName} {...defaultPort} {...args} />
+                <${PascalName} {...defaultProps} {...args} />
               </div>
             );
           },

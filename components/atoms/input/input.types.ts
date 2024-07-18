@@ -22,4 +22,5 @@ export interface InputPort extends htmlInputProps, Partial<Variants> {
   endContent?: ReactNode;
   isDisabled?: boolean;
   label?: ReactNode;
+  placeholder?: string;
 }

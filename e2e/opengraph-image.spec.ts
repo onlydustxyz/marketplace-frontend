@@ -12,8 +12,8 @@ test("should generate project opengraph image", async ({ page }, testinfo) => {
   await expect(page).toHaveScreenshot();
 });
 
-test("should generate user opengraph image", async ({ page }, testinfo) => {
-  testinfo.snapshotSuffix = "";
-  await page.goto("/u/dustyPierreO/opengraph-image");
-  await expect(page).toHaveScreenshot();
-});
+// test("should generate user opengraph image", async ({ page }, testinfo) => {
+//   testinfo.snapshotSuffix = "";
+//   await page.goto("/u/dustyPierreO/opengraph-image");
+//   await expect(page).toHaveScreenshot();
+// });

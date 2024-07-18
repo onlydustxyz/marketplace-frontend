@@ -1,4 +1,38 @@
 {
+  "header": {
+    "hackathons": "Hackathons",
+    "back": "Back"
+  },
+  "info": {
+    "register": "Register",
+    "connectToRegister": "Connect to register",
+    "registered": "Registered",
+    "seeEvents": "See events",
+    "eventOverTooltip": "The event is over",
+    "communityLinks": "Community links",
+    "links": "Links",
+    "totalBudget": "Total budget",
+    "sponsors": "Sponsors",
+    "countLinks": {
+      "zero": "0 links",
+      "one": "1 link",
+      "many": "__count__ links"
+    },
+    "countSponsors": {
+      "zero": "0 sponsors",
+      "one": "1 sponsor",
+      "many": "__count__ sponsors"
+    },
+    "close": "Close"
+  },
+  "registerModal": {
+    "title": "Register",
+    "telegram": {
+      "label": "We need your Telegram handle",
+      "placeholder": "Telegram"
+    },
+    "submit": "Register"
+  },
   "back": "Back",
   "navigation": {
     "overview": "Overview",
@@ -21,5 +55,9 @@
       "alreadyApplied": "Registered"
     },
     "confirmationToaster": "You have registered successfully."
+  },
+  "projects": {
+    "title": "Projects",
+    "button": "See project"
   }
 }
