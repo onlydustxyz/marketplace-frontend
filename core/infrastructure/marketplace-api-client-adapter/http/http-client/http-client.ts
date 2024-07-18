@@ -92,6 +92,20 @@ export class HttpClient {
     return `${marketplaceApiConfig.basePaths[version](path)}${searchParams ? `?${searchParams}` : ""}`;
   }
 
+  static buildTagParameter(obj: HttpClientPathParams | HttpClientQueryParams) {
+    return Object.keys(obj)
+      .sort()
+      .reduce((acc, key, i, arr) => {
+        acc += key + ":" + obj[key];
+
+        if (arr.length != i + 1) {
+          acc += "|";
+        }
+
+        return acc;
+      }, "");
+  }
+
   static buildTag({
     path,
     pathParams,
@@ -101,22 +115,8 @@ export class HttpClient {
     pathParams?: HttpClientPathParams;
     queryParams?: HttpClientQueryParams;
   }) {
-    function getObjectUniqueKey(obj: HttpClientPathParams | HttpClientQueryParams) {
-      return Object.keys(obj)
-        .sort()
-        .reduce((acc, key, i, arr) => {
-          acc += key + ":" + obj[key];
-
-          if (arr.length != i + 1) {
-            acc += "|";
-          }
-
-          return acc;
-        }, "");
-    }
-
-    return `${path}-${pathParams ? getObjectUniqueKey(pathParams) : ""}-${
-      queryParams ? getObjectUniqueKey(queryParams) : ""
+    return `${path}-${pathParams ? this.buildTagParameter(pathParams) : ""}-${
+      queryParams ? this.buildTagParameter(queryParams) : ""
     }`;
   }
 
