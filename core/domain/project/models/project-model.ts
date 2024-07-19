@@ -2,7 +2,7 @@ import { components } from "src/__generated/api";
 
 import { ShortProject, ShortProjectInterface } from "./short-project-model";
 
-type ProjectResponse = components["schemas"]["ProjectResponse"];
+export type ProjectResponse = components["schemas"]["ProjectResponse"];
 
 interface ProjectInterface extends ProjectResponse, ShortProjectInterface {}
 

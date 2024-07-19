@@ -4,6 +4,7 @@ import { ProjectReactQueryAdapter } from "core/application/react-query-adapter/p
 import { useContext } from "react";
 
 import { HackathonContext } from "app/hackathons/[hackathonSlug]/context/hackathon.context";
+import { MainInfo } from "app/hackathons/[hackathonSlug]/features/project-side-overview/components/main-infos/main-info";
 import { TProjectSideOverview } from "app/hackathons/[hackathonSlug]/features/project-side-overview/project-side-overview.types";
 
 import { Paper } from "components/atoms/paper";
@@ -22,13 +23,13 @@ export function ProjectSideOverview(_: TProjectSideOverview.Props) {
     },
   });
 
-  console.log({ project });
+  if (!project) return null;
 
   return (
     <Paper size="m" container="2" classNames={{ base: "flex flex-col gap-3" }}>
       <Header slug={project?.slug} logoUrl={project?.logoUrl} />
 
-      <p>Content</p>
+      <MainInfo project={project} />
     </Paper>
   );
 }

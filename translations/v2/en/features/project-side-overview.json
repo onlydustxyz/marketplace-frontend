@@ -1,0 +1,8 @@
+{
+  "countLinks": {
+    "zero": "0 links",
+    "one": "1 link",
+    "many": "__count__ links"
+  },
+  "links": "Links"
+}
