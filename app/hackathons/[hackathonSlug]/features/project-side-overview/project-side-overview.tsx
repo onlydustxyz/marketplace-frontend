@@ -19,7 +19,7 @@ export function ProjectSideOverview(_: TProjectSideOverview.Props) {
     project: { projectId },
   } = useContext(HackathonContext);
 
-  const { data: project, isLoading } = ProjectReactQueryAdapter.client.useGetProjectById({
+  const { data: project } = ProjectReactQueryAdapter.client.useGetProjectById({
     pathParams: { projectId },
     options: {
       enabled: !!projectId,
