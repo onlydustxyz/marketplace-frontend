@@ -3,10 +3,9 @@ import { ShortProject } from "core/domain/project/models/short-project-model";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { sharedMetadata } from "app/shared-metadata";
-
 import { IssuesSideWrapper } from "app/hackathons/[hackathonSlug]/features/side-wrapper/issues-side-wrapper/issues-side-wrapper";
 import { TimelineSideWrapper } from "app/hackathons/[hackathonSlug]/features/side-wrapper/timeline-side-wrapper/timeline-side-wrapper";
+import { sharedMetadata } from "app/shared-metadata";
 
 import { Paper } from "components/atoms/paper";
 import { HackathonCard } from "components/features/hackathons/hackathon-card";
