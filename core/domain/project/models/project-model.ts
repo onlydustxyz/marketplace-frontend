@@ -22,7 +22,7 @@ export class Project extends ShortProject implements ProjectInterface {
   moreInfos!: ProjectResponse["moreInfos"];
   topContributors!: ProjectResponse["topContributors"];
 
-  constructor(readonly props: ProjectResponse) {
+  constructor(protected readonly props: ProjectResponse) {
     super(props);
     Object.assign(this, props);
   }

@@ -1,16 +1,14 @@
-import { UserProfile } from "core/domain/user/models/user-profile-model";
-import { RegisterToHackathonPathParams } from "core/domain/user/user.types";
 import {
-  HttpClientParameters,
-  HttpStorageResponse,
-} from "core/infrastructure/marketplace-api-client-adapter/http/http-client/http-client.types";
+  GetMyProfilePortParams,
+  GetMyProfilePortResponse,
+  RegisterToHackathonPortParams,
+  RegisterToHackathonPortResponse,
+  SetMyProfilePortParams,
+  SetMyProfilePortResponse,
+} from "core/domain/user/user-contract.types";
 
 export interface UserFacadePort {
-  registerToHackathon(
-    params: HttpClientParameters<{
-      PathParams: RegisterToHackathonPathParams;
-    }>
-  ): HttpStorageResponse<never>;
-  setMyProfile(params: HttpClientParameters<object>): HttpStorageResponse<UserProfile>;
-  getMyProfile(params: HttpClientParameters<object>): HttpStorageResponse<UserProfile>;
+  registerToHackathon(params: RegisterToHackathonPortParams): RegisterToHackathonPortResponse;
+  setMyProfile(params: SetMyProfilePortParams): SetMyProfilePortResponse;
+  getMyProfile(params: GetMyProfilePortParams): GetMyProfilePortResponse;
 }

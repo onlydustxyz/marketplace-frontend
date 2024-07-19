@@ -4,7 +4,7 @@ import { components } from "src/__generated/api";
 
 type HackathonsDetailsResponse = components["schemas"]["HackathonsDetailsResponse"];
 
-interface HackathonInterface extends HackathonsDetailsResponse, ListHackathonInterface {
+export interface HackathonInterface extends HackathonsDetailsResponse, ListHackathonInterface {
   // TODO @hayden get the back to sync this
   projects: HackathonsDetailsResponse["projects"];
 }
@@ -18,7 +18,7 @@ export class Hackathon extends ListHackathon implements HackathonInterface {
   sponsors!: HackathonsDetailsResponse["sponsors"];
   totalBudget!: HackathonsDetailsResponse["totalBudget"];
 
-  constructor(readonly props: HackathonsDetailsResponse) {
+  constructor(protected readonly props: HackathonsDetailsResponse) {
     super(props);
     Object.assign(this, props);
   }

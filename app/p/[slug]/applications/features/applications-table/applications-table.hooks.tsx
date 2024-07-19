@@ -1,7 +1,8 @@
 "use client";
 
 import { SortDescriptor } from "@nextui-org/react";
-import { projectsApiClient } from "api-client/resources/projects";
+import { ProjectReactQueryAdapter } from "core/application/react-query-adapter/project";
+import { GetProjectIssuesQueryParams } from "core/domain/project/project-contract.types";
 import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
 
@@ -21,7 +22,7 @@ import { Translate } from "components/layout/translate/translate";
 
 import { NEXT_ROUTER } from "constants/router";
 
-type QueryParams = NonNullable<Parameters<typeof projectsApiClient.queries.useGetProjectIssues>[0]["queryParams"]>;
+type QueryParams = GetProjectIssuesQueryParams;
 type QueryParamsSort = QueryParams["sort"];
 
 const initialFilters: { sort: QueryParamsSort; direction: SortDescriptor["direction"] } = {
@@ -37,10 +38,8 @@ export function useApplicationsTable({ projectId = "" }: { projectId?: string })
     direction: filters.direction,
   });
 
-  const { data, ...query } = projectsApiClient.queries.useGetProjectIssues({
-    pathParams: {
-      projectId,
-    },
+  const { data, ...query } = ProjectReactQueryAdapter.client.useGetProjectPublicIssues({
+    pathParams: { projectId },
     queryParams: {
       sort: filters.sort,
       direction: filters.direction === "ascending" ? "ASC" : "DESC",
@@ -49,7 +48,7 @@ export function useApplicationsTable({ projectId = "" }: { projectId?: string })
       status: "OPEN",
     },
     options: {
-      enabled: Boolean(projectId),
+      enabled: !!projectId,
     },
   });
 
@@ -73,6 +72,14 @@ export function useApplicationsTable({ projectId = "" }: { projectId?: string })
         icon: {
           remixName: "ri-git-repository-line",
         },
+      },
+      {
+        key: "label",
+        children: <Translate token={"v2.pages.project.applications.table.columns.label"} />,
+        icon: {
+          remixName: "ri-price-tag-line",
+        },
+        width: 180,
       },
       {
         key: "applicants",
@@ -102,7 +109,7 @@ export function useApplicationsTable({ projectId = "" }: { projectId?: string })
   const rows: TTable.Row[] = useMemo(
     () =>
       issues.map(row => {
-        const repoName = row.repository.name;
+        const repoName = row.repo.name;
         const truncateLength = 200;
         const shouldTruncateRepoName = repoName.length > truncateLength;
         const contribution = mapIssueToContribution(row);
@@ -122,9 +129,18 @@ export function useApplicationsTable({ projectId = "" }: { projectId?: string })
             </div>
           ),
           repository: (
-            <Link href={row.repository.htmlUrl} className="whitespace-nowrap text-left" title={repoName}>
+            <Link href={row.repo.htmlUrl} className="whitespace-nowrap text-left" title={repoName}>
               {shouldTruncateRepoName ? repoName.substring(0, truncateLength) + "..." : repoName}
             </Link>
+          ),
+          label: (
+            <div className="flex flex-wrap gap-1">
+              {row.labels.map(label => (
+                <Tag key={label.name} size={"xs"} style={"outline"} classNames={{ base: "inline-flex" }}>
+                  {label.name}
+                </Tag>
+              ))}
+            </div>
           ),
           applicants: (
             <Tag size={"xs"} style={"outline"} classNames={{ base: "inline-flex" }}>

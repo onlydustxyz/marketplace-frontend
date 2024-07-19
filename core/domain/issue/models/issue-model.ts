@@ -16,7 +16,7 @@ export interface IssueInterface extends ListIssueInterface, GithubIssueResponse 
 const ExtendedWithListIssue = extendMultipleClasses(mapApiToClass<GithubIssueResponse>(), ListIssue);
 
 export class Issue extends ExtendedWithListIssue implements IssueInterface {
-  constructor(readonly props: GithubIssueResponse) {
+  constructor(protected readonly props: GithubIssueResponse) {
     super(props);
   }
 }

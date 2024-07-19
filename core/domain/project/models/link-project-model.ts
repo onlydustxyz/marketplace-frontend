@@ -7,7 +7,7 @@ type ProjectLinkResponse = components["schemas"]["ProjectLinkResponse"];
 export interface LinkProjectInterface extends ProjectLinkResponse {}
 
 export class LinkProject extends mapApiToClass<ProjectLinkResponse>() implements LinkProjectInterface {
-  constructor(readonly props: ProjectLinkResponse) {
+  constructor(protected readonly props: ProjectLinkResponse) {
     super(props);
   }
 }

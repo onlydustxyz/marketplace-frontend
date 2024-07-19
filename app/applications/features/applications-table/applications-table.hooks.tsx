@@ -92,7 +92,7 @@ export function useApplicationsTable() {
         const contribution = mapIssueToContribution({
           ...row.issue,
           author: { ...row.issue.author, isRegistered: false },
-          repository: { ...row.issue.repo, owner: "" },
+          repo: { ...row.issue.repo, owner: "" },
           createdAt: row.receivedAt,
         });
 

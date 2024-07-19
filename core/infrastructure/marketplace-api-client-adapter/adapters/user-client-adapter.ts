@@ -1,6 +1,6 @@
 import { UserProfile } from "core/domain/user/models/user-profile-model";
 import { UserStoragePort } from "core/domain/user/outputs/user-storage-port";
-import { GetMyProfileResponse, SetMyProfileBody, SetMyProfileResponse } from "core/domain/user/user.types";
+import { GetMyProfileResponse, SetMyProfileBody, SetMyProfileResponse } from "core/domain/user/user-contract.types";
 import { FirstParameter } from "core/helpers/types";
 import { HttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/http-client/http-client";
 

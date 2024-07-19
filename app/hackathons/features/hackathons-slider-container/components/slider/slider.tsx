@@ -37,7 +37,11 @@ export function Slider({ children, icon, title }: TSlider.Props) {
   });
 
   return (
-    <div className="flex w-full flex-col items-start justify-start gap-4">
+    <div
+      className={cn("flex w-full flex-col items-start justify-start gap-4 transition-all", {
+        "pointer-events-none opacity-0": !loaded,
+      })}
+    >
       <div className="flex w-full flex-row items-center justify-between gap-2">
         <div className="flex w-full flex-row items-center justify-start gap-2">
           <Icon {...icon} />
@@ -53,12 +57,7 @@ export function Slider({ children, icon, title }: TSlider.Props) {
           }}
         />
       </div>
-      <div
-        ref={sliderRef}
-        className={cn("keen-slider !overflow-hidden transition-all", {
-          "pointer-events-none opacity-0": !loaded,
-        })}
-      >
+      <div ref={sliderRef} className={"keen-slider !overflow-hidden"}>
         {children.map((c, key) => (
           <div key={key} className="keen-slider__slide">
             {c}
