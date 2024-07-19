@@ -22,11 +22,11 @@ export function ProjectSideOverview(_: TProjectSideOverview.Props) {
     },
   });
 
-  console.log({ project, isLoading });
+  console.log({ project });
 
   return (
     <Paper size="m" container="2" classNames={{ base: "flex flex-col gap-3" }}>
-      <Header />
+      <Header slug={project?.slug} logoUrl={project?.logoUrl} />
 
       <p>Content</p>
     </Paper>
