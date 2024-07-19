@@ -14,8 +14,9 @@ import { PosthogOnMount } from "components/features/posthog/components/posthog-o
 import { Translate } from "components/layout/translate/translate";
 
 import { Header } from "./components/header/header";
-import { HackathonIssuesContextProvider } from "./context/hackathon-issues.context";
+import { HackathonContextProvider } from "./context/hackathon.context";
 import { Description } from "./features/description/description";
+import { HackathonIssuesContextProvider } from "./features/hackathon-issues/context/hackathon-issues.context";
 import { HackathonIssues } from "./features/hackathon-issues/hackathon-issues";
 import { Info } from "./features/info/info";
 import { OverviewWrapper } from "./features/overview-wrapper/overview-wrapper";
@@ -58,7 +59,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
   const hackathon = await getHackathon(params.hackathonSlug);
 
   return (
-    <HackathonIssuesContextProvider hackathonId={hackathon.id}>
+    <HackathonContextProvider>
       <PosthogOnMount
         eventName="hackathon_viewed"
         params={{ hackathon_id: hackathon.id }}
@@ -92,11 +93,14 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
           <TimelineSideWrapper>
             <div className="h-[2000px] bg-pink-500">TIMELINE</div>
           </TimelineSideWrapper>
-          <IssuesSideWrapper>
-            <HackathonIssues />
-          </IssuesSideWrapper>
+
+          <HackathonIssuesContextProvider hackathonId={hackathon.id}>
+            <IssuesSideWrapper>
+              <HackathonIssues />
+            </IssuesSideWrapper>
+          </HackathonIssuesContextProvider>
         </div>
       </div>
-    </HackathonIssuesContextProvider>
+    </HackathonContextProvider>
   );
 }

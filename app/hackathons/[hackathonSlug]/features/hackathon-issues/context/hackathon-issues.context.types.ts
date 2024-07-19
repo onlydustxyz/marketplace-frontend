@@ -11,11 +11,6 @@ export namespace THackathonIssuesContext {
 
   export interface Return {
     projectIssues: ProjectIssues;
-    drawer: {
-      isOpen: boolean;
-      open: () => void;
-      close: () => void;
-    };
     filters: {
       values: Filter;
       isCleared: boolean;

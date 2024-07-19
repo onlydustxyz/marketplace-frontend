@@ -15,7 +15,7 @@ import { Modal } from "components/molecules/modal";
 
 import { useIntl } from "hooks/translate/use-translate";
 
-import { HackathonIssuesContext } from "../../context/hackathon-issues.context";
+import { HackathonContext } from "../../context/hackathon.context";
 import { useRegister } from "./register.hooks";
 import { TRegister } from "./register.types";
 
@@ -45,8 +45,8 @@ export function Register({
   });
 
   const {
-    drawer: { open },
-  } = useContext(HackathonIssuesContext);
+    issues: { open },
+  } = useContext(HackathonContext);
 
   function renderButton() {
     if (hasRegistered && hackathonIsLive) {

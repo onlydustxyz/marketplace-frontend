@@ -1,18 +1,13 @@
 "use client";
 
 import { bootstrap } from "core/bootstrap";
-import { GetHackathonByIdProjectIssuesQueryParams } from "core/domain/hackathon/hackathon-contract.types";
+import { GetHackathonByIdProjectIssuesPortParams } from "core/domain/hackathon/hackathon-contract.types";
 import { createContext, useEffect, useMemo, useState } from "react";
 
 import { THackathonIssuesContext } from "./hackathon-issues.context.types";
 
 export const HackathonIssuesContext = createContext<THackathonIssuesContext.Return>({
   projectIssues: [],
-  drawer: {
-    isOpen: false,
-    open: () => null,
-    close: () => null,
-  },
   filters: {
     values: THackathonIssuesContext.DEFAULT_FILTER,
     isCleared: true,
@@ -28,14 +23,13 @@ export const HackathonIssuesContext = createContext<THackathonIssuesContext.Retu
 export function HackathonIssuesContextProvider({ children, hackathonId }: THackathonIssuesContext.Props) {
   const [filters, setFilters] = useState<THackathonIssuesContext.Filter>(THackathonIssuesContext.DEFAULT_FILTER);
   const [filtersOptions, setFiltersOptions] = useState<THackathonIssuesContext.FiltersOptions>({ languages: [] });
-  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [languages, setLanguages] = useState<THackathonIssuesContext.Languages>([]);
   const [projectIssues, setProjectIssues] = useState<THackathonIssuesContext.ProjectIssues>([]);
 
   useEffect(() => {
     const fetchHackathonIssues = async () => {
       const hackathonStorage = bootstrap.getHackathonStoragePortForServer();
-      const queryParams: GetHackathonByIdProjectIssuesQueryParams = {
+      const queryParams: GetHackathonByIdProjectIssuesPortParams["queryParams"] = {
         search: filters.search || undefined,
         languageIds: filters.languageIds.length ? filters.languageIds : undefined,
         isAssigned: filters.isAssigned === "all" ? undefined : filters.isAssigned === "available" ? true : false,
@@ -87,11 +81,6 @@ export function HackathonIssuesContextProvider({ children, hackathonId }: THacka
     <HackathonIssuesContext.Provider
       value={{
         projectIssues,
-        drawer: {
-          isOpen: isDrawerOpen,
-          open: () => setIsDrawerOpen(true),
-          close: () => setIsDrawerOpen(false),
-        },
         filters: {
           values: filters,
           isCleared,

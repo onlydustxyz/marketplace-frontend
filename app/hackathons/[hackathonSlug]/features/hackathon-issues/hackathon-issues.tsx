@@ -5,9 +5,9 @@ import { useContext } from "react";
 import { Paper } from "components/atoms/paper";
 import { Accordion, AccordionItemProps } from "components/molecules/accordion";
 
-import { HackathonIssuesContext } from "../../context/hackathon-issues.context";
 import { Header } from "./components/header/header";
 import { RecommendedFilters } from "./components/recommended-filters/recommended-filters";
+import { HackathonIssuesContext } from "./context/hackathon-issues.context";
 
 export function HackathonIssues() {
   const { projectIssues } = useContext(HackathonIssuesContext);
