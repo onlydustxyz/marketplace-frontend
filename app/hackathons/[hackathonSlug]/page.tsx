@@ -3,6 +3,8 @@ import { ShortProject } from "core/domain/project/models/short-project-model";
 import { notFound } from "next/navigation";
 
 import { HACKATHON_LAYOUT_ID } from "app/hackathons/[hackathonSlug]/constants";
+import { IssuesSideWrapper } from "app/hackathons/[hackathonSlug]/features/side-wrapper/issues-side-wrapper/issues-side-wrapper";
+import { TimelineSideWrapper } from "app/hackathons/[hackathonSlug]/features/side-wrapper/timeline-side-wrapper/timeline-side-wrapper";
 
 import { Paper } from "components/atoms/paper";
 import { HackathonCard } from "components/features/hackathons/hackathon-card";
@@ -17,7 +19,6 @@ import { HackathonIssues } from "./features/hackathon-issues/hackathon-issues";
 import { Info } from "./features/info/info";
 import { OverviewWrapper } from "./features/overview-wrapper/overview-wrapper";
 import { Projects } from "./features/projects/projects";
-import { SideWrapper } from "./features/side-wrapper/side-wrapper";
 
 async function getHackathon(hackathonSlug: string) {
   try {
@@ -63,9 +64,12 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
             </Paper>
           </OverviewWrapper>
 
-          <SideWrapper>
+          <TimelineSideWrapper>
+            <div className="h-[2000px] bg-pink-500">TIMELINE</div>
+          </TimelineSideWrapper>
+          <IssuesSideWrapper>
             <HackathonIssues />
-          </SideWrapper>
+          </IssuesSideWrapper>
         </div>
       </div>
     </HackathonContextProvider>

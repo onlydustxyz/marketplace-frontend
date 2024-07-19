@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
 
-export namespace TSideWrapper {
+export namespace TIssuesSideWrapper {
   export interface Props extends PropsWithChildren {}
 }

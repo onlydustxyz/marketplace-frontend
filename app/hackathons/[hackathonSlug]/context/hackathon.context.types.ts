@@ -1,12 +1,14 @@
 import { PropsWithChildren } from "react";
 
+import { HackathonUtils } from "app/hackathons/[hackathonSlug]/utils";
+
 export namespace THackathonContext {
   export interface Props extends PropsWithChildren {}
 
   export interface Return {
-    panelSize: {
-      container: string;
-      panel: string;
+    panelSize: ReturnType<typeof HackathonUtils.getContainerSize>;
+    timeline: {
+      isOpen: boolean;
     };
     issues: {
       isOpen: boolean;
