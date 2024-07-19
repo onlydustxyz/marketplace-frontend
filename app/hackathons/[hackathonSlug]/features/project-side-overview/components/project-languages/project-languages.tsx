@@ -7,6 +7,7 @@ import { Icon } from "components/layout/icon/icon";
 
 export function ProjectLanguages({ languages }: TProjectLanguages.Props) {
   if (!languages.length) return null;
+
   return (
     <Paper size={"m"} container={"2"} classNames={{ base: "grid gap-3" }}>
       <div className="flex gap-1">

@@ -7,6 +7,7 @@ import { Icon } from "components/layout/icon/icon";
 
 export function ProjectCategories({ categories }: TProjectCategories.Props) {
   if (!categories.length) return null;
+
   return (
     <Paper size={"m"} container={"2"} classNames={{ base: "flex flex-col gap-3" }}>
       <div className="flex gap-1">

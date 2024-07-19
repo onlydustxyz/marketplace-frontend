@@ -17,7 +17,7 @@ export function ProjectSideWrapper({ children }: TProjectSideWrapper.Props) {
       {isOpen ? (
         <motion.aside
           className="scrollbar-sm absolute bottom-0 right-0 top-0 h-full overflow-auto pl-4"
-          style={{ width: panelSize.panels.issues }}
+          style={{ width: panelSize.panels.project }}
           initial={{ translate: "100%" }}
           animate={{ translate: 0 }}
           exit={{ translate: "100%" }}

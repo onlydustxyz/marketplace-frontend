@@ -25,6 +25,7 @@ export const HackathonContext = createContext<THackathonContext.Return>({
     container: "100%",
     panels: {
       issues: "0px",
+      project: "0px",
       timeline: "0px",
     },
   },
