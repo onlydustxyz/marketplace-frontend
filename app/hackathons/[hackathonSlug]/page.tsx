@@ -1,6 +1,9 @@
 import { bootstrap } from "core/bootstrap";
 import { ShortProject } from "core/domain/project/models/short-project-model";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+
+import { sharedMetadata } from "app/shared-metadata";
 
 import { IssuesSideWrapper } from "app/hackathons/[hackathonSlug]/features/side-wrapper/issues-side-wrapper/issues-side-wrapper";
 import { TimelineSideWrapper } from "app/hackathons/[hackathonSlug]/features/side-wrapper/timeline-side-wrapper/timeline-side-wrapper";
@@ -25,6 +28,30 @@ async function getHackathon(hackathonSlug: string) {
     return await hackathonStorage.getHackathonBySlug({ pathParams: { hackathonSlug } }).request();
   } catch {
     notFound();
+  }
+}
+
+export async function generateMetadata(props: { params: { hackathonSlug: string } }): Promise<Metadata> {
+  try {
+    const hackathon = await getHackathon(props.params.hackathonSlug);
+
+    return {
+      ...sharedMetadata,
+      title: `${hackathon.title}`,
+      description: `${hackathon.description}`,
+      openGraph: {
+        ...sharedMetadata.openGraph,
+        title: `${hackathon.title}`,
+        description: `${hackathon.description}`,
+      },
+      twitter: {
+        title: `${hackathon.title}`,
+        description: `${hackathon.description}`,
+        ...sharedMetadata.twitter,
+      },
+    };
+  } catch {
+    return sharedMetadata;
   }
 }
 
