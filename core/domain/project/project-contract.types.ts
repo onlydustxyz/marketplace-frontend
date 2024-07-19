@@ -37,7 +37,7 @@ export type GetProjectRewardsPortParams = HttpClientParameters<{
 /* --------------------------------- Get project public issues -------------------------------- */
 
 type GetProjectIssuesPathParams = operations["getProjectPublicIssues"]["parameters"]["path"];
-type GetProjectIssuesQueryParams = operations["getProjectPublicIssues"]["parameters"]["query"];
+export type GetProjectIssuesQueryParams = operations["getProjectPublicIssues"]["parameters"]["query"];
 
 export type GetProjectIssuesResponse = components["schemas"]["GithubIssuePageResponse"];
 

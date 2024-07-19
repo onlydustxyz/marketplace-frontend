@@ -60,7 +60,7 @@ export function ApplicationsTable() {
           const contribution = mapIssueToContribution({
             ...application.issue,
             author: { ...application.issue.author, isRegistered: false },
-            repository: { ...application.issue.repo, owner: "" },
+            repo: { ...application.issue.repo, owner: "" },
             createdAt: application.receivedAt,
             project: {
               ...application.project,
