@@ -5,6 +5,7 @@ import { useContext } from "react";
 
 import { HackathonContext } from "app/hackathons/[hackathonSlug]/context/hackathon.context";
 import { MainInfo } from "app/hackathons/[hackathonSlug]/features/project-side-overview/components/main-infos/main-info";
+import { ProjectInfos } from "app/hackathons/[hackathonSlug]/features/project-side-overview/components/project-infos/project-infos";
 import { TProjectSideOverview } from "app/hackathons/[hackathonSlug]/features/project-side-overview/project-side-overview.types";
 
 import { Paper } from "components/atoms/paper";
@@ -30,6 +31,7 @@ export function ProjectSideOverview(_: TProjectSideOverview.Props) {
       <Header slug={project?.slug} logoUrl={project?.logoUrl} />
 
       <MainInfo project={project} />
+      <ProjectInfos project={project} />
     </Paper>
   );
 }
