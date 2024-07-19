@@ -11,7 +11,7 @@ export interface HackathonEventInterface extends HackathonsEventsResponse {
   isAfterToday(): boolean;
   isBeforeToday(): boolean;
   isLive(): boolean;
-  getStringHours(): string;
+  getFormattedTzTime(): string;
   getStatus(): HackathonEventStatus;
 }
 
@@ -40,14 +40,14 @@ export class HackathonEvent implements HackathonEventInterface {
   }
 
   isBeforeToday(): boolean {
-    return !this.isToday() && this.dateHelper.isPast(new Date(this.startDate));
+    return !this.isToday() && this.dateHelper.isPast(new Date(this.endDate));
   }
 
   isLive(): boolean {
     return this.dateHelper.isPast(new Date(this.startDate)) && this.dateHelper.isFuture(new Date(this.endDate));
   }
 
-  getStringHours(): string {
+  getFormattedTzTime(): string {
     return this.dateHelper.formatInEuropeTimeZone(new Date(this.startDate), "hh aa OOO");
   }
 
@@ -56,7 +56,7 @@ export class HackathonEvent implements HackathonEventInterface {
       return "highlight";
     }
 
-    if (this.dateHelper.isPast(new Date(this.startDate))) {
+    if (this.dateHelper.isPast(new Date(this.endDate))) {
       return "terminated";
     }
 

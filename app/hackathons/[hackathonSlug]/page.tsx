@@ -93,8 +93,8 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
           <TimelineSideWrapper>
             <HackathonTimeline
               todayEvents={hackathon.getTodayEvents()}
-              nextEvents={hackathon.getNextEvent()}
-              previousEvents={hackathon.getPreviousEvent()}
+              nextEvents={hackathon.getNextEvents()}
+              previousEvents={hackathon.getPreviousEvents()}
             />
           </TimelineSideWrapper>
           <IssuesSideWrapper>

@@ -17,7 +17,7 @@ export function EventWrapper({ event, index }: TEventWrapper.Props) {
   const startDate = new Date(event.startDate);
   const isLive = event.isLive();
   const isToday = event.isToday();
-  const hours = event.getStringHours();
+  const hours = event.getFormattedTzTime();
   const status = event.getStatus();
   const shouldHaveMultipleSteps = !isToday || index === 1;
   const primaryAction = event.links?.[0];

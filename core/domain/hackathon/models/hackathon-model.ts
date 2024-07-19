@@ -9,8 +9,8 @@ export interface HackathonInterface extends HackathonsDetailsResponse, ListHacka
   // TODO @hayden get the back to sync this
   projects: HackathonsDetailsResponse["projects"];
   getTodayEvents(): HackathonEventInterface[];
-  getPreviousEvent(): HackathonEventInterface[];
-  getNextEvent(): HackathonEventInterface[];
+  getPreviousEvents(): HackathonEventInterface[];
+  getNextEvents(): HackathonEventInterface[];
   events: HackathonEventInterface[];
 }
 
@@ -38,11 +38,11 @@ export class Hackathon extends ListHackathon implements HackathonInterface {
     return this.events.filter(event => event.isToday());
   }
 
-  getPreviousEvent() {
+  getPreviousEvents() {
     return this.events.filter(event => event.isBeforeToday());
   }
 
-  getNextEvent() {
+  getNextEvents() {
     return this.events.filter(event => event.isAfterToday());
   }
 }
