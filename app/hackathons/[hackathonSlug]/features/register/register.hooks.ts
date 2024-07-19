@@ -52,7 +52,7 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
   useMutationAlert({
     mutation: restRegister,
     success: {
-      message: T("v2.pages.hackathons.details.application.confirmationToaster"),
+      message: T("v2.pages.hackathons.details.registerModal.success"),
     },
     error: {
       default: true,
