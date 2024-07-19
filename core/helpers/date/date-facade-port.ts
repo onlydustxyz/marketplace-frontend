@@ -6,5 +6,6 @@ export interface DateFacadePort {
   compareAsc: (dateLeft: Date, dateRight: Date) => number;
   compareDesc: (dateLeft: Date, dateRight: Date) => number;
   format: (date: Date, pattern: string) => string;
+  formatDistanceToNow: (date: Date) => string;
   formatInEuropeTimeZone: (date: Date, pattern: string) => string;
 }

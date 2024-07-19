@@ -22,7 +22,6 @@ export function EventWrapper({ event, index }: TEventWrapper.Props) {
   const shouldHaveMultipleSteps = !isToday || index === 1;
   const primaryAction = event.links?.[0];
   const secondaryAction = event.links?.[1];
-
   const primaryActionProps: ButtonPort<"a"> | undefined = primaryAction
     ? { htmlProps: { href: primaryAction.url }, children: primaryAction.value }
     : undefined;
@@ -43,9 +42,13 @@ export function EventWrapper({ event, index }: TEventWrapper.Props) {
           "border-solid": isToday,
         })}
       />
-      <div className="z-[1] flex w-full flex-row items-center justify-between gap-1">
+      <div
+        className={cn("z-[1] flex w-full flex-row items-center justify-between gap-1", {
+          hidden: !shouldHaveMultipleSteps,
+        })}
+      >
         <div className="flex flex-row items-center gap-2">
-          <Badge colors="brand-2" size="m" classNames={{ base: cn({ "opacity-0": !shouldHaveMultipleSteps }) }}>
+          <Badge colors="brand-2" size="m">
             {index}
           </Badge>
           <Typo variant="brand" size={"xs"} weight={"medium"}>
@@ -54,7 +57,11 @@ export function EventWrapper({ event, index }: TEventWrapper.Props) {
         </div>
         <div className="flex flex-1 justify-end">
           <Typo variant="brand" size={"xxs"} color="text-2">
-            {dateService.format(startDate, "MMMM d, yyyy")}
+            {isToday ? (
+              <Translate token={"v2.pages.hackathons.details.timeline.todayLabel"} />
+            ) : (
+              dateService.formatDistanceToNow(startDate)
+            )}
           </Typo>
         </div>
       </div>

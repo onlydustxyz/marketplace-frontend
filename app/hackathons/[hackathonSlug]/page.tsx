@@ -59,7 +59,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
   const hackathon = await getHackathon(params.hackathonSlug);
 
   return (
-    <HackathonContextProvider>
+    <HackathonContextProvider hasEvents={!!hackathon.events?.length}>
       <PosthogOnMount
         eventName="hackathon_viewed"
         params={{ hackathon_id: hackathon.id }}

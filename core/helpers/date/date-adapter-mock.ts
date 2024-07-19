@@ -8,5 +8,6 @@ export const DateAdapterMock: DateFacadePort = {
   compareAsc: (_dateLeft: Date, _dateRight: Date) => 1,
   compareDesc: (_dateLeft: Date, _dateRight: Date) => 1,
   format: (_date: Date, _pattern: string) => "",
+  formatDistanceToNow: (_date: Date) => "",
   formatInEuropeTimeZone: (_date: Date, _pattern: string) => "",
 };

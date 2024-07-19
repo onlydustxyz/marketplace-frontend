@@ -3,6 +3,7 @@ import {
   compareDesc,
   eachDayOfInterval as eachDayOfIntervalDateFns,
   format as formatDateFns,
+  formatDistanceToNowStrict,
   isFuture as isFutureDateFns,
   isPast as isPastDateFns,
   isToday as isTodayDateFns,
@@ -20,6 +21,7 @@ export const DateFnsAdapter: DateFacadePort = {
   compareAsc: (dateLeft: Date, dateRight: Date) => compareAsc(dateLeft, dateRight),
   compareDesc: (dateLeft: Date, dateRight: Date) => compareDesc(dateLeft, dateRight),
   format: (date: Date, pattern: string) => formatDateFns(date, pattern),
+  formatDistanceToNow: (date: Date) => formatDistanceToNowStrict(date, { addSuffix: true }),
   formatInEuropeTimeZone: (date: Date, pattern: string) =>
     formatInTimeZoneDateFns(date, "Europe/Paris", pattern, { locale: enGB }),
 };
