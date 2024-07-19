@@ -7,10 +7,6 @@ import { Typo } from "components/atoms/typo";
 import { Translate } from "components/layout/translate/translate";
 
 export function HackathonTimeline({ todayEvents, previousEvents, nextEvents }: THackathonTimeline.Props) {
-  console.log("todayEvents", todayEvents);
-  console.log("previousEvent", previousEvents);
-  console.log("futureEvents", nextEvents);
-
   return (
     <Paper size="m" container="3" classNames={{ base: "flex flex-col gap-3" }}>
       <Typo variant="brand" size={"xl"}>
