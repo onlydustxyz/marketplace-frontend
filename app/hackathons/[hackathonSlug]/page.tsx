@@ -57,6 +57,8 @@ export async function generateMetadata(props: { params: { hackathonSlug: string 
 export default async function HackathonPage({ params }: { params: { hackathonSlug: string } }) {
   const hackathon = await getHackathon(params.hackathonSlug);
 
+  console.log("hackathon", hackathon);
+
   return (
     <HackathonContextProvider>
       <PosthogOnMount
