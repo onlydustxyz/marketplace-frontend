@@ -15,7 +15,6 @@ export interface IssueInterface extends GithubIssueResponse {}
 export class Issue extends mapApiToClass<GithubIssueResponse>() implements IssueInterface {
   constructor(protected props: GithubIssueResponse) {
     super(props);
-    Object.assign(this, props);
   }
 }
 
