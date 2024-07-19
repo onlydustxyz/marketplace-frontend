@@ -11,7 +11,7 @@ export interface ListIssueInterface extends GithubIssueListItemResponse {
   isApplied(): boolean;
 }
 export class ListIssue extends mapApiToClass<GithubIssueListItemResponse>() implements ListIssueInterface {
-  constructor(readonly props: GithubIssueListItemResponse) {
+  constructor(protected readonly props: GithubIssueListItemResponse) {
     super(props);
   }
 

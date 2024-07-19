@@ -4,7 +4,7 @@ import { useMutationAdapter } from "core/application/react-query-adapter/helpers
 import { ReactQueryMutationParameters } from "core/application/react-query-adapter/react-query-adapter.types";
 import { bootstrap } from "core/bootstrap";
 import { UserFacadePort } from "core/domain/user/inputs/user-facade-port";
-import { SetMyProfileBody, SetMyProfileResponse } from "core/domain/user/user.types";
+import { SetMyProfileBody, SetMyProfileResponse } from "core/domain/user/user-contract.types";
 import { revalidateNextJsPath } from "core/infrastructure/marketplace-api-client-adapter/helpers/revalidate-nextjs-path";
 
 export function useSetMyProfile({ options }: ReactQueryMutationParameters<UserFacadePort["setMyProfile"]> = {}) {

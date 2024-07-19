@@ -13,7 +13,7 @@ export enum UserProfileContactChannel {
   Whatsapp = "WHATSAPP",
 }
 
-interface UserInterface extends UserProfileResponse {
+export interface UserProfileInterface extends UserProfileResponse {
   hasContact(channel: UserProfileContactChannel): boolean;
   getContact(channel: UserProfileContactChannel):
     | {
@@ -22,11 +22,11 @@ interface UserInterface extends UserProfileResponse {
         visibility: "public" | "private";
       }
     | undefined;
-  setContact(params: { channel: UserProfileContactChannel; contact: string; visibility: "public" | "private" }): void;
+  setContact(params: { channel: UserProfileContactChannel; contact: string; visibility?: "public" | "private" }): void;
 }
 
-class UserProfile extends mapApiToClass<UserProfileResponse>() implements UserInterface {
-  constructor(readonly props: UserProfileResponse) {
+class UserProfile extends mapApiToClass<UserProfileResponse>() implements UserProfileInterface {
+  constructor(protected readonly props: UserProfileResponse) {
     super(props);
   }
 
@@ -68,7 +68,6 @@ class UserProfile extends mapApiToClass<UserProfileResponse>() implements UserIn
     this.contacts = this.contacts?.map(c =>
       c.channel === channel ? { ...c, contact: this.sanitizeChannelContact(contact), visibility } : c
     );
-    this.props.contacts = this.contacts;
   }
 }
 
