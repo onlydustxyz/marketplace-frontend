@@ -3,6 +3,7 @@ import { ShortProject } from "core/domain/project/models/short-project-model";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { HackathonTimeline } from "app/hackathons/[hackathonSlug]/features/hackathon-timeline/hackathon-timeline";
 import { IssuesSideWrapper } from "app/hackathons/[hackathonSlug]/features/side-wrapper/issues-side-wrapper/issues-side-wrapper";
 import { TimelineSideWrapper } from "app/hackathons/[hackathonSlug]/features/side-wrapper/timeline-side-wrapper/timeline-side-wrapper";
 import { sharedMetadata } from "app/shared-metadata";
@@ -57,8 +58,6 @@ export async function generateMetadata(props: { params: { hackathonSlug: string 
 export default async function HackathonPage({ params }: { params: { hackathonSlug: string } }) {
   const hackathon = await getHackathon(params.hackathonSlug);
 
-  console.log("hackathon", hackathon);
-
   return (
     <HackathonContextProvider>
       <PosthogOnMount
@@ -92,7 +91,11 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
           </OverviewWrapper>
 
           <TimelineSideWrapper>
-            <div className="h-[2000px] bg-pink-500">TIMELINE</div>
+            <HackathonTimeline
+              todayEvents={hackathon.getTodayEvents()}
+              nextEvents={hackathon.getNextEvent()}
+              previousEvents={hackathon.getPreviousEvent()}
+            />
           </TimelineSideWrapper>
           <IssuesSideWrapper>
             <HackathonIssues />

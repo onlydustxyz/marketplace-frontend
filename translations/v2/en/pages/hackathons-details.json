@@ -38,5 +38,13 @@
   "projects": {
     "title": "Projects",
     "button": "See project"
+  },
+  "timeline": {
+    "title": "Timeline",
+    "live": "Live",
+    "nextTitle": "Next",
+    "todayLabel": "Today",
+    "previousTitle": "Previously",
+    "todayTitle": "Today"
   }
 }
