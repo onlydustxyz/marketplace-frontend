@@ -5,24 +5,26 @@ import { useContext } from "react";
 
 import { HackathonContext } from "app/hackathons/[hackathonSlug]/context/hackathon.context";
 
-import { TSideWrapper } from "./side-wrapper.types";
+import { TIssuesSideWrapper } from "./issues-side-wrapper.types";
 
-export function SideWrapper({ children }: TSideWrapper.Props) {
+export function IssuesSideWrapper({ children }: TIssuesSideWrapper.Props) {
   const {
     issues: { isOpen },
+    panelSize,
   } = useContext(HackathonContext);
 
   return (
     <AnimatePresence>
       {isOpen ? (
         <motion.aside
-          className="w-0 overflow-hidden"
-          initial={{ width: 0 }}
-          animate={{ width: "40%" }}
-          exit={{ width: 0 }}
+          className="absolute bottom-0 right-0 top-0 h-full overflow-scroll pl-4"
+          style={{ width: panelSize.panels.issues }}
+          initial={{ translate: "100%" }}
+          animate={{ translate: 0 }}
+          exit={{ translate: "100%" }}
           transition={{ duration: 0.3, type: "tween" }}
         >
-          <motion.div>{children}</motion.div>
+          <div className="h-auto">{children}</div>
         </motion.aside>
       ) : null}
     </AnimatePresence>

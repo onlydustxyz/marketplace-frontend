@@ -3,6 +3,8 @@ import { ShortProject } from "core/domain/project/models/short-project-model";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { IssuesSideWrapper } from "app/hackathons/[hackathonSlug]/features/side-wrapper/issues-side-wrapper/issues-side-wrapper";
+import { TimelineSideWrapper } from "app/hackathons/[hackathonSlug]/features/side-wrapper/timeline-side-wrapper/timeline-side-wrapper";
 import { sharedMetadata } from "app/shared-metadata";
 
 import { Paper } from "components/atoms/paper";
@@ -18,7 +20,6 @@ import { HackathonIssues } from "./features/hackathon-issues/hackathon-issues";
 import { Info } from "./features/info/info";
 import { OverviewWrapper } from "./features/overview-wrapper/overview-wrapper";
 import { Projects } from "./features/projects/projects";
-import { SideWrapper } from "./features/side-wrapper/side-wrapper";
 
 async function getHackathon(hackathonSlug: string) {
   try {
@@ -67,7 +68,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
       <div className="flex w-full flex-col gap-4 pb-6 pt-4">
         <Header hackathonSlug={hackathon.slug} />
 
-        <div className="flex w-full gap-4">
+        <div className="relative flex w-full gap-4">
           <OverviewWrapper>
             <Paper size="m" container="2" classNames={{ base: "grid gap-4" }}>
               <HackathonCard
@@ -88,9 +89,12 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
             </Paper>
           </OverviewWrapper>
 
-          <SideWrapper>
+          <TimelineSideWrapper>
+            <div className="h-[2000px] bg-pink-500">TIMELINE</div>
+          </TimelineSideWrapper>
+          <IssuesSideWrapper>
             <HackathonIssues />
-          </SideWrapper>
+          </IssuesSideWrapper>
         </div>
       </div>
     </HackathonContextProvider>
