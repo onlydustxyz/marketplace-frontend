@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { IssuesSideWrapper } from "app/hackathons/[hackathonSlug]/features/side-wrapper/issues-side-wrapper/issues-side-wrapper";
+import { ProjectSideWrapper } from "app/hackathons/[hackathonSlug]/features/side-wrapper/project-side-wrapper/project-side-wrapper";
 import { TimelineSideWrapper } from "app/hackathons/[hackathonSlug]/features/side-wrapper/timeline-side-wrapper/timeline-side-wrapper";
 import { sharedMetadata } from "app/shared-metadata";
 
@@ -95,6 +96,9 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
           <IssuesSideWrapper>
             <HackathonIssues />
           </IssuesSideWrapper>
+          <ProjectSideWrapper>
+            <div>coucou</div>
+          </ProjectSideWrapper>
         </div>
       </div>
     </HackathonContextProvider>
