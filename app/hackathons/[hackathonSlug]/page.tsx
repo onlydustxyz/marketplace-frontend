@@ -9,7 +9,7 @@ import { PosthogOnMount } from "components/features/posthog/components/posthog-o
 import { Translate } from "components/layout/translate/translate";
 
 import { Header } from "./components/header/header";
-import { HackathonContextProvider } from "./context/hackathon.context";
+import { HackathonIssuesContextProvider } from "./context/hackathon-issues.context";
 import { Description } from "./features/description/description";
 import { HackathonIssues } from "./features/hackathon-issues/hackathon-issues";
 import { Info } from "./features/info/info";
@@ -30,7 +30,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
   const hackathon = await getHackathon(params.hackathonSlug);
 
   return (
-    <HackathonContextProvider>
+    <HackathonIssuesContextProvider hackathonId={hackathon.id}>
       <PosthogOnMount
         eventName="hackathon_viewed"
         params={{ hackathon_id: hackathon.id }}
@@ -66,6 +66,6 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
           </SideWrapper>
         </div>
       </div>
-    </HackathonContextProvider>
+    </HackathonIssuesContextProvider>
   );
 }

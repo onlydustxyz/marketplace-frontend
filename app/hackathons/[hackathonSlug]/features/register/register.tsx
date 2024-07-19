@@ -4,8 +4,6 @@ import { Auth0ClientAdapter } from "core/application/auth0-client-adapter";
 import { useContext } from "react";
 import { Controller } from "react-hook-form";
 
-import { HackathonContext } from "app/hackathons/[hackathonSlug]/context/hackathon.context";
-
 import { Button } from "components/atoms/button/variants/button-default";
 import { Input } from "components/atoms/input";
 import { Tooltip } from "components/atoms/tooltip";
@@ -17,6 +15,7 @@ import { Modal } from "components/molecules/modal";
 
 import { useIntl } from "hooks/translate/use-translate";
 
+import { HackathonIssuesContext } from "../../context/hackathon-issues.context";
 import { useRegister } from "./register.hooks";
 import { TRegister } from "./register.types";
 
@@ -46,8 +45,8 @@ export function Register({
   });
 
   const {
-    issues: { open },
-  } = useContext(HackathonContext);
+    drawer: { open },
+  } = useContext(HackathonIssuesContext);
 
   function renderButton() {
     if (hasRegistered && hackathonIsLive) {

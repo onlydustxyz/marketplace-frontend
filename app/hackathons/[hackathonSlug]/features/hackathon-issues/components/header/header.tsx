@@ -2,14 +2,14 @@
 
 import { useContext } from "react";
 
-import { HackathonContext } from "app/hackathons/[hackathonSlug]/context/hackathon.context";
+import { HackathonIssuesContext } from "app/hackathons/[hackathonSlug]/context/hackathon-issues.context";
 
 import { ButtonSecondaryLight } from "components/atoms/button/variants/button-secondary-light";
 
 export function Header() {
   const {
-    issues: { close },
-  } = useContext(HackathonContext);
+    drawer: { close },
+  } = useContext(HackathonIssuesContext);
 
   return (
     <div className="flex items-center justify-between gap-2">

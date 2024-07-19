@@ -3,14 +3,13 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useContext } from "react";
 
-import { HackathonContext } from "app/hackathons/[hackathonSlug]/context/hackathon.context";
-
+import { HackathonIssuesContext } from "../../context/hackathon-issues.context";
 import { TSideWrapper } from "./side-wrapper.types";
 
 export function SideWrapper({ children }: TSideWrapper.Props) {
   const {
-    issues: { isOpen },
-  } = useContext(HackathonContext);
+    drawer: { isOpen },
+  } = useContext(HackathonIssuesContext);
 
   return (
     <AnimatePresence>
