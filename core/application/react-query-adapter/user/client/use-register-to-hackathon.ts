@@ -5,6 +5,7 @@ import { bootstrap } from "core/bootstrap";
 import { HackathonFacadePort } from "core/domain/hackathon/inputs/hackathon-facade-port";
 import { UserFacadePort } from "core/domain/user/inputs/user-facade-port";
 import { FirstParameter } from "core/helpers/types";
+import { revalidateNextJsPath } from "core/infrastructure/marketplace-api-client-adapter/helpers/revalidate-nextjs-path";
 
 export function useRegisterToHackathon({
   pathParams,
@@ -31,6 +32,9 @@ export function useRegisterToHackathon({
             queryKey: [hackathonStoragePort.getHackathonBySlug(invalidateTagParams.getHackathonBySlug).tag],
             exact: false,
           });
+
+          revalidateNextJsPath("/hackathons", "page");
+          revalidateNextJsPath("/hackathons/[hackathonSlug]", "page");
         },
         ...options,
       },
