@@ -4,13 +4,15 @@ interface getContainerSizeParameters {
   isProjectOpen: boolean;
 }
 
-function getContainerSize(p: getContainerSizeParameters): {
+interface getContainerSizeReturn {
   container: string;
   panels: {
     issues: string;
     timeline: string;
   };
-} {
+}
+
+function getContainerSize(p: getContainerSizeParameters): getContainerSizeReturn {
   const panels = {
     issues: "40%",
     timeline: "30%",
