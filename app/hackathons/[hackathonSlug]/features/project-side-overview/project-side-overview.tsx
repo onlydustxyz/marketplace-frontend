@@ -5,6 +5,7 @@ import { useContext } from "react";
 
 import { HackathonContext } from "app/hackathons/[hackathonSlug]/context/hackathon.context";
 import { MainInfo } from "app/hackathons/[hackathonSlug]/features/project-side-overview/components/main-infos/main-info";
+import { ProjectCategories } from "app/hackathons/[hackathonSlug]/features/project-side-overview/components/project-categories/project-categories";
 import { ProjectInfos } from "app/hackathons/[hackathonSlug]/features/project-side-overview/components/project-infos/project-infos";
 import { ProjectLanguages } from "app/hackathons/[hackathonSlug]/features/project-side-overview/components/project-languages/project-languages";
 import { TProjectSideOverview } from "app/hackathons/[hackathonSlug]/features/project-side-overview/project-side-overview.types";
@@ -35,6 +36,7 @@ export function ProjectSideOverview(_: TProjectSideOverview.Props) {
       <ProjectInfos project={project} />
       <div className="grid grid-cols-2 gap-3">
         <ProjectLanguages languages={project.languages} />
+        <ProjectCategories categories={project.categories} />
       </div>
     </Paper>
   );

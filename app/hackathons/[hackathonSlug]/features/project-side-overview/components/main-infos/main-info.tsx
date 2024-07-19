@@ -49,17 +49,16 @@ function Links({ links }: { links: TMainInfo.Link[] }) {
 export function MainInfo({ project }: TMainInfo.Props) {
   return (
     <Paper size={"m"} container={"2"} classNames={{ base: "grid gap-3" }}>
-      <Typo size={"s"} as="div" color="text-2">
-        <MarkdownPreview>{project.shortDescription}</MarkdownPreview>
+      <Typo size={"s"} as="div">
+        <MarkdownPreview className="text-sm text-text-2">{project.shortDescription}</MarkdownPreview>
       </Typo>
-      <div className={"flex flex-wrap gap-3"}>
-        {project.moreInfos.length ? (
-          <div className={"grid gap-1"}>
-            <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.features.projectSideOverview.links" }} />
-            <Links links={project.moreInfos} />
-          </div>
-        ) : null}
-      </div>
+
+      {project.moreInfos.length ? (
+        <div className={"grid gap-1"}>
+          <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.features.projectSideOverview.links" }} />
+          <Links links={project.moreInfos} />
+        </div>
+      ) : null}
     </Paper>
   );
 }

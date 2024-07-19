@@ -16,7 +16,7 @@ export function ProjectLanguages({ languages }: TProjectLanguages.Props) {
 
       <div className={"flex flex-wrap gap-2"}>
         {languages.map(s => (
-          <Tag key={s.id} avatar={{ src: s.logoUrl, alt: s.name }} style={"outline"} color={"white"} size={"s"}>
+          <Tag key={s.id} avatar={{ src: s.logoUrl, alt: s.name }} style={"outline"} color={"grey"} size={"s"}>
             {s.name}
           </Tag>
         ))}
