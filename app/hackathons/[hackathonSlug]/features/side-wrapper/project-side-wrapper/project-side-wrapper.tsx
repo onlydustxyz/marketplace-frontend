@@ -16,7 +16,7 @@ export function ProjectSideWrapper({ children }: TProjectSideWrapper.Props) {
     <AnimatePresence>
       {isOpen ? (
         <motion.aside
-          className="absolute bottom-0 right-0 top-0 h-full overflow-scroll pl-4"
+          className="scrollbar-sm absolute bottom-0 right-0 top-0 h-full overflow-auto pl-4"
           style={{ width: panelSize.panels.issues }}
           initial={{ translate: "100%" }}
           animate={{ translate: 0 }}

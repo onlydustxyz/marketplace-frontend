@@ -14,6 +14,7 @@ export const HackathonContext = createContext<THackathonContext.Return>({
   },
   project: {
     isOpen: false,
+    projectId: "",
     open: () => null,
     close: () => null,
   },
@@ -32,6 +33,8 @@ export const HackathonContext = createContext<THackathonContext.Return>({
 export function HackathonContextProvider({ children }: THackathonContext.Props) {
   const [isIssuesOpen, setIsIssuesOpen] = useState<boolean>(false);
   const [isProjectOpen, setIsProjectOpen] = useState<boolean>(false);
+  const [projectId, setProjectId] = useState("");
+
   // TODO keep this until timeline is done
   // const isTimelineOpen = !isIssuesOpen && !isProjectOpen;
   const isTimelineOpen = false;
@@ -41,9 +44,9 @@ export function HackathonContextProvider({ children }: THackathonContext.Props) 
       HackathonUtils.getContainerSize({
         isTimelineOpen,
         isIssueOpen: isIssuesOpen,
-        isProjectOpen: false,
+        isProjectOpen,
       }),
-    [isIssuesOpen]
+    [isIssuesOpen, isProjectOpen]
   );
 
   return (
@@ -60,8 +63,15 @@ export function HackathonContextProvider({ children }: THackathonContext.Props) 
         },
         project: {
           isOpen: isProjectOpen,
-          open: () => setIsProjectOpen(true),
-          close: () => setIsProjectOpen(false),
+          projectId,
+          open: projectId => {
+            setProjectId(projectId);
+            setIsProjectOpen(true);
+          },
+          close: () => {
+            setProjectId("");
+            setIsProjectOpen(false);
+          },
         },
       }}
     >

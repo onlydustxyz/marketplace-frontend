@@ -1,5 +1,4 @@
 import { bootstrap } from "core/bootstrap";
-import { ShortProject } from "core/domain/project/models/short-project-model";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -86,7 +85,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
               />
               <Info hackathon={hackathon} />
               <Description description={hackathon.description} />
-              <Projects projects={hackathon.projects.map(project => new ShortProject(project))} />
+              <Projects projects={hackathon.projects} />
             </Paper>
           </OverviewWrapper>
 
