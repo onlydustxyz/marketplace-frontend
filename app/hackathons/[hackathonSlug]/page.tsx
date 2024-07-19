@@ -2,6 +2,7 @@ import { bootstrap } from "core/bootstrap";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { ProjectSideOverview } from "app/hackathons/[hackathonSlug]/features/project-side-overview/project-side-overview";
 import { IssuesSideWrapper } from "app/hackathons/[hackathonSlug]/features/side-wrapper/issues-side-wrapper/issues-side-wrapper";
 import { ProjectSideWrapper } from "app/hackathons/[hackathonSlug]/features/side-wrapper/project-side-wrapper/project-side-wrapper";
 import { TimelineSideWrapper } from "app/hackathons/[hackathonSlug]/features/side-wrapper/timeline-side-wrapper/timeline-side-wrapper";
@@ -96,7 +97,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
             <HackathonIssues />
           </IssuesSideWrapper>
           <ProjectSideWrapper>
-            <div>coucou</div>
+            <ProjectSideOverview />
           </ProjectSideWrapper>
         </div>
       </div>

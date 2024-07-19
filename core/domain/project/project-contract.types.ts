@@ -20,6 +20,20 @@ export type GetProjectBySlugPortParams = HttpClientParameters<{
   QueryParams: GetProjectBySlugQueryParams;
 }>;
 
+/* --------------------------------- Get project by id -------------------------------- */
+
+type GetProjectByIdPathParams = operations["getProject"]["parameters"]["path"];
+type GetProjectByIdQueryParams = operations["getProject"]["parameters"]["query"];
+
+export type GetProjectByIdResponse = components["schemas"]["ProjectResponse"];
+
+export type GetProjectByIdPortResponse = HttpStorageResponse<GetProjectByIdResponse>;
+
+export type GetProjectByIdPortParams = HttpClientParameters<{
+  PathParams: GetProjectByIdPathParams;
+  QueryParams: GetProjectByIdQueryParams;
+}>;
+
 /* --------------------------------- Get project rewards -------------------------------- */
 
 type GetProjectRewardsPathParams = operations["getProjectRewards"]["parameters"]["path"];
