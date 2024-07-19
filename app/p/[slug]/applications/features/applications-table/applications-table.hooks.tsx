@@ -79,7 +79,7 @@ export function useApplicationsTable({ projectId = "" }: { projectId?: string })
         icon: {
           remixName: "ri-price-tag-line",
         },
-        width: 150,
+        width: 180,
       },
       {
         key: "applicants",
