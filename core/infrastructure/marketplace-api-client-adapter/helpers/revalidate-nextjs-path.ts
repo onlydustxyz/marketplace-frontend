@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 
-export async function revalidateNextJsPath(
+export function revalidateNextJsPath(
   path: Parameters<typeof revalidatePath>[0],
   type: Parameters<typeof revalidatePath>[1]
 ) {
