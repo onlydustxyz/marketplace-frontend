@@ -14,7 +14,7 @@ export type RegisterToHackathonPortParams = HttpClientParameters<{
   PathParams: RegisterToHackathonPathParams;
 }>;
 
-export type RegisterToHackathonPortResponse = HttpStorageResponse<never>;
+export type RegisterToHackathonPortResponse = HttpStorageResponse;
 
 /* --------------------------------- Set my profile -------------------------------- */
 
@@ -24,7 +24,7 @@ export type SetMyProfileResponse = components["schemas"]["PrivateUserProfileResp
 
 export type SetMyProfilePortParams = HttpClientParameters<object>;
 
-export type SetMyProfilePortResponse = HttpStorageResponse<UserProfileInterface>;
+export type SetMyProfilePortResponse = HttpStorageResponse<UserProfileInterface, SetMyProfileBody>;
 
 /* --------------------------------- Get my profile -------------------------------- */
 
