@@ -10,7 +10,7 @@ export function useGetMyProfile({
   const userStoragePort = bootstrap.getUserStoragePortForClient();
 
   return useQuery(
-    useQueryAdapter<UserProfileInterface>({
+    useQueryAdapter({
       ...userStoragePort.getMyProfile({}),
       options,
     })

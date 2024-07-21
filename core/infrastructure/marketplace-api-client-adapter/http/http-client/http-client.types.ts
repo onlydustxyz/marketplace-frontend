@@ -21,9 +21,7 @@ interface HttpClientParameters<T extends { PathParams?: HttpClientPathParams; Qu
   queryParams?: T["QueryParams"];
 }
 
-export type HttpStorageBody = object | undefined;
-
-interface HttpStorageResponse<Response = never, Body extends HttpStorageBody = undefined> {
+interface HttpStorageResponse<Response = never, Body extends object = object> {
   request(body?: Body): Promise<Response>;
   tag: string;
 }

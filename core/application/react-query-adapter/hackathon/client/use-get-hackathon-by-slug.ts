@@ -11,7 +11,7 @@ export function useGetHackathonBySlug({
   const hackathonStoragePort = bootstrap.getHackathonStoragePortForClient();
 
   return useQuery(
-    useQueryAdapter<HackathonInterface>({
+    useQueryAdapter({
       ...hackathonStoragePort.getHackathonBySlug({ pathParams }),
       options,
     })

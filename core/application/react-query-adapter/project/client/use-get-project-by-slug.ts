@@ -12,7 +12,7 @@ export function useGetProjectBySlug({
   const projectStoragePort = bootstrap.getProjectStoragePortForClient();
 
   return useQuery(
-    useQueryAdapter<GetProjectBySlugResponse>({
+    useQueryAdapter({
       ...projectStoragePort.getProjectBySlug({ pathParams, queryParams }),
       options,
     })

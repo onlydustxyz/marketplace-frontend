@@ -4,7 +4,7 @@ import { HttpStorageResponse } from "core/infrastructure/marketplace-api-client-
 
 type UseQueryOptions<Response> = FirstParameter<typeof useQuery<Response>>;
 
-type UseQueryAdapterParams<Response> = HttpStorageResponse<Response, object> & {
+type UseQueryAdapterParams<Response> = HttpStorageResponse<Response> & {
   options?: Omit<UseQueryOptions<Response>, "queryKey" | "queryFn">;
 };
 

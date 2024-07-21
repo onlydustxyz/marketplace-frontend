@@ -16,7 +16,7 @@ export function useSetMyProfile({
   const queryClient = useQueryClient();
 
   return useMutation(
-    useMutationAdapter<UserProfileInterface, SetMyProfileBody>({
+    useMutationAdapter({
       ...userStoragePort.setMyProfile({}),
       options: {
         onSuccess: async () => {
