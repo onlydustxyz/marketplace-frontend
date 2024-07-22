@@ -45,7 +45,7 @@ export function useInfiniteQueryAdapter<Params extends GenericFunction, Response
   const { tag } = _httpStorage();
 
   return {
-    queryKey: [tag],
+    queryKey: tag,
     queryFn: ({ pageParam: pageIndex = 0 }) => _httpStorage(pageIndex as number).request(),
     initialPageParam: 0,
     getNextPageParam: lastPage => (lastPage?.hasMore ? lastPage.nextPageIndex : undefined),
