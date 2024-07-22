@@ -4,6 +4,10 @@ import { createContext, useMemo, useState } from "react";
 
 import { HackathonUtils } from "app/hackathons/[hackathonSlug]/utils";
 
+import { viewportConfig } from "src/config";
+
+import { useClientMediaQuery } from "hooks/layout/useClientMediaQuery/use-client-media-query";
+
 import { THackathonContext } from "./hackathon.context.types";
 
 export const HackathonContext = createContext<THackathonContext.Return>({
@@ -32,11 +36,13 @@ export const HackathonContext = createContext<THackathonContext.Return>({
 });
 
 export function HackathonContextProvider({ children, hasEvents }: THackathonContext.Props) {
+  const isLg = useClientMediaQuery(`(max-width: ${viewportConfig.breakpoints.lg}px)`);
+
   const [isIssuesOpen, setIsIssuesOpen] = useState<boolean>(false);
   const [isProjectOpen, setIsProjectOpen] = useState<boolean>(false);
   const [projectId, setProjectId] = useState("");
 
-  const isTimelineOpen = hasEvents && !isIssuesOpen && !isProjectOpen;
+  const isTimelineOpen = isLg ? false : hasEvents && !isIssuesOpen && !isProjectOpen;
 
   const panelSize = useMemo(
     () =>
@@ -71,7 +77,10 @@ export function HackathonContextProvider({ children, hasEvents }: THackathonCont
   return (
     <HackathonContext.Provider
       value={{
-        panelSize,
+        panelSize: {
+          ...panelSize,
+          container: isLg ? "100%" : panelSize.container,
+        },
         timeline: {
           isOpen: isTimelineOpen,
         },

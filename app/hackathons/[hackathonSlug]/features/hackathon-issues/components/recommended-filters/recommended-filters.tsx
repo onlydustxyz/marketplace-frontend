@@ -26,7 +26,7 @@ export function RecommendedFilters() {
   }
 
   return (
-    <Paper size="s" container="2" classNames={{ base: "flex flex-col gap-2" }}>
+    <Paper size="s" container="transparent" classNames={{ base: "flex flex-col gap-2" }}>
       <Typo size="xs" weight="medium" translate={{ token: "v2.pages.hackathons.details.issues.filters.recommended" }} />
 
       <RadioButtonGroup

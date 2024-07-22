@@ -2,7 +2,7 @@ import { tv } from "tailwind-variants";
 
 export const DrawerNextUiVariants = tv({
   slots: {
-    base: "border-b-none group !m-0 h-[calc(100%_-_24px)] max-w-full rounded-xl rounded-b-none border-1 border-container-stroke-separator bg-container-1 sm:!m-3 sm:rounded-b-xl sm:border-b-1",
+    base: "border-b-none !m-0 h-[calc(100%_-_24px)] max-w-full rounded-xl rounded-b-none border-1 border-container-stroke-separator bg-container-1 sm:!m-3 sm:rounded-b-xl sm:border-b-1",
     wrapper: "justify-end",
     body: "gap-0 overflow-hidden p-3 pt-0",
     backdrop: "bg-container-backdrop",
