@@ -40,11 +40,12 @@ export type GetHackathonByIdProjectIssuesPortParams = HttpClientParameters<{
   QueryParams: GetHackathonByIdProjectIssuesQueryParams;
 }>;
 
-export type GetHackathonByIdProjectIssuesPortResponse = HttpStorageResponse<
-  Omit<GetHackathonByIdProjectIssuesResponse, "projects"> & {
-    projects: Omit<GetHackathonByIdProjectIssuesResponse["projects"][number], "project"> &
-      {
-        project: LinkProjectInterface;
-      }[];
-  }
->;
+export type GetHackathonByIdProjectIssuesFormattedResponse = Omit<GetHackathonByIdProjectIssuesResponse, "projects"> & {
+  projects: Omit<GetHackathonByIdProjectIssuesResponse["projects"][number], "project"> &
+    {
+      project: LinkProjectInterface;
+    }[];
+};
+
+export type GetHackathonByIdProjectIssuesPortResponse =
+  HttpStorageResponse<GetHackathonByIdProjectIssuesFormattedResponse>;

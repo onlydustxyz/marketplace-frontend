@@ -76,11 +76,7 @@ export function Info({ hackathon }: TInfo.Props) {
   const isClosed = hackathon.getStatus() === "closed";
 
   return (
-    <Paper
-      size={"m"}
-      container={"2"}
-      classNames={{ base: "flex flex-col md:flex-row md:items-center justify-between gap-4" }}
-    >
+    <Paper size={"m"} container={"2"} classNames={{ base: "flex flex-col md:flex-row justify-between gap-4" }}>
       <div className={"flex flex-wrap gap-3"}>
         {hackathon.communityLinks.length ? (
           <div className={"grid gap-1"}>
@@ -127,6 +123,7 @@ export function Info({ hackathon }: TInfo.Props) {
           buttonProps={{
             size: "xl",
             isDisabled: isClosed,
+            classNames: { base: "whitespace-nowrap" },
           }}
           tooltipProps={{
             content: <Translate token={"v2.pages.hackathons.details.info.eventOverTooltip"} />,
@@ -146,7 +143,7 @@ export function Info({ hackathon }: TInfo.Props) {
           buttonProps={{
             size: "l",
             isDisabled: isClosed,
-            classNames: { base: "w-full" },
+            classNames: { base: "w-full whitespace-nowrap" },
           }}
           tooltipProps={{
             content: <Translate token={"v2.pages.hackathons.details.info.eventOverTooltip"} />,

@@ -1,8 +1,5 @@
-import {
-  ReactQueryInfiniteParameters,
-  ReactQueryOptions,
-} from "core/application/react-query-adapter/react-query-adapter.types";
-import { GenericFunction } from "core/helpers/types";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { AnyType, FirstParameter, GenericFunction } from "core/helpers/types";
 
 interface BaseResponse {
   hasMore: boolean;
@@ -11,26 +8,37 @@ interface BaseResponse {
   nextPageIndex: number;
 }
 
-type UseInfiniteQueryAdapterParameters<T extends GenericFunction = GenericFunction> =
-  ReactQueryInfiniteParameters<T> & { httpStorage: T };
+type UseInfiniteQueryOptions<Response> = FirstParameter<typeof useInfiniteQuery<Response>>;
 
-interface UseInfiniteQueryAdapterReturn<T extends BaseResponse> extends Partial<ReactQueryOptions> {
-  queryKey: string[];
-  queryFn(p: { pageParam: unknown }): Promise<T>;
-  initialPageParam: number;
-  getNextPageParam(p: BaseResponse): number | undefined;
-}
+type UseInfiniteQueryFacadeParamsPaginated<Params extends GenericFunction, Response> = FirstParameter<Params> & {
+  options?: Omit<UseInfiniteQueryOptions<Response>, "queryKey" | "queryFn" | "initialPageParam" | "getNextPageParam">;
+};
 
-export function useInfiniteQueryAdapter<R extends BaseResponse, T extends GenericFunction = GenericFunction>({
+type OmitPagination<Params extends { queryParams?: AnyType }> = Omit<Params, "queryParams"> & {
+  queryParams?: Omit<Params["queryParams"], "pageIndex">;
+};
+
+export type UseInfiniteQueryFacadeParams<Params extends GenericFunction, Response> = OmitPagination<
+  UseInfiniteQueryFacadeParamsPaginated<Params, Response>
+>;
+
+type UseInfiniteQueryAdapterParams<Params extends GenericFunction, Response> = UseInfiniteQueryFacadeParams<
+  Params,
+  Response
+> & {
+  httpStorage: Params;
+};
+
+export function useInfiniteQueryAdapter<Params extends GenericFunction, Response extends BaseResponse>({
   pathParams,
   queryParams,
   options,
   httpStorage,
-}: UseInfiniteQueryAdapterParameters<T>): UseInfiniteQueryAdapterReturn<R> {
+}: UseInfiniteQueryAdapterParams<Params, Response>): UseInfiniteQueryOptions<Response> {
   function _httpStorage(pageIndex = 0) {
     return httpStorage({
       pathParams,
-      queryParams: { ...queryParams, pageIndex, pageSize: 15 },
+      queryParams: { pageSize: 15, ...queryParams, pageIndex },
     });
   }
 

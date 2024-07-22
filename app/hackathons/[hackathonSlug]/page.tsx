@@ -17,10 +17,12 @@ import { Translate } from "components/layout/translate/translate";
 import { Header } from "./components/header/header";
 import { HackathonContextProvider } from "./context/hackathon.context";
 import { Description } from "./features/description/description";
+import { HackathonIssuesContextProvider } from "./features/hackathon-issues/context/hackathon-issues.context";
 import { HackathonIssues } from "./features/hackathon-issues/hackathon-issues";
 import { Info } from "./features/info/info";
 import { OverviewWrapper } from "./features/overview-wrapper/overview-wrapper";
 import { Projects } from "./features/projects/projects";
+import { HackathonTimeline } from "app/hackathons/[hackathonSlug]/features/hackathon-timeline/hackathon-timeline";
 
 async function getHackathon(hackathonSlug: string) {
   try {
@@ -59,7 +61,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
   const hackathon = await getHackathon(params.hackathonSlug);
 
   return (
-    <HackathonContextProvider>
+    <HackathonContextProvider hasEvents={!!hackathon.events?.length}>
       <PosthogOnMount
         eventName="hackathon_viewed"
         params={{ hackathon_id: hackathon.id }}
@@ -91,11 +93,19 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
           </OverviewWrapper>
 
           <TimelineSideWrapper>
-            <div className="h-[2000px] bg-pink-500">TIMELINE</div>
+            <HackathonTimeline
+              todayEvents={hackathon.getTodayEvents()}
+              nextEvents={hackathon.getNextEvents()}
+              previousEvents={hackathon.getPreviousEvents()}
+            />
           </TimelineSideWrapper>
-          <IssuesSideWrapper>
-            <HackathonIssues />
-          </IssuesSideWrapper>
+
+          <HackathonIssuesContextProvider hackathonId={hackathon.id}>
+            <IssuesSideWrapper>
+              <HackathonIssues />
+            </IssuesSideWrapper>
+          </HackathonIssuesContextProvider>
+
           <ProjectSideWrapper>
             <ProjectSideOverview />
           </ProjectSideWrapper>

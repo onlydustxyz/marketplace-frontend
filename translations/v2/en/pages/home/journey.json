@@ -1,6 +1,10 @@
 {
   "title": "Start your journey now",
-  "progressPercentage": "__count__%",
+  "progressPercentage": {
+    "zero": "0%",
+    "one": "1%",
+    "many": "__count__%"
+  },
   "steps": {
     "step1": {
       "title": "Create and validate your first billing profile",

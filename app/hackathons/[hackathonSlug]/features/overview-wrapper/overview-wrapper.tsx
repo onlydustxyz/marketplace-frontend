@@ -3,8 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useContext } from "react";
 
-import { HackathonContext } from "app/hackathons/[hackathonSlug]/context/hackathon.context";
-
+import { HackathonContext } from "../../context/hackathon.context";
 import { TOverviewWrapper } from "./overview-wrapper.types";
 
 export function OverviewWrapper({ children }: TOverviewWrapper.Props) {

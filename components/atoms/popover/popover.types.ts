@@ -21,7 +21,6 @@ export interface PopoverPort {
     | "left-start"
     | "left"
     | "left-end";
-  closeOnBlur?: boolean;
 }
 
 export interface PopoverTriggerPort {

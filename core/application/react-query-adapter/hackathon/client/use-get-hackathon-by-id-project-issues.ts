@@ -1,19 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import { UseQueryFacadeParams, useQueryAdapter } from "core/application/react-query-adapter/helpers/use-query-adapter";
 import { bootstrap } from "core/bootstrap";
+import { GetHackathonByIdProjectIssuesFormattedResponse } from "core/domain/hackathon/hackathon-contract.types";
 import { HackathonFacadePort } from "core/domain/hackathon/inputs/hackathon-facade-port";
-import { HackathonInterface } from "core/domain/hackathon/models/hackathon-model";
 
-export function useGetHackathonBySlug({
+export function useGetHackathonByIdProjectIssues({
   pathParams,
+  queryParams,
   options,
-}: UseQueryFacadeParams<HackathonFacadePort["getHackathonBySlug"], HackathonInterface>) {
+}: UseQueryFacadeParams<
+  HackathonFacadePort["getHackathonByIdProjectIssues"],
+  GetHackathonByIdProjectIssuesFormattedResponse
+>) {
   const hackathonStoragePort = bootstrap.getHackathonStoragePortForClient();
 
   return useQuery(
-    useQueryAdapter({
-      ...hackathonStoragePort.getHackathonBySlug({ pathParams }),
-      options,
-    })
+    useQueryAdapter({ ...hackathonStoragePort.getHackathonByIdProjectIssues({ pathParams, queryParams }), options })
   );
 }
