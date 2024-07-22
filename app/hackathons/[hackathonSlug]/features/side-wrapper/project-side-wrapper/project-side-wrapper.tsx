@@ -33,14 +33,14 @@ export function ProjectSideWrapper({ children }: TProjectSideWrapper.Props) {
         <AnimatePresence>
           {isOpen ? (
             <motion.aside
-              className="scrollbar-sm absolute bottom-0 right-0 top-0 h-full overflow-auto pl-4"
+              className="scrollbar-sm absolute bottom-0 right-0 top-0 h-full max-h-[1054px] overflow-y-auto overflow-x-hidden pl-4"
               style={{ width: panelSize.panels.project }}
               initial={{ translate: "100%", opacity: 0 }}
               animate={{ translate: 0, opacity: 1 }}
               exit={{ translate: "100%", opacity: 0 }}
               transition={{ duration: 0.3, type: "tween" }}
             >
-              <Paper size="m" container="2" classNames={{ base: "flex flex-col gap-3" }}>
+              <Paper size="m" container="2" classNames={{ base: "flex flex-col gap-3 min-h-full" }}>
                 {children}
               </Paper>
             </motion.aside>
