@@ -79,6 +79,7 @@ export function ApplyIssueDrawer({ state }: TApplyIssueDrawer.Props) {
         motivations: getValues("motivations"),
         problemSolvingApproach: getValues("problemSolvingApproach"),
       };
+
       switch (actionType) {
         case "create":
           handleCreate(payload);
