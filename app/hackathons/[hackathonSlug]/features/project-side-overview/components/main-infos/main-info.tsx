@@ -1,8 +1,7 @@
 import { bootstrap } from "core/bootstrap";
+import { lazy } from "react";
 
 import { TMainInfo } from "app/hackathons/[hackathonSlug]/features/project-side-overview/components/main-infos/main-info.types";
-
-import MarkdownPreview from "src/components/MarkdownPreview";
 
 import { Paper } from "components/atoms/paper";
 import { Tag } from "components/atoms/tag";
@@ -11,6 +10,8 @@ import { InfoDropdown } from "components/features/info-dropdown/info-dropdown";
 import { SocialIconLink } from "components/features/social-icon-link/social-icon-link";
 import { BaseLink } from "components/layout/base-link/base-link";
 import { Translate } from "components/layout/translate/translate";
+
+const MarkdownPreview = lazy(() => import("src/components/MarkdownPreview"));
 
 function Links({ links }: { links: TMainInfo.Link[] }) {
   if (links.length > 3) {
