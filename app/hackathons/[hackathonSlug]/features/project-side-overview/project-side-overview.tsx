@@ -30,7 +30,7 @@ export function ProjectSideOverview(_: TProjectSideOverview.Props) {
 
   return (
     <Paper size="m" container="2" classNames={{ base: "flex flex-col gap-3" }}>
-      <Header slug={project?.slug} logoUrl={project?.logoUrl} />
+      <Header slug={project.slug} logoUrl={project.logoUrl} />
 
       <MainInfo project={project} />
       <ProjectInfos project={project} />

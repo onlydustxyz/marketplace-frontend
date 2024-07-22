@@ -39,7 +39,7 @@ function Links({ links }: { links: TMainInfo.Link[] }) {
             size={"s"}
             startContent={<SocialIconLink url={validUrl ?? ""} />}
           >
-            {link.value ?? link.url}
+            {link.value ?? validUrl}
           </Tag>
         );
       })}

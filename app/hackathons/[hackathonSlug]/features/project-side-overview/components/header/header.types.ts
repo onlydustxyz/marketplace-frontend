@@ -1,6 +1,6 @@
 export namespace THeader {
   export interface Props {
-    slug?: string;
+    slug: string;
     logoUrl?: string;
   }
 }
