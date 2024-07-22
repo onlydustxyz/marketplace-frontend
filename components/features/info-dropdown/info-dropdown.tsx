@@ -11,6 +11,7 @@ import { TInfoDropdown } from "components/features/info-dropdown/info-dropdown.t
 import { Translate } from "components/layout/translate/translate";
 
 export function InfoDropdown({ targetLabel, dropdownTitleToken, links }: TInfoDropdown.Props) {
+  const urlHelperPort = bootstrap.getUrlHelperPort();
   return (
     <Popover>
       <Popover.Trigger>
@@ -40,7 +41,6 @@ export function InfoDropdown({ targetLabel, dropdownTitleToken, links }: TInfoDr
             </div>
 
             {links.map(l => {
-              const urlHelperPort = bootstrap.getUrlHelperPort();
               if (l.url) {
                 const validUrl = l.url ? urlHelperPort.validateUrl(l.url) : "";
                 return (
