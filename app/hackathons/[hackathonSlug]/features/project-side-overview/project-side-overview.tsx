@@ -1,5 +1,6 @@
 "use client";
 
+import { keepPreviousData } from "@tanstack/react-query";
 import { ProjectReactQueryAdapter } from "core/application/react-query-adapter/project";
 import { useContext } from "react";
 
@@ -23,6 +24,7 @@ export function ProjectSideOverview(_: TProjectSideOverview.Props) {
     pathParams: { projectId },
     options: {
       enabled: !!projectId,
+      placeholderData: keepPreviousData,
     },
   });
 
