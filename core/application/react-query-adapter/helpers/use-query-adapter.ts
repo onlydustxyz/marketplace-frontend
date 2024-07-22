@@ -13,12 +13,12 @@ export type UseQueryFacadeParams<Params extends GenericFunction, Response> = Fir
 };
 
 export function useQueryAdapter<Response>({
-  tag = "",
+  tag = [],
   request: queryFn,
   options,
 }: UseQueryAdapterParams<Response>): UseQueryOptions<Response> {
   return {
-    queryKey: [tag],
+    queryKey: tag,
     queryFn,
     ...options,
   };

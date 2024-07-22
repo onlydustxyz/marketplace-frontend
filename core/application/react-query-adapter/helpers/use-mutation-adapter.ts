@@ -23,12 +23,12 @@ export type UseMutationFacadeParams<
 };
 
 export function useMutationAdapter<Response, Body extends object>({
-  tag = "",
+  tag = [],
   request: mutationFn,
   options,
 }: UseMutationAdapterParams<Response, Body>): UseMutationOptions<Response, Body> {
   return {
-    mutationKey: [tag],
+    mutationKey: tag,
     mutationFn,
     ...options,
   };

@@ -1,4 +1,5 @@
 import { TInfo } from "app/hackathons/[hackathonSlug]/features/info/info.types";
+import { OpenTimeline } from "app/hackathons/[hackathonSlug]/features/open-timeline/open-timeline";
 import { Register } from "app/hackathons/[hackathonSlug]/features/register/register";
 
 import { Paper } from "components/atoms/paper";
@@ -76,7 +77,7 @@ export function Info({ hackathon }: TInfo.Props) {
   const isClosed = hackathon.getStatus() === "closed";
 
   return (
-    <Paper size={"m"} container={"2"} classNames={{ base: "flex flex-col md:flex-row justify-between gap-4" }}>
+    <Paper size={"m"} container={"2"} classNames={{ base: "flex flex-col xl:flex-row justify-between gap-4" }}>
       <div className={"flex flex-wrap gap-3"}>
         {hackathon.communityLinks.length ? (
           <div className={"grid gap-1"}>
@@ -113,7 +114,7 @@ export function Info({ hackathon }: TInfo.Props) {
         ) : null}
       </div>
 
-      <div className={"hidden md:block"}>
+      <div className={"hidden xl:block"}>
         <Register
           hackathonId={hackathon.id}
           hackathonSlug={hackathon.slug}
@@ -133,7 +134,7 @@ export function Info({ hackathon }: TInfo.Props) {
         />
       </div>
 
-      <div className={"grid w-full gap-4 md:hidden"}>
+      <div className={"flex w-full flex-col gap-4 md:flex-row xl:hidden"}>
         <Register
           hackathonId={hackathon.id}
           hackathonSlug={hackathon.slug}
@@ -143,7 +144,7 @@ export function Info({ hackathon }: TInfo.Props) {
           buttonProps={{
             size: "l",
             isDisabled: isClosed,
-            classNames: { base: "w-full whitespace-nowrap" },
+            classNames: { base: "w-full md:w-fit whitespace-nowrap" },
           }}
           tooltipProps={{
             content: <Translate token={"v2.pages.hackathons.details.info.eventOverTooltip"} />,
@@ -151,9 +152,7 @@ export function Info({ hackathon }: TInfo.Props) {
           }}
         />
 
-        {/*<Button variant={"secondary-light"} size={"l"} classNames={{ base: "w-full" }}>*/}
-        {/*  <Translate token={"v2.pages.hackathons.details.info.seeEvents"} />*/}
-        {/*</Button>*/}
+        <OpenTimeline eventsCount={hackathon.events?.length} />
       </div>
     </Paper>
   );

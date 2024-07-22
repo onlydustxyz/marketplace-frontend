@@ -17,13 +17,15 @@ import { usePublicRepoScope } from "components/features/grant-permission/hooks/u
 import { useIntl } from "hooks/translate/use-translate";
 
 export function useApplyIssueDrawer({ state }: Pick<TApplyIssueDrawer.Props, "state">) {
-  const [{ isOpen, issueId, applicationId = "" }, setState] = state;
+  const { T } = useIntl();
+  const [{ isOpen, issueId, applicationId = "", projectId }, setState] = state;
   const { getPermissions } = usePublicRepoScope({});
   const { slug = "" } = useParams<{ slug: string }>();
   const project = ProjectApi.queries.useGetProjectBySlug({
     params: { slug },
   });
-  const { T } = useIntl();
+
+  const currentProjectId = project.data?.id ?? projectId;
 
   const { data: issue, ...getIssue } = issuesApiClient.queries.useGetIssueById({
     pathParams: {
@@ -38,7 +40,7 @@ export function useApplyIssueDrawer({ state }: Pick<TApplyIssueDrawer.Props, "st
   });
 
   const { mutateAsync: createAsync, ...createApplication } = meApiClient.mutations.usePostMyApplication({
-    projectId: project.data?.id ?? "",
+    projectId: currentProjectId ?? "",
   });
 
   const { mutateAsync: updateAsync, ...updateApplication } = meApiClient.mutations.useUpdateMyApplication(
@@ -47,7 +49,7 @@ export function useApplyIssueDrawer({ state }: Pick<TApplyIssueDrawer.Props, "st
         applicationId,
       },
     },
-    project.data?.id ?? ""
+    currentProjectId ?? ""
   );
 
   const { mutateAsync: deleteAsync, ...deleteApplication } = applicationsApiClient.mutations.useDeleteApplication(
@@ -56,7 +58,7 @@ export function useApplyIssueDrawer({ state }: Pick<TApplyIssueDrawer.Props, "st
         applicationId,
       },
     },
-    project.data?.id ?? ""
+    currentProjectId ?? ""
   );
 
   useMutationAlert({
@@ -103,10 +105,10 @@ export function useApplyIssueDrawer({ state }: Pick<TApplyIssueDrawer.Props, "st
   }
 
   function handleCreate(values: TApplyIssueDrawer.form) {
-    if (!project.data?.id || !issueId) return;
+    if (!currentProjectId || !issueId) return;
 
     createAsync({
-      projectId: project.data.id,
+      projectId: currentProjectId,
       issueId,
       motivation: values.motivations,
       problemSolvingApproach: values.problemSolvingApproach,
@@ -162,7 +164,7 @@ export function useApplyIssueDrawer({ state }: Pick<TApplyIssueDrawer.Props, "st
 }
 
 export function useApplyIssueDrawerState() {
-  return useState<{ isOpen: boolean; issueId?: number; applicationId?: string }>({
+  return useState<{ isOpen: boolean; issueId?: number; applicationId?: string; projectId?: string }>({
     isOpen: false,
   });
 }

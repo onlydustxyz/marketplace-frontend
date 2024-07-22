@@ -9,6 +9,7 @@ export interface ListIssueInterface extends GithubIssueListItemResponse {
   getApplicationStatus(): IssueApplicationStatus;
   isAssigned(): boolean;
   isApplied(): boolean;
+  getFirstAssignee(): GithubIssueListItemResponse["assignees"][0];
 }
 export class ListIssue extends mapApiToClass<GithubIssueListItemResponse>() implements ListIssueInterface {
   constructor(protected readonly props: GithubIssueListItemResponse) {
@@ -33,5 +34,9 @@ export class ListIssue extends mapApiToClass<GithubIssueListItemResponse>() impl
     }
 
     return "open";
+  }
+
+  getFirstAssignee(): GithubIssueListItemResponse["assignees"][0] {
+    return this.assignees[0];
   }
 }
