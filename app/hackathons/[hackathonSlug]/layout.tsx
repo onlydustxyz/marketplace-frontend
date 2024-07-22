@@ -5,7 +5,7 @@ import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 
 export default function HackathonLayout({ children }: PropsWithChildren) {
   return (
-    <ScrollView>
+    <ScrollView className="overflow-x-hidden">
       <Container>{children}</Container>
     </ScrollView>
   );

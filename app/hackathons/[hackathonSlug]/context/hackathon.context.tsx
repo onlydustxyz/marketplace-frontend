@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useMemo, useState } from "react";
+import { createContext, useEffect, useMemo, useState } from "react";
 
 import { HackathonUtils } from "app/hackathons/[hackathonSlug]/utils";
 
@@ -24,6 +24,8 @@ export const HackathonContext = createContext<THackathonContext.Return>({
   },
   timeline: {
     isOpen: false,
+    open: () => null,
+    close: () => null,
   },
   panelSize: {
     container: "100%",
@@ -36,29 +38,55 @@ export const HackathonContext = createContext<THackathonContext.Return>({
 });
 
 export function HackathonContextProvider({ children, hasEvents }: THackathonContext.Props) {
-  const isLg = useClientMediaQuery(`(max-width: ${viewportConfig.breakpoints.lg}px)`);
+  const isXl = useClientMediaQuery(`(max-width: ${viewportConfig.breakpoints.xl}px)`);
 
+  const [isTimelineOpen, setIsTimelineOpen] = useState<boolean>(false);
   const [isIssuesOpen, setIsIssuesOpen] = useState<boolean>(false);
   const [isProjectOpen, setIsProjectOpen] = useState<boolean>(false);
   const [projectId, setProjectId] = useState("");
 
-  const isTimelineOpen = isLg ? false : hasEvents && !isIssuesOpen && !isProjectOpen;
+  const panelSize = useMemo(() => {
+    if (isXl) {
+      return {
+        container: "100%",
+        panels: {
+          issues: "0px",
+          project: "0px",
+          timeline: "0px",
+        },
+      };
+    }
+    return HackathonUtils.getContainerSize({
+      isTimelineOpen,
+      isIssueOpen: isIssuesOpen,
+      isProjectOpen,
+    });
+  }, [isIssuesOpen, isProjectOpen, isTimelineOpen, isXl]);
 
-  const panelSize = useMemo(
-    () =>
-      HackathonUtils.getContainerSize({
-        isTimelineOpen,
-        isIssueOpen: isIssuesOpen,
-        isProjectOpen,
-      }),
-    [isIssuesOpen, isProjectOpen]
-  );
+  useEffect(() => {
+    if (!isXl) {
+      setIsTimelineOpen(hasEvents && !isIssuesOpen && !isProjectOpen);
+    } else {
+      setIsTimelineOpen(false);
+    }
+  }, [isXl, isIssuesOpen, isProjectOpen]);
 
   function toggleIssues() {
     if (isIssuesOpen) {
       setIsIssuesOpen(false);
     } else {
       setIsIssuesOpen(true);
+      setIsTimelineOpen(false);
+      setIsProjectOpen(false);
+    }
+  }
+
+  function toggleTimeline() {
+    if (isTimelineOpen) {
+      setIsTimelineOpen(false);
+    } else {
+      setIsTimelineOpen(true);
+      setIsIssuesOpen(false);
       setIsProjectOpen(false);
     }
   }
@@ -66,6 +94,7 @@ export function HackathonContextProvider({ children, hasEvents }: THackathonCont
   function openProject(projectId: string) {
     setProjectId(projectId);
     setIsIssuesOpen(false);
+    setIsTimelineOpen(false);
     setIsProjectOpen(true);
   }
 
@@ -77,12 +106,11 @@ export function HackathonContextProvider({ children, hasEvents }: THackathonCont
   return (
     <HackathonContext.Provider
       value={{
-        panelSize: {
-          ...panelSize,
-          container: isLg ? "100%" : panelSize.container,
-        },
+        panelSize,
         timeline: {
           isOpen: isTimelineOpen,
+          open: toggleTimeline,
+          close: toggleTimeline,
         },
         issues: {
           isOpen: isIssuesOpen,
