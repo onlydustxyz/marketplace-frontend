@@ -2,7 +2,7 @@ import { LinkProject } from "core/domain/project/models/link-project-model";
 
 import { components } from "src/__generated/api";
 
-type ProjectShortResponse = components["schemas"]["ProjectShortResponse"];
+export type ProjectShortResponse = components["schemas"]["ProjectShortResponse"];
 
 export interface ShortProjectInterface extends LinkProject, ProjectShortResponse {}
 

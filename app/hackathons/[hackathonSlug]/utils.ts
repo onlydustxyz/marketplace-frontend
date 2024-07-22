@@ -8,6 +8,7 @@ interface getContainerSizeReturn {
   container: string;
   panels: {
     issues: string;
+    project: string;
     timeline: string;
   };
 }
@@ -15,7 +16,8 @@ interface getContainerSizeReturn {
 function getContainerSize(p: getContainerSizeParameters): getContainerSizeReturn {
   const panels = {
     issues: "40%",
-    timeline: "30%",
+    project: "40%",
+    timeline: "40%",
   };
 
   if (p.isIssueOpen) {
@@ -34,7 +36,7 @@ function getContainerSize(p: getContainerSizeParameters): getContainerSizeReturn
 
   if (p.isTimelineOpen) {
     return {
-      container: "70%",
+      container: "60%",
       panels,
     };
   }

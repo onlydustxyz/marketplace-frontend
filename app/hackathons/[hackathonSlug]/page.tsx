@@ -1,10 +1,12 @@
 import { bootstrap } from "core/bootstrap";
-import { ShortProject } from "core/domain/project/models/short-project-model";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { HackathonTimeline } from "app/hackathons/[hackathonSlug]/features/hackathon-timeline/hackathon-timeline";
+import { ProjectSideOverview } from "app/hackathons/[hackathonSlug]/features/project-side-overview/project-side-overview";
+import { Projects } from "app/hackathons/[hackathonSlug]/features/projects/projects";
 import { IssuesSideWrapper } from "app/hackathons/[hackathonSlug]/features/side-wrapper/issues-side-wrapper/issues-side-wrapper";
+import { ProjectSideWrapper } from "app/hackathons/[hackathonSlug]/features/side-wrapper/project-side-wrapper/project-side-wrapper";
 import { TimelineSideWrapper } from "app/hackathons/[hackathonSlug]/features/side-wrapper/timeline-side-wrapper/timeline-side-wrapper";
 import { sharedMetadata } from "app/shared-metadata";
 
@@ -21,7 +23,6 @@ import { HackathonIssuesContextProvider } from "./features/hackathon-issues/cont
 import { HackathonIssues } from "./features/hackathon-issues/hackathon-issues";
 import { Info } from "./features/info/info";
 import { OverviewWrapper } from "./features/overview-wrapper/overview-wrapper";
-import { Projects } from "./features/projects/projects";
 
 async function getHackathon(hackathonSlug: string) {
   try {
@@ -87,7 +88,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
               />
               <Info hackathon={hackathon} />
               <Description description={hackathon.description} />
-              <Projects projects={hackathon.projects.map(project => new ShortProject(project))} />
+              <Projects projects={hackathon.projects} />
             </Paper>
           </OverviewWrapper>
 
@@ -104,6 +105,10 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
               <HackathonIssues />
             </IssuesSideWrapper>
           </HackathonIssuesContextProvider>
+
+          <ProjectSideWrapper>
+            <ProjectSideOverview />
+          </ProjectSideWrapper>
         </div>
       </div>
     </HackathonContextProvider>

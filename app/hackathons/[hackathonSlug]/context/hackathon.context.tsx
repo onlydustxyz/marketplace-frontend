@@ -12,6 +12,12 @@ export const HackathonContext = createContext<THackathonContext.Return>({
     open: () => null,
     close: () => null,
   },
+  project: {
+    isOpen: false,
+    projectId: "",
+    open: () => null,
+    close: () => null,
+  },
   timeline: {
     isOpen: false,
   },
@@ -19,6 +25,7 @@ export const HackathonContext = createContext<THackathonContext.Return>({
     container: "100%",
     panels: {
       issues: "0px",
+      project: "0px",
       timeline: "0px",
     },
   },
@@ -26,17 +33,40 @@ export const HackathonContext = createContext<THackathonContext.Return>({
 
 export function HackathonContextProvider({ children, hasEvents }: THackathonContext.Props) {
   const [isIssuesOpen, setIsIssuesOpen] = useState<boolean>(false);
-  const isTimelineOpen = hasEvents && !isIssuesOpen;
+  const [isProjectOpen, setIsProjectOpen] = useState<boolean>(false);
+  const [projectId, setProjectId] = useState("");
+
+  const isTimelineOpen = hasEvents && !isIssuesOpen && !isProjectOpen;
 
   const panelSize = useMemo(
     () =>
       HackathonUtils.getContainerSize({
         isTimelineOpen,
         isIssueOpen: isIssuesOpen,
-        isProjectOpen: false,
+        isProjectOpen,
       }),
-    [isIssuesOpen]
+    [isIssuesOpen, isProjectOpen]
   );
+
+  function toggleIssues() {
+    if (isIssuesOpen) {
+      setIsIssuesOpen(false);
+    } else {
+      setIsIssuesOpen(true);
+      setIsProjectOpen(false);
+    }
+  }
+
+  function openProject(projectId: string) {
+    setProjectId(projectId);
+    setIsIssuesOpen(false);
+    setIsProjectOpen(true);
+  }
+
+  function closeProject() {
+    setProjectId("");
+    setIsProjectOpen(false);
+  }
 
   return (
     <HackathonContext.Provider
@@ -47,8 +77,14 @@ export function HackathonContextProvider({ children, hasEvents }: THackathonCont
         },
         issues: {
           isOpen: isIssuesOpen,
-          open: () => setIsIssuesOpen(true),
-          close: () => setIsIssuesOpen(false),
+          open: toggleIssues,
+          close: toggleIssues,
+        },
+        project: {
+          isOpen: isProjectOpen,
+          projectId,
+          open: openProject,
+          close: closeProject,
         },
       }}
     >
