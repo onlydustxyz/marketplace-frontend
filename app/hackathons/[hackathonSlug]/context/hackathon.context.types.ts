@@ -3,7 +3,9 @@ import { PropsWithChildren } from "react";
 import { HackathonUtils } from "app/hackathons/[hackathonSlug]/utils";
 
 export namespace THackathonContext {
-  export interface Props extends PropsWithChildren {}
+  export interface Props extends PropsWithChildren {
+    hasEvents: boolean;
+  }
 
   export interface Return {
     panelSize: ReturnType<typeof HackathonUtils.getContainerSize>;

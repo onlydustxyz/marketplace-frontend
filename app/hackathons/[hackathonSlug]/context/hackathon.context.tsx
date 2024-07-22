@@ -24,11 +24,9 @@ export const HackathonContext = createContext<THackathonContext.Return>({
   },
 });
 
-export function HackathonContextProvider({ children }: THackathonContext.Props) {
+export function HackathonContextProvider({ children, hasEvents }: THackathonContext.Props) {
   const [isIssuesOpen, setIsIssuesOpen] = useState<boolean>(false);
-  // TODO keep this until timeline is done
-  // const isTimelineOpen = !isIssuesOpen;
-  const isTimelineOpen = false;
+  const isTimelineOpen = hasEvents && !isIssuesOpen;
 
   const panelSize = useMemo(
     () =>

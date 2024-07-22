@@ -26,10 +26,10 @@ export const BadgeDefaultVariants = tv({
     },
     size: {
       s: {
-        base: "h-4 w-4",
+        base: "h-4 min-h-4 w-4 min-w-4",
       },
       m: {
-        base: "h-6 w-6",
+        base: "h-6 min-h-6 w-6 min-w-6",
       },
     },
     fitContent: {

@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useMutationAdapter } from "core/application/react-query-adapter/helpers/use-mutation-adapter";
-import { ReactQueryMutationParameters } from "core/application/react-query-adapter/react-query-adapter.types";
+import {
+  UseMutationFacadeParams,
+  useMutationAdapter,
+} from "core/application/react-query-adapter/helpers/use-mutation-adapter";
 import { bootstrap } from "core/bootstrap";
 import { HackathonFacadePort } from "core/domain/hackathon/inputs/hackathon-facade-port";
 import { UserFacadePort } from "core/domain/user/inputs/user-facade-port";
@@ -13,7 +15,7 @@ export function useRegisterToHackathon({
   invalidateTagParams = {
     getHackathonBySlug: { pathParams: { hackathonSlug: "" } },
   },
-}: ReactQueryMutationParameters<
+}: UseMutationFacadeParams<
   UserFacadePort["registerToHackathon"],
   {
     getHackathonBySlug: FirstParameter<HackathonFacadePort["getHackathonBySlug"]>;
@@ -33,8 +35,8 @@ export function useRegisterToHackathon({
             exact: false,
           });
 
-          revalidateNextJsPath("/hackathons", "page");
-          revalidateNextJsPath("/hackathons/[hackathonSlug]", "page");
+          await revalidateNextJsPath("/hackathons", "page");
+          await revalidateNextJsPath("/hackathons/[hackathonSlug]", "page");
         },
         ...options,
       },
