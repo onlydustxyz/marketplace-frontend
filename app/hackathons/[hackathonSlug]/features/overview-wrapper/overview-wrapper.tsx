@@ -12,7 +12,7 @@ export function OverviewWrapper({ children }: TOverviewWrapper.Props) {
   return (
     <AnimatePresence>
       <motion.div
-        style={{ width: panelSize.container }}
+        style={{ width: panelSize.container, height: "100%" }}
         animate={{ width: panelSize.container }}
         transition={{ duration: 0.3, type: "tween" }}
       >
