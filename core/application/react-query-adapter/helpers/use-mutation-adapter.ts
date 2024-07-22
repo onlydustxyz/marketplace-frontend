@@ -1,25 +1,34 @@
+import type { DefaultError } from "@tanstack/query-core";
+import { useMutation } from "@tanstack/react-query";
+import { FirstParameter, GenericFunction } from "core/helpers/types";
 import {
-  ReactQueryMutationOptions,
-  ReactQueryOptions,
-} from "core/application/react-query-adapter/react-query-adapter.types";
-import { HttpStorageResponse } from "core/infrastructure/marketplace-api-client-adapter/http/http-client/http-client.types";
+  HttpClientParameters,
+  HttpStorageResponse,
+} from "core/infrastructure/marketplace-api-client-adapter/http/http-client/http-client.types";
 
-type UseMutationAdapterParameters<T> = HttpStorageResponse<T> & {
-  options?: Partial<ReactQueryMutationOptions>;
+type UseMutationOptions<Response, Body> = FirstParameter<typeof useMutation<Response, DefaultError, Body>>;
+
+type UseMutationAdapterParams<Response, Body extends object> = HttpStorageResponse<Response, Body> & {
+  options?: Omit<UseMutationOptions<Response, Body>, "mutationKey" | "mutationFn">;
 };
 
-interface UseMutationAdapterReturn<T> extends Partial<ReactQueryOptions> {
-  queryKey: string[];
-  mutationFn: (body?: Record<string, unknown>) => Promise<T>;
-}
+export type UseMutationFacadeParams<
+  Params extends GenericFunction,
+  Invalidate extends Record<string, HttpClientParameters<object>> | undefined = undefined,
+  Response = never,
+  Body extends object = object
+> = FirstParameter<Params> & {
+  options?: Omit<UseMutationOptions<Response, Body>, "mutationFn">;
+  invalidateTagParams?: Invalidate;
+};
 
-export function useMutationAdapter<T>({
+export function useMutationAdapter<Response, Body extends object>({
   tag = "",
   request: mutationFn,
   options,
-}: UseMutationAdapterParameters<T>): UseMutationAdapterReturn<T> {
+}: UseMutationAdapterParams<Response, Body>): UseMutationOptions<Response, Body> {
   return {
-    queryKey: [tag],
+    mutationKey: [tag],
     mutationFn,
     ...options,
   };

@@ -17,6 +17,7 @@ export interface HackathonInterface extends HackathonsDetailsResponse, ListHacka
 export class Hackathon extends ListHackathon implements HackathonInterface {
   communityLinks!: HackathonsDetailsResponse["communityLinks"];
   description!: HackathonsDetailsResponse["description"];
+  events!: HackathonsDetailsResponse["events"];
   links!: HackathonsDetailsResponse["links"];
   me!: HackathonsDetailsResponse["me"];
   declare projects: HackathonsDetailsResponse["projects"];
