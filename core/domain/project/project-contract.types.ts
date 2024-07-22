@@ -6,12 +6,14 @@ import {
 
 import { components, operations } from "src/__generated/api";
 
+type GetProjectResponse = components["schemas"]["ProjectResponse"];
+
 /* --------------------------------- Get project by slug -------------------------------- */
 
 type GetProjectBySlugPathParams = operations["getProjectBySlug"]["parameters"]["path"];
 type GetProjectBySlugQueryParams = operations["getProjectBySlug"]["parameters"]["query"];
 
-export type GetProjectBySlugResponse = components["schemas"]["ProjectResponse"];
+export type GetProjectBySlugResponse = GetProjectResponse;
 
 export type GetProjectBySlugPortResponse = HttpStorageResponse<GetProjectBySlugResponse>;
 
@@ -25,7 +27,7 @@ export type GetProjectBySlugPortParams = HttpClientParameters<{
 type GetProjectByIdPathParams = operations["getProject"]["parameters"]["path"];
 type GetProjectByIdQueryParams = operations["getProject"]["parameters"]["query"];
 
-export type GetProjectByIdResponse = components["schemas"]["ProjectResponse"];
+export type GetProjectByIdResponse = GetProjectResponse;
 
 export type GetProjectByIdPortResponse = HttpStorageResponse<GetProjectByIdResponse>;
 

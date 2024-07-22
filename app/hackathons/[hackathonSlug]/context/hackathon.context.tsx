@@ -48,6 +48,26 @@ export function HackathonContextProvider({ children, hasEvents }: THackathonCont
     [isIssuesOpen, isProjectOpen]
   );
 
+  function toggleIssues() {
+    if (isIssuesOpen) {
+      setIsIssuesOpen(false);
+    } else {
+      setIsIssuesOpen(true);
+      setIsProjectOpen(false);
+    }
+  }
+
+  function openProject(projectId: string) {
+    setProjectId(projectId);
+    setIsIssuesOpen(false);
+    setIsProjectOpen(true);
+  }
+
+  function closeProject() {
+    setProjectId("");
+    setIsProjectOpen(false);
+  }
+
   return (
     <HackathonContext.Provider
       value={{
@@ -57,20 +77,14 @@ export function HackathonContextProvider({ children, hasEvents }: THackathonCont
         },
         issues: {
           isOpen: isIssuesOpen,
-          open: () => setIsIssuesOpen(true),
-          close: () => setIsIssuesOpen(false),
+          open: toggleIssues,
+          close: toggleIssues,
         },
         project: {
           isOpen: isProjectOpen,
           projectId,
-          open: projectId => {
-            setProjectId(projectId);
-            setIsProjectOpen(true);
-          },
-          close: () => {
-            setProjectId("");
-            setIsProjectOpen(false);
-          },
+          open: openProject,
+          close: closeProject,
         },
       }}
     >

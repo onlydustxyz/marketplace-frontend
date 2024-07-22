@@ -2,7 +2,9 @@ import { bootstrap } from "core/bootstrap";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { HackathonTimeline } from "app/hackathons/[hackathonSlug]/features/hackathon-timeline/hackathon-timeline";
 import { ProjectSideOverview } from "app/hackathons/[hackathonSlug]/features/project-side-overview/project-side-overview";
+import { Projects } from "app/hackathons/[hackathonSlug]/features/projects/projects";
 import { IssuesSideWrapper } from "app/hackathons/[hackathonSlug]/features/side-wrapper/issues-side-wrapper/issues-side-wrapper";
 import { ProjectSideWrapper } from "app/hackathons/[hackathonSlug]/features/side-wrapper/project-side-wrapper/project-side-wrapper";
 import { TimelineSideWrapper } from "app/hackathons/[hackathonSlug]/features/side-wrapper/timeline-side-wrapper/timeline-side-wrapper";
@@ -21,8 +23,6 @@ import { HackathonIssuesContextProvider } from "./features/hackathon-issues/cont
 import { HackathonIssues } from "./features/hackathon-issues/hackathon-issues";
 import { Info } from "./features/info/info";
 import { OverviewWrapper } from "./features/overview-wrapper/overview-wrapper";
-import { Projects } from "./features/projects/projects";
-import { HackathonTimeline } from "app/hackathons/[hackathonSlug]/features/hackathon-timeline/hackathon-timeline";
 
 async function getHackathon(hackathonSlug: string) {
   try {

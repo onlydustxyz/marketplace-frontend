@@ -17,7 +17,7 @@ function getContainerSize(p: getContainerSizeParameters): getContainerSizeReturn
   const panels = {
     issues: "40%",
     project: "40%",
-    timeline: "30%",
+    timeline: "40%",
   };
 
   if (p.isIssueOpen) {
@@ -36,7 +36,7 @@ function getContainerSize(p: getContainerSizeParameters): getContainerSizeReturn
 
   if (p.isTimelineOpen) {
     return {
-      container: "70%",
+      container: "60%",
       panels,
     };
   }
