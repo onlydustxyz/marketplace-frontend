@@ -3,6 +3,7 @@
 import { keepPreviousData } from "@tanstack/react-query";
 import { HackathonReactQueryAdapter } from "core/application/react-query-adapter/hackathon";
 import { createContext, useEffect, useMemo, useState } from "react";
+import { useDebounce } from "usehooks-ts";
 
 import { THackathonIssuesContext } from "./hackathon-issues.context.types";
 
@@ -27,9 +28,11 @@ export function HackathonIssuesContextProvider({ children, hackathonId }: THacka
   const [filtersOptions, setFiltersOptions] = useState<THackathonIssuesContext.FiltersOptions>({ languages: [] });
   const [queryParams, setQueryParams] = useState<THackathonIssuesContext.QueryParams>({});
 
+  const debouncedQueryParams = useDebounce(queryParams, 300);
+
   const { data: projectIssues } = HackathonReactQueryAdapter.client.useGetHackathonByIdProjectIssues({
     pathParams: { hackathonId },
-    queryParams,
+    queryParams: debouncedQueryParams,
     options: {
       placeholderData: keepPreviousData,
     },
