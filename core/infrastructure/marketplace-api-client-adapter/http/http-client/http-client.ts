@@ -99,7 +99,7 @@ export class HttpClient {
         acc += key + ":" + obj[key];
 
         if (arr.length != i + 1) {
-          acc += "|";
+          acc += "-";
         }
 
         return acc;
