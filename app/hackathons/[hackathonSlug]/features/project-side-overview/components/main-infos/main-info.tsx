@@ -1,5 +1,5 @@
 import { bootstrap } from "core/bootstrap";
-import { lazy } from "react";
+import { Suspense, lazy } from "react";
 
 import { TMainInfo } from "app/hackathons/[hackathonSlug]/features/project-side-overview/components/main-infos/main-info.types";
 
@@ -52,7 +52,9 @@ export function MainInfo({ project }: TMainInfo.Props) {
   return (
     <Paper size={"m"} container={"2"} classNames={{ base: "grid gap-3" }}>
       <Typo size={"s"} as="div">
-        <MarkdownPreview className="text-sm text-text-2">{project.shortDescription}</MarkdownPreview>
+        <Suspense>
+          <MarkdownPreview className="text-sm text-text-2">{project.shortDescription}</MarkdownPreview>
+        </Suspense>
       </Typo>
 
       {project.moreInfos.length ? (
