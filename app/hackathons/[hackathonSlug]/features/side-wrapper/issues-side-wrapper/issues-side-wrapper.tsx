@@ -15,7 +15,7 @@ import { useClientMediaQuery } from "hooks/layout/useClientMediaQuery/use-client
 import { TIssuesSideWrapper } from "./issues-side-wrapper.types";
 
 export function IssuesSideWrapper({ children }: TIssuesSideWrapper.Props) {
-  const isLg = useClientMediaQuery(`(max-width: ${viewportConfig.breakpoints.lg}px)`);
+  const isXl = useClientMediaQuery(`(max-width: ${viewportConfig.breakpoints.xl}px)`);
 
   const {
     issues: { isOpen, close },
@@ -30,7 +30,7 @@ export function IssuesSideWrapper({ children }: TIssuesSideWrapper.Props) {
 
   return (
     <>
-      {!isLg ? (
+      {!isXl ? (
         <AnimatePresence>
           {isOpen ? (
             <motion.aside

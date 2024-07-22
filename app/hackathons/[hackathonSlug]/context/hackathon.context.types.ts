@@ -11,6 +11,8 @@ export namespace THackathonContext {
     panelSize: ReturnType<typeof HackathonUtils.getContainerSize>;
     timeline: {
       isOpen: boolean;
+      open: () => void;
+      close: () => void;
     };
     issues: {
       isOpen: boolean;

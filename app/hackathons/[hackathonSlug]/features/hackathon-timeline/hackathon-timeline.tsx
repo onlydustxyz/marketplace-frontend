@@ -2,16 +2,11 @@ import { EventListWrapper } from "app/hackathons/[hackathonSlug]/features/hackat
 import { EventWrapper } from "app/hackathons/[hackathonSlug]/features/hackathon-timeline/components/event-wrapper/event-wrapper";
 import { THackathonTimeline } from "app/hackathons/[hackathonSlug]/features/hackathon-timeline/hackathon-timeline.types";
 
-import { Paper } from "components/atoms/paper";
-import { Typo } from "components/atoms/typo";
 import { Translate } from "components/layout/translate/translate";
 
 export function HackathonTimeline({ todayEvents, previousEvents, nextEvents }: THackathonTimeline.Props) {
   return (
-    <Paper size="m" container="3" classNames={{ base: "flex flex-col gap-3" }}>
-      <Typo variant="brand" size={"xl"}>
-        <Translate token="v2.pages.hackathons.details.timeline.title" />
-      </Typo>
+    <>
       <EventListWrapper title={<Translate token="v2.pages.hackathons.details.timeline.nextTitle" />}>
         {nextEvents.map((event, index) => (
           <EventWrapper key={index} index={index + 1} event={event} />
@@ -27,6 +22,6 @@ export function HackathonTimeline({ todayEvents, previousEvents, nextEvents }: T
           <EventWrapper key={index} index={index + 1} event={event} />
         ))}
       </EventListWrapper>
-    </Paper>
+    </>
   );
 }
