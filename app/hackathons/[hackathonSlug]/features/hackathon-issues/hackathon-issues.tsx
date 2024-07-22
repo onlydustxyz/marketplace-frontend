@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 
 import { Avatar } from "components/atoms/avatar";
 import { Paper } from "components/atoms/paper";
@@ -16,20 +16,23 @@ import { HackathonIssuesContext } from "./context/hackathon-issues.context";
 export function HackathonIssues() {
   const { projectIssues } = useContext(HackathonIssuesContext);
 
-  const items: AccordionItemWithBadgeProps[] =
-    projectIssues?.map(projectIssue => {
-      return {
-        id: projectIssue.project.id,
-        titleProps: {
-          children: projectIssue.project.name,
-        },
-        badgeProps: {
-          children: projectIssue.issueCount,
-        },
-        startContent: <Avatar size="xs" shape="square" src={projectIssue.project.logoUrl} />,
-        content: <IssuesWrapper projectId={projectIssue.project.id} />,
-      };
-    }) || [];
+  const items: AccordionItemWithBadgeProps[] = useMemo(() => {
+    return (
+      projectIssues?.map(projectIssue => {
+        return {
+          id: projectIssue.project.id,
+          titleProps: {
+            children: projectIssue.project.name,
+          },
+          badgeProps: {
+            children: projectIssue.issueCount,
+          },
+          startContent: <Avatar size="xs" shape="square" src={projectIssue.project.logoUrl} />,
+          content: <IssuesWrapper projectId={projectIssue.project.id} />,
+        };
+      }) || []
+    );
+  }, [projectIssues]);
 
   return (
     <Paper size="m" container="2" classNames={{ base: "flex flex-col gap-3" }}>

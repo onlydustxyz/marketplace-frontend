@@ -45,6 +45,7 @@ export function IssuesWrapper({ projectId }: TIssuesWrapper.Props) {
             children: <Translate token="v2.pages.hackathons.details.issues.card.apply" />,
           }}
           viewActionProps={{
+            onClick: () => console.log("View application"),
             children: <Translate token="v2.pages.hackathons.details.issues.card.viewApplication" />,
           }}
           tokens={{

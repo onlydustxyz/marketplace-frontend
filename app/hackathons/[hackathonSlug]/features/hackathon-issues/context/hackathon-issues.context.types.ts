@@ -26,12 +26,12 @@ export namespace THackathonIssuesContext {
     };
   }
 
-  export type FilterAssigned = "all" | "available" | "notAvailable";
+  export type FilterAvailability = "all" | "available" | "notAvailable";
 
   export interface Filter {
     search: string;
     languageIds: string[];
-    assigned: FilterAssigned;
+    availability: FilterAvailability;
   }
 
   export interface FiltersOptions {
@@ -41,6 +41,6 @@ export namespace THackathonIssuesContext {
   export const DEFAULT_FILTER: Filter = {
     search: "",
     languageIds: [],
-    assigned: "all",
+    availability: "all",
   };
 }

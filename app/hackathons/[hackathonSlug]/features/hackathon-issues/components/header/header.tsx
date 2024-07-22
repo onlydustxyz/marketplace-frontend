@@ -29,7 +29,7 @@ export function Header() {
       count,
       set,
       clear,
-      values: { search, assigned, languageIds },
+      values: { search, availability, languageIds },
       options: { languages },
     },
   } = useContext(HackathonIssuesContext);
@@ -46,8 +46,8 @@ export function Header() {
     }
   }
 
-  function handleAssigned(value: THackathonIssuesContext.FilterAssigned) {
-    set({ assigned: value });
+  function handleAvailability(value: THackathonIssuesContext.FilterAvailability) {
+    set({ availability: value });
   }
 
   return (
@@ -61,13 +61,11 @@ export function Header() {
                 startIcon={{ remixName: "ri-filter-3-line" }}
                 translate={{ token: "v2.pages.hackathons.details.issues.filters.button" }}
                 endContent={
-                  <>
-                    {count ? (
-                      <Badge size="s" style="outline">
-                        {count}
-                      </Badge>
-                    ) : null}
-                  </>
+                  count ? (
+                    <Badge size="s" style="outline">
+                      {count}
+                    </Badge>
+                  ) : null
                 }
               />
             </div>
@@ -123,8 +121,8 @@ export function Header() {
                       value: "notAvailable",
                     },
                   ]}
-                  value={assigned}
-                  onChange={handleAssigned}
+                  value={availability}
+                  onChange={handleAvailability}
                 />
               </div>
             </div>

@@ -42,7 +42,7 @@ export function HackathonIssuesContextProvider({ children, hackathonId }: THacka
     setQueryParams({
       search: filters.search || undefined,
       languageIds: filters.languageIds.length ? filters.languageIds : undefined,
-      isAssigned: filters.assigned === "all" ? undefined : filters.assigned === "available" ? true : false,
+      isAssigned: filters.availability === "all" ? undefined : filters.availability === "available" ? false : true,
     });
   }, [filters]);
 
@@ -51,7 +51,7 @@ export function HackathonIssuesContextProvider({ children, hackathonId }: THacka
     [filters]
   );
   const filtersCount = useMemo(() => {
-    return filters.languageIds.length + (filters.assigned ? 1 : 0);
+    return filters.languageIds.length + (filters.availability ? 1 : 0);
   }, [filters]);
 
   const setFilter = (filter: Partial<THackathonIssuesContext.Filter>) => {

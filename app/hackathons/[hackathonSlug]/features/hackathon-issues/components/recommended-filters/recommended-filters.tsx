@@ -17,12 +17,12 @@ export function RecommendedFilters() {
   const {
     filters: {
       set,
-      values: { assigned },
+      values: { availability },
     },
   } = useContext(HackathonIssuesContext);
 
-  function handleAssigned(value: THackathonIssuesContext.FilterAssigned) {
-    set({ assigned: value });
+  function handleAvailability(value: THackathonIssuesContext.FilterAvailability) {
+    set({ availability: value });
   }
 
   return (
@@ -39,8 +39,8 @@ export function RecommendedFilters() {
             value: "notAvailable",
           },
         ]}
-        value={assigned}
-        onChange={handleAssigned}
+        value={availability}
+        onChange={handleAvailability}
       />
     </Paper>
   );
