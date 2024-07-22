@@ -66,11 +66,7 @@ export function ProjectInfos({ project }: TProjectInfos.Props) {
       return (
         <div className={"grid gap-1"}>
           <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.features.projectSideOverview.projectLeads" }} />
-          <AvatarGroup
-            avatars={project?.leaders.map(({ avatarUrl }) => ({ src: avatarUrl }))}
-            size="s"
-            maxAvatars={2}
-          />
+          <AvatarGroup avatars={project.leaders.map(({ avatarUrl }) => ({ src: avatarUrl }))} size="s" maxAvatars={2} />
         </div>
       );
     }
@@ -114,7 +110,7 @@ export function ProjectInfos({ project }: TProjectInfos.Props) {
         {project?.sponsors?.length ? (
           <div className={"grid gap-1"}>
             <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.features.projectSideOverview.sponsors" }} />
-            <Sponsors sponsors={project?.sponsors} />
+            <Sponsors sponsors={project.sponsors} />
           </div>
         ) : null}
       </div>
