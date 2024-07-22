@@ -24,7 +24,7 @@ export function Header({ slug, logoUrl }: THeader.Props) {
         htmlProps={{
           href: NEXT_ROUTER.projects.details.root(slug),
         }}
-        size="l"
+        size="m"
         startContent={<Avatar shape="square" size="s" src={logoUrl} />}
         endIcon={{
           remixName: "ri-arrow-right-s-line",

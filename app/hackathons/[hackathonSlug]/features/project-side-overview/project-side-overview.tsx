@@ -11,8 +11,6 @@ import { ProjectInfos } from "app/hackathons/[hackathonSlug]/features/project-si
 import { ProjectLanguages } from "app/hackathons/[hackathonSlug]/features/project-side-overview/components/project-languages/project-languages";
 import { TProjectSideOverview } from "app/hackathons/[hackathonSlug]/features/project-side-overview/project-side-overview.types";
 
-import { Paper } from "components/atoms/paper";
-
 import { Header } from "./components/header/header";
 
 export function ProjectSideOverview(_: TProjectSideOverview.Props) {
@@ -31,7 +29,7 @@ export function ProjectSideOverview(_: TProjectSideOverview.Props) {
   if (!project) return null;
 
   return (
-    <Paper size="m" container="2" classNames={{ base: "flex flex-col gap-3" }}>
+    <>
       <Header slug={project.slug} logoUrl={project.logoUrl} />
 
       <MainInfo project={project} />
@@ -40,6 +38,6 @@ export function ProjectSideOverview(_: TProjectSideOverview.Props) {
         <ProjectLanguages languages={project.languages} />
         <ProjectCategories categories={project.categories} />
       </div>
-    </Paper>
+    </>
   );
 }
