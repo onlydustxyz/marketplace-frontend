@@ -21,8 +21,8 @@ interface HttpClientParameters<T extends { PathParams?: HttpClientPathParams; Qu
   queryParams?: T["QueryParams"];
 }
 
-interface HttpStorageResponse<R> {
-  request(body?: Record<string, unknown>): Promise<R>;
+interface HttpStorageResponse<Response = never, Body extends object = object> {
+  request(body?: Body): Promise<Response>;
   tag: string;
 }
 
