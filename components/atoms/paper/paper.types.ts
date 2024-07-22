@@ -2,7 +2,7 @@ import { ComponentPropsWithoutRef, ElementType, PropsWithChildren } from "react"
 
 interface Variants {
   size: "s" | "m" | "l";
-  container: "1" | "2" | "3" | "4" | "action" | "inverse";
+  container: "1" | "2" | "3" | "4" | "action" | "inverse" | "transparent";
   border: "none" | "container-stroke-separator";
 }
 

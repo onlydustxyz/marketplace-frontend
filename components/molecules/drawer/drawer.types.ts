@@ -26,4 +26,5 @@ export interface DrawerPort<C extends ElementType> extends Partial<Variants>, Pr
   footer?: BlockProps;
   onOpenChange?: (value: boolean) => void;
   isOpen?: boolean;
+  hideHeader?: boolean;
 }

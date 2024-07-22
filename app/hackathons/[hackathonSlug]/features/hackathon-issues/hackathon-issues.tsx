@@ -3,7 +3,6 @@
 import { useContext, useMemo } from "react";
 
 import { Avatar } from "components/atoms/avatar";
-import { Paper } from "components/atoms/paper";
 import { Typo } from "components/atoms/typo";
 import { AccordionItemWithBadgeProps } from "components/molecules/accordion";
 import { AccordionWithBadge } from "components/molecules/accordion/variants/accordion-with-badge";
@@ -35,7 +34,7 @@ export function HackathonIssues() {
   }, [projectIssues]);
 
   return (
-    <Paper size="m" container="2" classNames={{ base: "flex flex-col gap-3" }}>
+    <>
       <Header />
       <RecommendedFilters />
 
@@ -47,6 +46,6 @@ export function HackathonIssues() {
       ) : (
         <AccordionWithBadge classNames={{ base: "gap-3" }} items={items} />
       )}
-    </Paper>
+    </>
   );
 }

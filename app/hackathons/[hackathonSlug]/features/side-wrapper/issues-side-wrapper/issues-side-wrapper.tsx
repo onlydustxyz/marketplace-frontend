@@ -5,28 +5,53 @@ import { useContext } from "react";
 
 import { HackathonContext } from "app/hackathons/[hackathonSlug]/context/hackathon.context";
 
+import { viewportConfig } from "src/config";
+
+import { Paper } from "components/atoms/paper";
+import { Drawer } from "components/molecules/drawer";
+
+import { useClientMediaQuery } from "hooks/layout/useClientMediaQuery/use-client-media-query";
+
 import { TIssuesSideWrapper } from "./issues-side-wrapper.types";
 
 export function IssuesSideWrapper({ children }: TIssuesSideWrapper.Props) {
+  const isLg = useClientMediaQuery(`(max-width: ${viewportConfig.breakpoints.lg}px)`);
+
   const {
-    issues: { isOpen },
+    issues: { isOpen, close },
     panelSize,
   } = useContext(HackathonContext);
 
+  function handleDrawerOpen() {
+    if (isOpen) {
+      close();
+    }
+  }
+
   return (
-    <AnimatePresence>
-      {isOpen ? (
-        <motion.aside
-          className="scrollbar-sm absolute bottom-0 right-0 top-0 h-full overflow-auto pl-4"
-          style={{ width: panelSize.panels.issues }}
-          initial={{ translate: "100%", opacity: 0 }}
-          animate={{ translate: 0, opacity: 1 }}
-          exit={{ translate: "100%", opacity: 0 }}
-          transition={{ duration: 0.3, type: "tween" }}
-        >
-          <div className="h-auto">{children}</div>
-        </motion.aside>
-      ) : null}
-    </AnimatePresence>
+    <>
+      {!isLg ? (
+        <AnimatePresence>
+          {isOpen ? (
+            <motion.aside
+              className="scrollbar-sm absolute bottom-0 right-0 top-0 h-full overflow-auto pl-4"
+              style={{ width: panelSize.panels.issues }}
+              initial={{ translate: "100%", opacity: 0 }}
+              animate={{ translate: 0, opacity: 1 }}
+              exit={{ translate: "100%", opacity: 0 }}
+              transition={{ duration: 0.3, type: "tween" }}
+            >
+              <Paper size="m" container="2" classNames={{ base: "flex flex-col gap-3 h-auto" }}>
+                {children}
+              </Paper>
+            </motion.aside>
+          ) : null}
+        </AnimatePresence>
+      ) : (
+        <Drawer isOpen={isOpen} onOpenChange={handleDrawerOpen} hideHeader>
+          <div className="flex h-auto flex-col gap-3 pt-4">{children}</div>
+        </Drawer>
+      )}
+    </>
   );
 }

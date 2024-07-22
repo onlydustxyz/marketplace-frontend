@@ -17,6 +17,7 @@ export const PaperDefaultVariants = tv({
       "4": { base: "bg-container-4" },
       action: { base: "bg-container-action" },
       inverse: { base: "bg-container-inverse" },
+      transparent: { base: "bg-container-transparent" },
     },
     border: {
       none: "border-0",
