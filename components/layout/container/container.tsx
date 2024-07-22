@@ -1,5 +1,7 @@
 import { PropsWithChildren } from "react";
 
-export function Container({ children }: PropsWithChildren) {
-  return <div className="mx-auto w-full max-w-[1664px] px-2 sm:px-6">{children}</div>;
+import { cn } from "src/utils/cn";
+
+export function Container({ children, className }: PropsWithChildren & { className?: string }) {
+  return <div className={cn("mx-auto w-full max-w-[1664px] px-2 sm:px-6", className)}>{children}</div>;
 }

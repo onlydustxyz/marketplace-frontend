@@ -14,6 +14,8 @@ import { Paper } from "components/atoms/paper";
 import { HackathonCard } from "components/features/hackathons/hackathon-card";
 import { getHackathonBackground } from "components/features/hackathons/hackathon-card/hackathon-card.utils";
 import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
+import { Container } from "components/layout/container/container";
+import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 import { Translate } from "components/layout/translate/translate";
 
 import { Header } from "./components/header/header";
@@ -68,48 +70,54 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
         paramsReady={Boolean(hackathon.id)}
       />
 
-      <div className="flex w-full flex-col gap-4 pb-6 pt-4">
-        <Header hackathonSlug={hackathon.slug} />
+      <div className="flex h-full w-full flex-col overflow-hidden pb-0 pt-4">
+        <Container>
+          <Header hackathonSlug={hackathon.slug} />
+        </Container>
 
-        <div className="relative flex w-full gap-4">
-          <OverviewWrapper>
-            <Paper size="m" container="2" classNames={{ base: "grid gap-4" }}>
-              <HackathonCard
-                title={hackathon.title}
-                backgroundImage={getHackathonBackground(hackathon.index)}
-                location={<Translate token={"v2.pages.hackathons.defaultLocation"} />}
-                startDate={new Date(hackathon.startDate)}
-                endDate={new Date(hackathon.endDate)}
-                status={hackathon.getStatus()}
-                projects={hackathon.projects}
-                subscriberCount={hackathon.subscriberCount}
-                openIssueCount={hackathon.openIssueCount}
-                issueCount={hackathon.issueCount}
+        <Container className="h-full overflow-hidden py-4">
+          <div className="relative flex h-full w-full gap-4 overflow-hidden">
+            <OverviewWrapper>
+              <ScrollView>
+                <Paper size="m" container="2" classNames={{ base: "grid gap-4" }}>
+                  <HackathonCard
+                    title={hackathon.title}
+                    backgroundImage={getHackathonBackground(hackathon.index)}
+                    location={<Translate token={"v2.pages.hackathons.defaultLocation"} />}
+                    startDate={new Date(hackathon.startDate)}
+                    endDate={new Date(hackathon.endDate)}
+                    status={hackathon.getStatus()}
+                    projects={hackathon.projects}
+                    subscriberCount={hackathon.subscriberCount}
+                    openIssueCount={hackathon.openIssueCount}
+                    issueCount={hackathon.issueCount}
+                  />
+                  <Info hackathon={hackathon} />
+                  <Description description={hackathon.description} />
+                  <Projects projects={hackathon.projects} />
+                </Paper>
+              </ScrollView>
+            </OverviewWrapper>
+
+            <TimelineSideWrapper>
+              <HackathonTimeline
+                todayEvents={hackathon.getTodayEvents()}
+                nextEvents={hackathon.getNextEvents()}
+                previousEvents={hackathon.getPreviousEvents()}
               />
-              <Info hackathon={hackathon} />
-              <Description description={hackathon.description} />
-              <Projects projects={hackathon.projects} />
-            </Paper>
-          </OverviewWrapper>
+            </TimelineSideWrapper>
 
-          <TimelineSideWrapper>
-            <HackathonTimeline
-              todayEvents={hackathon.getTodayEvents()}
-              nextEvents={hackathon.getNextEvents()}
-              previousEvents={hackathon.getPreviousEvents()}
-            />
-          </TimelineSideWrapper>
+            <HackathonIssuesContextProvider hackathonId={hackathon.id}>
+              <IssuesSideWrapper>
+                <HackathonIssues />
+              </IssuesSideWrapper>
+            </HackathonIssuesContextProvider>
 
-          <HackathonIssuesContextProvider hackathonId={hackathon.id}>
-            <IssuesSideWrapper>
-              <HackathonIssues />
-            </IssuesSideWrapper>
-          </HackathonIssuesContextProvider>
-
-          <ProjectSideWrapper>
-            <ProjectSideOverview />
-          </ProjectSideWrapper>
-        </div>
+            <ProjectSideWrapper>
+              <ProjectSideOverview />
+            </ProjectSideWrapper>
+          </div>
+        </Container>
       </div>
     </HackathonContextProvider>
   );
