@@ -2,13 +2,12 @@
 
 import { bootstrap } from "core/bootstrap";
 
-import { TInfoDropdown } from "app/hackathons/[hackathonSlug]/components/info-dropdown/info-dropdown.types";
-
 import { Button } from "components/atoms/button/variants/button-default";
 import { Link } from "components/atoms/link";
 import { Popover } from "components/atoms/popover";
 import { Tag } from "components/atoms/tag";
 import { Typo } from "components/atoms/typo";
+import { TInfoDropdown } from "components/features/info-dropdown/info-dropdown.types";
 import { Translate } from "components/layout/translate/translate";
 
 export function InfoDropdown({ targetLabel, dropdownTitleToken, links }: TInfoDropdown.Props) {

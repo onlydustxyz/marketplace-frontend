@@ -1,6 +1,5 @@
 import { bootstrap } from "core/bootstrap";
 
-import { InfoDropdown } from "app/hackathons/[hackathonSlug]/components/info-dropdown/info-dropdown";
 import { TMainInfo } from "app/hackathons/[hackathonSlug]/features/project-side-overview/components/main-infos/main-info.types";
 
 import MarkdownPreview from "src/components/MarkdownPreview";
@@ -8,6 +7,7 @@ import MarkdownPreview from "src/components/MarkdownPreview";
 import { Paper } from "components/atoms/paper";
 import { Tag } from "components/atoms/tag";
 import { Typo } from "components/atoms/typo";
+import { InfoDropdown } from "components/features/info-dropdown/info-dropdown";
 import { SocialIconLink } from "components/features/social-icon-link/social-icon-link";
 import { BaseLink } from "components/layout/base-link/base-link";
 import { Translate } from "components/layout/translate/translate";

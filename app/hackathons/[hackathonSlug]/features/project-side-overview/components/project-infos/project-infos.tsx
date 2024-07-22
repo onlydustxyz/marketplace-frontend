@@ -1,13 +1,13 @@
 import { bootstrap } from "core/bootstrap";
 import { useMemo } from "react";
 
-import { InfoDropdown } from "app/hackathons/[hackathonSlug]/components/info-dropdown/info-dropdown";
 import { TProjectInfos } from "app/hackathons/[hackathonSlug]/features/project-side-overview/components/project-infos/project-infos.types";
 
 import { Avatar } from "components/atoms/avatar";
 import { Paper } from "components/atoms/paper";
 import { Tag } from "components/atoms/tag";
 import { Typo } from "components/atoms/typo";
+import { InfoDropdown } from "components/features/info-dropdown/info-dropdown";
 import { BaseLink } from "components/layout/base-link/base-link";
 import { Translate } from "components/layout/translate/translate";
 import { AvatarGroup } from "components/molecules/avatar-group";
