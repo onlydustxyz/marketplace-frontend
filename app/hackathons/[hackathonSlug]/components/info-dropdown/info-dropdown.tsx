@@ -40,9 +40,11 @@ export function InfoDropdown({ targetLabel, dropdownTitleToken, links }: TInfoDr
 
             {links.map(l => {
               if (l.url) {
+                const validUrl =
+                  l.url.startsWith("http://") || l.url.startsWith("https://") ? l.url : `https://${l.url}`;
                 return (
-                  <Link key={l.url} href={l.url}>
-                    {l.value ?? l.url}
+                  <Link key={l.url} href={validUrl}>
+                    {l.value ?? validUrl}
                   </Link>
                 );
               }

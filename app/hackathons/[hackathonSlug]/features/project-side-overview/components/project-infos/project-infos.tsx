@@ -26,19 +26,22 @@ function Sponsors({ sponsors }: { sponsors: TProjectInfos.Sponsor[] }) {
 
   return (
     <div className={"flex flex-wrap gap-2"}>
-      {sponsors.map(s => (
-        <Tag
-          key={s.id}
-          as={s.url ? BaseLink : "span"}
-          htmlProps={{ href: s.url ?? "" }}
-          avatar={{ src: s.logoUrl, alt: s.name }}
-          style={"outline"}
-          color={"white"}
-          size={"s"}
-        >
-          {s.name}
-        </Tag>
-      ))}
+      {sponsors.map(s => {
+        const validUrl = s?.url?.startsWith("http://") || s?.url?.startsWith("https://") ? s.url : `https://${s.url}`;
+        return (
+          <Tag
+            key={s.id}
+            as={validUrl ? BaseLink : "span"}
+            htmlProps={{ href: validUrl ?? "" }}
+            avatar={{ src: s.logoUrl, alt: s.name }}
+            style={"outline"}
+            color={"white"}
+            size={"s"}
+          >
+            {s.name}
+          </Tag>
+        );
+      })}
     </div>
   );
 }
