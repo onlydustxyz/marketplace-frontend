@@ -35,7 +35,7 @@ export function useSetMyProfile({
             exact: false,
           });
 
-          revalidateNextJsPath("/u/[githubLogin]", "page");
+          await revalidateNextJsPath("/u/[githubLogin]", "page");
         },
         ...options,
       },

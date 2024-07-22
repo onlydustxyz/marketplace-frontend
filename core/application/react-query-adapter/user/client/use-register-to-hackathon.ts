@@ -35,8 +35,8 @@ export function useRegisterToHackathon({
             exact: false,
           });
 
-          revalidateNextJsPath("/hackathons", "page");
-          revalidateNextJsPath("/hackathons/[hackathonSlug]", "page");
+          await revalidateNextJsPath("/hackathons", "page");
+          await revalidateNextJsPath("/hackathons/[hackathonSlug]", "page");
         },
         ...options,
       },
