@@ -50,14 +50,14 @@ function Sponsors({ sponsors }: { sponsors: TProjectInfos.Sponsor[] }) {
 export function ProjectInfos({ project }: TProjectInfos.Props) {
   const renderLeaders = useMemo(() => {
     if (project?.leaders?.length) {
-      if (project?.leaders?.length === 1) {
+      if (project.leaders.length === 1) {
         return (
           <div className={"grid gap-1"}>
             <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.features.projectSideOverview.projectLeads" }} />
             <div className="flex items-center gap-1">
-              <Avatar shape="round" size="s" src={project?.leaders[0].avatarUrl} />
+              <Avatar shape="round" size="s" src={project.leaders[0].avatarUrl} />
               <Typo size={"xs"} color={"text-1"}>
-                {project?.leaders[0].login}
+                {project.leaders[0].login}
               </Typo>
             </div>
           </div>
@@ -79,14 +79,14 @@ export function ProjectInfos({ project }: TProjectInfos.Props) {
 
   const renderContributors = useMemo(() => {
     if (project?.topContributors?.length) {
-      if (project?.topContributors?.length === 1) {
+      if (project.topContributors.length === 1) {
         return (
           <div className={"grid gap-1"}>
             <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.features.projectSideOverview.contributors" }} />
             <div className="flex items-center gap-1">
-              <Avatar shape="round" size="s" src={project?.topContributors[0].avatarUrl} />
+              <Avatar shape="round" size="s" src={project.topContributors[0].avatarUrl} />
               <Typo size={"xs"} color={"text-1"}>
-                {project?.topContributors[0].login}
+                {project.topContributors[0].login}
               </Typo>
             </div>
           </div>
@@ -96,7 +96,7 @@ export function ProjectInfos({ project }: TProjectInfos.Props) {
         <div className={"grid gap-1"}>
           <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.features.projectSideOverview.contributors" }} />
           <AvatarGroup
-            avatars={project?.topContributors.map(({ avatarUrl }) => ({ src: avatarUrl }))}
+            avatars={project.topContributors.map(({ avatarUrl }) => ({ src: avatarUrl }))}
             size="s"
             maxAvatars={2}
           />
