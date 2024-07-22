@@ -1,3 +1,4 @@
+import { bootstrap } from "core/bootstrap";
 import { useMemo } from "react";
 
 import { InfoDropdown } from "app/hackathons/[hackathonSlug]/components/info-dropdown/info-dropdown";
@@ -27,7 +28,7 @@ function Sponsors({ sponsors }: { sponsors: TProjectInfos.Sponsor[] }) {
   return (
     <div className={"flex flex-wrap gap-2"}>
       {sponsors.map(s => {
-        const validUrl = s?.url?.startsWith("http://") || s?.url?.startsWith("https://") ? s.url : `https://${s.url}`;
+        const validUrl = s.url ? bootstrap.getUrlHelperPort()?.validateUrl(s.url) : "";
         return (
           <Tag
             key={s.id}

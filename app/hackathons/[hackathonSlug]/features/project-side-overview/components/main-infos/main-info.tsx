@@ -1,3 +1,5 @@
+import { bootstrap } from "core/bootstrap";
+
 import { InfoDropdown } from "app/hackathons/[hackathonSlug]/components/info-dropdown/info-dropdown";
 import { TMainInfo } from "app/hackathons/[hackathonSlug]/features/project-side-overview/components/main-infos/main-info.types";
 
@@ -26,17 +28,16 @@ function Links({ links }: { links: TMainInfo.Link[] }) {
   return (
     <div className={"flex flex-wrap gap-2"}>
       {links.map(link => {
-        const validUrl =
-          link.url.startsWith("http://") || link.url.startsWith("https://") ? link.url : `https://${link.url}`;
+        const validUrl = link.url ? bootstrap.getUrlHelperPort()?.validateUrl(link.url) : "";
         return (
           <Tag
             key={link.url}
             as={BaseLink}
-            htmlProps={{ href: validUrl }}
+            htmlProps={{ href: validUrl ?? "" }}
             style={"outline"}
             color={"white"}
             size={"s"}
-            startContent={<SocialIconLink url={validUrl} />}
+            startContent={<SocialIconLink url={validUrl ?? ""} />}
           >
             {link.value ?? link.url}
           </Tag>

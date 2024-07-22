@@ -1,5 +1,7 @@
 "use client";
 
+import { bootstrap } from "core/bootstrap";
+
 import { TInfoDropdown } from "app/hackathons/[hackathonSlug]/components/info-dropdown/info-dropdown.types";
 
 import { Button } from "components/atoms/button/variants/button-default";
@@ -40,10 +42,9 @@ export function InfoDropdown({ targetLabel, dropdownTitleToken, links }: TInfoDr
 
             {links.map(l => {
               if (l.url) {
-                const validUrl =
-                  l.url.startsWith("http://") || l.url.startsWith("https://") ? l.url : `https://${l.url}`;
+                const validUrl = l.url ? bootstrap.getUrlHelperPort()?.validateUrl(l.url) : "";
                 return (
-                  <Link key={l.url} href={validUrl}>
+                  <Link key={l.url} href={validUrl ?? ""}>
                     {l.value ?? validUrl}
                   </Link>
                 );
