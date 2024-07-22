@@ -14,7 +14,7 @@ export class HttpClient {
   request<R>(args: {
     path: string;
     method: HttpClientMethod;
-    tag: string;
+    tag: string[];
     pathParams?: HttpClientPathParams;
     queryParams?: HttpClientQueryParams;
     version?: MarketplaceApiVersion;
@@ -115,9 +115,17 @@ export class HttpClient {
     pathParams?: HttpClientPathParams;
     queryParams?: HttpClientQueryParams;
   }) {
-    return `${path}-${pathParams ? this.buildTagParameter(pathParams) : ""}-${
-      queryParams ? this.buildTagParameter(queryParams) : ""
-    }`;
+    const tagList = [path];
+
+    if (pathParams) {
+      tagList.push(HttpClient.buildTagParameter(pathParams));
+    }
+
+    if (queryParams) {
+      tagList.push(HttpClient.buildTagParameter(queryParams));
+    }
+
+    return tagList;
   }
 
   protected mapHttpStatusToString(statusCode: number): HttpClientErrorStatus {

@@ -23,7 +23,7 @@ interface HttpClientParameters<T extends { PathParams?: HttpClientPathParams; Qu
 
 interface HttpStorageResponse<Response = never, Body extends object = object> {
   request(body?: Body): Promise<Response>;
-  tag: string;
+  tag: string[];
 }
 
 interface HttpClientError extends Error {
