@@ -9,7 +9,7 @@ import { Badge } from "components/atoms/badge";
 import { Button } from "components/atoms/button/variants/button-default";
 import { Translate } from "components/layout/translate/translate";
 
-export function OpenTimeline({ eventsCount }: TOpenTimeline.Props) {
+export function OpenTimeline({ eventsCount = 0 }: TOpenTimeline.Props) {
   const {
     timeline: { open },
   } = useContext(HackathonContext);
@@ -22,7 +22,7 @@ export function OpenTimeline({ eventsCount }: TOpenTimeline.Props) {
       onClick={open}
       endContent={
         <Badge size={"s"} colors={"brand-2"}>
-          {eventsCount || 0}
+          {eventsCount}
         </Badge>
       }
     >
