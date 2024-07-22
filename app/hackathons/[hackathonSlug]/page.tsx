@@ -17,6 +17,7 @@ import { Translate } from "components/layout/translate/translate";
 import { Header } from "./components/header/header";
 import { HackathonContextProvider } from "./context/hackathon.context";
 import { Description } from "./features/description/description";
+import { HackathonIssuesContextProvider } from "./features/hackathon-issues/context/hackathon-issues.context";
 import { HackathonIssues } from "./features/hackathon-issues/hackathon-issues";
 import { Info } from "./features/info/info";
 import { OverviewWrapper } from "./features/overview-wrapper/overview-wrapper";
@@ -97,9 +98,12 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
               previousEvents={hackathon.getPreviousEvents()}
             />
           </TimelineSideWrapper>
-          <IssuesSideWrapper>
-            <HackathonIssues />
-          </IssuesSideWrapper>
+
+          <HackathonIssuesContextProvider hackathonId={hackathon.id}>
+            <IssuesSideWrapper>
+              <HackathonIssues />
+            </IssuesSideWrapper>
+          </HackathonIssuesContextProvider>
         </div>
       </div>
     </HackathonContextProvider>

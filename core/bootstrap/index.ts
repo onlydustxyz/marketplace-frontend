@@ -62,6 +62,10 @@ export class Bootstrap {
     return this.projectStoragePortForClient;
   }
 
+  getProjectStoragePortForServer() {
+    return this.projectStoragePortForServer;
+  }
+
   getHackathonStoragePortForClient() {
     return this.hackathonStoragePortForClient;
   }

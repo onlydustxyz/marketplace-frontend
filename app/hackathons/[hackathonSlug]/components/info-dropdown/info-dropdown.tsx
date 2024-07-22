@@ -11,7 +11,7 @@ import { Translate } from "components/layout/translate/translate";
 
 export function InfoDropdown({ targetLabel, dropdownTitleToken, links }: TInfoDropdown.Props) {
   return (
-    <Popover closeOnBlur={false}>
+    <Popover>
       <Popover.Trigger>
         {() => (
           <div>

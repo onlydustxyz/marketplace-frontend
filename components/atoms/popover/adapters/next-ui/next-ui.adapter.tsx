@@ -17,17 +17,12 @@ const PopoverContext = createContext<PopoverContextPort>({
   setIsOpen: () => {},
 });
 
-export function PopoverNextUiAdapter({
-  children,
-  defaultOpen = false,
-  placement = "bottom-start",
-  closeOnBlur = true,
-}: PopoverPort) {
+export function PopoverNextUiAdapter({ children, defaultOpen = false, placement = "bottom-start" }: PopoverPort) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
     <PopoverContext.Provider value={{ isOpen, setIsOpen }}>
-      <Popover isOpen={isOpen} onOpenChange={setIsOpen} placement={placement} shouldCloseOnBlur={closeOnBlur}>
+      <Popover isOpen={isOpen} onOpenChange={setIsOpen} placement={placement}>
         {children}
       </Popover>
     </PopoverContext.Provider>
