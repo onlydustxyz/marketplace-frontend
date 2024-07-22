@@ -13,6 +13,13 @@ export class ProjectClientAdapterMock implements ProjectStoragePort {
     } as ReturnType<ProjectStoragePort["getProjectBySlug"]>;
   };
 
+  getProjectById = (_: FirstParameter<ProjectStoragePort["getProjectById"]>) => {
+    return {
+      request: () => Promise.resolve({}),
+      tag: "",
+    } as ReturnType<ProjectStoragePort["getProjectById"]>;
+  };
+
   getProjectRewards = (_: FirstParameter<ProjectStoragePort["getProjectRewards"]>) => {
     return {
       request: () => Promise.resolve({}),
