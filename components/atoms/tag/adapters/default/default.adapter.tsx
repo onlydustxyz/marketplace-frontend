@@ -18,9 +18,11 @@ export function TagDefaultAdapter<C extends ElementType = "span">({
   children,
   endContent,
   htmlProps,
+  clickable,
   translate,
   labelProps = {},
   deletableIconProps = {},
+  hasDropdown,
   ...props
 }: TagPort<C>) {
   const { isDeletable, hideText = false, shape, size, color, style } = props;
@@ -31,7 +33,7 @@ export function TagDefaultAdapter<C extends ElementType = "span">({
   const showChildren = !hideText && (!!children || !!translate);
 
   return (
-    <Component {...htmlProps} className={cn(slots.base(), classNames?.base)}>
+    <Component {...htmlProps} className={cn(slots.base(), classNames?.base)} data-clickable={clickable || hasDropdown}>
       <div className={cn(slots.content(), classNames?.content)}>
         {startContent}
 
@@ -42,7 +44,14 @@ export function TagDefaultAdapter<C extends ElementType = "span">({
         </Show>
 
         {endContent}
-
+        {hasDropdown && (
+          <Icon
+            remixName="ri-arrow-down-s-line"
+            size={16}
+            {...deletableIconProps}
+            className={cn(slots.dropDownIcon(), classNames?.dropDownIcon)}
+          />
+        )}
         <Show show={!!isDeletable}>
           <Icon
             remixName="ri-close-circle-line"

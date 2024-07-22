@@ -2,10 +2,11 @@ import { tv } from "tailwind-variants";
 
 export const TagDefaultVariants = tv({
   slots: {
-    base: "group block border-1 border-container-stroke-separator bg-container-4",
+    base: "group block border-1 border-container-stroke-separator bg-container-4 transition-colors data-[clickable=true]:cursor-pointer",
     content: "flex flex-row items-center justify-center text-text-1",
     label: "text-inherit",
     deletableIcon: "text-inherit",
+    dropDownIcon: "text-inherit",
   },
   variants: {
     size: {
@@ -48,34 +49,34 @@ export const TagDefaultVariants = tv({
     color: {
       false: "",
       black: {
-        base: "border-container-action bg-container-action",
+        base: "border-container-action bg-container-action data-[clickable=true]:hover:!bg-interactions-black-hover",
       },
       white: {
-        base: "border-container-inverse bg-container-inverse",
+        base: "border-container-inverse bg-container-inverse data-[clickable=true]:hover:!bg-interactions-white-hover",
       },
       red: {
-        base: "border-label-red bg-label-red",
+        base: "border-label-red bg-label-red data-[clickable=true]:hover:!bg-interactions-white-hover",
       },
       pink: {
-        base: "border-label-pink bg-label-pink",
+        base: "border-label-pink bg-label-pink data-[clickable=true]:hover:!bg-interactions-white-hover",
       },
       grey: {
-        base: "border-label-grey bg-label-grey",
+        base: "border-label-grey bg-label-grey data-[clickable=true]:hover:!bg-interactions-white-hover",
       },
       green: {
-        base: "border-label-green bg-label-green",
+        base: "border-label-green bg-label-green data-[clickable=true]:hover:!bg-interactions-white-hover",
       },
       yellow: {
-        base: "border-label-yellow bg-label-yellow",
+        base: "border-label-yellow bg-label-yellow data-[clickable=true]:hover:!bg-interactions-white-hover",
       },
       orange: {
-        base: "border-label-orange bg-label-orange",
+        base: "border-label-orange bg-label-orange data-[clickable=true]:hover:!bg-interactions-white-hover",
       },
       purple: {
-        base: "border-label-purple bg-label-purple",
+        base: "border-label-purple bg-label-purple data-[clickable=true]:hover:!bg-interactions-white-hover",
       },
       blue: {
-        base: "border-label-blue bg-label-blue",
+        base: "border-label-blue bg-label-blue data-[clickable=true]:hover:!bg-interactions-white-hover",
       },
     },
   },

@@ -33,6 +33,7 @@ function Links({ links }: { links: TInfo.Link[] }) {
           color={"white"}
           size={"s"}
           icon={{ remixName: "ri-link" }}
+          clickable={true}
         >
           {l.value ?? l.url}
         </Tag>
