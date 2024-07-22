@@ -1,14 +1,25 @@
+"use client";
+
+import { ShortProject } from "core/domain/project/models/short-project-model";
+import { useContext } from "react";
+
+import { HackathonContext } from "app/hackathons/[hackathonSlug]/context/hackathon.context";
+
 import { Paper } from "components/atoms/paper";
 import { Typo } from "components/atoms/typo";
 import { Translate } from "components/layout/translate/translate";
 import { CardProject } from "components/molecules/cards/card-project";
 
-import { NEXT_ROUTER } from "constants/router";
-
 import { TProjects } from "./projects.types";
 
 export function Projects({ projects }: TProjects.Props) {
+  const {
+    project: { open },
+  } = useContext(HackathonContext);
+
   if (!projects.length) return null;
+
+  const projectsList = projects.map(project => new ShortProject(project));
 
   return (
     <Paper
@@ -27,15 +38,12 @@ export function Projects({ projects }: TProjects.Props) {
       />
 
       <ul className="grid grid-cols-1 gap-2 md:grid-cols-2">
-        {projects.map(project => (
+        {projectsList.map(project => (
           <li key={project.id}>
             <CardProject
               as="a"
               classNames={{
                 base: "h-full",
-              }}
-              htmlProps={{
-                href: NEXT_ROUTER.projects.details.root(project.slug),
               }}
               avatarProps={{
                 shape: "square",
@@ -50,6 +58,7 @@ export function Projects({ projects }: TProjects.Props) {
               maxBottomTags={1}
               primaryActionProps={{
                 children: <Translate token="v2.pages.hackathons.details.projects.button" />,
+                onClick: () => open(project.id),
               }}
             />
           </li>

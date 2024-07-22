@@ -1,4 +1,6 @@
 import {
+  GetProjectByIdPortParams,
+  GetProjectByIdPortResponse,
   GetProjectBySlugPortParams,
   GetProjectBySlugPortResponse,
   GetProjectIssuesPortParams,
@@ -10,6 +12,7 @@ import {
 export interface ProjectStoragePort {
   routes: Record<string, string>;
   getProjectBySlug(params: GetProjectBySlugPortParams): GetProjectBySlugPortResponse;
+  getProjectById(params: GetProjectByIdPortParams): GetProjectByIdPortResponse;
   getProjectRewards(params: GetProjectRewardsPortParams): GetProjectRewardsPortResponse;
   getProjectPublicIssues(params: GetProjectIssuesPortParams): GetProjectIssuesPortResponse;
 }

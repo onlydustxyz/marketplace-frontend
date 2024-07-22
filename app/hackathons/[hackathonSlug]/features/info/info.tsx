@@ -1,10 +1,10 @@
-import { InfoDropdown } from "app/hackathons/[hackathonSlug]/components/info-dropdown/info-dropdown";
 import { TInfo } from "app/hackathons/[hackathonSlug]/features/info/info.types";
 import { Register } from "app/hackathons/[hackathonSlug]/features/register/register";
 
 import { Paper } from "components/atoms/paper";
 import { Tag } from "components/atoms/tag";
 import { Typo } from "components/atoms/typo";
+import { InfoDropdown } from "components/features/info-dropdown/info-dropdown";
 import { BaseLink } from "components/layout/base-link/base-link";
 import { Translate } from "components/layout/translate/translate";
 

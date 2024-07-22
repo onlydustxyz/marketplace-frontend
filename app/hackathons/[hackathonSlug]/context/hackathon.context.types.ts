@@ -17,5 +17,11 @@ export namespace THackathonContext {
       open: () => void;
       close: () => void;
     };
+    project: {
+      isOpen: boolean;
+      projectId: string;
+      open: (projectId: string) => void;
+      close: () => void;
+    };
   }
 }

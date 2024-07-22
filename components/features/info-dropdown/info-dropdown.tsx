@@ -1,15 +1,17 @@
 "use client";
 
-import { TInfoDropdown } from "app/hackathons/[hackathonSlug]/components/info-dropdown/info-dropdown.types";
+import { bootstrap } from "core/bootstrap";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Link } from "components/atoms/link";
 import { Popover } from "components/atoms/popover";
 import { Tag } from "components/atoms/tag";
 import { Typo } from "components/atoms/typo";
+import { TInfoDropdown } from "components/features/info-dropdown/info-dropdown.types";
 import { Translate } from "components/layout/translate/translate";
 
 export function InfoDropdown({ targetLabel, dropdownTitleToken, links }: TInfoDropdown.Props) {
+  const urlHelperPort = bootstrap.getUrlHelperPort();
   return (
     <Popover>
       <Popover.Trigger>
@@ -40,9 +42,10 @@ export function InfoDropdown({ targetLabel, dropdownTitleToken, links }: TInfoDr
 
             {links.map(l => {
               if (l.url) {
+                const validUrl = l.url ? urlHelperPort.validateUrl(l.url) : "";
                 return (
-                  <Link key={l.url} href={l.url}>
-                    {l.value ?? l.url}
+                  <Link key={l.url} href={validUrl}>
+                    {l.value ?? validUrl}
                   </Link>
                 );
               }

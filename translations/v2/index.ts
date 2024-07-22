@@ -19,6 +19,7 @@ import en_features_leaders from "./en/features/leaders.json";
 import en_features_menu from "./en/features/menu.json";
 import en_features_payout_status from "./en/features/payout-status.json";
 import en_features_profile_card from "./en/features/profile-card.json";
+import en_features_project_side_overview from "./en/features/project-side-overview.json";
 import en_features_projects_apply_issue_drawer from "./en/features/projects/apply-issue-drawer.json";
 import en_features_roles from "./en/features/roles.json";
 import en_features_sidebar from "./en/features/sidebar.json";
@@ -88,6 +89,7 @@ export const en = {
         applyIssueDrawer: en_features_projects_apply_issue_drawer,
       },
       hackathonCard: en_features_hackathon_card,
+      projectSideOverview: en_features_project_side_overview,
     },
     pages: {
       projects: en_projects,

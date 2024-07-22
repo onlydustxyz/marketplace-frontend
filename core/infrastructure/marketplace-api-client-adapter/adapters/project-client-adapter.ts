@@ -1,6 +1,8 @@
 import { ListIssue } from "core/domain/issue/models/list-issue-model";
+import { Project } from "core/domain/project/models/project-model";
 import { ProjectStoragePort } from "core/domain/project/outputs/project-storage-port";
 import {
+  GetProjectByIdResponse,
   GetProjectBySlugResponse,
   GetProjectIssuesResponse,
   GetProjectRewardsResponse,
@@ -13,6 +15,7 @@ export class ProjectClientAdapter implements ProjectStoragePort {
 
   routes = {
     getProjectBySlug: "projects/slug/:slug",
+    getProjectById: "projects/:projectId",
     getProjectRewards: "projects/:projectId/rewards",
     getProjectPublicIssues: "projects/:projectId/public-issues",
   } as const;
@@ -21,14 +24,39 @@ export class ProjectClientAdapter implements ProjectStoragePort {
     const path = this.routes["getProjectBySlug"];
     const method = "GET";
     const tag = HttpClient.buildTag({ path, pathParams, queryParams });
-    const request = () =>
-      this.client.request<GetProjectBySlugResponse>({
+    const request = async () => {
+      const data = await this.client.request<GetProjectBySlugResponse>({
         path,
         method,
         tag,
         pathParams,
         queryParams,
       });
+
+      return new Project(data);
+    };
+
+    return {
+      request,
+      tag,
+    };
+  };
+
+  getProjectById = ({ pathParams, queryParams }: FirstParameter<ProjectStoragePort["getProjectById"]>) => {
+    const path = this.routes["getProjectById"];
+    const method = "GET";
+    const tag = HttpClient.buildTag({ path, pathParams, queryParams });
+    const request = async () => {
+      const data = await this.client.request<GetProjectByIdResponse>({
+        path,
+        method,
+        tag,
+        pathParams,
+        queryParams,
+      });
+
+      return new Project(data);
+    };
 
     return {
       request,
