@@ -5,14 +5,20 @@ import { useContext } from "react";
 
 import { HackathonContext } from "app/hackathons/[hackathonSlug]/context/hackathon.context";
 
+import { viewportConfig } from "src/config";
+
 import { Paper } from "components/atoms/paper";
 import { Typo } from "components/atoms/typo";
 import { Translate } from "components/layout/translate/translate";
 import { CardProject } from "components/molecules/cards/card-project";
 
+import { useClientMediaQuery } from "hooks/layout/useClientMediaQuery/use-client-media-query";
+
 import { TProjects } from "./projects.types";
 
 export function Projects({ projects }: TProjects.Props) {
+  const isSm = useClientMediaQuery(`(max-width: ${viewportConfig.breakpoints.sm}px)`);
+
   const {
     project: { open },
   } = useContext(HackathonContext);
@@ -47,7 +53,7 @@ export function Projects({ projects }: TProjects.Props) {
               }}
               avatarProps={{
                 shape: "square",
-                size: "xxl",
+                size: isSm ? "xl" : "xxl",
                 src: project.logoUrl,
               }}
               title={project.name}
