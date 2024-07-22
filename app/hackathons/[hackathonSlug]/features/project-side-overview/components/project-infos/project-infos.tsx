@@ -25,15 +25,17 @@ function Sponsors({ sponsors }: { sponsors: TProjectInfos.Sponsor[] }) {
     );
   }
 
+  const urlHelperPort = bootstrap.getUrlHelperPort();
+
   return (
     <div className={"flex flex-wrap gap-2"}>
       {sponsors.map(s => {
-        const validUrl = s.url ? bootstrap.getUrlHelperPort()?.validateUrl(s.url) : "";
+        const validUrl = s.url ? urlHelperPort.validateUrl(s.url) : "";
         return (
           <Tag
             key={s.id}
             as={validUrl ? BaseLink : "span"}
-            htmlProps={{ href: validUrl ?? "" }}
+            htmlProps={{ href: validUrl }}
             avatar={{ src: s.logoUrl, alt: s.name }}
             style={"outline"}
             color={"white"}

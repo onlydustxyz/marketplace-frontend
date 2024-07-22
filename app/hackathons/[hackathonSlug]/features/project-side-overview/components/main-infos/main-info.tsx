@@ -26,15 +26,17 @@ function Links({ links }: { links: TMainInfo.Link[] }) {
     );
   }
 
+  const urlHelperPort = bootstrap.getUrlHelperPort();
+
   return (
     <div className={"flex flex-wrap gap-2"}>
       {links.map(link => {
-        const validUrl = link.url ? bootstrap.getUrlHelperPort()?.validateUrl(link.url) : "";
+        const validUrl = link.url ? urlHelperPort.validateUrl(link.url) : "";
         return (
           <Tag
             key={link.url}
             as={BaseLink}
-            htmlProps={{ href: validUrl ?? "" }}
+            htmlProps={{ href: validUrl }}
             style={"outline"}
             color={"white"}
             size={"s"}

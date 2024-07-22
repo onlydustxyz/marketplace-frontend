@@ -40,10 +40,11 @@ export function InfoDropdown({ targetLabel, dropdownTitleToken, links }: TInfoDr
             </div>
 
             {links.map(l => {
+              const urlHelperPort = bootstrap.getUrlHelperPort();
               if (l.url) {
-                const validUrl = l.url ? bootstrap.getUrlHelperPort()?.validateUrl(l.url) : "";
+                const validUrl = l.url ? urlHelperPort.validateUrl(l.url) : "";
                 return (
-                  <Link key={l.url} href={validUrl ?? ""}>
+                  <Link key={l.url} href={validUrl}>
                     {l.value ?? validUrl}
                   </Link>
                 );

@@ -20,7 +20,7 @@ export interface BootstrapConstructor {
   userStoragePortForClient: UserStoragePort;
   userStoragePortForServer: UserStoragePort;
   dateHelperPort: DateFacadePort;
-  urlHelperPort?: UrlFacadePort;
+  urlHelperPort: UrlFacadePort;
 }
 
 export class Bootstrap {
@@ -34,7 +34,7 @@ export class Bootstrap {
   userStoragePortForClient: UserStoragePort;
   userStoragePortForServer: UserStoragePort;
   dateHelperPort: DateFacadePort;
-  urlHelperPort?: UrlFacadePort;
+  urlHelperPort: UrlFacadePort;
 
   constructor(constructor: BootstrapConstructor) {
     this.projectStoragePortForClient = constructor.projectStoragePortForClient;
