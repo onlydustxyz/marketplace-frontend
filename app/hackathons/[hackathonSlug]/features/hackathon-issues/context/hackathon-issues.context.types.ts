@@ -1,4 +1,7 @@
-import { GetHackathonByIdProjectIssuesResponse } from "core/domain/hackathon/hackathon-contract.types";
+import {
+  GetHackathonByIdProjectIssuesPortParams,
+  GetHackathonByIdProjectIssuesResponse,
+} from "core/domain/hackathon/hackathon-contract.types";
 import { PropsWithChildren } from "react";
 
 export namespace THackathonIssuesContext {
@@ -6,11 +9,13 @@ export namespace THackathonIssuesContext {
     hackathonId: string;
   }
 
-  export type Languages = GetHackathonByIdProjectIssuesResponse["languages"];
-  export type ProjectIssues = GetHackathonByIdProjectIssuesResponse["projects"];
+  type ProjectIssues = GetHackathonByIdProjectIssuesResponse["projects"];
+  export type QueryParams = GetHackathonByIdProjectIssuesPortParams["queryParams"];
 
   export interface Return {
-    projectIssues: ProjectIssues;
+    hackathonId: string;
+    projectIssues?: ProjectIssues;
+    queryParams: QueryParams;
     filters: {
       values: Filter;
       isCleared: boolean;
@@ -21,10 +26,12 @@ export namespace THackathonIssuesContext {
     };
   }
 
+  export type FilterAssigned = "all" | "available" | "notAvailable";
+
   export interface Filter {
     search: string;
     languageIds: string[];
-    isAssigned: "all" | "available" | "notAvailable";
+    assigned: FilterAssigned;
   }
 
   export interface FiltersOptions {
@@ -34,6 +41,6 @@ export namespace THackathonIssuesContext {
   export const DEFAULT_FILTER: Filter = {
     search: "",
     languageIds: [],
-    isAssigned: "all",
+    assigned: "all",
   };
 }

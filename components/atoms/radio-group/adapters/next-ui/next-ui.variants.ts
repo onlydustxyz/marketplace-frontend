@@ -4,7 +4,7 @@ export const RadioGroupNextUiVariants = tv({
   slots: {
     base: "flex flex-row gap-1",
     item: "group cursor-pointer !select-all",
-    indicator: "relative h-5 w-5 rounded-full border-2 transition-colors",
+    indicator: "relative h-4 w-4 rounded-full border-2 transition-colors",
     indicatorIcon:
       "pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 transition-opacity",
   },

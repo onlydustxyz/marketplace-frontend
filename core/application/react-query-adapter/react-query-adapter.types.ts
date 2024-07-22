@@ -1,6 +1,7 @@
 import { FirstParameter, GenericFunction } from "core/helpers/types";
 import { HttpClientParameters } from "core/infrastructure/marketplace-api-client-adapter/http/http-client/http-client.types";
 
+// TODO: Change types automatic and with placeholderData
 export interface ReactQueryOptions {
   enabled: boolean;
   retry: number;

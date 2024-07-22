@@ -38,5 +38,38 @@
   "projects": {
     "title": "Projects",
     "button": "See project"
+  },
+  "issues": {
+    "filters": {
+      "button": "Filters",
+      "search": "Search",
+      "modal": {
+        "title": "Add filters",
+        "clear": "Clear all",
+        "languages": "Languages",
+        "issuesStates": {
+          "label": "Issues states",
+          "all": "All",
+          "available": "Available",
+          "notAvailable": "Not available"
+        }
+      },
+      "recommended": "Recommended filters",
+      "empty": {
+        "title": "No issues found",
+        "description": "No issues found with the selected filters"
+      }
+    },
+    "card": {
+      "apply": "Apply",
+      "viewApplication": "View application",
+      "viewOnGithub": "View on GitHub",
+      "createdBy": "By",
+      "applicantsCount": {
+        "zero": "applicants",
+        "one": "applicant",
+        "many": "applicants"
+      }
+    }
   }
 }

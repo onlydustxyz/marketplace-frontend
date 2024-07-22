@@ -1,13 +1,15 @@
 "use client";
 
-import { bootstrap } from "core/bootstrap";
-import { GetHackathonByIdProjectIssuesPortParams } from "core/domain/hackathon/hackathon-contract.types";
+import { keepPreviousData } from "@tanstack/react-query";
+import { HackathonReactQueryAdapter } from "core/application/react-query-adapter/hackathon";
 import { createContext, useEffect, useMemo, useState } from "react";
 
 import { THackathonIssuesContext } from "./hackathon-issues.context.types";
 
 export const HackathonIssuesContext = createContext<THackathonIssuesContext.Return>({
+  hackathonId: "",
   projectIssues: [],
+  queryParams: {},
   filters: {
     values: THackathonIssuesContext.DEFAULT_FILTER,
     isCleared: true,
@@ -23,38 +25,30 @@ export const HackathonIssuesContext = createContext<THackathonIssuesContext.Retu
 export function HackathonIssuesContextProvider({ children, hackathonId }: THackathonIssuesContext.Props) {
   const [filters, setFilters] = useState<THackathonIssuesContext.Filter>(THackathonIssuesContext.DEFAULT_FILTER);
   const [filtersOptions, setFiltersOptions] = useState<THackathonIssuesContext.FiltersOptions>({ languages: [] });
-  const [languages, setLanguages] = useState<THackathonIssuesContext.Languages>([]);
-  const [projectIssues, setProjectIssues] = useState<THackathonIssuesContext.ProjectIssues>([]);
+  const [queryParams, setQueryParams] = useState<THackathonIssuesContext.QueryParams>({});
+
+  const { data: projectIssues } = HackathonReactQueryAdapter.client.useGetHackathonByIdProjectIssues({
+    pathParams: { hackathonId },
+    queryParams,
+    options: {
+      placeholderData: keepPreviousData,
+    },
+  });
 
   useEffect(() => {
-    const fetchHackathonIssues = async () => {
-      const hackathonStorage = bootstrap.getHackathonStoragePortForServer();
-      const queryParams: GetHackathonByIdProjectIssuesPortParams["queryParams"] = {
-        search: filters.search || undefined,
-        languageIds: filters.languageIds.length ? filters.languageIds : undefined,
-        isAssigned: filters.isAssigned === "all" ? undefined : filters.isAssigned === "available" ? true : false,
-      };
-
-      const hackathonProjectIssues = await hackathonStorage
-        .getHackathonByIdProjectIssues({
-          pathParams: { hackathonId },
-          queryParams,
-        })
-        .request();
-
-      setLanguages(hackathonProjectIssues.languages);
-      setProjectIssues(hackathonProjectIssues.projects);
-    };
-
-    fetchHackathonIssues();
-  }, [hackathonId, filters]);
+    setQueryParams({
+      search: filters.search || undefined,
+      languageIds: filters.languageIds.length ? filters.languageIds : undefined,
+      isAssigned: filters.assigned === "all" ? undefined : filters.assigned === "available" ? true : false,
+    });
+  }, [filters]);
 
   const isCleared = useMemo(
     () => JSON.stringify(filters) == JSON.stringify(THackathonIssuesContext.DEFAULT_FILTER),
     [filters]
   );
   const filtersCount = useMemo(() => {
-    return filters.languageIds.length + (filters.search ? 1 : 0) + (filters.isAssigned ? 1 : 0);
+    return filters.languageIds.length + (filters.assigned ? 1 : 0);
   }, [filters]);
 
   const setFilter = (filter: Partial<THackathonIssuesContext.Filter>) => {
@@ -67,20 +61,22 @@ export function HackathonIssuesContextProvider({ children, hackathonId }: THacka
   };
 
   useEffect(() => {
-    if (languages?.length) {
-      const newLanguages = languages.map(lang => ({
+    if (projectIssues?.languages?.length) {
+      const newLanguages = projectIssues.languages.map(lang => ({
         id: lang.id,
         name: lang.name,
       }));
 
       setFiltersOptions({ languages: newLanguages });
     }
-  }, [languages]);
+  }, [projectIssues?.languages]);
 
   return (
     <HackathonIssuesContext.Provider
       value={{
-        projectIssues,
+        hackathonId,
+        projectIssues: projectIssues?.projects,
+        queryParams,
         filters: {
           values: filters,
           isCleared,

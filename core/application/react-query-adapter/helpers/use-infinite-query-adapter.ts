@@ -21,6 +21,7 @@ interface UseInfiniteQueryAdapterReturn<T extends BaseResponse> extends Partial<
   getNextPageParam(p: BaseResponse): number | undefined;
 }
 
+// TODO: Change queryParams types with pageSize
 export function useInfiniteQueryAdapter<R extends BaseResponse, T extends GenericFunction = GenericFunction>({
   pathParams,
   queryParams,
@@ -30,7 +31,7 @@ export function useInfiniteQueryAdapter<R extends BaseResponse, T extends Generi
   function _httpStorage(pageIndex = 0) {
     return httpStorage({
       pathParams,
-      queryParams: { ...queryParams, pageIndex, pageSize: 15 },
+      queryParams: { pageSize: 15, ...queryParams, pageIndex },
     });
   }
 
