@@ -7,7 +7,7 @@ import { HackathonContext } from "app/hackathons/[hackathonSlug]/context/hackath
 import { THeader } from "app/hackathons/[hackathonSlug]/features/project-side-overview/components/header/header.types";
 
 import { Avatar } from "components/atoms/avatar";
-import { ButtonSecondaryLight } from "components/atoms/button/variants/button-secondary-light";
+import { Button } from "components/atoms/button/variants/button-default";
 
 import { NEXT_ROUTER } from "constants/router";
 
@@ -25,7 +25,8 @@ export function Header({ slug, logoUrl }: THeader.Props) {
 
   return (
     <div className="flex items-center justify-between gap-2">
-      <ButtonSecondaryLight
+      <Button
+        variant="secondary-light"
         onClick={handleRedirectToProject}
         size="l"
         startContent={<Avatar shape="square" size="s" src={logoUrl} />}
@@ -34,9 +35,10 @@ export function Header({ slug, logoUrl }: THeader.Props) {
         }}
       >
         {slug}
-      </ButtonSecondaryLight>
+      </Button>
 
-      <ButtonSecondaryLight
+      <Button
+        variant="secondary-light"
         onClick={close}
         size="l"
         hideText
