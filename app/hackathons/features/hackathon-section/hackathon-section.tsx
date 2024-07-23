@@ -29,7 +29,7 @@ export function HackathonSection({ title, icon, items }: THackathonSection.Props
             subscriberCount={item.subscriberCount}
             openIssueCount={item.openIssueCount}
             issueCount={item.issueCount}
-            dates={item.formatDates()}
+            dates={item.formatDisplayDates()}
           />
         ))}
       </div>

@@ -8,7 +8,7 @@ import { LocationIcon } from "components/features/seo/image-metadata/hackathons/
 const MAX_PROJECTS = 4;
 
 export function HackathonImageMetadata({ hackathon }: { hackathon: HackathonInterface }) {
-  const { startDate, endDate, startTime } = hackathon.formatDates();
+  const { startDate, endDate, startTime } = hackathon.formatDisplayDates();
   const hasReachedMaxProjects = hackathon.projects?.length > MAX_PROJECTS;
   const projects = hasReachedMaxProjects ? hackathon.projects?.slice(0, MAX_PROJECTS) : hackathon.projects;
   const imageHelper = bootstrap.getImageHelperPort();

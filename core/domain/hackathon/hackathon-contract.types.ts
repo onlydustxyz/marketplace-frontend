@@ -1,5 +1,5 @@
+import { HackathonListInterface } from "core/domain/hackathon/models/hackathon-list-model";
 import { HackathonInterface } from "core/domain/hackathon/models/hackathon-model";
-import { ListHackathonInterface } from "core/domain/hackathon/models/list-hackathon-model";
 import { LinkProjectInterface } from "core/domain/project/models/link-project-model";
 import {
   HttpClientParameters,
@@ -13,7 +13,7 @@ import { components, operations } from "src/__generated/api";
 export type GetHackathonsResponse = components["schemas"]["HackathonsListResponse"];
 
 export type GetHackathonsPortResponse = HttpStorageResponse<
-  Omit<GetHackathonsResponse, "hackathons"> & { hackathons: ListHackathonInterface[] }
+  Omit<GetHackathonsResponse, "hackathons"> & { hackathons: HackathonListInterface[] }
 >;
 
 /* --------------------------------- Get hackathon by slug -------------------------------- */

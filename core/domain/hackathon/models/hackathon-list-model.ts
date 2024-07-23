@@ -1,6 +1,5 @@
 import { bootstrap } from "core/bootstrap";
 import { DateFacadePort } from "core/helpers/date/date-facade-port";
-import { mapApiToClass } from "core/infrastructure/marketplace-api-client-adapter/mappers/map-api-to-class";
 import process from "process";
 
 import { components } from "src/__generated/api";
@@ -9,25 +8,35 @@ import { HackathonStatus } from "./hackathon.types";
 
 type HackathonsListResponse = components["schemas"]["HackathonsListItemResponse"];
 
-export interface ListHackathonInterface extends HackathonsListResponse {
+export interface HackathonListInterface extends HackathonsListResponse {
   backgroundImage: string;
   isComingSoon(): boolean;
   isLive(): boolean;
   isPast(): boolean;
   getStatus(): HackathonStatus;
-  formatDates(): {
+  formatDisplayDates(): {
     startDate: string;
     endDate: string;
     startTime: string;
   };
 }
 
-export class ListHackathon extends mapApiToClass<HackathonsListResponse>() implements ListHackathonInterface {
+export class HackathonList implements HackathonListInterface {
+  endDate!: HackathonsListResponse["endDate"];
+  id!: HackathonsListResponse["id"];
+  index!: HackathonsListResponse["index"];
+  issueCount!: HackathonsListResponse["issueCount"];
+  location!: HackathonsListResponse["location"];
+  openIssueCount!: HackathonsListResponse["openIssueCount"];
+  projects!: HackathonsListResponse["projects"];
+  slug!: HackathonsListResponse["slug"];
+  startDate!: HackathonsListResponse["startDate"];
+  subscriberCount!: HackathonsListResponse["subscriberCount"];
+  title!: HackathonsListResponse["title"];
   backgroundImage!: string;
   dateHelper: DateFacadePort;
 
   constructor(protected props: HackathonsListResponse) {
-    super(props);
     this.dateHelper = bootstrap.getDateHelperPort();
     this.setBackgroundImage();
   }
@@ -56,7 +65,7 @@ export class ListHackathon extends mapApiToClass<HackathonsListResponse>() imple
     return "closed";
   }
 
-  formatDates() {
+  formatDisplayDates() {
     const startDate = new Date(this.startDate);
     const endDate = new Date(this.endDate);
     const formatInEuropeTimeZone = this.dateHelper.formatInEuropeTimeZone;

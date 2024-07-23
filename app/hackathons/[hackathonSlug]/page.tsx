@@ -88,7 +88,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
                     subscriberCount={hackathon.subscriberCount}
                     openIssueCount={hackathon.openIssueCount}
                     issueCount={hackathon.issueCount}
-                    dates={hackathon.formatDates()}
+                    dates={hackathon.formatDisplayDates()}
                   />
                   <Info hackathon={hackathon} />
                   <Description description={hackathon.description} />
