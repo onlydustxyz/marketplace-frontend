@@ -1,4 +1,5 @@
 import {
+  addMinutes as addMinutesDateFns,
   compareAsc,
   compareDesc,
   eachDayOfInterval as eachDayOfIntervalDateFns,
@@ -21,6 +22,7 @@ export const DateFnsAdapter: DateFacadePort = {
   compareAsc: (dateLeft: Date, dateRight: Date) => compareAsc(dateLeft, dateRight),
   compareDesc: (dateLeft: Date, dateRight: Date) => compareDesc(dateLeft, dateRight),
   format: (date: Date, pattern: string) => formatDateFns(date, pattern),
+  addMinutes: (date: Date, minutes: number) => addMinutesDateFns(date, minutes),
   formatDistanceToNow: (date: Date) => formatDistanceToNowStrict(date, { addSuffix: true }),
   formatInEuropeTimeZone: (date: Date, pattern: string) =>
     formatInTimeZoneDateFns(date, "Europe/Paris", pattern, { locale: enGB }),
