@@ -31,7 +31,7 @@ export function useSetMyProfile({
           //  invalidatesTags: [{ queryKey: MeApi.tags.all, exact: false }],
 
           await queryClient.invalidateQueries({
-            queryKey: [userStoragePort.getMyProfile({}).tag],
+            queryKey: userStoragePort.getMyProfile({}).tag,
             exact: false,
           });
 

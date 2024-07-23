@@ -31,7 +31,7 @@ export function useRegisterToHackathon({
       options: {
         onSuccess: async () => {
           await queryClient.invalidateQueries({
-            queryKey: [hackathonStoragePort.getHackathonBySlug(invalidateTagParams.getHackathonBySlug).tag],
+            queryKey: hackathonStoragePort.getHackathonBySlug(invalidateTagParams.getHackathonBySlug).tag,
             exact: false,
           });
 
