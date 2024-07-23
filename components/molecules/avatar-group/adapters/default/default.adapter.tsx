@@ -16,6 +16,7 @@ export function AvatarGroupDefaultAdapter<C extends ElementType = "div">({
   size,
   shape,
   container,
+  disabledAnimation = true,
   showFallback = true,
 }: AvatarGroupPort<C>) {
   const Component = as || "div";
@@ -25,6 +26,9 @@ export function AvatarGroupDefaultAdapter<C extends ElementType = "div">({
 
   const slicedAvatars = maxAvatars ? avatars.slice(0, maxAvatars) : avatars;
 
+  const avatarAnimation = {
+    base: "transition-transform hover:-translate-x-1/4 hover:last:translate-x-0",
+  };
   return (
     <Component {...htmlProps} className={cn(slots.base(), classNames?.base)}>
       {slicedAvatars.map((avatar, index) => (
@@ -36,9 +40,7 @@ export function AvatarGroupDefaultAdapter<C extends ElementType = "div">({
           shape={shape}
           container={container}
           showFallback={showFallback}
-          classNames={{
-            base: "transition-transform hover:-translate-x-1/4 hover:last:translate-x-0",
-          }}
+          classNames={!disabledAnimation ? avatarAnimation : undefined}
         />
       ))}
 
@@ -49,9 +51,7 @@ export function AvatarGroupDefaultAdapter<C extends ElementType = "div">({
           shape={shape}
           container={container}
           showFallback={showFallback}
-          classNames={{
-            base: "transition-transform hover:-translate-x-1/4 hover:last:translate-x-0",
-          }}
+          classNames={!disabledAnimation ? avatarAnimation : undefined}
         />
       ) : null}
     </Component>

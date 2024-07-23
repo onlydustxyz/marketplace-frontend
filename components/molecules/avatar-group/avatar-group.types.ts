@@ -16,4 +16,5 @@ export interface AvatarGroupPort<C extends ElementType> extends Partial<Variants
   classNames?: Partial<ClassNames>;
   avatars: AvatarItem[];
   maxAvatars?: number;
+  disabledAnimation?: boolean;
 }
