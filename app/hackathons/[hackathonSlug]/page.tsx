@@ -71,11 +71,11 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
       />
 
       <div className="flex h-full w-full flex-col overflow-hidden pb-0 pt-4">
-        <Container>
+        <Container size={"wide"}>
           <Header hackathonSlug={hackathon.slug} />
         </Container>
 
-        <Container className="h-full overflow-hidden py-4">
+        <Container size={"wide"} className="h-full overflow-hidden py-4">
           <div className="relative flex h-full w-full gap-4 overflow-hidden">
             <OverviewWrapper>
               <ScrollView>
