@@ -17,6 +17,7 @@ export function EventWrapper({ event, index }: TEventWrapper.Props) {
   const startDate = new Date(event.startDate);
   const isLive = event.isLive();
   const isToday = event.isToday();
+  const isPast = event.isBeforeToday();
   const hours = event.getFormattedTzTime();
   const status = event.getStatus();
   const shouldHaveMultipleSteps = !isToday || index === 1;
@@ -40,6 +41,7 @@ export function EventWrapper({ event, index }: TEventWrapper.Props) {
         className={cn("absolute left-3 top-0 -z-[1] h-full border-l-1 border-dashed border-brand-2", {
           "top-0": index === 1,
           "border-solid": isToday,
+          "opacity-50": isPast,
         })}
       />
       <div
@@ -48,10 +50,15 @@ export function EventWrapper({ event, index }: TEventWrapper.Props) {
         })}
       >
         <div className="flex flex-row items-center gap-2">
-          <Badge colors="brand-2" size="m">
+          <Badge colors="brand-2" size="m" classNames={{ base: cn({ "opacity-50": isPast }) }}>
             {index}
           </Badge>
-          <Typo variant="brand" size={"xs"} weight={"medium"}>
+          <Typo
+            variant="brand"
+            size={"xs"}
+            weight={"medium"}
+            classNames={{ base: cn({ "text-text-2 font-regular": isPast }) }}
+          >
             {dateService.format(startDate, "MMMM d, yyyy")}
           </Typo>
         </div>

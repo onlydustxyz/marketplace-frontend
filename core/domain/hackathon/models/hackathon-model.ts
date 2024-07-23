@@ -42,17 +42,17 @@ export class Hackathon extends ListHackathon implements HackathonInterface {
   private createDefaultHackathonEvents(start: string, end: string): HackathonsDetailsResponse["events"] {
     return [
       {
-        name: "start hackathon",
+        name: "ODHack begins",
         iconSlug: "ri-calendar-line",
-        subtitle: "",
+        subtitle: "Get ready to start contributing, connecting & receiving rewards!",
         startDate: start,
         endDate: this.dateHelper.addMinutes(new Date(start), 10).toISOString(),
         links: [],
       },
       {
-        name: "end hackathon",
+        name: "ODHack finishes",
         iconSlug: "ri-calendar-line",
-        subtitle: "",
+        subtitle: "All tasks should have been completed, now maintainers will review final work.",
         startDate: end,
         endDate: this.dateHelper.addMinutes(new Date(end), 10).toISOString(),
         links: [],
