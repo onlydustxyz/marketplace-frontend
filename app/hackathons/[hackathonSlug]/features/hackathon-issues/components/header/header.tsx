@@ -112,7 +112,7 @@ export function Header() {
                 <Typo
                   size="xs"
                   color="text-2"
-                  translate={{ token: "v2.pages.hackathons.details.issues.filters.modal.languages" }}
+                  translate={{ token: "v2.pages.hackathons.details.issues.filters.modal.issuesStates.label" }}
                 />
                 <RadioButtonGroup
                   items={[
