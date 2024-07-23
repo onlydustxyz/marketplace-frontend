@@ -2,7 +2,6 @@ import { THackathonSection } from "app/hackathons/features/hackathon-section/hac
 
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
 import { HackathonCard } from "components/features/hackathons/hackathon-card/hackathon-card";
-import { getHackathonBackground } from "components/features/hackathons/hackathon-card/hackathon-card.utils";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
@@ -23,7 +22,7 @@ export function HackathonSection({ title, icon, items }: THackathonSection.Props
             key={item.slug}
             title={item.title}
             slug={item.slug}
-            backgroundImage={getHackathonBackground(item.index)}
+            backgroundImage={item.backgroundImage}
             location={<Translate token={"v2.pages.hackathons.defaultLocation"} />}
             startDate={new Date(item.startDate)}
             endDate={new Date(item.endDate)}

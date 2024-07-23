@@ -42,7 +42,7 @@ export function HackathonImageMetadata({ hackathon }: { hackathon: HackathonInte
       }}
     >
       <img
-        src={`${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/cover-${hackathon.backgroundIndex}.png`}
+        src={hackathon.backgroundImage}
         alt="Hackathon background"
         width={1840}
         height={1246}

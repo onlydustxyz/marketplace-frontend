@@ -12,7 +12,6 @@ import { sharedMetadata } from "app/shared-metadata";
 
 import { Paper } from "components/atoms/paper";
 import { HackathonCard } from "components/features/hackathons/hackathon-card";
-import { getHackathonBackground } from "components/features/hackathons/hackathon-card/hackathon-card.utils";
 import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 import { Container } from "components/layout/container/container";
 import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
@@ -82,7 +81,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
                 <Paper size="m" container="2" classNames={{ base: "grid gap-4" }}>
                   <HackathonCard
                     title={hackathon.title}
-                    backgroundImage={getHackathonBackground(hackathon.index)}
+                    backgroundImage={hackathon.backgroundImage}
                     location={<Translate token={"v2.pages.hackathons.defaultLocation"} />}
                     startDate={new Date(hackathon.startDate)}
                     endDate={new Date(hackathon.endDate)}

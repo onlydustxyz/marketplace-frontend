@@ -1,6 +1,7 @@
 import { bootstrap } from "core/bootstrap";
 import { DateFacadePort } from "core/helpers/date/date-facade-port";
 import { mapApiToClass } from "core/infrastructure/marketplace-api-client-adapter/mappers/map-api-to-class";
+import process from "process";
 
 import { components } from "src/__generated/api";
 
@@ -9,7 +10,7 @@ import { HackathonStatus } from "./hackathon.types";
 type HackathonsListResponse = components["schemas"]["HackathonsListItemResponse"];
 
 export interface ListHackathonInterface extends HackathonsListResponse {
-  backgroundIndex: number;
+  backgroundImage: string;
   isComingSoon(): boolean;
   isLive(): boolean;
   isPast(): boolean;
@@ -22,13 +23,13 @@ export interface ListHackathonInterface extends HackathonsListResponse {
 }
 
 export class ListHackathon extends mapApiToClass<HackathonsListResponse>() implements ListHackathonInterface {
-  backgroundIndex!: number;
+  backgroundImage!: string;
   dateHelper: DateFacadePort;
 
   constructor(protected props: HackathonsListResponse) {
     super(props);
     this.dateHelper = bootstrap.getDateHelperPort();
-    this.setBackgroundIndex();
+    this.setBackgroundImage();
   }
 
   isComingSoon() {
@@ -67,7 +68,7 @@ export class ListHackathon extends mapApiToClass<HackathonsListResponse>() imple
     };
   }
 
-  private setBackgroundIndex() {
+  private setBackgroundImage() {
     let backgroundIndex = this.index;
 
     const NB_AVAILABLE_BACKGROUNDS = 16;
@@ -76,6 +77,6 @@ export class ListHackathon extends mapApiToClass<HackathonsListResponse>() imple
       backgroundIndex = backgroundIndex % NB_AVAILABLE_BACKGROUNDS;
     }
 
-    this.backgroundIndex = backgroundIndex + 1;
+    this.backgroundImage = `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/cover-${backgroundIndex + 1}.png`;
   }
 }

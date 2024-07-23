@@ -140,7 +140,7 @@ export function HackathonCard<C extends ElementType = "div">({
       }}
     >
       <img
-        src={backgroundImage.src}
+        src={backgroundImage}
         alt={title}
         loading="lazy"
         className="pointer-events-none absolute -left-[5px] -top-[5px] h-[calc(100%_+_10px)] w-[calc(100%_+_10px)] max-w-[initial] object-cover object-center"

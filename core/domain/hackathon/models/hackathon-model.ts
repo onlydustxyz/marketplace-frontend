@@ -1,7 +1,5 @@
-import { bootstrap } from "core/bootstrap";
 import { HackathonEvent, HackathonEventInterface } from "core/domain/hackathon/models/hackathon-event-model";
 import { ListHackathon, ListHackathonInterface } from "core/domain/hackathon/models/list-hackathon-model";
-import { DateFacadePort } from "core/helpers/date/date-facade-port";
 
 import { components } from "src/__generated/api";
 
@@ -26,12 +24,10 @@ export class Hackathon extends ListHackathon implements HackathonInterface {
   events!: HackathonEventInterface[];
 
   declare projects: HackathonsDetailsResponse["projects"];
-  private dateHelper: DateFacadePort;
 
   constructor(protected readonly props: HackathonsDetailsResponse) {
     super(props);
     Object.assign(this, props);
-    this.dateHelper = bootstrap.getDateHelperPort();
 
     this.events = this.sortEventsByStartDate([
       ...this.createDefaultHackathonEvents(props.startDate, props.endDate),

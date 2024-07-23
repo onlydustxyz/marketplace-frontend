@@ -1,5 +1,4 @@
 import { HackathonStatus } from "core/domain/hackathon/models/hackathon.types";
-import { StaticImageData } from "next/image";
 import { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
 
 import { components } from "src/__generated/api";
@@ -32,7 +31,7 @@ export interface HackathonCardPort<C extends ElementType> extends Partial<Varian
   buttonLabel?: ReactNode;
   title: string;
   slug?: string;
-  backgroundImage: StaticImageData;
+  backgroundImage: string;
   location?: ReactNode;
   startDate?: Date;
   endDate?: Date;
@@ -52,6 +51,6 @@ export interface HackathonCardMiniPort<C extends ElementType> extends Partial<Va
   upperTitle?: ReactNode;
   title: string;
   slug?: string;
-  backgroundImage: StaticImageData;
+  backgroundImage: string;
   hasLayer?: boolean;
 }
