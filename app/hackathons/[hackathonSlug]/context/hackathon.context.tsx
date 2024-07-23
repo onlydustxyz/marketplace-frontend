@@ -74,6 +74,7 @@ export function HackathonContextProvider({ children, hasEvents }: THackathonCont
   function toggleIssues() {
     if (isIssuesOpen) {
       setIsIssuesOpen(false);
+      setIsTimelineOpen(true);
     } else {
       setIsIssuesOpen(true);
       setIsTimelineOpen(false);
@@ -101,6 +102,7 @@ export function HackathonContextProvider({ children, hasEvents }: THackathonCont
   function closeProject() {
     setProjectId("");
     setIsProjectOpen(false);
+    setIsTimelineOpen(true);
   }
 
   return (
