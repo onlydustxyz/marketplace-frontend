@@ -50,6 +50,11 @@ export function Header() {
     set({ availability: value });
   }
 
+  function handleClose() {
+    clear();
+    close();
+  }
+
   return (
     <div className="flex items-center justify-between gap-2">
       <Popover>
@@ -139,7 +144,7 @@ export function Header() {
 
       <div>
         <ButtonSecondaryLight
-          onClick={close}
+          onClick={handleClose}
           size="l"
           hideText
           startIcon={{

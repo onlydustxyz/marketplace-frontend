@@ -82,14 +82,14 @@ export function CardIssueDefaultAdapter<C extends ElementType = "div">({
       {...htmlProps}
     >
       <div className="flex w-full flex-row justify-between gap-1">
-        <div className="flex-1">
+        <div className="line-clamp-2 flex-1">
           <Typo size={"s"} weight="medium" as={"div"}>
             {title}
           </Typo>
         </div>
         <div className="flex flex-row justify-end gap-1">{actions.map(action => action)}</div>
       </div>
-      <div className="flex w-full flex-row justify-start gap-2">
+      <div className="flex w-full flex-row flex-wrap justify-start gap-x-2 gap-y-1">
         <LabelledIcon iconName={"ri-time-line"}>{_createdAt}</LabelledIcon>
         <LabelledIcon avatar={createdBy?.avatar} childrenPrefix={tokens.createdBy}>
           {createdBy?.name}
@@ -109,7 +109,7 @@ export function CardIssueDefaultAdapter<C extends ElementType = "div">({
         )}
       </div>
       {!!tags?.length && (
-        <div className="flex w-full justify-start gap-1">
+        <div className="flex w-full flex-wrap justify-start gap-1">
           {tags?.map((t, key) => (
             <Tag key={key} size={"xs"} shape={"round"} style={"outline"} color="grey" {...t} />
           ))}

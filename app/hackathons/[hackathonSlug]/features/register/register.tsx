@@ -45,13 +45,13 @@ export function Register({
   });
 
   const {
-    issues: { open },
+    issues: { open, isOpen },
   } = useContext(HackathonContext);
 
   function renderButton() {
     if (hasRegistered && hackathonIsLive) {
       return (
-        <Button {...buttonProps} onClick={open}>
+        <Button {...buttonProps} onClick={open} isDisabled={isOpen}>
           <Translate token={"v2.pages.hackathons.details.info.seeIssues"} />
         </Button>
       );

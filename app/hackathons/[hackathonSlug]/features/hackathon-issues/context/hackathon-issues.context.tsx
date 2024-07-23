@@ -51,7 +51,7 @@ export function HackathonIssuesContextProvider({ children, hackathonId }: THacka
     [filters]
   );
   const filtersCount = useMemo(() => {
-    return filters.languageIds.length + (filters.availability ? 1 : 0);
+    return filters.languageIds.length + (filters.availability !== "all" ? 1 : 0);
   }, [filters]);
 
   const setFilter = (filter: Partial<THackathonIssuesContext.Filter>) => {
