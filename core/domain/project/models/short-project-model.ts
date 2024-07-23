@@ -1,13 +1,18 @@
-import { mapApiToClass } from "core/infrastructure/marketplace-api-client-adapter/mappers/map-api-to-class";
+import { LinkProject } from "core/domain/project/models/link-project-model";
 
 import { components } from "src/__generated/api";
 
-type ProjectShortResponse = components["schemas"]["ProjectShortResponse"];
+export type ProjectShortResponse = components["schemas"]["ProjectShortResponse"];
 
-export interface ShortProjectInterface extends ProjectShortResponse {}
+export interface ShortProjectInterface extends LinkProject, ProjectShortResponse {}
 
-export class ShortProject extends mapApiToClass<ProjectShortResponse>() implements ShortProjectInterface {
-  constructor(readonly props: ProjectShortResponse) {
+export class ShortProject extends LinkProject implements ShortProjectInterface {
+  languages!: ProjectShortResponse["languages"];
+  shortDescription!: ProjectShortResponse["shortDescription"];
+  visibility!: ProjectShortResponse["visibility"];
+
+  constructor(protected readonly props: ProjectShortResponse) {
     super(props);
+    Object.assign(this, props);
   }
 }

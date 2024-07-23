@@ -20,6 +20,7 @@ interface ClassNames {
   content: string;
   label: string;
   deletableIcon: string;
+  dropDownIcon: string;
 }
 
 export interface TagBasePort<C extends ElementType> extends Partial<Variants>, PropsWithChildren {
@@ -31,6 +32,8 @@ export interface TagBasePort<C extends ElementType> extends Partial<Variants>, P
   endContent?: ReactNode;
   labelProps?: Partial<TypoPort<"span">>;
   deletableIconProps?: Partial<ComponentProps<typeof Icon>>;
+  clickable?: boolean;
+  hasDropdown?: boolean;
 }
 
 export interface TagIconPort<C extends ElementType> extends TagBasePort<C> {

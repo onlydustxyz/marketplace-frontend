@@ -3,14 +3,16 @@ import { ProjectStoragePort } from "core/domain/project/outputs/project-storage-
 import { UserStoragePort } from "core/domain/user/outputs/user-storage-port";
 import { DateFacadePort } from "core/helpers/date/date-facade-port";
 import { DateFnsAdapter } from "core/helpers/date/date-fns-adapter";
+import { UrlAdapter } from "core/helpers/url/url-adapter";
+import { UrlFacadePort } from "core/helpers/url/url-facade-port";
+import { HackathonClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/hackathon-client-adapter";
+import { ProjectClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/project-client-adapter";
+import { UserClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/user-client-adapter";
 import { AuthProvider } from "core/infrastructure/marketplace-api-client-adapter/auth/auth-provider";
-import { HackathonClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/hackathon-client-adapter";
 import { FetchHttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/fetch-http-client/fetch-http-client";
 import { ImpersonationProvider } from "core/infrastructure/marketplace-api-client-adapter/impersonation/impersonation-provider";
-import { ProjectClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/project-client-adapter";
-import { UserClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/user-client-adapter";
 
-interface BootstrapConstructor {
+export interface BootstrapConstructor {
   projectStoragePortForClient: ProjectStoragePort;
   projectStoragePortForServer: ProjectStoragePort;
   hackathonStoragePortForClient: HackathonStoragePort;
@@ -18,6 +20,7 @@ interface BootstrapConstructor {
   userStoragePortForClient: UserStoragePort;
   userStoragePortForServer: UserStoragePort;
   dateHelperPort: DateFacadePort;
+  urlHelperPort: UrlFacadePort;
 }
 
 export class Bootstrap {
@@ -31,6 +34,7 @@ export class Bootstrap {
   userStoragePortForClient: UserStoragePort;
   userStoragePortForServer: UserStoragePort;
   dateHelperPort: DateFacadePort;
+  urlHelperPort: UrlFacadePort;
 
   constructor(constructor: BootstrapConstructor) {
     this.projectStoragePortForClient = constructor.projectStoragePortForClient;
@@ -40,6 +44,7 @@ export class Bootstrap {
     this.userStoragePortForClient = constructor.userStoragePortForClient;
     this.userStoragePortForServer = constructor.userStoragePortForServer;
     this.dateHelperPort = constructor.dateHelperPort;
+    this.urlHelperPort = constructor.urlHelperPort;
   }
 
   getAuthProvider() {
@@ -62,6 +67,10 @@ export class Bootstrap {
     return this.projectStoragePortForClient;
   }
 
+  getProjectStoragePortForServer() {
+    return this.projectStoragePortForServer;
+  }
+
   getHackathonStoragePortForClient() {
     return this.hackathonStoragePortForClient;
   }
@@ -82,6 +91,10 @@ export class Bootstrap {
     return this.dateHelperPort;
   }
 
+  getUrlHelperPort() {
+    return this.urlHelperPort;
+  }
+
   public static get getBootstrap(): Bootstrap {
     if (!Bootstrap.#instance) {
       this.newBootstrap({
@@ -92,6 +105,7 @@ export class Bootstrap {
         userStoragePortForClient: new UserClientAdapter(new FetchHttpClient()),
         userStoragePortForServer: new UserClientAdapter(new FetchHttpClient()),
         dateHelperPort: DateFnsAdapter,
+        urlHelperPort: UrlAdapter,
       });
     }
 

@@ -4,8 +4,7 @@ import { meApiClient } from "api-client/resources/me";
 import { useMemo } from "react";
 import { useLocalStorage } from "react-use";
 
-import { TApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.types";
-
+import { TApplyIssueDrawer } from "components/features/apply-issue-drawer/apply-issue-drawer.types";
 import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
 
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";

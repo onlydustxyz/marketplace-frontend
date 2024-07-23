@@ -2,7 +2,7 @@ import { tv } from "tailwind-variants";
 
 export const PaperDefaultVariants = tv({
   slots: {
-    base: "group rounded-xl",
+    base: "rounded-xl",
   },
   variants: {
     size: {
@@ -17,6 +17,7 @@ export const PaperDefaultVariants = tv({
       "4": { base: "bg-container-4" },
       action: { base: "bg-container-action" },
       inverse: { base: "bg-container-inverse" },
+      transparent: { base: "bg-container-transparent" },
     },
     border: {
       none: "border-0",

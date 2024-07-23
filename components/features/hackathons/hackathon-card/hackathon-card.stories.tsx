@@ -39,18 +39,6 @@ const defaultPort: HackathonCardPort<"div"> = {
   },
 };
 
-const livePort: HackathonCardPort<"div"> = {
-  ...defaultPort,
-  title: "Hackathon Live Now",
-  status: "live",
-};
-
-const comingSoonPort: HackathonCardPort<"div"> = {
-  ...defaultPort,
-  title: "Hackathon Coming Soon",
-  status: "open",
-};
-
 const closedPort: HackathonCardPort<"div"> = {
   ...defaultPort,
   title: "Hackathon Closed",
@@ -96,6 +84,14 @@ const multipleProjectsPort: HackathonCardPort<"div"> = {
   ],
 };
 
+const subscriberAndIssueCountPort: HackathonCardPort<"div"> = {
+  ...defaultPort,
+  title: "Hackathon with Subscriber and Issue Count",
+  subscriberCount: 120,
+  issueCount: 50,
+  openIssueCount: 10,
+};
+
 const miniPort: HackathonCardMiniPort<"article"> = {
   title: "Hackathon Example",
   slug: "example",
@@ -133,31 +129,16 @@ export const Default: Story = {
   },
 };
 
-export const LiveNow: Story = {
+export const SubscriberAndIssueCount: Story = {
   parameters: {
     docs: {
-      source: { code: "<HackathonCard status='live' />" },
+      source: { code: "<HackathonCard subscriberCount={120} issueCount={50} openIssueCount={10} />" },
     },
   },
   render: args => {
     return (
       <div className="flex w-full items-center gap-2">
-        <HackathonCard {...livePort} {...args} />
-      </div>
-    );
-  },
-};
-
-export const ComingSoon: Story = {
-  parameters: {
-    docs: {
-      source: { code: "<HackathonCard status='open' />" },
-    },
-  },
-  render: args => {
-    return (
-      <div className="flex w-full items-center gap-2">
-        <HackathonCard {...comingSoonPort} {...args} />
+        <HackathonCard {...subscriberAndIssueCountPort} {...args} />
       </div>
     );
   },
@@ -208,6 +189,21 @@ export const MultipleProjects: Story = {
   },
 };
 
+export const Mini: Story = {
+  parameters: {
+    docs: {
+      source: { code: "<HackathonCardMini />" },
+    },
+  },
+  render: args => {
+    return (
+      <div className="flex w-full items-center gap-2">
+        <HackathonCardMini {...miniPort} {...args} />
+      </div>
+    );
+  },
+};
+
 export const Skeleton: Story = {
   parameters: {
     docs: {
@@ -222,21 +218,6 @@ export const Skeleton: Story = {
             base: "w-full",
           }}
         />
-      </div>
-    );
-  },
-};
-
-export const Mini: Story = {
-  parameters: {
-    docs: {
-      source: { code: "<HackathonCardMini />" },
-    },
-  },
-  render: args => {
-    return (
-      <div className="flex w-full items-center gap-2">
-        <HackathonCardMini {...miniPort} {...args} />
       </div>
     );
   },

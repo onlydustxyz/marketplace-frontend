@@ -1,10 +1,11 @@
-import { InfoDropdown } from "app/hackathons/[hackathonSlug]/components/info-dropdown/info-dropdown";
 import { TInfo } from "app/hackathons/[hackathonSlug]/features/info/info.types";
+import { OpenTimeline } from "app/hackathons/[hackathonSlug]/features/open-timeline/open-timeline";
 import { Register } from "app/hackathons/[hackathonSlug]/features/register/register";
 
 import { Paper } from "components/atoms/paper";
 import { Tag } from "components/atoms/tag";
 import { Typo } from "components/atoms/typo";
+import { InfoDropdown } from "components/features/info-dropdown/info-dropdown";
 import { BaseLink } from "components/layout/base-link/base-link";
 import { Translate } from "components/layout/translate/translate";
 
@@ -32,6 +33,7 @@ function Links({ links }: { links: TInfo.Link[] }) {
           color={"white"}
           size={"s"}
           icon={{ remixName: "ri-link" }}
+          clickable={true}
         >
           {l.value ?? l.url}
         </Tag>
@@ -76,11 +78,7 @@ export function Info({ hackathon }: TInfo.Props) {
   const isClosed = hackathon.getStatus() === "closed";
 
   return (
-    <Paper
-      size={"m"}
-      container={"2"}
-      classNames={{ base: "flex flex-col md:flex-row md:items-center justify-between gap-4" }}
-    >
+    <Paper size={"m"} container={"2"} classNames={{ base: "flex flex-col xl:flex-row justify-between gap-4" }}>
       <div className={"flex flex-wrap gap-3"}>
         {hackathon.communityLinks.length ? (
           <div className={"grid gap-1"}>
@@ -117,15 +115,17 @@ export function Info({ hackathon }: TInfo.Props) {
         ) : null}
       </div>
 
-      <div className={"hidden md:block"}>
+      <div className={"hidden xl:block"}>
         <Register
           hackathonId={hackathon.id}
           hackathonSlug={hackathon.slug}
           hackathonTitle={hackathon.title}
           hackathonIndex={hackathon.index}
+          hackathonIsLive={hackathon.isLive()}
           buttonProps={{
             size: "xl",
             isDisabled: isClosed,
+            classNames: { base: "whitespace-nowrap" },
           }}
           tooltipProps={{
             content: <Translate token={"v2.pages.hackathons.details.info.eventOverTooltip"} />,
@@ -135,26 +135,26 @@ export function Info({ hackathon }: TInfo.Props) {
         />
       </div>
 
-      <div className={"grid w-full gap-4 md:hidden"}>
+      <div className={"flex w-full gap-4 xl:hidden"}>
         <Register
           hackathonId={hackathon.id}
           hackathonSlug={hackathon.slug}
           hackathonTitle={hackathon.title}
           hackathonIndex={hackathon.index}
+          hackathonIsLive={hackathon.isLive()}
           buttonProps={{
             size: "l",
             isDisabled: isClosed,
-            classNames: { base: "w-full" },
+            classNames: { base: "w-full whitespace-nowrap" },
           }}
           tooltipProps={{
             content: <Translate token={"v2.pages.hackathons.details.info.eventOverTooltip"} />,
             enabled: isClosed,
+            classNames: { wrapper: "w-full flex-1" },
           }}
         />
 
-        {/*<Button variant={"secondary-light"} size={"l"} classNames={{ base: "w-full" }}>*/}
-        {/*  <Translate token={"v2.pages.hackathons.details.info.seeEvents"} />*/}
-        {/*</Button>*/}
+        <OpenTimeline eventsCount={hackathon.events?.length} />
       </div>
     </Paper>
   );

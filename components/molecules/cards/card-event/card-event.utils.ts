@@ -11,11 +11,11 @@ export function getComponentsVariants(status: CardEventStatus): {
   const map = {
     planned: {
       buttonVariant: "secondary-light",
-      tagColor: "red",
+      tagColor: "white",
     },
     terminated: {
       buttonVariant: "secondary-light",
-      tagColor: "red",
+      tagColor: "white",
     },
     highlight: {
       buttonVariant: "primary",

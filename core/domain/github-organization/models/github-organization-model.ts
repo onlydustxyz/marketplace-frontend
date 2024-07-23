@@ -9,7 +9,7 @@ interface GithubOrganizationInterface extends GithubOrganizationResponse {
 }
 
 class GithubOrganization extends mapApiToClass<GithubOrganizationResponse>() implements GithubOrganizationInterface {
-  constructor(readonly props: GithubOrganizationResponse) {
+  constructor(protected props: GithubOrganizationResponse) {
     super(props);
   }
 

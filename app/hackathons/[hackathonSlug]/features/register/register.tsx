@@ -1,6 +1,7 @@
 "use client";
 
 import { Auth0ClientAdapter } from "core/application/auth0-client-adapter";
+import { useContext } from "react";
 import { Controller } from "react-hook-form";
 
 import { Button } from "components/atoms/button/variants/button-default";
@@ -14,6 +15,7 @@ import { Modal } from "components/molecules/modal";
 
 import { useIntl } from "hooks/translate/use-translate";
 
+import { HackathonContext } from "../../context/hackathon.context";
 import { useRegister } from "./register.hooks";
 import { TRegister } from "./register.types";
 
@@ -24,6 +26,7 @@ export function Register({
   hackathonIndex,
   buttonProps,
   tooltipProps,
+  hackathonIsLive,
 }: TRegister.Props) {
   const { T } = useIntl();
   const {
@@ -41,7 +44,19 @@ export function Register({
     hackathonSlug,
   });
 
+  const {
+    issues: { open, isOpen },
+  } = useContext(HackathonContext);
+
   function renderButton() {
+    if (hasRegistered && hackathonIsLive) {
+      return (
+        <Button {...buttonProps} onClick={open} isDisabled={isOpen}>
+          <Translate token={"v2.pages.hackathons.details.info.seeIssues"} />
+        </Button>
+      );
+    }
+
     if (hasRegistered) {
       return (
         <Button {...buttonProps} isDisabled>

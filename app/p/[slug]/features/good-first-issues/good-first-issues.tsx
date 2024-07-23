@@ -1,14 +1,13 @@
 import { useMemo } from "react";
 
-import { ApplyIssueDrawer } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer";
-import { useApplyIssueDrawerState } from "app/p/[slug]/features/apply-issue-drawer/apply-issue-drawer.hooks";
-
 import ProjectApi from "src/api/Project";
 import { ShowMore } from "src/components/Table/ShowMore";
 
 import { Badge } from "components/ds/badge/badge";
 import { Card } from "components/ds/card/card";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
+import { ApplyIssueDrawer } from "components/features/apply-issue-drawer/apply-issue-drawer";
+import { useApplyIssueDrawerState } from "components/features/apply-issue-drawer/apply-issue-drawer.hooks";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";

@@ -1,19 +1,21 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useInfiniteQueryAdapter } from "core/application/react-query-adapter/helpers/use-infinite-query-adapter";
-import { ReactQueryInfiniteParameters } from "core/application/react-query-adapter/react-query-adapter.types";
+import {
+  UseInfiniteQueryFacadeParams,
+  useInfiniteQueryAdapter,
+} from "core/application/react-query-adapter/helpers/use-infinite-query-adapter";
 import { bootstrap } from "core/bootstrap";
 import { ProjectFacadePort } from "core/domain/project/inputs/project-facade-port";
-import { GetProjectRewardsResponse } from "core/domain/project/project.types";
+import { GetProjectRewardsResponse } from "core/domain/project/project-contract.types";
 
 export function useGetProjectRewards({
   pathParams,
   queryParams,
   options,
-}: ReactQueryInfiniteParameters<ProjectFacadePort["getProjectRewards"]>) {
+}: UseInfiniteQueryFacadeParams<ProjectFacadePort["getProjectRewards"], GetProjectRewardsResponse>) {
   const projectStoragePort = bootstrap.getProjectStoragePortForClient();
 
   return useInfiniteQuery(
-    useInfiniteQueryAdapter<GetProjectRewardsResponse>({
+    useInfiniteQueryAdapter<ProjectFacadePort["getProjectRewards"], GetProjectRewardsResponse>({
       pathParams,
       queryParams,
       options,

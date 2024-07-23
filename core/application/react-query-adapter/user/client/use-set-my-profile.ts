@@ -1,17 +1,21 @@
-import { DefaultError } from "@tanstack/query-core";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useMutationAdapter } from "core/application/react-query-adapter/helpers/use-mutation-adapter";
-import { ReactQueryMutationParameters } from "core/application/react-query-adapter/react-query-adapter.types";
+import {
+  UseMutationFacadeParams,
+  useMutationAdapter,
+} from "core/application/react-query-adapter/helpers/use-mutation-adapter";
 import { bootstrap } from "core/bootstrap";
 import { UserFacadePort } from "core/domain/user/inputs/user-facade-port";
-import { SetMyProfileBody, SetMyProfileResponse } from "core/domain/user/user.types";
+import { UserProfileInterface } from "core/domain/user/models/user-profile-model";
+import { SetMyProfileBody } from "core/domain/user/user-contract.types";
 import { revalidateNextJsPath } from "core/infrastructure/marketplace-api-client-adapter/helpers/revalidate-nextjs-path";
 
-export function useSetMyProfile({ options }: ReactQueryMutationParameters<UserFacadePort["setMyProfile"]> = {}) {
+export function useSetMyProfile({
+  options,
+}: UseMutationFacadeParams<UserFacadePort["setMyProfile"], undefined, UserProfileInterface, SetMyProfileBody> = {}) {
   const userStoragePort = bootstrap.getUserStoragePortForClient();
   const queryClient = useQueryClient();
 
-  return useMutation<SetMyProfileResponse, DefaultError, SetMyProfileBody>(
+  return useMutation(
     useMutationAdapter({
       ...userStoragePort.setMyProfile({}),
       options: {
@@ -31,7 +35,7 @@ export function useSetMyProfile({ options }: ReactQueryMutationParameters<UserFa
             exact: false,
           });
 
-          revalidateNextJsPath("/u/[githubLogin]", "page");
+          await revalidateNextJsPath("/u/[githubLogin]", "page");
         },
         ...options,
       },

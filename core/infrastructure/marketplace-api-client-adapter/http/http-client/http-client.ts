@@ -14,7 +14,7 @@ export class HttpClient {
   request<R>(args: {
     path: string;
     method: HttpClientMethod;
-    tag: string;
+    tag: string[];
     pathParams?: HttpClientPathParams;
     queryParams?: HttpClientQueryParams;
     version?: MarketplaceApiVersion;
@@ -92,6 +92,20 @@ export class HttpClient {
     return `${marketplaceApiConfig.basePaths[version](path)}${searchParams ? `?${searchParams}` : ""}`;
   }
 
+  static buildTagParameter(obj: HttpClientPathParams | HttpClientQueryParams) {
+    return Object.keys(obj)
+      .sort()
+      .reduce((acc, key, i, arr) => {
+        acc += key + ":" + obj[key];
+
+        if (arr.length != i + 1) {
+          acc += "-";
+        }
+
+        return acc;
+      }, "");
+  }
+
   static buildTag({
     path,
     pathParams,
@@ -101,7 +115,17 @@ export class HttpClient {
     pathParams?: HttpClientPathParams;
     queryParams?: HttpClientQueryParams;
   }) {
-    return `${path}-${pathParams ? JSON.stringify(pathParams) : ""}-${queryParams ? JSON.stringify(queryParams) : ""}`;
+    const tagList = [path];
+
+    if (pathParams) {
+      tagList.push(HttpClient.buildTagParameter(pathParams));
+    }
+
+    if (queryParams) {
+      tagList.push(HttpClient.buildTagParameter(queryParams));
+    }
+
+    return tagList;
   }
 
   protected mapHttpStatusToString(statusCode: number): HttpClientErrorStatus {
