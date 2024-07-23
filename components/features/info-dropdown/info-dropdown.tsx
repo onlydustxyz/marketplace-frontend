@@ -17,13 +17,7 @@ export function InfoDropdown({ targetLabel, dropdownTitleToken, links }: TInfoDr
       <Popover.Trigger>
         {() => (
           <div>
-            <Tag
-              as={"button"}
-              style={"outline"}
-              color={"white"}
-              size={"s"}
-              icon={{ remixName: "ri-arrow-down-s-line" }}
-            >
+            <Tag as={"button"} style={"outline"} color={"white"} size={"s"} clickable={true} hasDropdown={true}>
               {targetLabel}
             </Tag>
           </div>
