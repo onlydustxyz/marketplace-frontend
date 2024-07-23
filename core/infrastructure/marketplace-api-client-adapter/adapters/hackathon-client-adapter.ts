@@ -28,9 +28,6 @@ export class HackathonClientAdapter implements HackathonStoragePort {
         path,
         method,
         tag,
-        next: {
-          revalidate: 20,
-        },
       });
 
       return {
