@@ -9,6 +9,7 @@ import { HackathonStatus } from "./hackathon.types";
 type HackathonsListResponse = components["schemas"]["HackathonsListItemResponse"];
 
 export interface ListHackathonInterface extends HackathonsListResponse {
+  backgroundIndex: number;
   isComingSoon(): boolean;
   isLive(): boolean;
   isPast(): boolean;
@@ -21,11 +22,13 @@ export interface ListHackathonInterface extends HackathonsListResponse {
 }
 
 export class ListHackathon extends mapApiToClass<HackathonsListResponse>() implements ListHackathonInterface {
+  backgroundIndex!: number;
   dateHelper: DateFacadePort;
 
   constructor(protected props: HackathonsListResponse) {
     super(props);
     this.dateHelper = bootstrap.getDateHelperPort();
+    this.setBackgroundIndex();
   }
 
   isComingSoon() {
@@ -62,5 +65,17 @@ export class ListHackathon extends mapApiToClass<HackathonsListResponse>() imple
       endDate: formatInEuropeTimeZone(endDate, "MMMM dd, yyyy"),
       startTime: formatInEuropeTimeZone(startDate, "hh:mm aa OOO"),
     };
+  }
+
+  private setBackgroundIndex() {
+    let backgroundIndex = this.index;
+
+    const NB_AVAILABLE_BACKGROUNDS = 16;
+
+    if (backgroundIndex >= NB_AVAILABLE_BACKGROUNDS) {
+      backgroundIndex = backgroundIndex % NB_AVAILABLE_BACKGROUNDS;
+    }
+
+    this.backgroundIndex = backgroundIndex + 1;
   }
 }

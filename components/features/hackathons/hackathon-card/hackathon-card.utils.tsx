@@ -44,6 +44,8 @@ const backgroundSets = [
 const settings = {
   backgroundNumbers: 16,
 };
+
+// TODO @hayden this exists in hackathon domain now
 export function getHackathonBackground(index: number) {
   let backgroundIndex = index;
 

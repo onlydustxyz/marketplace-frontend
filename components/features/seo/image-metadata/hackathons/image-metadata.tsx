@@ -1,13 +1,32 @@
 import { HackathonInterface } from "core/domain/hackathon/models/hackathon-model";
+import process from "process";
 
 import { OnlyDustLogo } from "components/features/seo/image-metadata/commons/onlydust-logo/onlydust-logo";
 import { DateIcon } from "components/features/seo/image-metadata/hackathons/components/date-icon";
 import { LocationIcon } from "components/features/seo/image-metadata/hackathons/components/location-icon";
 
-export function HackathonImageMetadata({ hackathon }: { hackathon: HackathonInterface }) {
-  const backgroundUrl = `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/hackathon-opengraph.jpg`;
+const MAX_PROJECTS = 4;
 
+const isRemoteImage = (image: string) => {
+  if (process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX && image) {
+    return !image?.includes(process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX);
+  }
+
+  return false;
+};
+
+const optimizeSrc = (image: string) => {
+  if (isRemoteImage(image)) {
+    return `${process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX}format=png/${image}`;
+  }
+
+  return image;
+};
+
+export function HackathonImageMetadata({ hackathon }: { hackathon: HackathonInterface }) {
   const { startDate, endDate, startTime } = hackathon.formatDates();
+  const hasReachedMaxProjects = hackathon.projects?.length > MAX_PROJECTS;
+  const projects = hasReachedMaxProjects ? hackathon.projects?.slice(0, MAX_PROJECTS) : hackathon.projects;
 
   return (
     <div
@@ -23,8 +42,10 @@ export function HackathonImageMetadata({ hackathon }: { hackathon: HackathonInte
       }}
     >
       <img
-        src={backgroundUrl}
-        alt="background"
+        src={`${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/cover-${hackathon.backgroundIndex}.png`}
+        alt="Hackathon background"
+        width={1840}
+        height={1246}
         style={{
           width: "100%",
           height: "100%",
@@ -136,7 +157,7 @@ export function HackathonImageMetadata({ hackathon }: { hackathon: HackathonInte
                     fontWeight: "500",
                   }}
                 >
-                  {hackathon.location}
+                  {hackathon.location ?? "Worldwide"}
                 </span>
               </div>
 
@@ -163,6 +184,7 @@ export function HackathonImageMetadata({ hackathon }: { hackathon: HackathonInte
                   style={{
                     display: "flex",
                     flexDirection: "column",
+                    gap: "2px",
                   }}
                 >
                   <span
@@ -185,16 +207,68 @@ export function HackathonImageMetadata({ hackathon }: { hackathon: HackathonInte
               </div>
             </div>
 
-            <div>Projects</div>
+            <div
+              style={{
+                display: "flex",
+              }}
+            >
+              {projects.map((p, i) => {
+                return (
+                  <div
+                    key={p.id}
+                    style={{
+                      position: "relative",
+                      zIndex: i,
+                      display: "flex",
+                      boxShadow: "0px 0px 0px 2px rgba(255, 255, 255, 0.1)",
+                      borderRadius: "9999px",
+                      overflow: "hidden",
+                      marginLeft: "-14px",
+                    }}
+                  >
+                    {p.logoUrl ? (
+                      <img src={optimizeSrc(p.logoUrl)} alt={p.name} width={48} height={48} />
+                    ) : (
+                      <div
+                        style={{
+                          display: "flex",
+                          background: "#2B3362",
+                          width: "48px",
+                          height: "48px",
+                        }}
+                      />
+                    )}
+                  </div>
+                );
+              })}
 
-            {/*{projects?.length ? (*/}
-            {/*  <AvatarGroup*/}
-            {/*    avatars={projects.map(({ logoUrl }) => ({ src: logoUrl }))}*/}
-            {/*    size="xl"*/}
-            {/*    maxAvatars={4}*/}
-            {/*    classNames={{ base: "hidden sm:flex" }}*/}
-            {/*  />*/}
-            {/*) : null}*/}
+              {hasReachedMaxProjects ? (
+                <div
+                  style={{
+                    position: "relative",
+                    zIndex: projects.length,
+                    display: "flex",
+                    boxShadow: "0px 0px 0px 2px rgba(255, 255, 255, 0.1)",
+                    borderRadius: "9999px",
+                    overflow: "hidden",
+                    marginLeft: "-14px",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      background: "#2B3362",
+                      width: "48px",
+                      height: "48px",
+                    }}
+                  >
+                    + {hackathon.projects.length - MAX_PROJECTS}
+                  </div>
+                </div>
+              ) : null}
+            </div>
           </div>
         </div>
       </div>
