@@ -135,7 +135,7 @@ export function Info({ hackathon }: TInfo.Props) {
         />
       </div>
 
-      <div className={"flex w-full flex-col gap-4 md:flex-row xl:hidden"}>
+      <div className={"flex w-full gap-4 xl:hidden"}>
         <Register
           hackathonId={hackathon.id}
           hackathonSlug={hackathon.slug}
@@ -145,11 +145,12 @@ export function Info({ hackathon }: TInfo.Props) {
           buttonProps={{
             size: "l",
             isDisabled: isClosed,
-            classNames: { base: "w-full md:w-fit whitespace-nowrap" },
+            classNames: { base: "w-full whitespace-nowrap" },
           }}
           tooltipProps={{
             content: <Translate token={"v2.pages.hackathons.details.info.eventOverTooltip"} />,
             enabled: isClosed,
+            classNames: { wrapper: "w-full flex-1" },
           }}
         />
 
