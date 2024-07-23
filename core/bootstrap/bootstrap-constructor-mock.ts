@@ -1,5 +1,6 @@
 import { BootstrapConstructor } from "core/bootstrap/index";
 import { DateAdapterMock } from "core/helpers/date/date-adapter-mock";
+import { ImageAdapterMock } from "core/helpers/image/image-adapter-mock";
 import { UrlAdapterMock } from "core/helpers/url/url-adapter-mock";
 import { HackathonClientAdapterMock } from "core/infrastructure/marketplace-api-client-adapter/mock-adapters/hackathon-client-adapter-mock";
 import { ProjectClientAdapterMock } from "core/infrastructure/marketplace-api-client-adapter/mock-adapters/project-client-adapter-mock";
@@ -14,4 +15,5 @@ export const bootstrapConstructorMock: BootstrapConstructor = {
   userStoragePortForServer: new UserClientAdapterMock(),
   dateHelperPort: DateAdapterMock,
   urlHelperPort: UrlAdapterMock,
+  imageHelperPort: ImageAdapterMock,
 };
