@@ -41,7 +41,8 @@
     "description": "Apply to a list of curated issues well suited for those new to the project to kickstart your journey.",
     "button": {
       "viewApplication": "View application",
-      "apply": "Apply"
+      "apply": "Apply",
+      "connectAndApply": "Connect & Apply"
     },
     "labels": {
       "title": "Labels",
