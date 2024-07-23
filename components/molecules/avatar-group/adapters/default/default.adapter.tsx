@@ -16,7 +16,7 @@ export function AvatarGroupDefaultAdapter<C extends ElementType = "div">({
   size,
   shape,
   container,
-  disabledAnimation = true,
+  disableAnimation = true,
   showFallback = true,
 }: AvatarGroupPort<C>) {
   const Component = as || "div";
@@ -40,7 +40,7 @@ export function AvatarGroupDefaultAdapter<C extends ElementType = "div">({
           shape={shape}
           container={container}
           showFallback={showFallback}
-          classNames={!disabledAnimation ? avatarAnimation : undefined}
+          classNames={!disableAnimation ? avatarAnimation : undefined}
         />
       ))}
 
@@ -51,7 +51,7 @@ export function AvatarGroupDefaultAdapter<C extends ElementType = "div">({
           shape={shape}
           container={container}
           showFallback={showFallback}
-          classNames={!disabledAnimation ? avatarAnimation : undefined}
+          classNames={!disableAnimation ? avatarAnimation : undefined}
         />
       ) : null}
     </Component>

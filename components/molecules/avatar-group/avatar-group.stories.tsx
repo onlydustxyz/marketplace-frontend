@@ -105,12 +105,12 @@ export const Square: Story = {
 export const Animation: Story = {
   parameters: {
     docs: {
-      source: { code: "<AvatarGroup disabledAnimation={false} />" },
+      source: { code: "<AvatarGroup disableAnimation={false} />" },
     },
   },
   render: args => (
     <div className="flex w-full items-center gap-4">
-      <AvatarGroup {...defaultAvatars} {...args} maxAvatars={3} disabledAnimation={false} />
+      <AvatarGroup {...defaultAvatars} {...args} maxAvatars={3} disableAnimation={false} />
     </div>
   ),
 };
