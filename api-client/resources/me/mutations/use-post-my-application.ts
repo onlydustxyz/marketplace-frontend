@@ -21,7 +21,7 @@ export function usePostMyApplication({ projectId }: { projectId: string }) {
       });
       const projectStoragePort = bootstrap.getProjectStoragePortForClient();
       await queryClient.invalidateQueries({
-        queryKey: [projectStoragePort.getProjectPublicIssues({ pathParams: { projectId } }).tag],
+        queryKey: projectStoragePort.getProjectPublicIssues({ pathParams: { projectId } }).tag,
         exact: false,
       });
     },
