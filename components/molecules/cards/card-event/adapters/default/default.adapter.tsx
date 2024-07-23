@@ -40,7 +40,17 @@ export function CardEventDefaultAdapter<C extends ElementType = "div">({
           </div>
           <div>
             {!!tagProps && (
-              <Tag size={"xs"} shape={"round"} style={"outline"} color={variants.tagColor} {...tagProps} />
+              <Tag
+                size={"xs"}
+                shape={"round"}
+                style={"outline"}
+                color={variants.tagColor}
+                {...tagProps}
+                classNames={{
+                  ...(tagProps?.classNames || {}),
+                  base: cn({ "opacity-50": status === "terminated" }, tagProps?.classNames?.base),
+                }}
+              />
             )}
           </div>
         </div>
