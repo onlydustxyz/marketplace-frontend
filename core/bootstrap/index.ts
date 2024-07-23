@@ -115,7 +115,7 @@ export class Bootstrap {
         userStoragePortForServer: new UserClientAdapter(new FetchHttpClient()),
         dateHelperPort: DateFnsAdapter,
         urlHelperPort: UrlAdapter,
-        imageHelperPort: ImageAdapter,
+        imageHelperPort: new ImageAdapter(),
       });
     }
 

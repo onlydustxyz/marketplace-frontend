@@ -15,5 +15,5 @@ export const bootstrapConstructorMock: BootstrapConstructor = {
   userStoragePortForServer: new UserClientAdapterMock(),
   dateHelperPort: DateAdapterMock,
   urlHelperPort: UrlAdapterMock,
-  imageHelperPort: ImageAdapterMock,
+  imageHelperPort: new ImageAdapterMock(),
 };

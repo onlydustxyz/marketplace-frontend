@@ -1,6 +1,11 @@
 import { ImageFacadePort } from "./image-facade-port";
 
-export const ImageAdapterMock: ImageFacadePort = {
-  isRemote: (_image: string) => false,
-  optimizeSrc: (_image: string, _options: object) => "",
-};
+export class ImageAdapterMock implements ImageFacadePort {
+  isRemote(_image: string) {
+    return false;
+  }
+
+  optimizeSrc(_image: string, _options: object) {
+    return "";
+  }
+}

@@ -1,38 +1,27 @@
 import process from "process";
 
-import { ImageFacadePort } from "./image-facade-port";
+import { ImageFacadePort, OptimizeImageOptions } from "./image-facade-port";
 
-function isRemote(image: string) {
-  if (process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX && image) {
-    return !image.includes(process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX);
+export class ImageAdapter implements ImageFacadePort {
+  isRemote(image: string) {
+    if (process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX && image) {
+      return !image.includes(process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX);
+    }
+
+    return false;
   }
 
-  return false;
-}
+  optimizeSrc(src: string, options?: Partial<OptimizeImageOptions>) {
+    if (this.isRemote(src)) {
+      const params = options
+        ? Object.entries(options)
+            .map(([key, value]) => `${key}=${value}`)
+            .join(",")
+        : "";
 
-function optimizeSrc(
-  src: string,
-  options?: Partial<{
-    format: string;
-    width: number;
-    height: number;
-    fit: string;
-  }>
-) {
-  if (isRemote(src)) {
-    const params = options
-      ? Object.entries(options)
-          .map(([key, value]) => `${key}=${value}`)
-          .join(",")
-      : "";
+      return `${process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX}${params}/${src}`;
+    }
 
-    return `${process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX}${params}/${src}`;
+    return src;
   }
-
-  return src;
 }
-
-export const ImageAdapter: ImageFacadePort = {
-  isRemote,
-  optimizeSrc,
-};
