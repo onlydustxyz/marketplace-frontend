@@ -49,34 +49,34 @@ export const TagDefaultVariants = tv({
     color: {
       false: "",
       black: {
-        base: "border-container-action bg-container-action data-[clickable=true]:hover:!bg-interactions-black-hover",
+        base: "border-container-action bg-container-action data-[clickable=true]:hover:!border-interactions-black-hover",
       },
       white: {
-        base: "border-container-inverse bg-container-inverse data-[clickable=true]:hover:!bg-interactions-white-hover",
+        base: "border-container-inverse bg-container-inverse data-[clickable=true]:hover:!border-interactions-white-hover",
       },
       red: {
-        base: "border-label-red bg-label-red data-[clickable=true]:hover:!bg-interactions-white-hover",
+        base: "border-label-red bg-label-red data-[clickable=true]:hover:!border-interactions-white-hover",
       },
       pink: {
-        base: "border-label-pink bg-label-pink data-[clickable=true]:hover:!bg-interactions-white-hover",
+        base: "border-label-pink bg-label-pink data-[clickable=true]:hover:!border-interactions-white-hover",
       },
       grey: {
-        base: "border-label-grey bg-label-grey data-[clickable=true]:hover:!bg-interactions-white-hover",
+        base: "border-label-grey bg-label-grey data-[clickable=true]:hover:!border-interactions-white-hover",
       },
       green: {
-        base: "border-label-green bg-label-green data-[clickable=true]:hover:!bg-interactions-white-hover",
+        base: "border-label-green bg-label-green data-[clickable=true]:hover:!border-interactions-white-hover",
       },
       yellow: {
-        base: "border-label-yellow bg-label-yellow data-[clickable=true]:hover:!bg-interactions-white-hover",
+        base: "border-label-yellow bg-label-yellow data-[clickable=true]:hover:!border-interactions-white-hover",
       },
       orange: {
-        base: "border-label-orange bg-label-orange data-[clickable=true]:hover:!bg-interactions-white-hover",
+        base: "border-label-orange bg-label-orange data-[clickable=true]:hover:!border-interactions-white-hover",
       },
       purple: {
-        base: "border-label-purple bg-label-purple data-[clickable=true]:hover:!bg-interactions-white-hover",
+        base: "border-label-purple bg-label-purple data-[clickable=true]:hover:!border-interactions-white-hover",
       },
       blue: {
-        base: "border-label-blue bg-label-blue data-[clickable=true]:hover:!bg-interactions-white-hover",
+        base: "border-label-blue bg-label-blue data-[clickable=true]:hover:!border-interactions-white-hover",
       },
     },
   },
