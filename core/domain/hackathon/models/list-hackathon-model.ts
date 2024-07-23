@@ -13,7 +13,11 @@ export interface ListHackathonInterface extends HackathonsListResponse {
   isLive(): boolean;
   isPast(): boolean;
   getStatus(): HackathonStatus;
-  formatOpenGraphDate(): string;
+  formatDates(): {
+    startDate: string;
+    endDate: string;
+    startTime: string;
+  };
 }
 
 export class ListHackathon extends mapApiToClass<HackathonsListResponse>() implements ListHackathonInterface {
@@ -48,25 +52,15 @@ export class ListHackathon extends mapApiToClass<HackathonsListResponse>() imple
     return "closed";
   }
 
-  formatOpenGraphDate() {
+  formatDates() {
     const startDate = new Date(this.startDate);
     const endDate = new Date(this.endDate);
-    const format = this.dateHelper.format;
+    const formatInEuropeTimeZone = this.dateHelper.formatInEuropeTimeZone;
 
-    const start = {
-      day: format(startDate, "dd"),
-      month: format(startDate, "MMMM"),
-      year: format(startDate, "yyyy"),
+    return {
+      startDate: formatInEuropeTimeZone(startDate, "MMMM dd, yyyy"),
+      endDate: formatInEuropeTimeZone(endDate, "MMMM dd, yyyy"),
+      startTime: formatInEuropeTimeZone(startDate, "hh:mm aa OOO"),
     };
-
-    const end = {
-      day: format(endDate, "dd"),
-      month: format(endDate, "MMMM"),
-    };
-
-    // March 18 - 24 2024
-    // March 18 - April 24 2024
-    // March 18 2024 - March 24 2025
-    return `${start.month} ${start.day} - ${end.month} ${end.day} ${start.year}`;
   }
 }

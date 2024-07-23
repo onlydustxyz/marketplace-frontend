@@ -40,7 +40,7 @@ function HackathonCardStatus({
       <>
         <div className="hidden items-center gap-3 sm:flex">
           {subscriberCount ? (
-            <div className="flex min-w-40 flex-col gap-2 rounded-xl border border-container-stroke-separator bg-interactions-white-disabled p-3">
+            <div className="min-w-40 flex flex-col gap-2 rounded-xl border border-container-stroke-separator bg-interactions-white-disabled p-3">
               <div className="flex items-center gap-1">
                 <Icon remixName="ri-user-3-line" />
 
@@ -54,7 +54,7 @@ function HackathonCardStatus({
           ) : null}
 
           {openIssueCount && issueCount ? (
-            <div className="flex min-w-40 flex-col gap-2 rounded-xl border border-container-stroke-separator bg-interactions-white-disabled p-3">
+            <div className="min-w-40 flex flex-col gap-2 rounded-xl border border-container-stroke-separator bg-interactions-white-disabled p-3">
               <div className="flex items-center gap-1">
                 <Icon remixName="ri-code-line" />
 
@@ -124,6 +124,7 @@ export function HackathonCard<C extends ElementType = "div">({
   const Component = slug ? "a" : "article";
   const slots = HackathonCardVariants();
 
+  // TODO @hayden this exists in hackathon domain now
   const dates = adaptFormatDate(startDate, endDate);
 
   return (
