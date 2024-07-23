@@ -1,4 +1,5 @@
-import { useAuth0 } from "@auth0/auth0-react";
+import { Auth0ClientAdapter } from "core/application/auth0-client-adapter";
+import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 import { useMemo } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
@@ -8,11 +9,13 @@ import { OverviewAccordion } from "app/p/[slug]/features/good-first-issues/compo
 import { viewportConfig } from "src/config";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 
+import { Button } from "components/atoms/button/variants/button-default";
 import { Card } from "components/ds/card/card";
 import { Link } from "components/ds/link/link";
 import { Contributor } from "components/features/contributor/contributor";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
+import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 import { ApplyButton } from "./components/apply-button/apply-button";
@@ -20,15 +23,29 @@ import { TIssueCard } from "./issue-card.types";
 
 export function IssueCard({ issue, onDrawerOpen }: TIssueCard.Props) {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
-  const { isAuthenticated } = useAuth0();
+
   const hasApplied = Boolean(issue.currentUserApplication);
 
+  const {
+    clientBootstrap: { authProvider },
+  } = useClientBootstrapContext();
+  const { isAuthenticated = false, loginWithRedirect } = authProvider ?? {};
+
   const renderApplyButton = useMemo(() => {
-    if (isAuthenticated) {
-      return <ApplyButton hasApplied={hasApplied} onDrawerOpen={onDrawerOpen} />;
+    if (!isAuthenticated) {
+      return (
+        <Button
+          onClick={
+            loginWithRedirect ? () => Auth0ClientAdapter.helpers.handleLoginWithRedirect(loginWithRedirect) : undefined
+          }
+        >
+          <Translate token={"v2.pages.project.overview.goodFirstIssues.button.connectAndApply"} />
+        </Button>
+      );
     }
-    return null;
-  }, [isAuthenticated, hasApplied, onDrawerOpen]);
+
+    return <ApplyButton hasApplied={hasApplied} onDrawerOpen={onDrawerOpen} />;
+  }, [isAuthenticated, loginWithRedirect, hasApplied, onDrawerOpen]);
 
   return (
     <Card key={issue.id} background="base" hasPadding={false}>
