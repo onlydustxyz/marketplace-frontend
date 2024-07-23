@@ -18,7 +18,7 @@ export function OpenTimeline({ eventsCount = 0 }: TOpenTimeline.Props) {
     <Button
       variant={"secondary-light"}
       size={"l"}
-      classNames={{ base: "w-full md:w-fit whitespace-nowrap" }}
+      classNames={{ base: "w-full md:w-fit whitespace-nowrap flex-1" }}
       onClick={open}
       endContent={
         <Badge size={"s"} colors={"brand-2"}>
