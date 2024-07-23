@@ -83,13 +83,12 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
                     title={hackathon.title}
                     backgroundImage={hackathon.backgroundImage}
                     location={<Translate token={"v2.pages.hackathons.defaultLocation"} />}
-                    startDate={new Date(hackathon.startDate)}
-                    endDate={new Date(hackathon.endDate)}
                     status={hackathon.getStatus()}
                     projects={hackathon.projects}
                     subscriberCount={hackathon.subscriberCount}
                     openIssueCount={hackathon.openIssueCount}
                     issueCount={hackathon.issueCount}
+                    dates={hackathon.formatDates()}
                   />
                   <Info hackathon={hackathon} />
                   <Description description={hackathon.description} />

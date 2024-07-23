@@ -24,13 +24,12 @@ export function HackathonSection({ title, icon, items }: THackathonSection.Props
             slug={item.slug}
             backgroundImage={item.backgroundImage}
             location={<Translate token={"v2.pages.hackathons.defaultLocation"} />}
-            startDate={new Date(item.startDate)}
-            endDate={new Date(item.endDate)}
             status={item.getStatus()}
             projects={item.projects}
             subscriberCount={item.subscriberCount}
             openIssueCount={item.openIssueCount}
             issueCount={item.issueCount}
+            dates={item.formatDates()}
           />
         ))}
       </div>

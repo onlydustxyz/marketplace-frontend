@@ -1,6 +1,4 @@
 import { HackathonStatus } from "core/domain/hackathon/models/hackathon.types";
-import { formatInTimeZone } from "date-fns-tz";
-import enGB from "date-fns/locale/en-GB";
 import { ReactElement } from "react";
 
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
@@ -29,33 +27,4 @@ export function mapHackathonStatusToTag(status?: HackathonStatus): {
         tagText: "",
       };
   }
-}
-
-export function formatHackathonDate(
-  startDate?: Date,
-  endDate?: Date
-): {
-  startDate: string;
-  startTime: string;
-  endDate: string | null;
-} {
-  if (!startDate) {
-    return {
-      startDate: "",
-      startTime: "",
-      endDate: null,
-    };
-  }
-
-  const timeZone = "Europe/Paris";
-
-  const formattedEndDate = endDate ? formatInTimeZone(endDate, timeZone, "MMMM dd, yyyy", { locale: enGB }) : null;
-  const formattedStartDate = formatInTimeZone(startDate, timeZone, "MMMM dd, yyyy", { locale: enGB });
-  const formattedStartTime = formatInTimeZone(startDate, timeZone, "hh:mm aa OOO", { locale: enGB });
-
-  return {
-    startDate: formattedStartDate,
-    startTime: formattedStartTime,
-    endDate: formattedEndDate,
-  };
 }

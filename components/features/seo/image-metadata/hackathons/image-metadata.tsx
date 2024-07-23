@@ -7,6 +7,7 @@ import { LocationIcon } from "components/features/seo/image-metadata/hackathons/
 
 const MAX_PROJECTS = 4;
 
+//TODO @hayden refactor this
 const isRemoteImage = (image: string) => {
   if (process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX && image) {
     return !image?.includes(process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX);
