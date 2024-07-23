@@ -122,7 +122,7 @@
     --interactions-white-disabled: var(--_White100);
 
     --interactions-black-default: var(--_Black200);
-    --interactions-black-hover: var(--_Black800);
+    --interactions-black-hover: var(--_Black600);
     --interactions-black-active: var(--_Black);
     --interactions-black-disabled: var(--_Black100);
 

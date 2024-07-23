@@ -19,6 +19,6 @@ export interface CardEventPort<C extends ElementType> {
   text?: ReactNode;
   tagProps?: TagPort<"span">;
   status?: CardEventStatus;
-  primaryActionProps?: ButtonPort<"button">;
-  secondaryActionProps?: ButtonPort<"button">;
+  primaryActionProps?: ButtonPort<"a">;
+  secondaryActionProps?: ButtonPort<"a">;
 }

@@ -172,6 +172,35 @@ export const WithAvatar: Story = {
   },
 };
 
+export const HasDropdown: Story = {
+  parameters: {
+    docs: {
+      source: { code: "<TagAvatar hasDropdown={true} />" },
+    },
+  },
+  render: args => {
+    return (
+      <div className="flex w-full flex-col items-center gap-2">
+        <div className="flex w-full items-start gap-2">
+          {display.map(d => {
+            return (
+              <div key={d} className="flex w-full items-start gap-8">
+                {sizes.map(s => {
+                  return (
+                    <div key={s} className="flex flex-col items-start gap-2">
+                      <Tag {...defaultTagIconProps} {...args} hasDropdown={true} size={s} shape={d} />
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  },
+};
+
 export const Colors: Story = {
   parameters: {
     docs: {
@@ -186,6 +215,29 @@ export const Colors: Story = {
             <div key={c} className="flex w-full items-center gap-2">
               {style.map(s => {
                 return <Tag key={`${c}-${s}`} {...defaultProps} {...args} color={c} style={s} />;
+              })}
+            </div>
+          );
+        })}
+      </div>
+    );
+  },
+};
+
+export const Clickable: Story = {
+  parameters: {
+    docs: {
+      source: { code: "<Tag clickable={true} />" },
+    },
+  },
+  render: args => {
+    return (
+      <div className="flex w-full flex-col items-center gap-2">
+        {colors.map(c => {
+          return (
+            <div key={c} className="flex w-full items-center gap-2">
+              {style.map(s => {
+                return <Tag key={`${c}-${s}`} {...defaultProps} {...args} clickable={true} color={c} style={s} />;
               })}
             </div>
           );

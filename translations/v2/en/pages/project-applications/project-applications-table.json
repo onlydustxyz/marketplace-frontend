@@ -4,6 +4,7 @@
   "columns": {
     "date": "Date",
     "repository": "Repository",
+    "label": "Label",
     "applicants": "Applicants",
     "contribution": "Contribution"
   },

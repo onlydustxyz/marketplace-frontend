@@ -11,7 +11,7 @@ export class FetchHttpClient extends HttpClient implements FetchHttpClientInterf
   async request<R>({
     path,
     method,
-    tag,
+    tag: tags,
     pathParams,
     queryParams,
     version,
@@ -20,7 +20,6 @@ export class FetchHttpClient extends HttpClient implements FetchHttpClientInterf
   }: FirstParameter<FetchHttpClientInterface["request"]>): Promise<R> {
     const url = this.buildUrl({ path, pathParams, queryParams, version });
     const headers = await this.getHeaders();
-    const tags = tag ? [tag] : undefined;
     const next = { ...nextParams, tags };
     const cache = !nextParams?.revalidate ? "no-cache" : undefined;
 

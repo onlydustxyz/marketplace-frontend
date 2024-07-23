@@ -4,7 +4,7 @@ export const CheckboxNextUiVariants = tv({
   slots: {
     base: "",
     label: "",
-    wrapper: "rounded before:rounded after:rounded",
+    wrapper: "m-0 h-4 w-4 rounded before:rounded after:rounded",
     icon: "text-text-4",
   },
   variants: {

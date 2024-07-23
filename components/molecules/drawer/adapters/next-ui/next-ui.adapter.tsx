@@ -21,6 +21,7 @@ export function DrawerNextUiAdapter<C extends ElementType = "div">({
   footer,
   children,
   size,
+  hideHeader,
 }: DrawerPort<C>) {
   const Inner = as || "div";
   const slots = DrawerNextUiVariants({ size });
@@ -69,19 +70,21 @@ export function DrawerNextUiAdapter<C extends ElementType = "div">({
         <ModalContent>
           {onClose => (
             <>
-              <ModalHeader>
-                <div>{header?.startContent}</div>
-                <div className="flex items-center justify-end gap-2">
-                  {header?.endContent ? <div>{header.endContent}</div> : null}
-                  <Button
-                    onClick={onClose}
-                    startIcon={{ remixName: "ri-close-line" }}
-                    hideText
-                    variant="secondary-light"
-                    size={"l"}
-                  />
-                </div>
-              </ModalHeader>
+              {!hideHeader ? (
+                <ModalHeader>
+                  <div>{header?.startContent}</div>
+                  <div className="flex items-center justify-end gap-2">
+                    {header?.endContent ? <div>{header.endContent}</div> : null}
+                    <Button
+                      onClick={onClose}
+                      startIcon={{ remixName: "ri-close-line" }}
+                      hideText
+                      variant="secondary-light"
+                      size={"l"}
+                    />
+                  </div>
+                </ModalHeader>
+              ) : null}
 
               <ScrollView>
                 <ModalBody>{children}</ModalBody>

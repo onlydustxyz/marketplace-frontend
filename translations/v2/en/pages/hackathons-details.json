@@ -7,6 +7,7 @@
     "register": "Register",
     "connectToRegister": "Connect to register",
     "registered": "Registered",
+    "seeIssues": "See all issues",
     "seeEvents": "See events",
     "eventOverTooltip": "The event is over",
     "communityLinks": "Community links",
@@ -31,33 +32,52 @@
       "label": "We need your Telegram handle",
       "placeholder": "Telegram"
     },
-    "submit": "Register"
-  },
-  "back": "Back",
-  "navigation": {
-    "overview": "Overview",
-    "tracks": "Tracks"
-  },
-  "overview": {
-    "startDate": "Start date",
-    "endDate": "End date",
-    "totalBudget": "Total budget",
-    "sponsors": "Sponsors",
-    "links": "Links",
-    "projects": "Projects"
-  },
-  "application": {
-    "title": "Applications open",
-    "description": "Please share your telegram handle first so we can reach out to you.",
-    "button": {
-      "apply": "Register now",
-      "connectToApply": "Connect to register",
-      "alreadyApplied": "Registered"
-    },
-    "confirmationToaster": "You have registered successfully."
+    "submit": "Register",
+    "success": "You have registered successfully"
   },
   "projects": {
     "title": "Projects",
     "button": "See project"
+  },
+  "issues": {
+    "filters": {
+      "button": "Filters",
+      "search": "Search",
+      "modal": {
+        "title": "Add filters",
+        "clear": "Clear all",
+        "languages": "Languages",
+        "issuesStates": {
+          "label": "Issues states",
+          "all": "All",
+          "available": "Available",
+          "notAvailable": "Not available"
+        }
+      },
+      "recommended": "Recommended filters",
+      "empty": {
+        "title": "No issues found",
+        "description": "No issues found with the selected filters"
+      }
+    },
+    "card": {
+      "apply": "Apply",
+      "viewApplication": "View application",
+      "viewOnGithub": "View on GitHub",
+      "createdBy": "By",
+      "applicantsCount": {
+        "zero": "applicants",
+        "one": "applicant",
+        "many": "applicants"
+      }
+    }
+  },
+  "timeline": {
+    "title": "Timeline",
+    "live": "Live",
+    "nextTitle": "Next",
+    "todayLabel": "Today",
+    "previousTitle": "Previously",
+    "todayTitle": "Today"
   }
 }

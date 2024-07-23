@@ -16,7 +16,7 @@ type Issue = {
     visibility: "PUBLIC" | "PRIVATE";
     languages: { id: string; slug: string; name: string; logoUrl: string; bannerUrl?: string }[];
   };
-  repository: {
+  repo: {
     id: number;
     owner: string;
     name: string;
@@ -33,7 +33,7 @@ export function mapIssueToContribution(issue: Issue): ContributionT {
     githubStatus: issue.status,
     githubTitle: issue.title,
     githubNumber: issue.number,
-    repo: issue.repository,
+    repo: issue.repo,
     createdAt: issue.createdAt,
     lastUpdatedAt: issue.createdAt,
 

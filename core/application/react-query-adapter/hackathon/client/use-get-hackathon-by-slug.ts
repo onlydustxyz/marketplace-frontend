@@ -1,14 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
-import { useQueryAdapter } from "core/application/react-query-adapter/helpers/use-query-adapter";
-import { ReactQueryParameters } from "core/application/react-query-adapter/react-query-adapter.types";
+import { UseQueryFacadeParams, useQueryAdapter } from "core/application/react-query-adapter/helpers/use-query-adapter";
 import { bootstrap } from "core/bootstrap";
 import { HackathonFacadePort } from "core/domain/hackathon/inputs/hackathon-facade-port";
+import { HackathonInterface } from "core/domain/hackathon/models/hackathon-model";
 
 export function useGetHackathonBySlug({
   pathParams,
   options,
-}: ReactQueryParameters<HackathonFacadePort["getHackathonBySlug"]>) {
+}: UseQueryFacadeParams<HackathonFacadePort["getHackathonBySlug"], HackathonInterface>) {
   const hackathonStoragePort = bootstrap.getHackathonStoragePortForClient();
 
-  return useQuery(useQueryAdapter({ ...hackathonStoragePort.getHackathonBySlug({ pathParams }), options }));
+  return useQuery(
+    useQueryAdapter({
+      ...hackathonStoragePort.getHackathonBySlug({ pathParams }),
+      options,
+    })
+  );
 }

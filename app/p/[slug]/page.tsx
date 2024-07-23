@@ -109,7 +109,7 @@ function ProjectPage() {
       <ClaimBanner project={project} />
 
       <Flex className="flex-col gap-6 md:flex-row">
-        <Flex direction="col" className="grow gap-6 md:gap-4">
+        <Flex direction="col" className="flex-1 gap-6 overflow-x-hidden md:gap-4">
           <OverviewInformations project={project} />
 
           {!isMd ? <ProjectDetails project={project} /> : null}

@@ -3,6 +3,7 @@ import { useReactQueryAdapter } from "api-client/adapter/react-query/react-query
 import { deleteApplication } from "api-client/resources/applications/fetch";
 import ApplicationTags from "api-client/resources/applications/tags";
 import { ParametersInterfaceWithReactQuery } from "api-client/types/parameters-interface";
+import { bootstrap } from "core/bootstrap";
 
 import { PROJECT_TAGS } from "src/api/Project/tags";
 
@@ -25,6 +26,11 @@ export function useDeleteApplication(
       });
       await queryClient.invalidateQueries({
         queryKey: [ApplicationTags.get_all({ applicantId })],
+        exact: false,
+      });
+      const projectStoragePort = bootstrap.getProjectStoragePortForClient();
+      await queryClient.invalidateQueries({
+        queryKey: projectStoragePort.getProjectPublicIssues({ pathParams: { projectId } }).tag,
         exact: false,
       });
     },
