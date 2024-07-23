@@ -12,6 +12,8 @@ import { useApplyIssueDrawerState } from "components/features/apply-issue-drawer
 import { Translate } from "components/layout/translate/translate";
 import { CardIssue, CardIssueLoading, CardIssuePort } from "components/molecules/cards/card-issue";
 
+import { NEXT_ROUTER } from "constants/router";
+
 import { TIssuesWrapper } from "./issues-wrapper.types";
 
 export function IssuesWrapper({ projectId }: TIssuesWrapper.Props) {
@@ -32,10 +34,12 @@ export function IssuesWrapper({ projectId }: TIssuesWrapper.Props) {
 
   function buildFirstAssignee(issue: ListIssueInterface): CardIssuePort<AnyType>["assignee"] {
     const firstAssignee = issue.getFirstAssignee();
+
     if (firstAssignee) {
       return {
         avatar: { src: firstAssignee.avatarUrl },
         name: firstAssignee.login,
+        href: NEXT_ROUTER.publicProfile.root(firstAssignee.login),
       };
     }
 

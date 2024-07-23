@@ -39,7 +39,7 @@ export function HackathonIssues() {
       <RecommendedFilters />
 
       {!items.length ? (
-        <div className="flex flex-col items-center gap-1">
+        <div className="flex flex-col items-center gap-1 py-4">
           <Typo variant="brand" translate={{ token: "v2.pages.hackathons.details.issues.filters.empty.title" }} />
           <Typo size="s" translate={{ token: "v2.pages.hackathons.details.issues.filters.empty.description" }} />
         </div>

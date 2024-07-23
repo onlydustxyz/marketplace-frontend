@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useContext } from "react";
 
 import { HackathonContext } from "app/hackathons/[hackathonSlug]/context/hackathon.context";
+import { HackathonIssuesContext } from "app/hackathons/[hackathonSlug]/features/hackathon-issues/context/hackathon-issues.context";
 
 import { viewportConfig } from "src/config";
 
@@ -22,8 +23,13 @@ export function IssuesSideWrapper({ children }: TIssuesSideWrapper.Props) {
     panelSize,
   } = useContext(HackathonContext);
 
+  const {
+    filters: { clear },
+  } = useContext(HackathonIssuesContext);
+
   function handleDrawerOpen() {
     if (isOpen) {
+      clear();
       close();
     }
   }
