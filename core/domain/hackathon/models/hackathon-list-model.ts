@@ -36,7 +36,7 @@ export class HackathonList implements HackathonListInterface {
   backgroundImage!: string;
   dateHelper: DateFacadePort;
 
-  constructor(protected props: HackathonsListResponse) {
+  constructor(props: HackathonsListResponse) {
     Object.assign(this, props);
 
     this.dateHelper = bootstrap.getDateHelperPort();
