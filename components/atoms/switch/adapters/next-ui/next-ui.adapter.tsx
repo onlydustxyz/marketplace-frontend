@@ -7,7 +7,7 @@ import { SwitchNextUiVariants } from "components/atoms/switch/adapters/next-ui/n
 import { SwitchPort } from "../../switch.types";
 
 export function SwitchNextUiAdapter({ classNames, onChange, ...props }: SwitchPort) {
-  const { isDisabled, isActive, ...nextUiProps } = props;
+  const { isDisabled, isActive, startContent, endContent } = props;
   const slots = SwitchNextUiVariants({
     isDisabled,
   });
@@ -29,7 +29,8 @@ export function SwitchNextUiAdapter({ classNames, onChange, ...props }: SwitchPo
       isDisabled={isDisabled}
       isSelected={isActive}
       onValueChange={handleChange}
-      {...nextUiProps}
+      startContent={startContent}
+      endContent={endContent}
     />
   );
 }
