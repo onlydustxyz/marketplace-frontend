@@ -22,15 +22,7 @@ export namespace ProjectTypes {
     HasGoodFirstIssues = "HAS_GOOD_FIRST_ISSUES",
   }
 
-  export type TagsUnion =
-    | "BIG_WHALE"
-    | "FAST_AND_FURIOUS"
-    | "HOT_COMMUNITY"
-    | "LIKELY_TO_REWARD"
-    | "NEWBIES_WELCOME"
-    | "UPDATED_ROADMAP"
-    | "WORK_IN_PROGRESS"
-    | "HAS_GOOD_FIRST_ISSUES";
+  export type TagsUnion = `${Tags}`;
 
   export type Leader = components["schemas"]["RegisteredUserResponse"];
   export type EcoSystem = components["schemas"]["EcosystemResponse"];
