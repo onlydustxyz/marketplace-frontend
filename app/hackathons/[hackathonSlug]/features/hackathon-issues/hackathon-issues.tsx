@@ -1,6 +1,8 @@
 "use client";
 
-import { useContext, useMemo } from "react";
+import { useContext, useEffect, useMemo } from "react";
+
+import { usePosthog } from "src/hooks/usePosthog";
 
 import { Avatar } from "components/atoms/avatar";
 import { Typo } from "components/atoms/typo";
@@ -13,7 +15,8 @@ import { RecommendedFilters } from "./components/recommended-filters/recommended
 import { HackathonIssuesContext } from "./context/hackathon-issues.context";
 
 export function HackathonIssues() {
-  const { projectIssues } = useContext(HackathonIssuesContext);
+  const { capture } = usePosthog();
+  const { hackathonId, projectIssues } = useContext(HackathonIssuesContext);
 
   const items: AccordionItemWithBadgeProps[] = useMemo(() => {
     return (
@@ -32,6 +35,12 @@ export function HackathonIssues() {
       }) || []
     );
   }, [projectIssues]);
+
+  useEffect(() => {
+    if (hackathonId) {
+      capture("hackathon_issues_list_viewed", { hackathon_id: hackathonId });
+    }
+  }, []);
 
   return (
     <>
