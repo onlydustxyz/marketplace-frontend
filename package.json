@@ -17,7 +17,7 @@
     "dependency-cruiser": "depcruise --config .dependency-cruiser.js src",
     "update-languages": "scripts/generate-github-languages-file.sh",
     "component": "ts-node tools/create-component.js",
-    "ds": "ts-node tools/creatswitche-ds.js",
+    "ds": "ts-node tools/create-ds.js",
     "ds:adapter": "ts-node tools/add-adapter.js",
     "hook": "ts-node tools/create-hook.js"
   },
