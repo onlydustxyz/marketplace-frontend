@@ -1,0 +1,54 @@
+import { Meta, StoryObj } from "@storybook/react";
+
+import { SwitchPort } from "./switch.types";
+import { Switch } from "./variants/switch-default";
+
+type Story = StoryObj<typeof Switch>;
+
+const defaultProps: SwitchPort = {};
+
+const meta: Meta<typeof Switch> = {
+  component: Switch,
+  title: "Atoms/Switch",
+  tags: ["autodocs"],
+  parameters: {
+    backgrounds: {
+      default: "black",
+      values: [{ name: "black", value: "#05051E" }],
+    },
+  },
+};
+
+export const Default: Story = {
+  parameters: {
+    docs: {
+      source: { code: "<Switch />" },
+    },
+  },
+  render: args => {
+    return (
+      <div className="flex w-full items-center gap-2">
+        <Switch {...defaultProps} {...args} />
+      </div>
+    );
+  },
+};
+
+export const Disabled: Story = {
+  parameters: {
+    docs: {
+      source: { code: "<Switch />" },
+    },
+  },
+  render: () => {
+    return (
+      <div className="flex w-full items-center gap-2">
+        <Switch {...defaultProps} isDisabled />
+        <Switch {...defaultProps} isDisabled value={true} />
+        <Switch {...defaultProps} isDisabled mixed />
+      </div>
+    );
+  },
+};
+
+export default meta;
