@@ -4,7 +4,6 @@ import PageBannerBackgroundMobile from "public/images/banners/page-banner/page-b
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Typo } from "components/atoms/typo";
-import { Icon } from "components/layout/icon/icon";
 
 import { PageBannerProps } from "./page-banner.types";
 
@@ -18,19 +17,20 @@ function Cta({ cta }: { cta: PageBannerProps["cta"] }) {
     : undefined;
 
   return (
-    <div>
-      <Button
-        as={"a"}
-        htmlProps={{
-          href: cta.href,
-          target: cta.isExternal ? "_blank" : undefined,
-          rel: cta.isExternal ? "noopener noreferrer" : undefined,
-        }}
-        startIcon={startIcon}
-      >
-        {cta.text}
-      </Button>
-    </div>
+    <Button
+      as={"a"}
+      htmlProps={{
+        href: cta.href,
+        target: cta.isExternal ? "_blank" : undefined,
+        rel: cta.isExternal ? "noopener noreferrer" : undefined,
+      }}
+      startIcon={startIcon}
+      classNames={{
+        base: "whitespace-nowrap min-w-fit",
+      }}
+    >
+      {cta.text}
+    </Button>
   );
 }
 
@@ -38,18 +38,23 @@ function CloseButton({ onClick }: { onClick: PageBannerProps["onClose"] }) {
   if (typeof onClick !== "function") return null;
 
   return (
-    <button className={"absolute right-4 top-1/2 hidden -translate-y-1/2 md:flex"} onClick={onClick}>
-      <Icon remixName={"ri-close-line"} size={24} />
-    </button>
+    <div>
+      <Button
+        variant="secondary-light"
+        onClick={onClick}
+        hideText
+        startIcon={{
+          remixName: "ri-close-line",
+        }}
+      />
+    </div>
   );
 }
 
 export function PageBanner({ message, cta, onClose }: PageBannerProps) {
   return (
     <div
-      className={
-        "relative mx-auto flex w-full max-w-[1920px] justify-center overflow-hidden px-4 py-3 md:rounded-2xl md:pr-14"
-      }
+      className={"relative mx-auto flex w-full max-w-[1920px] justify-center overflow-hidden px-4 py-3 md:rounded-2xl"}
     >
       <Image
         src={PageBannerBackgroundDesktop}
@@ -65,15 +70,28 @@ export function PageBanner({ message, cta, onClose }: PageBannerProps) {
         fill
         priority
       />
-      <div className={"relative z-10 flex items-center gap-4"}>
-        <Typo size={"m"} weight={"medium"} color={"text-1"}>
-          {message}
-        </Typo>
 
-        <Cta cta={cta} />
+      <div className="flex w-full items-center justify-between gap-1">
+        <div className="hidden md:block" />
+
+        <div className={"relative z-10 flex items-center gap-4"}>
+          <Typo size={"m"} weight={"medium"} color={"text-1"}>
+            {message}
+          </Typo>
+
+          <div className="hidden md:block">
+            <Cta cta={cta} />
+          </div>
+        </div>
+
+        <div className="flex items-center gap-1">
+          <div className="block md:hidden">
+            <Cta cta={cta} />
+          </div>
+
+          <CloseButton onClick={onClose} />
+        </div>
       </div>
-
-      <CloseButton onClick={onClose} />
     </div>
   );
 }

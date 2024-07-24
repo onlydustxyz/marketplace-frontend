@@ -1,5 +1,4 @@
 import { HackathonCard } from "components/features/hackathons/hackathon-card";
-import { getHackathonBackground } from "components/features/hackathons/hackathon-card/hackathon-card.utils";
 import { Translate } from "components/layout/translate/translate";
 
 import { Slider } from "./components/slider/slider";
@@ -14,12 +13,11 @@ export function HackathonsSliderContainer({ title, icon, items }: THackathonsSli
           key={item.slug}
           title={item.title}
           slug={item.slug}
-          backgroundImage={getHackathonBackground(item.index)}
+          backgroundImage={item.backgroundImage}
           location={<Translate token={"v2.pages.hackathons.defaultLocation"} />}
-          startDate={new Date(item.startDate)}
-          endDate={new Date(item.endDate)}
           status={item.getStatus()}
           projects={item.projects}
+          dates={item.formatDisplayDates()}
         />
       ))}
     </Slider>

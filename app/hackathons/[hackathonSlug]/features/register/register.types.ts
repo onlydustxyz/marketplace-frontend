@@ -10,7 +10,7 @@ export namespace TRegister {
     hackathonId: string;
     hackathonSlug: string;
     hackathonTitle: string;
-    hackathonIndex: number;
+    hackathonBackgroundImage: string;
     buttonProps: ButtonDefaultPort<"button">;
     tooltipProps: TooltipPort<"div">;
     hackathonIsLive: boolean;

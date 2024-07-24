@@ -35,7 +35,7 @@ export function HackathonCardMini<C extends ElementType = "article">({
       }}
     >
       <img
-        src={backgroundImage.src}
+        src={backgroundImage}
         alt={title}
         loading="lazy"
         className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"

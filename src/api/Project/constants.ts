@@ -39,5 +39,10 @@ export namespace ProjectConstants {
       tooltip: "v2.pages.projects.tags.tooltips.WORK_IN_PROGRESS",
       label: "v2.commons.enums.project.tags.WORK_IN_PROGRESS",
     },
+    HAS_GOOD_FIRST_ISSUES: {
+      icon: { remixName: "ri-thumb-up-line" },
+      tooltip: "v2.pages.projects.tags.tooltips.HAS_GOOD_FIRST_ISSUES",
+      label: "v2.commons.enums.project.tags.HAS_GOOD_FIRST_ISSUES",
+    },
   };
 }

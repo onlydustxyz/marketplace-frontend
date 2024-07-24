@@ -11,10 +11,7 @@ import {
   HackathonCardPort,
   HackathonCardStatusProps,
 } from "components/features/hackathons/hackathon-card/hackathon-card.types";
-import {
-  formatHackathonDate,
-  mapHackathonStatusToTag,
-} from "components/features/hackathons/hackathon-card/hackathon-card.utils";
+import { mapHackathonStatusToTag } from "components/features/hackathons/hackathon-card/hackathon-card.utils";
 import { ClientOnly } from "components/layout/client-only/client-only";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
@@ -110,8 +107,6 @@ export function HackathonCard<C extends ElementType = "div">({
   slug,
   backgroundImage,
   location,
-  startDate,
-  endDate,
   status,
   projects,
   hasLayer,
@@ -119,12 +114,10 @@ export function HackathonCard<C extends ElementType = "div">({
   openIssueCount,
   issueCount,
   adaptMapStatusToTag = mapHackathonStatusToTag,
-  adaptFormatDate = formatHackathonDate,
+  dates,
 }: HackathonCardPort<C>) {
   const Component = slug ? "a" : "article";
   const slots = HackathonCardVariants();
-
-  const dates = adaptFormatDate(startDate, endDate);
 
   return (
     <Paper
@@ -139,7 +132,7 @@ export function HackathonCard<C extends ElementType = "div">({
       }}
     >
       <img
-        src={backgroundImage.src}
+        src={backgroundImage}
         alt={title}
         loading="lazy"
         className="pointer-events-none absolute -left-[5px] -top-[5px] h-[calc(100%_+_10px)] w-[calc(100%_+_10px)] max-w-[initial] object-cover object-center"
@@ -188,29 +181,27 @@ export function HackathonCard<C extends ElementType = "div">({
             ) : null}
 
             <ClientOnly>
-              {startDate ? (
-                <div className="flex items-center gap-2">
-                  <Paper
-                    size="s"
-                    as="div"
-                    classNames={{
-                      base: "inline-flex",
-                    }}
-                  >
-                    <Icon remixName="ri-calendar-2-line" />
-                  </Paper>
+              <div className="flex items-center gap-2">
+                <Paper
+                  size="s"
+                  as="div"
+                  classNames={{
+                    base: "inline-flex",
+                  }}
+                >
+                  <Icon remixName="ri-calendar-2-line" />
+                </Paper>
 
-                  <div className="flex flex-col">
-                    <Typo size="s" weight="medium">
-                      {dates.startDate} {dates.endDate ? ` - ${dates.endDate}` : ""}
-                    </Typo>
+                <div className="flex flex-col">
+                  <Typo size="s" weight="medium">
+                    {dates.startDate} - {dates.endDate}
+                  </Typo>
 
-                    <Typo size="xxs" color="text-2">
-                      {dates.startTime}
-                    </Typo>
-                  </div>
+                  <Typo size="xxs" color="text-2">
+                    {dates.startTime}
+                  </Typo>
                 </div>
-              ) : null}
+              </div>
             </ClientOnly>
           </div>
 
