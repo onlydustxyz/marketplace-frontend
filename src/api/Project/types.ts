@@ -19,6 +19,7 @@ export namespace ProjectTypes {
     NewbiesWelcome = "NEWBIES_WELCOME",
     UpdatedRoadmap = "UPDATED_ROADMAP",
     WorkInProgress = "WORK_IN_PROGRESS",
+    HasGoodFirstIssues = "HAS_GOOD_FIRST_ISSUES",
   }
 
   export type TagsUnion =
@@ -28,7 +29,8 @@ export namespace ProjectTypes {
     | "LIKELY_TO_REWARD"
     | "NEWBIES_WELCOME"
     | "UPDATED_ROADMAP"
-    | "WORK_IN_PROGRESS";
+    | "WORK_IN_PROGRESS"
+    | "HAS_GOOD_FIRST_ISSUES";
 
   export type Leader = components["schemas"]["RegisteredUserResponse"];
   export type EcoSystem = components["schemas"]["EcosystemResponse"];
