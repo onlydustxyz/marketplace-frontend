@@ -34,6 +34,21 @@ export const Default: Story = {
   },
 };
 
+export const Active: Story = {
+  parameters: {
+    docs: {
+      source: { code: "<Switch />" },
+    },
+  },
+  render: () => {
+    return (
+      <div className="flex w-full items-center gap-2">
+        <Switch {...defaultProps} isActive={true} />
+      </div>
+    );
+  },
+};
+
 export const Disabled: Story = {
   parameters: {
     docs: {
@@ -44,8 +59,21 @@ export const Disabled: Story = {
     return (
       <div className="flex w-full items-center gap-2">
         <Switch {...defaultProps} isDisabled />
-        <Switch {...defaultProps} isDisabled value={true} />
-        <Switch {...defaultProps} isDisabled mixed />
+      </div>
+    );
+  },
+};
+
+export const ActiveDisabled: Story = {
+  parameters: {
+    docs: {
+      source: { code: "<Switch />" },
+    },
+  },
+  render: () => {
+    return (
+      <div className="flex w-full items-center gap-2">
+        <Switch {...defaultProps} isDisabled isActive={true} />
       </div>
     );
   },

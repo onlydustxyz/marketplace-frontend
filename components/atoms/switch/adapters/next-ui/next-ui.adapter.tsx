@@ -6,11 +6,10 @@ import { SwitchNextUiVariants } from "components/atoms/switch/adapters/next-ui/n
 
 import { SwitchPort } from "../../switch.types";
 
-export function SwitchNextUiAdapter({ classNames, children, onChange, value, ...props }: SwitchPort) {
-  const { isDisabled, mixed } = props;
+export function SwitchNextUiAdapter({ classNames, onChange, ...props }: SwitchPort) {
+  const { isDisabled, isActive, ...nextUiProps } = props;
   const slots = SwitchNextUiVariants({
     isDisabled,
-    mixed,
   });
 
   function handleChange(value: boolean) {
@@ -29,10 +28,9 @@ export function SwitchNextUiAdapter({ classNames, children, onChange, value, ...
         thumbIcon: cn(slots.thumbIcon(), classNames?.thumbIcon),
       }}
       isDisabled={isDisabled}
-      isSelected={value}
+      isSelected={isActive}
       onValueChange={handleChange}
-    >
-      {children}
-    </NextUiSwitch>
+      {...nextUiProps}
+    />
   );
 }

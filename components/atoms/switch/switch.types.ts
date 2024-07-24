@@ -1,5 +1,3 @@
-import { PropsWithChildren } from "react";
-
 interface Variants {
   isDisabled: boolean;
 }
@@ -14,10 +12,9 @@ interface ClassNames {
   thumbIcon: string;
 }
 
-export interface SwitchPort extends Partial<Variants>, PropsWithChildren {
+export interface SwitchPort extends Partial<Variants> {
   classNames?: Partial<ClassNames>;
   onChange?: (isActive: boolean) => void;
-  value?: boolean;
+  isActive?: boolean;
   isDisabled?: boolean;
-  mixed?: boolean;
 }

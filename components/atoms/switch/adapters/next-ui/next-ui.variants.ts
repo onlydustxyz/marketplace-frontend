@@ -2,9 +2,9 @@ import { tv } from "tailwind-variants";
 
 export const SwitchNextUiVariants = tv({
   slots: {
-    base: "",
-    wrapper: "m-0",
-    thumb: "",
+    base: "h-4 w-[28px] max-w-[28px]",
+    wrapper: "m-0 h-4 w-full p-0.5",
+    thumb: "h-3 w-3 group-data-[selected=true]:ml-3",
     label: "",
     startContent: "",
     endContent: "",
@@ -14,7 +14,7 @@ export const SwitchNextUiVariants = tv({
     isDisabled: {
       true: "",
     },
-    mixed: {
+    isActive: {
       true: "",
     },
   },
@@ -25,14 +25,9 @@ export const SwitchNextUiVariants = tv({
         wrapper: "",
       },
     },
-    {
-      mixed: true,
-      class: {
-        thumb: "",
-      },
-    },
   ],
   defaultVariants: {
     isDisabled: false,
+    isActive: true,
   },
 });
