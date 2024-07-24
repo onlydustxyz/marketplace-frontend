@@ -1,3 +1,3 @@
 export interface ImpersonationProvider {
-  getImpersonationHeaders: () => Record<string, string>;
+  getHeaders: () => Record<string, string>;
 }

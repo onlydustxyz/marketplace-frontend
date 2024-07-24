@@ -1,3 +1,5 @@
-export function buildImpersonationHeaders({ githubUserId }: { githubUserId: string }) {
-  return { "X-Impersonation-Claims": JSON.stringify({ sub: `github|${githubUserId}` }) };
+import { ImpersonationClaim } from "core/infrastructure/marketplace-api-client-adapter/impersonation/impersonation.types";
+
+export function buildImpersonationHeadersFromClaim(claim: ImpersonationClaim) {
+  return { "X-Impersonation-Claims": JSON.stringify(claim) };
 }
