@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 interface Variants {
   isDisabled: boolean;
 }
@@ -14,7 +16,9 @@ interface ClassNames {
 
 export interface SwitchPort extends Partial<Variants> {
   classNames?: Partial<ClassNames>;
-  onChange?: (isActive: boolean) => void;
-  isActive?: boolean;
+  onChange: (isActive: boolean) => void;
+  isActive: boolean;
   isDisabled?: boolean;
+  startContent?: ReactNode;
+  endContent?: ReactNode;
 }

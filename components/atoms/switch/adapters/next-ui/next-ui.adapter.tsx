@@ -25,7 +25,6 @@ export function SwitchNextUiAdapter({ classNames, onChange, ...props }: SwitchPo
         thumb: cn(slots.thumb(), classNames?.thumb),
         startContent: cn(slots.startContent(), classNames?.startContent),
         endContent: cn(slots.endContent(), classNames?.endContent),
-        thumbIcon: cn(slots.thumbIcon(), classNames?.thumbIcon),
       }}
       isDisabled={isDisabled}
       isSelected={isActive}

@@ -5,7 +5,11 @@ import { Switch } from "./variants/switch-default";
 
 type Story = StoryObj<typeof Switch>;
 
-const defaultProps: SwitchPort = {};
+const defaultProps: SwitchPort = {
+  isActive: false,
+  onChange: () => null,
+  isDisabled: false,
+};
 
 const meta: Meta<typeof Switch> = {
   component: Switch,
@@ -37,12 +41,12 @@ export const Default: Story = {
 export const Active: Story = {
   parameters: {
     docs: {
-      source: { code: "<Switch />" },
+      source: { code: "<Switch isActive={true} />" },
     },
   },
   render: () => {
     return (
-      <div className="flex w-full items-center gap-2">
+      <div className="flex w-full">
         <Switch {...defaultProps} isActive={true} />
       </div>
     );
@@ -52,12 +56,12 @@ export const Active: Story = {
 export const Disabled: Story = {
   parameters: {
     docs: {
-      source: { code: "<Switch />" },
+      source: { code: "<Switch isDisabled />" },
     },
   },
   render: () => {
     return (
-      <div className="flex w-full items-center gap-2">
+      <div className="flex w-full">
         <Switch {...defaultProps} isDisabled />
       </div>
     );
@@ -67,12 +71,12 @@ export const Disabled: Story = {
 export const ActiveDisabled: Story = {
   parameters: {
     docs: {
-      source: { code: "<Switch />" },
+      source: { code: "<Switch isDisabled isActive={true} />" },
     },
   },
   render: () => {
     return (
-      <div className="flex w-full items-center gap-2">
+      <div className="flex w-full">
         <Switch {...defaultProps} isDisabled isActive={true} />
       </div>
     );

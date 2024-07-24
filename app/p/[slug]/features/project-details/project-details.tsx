@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import { Categories } from "app/p/[slug]/features/project-details/components/categories/categories";
 import { Languages } from "app/p/[slug]/features/project-details/components/languages/languages";
@@ -6,6 +6,7 @@ import { Languages } from "app/p/[slug]/features/project-details/components/lang
 import { IMAGES } from "src/assets/img";
 import isDefined from "src/utils/isDefined";
 
+import { Switch } from "components/atoms/switch";
 import { Card } from "components/ds/card/card";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
@@ -20,6 +21,7 @@ import { Sponsors } from "./components/sponsors/sponsors";
 import { TProjectDetails } from "./project-details.types";
 
 export function ProjectDetails({ project }: TProjectDetails.Props) {
+  const [isActive, setIsActive] = useState(false);
   const {
     contributorCount,
     topContributors,
@@ -53,6 +55,7 @@ export function ProjectDetails({ project }: TProjectDetails.Props) {
 
   return (
     <Card background="base" hasPadding={false}>
+      <Switch isActive={isActive} onChange={setIsActive} />
       <Flex direction="col" className="divide-y divide-greyscale-50/8">
         <Flex alignItems="center" className="gap-2 px-6 py-4">
           <Icon remixName="ri-folder-line" size={20} />
