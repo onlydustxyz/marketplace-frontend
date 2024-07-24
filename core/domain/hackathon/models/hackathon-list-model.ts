@@ -34,7 +34,7 @@ export class HackathonList implements HackathonListInterface {
   title!: HackathonsListResponse["title"];
   backgroundImage!: string;
 
-  constructor(protected props: HackathonsListResponse) {
+  constructor(props: HackathonsListResponse) {
     Object.assign(this, props);
 
     this.setBackgroundImage();

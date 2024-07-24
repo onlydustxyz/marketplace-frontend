@@ -12,6 +12,7 @@ import {
   HackathonCardStatusProps,
 } from "components/features/hackathons/hackathon-card/hackathon-card.types";
 import { mapHackathonStatusToTag } from "components/features/hackathons/hackathon-card/hackathon-card.utils";
+import { BaseLink } from "components/layout/base-link/base-link";
 import { ClientOnly } from "components/layout/client-only/client-only";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
@@ -116,16 +117,19 @@ export function HackathonCard<C extends ElementType = "div">({
   adaptMapStatusToTag = mapHackathonStatusToTag,
   dates,
 }: HackathonCardPort<C>) {
-  const Component = slug ? "a" : "article";
+  const Component = slug ? BaseLink : "article";
+  const paperHtmlProps = slug
+    ? {
+        href: NEXT_ROUTER.hackathons.details.root(slug),
+        ...htmlProps,
+      }
+    : htmlProps;
   const slots = HackathonCardVariants();
 
   return (
     <Paper
       as={Component}
-      htmlProps={{
-        href: slug ? NEXT_ROUTER.hackathons.details.root(slug) : undefined,
-        ...htmlProps,
-      }}
+      htmlProps={{ ...paperHtmlProps }}
       size="l"
       classNames={{
         base: cn(slots.base(), classNames?.base),

@@ -25,7 +25,7 @@ export class Hackathon extends HackathonList implements HackathonInterface {
 
   declare projects: HackathonsDetailsResponse["projects"];
 
-  constructor(protected readonly props: HackathonsDetailsResponse) {
+  constructor(props: HackathonsDetailsResponse) {
     super(props);
     Object.assign(this, props);
 

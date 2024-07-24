@@ -2,7 +2,7 @@
 
 import { keepPreviousData } from "@tanstack/react-query";
 import { ProjectReactQueryAdapter } from "core/application/react-query-adapter/project";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import { HackathonContext } from "app/hackathons/[hackathonSlug]/context/hackathon.context";
 import { MainInfo } from "app/hackathons/[hackathonSlug]/features/project-side-overview/components/main-infos/main-info";
@@ -11,9 +11,13 @@ import { ProjectInfos } from "app/hackathons/[hackathonSlug]/features/project-si
 import { ProjectLanguages } from "app/hackathons/[hackathonSlug]/features/project-side-overview/components/project-languages/project-languages";
 import { TProjectSideOverview } from "app/hackathons/[hackathonSlug]/features/project-side-overview/project-side-overview.types";
 
+import { usePosthog } from "src/hooks/usePosthog";
+
 import { Header } from "./components/header/header";
 
 export function ProjectSideOverview(_: TProjectSideOverview.Props) {
+  const { capture } = usePosthog();
+
   const {
     project: { projectId },
   } = useContext(HackathonContext);
@@ -25,6 +29,12 @@ export function ProjectSideOverview(_: TProjectSideOverview.Props) {
       placeholderData: keepPreviousData,
     },
   });
+
+  useEffect(() => {
+    if (project) {
+      capture("project_viewed", { id_project: project.id, type: "hackathon" });
+    }
+  }, [project]);
 
   if (!project) return null;
 
