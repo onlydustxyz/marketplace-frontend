@@ -45,9 +45,8 @@ export function Projects({ projects }: TProjects.Props) {
 
       <ul className="grid grid-cols-1 gap-2 md:grid-cols-2">
         {projectsList.map(project => (
-          <li key={project.id}>
+          <li key={project.id} className={"cursor-pointer"} onClick={() => open(project.id)}>
             <CardProject
-              as="a"
               classNames={{
                 base: "h-full",
               }}

@@ -25,11 +25,11 @@ export class Hackathon extends HackathonList implements HackathonInterface {
 
   declare projects: HackathonsDetailsResponse["projects"];
 
-  constructor(protected readonly props: HackathonsDetailsResponse) {
+  constructor(props: HackathonsDetailsResponse) {
     super(props);
     Object.assign(this, props);
 
-    this.events = this.sortEventsByStartDate([
+    this.events = this.sortEventsByDescStartDate([
       ...this.createDefaultHackathonEvents(props.startDate, props.endDate),
       ...props.events,
     ]).map(event => new HackathonEvent(event));
@@ -56,8 +56,8 @@ export class Hackathon extends HackathonList implements HackathonInterface {
     ];
   }
 
-  private sortEventsByStartDate(events: HackathonsDetailsResponse["events"]): HackathonsDetailsResponse["events"] {
-    return events.sort((a, b) => this.dateHelper.compareAsc(new Date(a.startDate), new Date(b.startDate)));
+  private sortEventsByDescStartDate(events: HackathonsDetailsResponse["events"]): HackathonsDetailsResponse["events"] {
+    return events.sort((a, b) => this.dateHelper.compareDesc(new Date(a.startDate), new Date(b.startDate)));
   }
 
   getTodayEvents() {

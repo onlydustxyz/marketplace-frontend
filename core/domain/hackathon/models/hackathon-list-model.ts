@@ -1,5 +1,4 @@
 import { bootstrap } from "core/bootstrap";
-import { DateFacadePort } from "core/helpers/date/date-facade-port";
 import process from "process";
 
 import { components } from "src/__generated/api";
@@ -34,14 +33,14 @@ export class HackathonList implements HackathonListInterface {
   subscriberCount!: HackathonsListResponse["subscriberCount"];
   title!: HackathonsListResponse["title"];
   backgroundImage!: string;
-  dateHelper: DateFacadePort;
 
-  constructor(protected props: HackathonsListResponse) {
+  constructor(props: HackathonsListResponse) {
     Object.assign(this, props);
 
-    this.dateHelper = bootstrap.getDateHelperPort();
     this.setBackgroundImage();
   }
+
+  protected dateHelper = bootstrap.getDateHelperPort();
 
   isComingSoon() {
     return this.dateHelper.isFuture(new Date(this.startDate));
