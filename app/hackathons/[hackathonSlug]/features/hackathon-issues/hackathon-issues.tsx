@@ -9,14 +9,14 @@ import { Typo } from "components/atoms/typo";
 import { AccordionItemWithBadgeProps } from "components/molecules/accordion";
 import { AccordionWithBadge } from "components/molecules/accordion/variants/accordion-with-badge";
 
+import { IssuesWrapper } from "../../../features/issues-wrapper/issues-wrapper";
 import { Header } from "./components/header/header";
-import { IssuesWrapper } from "./components/issues-wrapper/issues-wrapper";
 import { RecommendedFilters } from "./components/recommended-filters/recommended-filters";
 import { HackathonIssuesContext } from "./context/hackathon-issues.context";
 
 export function HackathonIssues() {
   const { capture } = usePosthog();
-  const { hackathonId, projectIssues } = useContext(HackathonIssuesContext);
+  const { hackathonId, projectIssues, queryParams } = useContext(HackathonIssuesContext);
 
   const items: AccordionItemWithBadgeProps[] = useMemo(() => {
     return (
@@ -30,7 +30,9 @@ export function HackathonIssues() {
             children: projectIssue.issueCount,
           },
           startContent: <Avatar size="xs" shape="square" src={projectIssue.project.logoUrl} />,
-          content: <IssuesWrapper projectId={projectIssue.project.id} />,
+          content: (
+            <IssuesWrapper projectId={projectIssue.project.id} queryParams={queryParams} hackathonId={hackathonId} />
+          ),
         };
       }) || []
     );
