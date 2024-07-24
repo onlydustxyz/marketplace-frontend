@@ -1,4 +1,4 @@
-import process from "process";
+import { bootstrap } from "core/bootstrap";
 import { getOrdinalSuffix } from "utils/profile/ordinal-position-suffix";
 
 interface Props {
@@ -9,21 +9,7 @@ interface Props {
   rankPercentile: number;
 }
 export function ContentUser({ login, title, image, rank, rankPercentile }: Props) {
-  const isRemoteImage = (() => {
-    if (process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX && image) {
-      return !image?.includes(process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX);
-    }
-
-    return false;
-  })();
-
-  const optimizeSrc = (() => {
-    if (isRemoteImage) {
-      return `${process.env.NEXT_PUBLIC_CLOUDFLARE_RESIZE_PREFIX}format=png/${image}`;
-    }
-
-    return image;
-  })();
+  const imageHelper = bootstrap.getImageHelperPort();
 
   return (
     <div
@@ -36,7 +22,7 @@ export function ContentUser({ login, title, image, rank, rankPercentile }: Props
       }}
     >
       <img
-        src={optimizeSrc}
+        src={imageHelper.optimizeSrc(image, { format: "png" })}
         alt="user-image"
         width="196"
         height="196"

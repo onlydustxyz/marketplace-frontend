@@ -3,6 +3,8 @@ import { ProjectStoragePort } from "core/domain/project/outputs/project-storage-
 import { UserStoragePort } from "core/domain/user/outputs/user-storage-port";
 import { DateFacadePort } from "core/helpers/date/date-facade-port";
 import { DateFnsAdapter } from "core/helpers/date/date-fns-adapter";
+import { ImageAdapter } from "core/helpers/image/image-adapter";
+import { ImageFacadePort } from "core/helpers/image/image-facade-port";
 import { UrlAdapter } from "core/helpers/url/url-adapter";
 import { UrlFacadePort } from "core/helpers/url/url-facade-port";
 import { HackathonClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/hackathon-client-adapter";
@@ -21,6 +23,7 @@ export interface BootstrapConstructor {
   userStoragePortForServer: UserStoragePort;
   dateHelperPort: DateFacadePort;
   urlHelperPort: UrlFacadePort;
+  imageHelperPort: ImageFacadePort;
 }
 
 export class Bootstrap {
@@ -35,6 +38,7 @@ export class Bootstrap {
   userStoragePortForServer: UserStoragePort;
   dateHelperPort: DateFacadePort;
   urlHelperPort: UrlFacadePort;
+  imageHelperPort: ImageFacadePort;
 
   constructor(constructor: BootstrapConstructor) {
     this.projectStoragePortForClient = constructor.projectStoragePortForClient;
@@ -45,6 +49,7 @@ export class Bootstrap {
     this.userStoragePortForServer = constructor.userStoragePortForServer;
     this.dateHelperPort = constructor.dateHelperPort;
     this.urlHelperPort = constructor.urlHelperPort;
+    this.imageHelperPort = constructor.imageHelperPort;
   }
 
   getAuthProvider() {
@@ -95,6 +100,10 @@ export class Bootstrap {
     return this.urlHelperPort;
   }
 
+  getImageHelperPort() {
+    return this.imageHelperPort;
+  }
+
   public static get getBootstrap(): Bootstrap {
     if (!Bootstrap.#instance) {
       this.newBootstrap({
@@ -106,6 +115,7 @@ export class Bootstrap {
         userStoragePortForServer: new UserClientAdapter(new FetchHttpClient()),
         dateHelperPort: DateFnsAdapter,
         urlHelperPort: UrlAdapter,
+        imageHelperPort: new ImageAdapter(),
       });
     }
 

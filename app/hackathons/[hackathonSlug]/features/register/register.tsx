@@ -8,7 +8,6 @@ import { Button } from "components/atoms/button/variants/button-default";
 import { Input } from "components/atoms/input";
 import { Tooltip } from "components/atoms/tooltip";
 import { HackathonCardMini } from "components/features/hackathons/hackathon-card/hackathon-card.mini";
-import { getHackathonBackground } from "components/features/hackathons/hackathon-card/hackathon-card.utils";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Modal } from "components/molecules/modal";
@@ -23,7 +22,7 @@ export function Register({
   hackathonId,
   hackathonSlug,
   hackathonTitle,
-  hackathonIndex,
+  hackathonBackgroundImage,
   buttonProps,
   tooltipProps,
   hackathonIsLive,
@@ -116,7 +115,7 @@ export function Register({
         }}
       >
         <div className="grid gap-4">
-          <HackathonCardMini title={hackathonTitle} backgroundImage={getHackathonBackground(hackathonIndex)} />
+          <HackathonCardMini title={hackathonTitle} backgroundImage={hackathonBackgroundImage} />
 
           <Controller
             name="telegram"

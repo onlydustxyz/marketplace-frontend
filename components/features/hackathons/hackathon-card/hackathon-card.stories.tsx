@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import backgroundImage from "public/images/hackathons/cover-1.webp";
+import process from "process";
 
 import { HackathonCardLoading } from "components/features/hackathons/hackathon-card/hackathon-card.loading";
 import { HackathonCardMini } from "components/features/hackathons/hackathon-card/hackathon-card.mini";
@@ -12,15 +12,18 @@ type Story = StoryObj<typeof HackathonCard>;
 const defaultPort: HackathonCardPort<"div"> = {
   title: "Hackathon Example",
   slug: "example",
-  backgroundImage,
+  backgroundImage: `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/cover-1.png`,
   adaptMapStatusToTag: () => ({
     tagText: "Status tags",
   }),
   location: "Paris",
   upperTitle: "Hackathon",
   buttonLabel: "Discover",
-  startDate: new Date(),
-  endDate: new Date(),
+  dates: {
+    startDate: "2021-09-01",
+    endDate: "2021-09-02",
+    startTime: "10:00",
+  },
   status: "open",
   projects: [
     {
@@ -95,7 +98,7 @@ const subscriberAndIssueCountPort: HackathonCardPort<"div"> = {
 const miniPort: HackathonCardMiniPort<"article"> = {
   title: "Hackathon Example",
   slug: "example",
-  backgroundImage,
+  backgroundImage: `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/cover-1.png`,
   upperTitle: "Hackathon",
   classNames: {
     base: "w-full",
