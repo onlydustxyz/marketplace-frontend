@@ -1,9 +1,5 @@
 import { ReactNode } from "react";
 
-interface Variants {
-  isDisabled: boolean;
-}
-
 interface ClassNames {
   base: string;
   wrapper: string;
@@ -14,7 +10,7 @@ interface ClassNames {
   thumbIcon: string;
 }
 
-export interface SwitchPort extends Partial<Variants> {
+export interface SwitchPort {
   classNames?: Partial<ClassNames>;
   onChange: (isActive: boolean) => void;
   isActive: boolean;
