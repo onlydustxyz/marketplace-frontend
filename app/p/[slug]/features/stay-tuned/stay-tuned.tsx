@@ -63,6 +63,10 @@ export function StayTuned({ projectId, moreInfos }: TStayTuned.Props) {
     return moreInfos?.filter(link => communityLinkPatterns.some(pattern => link.url.includes(pattern)));
   }, [moreInfos]);
 
+  if (!communityLinks?.length && !isAuthenticated) {
+    return null;
+  }
+
   return (
     <Card background="base" hasPadding={false}>
       <Flex direction="col" className="divide-y divide-greyscale-50/8">
