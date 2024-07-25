@@ -3,6 +3,6 @@ import { GetProjectBySlugResponse } from "core/domain/project/project-contract.t
 export namespace TStayTuned {
   export interface Props {
     projectId: string;
-    moreInfo: GetProjectBySlugResponse["moreInfos"];
+    moreInfos: GetProjectBySlugResponse["moreInfos"];
   }
 }

@@ -127,7 +127,7 @@ function ProjectPage() {
 
         {isMd ? (
           <Flex direction="col" className="shrink-0 gap-4 md:w-72 xl:w-80">
-            <StayTuned projectId={project.id} moreInfo={project.moreInfos} />
+            <StayTuned projectId={project.id} moreInfos={project.moreInfos} />
             <ProjectDetails project={project} />
             <Repositories organizations={project.organizations} />
           </Flex>

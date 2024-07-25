@@ -17,7 +17,7 @@ import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
-export function StayTuned({ projectId, moreInfo }: TStayTuned.Props) {
+export function StayTuned({ projectId, moreInfos }: TStayTuned.Props) {
   const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
 
   const {
@@ -60,8 +60,8 @@ export function StayTuned({ projectId, moreInfo }: TStayTuned.Props) {
   const urlHelperPort = bootstrap.getUrlHelperPort();
 
   const communityLinks = useMemo(() => {
-    return moreInfo?.filter(link => communityLinkPatterns.some(pattern => link.url.includes(pattern)));
-  }, [moreInfo]);
+    return moreInfos?.filter(link => communityLinkPatterns.some(pattern => link.url.includes(pattern)));
+  }, [moreInfos]);
 
   return (
     <Card background="base" hasPadding={false}>
