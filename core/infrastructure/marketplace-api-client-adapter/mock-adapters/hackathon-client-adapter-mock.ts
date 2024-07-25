@@ -1,30 +1,19 @@
 import { HackathonStoragePort } from "core/domain/hackathon/outputs/hackathon-storage-port";
-import { FirstParameter } from "core/helpers/types";
+import {
+  mockHttpStorageResponse,
+  mockHttpStorageResponseWithParams,
+} from "core/infrastructure/marketplace-api-client-adapter/http/mock-http-client/mock-http-storage-response";
 
 export class HackathonClientAdapterMock implements HackathonStoragePort {
   constructor() {}
 
   routes = {};
 
-  getHackathons = () => {
-    return {
-      request: () => Promise.resolve({}),
+  getHackathons = mockHttpStorageResponse<HackathonStoragePort["getHackathons"]>;
 
-      tag: "",
-    } as ReturnType<HackathonStoragePort["getHackathons"]>;
-  };
+  getHackathonBySlug = mockHttpStorageResponseWithParams<HackathonStoragePort["getHackathonBySlug"]>;
 
-  getHackathonBySlug = (_: FirstParameter<HackathonStoragePort["getHackathonBySlug"]>) => {
-    return {
-      request: () => Promise.resolve({}),
-      tag: "",
-    } as ReturnType<HackathonStoragePort["getHackathonBySlug"]>;
-  };
-
-  getHackathonByIdProjectIssues = (_: FirstParameter<HackathonStoragePort["getHackathonByIdProjectIssues"]>) => {
-    return {
-      request: () => Promise.resolve({}),
-      tag: "",
-    } as ReturnType<HackathonStoragePort["getHackathonByIdProjectIssues"]>;
-  };
+  getHackathonByIdProjectIssues = mockHttpStorageResponseWithParams<
+    HackathonStoragePort["getHackathonByIdProjectIssues"]
+  >;
 }

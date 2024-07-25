@@ -1,36 +1,16 @@
 import { ProjectStoragePort } from "core/domain/project/outputs/project-storage-port";
-import { FirstParameter } from "core/helpers/types";
+import { mockHttpStorageResponseWithParams } from "core/infrastructure/marketplace-api-client-adapter/http/mock-http-client/mock-http-storage-response";
 
 export class ProjectClientAdapterMock implements ProjectStoragePort {
   constructor() {}
 
   routes = {};
 
-  getProjectBySlug = (_: FirstParameter<ProjectStoragePort["getProjectBySlug"]>) => {
-    return {
-      request: () => Promise.resolve({}),
-      tag: "",
-    } as ReturnType<ProjectStoragePort["getProjectBySlug"]>;
-  };
+  getProjectBySlug = mockHttpStorageResponseWithParams<ProjectStoragePort["getProjectBySlug"]>;
 
-  getProjectById = (_: FirstParameter<ProjectStoragePort["getProjectById"]>) => {
-    return {
-      request: () => Promise.resolve({}),
-      tag: "",
-    } as ReturnType<ProjectStoragePort["getProjectById"]>;
-  };
+  getProjectById = mockHttpStorageResponseWithParams<ProjectStoragePort["getProjectById"]>;
 
-  getProjectRewards = (_: FirstParameter<ProjectStoragePort["getProjectRewards"]>) => {
-    return {
-      request: () => Promise.resolve({}),
-      tag: "",
-    } as ReturnType<ProjectStoragePort["getProjectRewards"]>;
-  };
+  getProjectRewards = mockHttpStorageResponseWithParams<ProjectStoragePort["getProjectRewards"]>;
 
-  getProjectPublicIssues = (_: FirstParameter<ProjectStoragePort["getProjectPublicIssues"]>) => {
-    return {
-      request: () => Promise.resolve({}),
-      tag: "",
-    } as ReturnType<ProjectStoragePort["getProjectPublicIssues"]>;
-  };
+  getProjectPublicIssues = mockHttpStorageResponseWithParams<ProjectStoragePort["getProjectPublicIssues"]>;
 }
