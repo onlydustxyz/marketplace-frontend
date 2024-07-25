@@ -27,7 +27,7 @@ export function HackathonImageMetadata({ hackathon }: { hackathon: HackathonInte
       }}
     >
       <img
-        src={hackathon.backgroundImage}
+        src={hackathon.getBackgroundImage()}
         alt="Hackathon background"
         width={1840}
         height={1246}

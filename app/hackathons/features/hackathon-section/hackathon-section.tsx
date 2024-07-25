@@ -22,7 +22,7 @@ export function HackathonSection({ title, icon, items }: THackathonSection.Props
             key={item.slug}
             title={item.title}
             slug={item.slug}
-            backgroundImage={item.backgroundImage}
+            backgroundImage={item.getBackgroundImage()}
             location={<Translate token={"v2.pages.hackathons.defaultLocation"} />}
             status={item.getStatus()}
             projects={item.projects}

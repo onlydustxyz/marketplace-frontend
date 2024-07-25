@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
-import { ShortBillingProfile, ShortBillingProfileResponse } from "./short-billing-profile.model";
+import { BillingProfileShort, BillingProfileShortResponse } from "./billing-profile-short-model";
 
-const defaultBillingProfile: ShortBillingProfileResponse = {
+const defaultBillingProfile: BillingProfileShortResponse = {
   id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
   type: "INDIVIDUAL",
   name: "string",
@@ -17,9 +17,9 @@ const defaultBillingProfile: ShortBillingProfileResponse = {
   individualLimitReached: false,
 };
 
-describe("ShortBillingProfile", () => {
+describe("BillingProfileShort", () => {
   it("should return true when individual limit is reached", () => {
-    const profile = new ShortBillingProfile({
+    const profile = new BillingProfileShort({
       ...defaultBillingProfile,
       individualLimitReached: true,
     });
@@ -27,7 +27,7 @@ describe("ShortBillingProfile", () => {
   });
 
   it("should return payment progression", () => {
-    const profile = new ShortBillingProfile({
+    const profile = new BillingProfileShort({
       ...defaultBillingProfile,
       currentYearPaymentLimit: 5001,
       currentYearPaymentAmount: 4500,
@@ -41,14 +41,14 @@ describe("ShortBillingProfile", () => {
   });
 
   it("should return payment progression with dynamic value", () => {
-    const profile = new ShortBillingProfile({
+    const profile = new BillingProfileShort({
       ...defaultBillingProfile,
       currentYearPaymentLimit: 5001,
       currentYearPaymentAmount: 4500,
       individualLimitReached: true,
     });
 
-    const profileReached = new ShortBillingProfile({
+    const profileReached = new BillingProfileShort({
       ...defaultBillingProfile,
       currentYearPaymentLimit: 5001,
       currentYearPaymentAmount: 4500,
