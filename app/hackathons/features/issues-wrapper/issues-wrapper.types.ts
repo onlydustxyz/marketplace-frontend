@@ -7,7 +7,6 @@ export namespace TIssuesWrapper {
     projectId: string;
     hackathonId: string;
     queryParams: THackathonIssuesContext.QueryParams;
-    // Wrapper?: (p: { children: ReactNode }) => ReactElement;
     Wrapper?: ComponentType<PropsWithChildren>;
   }
 }
