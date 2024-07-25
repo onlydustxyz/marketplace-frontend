@@ -43,7 +43,6 @@ export async function generateMetadata(props: { params: { hackathonSlug: string 
       title: `${hackathon.title}`,
       description: `${hackathon.description}`,
       openGraph: {
-        ...sharedMetadata.openGraph,
         title: `${hackathon.title}`,
         description: `${hackathon.description}`,
       },

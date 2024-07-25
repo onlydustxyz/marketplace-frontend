@@ -22,5 +22,3 @@ export default async function Image(props: { params: { hackathonSlug: string } }
     });
   }
 }
-
-export const revalidate = 0;
