@@ -33,3 +33,29 @@ export type GetMyProfileResponse = components["schemas"]["PrivateUserProfileResp
 export type GetMyProfilePortParams = HttpClientParameters<object>;
 
 export type GetMyProfilePortResponse = HttpStorageResponse<UserProfileInterface>;
+
+/* --------------------------------- Get my notification settings -------------------------------- */
+
+export type GetMyNotificationSettingsPathParams =
+  operations["getMyNotificationSettingsForProject"]["parameters"]["path"];
+
+export type GetMyNotificationSettingsPortParams = HttpClientParameters<{
+  PathParams: GetMyNotificationSettingsPathParams;
+}>;
+
+export type GetMyNotificationSettingsPortResponse = HttpStorageResponse;
+
+/* --------------------------------- Set my notification settings -------------------------------- */
+
+export type SetMyNotificationSettingsBody = components["schemas"]["UserProfileRequest"];
+
+export type SetMyNotificationSettingsResponse = components["schemas"]["PrivateUserProfileResponse"];
+
+export type SetMyNotificationSettingsPathParams =
+  operations["getMyNotificationSettingsForProject"]["parameters"]["path"];
+
+export type SetMyNotificationSettingsPortParams = HttpClientParameters<{
+  PathParams: GetMyNotificationSettingsPathParams;
+}>;
+
+export type SetMyNotificationSettingsPortResponse = HttpStorageResponse;
