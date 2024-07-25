@@ -81,7 +81,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
                 <Paper size="m" container="2" classNames={{ base: "grid gap-4" }}>
                   <HackathonCard
                     title={hackathon.title}
-                    backgroundImage={hackathon.backgroundImage}
+                    backgroundImage={hackathon.getBackgroundImage()}
                     location={<Translate token={"v2.pages.hackathons.defaultLocation"} />}
                     status={hackathon.getStatus()}
                     projects={hackathon.projects}
