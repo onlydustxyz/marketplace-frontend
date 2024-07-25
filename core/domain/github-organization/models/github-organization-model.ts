@@ -1,21 +1,28 @@
-import { mapApiToClass } from "core/infrastructure/marketplace-api-client-adapter/mappers/map-api-to-class";
-
 import { components } from "src/__generated/api";
 
 type GithubOrganizationResponse = components["schemas"]["GithubOrganizationResponse"];
 
 interface GithubOrganizationInterface extends GithubOrganizationResponse {
-  isInstalled: boolean;
+  isInstalled(): boolean;
 }
 
-class GithubOrganization extends mapApiToClass<GithubOrganizationResponse>() implements GithubOrganizationInterface {
-  constructor(protected props: GithubOrganizationResponse) {
-    super(props);
+export class GithubOrganization implements GithubOrganizationInterface {
+  avatarUrl!: GithubOrganizationResponse["avatarUrl"];
+  githubUserId!: GithubOrganizationResponse["githubUserId"];
+  htmlUrl!: GithubOrganizationResponse["htmlUrl"];
+  installationId!: GithubOrganizationResponse["installationId"];
+  installationStatus!: GithubOrganizationResponse["installationStatus"];
+  isCurrentUserAdmin!: GithubOrganizationResponse["isCurrentUserAdmin"];
+  isPersonal!: GithubOrganizationResponse["isPersonal"];
+  login!: GithubOrganizationResponse["login"];
+  name!: GithubOrganizationResponse["name"];
+  repos!: GithubOrganizationResponse["repos"];
+
+  constructor(props: GithubOrganizationResponse) {
+    Object.assign(this, props);
   }
 
-  get isInstalled() {
+  isInstalled() {
     return this.installationStatus !== "NOT_INSTALLED";
   }
 }
-
-export { GithubOrganization };
