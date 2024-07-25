@@ -50,6 +50,7 @@ import en_settings_invoices from "./en/pages/settings-invoices.json";
 import en_settings_payout_preferences from "./en/pages/settings-payout-preferences.json";
 import en_settings_payout from "./en/pages/settings-payout.json";
 import en_settings_profile from "./en/pages/settings-profile.json";
+import en_signin_signin_section from "./en/pages/signin/signin-section.json";
 import en_page_sponsor from "./en/pages/sponsor.json";
 import en_stack_mandate from "./en/pages/stacks-mandate.json";
 import en_stack_request_payments from "./en/pages/stacks-request-payments.json";
@@ -132,6 +133,9 @@ export const en = {
       ecosystems: en_ecosystems,
       home: en_home,
       applications: en_applications,
+      signin: {
+        signinSection: en_signin_signin_section,
+      },
     },
   },
 };
