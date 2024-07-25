@@ -1,16 +1,15 @@
 "use client";
 
+import { Auth0ClientAdapter } from "core/application/auth0-client-adapter";
 import { bootstrap } from "core/bootstrap";
 
 import { Cta } from "app/signin/components/cta/cta";
-
-import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
 
 export function SigninCta() {
   function handleSignin() {
     const { loginWithRedirect } = bootstrap.getAuthProvider() ?? {};
 
-    if (loginWithRedirect) handleLoginWithRedirect(loginWithRedirect);
+    if (loginWithRedirect) Auth0ClientAdapter.helpers.handleLoginWithRedirect(loginWithRedirect);
   }
 
   return (
