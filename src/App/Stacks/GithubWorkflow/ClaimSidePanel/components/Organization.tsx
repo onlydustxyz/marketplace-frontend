@@ -46,7 +46,7 @@ export default function ClaimBannerOrganization({
     id: organization.githubUserId,
     login: organization.login,
     installationId: organization.installationId,
-    installed: organization.isInstalled,
+    installed: organization.isInstalled(),
     isAPersonalOrganization: organization.isPersonal,
     projectSlug: project?.slug,
     isClaim: true,
@@ -55,8 +55,8 @@ export default function ClaimBannerOrganization({
   const organizationStatus: organizationStatusEnum = useMemo(() => {
     if (
       myOrganization &&
-      !organization.isInstalled &&
-      !myOrganization.isInstalled &&
+      !organization.isInstalled() &&
+      !myOrganization.isInstalled() &&
       myOrganization.isCurrentUserAdmin
     ) {
       return organizationStatusEnum.shouldInstall;
@@ -64,8 +64,8 @@ export default function ClaimBannerOrganization({
 
     if (
       myOrganization &&
-      !organization.isInstalled &&
-      !myOrganization.isInstalled &&
+      !organization.isInstalled() &&
+      !myOrganization.isInstalled() &&
       !myOrganization.isCurrentUserAdmin
     ) {
       return organizationStatusEnum.shouldGrant;
