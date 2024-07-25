@@ -37,7 +37,7 @@
     ".storybook/**/*.tsx",
     "./dist/types/**/*.ts",
     "./next-env.d.ts",
-    ".next/types/**/*.ts"
+    ".next"
   ],
   "exclude": ["./node_modules"]
 }
