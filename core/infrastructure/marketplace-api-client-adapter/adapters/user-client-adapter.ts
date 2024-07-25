@@ -1,7 +1,9 @@
+import { User } from "core/domain/user/models/user-model";
 import { UserNotifications } from "core/domain/user/models/user-notifications-model";
 import { UserProfile } from "core/domain/user/models/user-profile-model";
 import { UserStoragePort } from "core/domain/user/outputs/user-storage-port";
 import {
+  GetMeResponse,
   GetMyNotificationSettingsResponse,
   GetMyProfileResponse,
   SetMyNotificationSettingsBody,
@@ -20,6 +22,7 @@ export class UserClientAdapter implements UserStoragePort {
     getMyProfile: "me/profile",
     setMyNotificationSettings: "me/notification-settings/projects/:projectId",
     getMyNotificationSettings: "me/notification-settings/projects/:projectId",
+    getMe: "me",
   } as const;
 
   registerToHackathon = ({ pathParams }: FirstParameter<UserStoragePort["registerToHackathon"]>) => {
@@ -118,6 +121,27 @@ export class UserClientAdapter implements UserStoragePort {
       });
 
       return new UserNotifications(data);
+    };
+
+    return {
+      request,
+      tag,
+    };
+  };
+
+  getMe = () => {
+    const path = this.routes["getMe"];
+    const method = "GET";
+    const tag = HttpClient.buildTag({ path });
+
+    const request = async () => {
+      const data = await this.client.request<GetMeResponse>({
+        path,
+        method,
+        tag,
+      });
+
+      return new User(data);
     };
 
     return {

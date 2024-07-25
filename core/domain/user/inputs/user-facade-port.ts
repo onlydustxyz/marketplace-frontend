@@ -1,4 +1,6 @@
 import {
+  GetMeResponsePortParams,
+  GetMeResponsePortResponse,
   GetMyNotificationSettingsPortParams,
   GetMyNotificationSettingsPortResponse,
   GetMyProfilePortParams,
@@ -17,4 +19,5 @@ export interface UserFacadePort {
   getMyProfile(params: GetMyProfilePortParams): GetMyProfilePortResponse;
   getMyNotificationSettings(params: GetMyNotificationSettingsPortParams): GetMyNotificationSettingsPortResponse;
   setMyNotificationSettings(params: SetMyNotificationSettingsPortParams): SetMyNotificationSettingsPortResponse;
+  getMe(params: GetMeResponsePortParams): GetMeResponsePortResponse;
 }
