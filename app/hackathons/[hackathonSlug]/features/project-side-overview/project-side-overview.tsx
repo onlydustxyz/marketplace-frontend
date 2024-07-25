@@ -5,21 +5,22 @@ import { ProjectReactQueryAdapter } from "core/application/react-query-adapter/p
 import { useContext, useEffect } from "react";
 
 import { HackathonContext } from "app/hackathons/[hackathonSlug]/context/hackathon.context";
+import { Header } from "app/hackathons/[hackathonSlug]/features/project-side-overview/components/header/header";
 import { MainInfo } from "app/hackathons/[hackathonSlug]/features/project-side-overview/components/main-infos/main-info";
 import { ProjectCategories } from "app/hackathons/[hackathonSlug]/features/project-side-overview/components/project-categories/project-categories";
 import { ProjectInfos } from "app/hackathons/[hackathonSlug]/features/project-side-overview/components/project-infos/project-infos";
+import { ProjectIssues } from "app/hackathons/[hackathonSlug]/features/project-side-overview/components/project-issues/project-issues";
 import { ProjectLanguages } from "app/hackathons/[hackathonSlug]/features/project-side-overview/components/project-languages/project-languages";
 import { TProjectSideOverview } from "app/hackathons/[hackathonSlug]/features/project-side-overview/project-side-overview.types";
 
 import { usePosthog } from "src/hooks/usePosthog";
 
-import { Header } from "./components/header/header";
-
-export function ProjectSideOverview(_: TProjectSideOverview.Props) {
+export function ProjectSideOverview({ isLive }: TProjectSideOverview.Props) {
   const { capture } = usePosthog();
 
   const {
     project: { projectId },
+    hackathonId,
   } = useContext(HackathonContext);
 
   const { data: project } = ProjectReactQueryAdapter.client.useGetProjectById({
@@ -48,6 +49,7 @@ export function ProjectSideOverview(_: TProjectSideOverview.Props) {
         <ProjectLanguages languages={project.languages} />
         <ProjectCategories categories={project.categories} />
       </div>
+      {isLive && <ProjectIssues hackathonId={hackathonId} projectId={projectId} />}
     </>
   );
 }

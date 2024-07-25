@@ -5,6 +5,7 @@ import { HackathonUtils } from "app/hackathons/[hackathonSlug]/utils";
 export namespace THackathonContext {
   export interface Props extends PropsWithChildren {
     hasEvents: boolean;
+    hackathonId: string;
   }
 
   export interface Return {
@@ -19,6 +20,7 @@ export namespace THackathonContext {
       open: () => void;
       close: () => void;
     };
+    hackathonId: string;
     project: {
       isOpen: boolean;
       projectId: string;
