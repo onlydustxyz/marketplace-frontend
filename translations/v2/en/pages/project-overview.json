@@ -70,5 +70,10 @@
   },
   "repositories": {
     "title": "Repositories"
+  },
+  "stayTuned": {
+    "title": "Stay tuned",
+    "description": "Join the project community to stay updated on the projects, chat with members, and contact maintainers.",
+    "notifySwitchLabel": "Notify me when issues are available"
   }
 }
