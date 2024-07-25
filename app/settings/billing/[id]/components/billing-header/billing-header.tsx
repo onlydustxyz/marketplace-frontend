@@ -1,6 +1,6 @@
+import { BillingProfileShort } from "core/domain/billing-profile/models/billing-profile-short-model";
 import { useParams } from "next/navigation";
 import { useMemo } from "react";
-import { ShortBillingProfile, useClientInstance } from "utils/billing-profile/short-billing-profile.model";
 
 import { SettingsHeader } from "app/settings/components/settings-header/settings-header";
 
@@ -21,7 +21,7 @@ export function BillingHeader() {
 
   const role = profile?.data.me.role;
 
-  const shortBillingProfile = useClientInstance(ShortBillingProfile, profile?.data);
+  const shortBillingProfile = profile?.data ? new BillingProfileShort(profile.data) : null;
   const isAdmin = role === BillingProfilesTypes.ROLE.ADMIN;
   const isInvited = profile?.data.me?.invitation;
   const isIndividual = profile?.data?.type === MeTypes.billingProfileType.Individual;
