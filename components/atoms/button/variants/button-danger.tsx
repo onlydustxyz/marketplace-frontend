@@ -11,12 +11,13 @@ export function ButtonDanger<C extends ElementType = "button">(props: ButtonPort
   return withComponentAdapter<ButtonPort<C>>(ButtonDefaultAdapter)({
     ...props,
     classNames: {
+      ...(props.classNames || {}),
       base: cn(
         "bg-interactions-error-active data-[disabled=true]:bg-interactions-error-disabled",
         "hover:bg-interactions-error-hover",
         props.classNames?.base
       ),
-      loaderContainer: "bg-interactions-error-active",
+      loaderContainer: cn("bg-interactions-error-active", props.classNames?.loaderContainer),
     },
   });
 }
