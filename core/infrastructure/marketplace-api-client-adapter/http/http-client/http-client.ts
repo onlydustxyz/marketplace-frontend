@@ -28,7 +28,7 @@ export class HttpClient {
 
   async getHeaders() {
     const impersonationProvider = bootstrap.getImpersonationProvider();
-    const impersonationHeaders = impersonationProvider?.getImpersonationHeaders() ?? {};
+    const impersonationHeaders = impersonationProvider?.getHeaders() ?? {};
 
     const defaultHeaders = {
       "Content-Type": "application/json",

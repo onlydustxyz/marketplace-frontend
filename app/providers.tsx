@@ -3,6 +3,7 @@
 import { NextUIProvider } from "@nextui-org/react";
 import { ClientBootstrapProvider } from "core/bootstrap/client-bootstrap-context";
 import { InitBootstrapAuth } from "core/bootstrap/init-bootstrap-auth";
+import { InitBootstrapImpersonation } from "core/bootstrap/init-bootstrap-impersonation";
 import { NavigationStateProvider } from "providers/navigation-state/navigation-state";
 import { PropsWithChildren } from "react";
 import { useMediaQuery } from "usehooks-ts";
@@ -31,6 +32,7 @@ export default function Providers({ children }: PropsWithChildren) {
     <ClientBootstrapProvider>
       <PosthogProvider>
         <ImpersonationProvider>
+          <InitBootstrapImpersonation />
           <Auth0ProviderWithNavigate>
             <InitBootstrapAuth />
             <IntlProvider>
