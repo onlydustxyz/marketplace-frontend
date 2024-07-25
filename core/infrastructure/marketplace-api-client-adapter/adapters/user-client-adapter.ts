@@ -1,17 +1,17 @@
-import {User} from "core/domain/user/models/user-model";
-import {UserNotifications} from "core/domain/user/models/user-notifications-model";
-import {UserProfile} from "core/domain/user/models/user-profile-model";
-import {UserStoragePort} from "core/domain/user/outputs/user-storage-port";
+import { User } from "core/domain/user/models/user-model";
+import { UserNotifications } from "core/domain/user/models/user-notifications-model";
+import { UserProfile } from "core/domain/user/models/user-profile-model";
+import { UserStoragePort } from "core/domain/user/outputs/user-storage-port";
 import {
-    GetMeResponse,
-    GetMyNotificationSettingsResponse,
-    GetMyProfileResponse,
-    SetMyNotificationSettingsBody,
-    SetMyProfileBody,
-    SetMyProfileResponse,
+  GetMeResponse,
+  GetMyNotificationSettingsResponse,
+  GetMyProfileResponse,
+  SetMyNotificationSettingsBody,
+  SetMyProfileBody,
+  SetMyProfileResponse,
 } from "core/domain/user/user-contract.types";
-import {FirstParameter} from "core/helpers/types";
-import {HttpClient} from "core/infrastructure/marketplace-api-client-adapter/http/http-client/http-client";
+import { FirstParameter } from "core/helpers/types";
+import { HttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/http-client/http-client";
 
 export class UserClientAdapter implements UserStoragePort {
   constructor(private readonly client: HttpClient) {}

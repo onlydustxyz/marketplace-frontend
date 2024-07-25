@@ -1,8 +1,8 @@
 import {
-  GetMyNotificationSettingsPortParams,
-  GetMyNotificationSettingsPortResponse,
   GetMeResponsePortParams,
   GetMeResponsePortResponse,
+  GetMyNotificationSettingsPortParams,
+  GetMyNotificationSettingsPortResponse,
   GetMyProfilePortParams,
   GetMyProfilePortResponse,
   RegisterToHackathonPortParams,
