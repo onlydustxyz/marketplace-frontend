@@ -1,5 +1,4 @@
 import { bootstrap } from "core/bootstrap";
-import { DateFacadePort } from "core/helpers/date/date-facade-port";
 import process from "process";
 
 import { components } from "src/__generated/api";
@@ -9,7 +8,6 @@ import { HackathonStatus } from "./hackathon.types";
 type HackathonsListResponse = components["schemas"]["HackathonsListItemResponse"];
 
 export interface HackathonListInterface extends HackathonsListResponse {
-  backgroundImage: string;
   isComingSoon(): boolean;
   isLive(): boolean;
   isPast(): boolean;
@@ -19,10 +17,12 @@ export interface HackathonListInterface extends HackathonsListResponse {
     endDate: string;
     startTime: string;
   };
+  getBackgroundImage(): string;
 }
 
 export class HackathonList implements HackathonListInterface {
   endDate!: HackathonsListResponse["endDate"];
+  githubLabels!: HackathonsListResponse["githubLabels"];
   id!: HackathonsListResponse["id"];
   index!: HackathonsListResponse["index"];
   issueCount!: HackathonsListResponse["issueCount"];
@@ -33,15 +33,12 @@ export class HackathonList implements HackathonListInterface {
   startDate!: HackathonsListResponse["startDate"];
   subscriberCount!: HackathonsListResponse["subscriberCount"];
   title!: HackathonsListResponse["title"];
-  backgroundImage!: string;
-  dateHelper: DateFacadePort;
 
-  constructor(protected props: HackathonsListResponse) {
+  constructor(props: HackathonsListResponse) {
     Object.assign(this, props);
-
-    this.dateHelper = bootstrap.getDateHelperPort();
-    this.setBackgroundImage();
   }
+
+  protected dateHelper = bootstrap.getDateHelperPort();
 
   isComingSoon() {
     return this.dateHelper.isFuture(new Date(this.startDate));
@@ -79,15 +76,15 @@ export class HackathonList implements HackathonListInterface {
     };
   }
 
-  private setBackgroundImage() {
-    let backgroundIndex = this.index;
-
+  getBackgroundImage() {
     const NB_AVAILABLE_BACKGROUNDS = 16;
+
+    let backgroundIndex = this.index;
 
     if (backgroundIndex >= NB_AVAILABLE_BACKGROUNDS) {
       backgroundIndex = backgroundIndex % NB_AVAILABLE_BACKGROUNDS;
     }
 
-    this.backgroundImage = `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/cover-${backgroundIndex + 1}.png`;
+    return `${process.env.NEXT_PUBLIC_METADATA_ASSETS_S3_BUCKET}/cover-${backgroundIndex + 1}.png`;
   }
 }

@@ -3,9 +3,9 @@
 import { ProjectReactQueryAdapter } from "core/application/react-query-adapter/project";
 import { ListIssueInterface } from "core/domain/issue/models/list-issue-model";
 import { AnyType } from "core/helpers/types";
-import { useContext, useMemo } from "react";
+import { Fragment, useMemo } from "react";
 
-import { HackathonIssuesContext } from "app/hackathons/[hackathonSlug]/features/hackathon-issues/context/hackathon-issues.context";
+import { TIssuesWrapper } from "app/hackathons/features/issues-wrapper/issues-wrapper.types";
 
 import { ApplyIssueDrawer } from "components/features/apply-issue-drawer/apply-issue-drawer";
 import { useApplyIssueDrawerState } from "components/features/apply-issue-drawer/apply-issue-drawer.hooks";
@@ -14,10 +14,7 @@ import { CardIssue, CardIssueLoading, CardIssuePort } from "components/molecules
 
 import { NEXT_ROUTER } from "constants/router";
 
-import { TIssuesWrapper } from "./issues-wrapper.types";
-
-export function IssuesWrapper({ projectId }: TIssuesWrapper.Props) {
-  const { hackathonId, queryParams } = useContext(HackathonIssuesContext);
+export function IssuesWrapper({ projectId, hackathonId, queryParams, Wrapper = Fragment }: TIssuesWrapper.Props) {
   const applyIssueDrawerState = useApplyIssueDrawerState();
   const [, setApplyIssueDrawerState] = applyIssueDrawerState;
 
@@ -67,8 +64,12 @@ export function IssuesWrapper({ projectId }: TIssuesWrapper.Props) {
     setApplyIssueDrawerState(prevState => ({ ...prevState, isOpen: true, issueId, applicationId, projectId }));
   }
 
+  if (!flatIssues.length) {
+    return null;
+  }
+
   return (
-    <>
+    <Wrapper>
       <div className="flex flex-col gap-3">
         {flatIssues.map(issue => (
           <CardIssue
@@ -129,6 +130,6 @@ export function IssuesWrapper({ projectId }: TIssuesWrapper.Props) {
         ))}
       </div>
       <ApplyIssueDrawer state={applyIssueDrawerState} />
-    </>
+    </Wrapper>
   );
 }

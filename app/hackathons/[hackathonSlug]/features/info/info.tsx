@@ -120,7 +120,7 @@ export function Info({ hackathon }: TInfo.Props) {
           hackathonId={hackathon.id}
           hackathonSlug={hackathon.slug}
           hackathonTitle={hackathon.title}
-          hackathonBackgroundImage={hackathon.backgroundImage}
+          hackathonBackgroundImage={hackathon.getBackgroundImage()}
           hackathonIsLive={hackathon.isLive()}
           buttonProps={{
             size: "xl",
@@ -140,7 +140,7 @@ export function Info({ hackathon }: TInfo.Props) {
           hackathonId={hackathon.id}
           hackathonSlug={hackathon.slug}
           hackathonTitle={hackathon.title}
-          hackathonBackgroundImage={hackathon.backgroundImage}
+          hackathonBackgroundImage={hackathon.getBackgroundImage()}
           hackathonIsLive={hackathon.isLive()}
           buttonProps={{
             size: "l",

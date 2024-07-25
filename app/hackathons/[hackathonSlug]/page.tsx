@@ -43,7 +43,6 @@ export async function generateMetadata(props: { params: { hackathonSlug: string 
       title: `${hackathon.title}`,
       description: `${hackathon.description}`,
       openGraph: {
-        ...sharedMetadata.openGraph,
         title: `${hackathon.title}`,
         description: `${hackathon.description}`,
       },
@@ -62,7 +61,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
   const hackathon = await getHackathon(params.hackathonSlug);
 
   return (
-    <HackathonContextProvider hasEvents={!!hackathon.events?.length}>
+    <HackathonContextProvider hasEvents={!!hackathon.events?.length} hackathonId={hackathon.id}>
       <PosthogOnMount
         eventName="hackathon_viewed"
         params={{ hackathon_id: hackathon.id }}
@@ -81,7 +80,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
                 <Paper size="m" container="2" classNames={{ base: "grid gap-4" }}>
                   <HackathonCard
                     title={hackathon.title}
-                    backgroundImage={hackathon.backgroundImage}
+                    backgroundImage={hackathon.getBackgroundImage()}
                     location={<Translate token={"v2.pages.hackathons.defaultLocation"} />}
                     status={hackathon.getStatus()}
                     projects={hackathon.projects}
@@ -112,7 +111,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
             </HackathonIssuesContextProvider>
 
             <ProjectSideWrapper>
-              <ProjectSideOverview />
+              <ProjectSideOverview isLive={hackathon.isLive()} />
             </ProjectSideWrapper>
           </div>
         </Container>
