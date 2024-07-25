@@ -48,6 +48,8 @@ export function ButtonDefaultAdapter<C extends ElementType = "button">({
     xl: "m",
   };
 
+  console.log(slots.content(), classNames?.content);
+
   return (
     <Component
       {...(htmlProps || {})}
