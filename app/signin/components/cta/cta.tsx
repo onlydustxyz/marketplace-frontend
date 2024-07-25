@@ -7,6 +7,8 @@ import { Icon } from "components/layout/icon/icon";
 import { TCta } from "./cta.types";
 
 export function Cta({ title, subtitle, iconProps, wrapperProps }: TCta.Props) {
+  const { className: iconClassName, ...restIconProps } = iconProps;
+
   return (
     <Paper
       size={"s"}
@@ -15,13 +17,14 @@ export function Cta({ title, subtitle, iconProps, wrapperProps }: TCta.Props) {
       {...wrapperProps}
     >
       <div className={"flex items-center gap-3"}>
-        <div
-          className={
-            "flex h-16 w-16 items-center justify-center rounded-lg border border-container-stroke-separator p-6"
-          }
-        >
-          <Icon size={24} {...iconProps} />
-        </div>
+        <Icon
+          size={24}
+          className={cn(
+            "flex h-16 w-16 items-center justify-center rounded-lg border border-container-stroke-separator",
+            iconClassName
+          )}
+          {...restIconProps}
+        />
 
         <div className={"grid"}>
           <Typo size={"l"} weight={"medium"} color={"text-1"} translate={{ token: title }} />
