@@ -1,3 +1,4 @@
+import { UserInterface } from "core/domain/user/models/user-model";
 import { UserProfileInterface } from "core/domain/user/models/user-profile-model";
 import {
   HttpClientParameters,
@@ -59,3 +60,11 @@ export type SetMyNotificationSettingsPortParams = HttpClientParameters<{
 }>;
 
 export type SetMyNotificationSettingsPortResponse = HttpStorageResponse<never, SetMyNotificationSettingsBody>;
+
+/* --------------------------------- Get me -------------------------------- */
+
+export type GetMeResponse = components["schemas"]["GetMeResponse"];
+
+export type GetMeResponsePortParams = HttpClientParameters<object>;
+
+export type GetMeResponsePortResponse = HttpStorageResponse<UserInterface>;
