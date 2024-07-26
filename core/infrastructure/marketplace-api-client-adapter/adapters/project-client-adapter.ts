@@ -1,4 +1,4 @@
-import { ListIssue } from "core/domain/issue/models/list-issue-model";
+import { IssueList } from "core/domain/issue/models/issue-list-model";
 import { Project } from "core/domain/project/models/project-model";
 import { ProjectStoragePort } from "core/domain/project/outputs/project-storage-port";
 import {
@@ -101,7 +101,7 @@ export class ProjectClientAdapter implements ProjectStoragePort {
 
       return {
         ...data,
-        issues: data.issues.map(i => new ListIssue(i)),
+        issues: data.issues.map(i => new IssueList(i)),
       };
     };
 
