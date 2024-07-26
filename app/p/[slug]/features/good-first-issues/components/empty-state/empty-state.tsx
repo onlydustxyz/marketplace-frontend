@@ -1,3 +1,4 @@
+import { Auth0ClientAdapter } from "core/application/auth0-client-adapter";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 import Image from "next/image";
 import { useMediaQuery } from "usehooks-ts";
@@ -7,6 +8,7 @@ import { useGoodFirstIssuesNotification } from "app/p/[slug]/hooks/use-good-firs
 import { IMAGES } from "src/assets/img";
 import { viewportConfig } from "src/config";
 
+import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
 import { Switch } from "components/atoms/switch";
 import { Flex } from "components/layout/flex/flex";
@@ -23,7 +25,7 @@ export function EmptyState({ projectId }: TEmptyState.Props) {
   const {
     clientBootstrap: { authProvider },
   } = useClientBootstrapContext();
-  const { isAuthenticated = false } = authProvider ?? {};
+  const { isAuthenticated = false, loginWithRedirect } = authProvider ?? {};
 
   const { isNotificationEnabled, handleSetMyNotificationSettings } = useGoodFirstIssuesNotification({ projectId });
 
@@ -42,7 +44,13 @@ export function EmptyState({ projectId }: TEmptyState.Props) {
           />
 
           <Typography variant="body-s" className="text-center text-spaceBlue-200">
-            <Translate token="v2.pages.project.overview.goodFirstIssues.empty.description" />
+            <Translate
+              token={
+                isAuthenticated
+                  ? "v2.pages.project.overview.goodFirstIssues.empty.descriptionAuthenticated"
+                  : "v2.pages.project.overview.goodFirstIssues.empty.descriptionAnonymous"
+              }
+            />
           </Typography>
         </Flex>
       </Flex>
@@ -55,7 +63,15 @@ export function EmptyState({ projectId }: TEmptyState.Props) {
             translate={{ token: "v2.pages.project.overview.stayTuned.notifySwitchLabel" }}
           />
         </Paper>
-      ) : null}
+      ) : (
+        <Button
+          onClick={
+            loginWithRedirect ? () => Auth0ClientAdapter.helpers.handleLoginWithRedirect(loginWithRedirect) : undefined
+          }
+        >
+          <Translate token={"v2.pages.project.overview.goodFirstIssues.empty.connectToFillForm"} />
+        </Button>
+      )}
     </Flex>
   );
 }

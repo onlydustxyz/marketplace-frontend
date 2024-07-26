@@ -50,11 +50,9 @@
     },
     "empty": {
       "title": "No Good First Issues? Express Your Interest!",
-      "description": "Show your interest by filling out this form, \nand our maintainers will connect you with suitable opportunities!",
-      "button": {
-        "lead": "List issues on Github",
-        "contributor": "See all issues on Github"
-      }
+      "descriptionAuthenticated": "Show your interest by filling out this form, and our maintainers will connect you with suitable opportunities!",
+      "descriptionAnonymous": "Connect to OnlyDust to express your interest in contributing to this project.",
+      "connectToFillForm": "Connect and show interest"
     },
     "overview": {
       "title": "Overview",
