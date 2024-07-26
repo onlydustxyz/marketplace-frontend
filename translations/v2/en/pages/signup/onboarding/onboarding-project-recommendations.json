@@ -1,0 +1,41 @@
+{
+  "title": "Project Recommendations",
+  "actions": {
+    "next": "Next",
+    "back": "Back"
+  },
+  "languages": {
+    "title": "Choose Your Preferred Programming Languages",
+    "content": "Please select the programming languages you are most comfortable with or interested in. You can choose multiple languages to tailor your experience on OnlyDust.",
+    "choices": {
+      "skill": {
+        "title": "Learn & Devellop Skills",
+        "content": "Gain access to projects designed to enhance your skills and knowledge through continuous learning opportunities."
+      },
+      "challenge": {
+        "title": "Challenge",
+        "content": "Engage in projects that are complex and challenging, providing stimulating problem-solving experiences."
+      },
+      "money": {
+        "title": "Earn Money",
+        "content": "Find projects specifically aimed at offering financial rewards, allowing you to monetize your skills and efforts."
+      },
+      "notoriety": {
+        "title": "Gain Notoriety",
+        "content": "Participate in projects specifically chosen to boost your reputation and visibility, showcasing your talents to a broad audience."
+      }
+    },
+    "lookingForAJob": {
+      "title": "Are You Looking for a Job?",
+      "content": "This will help us match you with relevant projects and potential employers."
+    }
+  },
+  "goal": {
+    "title": "Your Goal",
+    "content": "To tailor your experience on OnlyDust, please select the main reasons why you want to join our community."
+  },
+  "categories": {
+    "title": "Choose Your Favorite Categories",
+    "content": "To help us recommend the best projects for you, please select the categories that interest you the most. You can choose multiple categories to tailor your experience on OnlyDust."
+  }
+}
