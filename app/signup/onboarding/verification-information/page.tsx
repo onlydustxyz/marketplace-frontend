@@ -107,7 +107,7 @@ export default function VerificationInformationPage() {
         />
       </div>
     );
-  }, [handleSubmit]);
+  }, [handleSubmit, userProfileIsLoading, isPendingSetMyProfile]);
 
   return (
     <SignupTemplate header={<AccountAlreadyExist showDisconnectButton />} footer={renderFooter}>
