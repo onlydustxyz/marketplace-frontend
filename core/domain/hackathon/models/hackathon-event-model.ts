@@ -1,6 +1,5 @@
 import { bootstrap } from "core/bootstrap";
 import { HackathonEventStatus } from "core/domain/hackathon/models/hackathon.types";
-import { DateFacadePort } from "core/helpers/date/date-facade-port";
 
 import { components } from "src/__generated/api";
 
@@ -22,12 +21,12 @@ export class HackathonEvent implements HackathonEventInterface {
   name!: HackathonsEventsResponse["name"];
   startDate!: HackathonsEventsResponse["startDate"];
   subtitle!: HackathonsEventsResponse["subtitle"];
-  dateHelper: DateFacadePort;
 
-  constructor(protected readonly props: HackathonsEventsResponse) {
+  constructor(props: HackathonsEventsResponse) {
     Object.assign(this, props);
-    this.dateHelper = bootstrap.getDateHelperPort();
   }
+
+  protected dateHelper = bootstrap.getDateHelperPort();
 
   isToday(): boolean {
     const eachDays = this.dateHelper.eachDayOfInterval(new Date(this.startDate), new Date(this.endDate));
