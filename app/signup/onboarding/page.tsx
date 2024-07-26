@@ -51,7 +51,7 @@ function OnboardingPage() {
             content={{ token: "v2.pages.signup.onboarding.tunnel.steps.information.content" }}
             icon={{ remixName: "ri-checkbox-circle-line" }}
             type={"mandatory"}
-            isDone={user.isVerificationInformationCompleted()}
+            isDone={user.hasCompletedVerificationInformation}
             path={"/signup"}
           />
           <TunnelStep
@@ -59,7 +59,7 @@ function OnboardingPage() {
             content={{ token: "v2.pages.signup.onboarding.tunnel.steps.terms.content" }}
             icon={{ remixName: "ri-file-text-line" }}
             type={"mandatory"}
-            isDone={user.isTermsAndConditionsAccepted()}
+            isDone={user.hasAcceptedLatestTermsAndConditions}
             path={"/signup"}
           />
           <TunnelStep
@@ -67,7 +67,7 @@ function OnboardingPage() {
             content={{ token: "v2.pages.signup.onboarding.tunnel.steps.project.content" }}
             icon={{ remixName: "ri-medal-2-fill" }}
             type={"recommended"}
-            isDone={user.isProjectRecommendationCompleted()}
+            isDone={user.hasCompletedProjectRecommendations}
             path={"/signup"}
           />
           <TunnelStep
@@ -75,7 +75,7 @@ function OnboardingPage() {
             content={{ token: "v2.pages.signup.onboarding.tunnel.steps.profile.content" }}
             icon={{ remixName: "ri-user-line" }}
             type={"optional"}
-            isDone={user.isProfileCompleted()}
+            isDone={user.hasCompletedProfile}
             path={"/signup"}
           />
           <TunnelStep
@@ -83,7 +83,7 @@ function OnboardingPage() {
             content={{ token: "v2.pages.signup.onboarding.tunnel.steps.payout.content" }}
             icon={{ remixName: "ri-building-line" }}
             type={"optional"}
-            isDone={user.isPayoutInformationCompleted()}
+            isDone={user.hasCompletePayoutInformation}
             path={"/signup"}
           />
         </div>

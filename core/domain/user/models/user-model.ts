@@ -7,13 +7,6 @@ export interface UserInterface extends UserResponse {
   hasCompletedProjectRecommendations: boolean;
   hasCompletedProfile: boolean;
   hasCompletePayoutInformation: boolean;
-
-  isProjectRecommendationCompleted(): boolean;
-  isProfileCompleted(): boolean;
-  isPayoutInformationCompleted(): boolean;
-  isVerificationInformationCompleted(): boolean;
-  isOnboardingWizardSeen(): boolean;
-  isTermsAndConditionsAccepted(): boolean;
 }
 
 export class User implements UserInterface {
@@ -43,29 +36,5 @@ export class User implements UserInterface {
 
   constructor(props: UserResponse) {
     Object.assign(this, props);
-  }
-
-  isProjectRecommendationCompleted() {
-    return this.hasCompletedProjectRecommendations;
-  }
-
-  isProfileCompleted() {
-    return this.hasCompletedProfile;
-  }
-
-  isPayoutInformationCompleted() {
-    return this.hasCompletePayoutInformation;
-  }
-
-  isVerificationInformationCompleted() {
-    return this.hasCompletedVerificationInformation;
-  }
-
-  isOnboardingWizardSeen() {
-    return this.hasSeenOnboardingWizard;
-  }
-
-  isTermsAndConditionsAccepted() {
-    return this.hasAcceptedLatestTermsAndConditions;
   }
 }
