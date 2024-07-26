@@ -1,8 +1,8 @@
-import { SigninCta } from "app/signup/(signup)/features/signin-cta/signin-cta";
-
 import { Paper } from "components/atoms/paper";
 import { Typo } from "components/atoms/typo";
 import { SignupTemplate } from "components/templates/signup-template/signup-template";
+
+import { SigninCta } from "./features/signin-cta/signin-cta";
 
 export default function SignupPage() {
   return (

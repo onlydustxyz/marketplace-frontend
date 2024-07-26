@@ -3,7 +3,7 @@
 import { Auth0ClientAdapter } from "core/application/auth0-client-adapter";
 import { bootstrap } from "core/bootstrap";
 
-import { Cta } from "app/signup/(signup)/components/cta/cta";
+import { Cta } from "../../components/cta/cta";
 
 export function SigninCta() {
   function handleSignin() {

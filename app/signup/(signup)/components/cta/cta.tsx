@@ -1,10 +1,10 @@
-import { TCta } from "app/signup/(signup)/components/cta/cta.types";
-
 import { cn } from "src/utils/cn";
 
 import { Paper } from "components/atoms/paper";
 import { Typo } from "components/atoms/typo";
 import { Icon } from "components/layout/icon/icon";
+
+import { TCta } from "./cta.types";
 
 export function Cta({ title, subtitle, iconProps, wrapperProps }: TCta.Props) {
   const { className: iconClassName, ...restIconProps } = iconProps;
