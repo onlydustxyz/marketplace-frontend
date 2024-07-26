@@ -72,4 +72,7 @@ export const NEXT_ROUTER = {
       root: (slug: string) => `/ecosystems/${slug}`,
     },
   },
+  signup: {
+    root: "/signup",
+  },
 } as const;
