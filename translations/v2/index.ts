@@ -51,6 +51,7 @@ import en_settings_payout_preferences from "./en/pages/settings-payout-preferenc
 import en_settings_payout from "./en/pages/settings-payout.json";
 import en_settings_profile from "./en/pages/settings-profile.json";
 import en_signup_signin_section from "./en/pages/signup/signin-section.json";
+import en_signup_signup_section from "./en/pages/signup/signup-section.json";
 import en_page_sponsor from "./en/pages/sponsor.json";
 import en_stack_mandate from "./en/pages/stacks-mandate.json";
 import en_stack_request_payments from "./en/pages/stacks-request-payments.json";
@@ -135,6 +136,7 @@ export const en = {
       applications: en_applications,
       signup: {
         signinSection: en_signup_signin_section,
+        signupSection: en_signup_signup_section,
       },
     },
   },

@@ -1,0 +1,16 @@
+{
+  "title": "Sign up",
+  "subtitle": "To get started, help us understand your main reason for joining our application.",
+  "contributor": {
+    "title": "Contributor",
+    "subtitle": "You want to discover open source projects, join exciting initiatives, and help them grow."
+  },
+  "maintainer": {
+    "title": "Maintainer",
+    "subtitle": "You are the creator or maintainer of an open source project and are looking for qualified contributors to join your team."
+  },
+  "sponsor": {
+    "title": "Sponsor",
+    "subtitle": "You represent an organization or foundation and want to support and accelerate open source projects through various programs."
+  }
+}
