@@ -3,9 +3,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
-import { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 
+import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
+import { StepHeader } from "app/signup/components/step-header/step-header";
+import { Title } from "app/signup/components/title/title";
 import { TVerificationInformation } from "app/signup/onboarding/verification-information/verification-information.types";
 
 import useMutationAlert from "src/api/useMutationAlert";
@@ -33,7 +36,11 @@ export default function VerificationInformationPage() {
     },
   });
 
-  const { mutateAsync: setMyProfile, ...restSetMyProfile } = UserReactQueryAdapter.client.useSetMyProfile();
+  const {
+    mutateAsync: setMyProfile,
+    isPending: isPendingSetMyProfile,
+    ...restSetMyProfile
+  } = UserReactQueryAdapter.client.useSetMyProfile();
 
   useMutationAlert({
     mutation: restSetMyProfile,
@@ -45,8 +52,8 @@ export default function VerificationInformationPage() {
   const { control, handleSubmit, reset } = useForm<TVerificationInformation.form>({
     resolver: zodResolver(TVerificationInformation.validation),
     defaultValues: {
-      email: "",
-      telegram: "",
+      email: userProfile?.contacts?.find(contact => contact.channel === "EMAIL")?.contact,
+      telegram: userProfile?.contacts?.find(contact => contact.channel === "TELEGRAM")?.contact,
     },
   });
 
@@ -73,6 +80,8 @@ export default function VerificationInformationPage() {
           visibility: userProfile?.contacts?.find(contact => contact.channel === "TELEGRAM")?.visibility ?? "public",
         },
       ],
+    }).then(() => {
+      // TODO @Mehdi add redirection to Terms and condition
     });
   }
 
@@ -84,6 +93,8 @@ export default function VerificationInformationPage() {
           size="l"
           translate={{ token: "v2.pages.signup.verificationInformation.footer.back" }}
           startIcon={{ remixName: "ri-arrow-left-s-line" }}
+          // TODO @Mehdi add back redirection to step 1
+          isDisabled={userProfileIsLoading || isPendingSetMyProfile}
         />
         <Button
           variant="primary"
@@ -91,23 +102,25 @@ export default function VerificationInformationPage() {
           translate={{ token: "v2.pages.signup.verificationInformation.footer.next" }}
           endIcon={{ remixName: "ri-arrow-right-s-line" }}
           onClick={handleSubmit(handleSetMyProfile)}
+          isLoading={isPendingSetMyProfile}
+          isDisabled={userProfileIsLoading || isPendingSetMyProfile}
         />
       </div>
     );
   }, [handleSubmit]);
 
   return (
-    <SignupTemplate footer={renderFooter}>
-      <Paper size={"l"} container={"3"} classNames={{ base: "flex flex-col gap-6 h-full" }}>
-        <div className="grid gap-2">
-          <Typo
-            size={"2xl"}
-            variant={"brand"}
-            color={"text-1"}
-            translate={{ token: "v2.pages.signup.verificationInformation.title" }}
-          />
-          <Typo size={"s"} color={"text-2"} translate={{ token: "v2.pages.signup.verificationInformation.subtitle" }} />
-        </div>
+    <SignupTemplate header={<AccountAlreadyExist />} footer={renderFooter}>
+      <Paper size={"l"} container={"3"} classNames={{ base: "flex flex-col gap-3 min-h-full" }}>
+        <StepHeader
+          step={2}
+          stepPath={"/signup/onboarding"}
+          subStep={{ token: "v2.pages.signup.verificationInformation.title" }}
+        />
+        <Title
+          title={{ token: "v2.pages.signup.verificationInformation.title" }}
+          content={{ token: "v2.pages.signup.verificationInformation.subtitle" }}
+        />
         <div className="flex flex-col gap-2">
           <Paper size={"s"} container={"transparent"} classNames={{ base: "grid gap-6" }}>
             <div className="grid gap-2">
