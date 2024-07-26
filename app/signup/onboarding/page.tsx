@@ -1,7 +1,6 @@
 "use client";
 
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
-import React from "react";
 
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
 import { StepHeader } from "app/signup/components/step-header/step-header";

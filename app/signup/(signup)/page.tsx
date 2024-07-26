@@ -1,5 +1,3 @@
-import React from "react";
-
 import { SignupCtas } from "app/signup/(signup)/features/signup-ctas/signup-ctas";
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
 import { StepHeader } from "app/signup/components/step-header/step-header";
