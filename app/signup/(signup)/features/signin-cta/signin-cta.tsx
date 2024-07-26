@@ -3,7 +3,7 @@
 import { Auth0ClientAdapter } from "core/application/auth0-client-adapter";
 import { bootstrap } from "core/bootstrap";
 
-import { Cta } from "app/signin/components/cta/cta";
+import { Cta } from "app/signup/(signup)/components/cta/cta";
 
 export function SigninCta() {
   function handleSignin() {
@@ -14,8 +14,8 @@ export function SigninCta() {
 
   return (
     <Cta
-      title={"v2.pages.signin.signinSection.github.title"}
-      subtitle={"v2.pages.signin.signinSection.github.subtitle"}
+      title={"v2.pages.signup.signinSection.github.title"}
+      subtitle={"v2.pages.signup.signinSection.github.subtitle"}
       iconProps={{
         remixName: "ri-github-line",
       }}
