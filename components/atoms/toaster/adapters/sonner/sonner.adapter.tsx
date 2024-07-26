@@ -10,13 +10,13 @@ export function ToasterSonnerAdapter({ position = "bottom-left" }: ToasterPort) 
   return <Toaster position={position} />;
 }
 
-function handleToast({ children, variants, icon }: ToastProps) {
+function handleToast({ children, variants, iconProps }: ToastProps) {
   const slots = ToasterSonnerVariants(variants);
 
   toast.custom(t => (
     <div className={slots.base()}>
       <div className={slots.messageWrapper()}>
-        {icon}
+        {iconProps ? <Icon {...iconProps} /> : null}
 
         <Typo size={"s"}>{children}</Typo>
       </div>
@@ -31,5 +31,5 @@ function handleToast({ children, variants, icon }: ToastProps) {
 export const toastSonnerAdapter: ToastPort = {
   default: children => handleToast({ children, variants: { variant: "default" } }),
   error: children =>
-    handleToast({ children, variants: { variant: "error" }, icon: <Icon remixName={"ri-error-warning-line"} /> }),
+    handleToast({ children, variants: { variant: "error" }, iconProps: { remixName: "ri-error-warning-line" } }),
 };
