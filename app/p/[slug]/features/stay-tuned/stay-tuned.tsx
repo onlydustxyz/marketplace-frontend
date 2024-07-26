@@ -1,12 +1,10 @@
-import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { bootstrap } from "core/bootstrap";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 import { TStayTuned } from "app/p/[slug]/features/stay-tuned/stay-tuned.types";
-
-import useMutationAlert from "src/api/useMutationAlert";
+import { useGoodFirstIssuesNotification } from "app/p/[slug]/hooks/use-good-first-issue-notification";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
@@ -18,43 +16,12 @@ import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
 export function StayTuned({ projectId, moreInfos }: TStayTuned.Props) {
-  const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
-
   const {
     clientBootstrap: { authProvider },
   } = useClientBootstrapContext();
   const { isAuthenticated = false } = authProvider ?? {};
 
-  const { data: myNotificationSettings } = UserReactQueryAdapter.client.useGetMyNotificationsSettings({
-    pathParams: {
-      projectId,
-    },
-    options: {
-      enabled: isAuthenticated,
-    },
-  });
-
-  useEffect(() => {
-    if (myNotificationSettings) {
-      setIsNotificationEnabled(myNotificationSettings.onGoodFirstIssueAdded);
-    }
-  }, [myNotificationSettings]);
-
-  const { mutateAsync: setMyNotificationSettings, ...restSetMyNotificationSettings } =
-    UserReactQueryAdapter.client.useSetMyNotificationsSettings({ pathParams: { projectId } });
-
-  useMutationAlert({
-    mutation: restSetMyNotificationSettings,
-    error: {
-      default: true,
-    },
-  });
-
-  async function handleSetMyNotificationSettings() {
-    await setMyNotificationSettings({
-      onGoodFirstIssueAdded: !isNotificationEnabled,
-    });
-  }
+  const { isNotificationEnabled, handleSetMyNotificationSettings } = useGoodFirstIssuesNotification({ projectId });
 
   const communityLinkPatterns = ["t.me", "discord.com"];
   const urlHelperPort = bootstrap.getUrlHelperPort();
