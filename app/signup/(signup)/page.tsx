@@ -1,3 +1,5 @@
+import { SignupCtas } from "app/signup/(signup)/features/signup-ctas/signup-ctas";
+
 import { Paper } from "components/atoms/paper";
 import { Typo } from "components/atoms/typo";
 import { SignupTemplate } from "components/templates/signup-template/signup-template";
@@ -32,7 +34,7 @@ export default function SignupPage() {
             <Typo size={"s"} color={"text-2"} translate={{ token: "v2.pages.signup.signupSection.subtitle" }} />
           </div>
 
-          <SigninCta />
+          <SignupCtas />
         </Paper>
       </div>
     </SignupTemplate>
