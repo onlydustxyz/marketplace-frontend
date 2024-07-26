@@ -25,14 +25,14 @@ export function SignupTemplate({ children, header, aside, footer }: TSignupTempl
         <div className="flex w-full flex-row justify-center py-4 md:hidden">
           <Image src={logo} alt="Onlydust" className="h-auto w-[163px]" />
         </div>
-        {header && <div className="hidden h-auto w-full md:block">{header}</div>}
+        {header && <div className="hidden h-auto w-full py-2 md:block">{header}</div>}
         <div className="flew-row flex w-full flex-1 gap-3 overflow-hidden">
           <div className="hidden h-full w-[250px] md:block lg:w-[350px]">{aside || <SignupAside />}</div>
           <div className="h-full flex-1">
             <ScrollView>{children}</ScrollView>
           </div>
         </div>
-        {footer && <div className="h-auto w-full">{footer}</div>}
+        {footer && <div className="h-auto w-full py-2">{footer}</div>}
       </Paper>
     </div>
   );

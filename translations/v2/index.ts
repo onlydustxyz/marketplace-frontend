@@ -50,6 +50,8 @@ import en_settings_invoices from "./en/pages/settings-invoices.json";
 import en_settings_payout_preferences from "./en/pages/settings-payout-preferences.json";
 import en_settings_payout from "./en/pages/settings-payout.json";
 import en_settings_profile from "./en/pages/settings-profile.json";
+import en_signup_account_already_exist from "./en/pages/signup/account-already-exist.json";
+import en_signup_onboarding_tunnel from "./en/pages/signup/onboarding/onboarding-tunnel.json";
 import en_signup_signin_section from "./en/pages/signup/signin-section.json";
 import en_page_sponsor from "./en/pages/sponsor.json";
 import en_stack_mandate from "./en/pages/stacks-mandate.json";
@@ -135,6 +137,10 @@ export const en = {
       applications: en_applications,
       signup: {
         signinSection: en_signup_signin_section,
+        accountAlreadyExist: en_signup_account_already_exist,
+        onboarding: {
+          tunnel: en_signup_onboarding_tunnel,
+        },
       },
     },
   },

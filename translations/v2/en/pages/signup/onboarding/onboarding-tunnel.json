@@ -1,0 +1,35 @@
+{
+  "title": "Complete Your Profile",
+  "content": "To personalize your experience, please follow these steps. The first step is mandatory, while the following ones are optional but highly recommended to enhance your experience.",
+  "steps": {
+    "information": {
+      "title": "Verification Information",
+      "content": "To create your account, we need some basic information."
+    },
+    "terms": {
+      "title": "Terms & Conditions",
+      "content": "To access at the app, You need to approved our Terms & Conditions."
+    },
+    "project": {
+      "title": "Project Recommendations",
+      "content": "Help us recommend projects that match your interests."
+    },
+    "profile": {
+      "title": "Complete Your Profile",
+      "content": "To help you connect with other members and showcase your expertise."
+    },
+    "payout": {
+      "title": "Payout informations",
+      "content": "To claim rewards, you will need to verify your identity or business."
+    }
+  },
+  "stepsTags": {
+    "mandatory": "Mandatory",
+    "optional": "Optional",
+    "recommended": "Recommended"
+  },
+  "actions": {
+    "skip": "Skip",
+    "back": "Back"
+  }
+}
