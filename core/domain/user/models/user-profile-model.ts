@@ -1,5 +1,3 @@
-import { mapApiToClass } from "core/infrastructure/marketplace-api-client-adapter/mappers/map-api-to-class";
-
 import { components } from "src/__generated/api";
 
 type UserProfileResponse = components["schemas"]["PrivateUserProfileResponse"];
@@ -25,9 +23,23 @@ export interface UserProfileInterface extends UserProfileResponse {
   setContact(params: { channel: UserProfileContactChannel; contact: string; visibility?: "public" | "private" }): void;
 }
 
-class UserProfile extends mapApiToClass<UserProfileResponse>() implements UserProfileInterface {
-  constructor(protected readonly props: UserProfileResponse) {
-    super(props);
+export class UserProfile implements UserProfileInterface {
+  allocatedTimeToContribute!: UserProfileResponse["allocatedTimeToContribute"];
+  avatarUrl!: UserProfileResponse["avatarUrl"];
+  bio!: UserProfileResponse["bio"];
+  contacts!: UserProfileResponse["contacts"];
+  firstName!: UserProfileResponse["firstName"];
+  githubUserId!: UserProfileResponse["githubUserId"];
+  id!: UserProfileResponse["id"];
+  isLookingForAJob!: UserProfileResponse["isLookingForAJob"];
+  lastName!: UserProfileResponse["lastName"];
+  location!: UserProfileResponse["location"];
+  login!: UserProfileResponse["login"];
+  technologies!: UserProfileResponse["technologies"];
+  website!: UserProfileResponse["website"];
+
+  constructor(props: UserProfileResponse) {
+    Object.assign(this, props);
   }
 
   hasContact(channel: UserProfileContactChannel) {
@@ -70,5 +82,3 @@ class UserProfile extends mapApiToClass<UserProfileResponse>() implements UserPr
     );
   }
 }
-
-export { UserProfile };
