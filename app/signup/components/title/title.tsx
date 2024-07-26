@@ -1,6 +1,6 @@
-import { Typo } from "components/atoms/typo";
+import { TTitle } from "app/signup/components/title/title.types";
 
-import { TTitle } from "./title.types";
+import { Typo } from "components/atoms/typo";
 
 export function Title({ title, content }: TTitle.Props) {
   return (

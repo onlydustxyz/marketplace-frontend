@@ -5,7 +5,7 @@ import React from "react";
 
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
 import { StepHeader } from "app/signup/components/step-header/step-header";
-import { Title } from "app/signup/onboarding/components/title/title";
+import { Title } from "app/signup/components/title/title";
 import { TunnelStep } from "app/signup/onboarding/components/tunnel-step/tunnel-step";
 
 import { Button } from "components/atoms/button/variants/button-default";
