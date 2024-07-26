@@ -6,21 +6,22 @@ import { Icon } from "components/layout/icon/icon";
 
 import { TCta } from "./cta.types";
 
-export function Cta({ title, subtitle, iconProps, wrapperProps }: TCta.Props) {
+export function Cta({ title, subtitle, iconProps, wrapperProps = {} }: TCta.Props) {
   const { className: iconClassName, ...restIconProps } = iconProps;
+  const { classNames: wrapperClassNames, ...restWrapperProps } = wrapperProps;
 
   return (
     <Paper
       size={"s"}
       container={"3"}
-      classNames={{ base: cn("flex items-center gap-3 justify-between text-left", wrapperProps?.classNames?.base) }}
-      {...wrapperProps}
+      classNames={{ base: cn("flex items-center gap-3 justify-between text-left", wrapperClassNames?.base) }}
+      {...restWrapperProps}
     >
       <div className={"flex items-center gap-3"}>
         <Icon
           size={24}
           className={cn(
-            "flex h-16 w-16 items-center justify-center rounded-lg border border-container-stroke-separator",
+            "flex h-16 w-16 min-w-16 items-center justify-center rounded-lg border border-container-stroke-separator",
             iconClassName
           )}
           {...restIconProps}

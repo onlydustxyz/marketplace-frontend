@@ -19,6 +19,9 @@ import { PosthogIdentifyUser } from "components/features/posthog/components/post
 import { PosthogPageView } from "components/features/posthog/components/posthog-page-view";
 import { RouteChangeListener } from "components/features/route-change-listener/route-change-listener";
 import SpaceBackground from "components/features/space-background/space-background";
+import { RenderByPath } from "components/layout/components-utils/render-by-path/render-by-path";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { sharedMetadata } from "./shared-metadata";
 
@@ -30,8 +33,10 @@ export default function RootLayout({ children }: PropsWithChildren) {
       <body>
         <Providers>
           <div className="z-[1] flex h-[calc(100dvh)] w-screen flex-col bg-space-gradient xl:fixed">
-            <PageBanner />
-            <Header />
+            <RenderByPath path={NEXT_ROUTER.signup.root} exact={false} matches={false}>
+              <PageBanner />
+              <Header />
+            </RenderByPath>
             <SpaceBackground />
             {children}
           </div>
