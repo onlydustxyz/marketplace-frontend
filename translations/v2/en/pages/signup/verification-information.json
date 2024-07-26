@@ -1,4 +1,25 @@
 {
   "title": "Verification information",
-  "subtitle": "To create your account, we need some basic information:"
+  "subtitle": "To create your account, we need some basic information:",
+  "form": {
+    "githubAccount": {
+      "label": "GitHub Account",
+      "placeholder": "Enter your GitHub username"
+    },
+    "contactEmail": {
+      "label": "Contact Email",
+      "placeholder": "Enter your email address",
+      "tag": "Mandatory"
+    },
+    "telegram": {
+      "label": "Telegram",
+      "placeholder": "Enter your Telegram username",
+      "tag": "Recommended"
+    }
+  },
+  "specialMention": "All information will be used only by Onlydust and will only be public if you authorize it.",
+  "footer": {
+    "back": "Back",
+    "next": "Next"
+  }
 }
