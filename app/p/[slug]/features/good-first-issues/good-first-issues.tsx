@@ -16,7 +16,7 @@ import { EmptyState } from "./components/empty-state/empty-state";
 import { IssueCard } from "./components/issue-card/issue-card";
 import { TGoodFirstIssues } from "./good-first-issues.types";
 
-export function GoodFirstIssues({ projectId, organizations, isProjectLeader }: TGoodFirstIssues.Props) {
+export function GoodFirstIssues({ projectId }: TGoodFirstIssues.Props) {
   const applyIssueDrawerState = useApplyIssueDrawerState();
   const [, setApplyIssueDrawerState] = applyIssueDrawerState;
 
@@ -33,7 +33,7 @@ export function GoodFirstIssues({ projectId, organizations, isProjectLeader }: T
 
   function renderContent() {
     if (isError) {
-      return <EmptyState organizations={organizations} isProjectLeader={isProjectLeader} />;
+      return <EmptyState projectId={projectId} />;
     }
 
     if (isLoading) {
@@ -70,7 +70,7 @@ export function GoodFirstIssues({ projectId, organizations, isProjectLeader }: T
       );
     }
 
-    return <EmptyState organizations={organizations} isProjectLeader={isProjectLeader} />;
+    return <EmptyState projectId={projectId} />;
   }
 
   return (

@@ -41,22 +41,18 @@
     "description": "Apply to a list of curated issues well suited for those new to the project to kickstart your journey.",
     "button": {
       "viewApplication": "View application",
-      "apply": "Apply"
+      "apply": "Apply",
+      "connectAndApply": "Connect & Apply"
     },
     "labels": {
       "title": "Labels",
       "none": "None"
     },
     "empty": {
-      "title": "No good first issues listed.",
-      "description": {
-        "lead": "Start taging issues with “good first issue” on GitHub to add them on this section.",
-        "contributor": "This project might have other open issues on its Github page."
-      },
-      "button": {
-        "lead": "List issues on Github",
-        "contributor": "See all issues on Github"
-      }
+      "title": "No Good First Issues? Express Your Interest!",
+      "descriptionAuthenticated": "Show your interest by filling out this form, and our maintainers will connect you with suitable opportunities!",
+      "descriptionAnonymous": "Connect to OnlyDust to express your interest in contributing to this project.",
+      "connectToFillForm": "Connect and show interest"
     },
     "overview": {
       "title": "Overview",
@@ -69,5 +65,10 @@
   },
   "repositories": {
     "title": "Repositories"
+  },
+  "stayTuned": {
+    "title": "Stay tuned",
+    "description": "Join the project community to stay updated on the projects, chat with members, and contact maintainers.",
+    "notifySwitchLabel": "Notify me when issues are available"
   }
 }

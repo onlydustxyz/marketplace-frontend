@@ -16,6 +16,7 @@ export const HackathonContext = createContext<THackathonContext.Return>({
     open: () => null,
     close: () => null,
   },
+  hackathonId: "",
   project: {
     isOpen: false,
     projectId: "",
@@ -37,7 +38,7 @@ export const HackathonContext = createContext<THackathonContext.Return>({
   },
 });
 
-export function HackathonContextProvider({ children, hasEvents }: THackathonContext.Props) {
+export function HackathonContextProvider({ children, hasEvents, hackathonId }: THackathonContext.Props) {
   const isXl = useClientMediaQuery(`(max-width: ${viewportConfig.breakpoints.xl}px)`);
 
   const [isTimelineOpen, setIsTimelineOpen] = useState<boolean>(false);
@@ -108,6 +109,7 @@ export function HackathonContextProvider({ children, hasEvents }: THackathonCont
   return (
     <HackathonContext.Provider
       value={{
+        hackathonId,
         panelSize,
         timeline: {
           isOpen: isTimelineOpen,

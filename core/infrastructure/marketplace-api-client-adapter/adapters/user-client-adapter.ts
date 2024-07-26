@@ -1,6 +1,15 @@
+import { User } from "core/domain/user/models/user-model";
+import { UserNotifications } from "core/domain/user/models/user-notifications-model";
 import { UserProfile } from "core/domain/user/models/user-profile-model";
 import { UserStoragePort } from "core/domain/user/outputs/user-storage-port";
-import { GetMyProfileResponse, SetMyProfileBody, SetMyProfileResponse } from "core/domain/user/user-contract.types";
+import {
+  GetMeResponse,
+  GetMyNotificationSettingsResponse,
+  GetMyProfileResponse,
+  SetMyNotificationSettingsBody,
+  SetMyProfileBody,
+  SetMyProfileResponse,
+} from "core/domain/user/user-contract.types";
 import { FirstParameter } from "core/helpers/types";
 import { HttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/http-client/http-client";
 
@@ -11,6 +20,9 @@ export class UserClientAdapter implements UserStoragePort {
     registerToHackathon: "me/hackathons/:hackathonId/registrations",
     setMyProfile: "me/profile",
     getMyProfile: "me/profile",
+    setMyNotificationSettings: "me/notification-settings/projects/:projectId",
+    getMyNotificationSettings: "me/notification-settings/projects/:projectId",
+    getMe: "me",
   } as const;
 
   registerToHackathon = ({ pathParams }: FirstParameter<UserStoragePort["registerToHackathon"]>) => {
@@ -67,6 +79,69 @@ export class UserClientAdapter implements UserStoragePort {
       });
 
       return new UserProfile(data);
+    };
+
+    return {
+      request,
+      tag,
+    };
+  };
+
+  setMyNotificationSettings = ({ pathParams }: FirstParameter<UserStoragePort["setMyNotificationSettings"]>) => {
+    const path = this.routes["setMyNotificationSettings"];
+    const method = "PATCH";
+    const tag = HttpClient.buildTag({ path, pathParams });
+
+    const request = async (body: SetMyNotificationSettingsBody) =>
+      this.client.request<never>({
+        path,
+        method,
+        tag,
+        body: JSON.stringify(body),
+        pathParams,
+      });
+
+    return {
+      request,
+      tag,
+    };
+  };
+
+  getMyNotificationSettings = ({ pathParams }: FirstParameter<UserStoragePort["getMyNotificationSettings"]>) => {
+    const path = this.routes["getMyNotificationSettings"];
+    const method = "GET";
+    const tag = HttpClient.buildTag({ path, pathParams });
+
+    const request = async () => {
+      const data = await this.client.request<GetMyNotificationSettingsResponse>({
+        path,
+        method,
+        tag,
+        pathParams,
+      });
+
+      return new UserNotifications(data);
+    };
+
+    return {
+      request,
+      tag,
+    };
+  };
+
+  getMe = () => {
+    const path = this.routes["getMe"];
+    const method = "GET";
+    const tag = HttpClient.buildTag({ path });
+
+    const request = async () => {
+      const data = await this.client.request<GetMeResponse>({
+        path,
+        method,
+        tag,
+      });
+
+      return new User(data);
     };
 
     return {

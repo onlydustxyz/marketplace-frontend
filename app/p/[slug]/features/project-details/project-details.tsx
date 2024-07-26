@@ -40,6 +40,11 @@ export function ProjectDetails({ project }: TProjectDetails.Props) {
     return invitedLeaders?.filter(lead => isDefined(lead?.login)) || [];
   }, [invitedLeaders]);
 
+  const communityLinkPatterns = ["t.me", "discord.com"];
+  const nonCommunityMoreInfos = useMemo(() => {
+    return moreInfos?.filter(link => !communityLinkPatterns.some(pattern => link.url.includes(pattern)));
+  }, [moreInfos]);
+
   if (!projectLeads.length && !contributorCount) {
     return (
       <Card background="base" hasPadding={false}>
@@ -66,7 +71,7 @@ export function ProjectDetails({ project }: TProjectDetails.Props) {
         <Categories categories={categories} />
         <Sponsors sponsors={sponsors} />
         <Languages languages={languages} />
-        <MoreInfos moreInfos={moreInfos} />
+        <MoreInfos moreInfos={nonCommunityMoreInfos} />
       </Flex>
     </Card>
   );

@@ -1,29 +1,19 @@
 import { UserStoragePort } from "core/domain/user/outputs/user-storage-port";
-import { FirstParameter } from "core/helpers/types";
+import {
+  mockHttpStorageResponse,
+  mockHttpStorageResponseWithParams,
+} from "core/infrastructure/marketplace-api-client-adapter/http/mock-http-client/mock-http-storage-response";
 
 export class UserClientAdapterMock implements UserStoragePort {
   constructor() {}
 
   routes = {};
 
-  registerToHackathon = (_: FirstParameter<UserStoragePort["registerToHackathon"]>) => {
-    return {
-      request: () => Promise.resolve({}),
-      tag: "",
-    } as ReturnType<UserStoragePort["registerToHackathon"]>;
-  };
+  registerToHackathon = mockHttpStorageResponseWithParams<UserStoragePort["registerToHackathon"]>;
 
-  setMyProfile = () => {
-    return {
-      request: () => Promise.resolve({}),
-      tag: "",
-    } as ReturnType<UserStoragePort["setMyProfile"]>;
-  };
+  setMyProfile = mockHttpStorageResponseWithParams<UserStoragePort["setMyProfile"]>;
 
-  getMyProfile = () => {
-    return {
-      request: () => Promise.resolve({}),
-      tag: "",
-    } as ReturnType<UserStoragePort["getMyProfile"]>;
-  };
+  getMyProfile = mockHttpStorageResponseWithParams<UserStoragePort["getMyProfile"]>;
+
+  getMe = mockHttpStorageResponse<UserStoragePort["getMe"]>;
 }

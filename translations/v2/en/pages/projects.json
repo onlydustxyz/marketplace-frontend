@@ -22,7 +22,8 @@
       "LIKELY_TO_REWARD": "Project that can reward a work well done.",
       "NEWBIES_WELCOME": "Project that onboard new contributors regularly.",
       "UPDATED_ROADMAP": "Project presenting the most recent challenges.",
-      "WORK_IN_PROGRESS": "Project that has open issues ready to tackle."
+      "WORK_IN_PROGRESS": "Project that has open issues ready to tackle.",
+      "HAS_GOOD_FIRST_ISSUES": "Project that has issues suitable for first-time contributors."
     }
   },
   "addProject": {

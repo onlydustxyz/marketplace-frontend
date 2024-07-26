@@ -5,6 +5,8 @@ import { useParams } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
+import { StayTuned } from "app/p/[slug]/features/stay-tuned/stay-tuned";
+
 import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
 import Skeleton from "src/components/Skeleton";
@@ -114,17 +116,14 @@ function ProjectPage() {
 
           {!isMd ? <ProjectDetails project={project} /> : null}
 
-          <GoodFirstIssues
-            projectId={project.id}
-            organizations={project.organizations}
-            isProjectLeader={isProjectLeader}
-          />
+          <GoodFirstIssues projectId={project.id} />
 
           {!isMd ? <Repositories organizations={project.organizations} /> : null}
         </Flex>
 
         {isMd ? (
           <Flex direction="col" className="shrink-0 gap-4 md:w-72 xl:w-80">
+            <StayTuned projectId={project.id} moreInfos={project.moreInfos} />
             <ProjectDetails project={project} />
             <Repositories organizations={project.organizations} />
           </Flex>

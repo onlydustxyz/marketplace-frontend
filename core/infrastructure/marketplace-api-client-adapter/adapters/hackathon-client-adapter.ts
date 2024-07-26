@@ -3,8 +3,8 @@ import {
   GetHackathonBySlugResponse,
   GetHackathonsResponse,
 } from "core/domain/hackathon/hackathon-contract.types";
+import { HackathonList } from "core/domain/hackathon/models/hackathon-list-model";
 import { Hackathon } from "core/domain/hackathon/models/hackathon-model";
-import { ListHackathon } from "core/domain/hackathon/models/list-hackathon-model";
 import { HackathonStoragePort } from "core/domain/hackathon/outputs/hackathon-storage-port";
 import { LinkProject } from "core/domain/project/models/link-project-model";
 import { FirstParameter } from "core/helpers/types";
@@ -32,7 +32,7 @@ export class HackathonClientAdapter implements HackathonStoragePort {
 
       return {
         ...data,
-        hackathons: data.hackathons.map(hackathon => new ListHackathon(hackathon)),
+        hackathons: data.hackathons.map(hackathon => new HackathonList(hackathon)),
       };
     };
 

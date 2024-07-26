@@ -1,5 +1,5 @@
+import { BillingProfileShort } from "core/domain/billing-profile/models/billing-profile-short-model";
 import { useMemo } from "react";
-import { ShortBillingProfile, useClientInstance } from "utils/billing-profile/short-billing-profile.model";
 
 import { BillingProfilesTypes } from "src/api/BillingProfiles/type";
 import { IMAGES } from "src/assets/img";
@@ -35,7 +35,7 @@ export function SelectRewards({
   const { capture } = usePosthog();
 
   const { profile } = useBillingProfileById({ id: billingProfileId, enabledPooling: false });
-  const shortBillingProfile = useClientInstance(ShortBillingProfile, profile?.data);
+  const shortBillingProfile = profile?.data ? new BillingProfileShort(profile.data) : null;
 
   const isIndividual = profile?.data?.type === BillingProfilesTypes.type.Individual;
   const isMandateAccepted = profile?.data?.invoiceMandateAccepted;

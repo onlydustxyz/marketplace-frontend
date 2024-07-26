@@ -11,16 +11,17 @@ export function ButtonSecondaryDark<C extends ElementType = "button">(props: But
   return withComponentAdapter<ButtonPort<C>>(ButtonDefaultAdapter)({
     ...props,
     classNames: {
+      ...(props.classNames || {}),
       base: cn(
         "bg-transparent border-1 border-interactions-black-default data-[loading=true]:border-interactions-black-active data-[disabled=true]:bg-interactions-black-disabled",
         "hover:border-interactions-black-hover text-text-4",
         props.classNames?.base
       ),
-      label: "text-text-4",
-      startIcon: "text-text-4",
-      endIcon: "text-text-4",
-      loaderContainer: "bg-transparent",
-      spinnerCircle: "border-b-text-4",
+      label: cn("text-text-4", props.classNames?.label),
+      startIcon: cn("text-text-4", props.classNames?.startIcon),
+      endIcon: cn("text-text-4", props.classNames?.endIcon),
+      loaderContainer: cn("bg-transparent", props.classNames?.loaderContainer),
+      spinnerCircle: cn("border-b-text-4", props.classNames?.spinnerCircle),
     },
   });
 }

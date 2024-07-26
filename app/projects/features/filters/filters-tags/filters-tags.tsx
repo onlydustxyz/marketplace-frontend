@@ -25,6 +25,12 @@ export function FiltersTags() {
         onChange={onFilterChange}
         options={[
           {
+            value: ProjectTypes.Tags.HasGoodFirstIssues,
+            children: <Translate token={ProjectConstants.tagMapping.HAS_GOOD_FIRST_ISSUES.label} />,
+            icon: props => <Icon {...ProjectConstants.tagMapping.HAS_GOOD_FIRST_ISSUES.icon} {...props} />,
+            tooltipProps: { content: <Translate token={ProjectConstants.tagMapping.HAS_GOOD_FIRST_ISSUES.tooltip} /> },
+          },
+          {
             value: ProjectTypes.Tags.HotCommunity,
             children: <Translate token={ProjectConstants.tagMapping.HOT_COMMUNITY.label} />,
             icon: props => <Icon {...ProjectConstants.tagMapping.HOT_COMMUNITY.icon} {...props} />,

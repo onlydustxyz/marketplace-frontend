@@ -12,7 +12,6 @@ import { sharedMetadata } from "app/shared-metadata";
 
 import { Paper } from "components/atoms/paper";
 import { HackathonCard } from "components/features/hackathons/hackathon-card";
-import { getHackathonBackground } from "components/features/hackathons/hackathon-card/hackathon-card.utils";
 import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 import { Container } from "components/layout/container/container";
 import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
@@ -44,7 +43,6 @@ export async function generateMetadata(props: { params: { hackathonSlug: string 
       title: `${hackathon.title}`,
       description: `${hackathon.description}`,
       openGraph: {
-        ...sharedMetadata.openGraph,
         title: `${hackathon.title}`,
         description: `${hackathon.description}`,
       },
@@ -63,7 +61,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
   const hackathon = await getHackathon(params.hackathonSlug);
 
   return (
-    <HackathonContextProvider hasEvents={!!hackathon.events?.length}>
+    <HackathonContextProvider hasEvents={!!hackathon.events?.length} hackathonId={hackathon.id}>
       <PosthogOnMount
         eventName="hackathon_viewed"
         params={{ hackathon_id: hackathon.id }}
@@ -82,15 +80,14 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
                 <Paper size="m" container="2" classNames={{ base: "grid gap-4" }}>
                   <HackathonCard
                     title={hackathon.title}
-                    backgroundImage={getHackathonBackground(hackathon.index)}
+                    backgroundImage={hackathon.getBackgroundImage()}
                     location={<Translate token={"v2.pages.hackathons.defaultLocation"} />}
-                    startDate={new Date(hackathon.startDate)}
-                    endDate={new Date(hackathon.endDate)}
                     status={hackathon.getStatus()}
                     projects={hackathon.projects}
                     subscriberCount={hackathon.subscriberCount}
                     openIssueCount={hackathon.openIssueCount}
                     issueCount={hackathon.issueCount}
+                    dates={hackathon.formatDisplayDates()}
                   />
                   <Info hackathon={hackathon} />
                   <Description description={hackathon.description} />
@@ -114,7 +111,7 @@ export default async function HackathonPage({ params }: { params: { hackathonSlu
             </HackathonIssuesContextProvider>
 
             <ProjectSideWrapper>
-              <ProjectSideOverview />
+              <ProjectSideOverview isLive={hackathon.isLive()} />
             </ProjectSideWrapper>
           </div>
         </Container>
