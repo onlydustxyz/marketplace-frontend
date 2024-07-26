@@ -1,7 +1,7 @@
 "use client";
 
 import { ProjectReactQueryAdapter } from "core/application/react-query-adapter/project";
-import { ListIssueInterface } from "core/domain/issue/models/list-issue-model";
+import { IssueListInterface } from "core/domain/issue/models/issue-list-model";
 import { AnyType } from "core/helpers/types";
 import { Fragment, useMemo } from "react";
 
@@ -29,7 +29,7 @@ export function IssuesWrapper({ projectId, hackathonId, queryParams, Wrapper = F
 
   const flatIssues = useMemo(() => data?.pages.flatMap(({ issues }) => issues) ?? [], [data]);
 
-  function buildFirstAssignee(issue: ListIssueInterface): CardIssuePort<AnyType>["assignee"] {
+  function buildFirstAssignee(issue: IssueListInterface): CardIssuePort<AnyType>["assignee"] {
     const firstAssignee = issue.getFirstAssignee();
 
     if (firstAssignee) {
