@@ -1,6 +1,10 @@
+"use client";
+
+import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import React from "react";
 
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
+import { StepHeader } from "app/signup/components/step-header/step-header";
 import { Title } from "app/signup/onboarding/components/title/title";
 import { TunnelStep } from "app/signup/onboarding/components/tunnel-step/tunnel-step";
 
@@ -29,9 +33,14 @@ function Footer() {
 }
 
 function OnboardingPage() {
+  const { data: user } = UserReactQueryAdapter.client.useGetMe({});
+
+  if (!user) return null;
+
   return (
     <SignupTemplate header={<AccountAlreadyExist />} footer={<Footer />}>
       <Paper container={"2"} classNames={{ base: "flex flex-col gap-3 min-h-full" }}>
+        <StepHeader step={2} stepPath={"/signup/onboarding"} />
         <Title
           title={{ token: "v2.pages.signup.onboarding.tunnel.title" }}
           content={{ token: "v2.pages.signup.onboarding.tunnel.content" }}
@@ -42,7 +51,7 @@ function OnboardingPage() {
             content={{ token: "v2.pages.signup.onboarding.tunnel.steps.information.content" }}
             icon={{ remixName: "ri-checkbox-circle-line" }}
             type={"mandatory"}
-            isDone={false}
+            isDone={user.isVerificationInformationCompleted()}
             path={"/signup"}
           />
           <TunnelStep
@@ -50,7 +59,7 @@ function OnboardingPage() {
             content={{ token: "v2.pages.signup.onboarding.tunnel.steps.terms.content" }}
             icon={{ remixName: "ri-file-text-line" }}
             type={"mandatory"}
-            isDone={false}
+            isDone={user.isTermsAndConditionsAccepted()}
             path={"/signup"}
           />
           <TunnelStep
@@ -58,7 +67,7 @@ function OnboardingPage() {
             content={{ token: "v2.pages.signup.onboarding.tunnel.steps.project.content" }}
             icon={{ remixName: "ri-medal-2-fill" }}
             type={"recommended"}
-            isDone={false}
+            isDone={user.isProjectRecommendationCompleted()}
             path={"/signup"}
           />
           <TunnelStep
@@ -66,7 +75,7 @@ function OnboardingPage() {
             content={{ token: "v2.pages.signup.onboarding.tunnel.steps.profile.content" }}
             icon={{ remixName: "ri-user-line" }}
             type={"optional"}
-            isDone={false}
+            isDone={user.isProfileCompleted()}
             path={"/signup"}
           />
           <TunnelStep
@@ -74,7 +83,7 @@ function OnboardingPage() {
             content={{ token: "v2.pages.signup.onboarding.tunnel.steps.payout.content" }}
             icon={{ remixName: "ri-building-line" }}
             type={"optional"}
-            isDone={false}
+            isDone={user.isPayoutInformationCompleted()}
             path={"/signup"}
           />
         </div>
