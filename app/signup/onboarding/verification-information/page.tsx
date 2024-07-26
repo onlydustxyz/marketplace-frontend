@@ -110,7 +110,7 @@ export default function VerificationInformationPage() {
   }, [handleSubmit]);
 
   return (
-    <SignupTemplate header={<AccountAlreadyExist />} footer={renderFooter}>
+    <SignupTemplate header={<AccountAlreadyExist showDisconnectButton />} footer={renderFooter}>
       <Paper size={"l"} container={"3"} classNames={{ base: "flex flex-col gap-3 min-h-full" }}>
         <StepHeader
           step={2}
