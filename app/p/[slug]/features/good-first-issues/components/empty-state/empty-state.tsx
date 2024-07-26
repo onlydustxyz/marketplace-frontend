@@ -1,15 +1,15 @@
+import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 import Image from "next/image";
-import { useMemo } from "react";
 import { useMediaQuery } from "usehooks-ts";
-import { getSearchLink } from "utils/github/search";
+
+import { useGoodFirstIssuesNotification } from "app/p/[slug]/hooks/use-good-first-issue-notification";
 
 import { IMAGES } from "src/assets/img";
 import { viewportConfig } from "src/config";
 
-import { Button } from "components/ds/button/button";
-import { BaseLink } from "components/layout/base-link/base-link";
+import { Paper } from "components/atoms/paper";
+import { Switch } from "components/atoms/switch";
 import { Flex } from "components/layout/flex/flex";
-import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
@@ -17,24 +17,17 @@ import { useIntl } from "hooks/translate/use-translate";
 
 import { TEmptyState } from "./empty-state.types";
 
-export function EmptyState({ organizations, isProjectLeader }: TEmptyState.Props) {
+export function EmptyState({ projectId }: TEmptyState.Props) {
   const { T } = useIntl();
 
+  const {
+    clientBootstrap: { authProvider },
+  } = useClientBootstrapContext();
+  const { isAuthenticated = false } = authProvider ?? {};
+
+  const { isNotificationEnabled, handleSetMyNotificationSettings } = useGoodFirstIssuesNotification({ projectId });
+
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
-
-  const repositories = useMemo(() => {
-    return organizations?.flatMap(organization => organization.repos.map(repo => `${organization.login}/${repo.name}`));
-  }, [organizations]);
-
-  const repoQueries = useMemo(() => {
-    return repositories?.map(repo => `repo:${repo}`).join("+");
-  }, [repositories]);
-
-  const url = getSearchLink({
-    type: "issues",
-    state: "open",
-    query: repoQueries,
-  });
 
   return (
     <Flex direction="col" alignItems="center" className="gap-6 px-6 pb-12 pt-4">
@@ -49,29 +42,20 @@ export function EmptyState({ organizations, isProjectLeader }: TEmptyState.Props
           />
 
           <Typography variant="body-s" className="text-center text-spaceBlue-200">
-            <Translate
-              token={
-                isProjectLeader
-                  ? "v2.pages.project.overview.goodFirstIssues.empty.description.lead"
-                  : "v2.pages.project.overview.goodFirstIssues.empty.description.contributor"
-              }
-            />
+            <Translate token="v2.pages.project.overview.goodFirstIssues.empty.description" />
           </Typography>
         </Flex>
       </Flex>
 
-      <BaseLink href={url}>
-        <Button variant="primary" size={isMd ? "m" : "s"}>
-          <Icon remixName="ri-github-fill" size={20} className="text-spaceBlue-900" />
-          <Translate
-            token={
-              isProjectLeader
-                ? "v2.pages.project.overview.goodFirstIssues.empty.button.lead"
-                : "v2.pages.project.overview.goodFirstIssues.empty.button.contributor"
-            }
+      {isAuthenticated ? (
+        <Paper container="4" border="none" classNames={{ base: "flex gap-2 items-center px-4 py-6" }}>
+          <Switch isActive={isNotificationEnabled} onChange={handleSetMyNotificationSettings} />
+          <Typography
+            variant="body-s-bold"
+            translate={{ token: "v2.pages.project.overview.stayTuned.notifySwitchLabel" }}
           />
-        </Button>
-      </BaseLink>
+        </Paper>
+      ) : null}
     </Flex>
   );
 }

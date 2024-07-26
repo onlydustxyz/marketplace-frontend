@@ -116,11 +116,7 @@ function ProjectPage() {
 
           {!isMd ? <ProjectDetails project={project} /> : null}
 
-          <GoodFirstIssues
-            projectId={project.id}
-            organizations={project.organizations}
-            isProjectLeader={isProjectLeader}
-          />
+          <GoodFirstIssues projectId={project.id} />
 
           {!isMd ? <Repositories organizations={project.organizations} /> : null}
         </Flex>
