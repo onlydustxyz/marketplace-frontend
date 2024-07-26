@@ -1,4 +1,4 @@
-import { ListIssueInterface } from "core/domain/issue/models/list-issue-model";
+import { IssueListInterface } from "core/domain/issue/models/issue-list-model";
 import {
   HttpClientParameters,
   HttpStorageResponse,
@@ -58,7 +58,7 @@ export type GetProjectIssuesQueryParams = operations["getProjectPublicIssues"]["
 export type GetProjectIssuesResponse = components["schemas"]["GithubIssuePageResponse"];
 
 export type GetProjectIssuesModel = Omit<GetProjectIssuesResponse, "issues"> & {
-  issues: ListIssueInterface[];
+  issues: IssueListInterface[];
 };
 
 export type GetProjectIssuesPortResponse = HttpStorageResponse<GetProjectIssuesModel>;

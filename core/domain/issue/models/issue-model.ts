@@ -1,4 +1,4 @@
-import { GithubIssueListItemResponse, ListIssue } from "core/domain/issue/models/list-issue-model";
+import { GithubIssueListItemResponse, IssueList } from "core/domain/issue/models/issue-list-model";
 import { extendClasses } from "core/infrastructure/marketplace-api-client-adapter/mappers/extend-classes";
 import { mapApiToClass } from "core/infrastructure/marketplace-api-client-adapter/mappers/map-api-to-class";
 
@@ -18,4 +18,4 @@ export class Issue extends mapApiToClass<GithubIssueResponse>() implements Issue
   }
 }
 
-extendClasses(Issue, [ListIssue]);
+extendClasses(Issue, [IssueList]);
