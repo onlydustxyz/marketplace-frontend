@@ -1,13 +1,17 @@
-import { ComponentPropsWithoutRef, ElementType } from "react";
+import { ComponentPropsWithoutRef } from "react";
 
-interface Variants {}
+import { ProgressBarPort } from "components/atoms/progress-bar";
+
+interface Variants extends Pick<ProgressBarPort, "color"> {}
 
 interface ClassNames {
   base: string;
 }
 
-export interface StepperPort<C extends ElementType> extends Partial<Variants> {
-  as?: C;
-  htmlProps?: ComponentPropsWithoutRef<C>;
+interface StepItem extends Pick<ProgressBarPort, "max" | "min" | "value"> {}
+
+export interface StepperPort extends Partial<Variants> {
+  htmlProps?: ComponentPropsWithoutRef<"div">;
   classNames?: Partial<ClassNames>;
+  steps: StepItem[];
 }

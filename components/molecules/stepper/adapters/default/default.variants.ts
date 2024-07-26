@@ -2,8 +2,6 @@ import { tv } from "tailwind-variants";
 
 export const StepperDefaultVariants = tv({
   slots: {
-    base: "",
+    base: "flex w-full items-center gap-2",
   },
-  variants: {},
-  defaultVariants: {},
 });
