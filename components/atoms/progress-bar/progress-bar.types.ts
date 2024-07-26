@@ -1,6 +1,6 @@
-import { ComponentPropsWithoutRef, ElementType } from "react";
-
-interface Variants {}
+interface Variants {
+  color: "brand-1" | "brand-2" | "brand-3" | "brand-4";
+}
 
 interface ClassNames {
   base: string;
@@ -8,10 +8,9 @@ interface ClassNames {
   indicator: string;
 }
 
-export interface ProgressBarPort<C extends ElementType> extends Partial<Variants> {
-  htmlProps?: ComponentPropsWithoutRef<C>;
+export interface ProgressBarPort extends Partial<Variants> {
   classNames?: Partial<ClassNames>;
-  minValue?: number;
-  maxValue?: number;
+  min?: number;
+  max?: number;
   value: number;
 }

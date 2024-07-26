@@ -6,9 +6,9 @@ import { ProgressBar } from "./variants/progress-bar-default";
 
 type Story = StoryObj<typeof ProgressBar>;
 
-const defaultProps: ProgressBarPort<"div"> = {
-  minValue: 0,
-  maxValue: 100,
+const defaultProps: ProgressBarPort = {
+  min: 0,
+  max: 100,
   value: 50,
 };
 
@@ -39,15 +39,34 @@ export const Default: Story = {
   },
 };
 
-export const WithMinMaxValues: Story = {
+export const WithMinAndMax: Story = {
   args: {
-    minValue: 0,
-    maxValue: 200,
+    min: 0,
+    max: 200,
     value: 75,
   },
   parameters: {
     docs: {
-      source: { code: "<ProgressBar minValue={0} maxValue={200} value={75} />" },
+      source: { code: "<ProgressBar min={0} max={200} value={75} />" },
+    },
+  },
+  render: args => {
+    return (
+      <div className="flex w-full items-center gap-2">
+        <ProgressBar {...args} />
+      </div>
+    );
+  },
+};
+
+export const WithColorChange: Story = {
+  args: {
+    value: 60,
+    color: "brand-1",
+  },
+  parameters: {
+    docs: {
+      source: { code: "<ProgressBar value={60} color='brand-1' />" },
     },
   },
   render: args => {
