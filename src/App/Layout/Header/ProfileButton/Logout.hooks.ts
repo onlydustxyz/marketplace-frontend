@@ -1,7 +1,6 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { QueryClient } from "@tanstack/react-query";
 import { meApiClient } from "api-client/resources/me";
-import { bootstrap } from "core/bootstrap";
+import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 
 import { usePosthog } from "src/hooks/usePosthog";
 
@@ -12,7 +11,10 @@ const queryClient = new QueryClient();
 export function useLogout() {
   const { capture, reset } = usePosthog();
   const { isImpersonating, clearImpersonateClaim } = useImpersonation();
-  const { logout } = useAuth0();
+  const {
+    clientBootstrap: { authProvider },
+  } = useClientBootstrapContext();
+  const { logout } = authProvider ?? {};
   const { mutateAsync: logoutUser } = meApiClient.mutations.useLogoutUser({});
 
   async function handleLogout() {
@@ -21,12 +23,11 @@ export function useLogout() {
 
     if (isImpersonating) {
       clearImpersonateClaim();
-      bootstrap.setImpersonationProvider(null);
       queryClient.invalidateQueries();
       window.location.reload();
     } else {
       await logoutUser({});
-      logout({
+      logout?.({
         logoutParams: {
           returnTo: process.env.NEXT_PUBLIC_AUTH0_CALLBACK_URL || "/",
         },
