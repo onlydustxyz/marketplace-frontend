@@ -40,7 +40,11 @@ export default function VerificationInformationPage() {
     mutateAsync: setMyProfile,
     isPending: isPendingSetMyProfile,
     ...restSetMyProfile
-  } = UserReactQueryAdapter.client.useSetMyProfile();
+  } = UserReactQueryAdapter.client.useSetMyProfile({
+    options: {
+      onSuccess,
+    },
+  });
 
   useMutationAlert({
     mutation: restSetMyProfile,
