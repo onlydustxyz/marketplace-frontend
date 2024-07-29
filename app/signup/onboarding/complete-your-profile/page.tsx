@@ -1,12 +1,11 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
+import { Controller } from "react-hook-form";
 
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
 import { StepHeader } from "app/signup/components/step-header/step-header";
 import { Title } from "app/signup/components/title/title";
-import { TCompleteYourProfile } from "app/signup/onboarding/complete-your-profile/components/complete-your-profile.types";
+import { useCompleteYourProfile } from "app/signup/onboarding/complete-your-profile/complete-your-profile.hooks";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Input } from "components/atoms/input";
@@ -16,23 +15,26 @@ import { BaseLink } from "components/layout/base-link/base-link";
 import { Translate } from "components/layout/translate/translate";
 import { SignupTemplate } from "components/templates/signup-template/signup-template";
 
+import { NEXT_ROUTER } from "constants/router";
+
 import { useIntl } from "hooks/translate/use-translate";
 
-function Footer() {
+function Footer({ isLoading, isDisabled }: { isLoading: boolean; isDisabled: boolean }) {
   return (
     <div className="flex w-full flex-row justify-end gap-2">
       <Button
         variant={"secondary-light"}
         translate={{ token: "v2.pages.signup.onboarding.tunnel.actions.back" }}
         as={BaseLink}
-        htmlProps={{ href: "/signup" }}
+        htmlProps={{ href: NEXT_ROUTER.signup.onboarding.root }}
         startIcon={{ remixName: "ri-arrow-left-s-line" }}
       />
       <Button
         type={"submit"}
-        isLoading={true}
         translate={{ token: "v2.pages.signup.onboarding.tunnel.actions.next" }}
         endIcon={{ remixName: "ri-arrow-right-s-line" }}
+        isLoading={isLoading}
+        isDisabled={isDisabled}
       />
     </div>
   );
@@ -40,27 +42,14 @@ function Footer() {
 
 export default function CompleteYourProfilePage() {
   const { T } = useIntl();
-
-  const form = useForm<TCompleteYourProfile.form>({
-    resolver: zodResolver(TCompleteYourProfile.validation),
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      location: "",
-      bio: "",
-      website: "",
-    },
-  });
-
-  const { control, handleSubmit } = form;
-
-  function handleFormSubmit(values: TCompleteYourProfile.form) {
-    console.log({ values });
-  }
+  const { userProfile, form, setMyProfileMutation, handleFormSubmit } = useCompleteYourProfile();
 
   return (
-    <form className={"h-full"} onSubmit={handleSubmit(handleFormSubmit)}>
-      <SignupTemplate header={<AccountAlreadyExist />} footer={<Footer />}>
+    <form className={"h-full"} onSubmit={form.handleSubmit(handleFormSubmit)}>
+      <SignupTemplate
+        header={<AccountAlreadyExist />}
+        footer={<Footer isLoading={setMyProfileMutation.isPending} isDisabled={!userProfile} />}
+      >
         <Paper container={"2"} classNames={{ base: "flex flex-col gap-6 min-h-full" }}>
           <div className="grid gap-3">
             <StepHeader
@@ -78,7 +67,7 @@ export default function CompleteYourProfilePage() {
           <Paper size={"s"} container={"transparent"} classNames={{ base: "grid grid-cols-2 gap-2" }}>
             <Controller
               name="firstName"
-              control={control}
+              control={form.control}
               render={({ field, fieldState }) => (
                 <Input
                   id={field.name}
@@ -92,7 +81,7 @@ export default function CompleteYourProfilePage() {
 
             <Controller
               name="lastName"
-              control={control}
+              control={form.control}
               render={({ field, fieldState }) => (
                 <Input
                   id={field.name}
@@ -106,7 +95,7 @@ export default function CompleteYourProfilePage() {
 
             <Controller
               name="location"
-              control={control}
+              control={form.control}
               render={({ field, fieldState }) => (
                 <Input
                   id={field.name}
@@ -121,7 +110,7 @@ export default function CompleteYourProfilePage() {
 
             <Controller
               name="bio"
-              control={control}
+              control={form.control}
               render={({ field, fieldState }) => (
                 <Textarea
                   id={field.name}
@@ -136,7 +125,7 @@ export default function CompleteYourProfilePage() {
 
             <Controller
               name="website"
-              control={control}
+              control={form.control}
               render={({ field, fieldState }) => (
                 <Input
                   id={field.name}

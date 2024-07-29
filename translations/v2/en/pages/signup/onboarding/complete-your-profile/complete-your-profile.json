@@ -21,6 +21,10 @@
     "website": {
       "label": "Website",
       "placeholder": "Enter your website"
+    },
+    "toast": {
+        "success": "Completed profile successfully.",
+        "error": "Profile completion failed."
     }
   }
 }

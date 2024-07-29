@@ -14,6 +14,11 @@ export interface UserProfileInterface extends UserProfileResponse {
       }
     | undefined;
   setContact(params: { channel: UserProfileContactChannel; contact: string; visibility?: "public" | "private" }): void;
+  setFirstName(firstName: string): void;
+  setLastName(lastName: string): void;
+  setLocation(location: string): void;
+  setBio(bio: string): void;
+  setWebsite(website: string): void;
 }
 
 export class UserProfile implements UserProfileInterface {
@@ -73,5 +78,25 @@ export class UserProfile implements UserProfileInterface {
     this.contacts = this.contacts?.map(c =>
       c.channel === channel ? { ...c, contact: this.sanitizeChannelContact(contact), visibility } : c
     );
+  }
+
+  setFirstName(firstName: string) {
+    this.firstName = firstName;
+  }
+
+  setLastName(lastName: string) {
+    this.lastName = lastName;
+  }
+
+  setLocation(location: string) {
+    this.location = location;
+  }
+
+  setBio(bio: string) {
+    this.bio = bio;
+  }
+
+  setWebsite(website: string) {
+    this.website = website;
   }
 }
