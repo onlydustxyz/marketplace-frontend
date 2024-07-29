@@ -9,7 +9,7 @@ export interface ShortProjectInterface extends ListProjectCategoriesResponse {}
 export class ListProjectCategories implements ShortProjectInterface {
   categories!: ListProjectCategoriesResponse["categories"];
 
-  constructor(protected readonly props: ListProjectCategoriesResponse) {
+  constructor(props: ListProjectCategoriesResponse) {
     this.categories = props.categories.map(category => new ProjectCategory(category));
     Object.assign(this, props);
   }
