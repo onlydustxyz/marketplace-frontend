@@ -11,7 +11,7 @@ import { Typography } from "components/layout/typography/typography";
 async function getHackathons() {
   try {
     const hackathonStorage = bootstrap.getHackathonStoragePortForServer();
-    return await hackathonStorage.getHackathons().request();
+    return await hackathonStorage.getHackathons({}).request();
   } catch {
     notFound();
   }

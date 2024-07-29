@@ -9,7 +9,7 @@ export function Modal<C extends ElementType = "div">({ titleProps, closeButtonPr
   return withComponentAdapter<ModalPort<C>>(ModalNextUiAdapter)({
     ...props,
     classNames: {
-      modal: "bg-container-2 border border-container-stroke-separator",
+      modal: "border border-container-stroke-separator",
       footer: "border-t border-container-stroke-separator",
     },
     titleProps: {

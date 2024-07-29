@@ -15,6 +15,7 @@ import "src/assets/fonts/Belwe/stylesheet.css";
 import "src/assets/fonts/GTWalsheimPro/stylesheet.css";
 import config from "src/config";
 
+import { OnboardingCompletedModal } from "components/features/onboarding-completed-modal/onboarding-completed-modal";
 import { PosthogIdentifyUser } from "components/features/posthog/components/posthog-identify-user";
 import { PosthogPageView } from "components/features/posthog/components/posthog-page-view";
 import { RouteChangeListener } from "components/features/route-change-listener/route-change-listener";
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
             <SpaceBackground />
             {children}
           </div>
+          <OnboardingCompletedModal />
           <RouteChangeListener />
           <PosthogIdentifyUser />
           <PosthogPageView />

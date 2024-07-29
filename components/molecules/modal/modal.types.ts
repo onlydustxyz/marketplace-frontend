@@ -3,7 +3,10 @@ import { ComponentProps, ComponentPropsWithoutRef, ElementType, PropsWithChildre
 import { Button } from "components/atoms/button/variants/button-default";
 import { Typo } from "components/atoms/typo/variants/typo-default";
 
-interface Variants {}
+interface Variants {
+  size: "m" | "l";
+  container: "1" | "2" | "3" | "4";
+}
 
 interface ClassNames {
   modal: string;
