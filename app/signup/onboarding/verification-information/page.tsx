@@ -50,16 +50,16 @@ export default function VerificationInformationPage() {
   const { control, handleSubmit, reset } = useForm<TVerificationInformation.form>({
     resolver: zodResolver(TVerificationInformation.validation),
     defaultValues: {
-      email: userProfile?.getContact(UserProfileContactChannel.email)?.contact,
-      telegram: userProfile?.getContact(UserProfileContactChannel.telegram)?.contact,
+      email: userProfile?.getContactEmail()?.contact,
+      telegram: userProfile?.getContactTelegram()?.contact,
     },
   });
 
   useEffect(() => {
     if (userProfile) {
       reset({
-        email: userProfile.getContact(UserProfileContactChannel.email)?.contact,
-        telegram: userProfile.getContact(UserProfileContactChannel.telegram)?.contact,
+        email: userProfile.getContactEmail()?.contact,
+        telegram: userProfile.getContactTelegram()?.contact,
       });
     }
   }, [userProfile]);
@@ -70,13 +70,13 @@ export default function VerificationInformationPage() {
     userProfile.setContact({
       channel: UserProfileContactChannel.email,
       contact: data.email,
-      visibility: userProfile?.getContact(UserProfileContactChannel.email)?.visibility,
+      visibility: userProfile?.getContactEmail()?.visibility,
     });
 
     userProfile.setContact({
       channel: UserProfileContactChannel.telegram,
       contact: data.telegram,
-      visibility: userProfile?.getContact(UserProfileContactChannel.telegram)?.visibility,
+      visibility: userProfile?.getContactTelegram()?.visibility,
     });
 
     await setMyProfile({

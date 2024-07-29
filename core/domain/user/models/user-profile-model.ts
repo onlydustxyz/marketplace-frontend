@@ -1,4 +1,4 @@
-import { UserProfileContactChannel } from "core/domain/user/models/user.types";
+import { UserProfileContact, UserProfileContactChannel } from "core/domain/user/models/user.types";
 
 import { components } from "src/__generated/api";
 
@@ -6,19 +6,10 @@ type UserProfileResponse = components["schemas"]["PrivateUserProfileResponse"];
 
 export interface UserProfileInterface extends UserProfileResponse {
   hasContact(channel: UserProfileContactChannel): boolean;
-  getContact(channel: UserProfileContactChannel):
-    | {
-        channel: `${UserProfileContactChannel}`;
-        contact?: string;
-        visibility: "public" | "private";
-      }
-    | undefined;
+  getContact(channel: UserProfileContactChannel): UserProfileContact | undefined;
+  getContactEmail(): UserProfileContact | undefined;
+  getContactTelegram(): UserProfileContact | undefined;
   setContact(params: { channel: UserProfileContactChannel; contact: string; visibility?: "public" | "private" }): void;
-  setFirstName(firstName: string): void;
-  setLastName(lastName: string): void;
-  setLocation(location: string): void;
-  setBio(bio: string): void;
-  setWebsite(website: string): void;
 }
 
 export class UserProfile implements UserProfileInterface {
@@ -46,6 +37,14 @@ export class UserProfile implements UserProfileInterface {
 
   getContact(channel: UserProfileContactChannel) {
     return this.contacts?.find(c => c.channel === channel && c.contact);
+  }
+
+  getContactEmail() {
+    return this.getContact(UserProfileContactChannel.email);
+  }
+
+  getContactTelegram() {
+    return this.getContact(UserProfileContactChannel.telegram);
   }
 
   private sanitizeChannelContact(contact: string) {
@@ -78,25 +77,5 @@ export class UserProfile implements UserProfileInterface {
     this.contacts = this.contacts?.map(c =>
       c.channel === channel ? { ...c, contact: this.sanitizeChannelContact(contact), visibility } : c
     );
-  }
-
-  setFirstName(firstName: string) {
-    this.firstName = firstName;
-  }
-
-  setLastName(lastName: string) {
-    this.lastName = lastName;
-  }
-
-  setLocation(location: string) {
-    this.location = location;
-  }
-
-  setBio(bio: string) {
-    this.bio = bio;
-  }
-
-  setWebsite(website: string) {
-    this.website = website;
   }
 }

@@ -6,3 +6,9 @@ export enum UserProfileContactChannel {
   twitter = "TWITTER",
   whatsapp = "WHATSAPP",
 }
+
+export interface UserProfileContact {
+  channel: `${UserProfileContactChannel}`;
+  contact?: string;
+  visibility: "public" | "private";
+}
