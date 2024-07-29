@@ -6,7 +6,15 @@
   },
   "languages": {
     "title": "Choose Your Preferred Programming Languages",
-    "content": "Please select the programming languages you are most comfortable with or interested in. You can choose multiple languages to tailor your experience on OnlyDust.",
+    "content": "Please select the programming languages you are most comfortable with or interested in. You can choose multiple languages to tailor your experience on OnlyDust."
+  },
+  "categories": {
+    "title": "Choose Your Favorite Categories",
+    "content": "To help us recommend the best projects for you, please select the categories that interest you the most. You can choose multiple categories to tailor your experience on OnlyDust."
+  },
+  "goal": {
+    "title": "Your Goal",
+    "content": "To tailor your experience on OnlyDust, please select the main reasons why you want to join our community.",
     "choices": {
       "skill": {
         "title": "Learn & Devellop Skills",
@@ -29,13 +37,5 @@
       "title": "Are You Looking for a Job?",
       "content": "This will help us match you with relevant projects and potential employers."
     }
-  },
-  "goal": {
-    "title": "Your Goal",
-    "content": "To tailor your experience on OnlyDust, please select the main reasons why you want to join our community."
-  },
-  "categories": {
-    "title": "Choose Your Favorite Categories",
-    "content": "To help us recommend the best projects for you, please select the categories that interest you the most. You can choose multiple categories to tailor your experience on OnlyDust."
   }
 }

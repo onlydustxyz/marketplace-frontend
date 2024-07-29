@@ -2,7 +2,6 @@ import React from "react";
 
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
 import { StepHeader } from "app/signup/components/step-header/step-header";
-import { Title } from "app/signup/components/title/title";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
@@ -10,6 +9,10 @@ import { BaseLink } from "components/layout/base-link/base-link";
 import { SignupTemplate } from "components/templates/signup-template/signup-template";
 
 import { NEXT_ROUTER } from "constants/router";
+
+import { Categories } from "./components/categories/categories";
+import { Goals } from "./components/goals/goals";
+import { Languages } from "./components/languages/languages";
 
 function Footer() {
   return (
@@ -39,12 +42,9 @@ function projectRecommendationsPage() {
             subStep={{ token: "v2.pages.signup.onboarding.tunnel.title" }}
           />
         </Paper>
-        <Paper container={"2"} classNames={{ base: "flex flex-col gap-3" }}>
-          <Title
-            title={{ token: "v2.pages.signup.onboarding.projectRecommendations.languages.title" }}
-            content={{ token: "v2.pages.signup.onboarding.projectRecommendations.languages.content" }}
-          />
-        </Paper>
+        <Languages />
+        <Goals />
+        <Categories />
       </div>
     </SignupTemplate>
   );
