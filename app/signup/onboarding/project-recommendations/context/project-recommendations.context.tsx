@@ -35,6 +35,7 @@ export function ProjectRecommendationContextProvider({ children }: TProjectRecom
     options: {
       onSuccess: () => {
         toast.default(<Translate token={"v2.pages.signup.onboarding.common.updateProfile.toast.success"} />);
+        router.push(NEXT_ROUTER.signup.onboarding.root);
       },
       onError: () => {
         toast.error(<Translate token={"v2.pages.signup.onboarding.common.updateProfile.toast.error"} />);
@@ -43,12 +44,7 @@ export function ProjectRecommendationContextProvider({ children }: TProjectRecom
   });
 
   async function onSubmit(data: TProjectRecommendationContext.form) {
-    try {
-      await setMyProfile({ ...data, goal: data.goal as TProjectRecommendationContext.Goals });
-      router.push(NEXT_ROUTER.signup.onboarding.root);
-    } catch {
-      //
-    }
+    await setMyProfile({ ...data, goal: data.goal as TProjectRecommendationContext.Goals });
   }
 
   return (
