@@ -1,4 +1,7 @@
-import { ReactNode } from "react";
+import { ComponentPropsWithoutRef, ReactNode } from "react";
+
+// Should use the `textarea` HTML element, but we're using `input` to please NextUI for now
+type htmlTextareaProps = ComponentPropsWithoutRef<"input">;
 
 interface Variants {
   isDisabled: boolean;
@@ -17,17 +20,16 @@ interface ClassNames {
   description: string;
 }
 
-export interface TextareaPort extends Partial<Variants> {
-  id?: string;
-  name: string;
+export interface TextareaPort extends htmlTextareaProps, Partial<Variants> {
   classNames?: Partial<ClassNames>;
   isDisabled?: boolean;
   minRows?: number;
   maxRows?: number;
   disableAutosize?: boolean;
-  onChange?: (value: string) => void;
   value?: string;
   isError?: boolean;
   startContent?: ReactNode;
   endContent?: ReactNode;
+  label?: ReactNode;
+  placeholder?: string;
 }

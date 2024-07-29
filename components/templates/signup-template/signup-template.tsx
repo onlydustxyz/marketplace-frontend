@@ -11,12 +11,11 @@ import { TSignupTemplate } from "./signup-template.types";
 
 export function SignupTemplate({ children, header, aside, footer }: TSignupTemplate.Props) {
   return (
-    <div className="relative flex h-full w-full flex-row items-center justify-center overflow-hidden bg-black p-1 md:bg-transparent md:p-3">
+    <div className="relative flex h-full w-full flex-row items-center justify-center overflow-hidden bg-black p-2.5 md:bg-transparent md:p-3">
       <Paper
         classNames={{
           base: cn(
-            "flex h-full max-h-[800px] overflow-hidden max-w-[1000px] w-full flex-col gap-2 md:bg-container-1",
-            "p-0 bg-transparent border-0",
+            "flex h-full max-h-[800px] overflow-hidden max-w-[1000px] w-full flex-col gap-2 p-0 bg-transparent border-0",
             "md:p-3 md:border-1 md:bg-container-1"
           ),
         }}
@@ -32,7 +31,7 @@ export function SignupTemplate({ children, header, aside, footer }: TSignupTempl
             <ScrollView>{children}</ScrollView>
           </div>
         </div>
-        {footer && <div className="h-auto w-full py-2">{footer}</div>}
+        {footer && <div className="h-auto w-full">{footer}</div>}
       </Paper>
     </div>
   );
