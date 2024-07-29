@@ -97,11 +97,12 @@ export default function VerificationInformationPage() {
           isDisabled={userProfileIsLoading || isPendingSetMyProfile}
         />
         <Button
+          type={"submit"}
           variant="primary"
           size="l"
           translate={{ token: "v2.pages.signup.verificationInformation.footer.next" }}
           endIcon={{ remixName: "ri-arrow-right-s-line" }}
-          onClick={handleSubmit(handleSetMyProfile)}
+          // onClick={handleSubmit(handleSetMyProfile)}
           isLoading={isPendingSetMyProfile}
           isDisabled={userProfileIsLoading || isPendingSetMyProfile}
         />
@@ -110,102 +111,104 @@ export default function VerificationInformationPage() {
   }, [handleSubmit, userProfileIsLoading, isPendingSetMyProfile]);
 
   return (
-    <SignupTemplate header={<AccountAlreadyExist showDisconnectButton />} footer={renderFooter}>
-      <Paper size={"l"} container={"3"} classNames={{ base: "flex flex-col gap-3 min-h-full" }}>
-        <StepHeader
-          step={2}
-          stepPath={"/signup/onboarding"}
-          subStep={{ token: "v2.pages.signup.verificationInformation.title" }}
-        />
-        <Title
-          title={{ token: "v2.pages.signup.verificationInformation.title" }}
-          content={{ token: "v2.pages.signup.verificationInformation.subtitle" }}
-        />
-        <div className="flex flex-col gap-2">
-          <Paper size={"s"} container={"transparent"} classNames={{ base: "grid gap-6" }}>
-            <div className="grid gap-2">
-              <Typo
-                size={"s"}
-                weight={"medium"}
-                color={"text-1"}
-                translate={{ token: "v2.pages.signup.verificationInformation.form.githubAccount.label" }}
-              />
-              <div className="flex gap-2">
-                <Avatar size="l" shape="square" src={userProfile?.avatarUrl} />
-                <Input
-                  type={"text"}
-                  placeholder={T("v2.pages.signup.verificationInformation.form.contactEmail.placeholder")}
-                  value={userProfile?.login ?? ""}
-                  isDisabled
-                />
-              </div>
-            </div>
-            <div className="grid gap-2">
-              <div className="flex items-center justify-between">
-                <Typo
-                  size={"s"}
-                  weight={"medium"}
-                  color={"text-1"}
-                  translate={{ token: "v2.pages.signup.verificationInformation.form.contactEmail.label" }}
-                />
-                <Tag
-                  color="purple"
-                  style="fill"
-                  size="xs"
-                  translate={{ token: "v2.pages.signup.verificationInformation.form.contactEmail.tag" }}
-                />
-              </div>
-
-              <Controller
-                name="email"
-                control={control}
-                render={({ field, fieldState }) => (
-                  <Input
-                    {...field}
-                    placeholder={T("v2.pages.signup.verificationInformation.form.contactEmail.placeholder")}
-                    isError={!!fieldState.error}
-                  />
-                )}
-              />
-            </div>
-
-            <div className="grid gap-2">
-              <div className="flex items-center justify-between">
-                <Typo
-                  size={"s"}
-                  weight={"medium"}
-                  color={"text-1"}
-                  translate={{ token: "v2.pages.signup.verificationInformation.form.telegram.label" }}
-                />
-                <Tag
-                  color="pink"
-                  style="fill"
-                  size="xs"
-                  translate={{ token: "v2.pages.signup.verificationInformation.form.telegram.tag" }}
-                />
-              </div>
-
-              <Controller
-                name="telegram"
-                control={control}
-                render={({ field, fieldState }) => (
-                  <Input
-                    {...field}
-                    placeholder={T("v2.pages.signup.verificationInformation.form.telegram.placeholder")}
-                    isError={!!fieldState.error}
-                  />
-                )}
-              />
-            </div>
-          </Paper>
-          <Typo
-            size={"xxs"}
-            weight={"regular"}
-            color={"text-2"}
-            translate={{ token: "v2.pages.signup.verificationInformation.specialMention" }}
+    <form onSubmit={handleSubmit(handleSetMyProfile)} className="h-full">
+      <SignupTemplate header={<AccountAlreadyExist showDisconnectButton />} footer={renderFooter}>
+        <Paper size={"l"} container={"3"} classNames={{ base: "flex flex-col gap-3 min-h-full" }}>
+          <StepHeader
+            step={2}
+            stepPath={"/signup/onboarding"}
+            subStep={{ token: "v2.pages.signup.verificationInformation.title" }}
           />
-        </div>
-      </Paper>
-    </SignupTemplate>
+          <Title
+            title={{ token: "v2.pages.signup.verificationInformation.title" }}
+            content={{ token: "v2.pages.signup.verificationInformation.subtitle" }}
+          />
+          <div className="flex flex-col gap-2">
+            <Paper size={"s"} container={"transparent"} classNames={{ base: "grid gap-6" }}>
+              <div className="grid gap-2">
+                <Typo
+                  size={"s"}
+                  weight={"medium"}
+                  color={"text-1"}
+                  translate={{ token: "v2.pages.signup.verificationInformation.form.githubAccount.label" }}
+                />
+                <div className="flex gap-2">
+                  <Avatar size="l" shape="square" src={userProfile?.avatarUrl} />
+                  <Input
+                    type={"text"}
+                    placeholder={T("v2.pages.signup.verificationInformation.form.contactEmail.placeholder")}
+                    value={userProfile?.login ?? ""}
+                    isDisabled
+                  />
+                </div>
+              </div>
+              <div className="grid gap-2">
+                <div className="flex items-center justify-between">
+                  <Typo
+                    size={"s"}
+                    weight={"medium"}
+                    color={"text-1"}
+                    translate={{ token: "v2.pages.signup.verificationInformation.form.contactEmail.label" }}
+                  />
+                  <Tag
+                    color="purple"
+                    style="fill"
+                    size="xs"
+                    translate={{ token: "v2.pages.signup.verificationInformation.form.contactEmail.tag" }}
+                  />
+                </div>
+
+                <Controller
+                  name="email"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Input
+                      {...field}
+                      placeholder={T("v2.pages.signup.verificationInformation.form.contactEmail.placeholder")}
+                      isError={!!fieldState.error}
+                    />
+                  )}
+                />
+              </div>
+
+              <div className="grid gap-2">
+                <div className="flex items-center justify-between">
+                  <Typo
+                    size={"s"}
+                    weight={"medium"}
+                    color={"text-1"}
+                    translate={{ token: "v2.pages.signup.verificationInformation.form.telegram.label" }}
+                  />
+                  <Tag
+                    color="pink"
+                    style="fill"
+                    size="xs"
+                    translate={{ token: "v2.pages.signup.verificationInformation.form.telegram.tag" }}
+                  />
+                </div>
+
+                <Controller
+                  name="telegram"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Input
+                      {...field}
+                      placeholder={T("v2.pages.signup.verificationInformation.form.telegram.placeholder")}
+                      isError={!!fieldState.error}
+                    />
+                  )}
+                />
+              </div>
+            </Paper>
+            <Typo
+              size={"xxs"}
+              weight={"regular"}
+              color={"text-2"}
+              translate={{ token: "v2.pages.signup.verificationInformation.specialMention" }}
+            />
+          </div>
+        </Paper>
+      </SignupTemplate>
+    </form>
   );
 }

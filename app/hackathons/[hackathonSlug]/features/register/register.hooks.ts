@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { HackathonReactQueryAdapter } from "core/application/react-query-adapter/hackathon";
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
-import { UserProfileContactChannel } from "core/domain/user/models/user-profile-model";
+import { UserProfileContactChannel } from "core/domain/user/models/user.types";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -91,10 +91,10 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
   async function handleTelegramSubmit(data: TRegister.form) {
     if (!userProfile) return;
 
-    const currentUserProfileTelegram = userProfile.getContact(UserProfileContactChannel.Telegram);
+    const currentUserProfileTelegram = userProfile.getContact(UserProfileContactChannel.telegram);
 
     userProfile.setContact({
-      channel: UserProfileContactChannel.Telegram,
+      channel: UserProfileContactChannel.telegram,
       contact: data.telegram,
       visibility: currentUserProfileTelegram?.visibility,
     });
@@ -131,7 +131,7 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
     registerForHackathon,
     isLoading: userProfileIsLoading || hackathonIsLoading,
     isPending: restRegister.isPending || restSetMyProfile.isPending,
-    hasTelegram: userProfile?.hasContact(UserProfileContactChannel.Telegram),
+    hasTelegram: userProfile?.hasContact(UserProfileContactChannel.telegram),
     hasRegistered: hackathon?.me.hasRegistered,
   };
 }

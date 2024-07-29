@@ -1,15 +1,8 @@
+import { UserProfileContactChannel } from "core/domain/user/models/user.types";
+
 import { components } from "src/__generated/api";
 
 type UserProfileResponse = components["schemas"]["PrivateUserProfileResponse"];
-
-export enum UserProfileContactChannel {
-  Discord = "DISCORD",
-  Email = "EMAIL",
-  LinkedIn = "LINKEDIN",
-  Telegram = "TELEGRAM",
-  Twitter = "TWITTER",
-  Whatsapp = "WHATSAPP",
-}
 
 export interface UserProfileInterface extends UserProfileResponse {
   hasContact(channel: UserProfileContactChannel): boolean;
