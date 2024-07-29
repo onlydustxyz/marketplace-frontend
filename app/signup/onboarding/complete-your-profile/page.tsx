@@ -13,7 +13,6 @@ import { Paper } from "components/atoms/paper";
 import { Textarea } from "components/atoms/textarea";
 import { BaseLink } from "components/layout/base-link/base-link";
 import { Translate } from "components/layout/translate/translate";
-import { Stepper } from "components/molecules/stepper";
 import { SignupTemplate } from "components/templates/signup-template/signup-template";
 
 import { NEXT_ROUTER } from "constants/router";
@@ -56,29 +55,10 @@ export default function CompleteYourProfilePage() {
         <Paper container={"2"} classNames={{ base: "flex flex-col gap-6 min-h-full" }}>
           <div className="grid gap-3">
             <div className={"flex items-center justify-between gap-3"}>
-              <div className="whitespace-nowrap">
-                <StepHeader
-                  step={2}
-                  stepPath={"/signup/onboarding"}
-                  subStep={{ token: "v2.pages.signup.onboarding.completeYourProfile.title" }}
-                />
-              </div>
-
-              <Stepper
-                steps={[
-                  {
-                    value: 100,
-                  },
-                  {
-                    value: 100,
-                  },
-                  {
-                    value: 0,
-                  },
-                ]}
-                classNames={{
-                  base: "w-[38%]",
-                }}
+              <StepHeader
+                step={2}
+                stepPath={"/signup/onboarding"}
+                subStep={{ token: "v2.pages.signup.onboarding.completeYourProfile.title" }}
               />
             </div>
 
