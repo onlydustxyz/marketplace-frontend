@@ -9,6 +9,7 @@ import { TProjectRecommendationContext } from "app/signup/onboarding/project-rec
 
 import { Paper } from "components/atoms/paper";
 import { RadioGroup } from "components/atoms/radio-group";
+import { Switch } from "components/atoms/switch";
 import { Typo } from "components/atoms/typo";
 
 import { Key } from "hooks/translate/use-translate";
@@ -80,6 +81,36 @@ export function Goals(_: TGoals.Props) {
               }))}
             />
           </div>
+        )}
+      />
+      <Controller
+        control={control}
+        name={"isLookingForAJob"}
+        render={({ field: { value, onChange } }) => (
+          <Paper
+            size={"s"}
+            container={"transparent"}
+            classNames={{ base: "flex flex-row gap-2 items-center justify-start" }}
+          >
+            <Paper
+              size={"m"}
+              container={"3"}
+              classNames={{ base: "flex items-center justify-center rounded-lg px-2.5" }}
+            >
+              <Switch isActive={value || false} onChange={onChange} />
+            </Paper>
+            <div className="flex flex-1 flex-col">
+              <Typo
+                size="l"
+                weight={"medium"}
+                translate={{ token: "v2.pages.signup.onboarding.projectRecommendations.goal.lookingForAJob.title" }}
+              />
+              <Typo
+                size="s"
+                translate={{ token: "v2.pages.signup.onboarding.projectRecommendations.goal.lookingForAJob.content" }}
+              />
+            </div>
+          </Paper>
         )}
       />
     </Paper>
