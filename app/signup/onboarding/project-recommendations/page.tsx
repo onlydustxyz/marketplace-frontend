@@ -1,8 +1,13 @@
-import React from "react";
+"use client";
+
+import React, { useContext } from "react";
 
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
 import { StepHeader } from "app/signup/components/step-header/step-header";
-import { ProjectRecommendationContextProvider } from "app/signup/onboarding/project-recommendations/context/project-recommendations.context";
+import {
+  ProjectRecommendationContext,
+  ProjectRecommendationContextProvider,
+} from "app/signup/onboarding/project-recommendations/context/project-recommendations.context";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
@@ -28,13 +33,16 @@ function Footer() {
       <Button
         translate={{ token: "v2.pages.signup.onboarding.projectRecommendations.actions.next" }}
         endIcon={{ remixName: "ri-arrow-right-s-line" }}
+        type={"submit"}
       />
     </div>
   );
 }
-function projectRecommendationsPage() {
+
+function SafeProjectRecommendationsPage() {
+  const { onSubmit } = useContext(ProjectRecommendationContext);
   return (
-    <ProjectRecommendationContextProvider>
+    <form onSubmit={onSubmit}>
       <SignupTemplate header={<AccountAlreadyExist />} footer={<Footer />}>
         <div className="flex w-full flex-col gap-3">
           <Paper container={"2"}>
@@ -49,6 +57,13 @@ function projectRecommendationsPage() {
           <Categories />
         </div>
       </SignupTemplate>
+    </form>
+  );
+}
+function projectRecommendationsPage() {
+  return (
+    <ProjectRecommendationContextProvider>
+      <SafeProjectRecommendationsPage />
     </ProjectRecommendationContextProvider>
   );
 }

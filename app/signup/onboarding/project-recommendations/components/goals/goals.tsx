@@ -58,6 +58,7 @@ export function CustomRadioComponent({
 export function Goals(_: TGoals.Props) {
   const { goals } = useContext(ProjectRecommendationContext);
   const { control } = useFormContext<TProjectRecommendationContext.form>();
+
   return (
     <Paper container={"2"} classNames={{ base: "flex flex-col gap-3" }}>
       <Title

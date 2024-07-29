@@ -9,6 +9,7 @@ export namespace TProjectRecommendationContext {
   export interface Return {
     categories: ProjectCategoryInterface[];
     goals: Goals[];
+    onSubmit(): void;
   }
 
   export const validation = z.object({
