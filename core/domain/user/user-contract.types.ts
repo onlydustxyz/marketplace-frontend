@@ -72,3 +72,11 @@ export type GetMeResponse = components["schemas"]["GetMeResponse"];
 export type GetMeResponsePortParams = HttpClientParameters<object>;
 
 export type GetMeResponsePortResponse = HttpStorageResponse<UserInterface>;
+
+/* --------------------------------- Set me --------------------------------- */
+
+export type SetMeBody = components["schemas"]["PatchMeContract"];
+
+export type SetMePortParams = HttpClientParameters<object>;
+
+export type SetMePortResponse = HttpStorageResponse<UserInterface, SetMeBody>;

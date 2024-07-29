@@ -1,6 +1,8 @@
 "use client";
 
+import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { bootstrap } from "core/bootstrap";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
@@ -10,26 +12,30 @@ import { Title } from "app/signup/components/title/title";
 import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
 import { Switch } from "components/atoms/switch";
+import { toast } from "components/atoms/toaster";
 import { Typo } from "components/atoms/typo";
 import { BaseLink } from "components/layout/base-link/base-link";
 import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 import { Translate } from "components/layout/translate/translate";
 import { SignupTemplate } from "components/templates/signup-template/signup-template";
 
-function Footer() {
+import { NEXT_ROUTER } from "constants/router";
+
+function Footer({ isDisabled, onClick }: { isDisabled: boolean; onClick: () => void }) {
   return (
     <div className="flex w-full flex-row justify-end gap-2">
       <Button
-        variant="secondary-light"
-        translate={{ token: "v2.pages.signup.onboarding.tunnel.actions.back" }}
+        variant={"secondary-light"}
+        translate={{ token: "v2.pages.signup.onboarding.projectRecommendations.actions.back" }}
         as={BaseLink}
-        htmlProps={{ href: "/signup" }}
+        htmlProps={{ href: NEXT_ROUTER.signup.onboarding.root }}
         startIcon={{ remixName: "ri-arrow-left-s-line" }}
       />
       <Button
-        variant="secondary-light"
-        translate={{ token: "v2.pages.signup.onboarding.tunnel.actions.skip" }}
+        translate={{ token: "v2.pages.signup.onboarding.projectRecommendations.actions.next" }}
         endIcon={{ remixName: "ri-arrow-right-s-line" }}
+        isDisabled={isDisabled}
+        onClick={onClick}
       />
     </div>
   );
@@ -37,20 +43,41 @@ function Footer() {
 
 // Big paragraph is not translated
 function TermsAndConditionsPage() {
-  const [isActive, setIsActive] = useState<boolean>(false);
+  const [isTermsAccepted, setIsTermsAccepted] = useState<boolean>(false);
+
+  const router = useRouter();
 
   const termsUrls = bootstrap.getLegalHelperPort().urls;
 
   function handleSwitchChange() {
-    setIsActive(!isActive);
+    setIsTermsAccepted(!isTermsAccepted);
+  }
+
+  const { mutateAsync: setMe } = UserReactQueryAdapter.client.useSetMe({
+    options: {
+      onSuccess: () => {
+        toast.default(<Translate token={"v2.pages.signup.onboarding.common.updateProfile.toast.success"} />);
+        router.push(NEXT_ROUTER.signup.onboarding.root);
+      },
+      onError: () => {
+        toast.error(<Translate token={"v2.pages.signup.onboarding.common.updateProfile.toast.error"} />);
+      },
+    },
+  });
+
+  function handleSubmit() {
+    setMe({ hasAcceptedTermsAndConditions: isTermsAccepted });
   }
 
   return (
-    <SignupTemplate header={<AccountAlreadyExist />} footer={<Footer />}>
+    <SignupTemplate
+      header={<AccountAlreadyExist />}
+      footer={<Footer isDisabled={!isTermsAccepted} onClick={handleSubmit} />}
+    >
       <Paper container="2" classNames={{ base: "flex flex-col gap-3 h-full" }}>
         <StepHeader
           step={2}
-          stepPath="/signup/onboarding"
+          stepPath={NEXT_ROUTER.signup.onboarding.root}
           subStep={{ token: "v2.pages.signup.onboarding.tunnel.steps.terms.title" }}
         />
 
@@ -167,7 +194,7 @@ function TermsAndConditionsPage() {
           }}
         >
           <Paper container="3" size="s">
-            <Switch onChange={handleSwitchChange} isActive={isActive} />
+            <Switch onChange={handleSwitchChange} isActive={isTermsAccepted} />
           </Paper>
 
           <div className="flex flex-col">

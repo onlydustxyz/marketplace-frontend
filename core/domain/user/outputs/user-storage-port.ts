@@ -7,6 +7,8 @@ import {
   GetMyProfilePortResponse,
   RegisterToHackathonPortParams,
   RegisterToHackathonPortResponse,
+  SetMePortParams,
+  SetMePortResponse,
   SetMyNotificationSettingsPortParams,
   SetMyNotificationSettingsPortResponse,
   SetMyProfilePortParams,
@@ -21,4 +23,5 @@ export interface UserStoragePort {
   getMyNotificationSettings(params: GetMyNotificationSettingsPortParams): GetMyNotificationSettingsPortResponse;
   setMyNotificationSettings(params: SetMyNotificationSettingsPortParams): SetMyNotificationSettingsPortResponse;
   getMe(params: GetMeResponsePortParams): GetMeResponsePortResponse;
+  setMe(params: SetMePortParams): SetMePortResponse;
 }

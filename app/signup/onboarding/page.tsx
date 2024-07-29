@@ -41,7 +41,7 @@ function OnboardingPage() {
   return (
     <SignupTemplate header={<AccountAlreadyExist />} footer={<Footer />}>
       <Paper container={"2"} classNames={{ base: "flex flex-col gap-3 min-h-full" }}>
-        <StepHeader step={2} stepPath={"/signup/onboarding"} />
+        <StepHeader step={2} stepPath={NEXT_ROUTER.signup.onboarding.root} />
         <Title
           title={{ token: "v2.pages.signup.onboarding.tunnel.title" }}
           content={{ token: "v2.pages.signup.onboarding.tunnel.content" }}
