@@ -74,5 +74,9 @@ export const NEXT_ROUTER = {
   },
   signup: {
     root: "/signup",
+    onboarding: {
+      root: "/signup/onboarding",
+      projectRecommendations: "/signup/onboarding/project-recommendations",
+    },
   },
 } as const;

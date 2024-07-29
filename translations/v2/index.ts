@@ -52,6 +52,7 @@ import en_settings_payout from "./en/pages/settings-payout.json";
 import en_settings_profile from "./en/pages/settings-profile.json";
 import en_signup_account_already_exist from "./en/pages/signup/account-already-exist.json";
 import en_signup_onboarding_common from "./en/pages/signup/onboarding/onboarding-common.json";
+import en_signup_onboarding_project_recommendations from "./en/pages/signup/onboarding/onboarding-project-recommendations.json";
 import en_signup_onboarding_tunnel from "./en/pages/signup/onboarding/onboarding-tunnel.json";
 import en_signup_signin_section from "./en/pages/signup/signin-section.json";
 import en_signup_signup_section from "./en/pages/signup/signup-section.json";
@@ -146,6 +147,7 @@ export const en = {
         onboarding: {
           common: en_signup_onboarding_common,
           tunnel: en_signup_onboarding_tunnel,
+          projectRecommendations: en_signup_onboarding_project_recommendations,
         },
       },
     },
