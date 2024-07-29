@@ -13,5 +13,30 @@
   "toast": {
     "error": "An error occurred while saving your information. Please try again later.",
     "success": "Information saved successfully."
+  },
+  "fields": {
+    "individual": {
+      "title": "Individual",
+      "points": {
+        "1": "when you don’t have a legal structure",
+        "2": "The annual reward amount is limited based on your tax residency.",
+        "3": "requires identity verification"
+      }
+    },
+    "selfEmployed": {
+      "title": "Self-employed",
+      "points": {
+        "1": "when you have a legal structure for yourself",
+        "2": "requires business verification"
+      }
+    },
+    "company": {
+      "title": "Organisation",
+      "points": {
+        "1": "when you have a legal structure",
+        "2": "when you manage a team of contributors",
+        "3": "requires business verification required"
+      }
+    }
   }
 }
