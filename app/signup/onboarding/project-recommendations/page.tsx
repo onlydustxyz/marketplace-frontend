@@ -2,6 +2,7 @@ import React from "react";
 
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
 import { StepHeader } from "app/signup/components/step-header/step-header";
+import { ProjectRecommendationContextProvider } from "app/signup/onboarding/project-recommendations/context/project-recommendations.context";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
@@ -33,20 +34,22 @@ function Footer() {
 }
 function projectRecommendationsPage() {
   return (
-    <SignupTemplate header={<AccountAlreadyExist />} footer={<Footer />}>
-      <div className="flex w-full flex-col gap-3">
-        <Paper container={"2"}>
-          <StepHeader
-            step={2}
-            stepPath={NEXT_ROUTER.signup.onboarding.root}
-            subStep={{ token: "v2.pages.signup.onboarding.tunnel.title" }}
-          />
-        </Paper>
-        <Languages />
-        <Goals />
-        <Categories />
-      </div>
-    </SignupTemplate>
+    <ProjectRecommendationContextProvider>
+      <SignupTemplate header={<AccountAlreadyExist />} footer={<Footer />}>
+        <div className="flex w-full flex-col gap-3">
+          <Paper container={"2"}>
+            <StepHeader
+              step={2}
+              stepPath={NEXT_ROUTER.signup.onboarding.root}
+              subStep={{ token: "v2.pages.signup.onboarding.tunnel.title" }}
+            />
+          </Paper>
+          <Languages />
+          <Goals />
+          <Categories />
+        </div>
+      </SignupTemplate>
+    </ProjectRecommendationContextProvider>
   );
 }
 

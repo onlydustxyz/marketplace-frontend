@@ -2,9 +2,9 @@ import { components } from "src/__generated/api";
 
 export type ProjectCategoriesResponse = components["schemas"]["ProjectCategoryResponse"];
 
-interface ProjectInterface extends ProjectCategoriesResponse {}
+export interface ProjectCategoryInterface extends ProjectCategoriesResponse {}
 
-export class ProjectCategory implements ProjectInterface {
+export class ProjectCategory implements ProjectCategoryInterface {
   id!: ProjectCategoriesResponse["id"];
   slug!: ProjectCategoriesResponse["slug"];
   name!: ProjectCategoriesResponse["name"];
