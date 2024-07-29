@@ -1,4 +1,5 @@
 import { HackathonStoragePort } from "core/domain/hackathon/outputs/hackathon-storage-port";
+import { ProjectCategoriesStoragePort } from "core/domain/project-categories/outputs/project-categories-storage-port";
 import { ProjectStoragePort } from "core/domain/project/outputs/project-storage-port";
 import { UserStoragePort } from "core/domain/user/outputs/user-storage-port";
 import { ContactAdapter } from "core/helpers/contact/contact-adapter";
@@ -12,6 +13,7 @@ import { LegalFacadePort } from "core/helpers/legal/legal-facade-port";
 import { UrlAdapter } from "core/helpers/url/url-adapter";
 import { UrlFacadePort } from "core/helpers/url/url-facade-port";
 import { HackathonClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/hackathon-client-adapter";
+import { ProjectCategoriesClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/project-categories-client-adapter";
 import { ProjectClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/project-client-adapter";
 import { UserClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/user-client-adapter";
 import { AuthProvider } from "core/infrastructure/marketplace-api-client-adapter/auth/auth-provider";
@@ -25,6 +27,8 @@ export interface BootstrapConstructor {
   hackathonStoragePortForServer: HackathonStoragePort;
   userStoragePortForClient: UserStoragePort;
   userStoragePortForServer: UserStoragePort;
+  projectCategoriesStoragePortForClient: ProjectCategoriesStoragePort;
+  projectCategoriesStoragePortForServer: ProjectCategoriesStoragePort;
   dateHelperPort: DateFacadePort;
   urlHelperPort: UrlFacadePort;
   imageHelperPort: ImageFacadePort;
@@ -42,6 +46,8 @@ export class Bootstrap {
   hackathonStoragePortForServer: HackathonStoragePort;
   userStoragePortForClient: UserStoragePort;
   userStoragePortForServer: UserStoragePort;
+  projectCategoriesStoragePortForClient: ProjectCategoriesStoragePort;
+  projectCategoriesStoragePortForServer: ProjectCategoriesStoragePort;
   dateHelperPort: DateFacadePort;
   urlHelperPort: UrlFacadePort;
   imageHelperPort: ImageFacadePort;
@@ -55,6 +61,8 @@ export class Bootstrap {
     this.hackathonStoragePortForServer = constructor.hackathonStoragePortForServer;
     this.userStoragePortForClient = constructor.userStoragePortForClient;
     this.userStoragePortForServer = constructor.userStoragePortForServer;
+    this.projectCategoriesStoragePortForClient = constructor.projectCategoriesStoragePortForClient;
+    this.projectCategoriesStoragePortForServer = constructor.projectCategoriesStoragePortForServer;
     this.dateHelperPort = constructor.dateHelperPort;
     this.urlHelperPort = constructor.urlHelperPort;
     this.imageHelperPort = constructor.imageHelperPort;
@@ -98,6 +106,14 @@ export class Bootstrap {
     return this.userStoragePortForClient;
   }
 
+  getProjectCategoriesStoragePortForServer() {
+    return this.projectCategoriesStoragePortForServer;
+  }
+
+  getProjectCategoriesStoragePortForClient() {
+    return this.projectCategoriesStoragePortForClient;
+  }
+
   getUserStoragePortForServer() {
     return this.userStoragePortForServer;
   }
@@ -131,6 +147,8 @@ export class Bootstrap {
         hackathonStoragePortForServer: new HackathonClientAdapter(new FetchHttpClient()),
         userStoragePortForClient: new UserClientAdapter(new FetchHttpClient()),
         userStoragePortForServer: new UserClientAdapter(new FetchHttpClient()),
+        projectCategoriesStoragePortForClient: new ProjectCategoriesClientAdapter(new FetchHttpClient()),
+        projectCategoriesStoragePortForServer: new ProjectCategoriesClientAdapter(new FetchHttpClient()),
         dateHelperPort: DateFnsAdapter,
         urlHelperPort: UrlAdapter,
         imageHelperPort: new ImageAdapter(),

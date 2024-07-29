@@ -1,7 +1,6 @@
 "use client";
 
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
-import React from "react";
 
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
 import { StepHeader } from "app/signup/components/step-header/step-header";
@@ -13,6 +12,8 @@ import { Paper } from "components/atoms/paper";
 import { BaseLink } from "components/layout/base-link/base-link";
 import { SignupTemplate } from "components/templates/signup-template/signup-template";
 
+import { NEXT_ROUTER } from "constants/router";
+
 function Footer() {
   return (
     <div className="flex w-full flex-row justify-end gap-2">
@@ -20,7 +21,7 @@ function Footer() {
         variant={"secondary-light"}
         translate={{ token: "v2.pages.signup.onboarding.tunnel.actions.back" }}
         as={BaseLink}
-        htmlProps={{ href: "/signup" }}
+        htmlProps={{ href: NEXT_ROUTER.signup.root }}
         startIcon={{ remixName: "ri-arrow-left-s-line" }}
       />
       <Button
@@ -68,7 +69,7 @@ function OnboardingPage() {
             icon={{ remixName: "ri-medal-2-fill" }}
             type={"recommended"}
             isDone={user.hasCompletedProjectRecommendations}
-            path={"/signup"}
+            path={NEXT_ROUTER.signup.onboarding.projectRecommendations}
           />
           <TunnelStep
             title={{ token: "v2.pages.signup.onboarding.tunnel.steps.profile.title" }}

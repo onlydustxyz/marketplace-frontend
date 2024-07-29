@@ -30,7 +30,6 @@ export function useSetMyProfile({
           //  /api/v1/me/billing-profiles
           //
           //  invalidatesTags: [{ queryKey: MeApi.tags.all, exact: false }],
-          options?.onSuccess?.(data, variables, context);
 
           await queryClient.invalidateQueries({
             queryKey: userStoragePort.getMyProfile({}).tag,
@@ -38,6 +37,8 @@ export function useSetMyProfile({
           });
 
           await revalidateNextJsPath("/u/[githubLogin]", "page");
+
+          options?.onSuccess?.(data, variables, context);
         },
       },
     })

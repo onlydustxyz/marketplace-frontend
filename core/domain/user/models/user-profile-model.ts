@@ -1,4 +1,4 @@
-import { UserProfileContactChannel } from "core/domain/user/models/user.types";
+import { UserProfileContact, UserProfileContactChannel } from "core/domain/user/models/user.types";
 
 import { components } from "src/__generated/api";
 
@@ -6,13 +6,9 @@ type UserProfileResponse = components["schemas"]["PrivateUserProfileResponse"];
 
 export interface UserProfileInterface extends UserProfileResponse {
   hasContact(channel: UserProfileContactChannel): boolean;
-  getContact(channel: UserProfileContactChannel):
-    | {
-        channel: `${UserProfileContactChannel}`;
-        contact?: string;
-        visibility: "public" | "private";
-      }
-    | undefined;
+  getContact(channel: UserProfileContactChannel): UserProfileContact | undefined;
+  getContactEmail(): UserProfileContact | undefined;
+  getContactTelegram(): UserProfileContact | undefined;
   setContact(params: { channel: UserProfileContactChannel; contact: string; visibility?: "public" | "private" }): void;
 }
 
@@ -41,6 +37,14 @@ export class UserProfile implements UserProfileInterface {
 
   getContact(channel: UserProfileContactChannel) {
     return this.contacts?.find(c => c.channel === channel && c.contact);
+  }
+
+  getContactEmail() {
+    return this.getContact(UserProfileContactChannel.email);
+  }
+
+  getContactTelegram() {
+    return this.getContact(UserProfileContactChannel.telegram);
   }
 
   private sanitizeChannelContact(contact: string) {
