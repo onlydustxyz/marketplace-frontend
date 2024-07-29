@@ -1,0 +1,17 @@
+{
+  "title": "Which type of profile is relevant to you?",
+  "stepTitle": "Payout information",
+  "subtitle": "You can create multiple billing profiles if necessary. Also don’t worry about picking the wrong type, you can update your setup anytime",
+  "form": {
+
+  },
+  "specialMention": "",
+  "footer": {
+    "back": "Back",
+    "next": "Next"
+  },
+  "toast": {
+    "error": "An error occurred while saving your information. Please try again later.",
+    "success": "Information saved successfully."
+  }
+}
