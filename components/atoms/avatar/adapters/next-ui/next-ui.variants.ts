@@ -17,7 +17,7 @@ export const AvatarNextUiVariants = tv({
         base: "h-12 w-12",
       },
       l: {
-        base: "h-11 w-11",
+        base: "h-10 w-10",
       },
       ml: {
         base: "h-9 w-9",

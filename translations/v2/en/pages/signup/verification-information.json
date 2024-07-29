@@ -1,0 +1,29 @@
+{
+  "title": "Verification information",
+  "subtitle": "To create your account, we need some basic information:",
+  "form": {
+    "githubAccount": {
+      "label": "GitHub Account",
+      "placeholder": "Enter your GitHub username"
+    },
+    "contactEmail": {
+      "label": "Contact Email",
+      "placeholder": "Enter your email address",
+      "tag": "Mandatory"
+    },
+    "telegram": {
+      "label": "Telegram",
+      "placeholder": "Enter your Telegram username",
+      "tag": "Recommended"
+    }
+  },
+  "specialMention": "All information will be used only by OnlyDust and will only be public if you authorize it.",
+  "footer": {
+    "back": "Back",
+    "next": "Next"
+  },
+  "toast": {
+    "error": "An error occurred while saving your information. Please try again later.",
+    "success": "Information saved successfully."
+  }
+}
