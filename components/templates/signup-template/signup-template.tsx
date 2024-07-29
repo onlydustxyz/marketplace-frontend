@@ -17,7 +17,7 @@ export function SignupTemplate({ children, header, aside, footer }: TSignupTempl
           base: cn(
             "flex h-full max-h-[800px] overflow-hidden max-w-[1000px] w-full flex-col gap-2 md:bg-container-1",
             "p-0 bg-transparent border-0",
-            "md:p-2 md:border-1 md:bg-container-1"
+            "md:p-3 md:border-1 md:bg-container-1"
           ),
         }}
         container="1"
@@ -25,7 +25,7 @@ export function SignupTemplate({ children, header, aside, footer }: TSignupTempl
         <div className="flex w-full flex-row justify-center py-4 md:hidden">
           <Image src={logo} alt="Onlydust" className="h-auto w-[163px]" />
         </div>
-        {header && <div className="hidden h-auto w-full py-2 md:block">{header}</div>}
+        {header && <div className="hidden h-auto w-full md:block">{header}</div>}
         <div className="flew-row flex w-full flex-1 gap-3 overflow-hidden">
           <div className="hidden h-full w-[250px] md:block lg:w-[350px]">{aside || <SignupAside />}</div>
           <div className="h-full flex-1">

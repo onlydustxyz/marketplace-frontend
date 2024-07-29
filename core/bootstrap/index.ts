@@ -1,6 +1,8 @@
 import { HackathonStoragePort } from "core/domain/hackathon/outputs/hackathon-storage-port";
 import { ProjectStoragePort } from "core/domain/project/outputs/project-storage-port";
 import { UserStoragePort } from "core/domain/user/outputs/user-storage-port";
+import { ContactAdapter } from "core/helpers/contact/contact-adapter";
+import { ContactFacadePort } from "core/helpers/contact/contact-facade-port";
 import { DateFacadePort } from "core/helpers/date/date-facade-port";
 import { DateFnsAdapter } from "core/helpers/date/date-fns-adapter";
 import { ImageAdapter } from "core/helpers/image/image-adapter";
@@ -24,6 +26,7 @@ export interface BootstrapConstructor {
   dateHelperPort: DateFacadePort;
   urlHelperPort: UrlFacadePort;
   imageHelperPort: ImageFacadePort;
+  contactHelperPort: ContactFacadePort;
 }
 
 export class Bootstrap {
@@ -39,6 +42,7 @@ export class Bootstrap {
   dateHelperPort: DateFacadePort;
   urlHelperPort: UrlFacadePort;
   imageHelperPort: ImageFacadePort;
+  contactHelperPort: ContactFacadePort;
 
   constructor(constructor: BootstrapConstructor) {
     this.projectStoragePortForClient = constructor.projectStoragePortForClient;
@@ -50,6 +54,7 @@ export class Bootstrap {
     this.dateHelperPort = constructor.dateHelperPort;
     this.urlHelperPort = constructor.urlHelperPort;
     this.imageHelperPort = constructor.imageHelperPort;
+    this.contactHelperPort = constructor.contactHelperPort;
   }
 
   getAuthProvider() {
@@ -104,6 +109,10 @@ export class Bootstrap {
     return this.imageHelperPort;
   }
 
+  getContactHelperPort() {
+    return this.contactHelperPort;
+  }
+
   public static get getBootstrap(): Bootstrap {
     if (!Bootstrap.#instance) {
       this.newBootstrap({
@@ -116,6 +125,7 @@ export class Bootstrap {
         dateHelperPort: DateFnsAdapter,
         urlHelperPort: UrlAdapter,
         imageHelperPort: new ImageAdapter(),
+        contactHelperPort: new ContactAdapter(),
       });
     }
 

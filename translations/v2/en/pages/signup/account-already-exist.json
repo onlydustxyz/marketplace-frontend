@@ -1,4 +1,5 @@
 {
   "label": "Already have an account?",
-  "link": "Sign in"
+  "link": "Sign in",
+  "disconnect": "Disconnect"
 }

@@ -19,7 +19,8 @@ export function useSetMyProfile({
     useMutationAdapter({
       ...userStoragePort.setMyProfile({}),
       options: {
-        onSuccess: async () => {
+        ...options,
+        onSuccess: async (data, variables, context) => {
           // TODO @hayden invalidate all /me queries like before
           //  /api/v1/me/payout-preferences
           //  /api/v1/me
@@ -29,6 +30,7 @@ export function useSetMyProfile({
           //  /api/v1/me/billing-profiles
           //
           //  invalidatesTags: [{ queryKey: MeApi.tags.all, exact: false }],
+          options?.onSuccess?.(data, variables, context);
 
           await queryClient.invalidateQueries({
             queryKey: userStoragePort.getMyProfile({}).tag,
@@ -37,7 +39,6 @@ export function useSetMyProfile({
 
           await revalidateNextJsPath("/u/[githubLogin]", "page");
         },
-        ...options,
       },
     })
   );
