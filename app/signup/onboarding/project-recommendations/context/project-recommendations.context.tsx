@@ -9,6 +9,7 @@ import { TProjectRecommendationContext } from "./project-recommendations.context
 
 export const ProjectRecommendationContext = createContext<TProjectRecommendationContext.Return>({
   categories: [],
+  goals: [],
 });
 
 export function ProjectRecommendationContextProvider({ children }: TProjectRecommendationContext.Props) {
@@ -28,6 +29,7 @@ export function ProjectRecommendationContextProvider({ children }: TProjectRecom
     <ProjectRecommendationContext.Provider
       value={{
         categories: categories?.categories || [],
+        goals: ["earn", "learn", "challenge", "notoriety"],
       }}
     >
       <FormProvider {...form}>{children}</FormProvider>
