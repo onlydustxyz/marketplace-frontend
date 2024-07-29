@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
+import { UserProfileContactChannel } from "core/domain/user/models/user.types";
 import React, { useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -49,34 +50,37 @@ export default function VerificationInformationPage() {
   const { control, handleSubmit, reset } = useForm<TVerificationInformation.form>({
     resolver: zodResolver(TVerificationInformation.validation),
     defaultValues: {
-      email: userProfile?.contacts?.find(contact => contact.channel === "EMAIL")?.contact,
-      telegram: userProfile?.contacts?.find(contact => contact.channel === "TELEGRAM")?.contact,
+      email: userProfile?.getContact(UserProfileContactChannel.email)?.contact,
+      telegram: userProfile?.getContact(UserProfileContactChannel.telegram)?.contact,
     },
   });
 
   useEffect(() => {
     if (userProfile) {
       reset({
-        email: userProfile?.contacts?.find(contact => contact.channel === "EMAIL")?.contact,
-        telegram: userProfile?.contacts?.find(contact => contact.channel === "TELEGRAM")?.contact,
+        email: userProfile.getContact(UserProfileContactChannel.email)?.contact,
+        telegram: userProfile.getContact(UserProfileContactChannel.telegram)?.contact,
       });
     }
   }, [userProfile]);
 
   async function handleSetMyProfile(data: TVerificationInformation.form) {
+    if (!userProfile) return;
+
+    userProfile.setContact({
+      channel: UserProfileContactChannel.email,
+      contact: data.email,
+      visibility: userProfile?.getContact(UserProfileContactChannel.email)?.visibility,
+    });
+
+    userProfile.setContact({
+      channel: UserProfileContactChannel.telegram,
+      contact: data.telegram,
+      visibility: userProfile?.getContact(UserProfileContactChannel.telegram)?.visibility,
+    });
+
     await setMyProfile({
-      contacts: [
-        {
-          channel: "EMAIL",
-          contact: data.email,
-          visibility: userProfile?.contacts?.find(contact => contact.channel === "EMAIL")?.visibility ?? "public",
-        },
-        {
-          channel: "TELEGRAM",
-          contact: data.telegram,
-          visibility: userProfile?.contacts?.find(contact => contact.channel === "TELEGRAM")?.visibility ?? "public",
-        },
-      ],
+      contacts: userProfile.contacts,
     }).then(() => {
       // TODO @Mehdi add redirection to Terms and condition
     });
