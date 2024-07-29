@@ -7,6 +7,9 @@ import { useRouter } from "next/navigation";
 import { createContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
+import { toast } from "components/atoms/toaster";
+import { Translate } from "components/layout/translate/translate";
+
 import { NEXT_ROUTER } from "constants/router";
 
 import { TProjectRecommendationContext } from "./project-recommendations.context.type";
@@ -28,14 +31,23 @@ export function ProjectRecommendationContextProvider({ children }: TProjectRecom
     },
   });
 
-  const { mutateAsync: setMyProfile } = UserReactQueryAdapter.client.useSetMyProfile();
+  const { mutateAsync: setMyProfile } = UserReactQueryAdapter.client.useSetMyProfile({
+    options: {
+      onSuccess: () => {
+        toast.default(<Translate token={"v2.pages.signup.onboarding.common.updateProfile.toast.success"} />);
+      },
+      onError: () => {
+        toast.error(<Translate token={"v2.pages.signup.onboarding.common.updateProfile.toast.error"} />);
+      },
+    },
+  });
 
   async function onSubmit(data: TProjectRecommendationContext.form) {
     try {
       await setMyProfile({ ...data, goal: data.goal as TProjectRecommendationContext.Goals });
       router.push(NEXT_ROUTER.signup.onboarding.root);
     } catch {
-      // TODO toaster
+      //
     }
   }
 

@@ -1,3 +1,9 @@
 {
-  "step": "Step __step__"
+  "step": "Step __step__",
+  "updateProfile": {
+    "toast": {
+      "error": "An error occurred while saving your information. Please try again later.",
+      "success": "Information saved successfully."
+    }
+  }
 }
