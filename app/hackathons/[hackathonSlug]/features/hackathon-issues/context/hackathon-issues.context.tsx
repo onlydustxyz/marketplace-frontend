@@ -43,6 +43,7 @@ export function HackathonIssuesContextProvider({ children, hackathonId }: THacka
       search: filters.search || undefined,
       languageIds: filters.languageIds.length ? filters.languageIds : undefined,
       isAssigned: filters.availability === "all" ? undefined : filters.availability === "available" ? false : true,
+      statuses: ["OPEN"],
     });
   }, [filters]);
 

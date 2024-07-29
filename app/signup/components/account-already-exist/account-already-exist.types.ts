@@ -1,3 +1,5 @@
 export namespace TAccountAlreadyExist {
-  export interface Props {}
+  export interface Props {
+    showDisconnectButton?: boolean;
+  }
 }

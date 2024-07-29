@@ -1,4 +1,5 @@
 import { BootstrapConstructor } from "core/bootstrap/index";
+import { ContactAdapterMock } from "core/helpers/contact/contact-adapter-mock";
 import { DateAdapterMock } from "core/helpers/date/date-adapter-mock";
 import { ImageAdapterMock } from "core/helpers/image/image-adapter-mock";
 import { UrlAdapterMock } from "core/helpers/url/url-adapter-mock";
@@ -19,4 +20,5 @@ export const bootstrapConstructorMock: BootstrapConstructor = {
   dateHelperPort: DateAdapterMock,
   urlHelperPort: UrlAdapterMock,
   imageHelperPort: new ImageAdapterMock(),
+  contactHelperPort: new ContactAdapterMock(),
 };

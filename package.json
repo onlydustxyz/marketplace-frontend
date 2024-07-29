@@ -75,6 +75,7 @@
     "remark-gfm": "^3.0.1",
     "remixicon": "^4.3.0",
     "sharp": "^0.33.4",
+    "sonner": "^1.5.0",
     "tailwind-merge": "^1.14.0",
     "tailwind-scrollbar": "^2.1.0",
     "tailwind-variants": "^0.1.20",
