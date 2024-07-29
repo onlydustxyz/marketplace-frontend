@@ -1,4 +1,4 @@
-import { ChangeEvent, ComponentPropsWithoutRef, ReactNode } from "react";
+import { ComponentPropsWithoutRef, ReactNode } from "react";
 
 type htmlInputProps = ComponentPropsWithoutRef<"input">;
 
@@ -15,8 +15,7 @@ interface ClassNames {
 
 export interface InputPort extends htmlInputProps, Partial<Variants> {
   classNames?: Partial<ClassNames>;
-  value: string;
-  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  value?: string;
   isError?: boolean;
   startContent?: ReactNode;
   endContent?: ReactNode;
