@@ -2,7 +2,6 @@ import { bootstrap } from "core/bootstrap";
 import { z } from "zod";
 
 export namespace TVerificationInformation {
-  console.log(bootstrap.getContactHelperPort().regex.telegram);
   export const validation = z.object({
     email: z.string().min(1),
     telegram: z

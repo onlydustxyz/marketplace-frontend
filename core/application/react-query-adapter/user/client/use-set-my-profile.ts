@@ -20,7 +20,7 @@ export function useSetMyProfile({
       ...userStoragePort.setMyProfile({}),
       options: {
         ...options,
-        onSuccess: async () => {
+        onSuccess: async (data, variables, context) => {
           // TODO @hayden invalidate all /me queries like before
           //  /api/v1/me/payout-preferences
           //  /api/v1/me
@@ -30,7 +30,7 @@ export function useSetMyProfile({
           //  /api/v1/me/billing-profiles
           //
           //  invalidatesTags: [{ queryKey: MeApi.tags.all, exact: false }],
-          options?.onSuccess?.();
+          options?.onSuccess?.(data, variables, context);
 
           await queryClient.invalidateQueries({
             queryKey: userStoragePort.getMyProfile({}).tag,

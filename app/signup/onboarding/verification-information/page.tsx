@@ -11,13 +11,12 @@ import { StepHeader } from "app/signup/components/step-header/step-header";
 import { Title } from "app/signup/components/title/title";
 import { TVerificationInformation } from "app/signup/onboarding/verification-information/verification-information.types";
 
-import useMutationAlert from "src/api/useMutationAlert";
-
 import { Avatar } from "components/atoms/avatar";
 import { Button } from "components/atoms/button/variants/button-default";
 import { Input } from "components/atoms/input";
 import { Paper } from "components/atoms/paper";
 import { Tag } from "components/atoms/tag";
+import { toast } from "components/atoms/toaster";
 import { Typo } from "components/atoms/typo";
 import { SignupTemplate } from "components/templates/signup-template/signup-template";
 
@@ -36,20 +35,14 @@ export default function VerificationInformationPage() {
     },
   });
 
-  const {
-    mutateAsync: setMyProfile,
-    isPending: isPendingSetMyProfile,
-    ...restSetMyProfile
-  } = UserReactQueryAdapter.client.useSetMyProfile({
+  const { mutateAsync: setMyProfile, isPending: isPendingSetMyProfile } = UserReactQueryAdapter.client.useSetMyProfile({
     options: {
-      onSuccess,
-    },
-  });
-
-  useMutationAlert({
-    mutation: restSetMyProfile,
-    error: {
-      default: true,
+      onSuccess: () => {
+        toast.default(T("v2.pages.signup.verificationInformation.toast.success"));
+      },
+      onError: () => {
+        toast.error(T("v2.pages.signup.verificationInformation.toast.error"));
+      },
     },
   });
 

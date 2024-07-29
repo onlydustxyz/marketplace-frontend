@@ -21,5 +21,9 @@
   "footer": {
     "back": "Back",
     "next": "Next"
+  },
+  "toast": {
+    "error": "An error occurred while saving your information. Please try again later.",
+    "success": "Information saved successfully."
   }
 }
