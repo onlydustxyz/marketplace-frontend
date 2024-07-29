@@ -67,23 +67,17 @@ export function useCompleteYourProfile() {
   async function handleFormSubmit(values: TCompleteYourProfile.form) {
     if (!userProfile) return;
 
-    userProfile.setFirstName(values.firstName ?? "");
-    userProfile.setLastName(values.lastName ?? "");
-    userProfile.setLocation(values.location ?? "");
-    userProfile.setBio(values.bio ?? "");
-    userProfile.setWebsite(values.website ?? "");
-
     await setMyProfile({
       avatarUrl: userProfile.avatarUrl,
-      location: userProfile.location,
-      bio: userProfile.bio,
-      website: userProfile.website,
+      location: values.location,
+      bio: values.bio,
+      website: values.website,
       technologies: userProfile.technologies,
       contacts: userProfile.contacts,
       allocatedTimeToContribute: userProfile.allocatedTimeToContribute,
       isLookingForAJob: userProfile.isLookingForAJob,
-      firstName: userProfile.firstName,
-      lastName: userProfile.lastName,
+      firstName: values.firstName,
+      lastName: values.lastName,
     });
   }
 
