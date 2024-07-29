@@ -1,4 +1,4 @@
-import { ProjectCategory } from "core/domain/project-categories/models/project-category-model";
+import { ListProjectCategories } from "core/domain/project-categories/models/project-categories-list.model";
 import { ProjectCategoriesStoragePort } from "core/domain/project-categories/outputs/project-categories-storage-port";
 import { GetProjectCategoriesResponse } from "core/domain/project-categories/project-categories-contract.types";
 import { HttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/http-client/http-client";
@@ -21,10 +21,7 @@ export class ProjectCategoriesClientAdapter implements ProjectCategoriesStorageP
         tag,
       });
 
-      return {
-        ...data,
-        categories: data.categories.map(category => new ProjectCategory(category)),
-      };
+      return new ListProjectCategories(data);
     };
 
     return {
