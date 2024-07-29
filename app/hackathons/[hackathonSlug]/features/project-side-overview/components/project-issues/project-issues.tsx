@@ -19,5 +19,12 @@ function Wrapper({ children }: PropsWithChildren) {
 }
 
 export function ProjectIssues({ projectId, hackathonId }: TProjectIssues.Props) {
-  return <IssuesWrapper projectId={projectId} hackathonId={hackathonId} queryParams={{}} Wrapper={Wrapper} />;
+  return (
+    <IssuesWrapper
+      projectId={projectId}
+      hackathonId={hackathonId}
+      queryParams={{ statuses: ["OPEN"] }}
+      Wrapper={Wrapper}
+    />
+  );
 }
