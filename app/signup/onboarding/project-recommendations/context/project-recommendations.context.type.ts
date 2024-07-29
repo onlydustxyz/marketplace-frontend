@@ -15,6 +15,7 @@ export namespace TProjectRecommendationContext {
   export const validation = z.object({
     goal: z.string(),
     categoriesIds: z.array(z.string()).optional(),
+    isLookingForAJob: z.boolean().optional(),
   });
 
   export type form = z.infer<typeof validation>;
