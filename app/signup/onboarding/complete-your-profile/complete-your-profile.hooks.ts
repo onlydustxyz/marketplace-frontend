@@ -72,7 +72,6 @@ export function useCompleteYourProfile() {
       location: values.location,
       bio: values.bio,
       website: values.website,
-      technologies: userProfile.technologies,
       contacts: userProfile.contacts,
       allocatedTimeToContribute: userProfile.allocatedTimeToContribute,
       isLookingForAJob: userProfile.isLookingForAJob,

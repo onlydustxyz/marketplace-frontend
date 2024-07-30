@@ -39,7 +39,7 @@ export function ProjectRecommendationContextProvider({ children }: TProjectRecom
     mode: "all",
     resolver: zodResolver(TProjectRecommendationContext.validation),
     defaultValues: {
-      categoriesIds: [],
+      preferredCategories: [],
       isLookingForAJob: false,
     },
   });
@@ -67,7 +67,7 @@ export function ProjectRecommendationContextProvider({ children }: TProjectRecom
   async function onSubmit(data: TProjectRecommendationContext.form) {
     await setMyProfile({
       ...data,
-      goal: data.goal as TProjectRecommendationContext.Goals,
+      goal: data.goal as TProjectRecommendationContext.Goal,
     });
   }
 
@@ -75,7 +75,7 @@ export function ProjectRecommendationContextProvider({ children }: TProjectRecom
     <ProjectRecommendationContext.Provider
       value={{
         categories: categories?.categories || [],
-        goals: ["earn", "learn", "challenge", "notoriety"],
+        goals: ["LEARN", "CHALLENGE", "EARN", "NOTORIETY"],
         onSubmit: form.handleSubmit(onSubmit),
       }}
     >

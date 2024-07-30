@@ -19,21 +19,21 @@ import { TGoals } from "./goals.types";
 export function CustomRadioComponent({
   goal,
   children,
-}: { goal: TProjectRecommendationContext.Goals } & PropsWithChildren): ReactNode {
-  const translates: { [key in TProjectRecommendationContext.Goals]: { title: Key; content: Key } } = {
-    earn: {
+}: { goal: TProjectRecommendationContext.Goal } & PropsWithChildren): ReactNode {
+  const translates: { [key in TProjectRecommendationContext.Goal]: { title: Key; content: Key } } = {
+    EARN: {
       title: "v2.pages.signup.onboarding.projectRecommendations.goal.choices.money.title",
       content: "v2.pages.signup.onboarding.projectRecommendations.goal.choices.money.content",
     },
-    learn: {
+    LEARN: {
       title: "v2.pages.signup.onboarding.projectRecommendations.goal.choices.skill.title",
       content: "v2.pages.signup.onboarding.projectRecommendations.goal.choices.skill.content",
     },
-    challenge: {
+    CHALLENGE: {
       title: "v2.pages.signup.onboarding.projectRecommendations.goal.choices.challenge.title",
       content: "v2.pages.signup.onboarding.projectRecommendations.goal.choices.challenge.content",
     },
-    notoriety: {
+    NOTORIETY: {
       title: "v2.pages.signup.onboarding.projectRecommendations.goal.choices.notoriety.title",
       content: "v2.pages.signup.onboarding.projectRecommendations.goal.choices.notoriety.content",
     },

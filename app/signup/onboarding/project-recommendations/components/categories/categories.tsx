@@ -17,7 +17,7 @@ export function Categories(_: TCategories.Props) {
   const { control, setValue } = useFormContext<TProjectRecommendationContext.form>();
 
   function onCategoryChange(
-    value: TProjectRecommendationContext.form["categoriesIds"],
+    value: TProjectRecommendationContext.form["preferredCategories"],
     categoryId: string,
     checked: boolean
   ) {
@@ -29,7 +29,7 @@ export function Categories(_: TCategories.Props) {
       newValue.push(categoryId);
     }
 
-    setValue("categoriesIds", newValue, { shouldDirty: true, shouldValidate: true });
+    setValue("preferredCategories", newValue, { shouldDirty: true, shouldValidate: true });
   }
   return (
     <Paper container={"2"} classNames={{ base: "flex flex-col gap-3" }}>
@@ -39,7 +39,7 @@ export function Categories(_: TCategories.Props) {
       />
       <Controller
         control={control}
-        name={"categoriesIds"}
+        name={"preferredCategories"}
         render={({ field: { value } }) => (
           <div className="flex w-full flex-row flex-wrap gap-2">
             {categories.map(category => (
