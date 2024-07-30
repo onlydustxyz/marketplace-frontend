@@ -154,6 +154,7 @@ describe("formatToData", () => {
       location: "Mars",
       bio: "Another bio",
       isLookingForAJob: false,
+      contactEmail: "john@mail.com",
       ...baseMockData,
     };
 
@@ -163,6 +164,7 @@ describe("formatToData", () => {
       avatarUrl: "https://example.com/avatar.jpg",
       location: "Mars",
       bio: "Another bio",
+      contactEmail: "john@mail.com",
       website: "",
       telegram: { contact: "", isPublic: false },
       whatsapp: { contact: "", isPublic: false },
