@@ -19,11 +19,7 @@ export type RegisterToHackathonPortResponse = HttpStorageResponse;
 
 /* --------------------------------- Set my profile -------------------------------- */
 
-export type SetMyProfileBody = components["schemas"]["UserProfileRequest"] & {
-  // MOCK
-  goal?: "learn" | "challenge" | "earn" | "notoriety";
-  categoriesIds?: string[];
-};
+export type SetMyProfileBody = components["schemas"]["UserProfileUpdateRequest"];
 
 export type SetMyProfileResponse = components["schemas"]["PrivateUserProfileResponse"];
 

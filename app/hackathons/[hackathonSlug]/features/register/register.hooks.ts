@@ -104,7 +104,6 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
       location: userProfile.location,
       bio: userProfile.bio,
       website: userProfile.website,
-      technologies: userProfile.technologies,
       contacts: userProfile.contacts,
       allocatedTimeToContribute: userProfile.allocatedTimeToContribute,
       isLookingForAJob: userProfile.isLookingForAJob,

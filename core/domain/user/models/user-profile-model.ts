@@ -24,7 +24,6 @@ export class UserProfile implements UserProfileInterface {
   lastName!: UserProfileResponse["lastName"];
   location!: UserProfileResponse["location"];
   login!: UserProfileResponse["login"];
-  technologies!: UserProfileResponse["technologies"];
   website!: UserProfileResponse["website"];
 
   constructor(props: UserProfileResponse) {
