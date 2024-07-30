@@ -30,7 +30,7 @@ function TermsAndConditionsPage() {
     options: {
       onSuccess: () => {
         toast.default(<Translate token="v2.pages.legalNotice.common.toast.success" />);
-        router.push(NEXT_ROUTER.signup.onboarding.root);
+        router.push(NEXT_ROUTER.home.all);
       },
       onError: () => {
         toast.error(<Translate token="v2.pages.legalNotice.common.toast.error" />);

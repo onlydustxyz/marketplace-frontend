@@ -58,7 +58,6 @@ export const NEXT_ROUTER = {
   },
   notFound: "/not-found",
   onboarding: "/onboarding",
-  termsAndConditions: "/terms-and-conditions",
   maintenance: "/maintenance",
   hackathons: {
     root: "/hackathons",
