@@ -27,11 +27,12 @@ export function useCreateBillingProfile({
       options: {
         ...options,
         onSuccess: async (data, variables, context) => {
-          options?.onSuccess?.(data, variables, context);
           await queryClient.invalidateQueries({
             queryKey: ME_BILLING_TAGS.allProfiles(),
             exact: false,
           });
+
+          options?.onSuccess?.(data, variables, context);
         },
       },
     })
