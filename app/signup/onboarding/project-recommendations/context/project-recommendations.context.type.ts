@@ -1,4 +1,5 @@
-import { ProjectCategoryInterface } from "core/domain/project-categories/models/project-category-model";
+import { LanguageInterface } from "core/domain/language/models/language-model";
+import { ProjectCategoryInterface } from "core/domain/project-category/models/project-category-model";
 import { SetMyProfileBody } from "core/domain/user/user-contract.types";
 import { PropsWithChildren } from "react";
 import { z } from "zod";
@@ -10,13 +11,16 @@ export namespace TProjectRecommendationContext {
 
   export interface Return {
     categories: ProjectCategoryInterface[];
+    languages: LanguageInterface[];
     goals: Goal[];
     onSubmit(): void;
+    isInvalid: boolean;
   }
 
   export const validation = z.object({
     goal: z.string(),
     preferredCategories: z.array(z.string()).optional(),
+    preferredLanguages: z.array(z.string()).optional(),
     isLookingForAJob: z.boolean().optional(),
   });
 

@@ -1,9 +1,9 @@
-import { ListProjectCategories } from "core/domain/project-categories/models/project-categories-list.model";
-import { ProjectCategoriesStoragePort } from "core/domain/project-categories/outputs/project-categories-storage-port";
-import { GetProjectCategoriesResponse } from "core/domain/project-categories/project-categories-contract.types";
+import { ProjectCategoriesList } from "core/domain/project-category/models/project-categories-list.model";
+import { ProjectCategoryStoragePort } from "core/domain/project-category/outputs/project-category-storage-port";
+import { GetProjectCategoriesResponse } from "core/domain/project-category/project-category-contract.types";
 import { HttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/http-client/http-client";
 
-export class ProjectCategoriesClientAdapter implements ProjectCategoriesStoragePort {
+export class ProjectCategoryClientAdapter implements ProjectCategoryStoragePort {
   constructor(private readonly client: HttpClient) {}
 
   routes = {
@@ -21,7 +21,7 @@ export class ProjectCategoriesClientAdapter implements ProjectCategoriesStorageP
         tag,
       });
 
-      return new ListProjectCategories(data);
+      return new ProjectCategoriesList(data);
     };
 
     return {

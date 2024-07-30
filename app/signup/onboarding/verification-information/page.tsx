@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
+import { UserProfile } from "core/domain/user/models/user-profile-model";
 import { UserProfileContactChannel } from "core/domain/user/models/user.types";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useMemo } from "react";
@@ -55,7 +56,7 @@ export default function VerificationInformationPage() {
   const { control, handleSubmit, reset } = useForm<TVerificationInformation.form>({
     resolver: zodResolver(TVerificationInformation.validation),
     defaultValues: {
-      email: userProfile?.getContactEmail()?.contact,
+      email: userProfile?.contactEmail,
       telegram: userProfile?.getContactTelegram()?.contact,
     },
   });
@@ -63,7 +64,7 @@ export default function VerificationInformationPage() {
   useEffect(() => {
     if (userProfile) {
       reset({
-        email: userProfile.getContactEmail()?.contact,
+        email: userProfile.contactEmail,
         telegram: userProfile.getContactTelegram()?.contact,
       });
     }
@@ -72,20 +73,16 @@ export default function VerificationInformationPage() {
   async function handleSetMyProfile(data: TVerificationInformation.form) {
     if (!userProfile) return;
 
-    userProfile.setContact({
-      channel: UserProfileContactChannel.email,
-      contact: data.email,
-      visibility: userProfile?.getContactEmail()?.visibility,
-    });
-
-    userProfile.setContact({
-      channel: UserProfileContactChannel.telegram,
-      contact: data.telegram,
-      visibility: userProfile?.getContactTelegram()?.visibility,
-    });
-
     await setMyProfile({
-      contacts: userProfile.contacts,
+      contactEmail: data.email,
+      contacts: [
+        ...(userProfile.contacts?.filter(c => c.channel !== UserProfileContactChannel.telegram) ?? []),
+        UserProfile.buildContact({
+          channel: UserProfileContactChannel.telegram,
+          contact: data.telegram,
+          visibility: userProfile?.getContactTelegram()?.visibility,
+        }),
+      ],
     });
   }
 
