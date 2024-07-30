@@ -4,9 +4,9 @@ import { components } from "src/__generated/api";
 
 export type ListProjectCategoriesResponse = components["schemas"]["ProjectCategoriesResponse"];
 
-export interface ShortProjectInterface extends ListProjectCategoriesResponse {}
+export interface ListProjectCategoriesInterface extends ListProjectCategoriesResponse {}
 
-export class ListProjectCategories implements ShortProjectInterface {
+export class ListProjectCategories implements ListProjectCategoriesInterface {
   categories!: ListProjectCategoriesResponse["categories"];
 
   constructor(props: ListProjectCategoriesResponse) {

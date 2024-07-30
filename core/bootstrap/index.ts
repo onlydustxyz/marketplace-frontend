@@ -1,5 +1,6 @@
 import { BillingProfileStoragePort } from "core/domain/billing-profile/outputs/biling-profile-storage-port";
 import { HackathonStoragePort } from "core/domain/hackathon/outputs/hackathon-storage-port";
+import { LanguagesStoragePort } from "core/domain/languages/outputs/languages-storage-port";
 import { ProjectCategoriesStoragePort } from "core/domain/project-categories/outputs/project-categories-storage-port";
 import { ProjectStoragePort } from "core/domain/project/outputs/project-storage-port";
 import { UserStoragePort } from "core/domain/user/outputs/user-storage-port";
@@ -15,6 +16,7 @@ import { UrlAdapter } from "core/helpers/url/url-adapter";
 import { UrlFacadePort } from "core/helpers/url/url-facade-port";
 import { BillingProfileClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/billing-profile-client-adapter";
 import { HackathonClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/hackathon-client-adapter";
+import { LanguagesClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/languages-client-adapter";
 import { ProjectCategoriesClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/project-categories-client-adapter";
 import { ProjectClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/project-client-adapter";
 import { UserClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/user-client-adapter";
@@ -33,6 +35,8 @@ export interface BootstrapConstructor {
   billingProfileStoragePortForServer: BillingProfileStoragePort;
   projectCategoriesStoragePortForClient: ProjectCategoriesStoragePort;
   projectCategoriesStoragePortForServer: ProjectCategoriesStoragePort;
+  languagesStoragePortForClient: LanguagesStoragePort;
+  languagesStoragePortForServer: LanguagesStoragePort;
   dateHelperPort: DateFacadePort;
   urlHelperPort: UrlFacadePort;
   imageHelperPort: ImageFacadePort;
@@ -54,6 +58,8 @@ export class Bootstrap {
   billingProfileStoragePortForServer: BillingProfileStoragePort;
   projectCategoriesStoragePortForClient: ProjectCategoriesStoragePort;
   projectCategoriesStoragePortForServer: ProjectCategoriesStoragePort;
+  languagesStoragePortForClient: LanguagesStoragePort;
+  languagesStoragePortForServer: LanguagesStoragePort;
   dateHelperPort: DateFacadePort;
   urlHelperPort: UrlFacadePort;
   imageHelperPort: ImageFacadePort;
@@ -71,6 +77,8 @@ export class Bootstrap {
     this.billingProfileStoragePortForServer = constructor.billingProfileStoragePortForServer;
     this.projectCategoriesStoragePortForClient = constructor.projectCategoriesStoragePortForClient;
     this.projectCategoriesStoragePortForServer = constructor.projectCategoriesStoragePortForServer;
+    this.languagesStoragePortForClient = constructor.languagesStoragePortForClient;
+    this.languagesStoragePortForServer = constructor.languagesStoragePortForServer;
     this.dateHelperPort = constructor.dateHelperPort;
     this.urlHelperPort = constructor.urlHelperPort;
     this.imageHelperPort = constructor.imageHelperPort;
@@ -122,6 +130,14 @@ export class Bootstrap {
     return this.projectCategoriesStoragePortForClient;
   }
 
+  getLanguagesStoragePortForServer() {
+    return this.languagesStoragePortForServer;
+  }
+
+  getLanguagesStoragePortForClient() {
+    return this.languagesStoragePortForClient;
+  }
+
   getUserStoragePortForServer() {
     return this.userStoragePortForServer;
   }
@@ -167,6 +183,8 @@ export class Bootstrap {
         billingProfileStoragePortForServer: new BillingProfileClientAdapter(new FetchHttpClient()),
         projectCategoriesStoragePortForClient: new ProjectCategoriesClientAdapter(new FetchHttpClient()),
         projectCategoriesStoragePortForServer: new ProjectCategoriesClientAdapter(new FetchHttpClient()),
+        languagesStoragePortForClient: new LanguagesClientAdapter(new FetchHttpClient()),
+        languagesStoragePortForServer: new LanguagesClientAdapter(new FetchHttpClient()),
         dateHelperPort: DateFnsAdapter,
         urlHelperPort: UrlAdapter,
         imageHelperPort: new ImageAdapter(),
