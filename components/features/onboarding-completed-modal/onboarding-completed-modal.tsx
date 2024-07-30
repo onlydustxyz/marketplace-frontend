@@ -1,8 +1,10 @@
 "use client";
 
 import { HackathonReactQueryAdapter } from "core/application/react-query-adapter/hackathon";
+import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
+import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { StepHeader } from "app/signup/components/step-header/step-header";
 import { Title } from "app/signup/components/title/title";
@@ -46,55 +48,68 @@ function Card({ title, content }: Card) {
 
 const ONBOARDING_SEARCH_PARAM = "onboardingCompleted";
 
+const maintainerCards: Card[] = [
+  {
+    title: "v2.pages.signup.onboarding.completed.sections.submitProject.title",
+    content: "v2.pages.signup.onboarding.completed.sections.submitProject.content",
+  },
+  {
+    title: "v2.pages.signup.onboarding.completed.sections.exploreEcosystems.title",
+    content: "v2.pages.signup.onboarding.completed.sections.exploreEcosystems.content",
+  },
+  {
+    title: "v2.pages.signup.onboarding.completed.sections.applyGrant.title",
+    content: "v2.pages.signup.onboarding.completed.sections.applyGrant.content",
+  },
+];
+
+const contributorCards: Card[] = [
+  {
+    title: "v2.pages.signup.onboarding.completed.sections.exploreProjects.title",
+    content: "v2.pages.signup.onboarding.completed.sections.exploreProjects.content",
+  },
+  {
+    title: "v2.pages.signup.onboarding.completed.sections.joinProject.title",
+    content: "v2.pages.signup.onboarding.completed.sections.joinProject.content",
+  },
+  {
+    title: "v2.pages.signup.onboarding.completed.sections.earnRewards.title",
+    content: "v2.pages.signup.onboarding.completed.sections.earnRewards.content",
+  },
+];
+
 export function OnboardingCompletedModal() {
   const router = useRouter();
-
   const searchParams = useSearchParams();
-  const onboardingCompleted = searchParams.has(ONBOARDING_SEARCH_PARAM);
+  const hasOnboardingCompletedParam = searchParams.has(ONBOARDING_SEARCH_PARAM);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const [isOpen, setIsOpen] = useState(onboardingCompleted);
+  const {
+    clientBootstrap: { authProvider },
+  } = useClientBootstrapContext();
+  const { isAuthenticated = false } = authProvider ?? {};
 
-  // TODO @hayden handle condition
-  const isMaintainer = false;
+  const { data: userProfile } = UserReactQueryAdapter.client.useGetMyProfile({
+    options: {
+      enabled: isAuthenticated,
+    },
+  });
+
+  const isMaintainer = userProfile?.isMaintainer() ?? false;
+  const cards = isMaintainer ? maintainerCards : contributorCards;
 
   const { data } = HackathonReactQueryAdapter.client.useGetHackathons({
     options: {
-      enabled: !isMaintainer,
+      enabled: userProfile && !isMaintainer,
     },
   });
   const liveHackathon = data?.hackathons.find(h => h.isLive());
 
-  const maintainerCards: Card[] = [
-    {
-      title: "v2.pages.signup.onboarding.completed.sections.submitProject.title",
-      content: "v2.pages.signup.onboarding.completed.sections.submitProject.content",
-    },
-    {
-      title: "v2.pages.signup.onboarding.completed.sections.exploreEcosystems.title",
-      content: "v2.pages.signup.onboarding.completed.sections.exploreEcosystems.content",
-    },
-    {
-      title: "v2.pages.signup.onboarding.completed.sections.applyGrant.title",
-      content: "v2.pages.signup.onboarding.completed.sections.applyGrant.content",
-    },
-  ];
-
-  const contributorCards: Card[] = [
-    {
-      title: "v2.pages.signup.onboarding.completed.sections.exploreProjects.title",
-      content: "v2.pages.signup.onboarding.completed.sections.exploreProjects.content",
-    },
-    {
-      title: "v2.pages.signup.onboarding.completed.sections.joinProject.title",
-      content: "v2.pages.signup.onboarding.completed.sections.joinProject.content",
-    },
-    {
-      title: "v2.pages.signup.onboarding.completed.sections.earnRewards.title",
-      content: "v2.pages.signup.onboarding.completed.sections.earnRewards.content",
-    },
-  ];
-
-  const cards = isMaintainer ? maintainerCards : contributorCards;
+  useEffect(() => {
+    if (userProfile && hasOnboardingCompletedParam) {
+      setIsOpen(true);
+    }
+  }, [userProfile]);
 
   function handleClose() {
     setIsOpen(false);
