@@ -2,6 +2,7 @@
 
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
+import { useRouter } from "next/navigation";
 
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
 import { StepHeader } from "app/signup/components/step-header/step-header";
@@ -10,17 +11,36 @@ import { TunnelStep } from "app/signup/onboarding/components/tunnel-step/tunnel-
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
+import { toast } from "components/atoms/toaster";
+import { Translate } from "components/layout/translate/translate";
 import { SignupTemplate } from "components/templates/signup-template/signup-template";
 
 import { NEXT_ROUTER } from "constants/router";
 
 function Footer() {
+  const router = useRouter();
+  const { mutateAsync: setMe } = UserReactQueryAdapter.client.useSetMe({
+    options: {
+      onSuccess: () => {
+        router.push(`${NEXT_ROUTER.home.all}?onboardingCompleted`);
+      },
+      onError: () => {
+        toast.error(<Translate token={"v2.pages.signup.onboarding.common.updateProfile.toast.error"} />);
+      },
+    },
+  });
+
+  function handleSubmit() {
+    setMe({ hasCompletedOnboarding: true });
+  }
+
   return (
     <div className="flex w-full justify-end">
       <Button
         variant={"secondary-light"}
         translate={{ token: "v2.pages.signup.onboarding.tunnel.actions.skip" }}
         endIcon={{ remixName: "ri-arrow-right-s-line" }}
+        onClick={handleSubmit}
       />
     </div>
   );
