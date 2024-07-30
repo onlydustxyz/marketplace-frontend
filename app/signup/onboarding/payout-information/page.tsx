@@ -78,7 +78,7 @@ export default function PayoutInformationPage() {
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={handleSubmit(handleCreateBillingProfile)} className="h-full">
-        <SignupTemplate header={<AccountAlreadyExist showDisconnectButton />} footer={renderFooter}>
+        <SignupTemplate header={<AccountAlreadyExist />} footer={renderFooter}>
           <Paper size={"l"} container={"3"} classNames={{ base: "flex flex-col gap-6 min-h-full" }}>
             <StepHeader
               step={2}
