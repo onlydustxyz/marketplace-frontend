@@ -5,6 +5,7 @@ import { UserReactQueryAdapter } from "core/application/react-query-adapter/user
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 import { UserProfile } from "core/domain/user/models/user-profile-model";
 import { UserProfileContactChannel } from "core/domain/user/models/user.types";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -22,10 +23,13 @@ import { toast } from "components/atoms/toaster";
 import { Typo } from "components/atoms/typo";
 import { SignupTemplate } from "components/templates/signup-template/signup-template";
 
+import { NEXT_ROUTER } from "constants/router";
+
 import { useIntl } from "hooks/translate/use-translate";
 
 export default function VerificationInformationPage() {
   const { T } = useIntl();
+  const router = useRouter();
   const {
     clientBootstrap: { authProvider },
   } = useClientBootstrapContext();
@@ -41,7 +45,7 @@ export default function VerificationInformationPage() {
     options: {
       onSuccess: () => {
         toast.default(T("v2.pages.signup.verificationInformation.toast.success"));
-        // TODO @Mehdi add redirection to Terms and condition
+        router.push(NEXT_ROUTER.signup.onboarding.termsAndConditions);
       },
       onError: () => {
         toast.error(T("v2.pages.signup.verificationInformation.toast.error"));
@@ -85,14 +89,6 @@ export default function VerificationInformationPage() {
   const renderFooter = useMemo(() => {
     return (
       <div className="flex justify-end gap-1">
-        <Button
-          variant="secondary-light"
-          size="l"
-          translate={{ token: "v2.pages.signup.verificationInformation.footer.back" }}
-          startIcon={{ remixName: "ri-arrow-left-s-line" }}
-          // TODO @Mehdi add back redirection to step 1
-          isDisabled={userProfileIsLoading || isPendingSetMyProfile}
-        />
         <Button
           type={"submit"}
           variant="primary"

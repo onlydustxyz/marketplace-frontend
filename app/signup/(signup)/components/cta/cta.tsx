@@ -13,7 +13,7 @@ export function Cta({ title, subtitle, iconProps, wrapperProps = {} }: TCta.Prop
   return (
     <Paper
       size={"s"}
-      container={"3"}
+      container={"transparent"}
       classNames={{ base: cn("flex items-center gap-3 justify-between text-left", wrapperClassNames?.base) }}
       {...restWrapperProps}
     >

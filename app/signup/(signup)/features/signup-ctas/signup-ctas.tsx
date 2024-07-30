@@ -2,15 +2,16 @@
 
 import { Auth0ClientAdapter } from "core/application/auth0-client-adapter";
 import { bootstrap } from "core/bootstrap";
+import { UserJoiningReason } from "core/domain/user/models/user.types";
 
 import { Cta } from "../../components/cta/cta";
 
 export function SignupCtas() {
-  function handleSignin(userType: "contributor" | "maintainer" | "sponsor") {
+  function handleSignin(joiningReason: NonNullable<UserJoiningReason>) {
     const { loginWithRedirect } = bootstrap.getAuthProvider() ?? {};
 
     if (loginWithRedirect)
-      Auth0ClientAdapter.helpers.handleLoginWithRedirect(loginWithRedirect, { queryParam: { userType } });
+      Auth0ClientAdapter.helpers.handleLoginWithRedirect(loginWithRedirect, { queryParam: { joiningReason } });
   }
 
   return (
@@ -26,7 +27,7 @@ export function SignupCtas() {
           as: "button",
           htmlProps: {
             type: "button",
-            onClick: () => handleSignin("contributor"),
+            onClick: () => handleSignin("CONTRIBUTOR"),
           },
         }}
       />
@@ -41,7 +42,7 @@ export function SignupCtas() {
           as: "button",
           htmlProps: {
             type: "button",
-            onClick: () => handleSignin("maintainer"),
+            onClick: () => handleSignin("MAINTAINER"),
           },
         }}
       />

@@ -2,6 +2,7 @@
 
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { useRouter } from "next/navigation";
+import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
 import { StepHeader } from "app/signup/components/step-header/step-header";
@@ -34,7 +35,7 @@ function Footer() {
   }
 
   return (
-    <div className="flex w-full flex-row justify-end gap-2">
+    <div className="flex w-full justify-end">
       <Button
         variant={"secondary-light"}
         translate={{ token: "v2.pages.signup.onboarding.tunnel.actions.skip" }}
@@ -46,9 +47,18 @@ function Footer() {
 }
 
 function OnboardingPage() {
-  const { data: user } = UserReactQueryAdapter.client.useGetMe({});
+  const {
+    clientBootstrap: { authProvider },
+  } = useClientBootstrapContext();
+  const { isAuthenticated = false } = authProvider ?? {};
 
-  if (!user) return null;
+  const { data: userOnboarding } = UserReactQueryAdapter.client.useGetMyOnboarding({
+    options: {
+      enabled: isAuthenticated,
+    },
+  });
+
+  if (!userOnboarding) return null;
 
   return (
     <SignupTemplate header={<AccountAlreadyExist />} footer={<Footer />}>
@@ -64,7 +74,7 @@ function OnboardingPage() {
             content={{ token: "v2.pages.signup.onboarding.tunnel.steps.information.content" }}
             icon={{ remixName: "ri-checkbox-circle-line" }}
             type={"mandatory"}
-            isDone={user.hasCompletedVerificationInformation}
+            isDone={userOnboarding.verificationInformationProvided}
             path={NEXT_ROUTER.signup.onboarding.verificationInformation}
           />
           <TunnelStep
@@ -72,7 +82,7 @@ function OnboardingPage() {
             content={{ token: "v2.pages.signup.onboarding.tunnel.steps.terms.content" }}
             icon={{ remixName: "ri-file-text-line" }}
             type={"mandatory"}
-            isDone={user.hasAcceptedLatestTermsAndConditions}
+            isDone={userOnboarding.termsAndConditionsAccepted}
             path={NEXT_ROUTER.signup.onboarding.termsAndConditions}
           />
           <TunnelStep
@@ -80,7 +90,7 @@ function OnboardingPage() {
             content={{ token: "v2.pages.signup.onboarding.tunnel.steps.project.content" }}
             icon={{ remixName: "ri-medal-2-fill" }}
             type={"recommended"}
-            isDone={user.hasCompletedProjectRecommendations}
+            isDone={userOnboarding.projectPreferencesProvided}
             path={NEXT_ROUTER.signup.onboarding.projectRecommendations}
           />
           <TunnelStep
@@ -88,7 +98,7 @@ function OnboardingPage() {
             content={{ token: "v2.pages.signup.onboarding.tunnel.steps.profile.content" }}
             icon={{ remixName: "ri-user-line" }}
             type={"optional"}
-            isDone={user.hasCompletedProfile}
+            isDone={userOnboarding.profileCompleted}
             path={NEXT_ROUTER.signup.onboarding.completeYourProfile}
           />
           <TunnelStep
@@ -96,7 +106,7 @@ function OnboardingPage() {
             content={{ token: "v2.pages.signup.onboarding.tunnel.steps.payout.content" }}
             icon={{ remixName: "ri-building-line" }}
             type={"optional"}
-            isDone={user.hasCompletePayoutInformation}
+            isDone={userOnboarding.payoutInformationProvided}
             path={NEXT_ROUTER.signup.onboarding.payoutInformation}
           />
         </div>

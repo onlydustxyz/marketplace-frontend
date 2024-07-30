@@ -29,7 +29,7 @@ function Footer({ isDisabled, onClick }: { isDisabled: boolean; onClick: () => v
         variant={"secondary-light"}
         translate={{ token: "v2.pages.signup.onboarding.projectRecommendations.actions.back" }}
         as={BaseLink}
-        htmlProps={{ href: NEXT_ROUTER.signup.onboarding.root }}
+        htmlProps={{ href: NEXT_ROUTER.signup.onboarding.verificationInformation }}
         startIcon={{ remixName: "ri-arrow-left-s-line" }}
       />
       <Button
@@ -71,6 +71,8 @@ function TermsAndConditionsPage() {
   function handleSubmit() {
     if (!user?.hasAcceptedLatestTermsAndConditions) {
       setMe({ hasAcceptedTermsAndConditions: isTermsAccepted });
+    } else if (user?.hasAcceptedLatestTermsAndConditions) {
+      router.push(NEXT_ROUTER.signup.onboarding.root);
     }
   }
 
