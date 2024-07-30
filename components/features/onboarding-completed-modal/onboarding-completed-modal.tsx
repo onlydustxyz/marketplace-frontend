@@ -1,6 +1,7 @@
 "use client";
 
 import { HackathonReactQueryAdapter } from "core/application/react-query-adapter/hackathon";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 import { StepHeader } from "app/signup/components/step-header/step-header";
@@ -17,7 +18,7 @@ import { Modal } from "components/molecules/modal";
 
 import { NEXT_ROUTER } from "constants/router";
 
-import { Key } from "hooks/translate/use-translate";
+import { Key, useIntl } from "hooks/translate/use-translate";
 
 type Card = {
   title: Key;
@@ -26,11 +27,14 @@ type Card = {
 };
 
 function Card({ title, content, cta }: Card) {
+  const { T } = useIntl();
+
   return (
     <Paper size={"s"} container={"3"} classNames={{ base: "grid gap-2 content-start" }}>
       <img
         // TODO @hayden handle real images
         src={IMAGES.logo.space}
+        alt={T("title")}
         className={"rounded-lg border border-container-stroke-separator"}
       />
       <div className={"grid"}>
@@ -52,9 +56,15 @@ function Card({ title, content, cta }: Card) {
   );
 }
 
+const ONBOARDING_SEARCH_PARAM = "onboardingCompleted";
+
 export function OnboardingCompletedModal() {
-  // TODO @hayden handle condition
-  const [isOpen, setIsOpen] = useState(true);
+  const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const onboardingCompleted = searchParams.has(ONBOARDING_SEARCH_PARAM);
+
+  const [isOpen, setIsOpen] = useState(onboardingCompleted);
 
   // TODO @hayden handle condition
   const isMaintainer = false;
@@ -104,6 +114,13 @@ export function OnboardingCompletedModal() {
 
   function handleClose() {
     setIsOpen(false);
+
+    const { origin, pathname, search } = window.location;
+
+    const searchParams = new URLSearchParams(search);
+    searchParams.delete(ONBOARDING_SEARCH_PARAM);
+
+    router.replace(`${origin}${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`);
   }
 
   return (
