@@ -1,7 +1,7 @@
 {
   "title": "Which type of profile is relevant to you?",
   "stepTitle": "Payout information",
-  "subtitle": "You can create multiple billing profiles if necessary. Also don’t worry about picking the wrong type, you can update your setup anytime",
+  "subtitle": "You can create multiple billing profiles if necessary. Also don’t worry about picking the wrong type, you can update your setup anytime.",
   "form": {
     "name": {
       "label": "Give your billing profile a name",
@@ -10,7 +10,7 @@
   },
   "specialMention": {
     "title": "If you are an employee",
-    "description": "please ask your company's administrator to create a billing profile and add you as a collaborator. This will allow you to begin working together seamlessly."
+    "description": "Please ask your company's administrator to create a billing profile and add you as a collaborator. This will allow you to begin working together seamlessly."
   },
   "footer": {
     "back": "Back",
@@ -24,24 +24,24 @@
     "individual": {
       "title": "Individual",
       "points": {
-        "1": "when you don’t have a legal structure",
+        "1": "When you don’t have a legal structure",
         "2": "The annual reward amount is limited based on your tax residency.",
-        "3": "requires identity verification"
+        "3": "Requires identity verification"
       }
     },
     "selfEmployed": {
       "title": "Self-employed",
       "points": {
-        "1": "when you have a legal structure for yourself",
-        "2": "requires business verification"
+        "1": "When you have a legal structure for yourself",
+        "2": "Requires business verification"
       }
     },
     "company": {
       "title": "Organisation",
       "points": {
-        "1": "when you have a legal structure",
-        "2": "when you manage a team of contributors",
-        "3": "requires business verification required"
+        "1": "When you have a legal structure",
+        "2": "When you manage a team of contributors",
+        "3": "Requires business verification required"
       }
     }
   }
