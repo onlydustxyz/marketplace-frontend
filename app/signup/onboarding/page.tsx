@@ -22,7 +22,7 @@ function Footer() {
     options: {
       onSuccess: () => {
         toast.default(<Translate token={"v2.pages.signup.onboarding.common.updateProfile.toast.success"} />);
-        router.push(`${NEXT_ROUTER.home.all}?onboardingCompleted=true`);
+        router.push(`${NEXT_ROUTER.home.all}?onboardingCompleted`);
       },
       onError: () => {
         toast.error(<Translate token={"v2.pages.signup.onboarding.common.updateProfile.toast.error"} />);
