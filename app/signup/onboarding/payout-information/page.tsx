@@ -24,7 +24,7 @@ export default function PayoutInformationPage() {
     resolver: zodResolver(TBillingProfiles.validation),
     defaultValues: {
       name: "",
-      type: "INDIVIDUAL" as BillingProfileTypeUnion,
+      type: "SELF_EMPLOYED" as BillingProfileTypeUnion,
     },
   });
 

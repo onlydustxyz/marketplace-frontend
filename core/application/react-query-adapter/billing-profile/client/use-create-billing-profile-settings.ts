@@ -8,6 +8,8 @@ import { CreateBillingProfileBody } from "core/domain/billing-profile/billing-pr
 import { BillingProfileFacadePort } from "core/domain/billing-profile/inputs/billing-profile-facade-port";
 import { BillingProfileShortInterface } from "core/domain/billing-profile/models/billing-profile-short-model";
 
+import { ME_BILLING_TAGS } from "src/api/me/billing/tags";
+
 export function useCreateBillingProfile({
   options,
 }: UseMutationFacadeParams<
@@ -24,10 +26,10 @@ export function useCreateBillingProfile({
       ...billingProfileStoragePort.createBillingProfile({}),
       options: {
         onSuccess: async () => {
-          // await queryClient.invalidateQueries({
-          //   queryKey: userStoragePort.getMyNotificationSettings({}).tag,
-          //   exact: false,
-          // });
+          await queryClient.invalidateQueries({
+            queryKey: ME_BILLING_TAGS.allProfiles(),
+            exact: false,
+          });
         },
         ...options,
       },
