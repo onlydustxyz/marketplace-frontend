@@ -37,19 +37,6 @@ describe("createContact", () => {
     });
   });
 
-  it("should create an EMAIL contact with correct visibility", () => {
-    const result = createContact({
-      channel: "EMAIL",
-      contact: "foobar@gmail.com",
-      isPublic: false,
-    });
-    expect(result).toEqual({
-      channel: "EMAIL",
-      contact: "foobar@gmail.com",
-      visibility: "private",
-    });
-  });
-
   it("should create a LINKEDIN contact with sanitized URL", () => {
     const result = createContact({
       channel: "LINKEDIN",

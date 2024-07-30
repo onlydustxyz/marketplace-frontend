@@ -85,7 +85,7 @@ const useUpdateProfile = ({ options = {} }: UseMutationProps<UseUpdateProfileRes
     resourcePath: ME_PATH.PROFILE,
     invalidatesTags: [{ queryKey: MeApi.tags.all, exact: false }],
     onSuccess: () => revalidateNextJsPath("/u/[githubLogin]", "page"),
-    method: "PUT",
+    method: "PATCH",
     ...options,
   });
 };

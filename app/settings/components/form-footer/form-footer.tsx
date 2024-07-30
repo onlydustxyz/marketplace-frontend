@@ -24,7 +24,10 @@ export function FormFooter({ isPending, hasPreviewButton, isAbsolute = true }: T
   const { user } = useAuth0();
 
   const { formState } = useFormContext();
-  const { isDirty, isValid } = formState;
+  const { isDirty, isValid, errors } = formState;
+
+  console.log("isDirty", isDirty);
+  console.log("isValid", isValid, errors);
 
   function renderIcon() {
     if (!isMd) return null;

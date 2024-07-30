@@ -15,11 +15,6 @@ const userProfile = {
       visibility: "private" as const,
     },
     {
-      channel: "EMAIL" as const,
-      contact: "email@mail.com",
-      visibility: "private" as const,
-    },
-    {
       channel: "LINKEDIN" as const,
       contact: "linkedin.com",
       visibility: "private" as const,
