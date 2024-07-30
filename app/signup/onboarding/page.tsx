@@ -9,21 +9,13 @@ import { TunnelStep } from "app/signup/onboarding/components/tunnel-step/tunnel-
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
-import { BaseLink } from "components/layout/base-link/base-link";
 import { SignupTemplate } from "components/templates/signup-template/signup-template";
 
 import { NEXT_ROUTER } from "constants/router";
 
 function Footer() {
   return (
-    <div className="flex w-full flex-row justify-end gap-2">
-      <Button
-        variant={"secondary-light"}
-        translate={{ token: "v2.pages.signup.onboarding.tunnel.actions.back" }}
-        as={BaseLink}
-        htmlProps={{ href: NEXT_ROUTER.signup.root }}
-        startIcon={{ remixName: "ri-arrow-left-s-line" }}
-      />
+    <div className="flex w-full justify-end">
       <Button
         variant={"secondary-light"}
         translate={{ token: "v2.pages.signup.onboarding.tunnel.actions.skip" }}

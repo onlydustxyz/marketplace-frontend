@@ -46,35 +46,35 @@ export default function SignupPage() {
     {}
   );
 
+  async function handleSignupDispatcher() {
+    const joiningReason = searchParams.get("joiningReason") ?? "";
+
+    if (!userProfile?.joiningReason && UserProfile.isValidJoiningReason(joiningReason)) {
+      await setMyProfile({
+        joiningReason: joiningReason as UserJoiningReason,
+      });
+    }
+
+    if (!userOnboarding?.verificationInformationProvided) {
+      router.push(NEXT_ROUTER.signup.onboarding.verificationInformation);
+      return;
+    }
+
+    if (!userOnboarding?.termsAndConditionsAccepted) {
+      router.push(NEXT_ROUTER.signup.onboarding.termsAndConditions);
+      return;
+    }
+
+    router.push(NEXT_ROUTER.signup.onboarding.root);
+  }
+
   useEffect(() => {
     if (userOnboarding?.completed) {
-      console.log("completed");
       router.push(NEXT_ROUTER.home.all);
       return;
     }
 
-    const joiningReason = searchParams.get("joiningReason") ?? "";
-
-    if (!userProfile?.joiningReason && UserProfile.isValidJoiningReason(joiningReason)) {
-      console.log("joiningReason");
-      setMyProfile({
-        joiningReason: joiningReason as UserJoiningReason,
-      }).then(() => {
-        if (!userOnboarding?.verificationInformationProvided) {
-          console.log("verificationInformationProvided");
-          router.push(NEXT_ROUTER.signup.onboarding.verificationInformation);
-          return;
-        }
-
-        if (!userOnboarding?.termsAndConditionsAccepted) {
-          console.log("termsAndConditionsAccepted");
-          router.push(NEXT_ROUTER.signup.onboarding.termsAndConditions);
-          return;
-        }
-        console.log("onboarding.root");
-        router.push(NEXT_ROUTER.signup.onboarding.root);
-      });
-    }
+    handleSignupDispatcher();
   }, [userOnboarding, userProfile, searchParams]);
 
   return (

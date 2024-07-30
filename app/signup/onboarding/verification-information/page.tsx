@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 import { UserProfileContactChannel } from "core/domain/user/models/user.types";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -21,10 +22,13 @@ import { toast } from "components/atoms/toaster";
 import { Typo } from "components/atoms/typo";
 import { SignupTemplate } from "components/templates/signup-template/signup-template";
 
+import { NEXT_ROUTER } from "constants/router";
+
 import { useIntl } from "hooks/translate/use-translate";
 
 export default function VerificationInformationPage() {
   const { T } = useIntl();
+  const router = useRouter();
   const {
     clientBootstrap: { authProvider },
   } = useClientBootstrapContext();
@@ -40,8 +44,7 @@ export default function VerificationInformationPage() {
     options: {
       onSuccess: () => {
         toast.default(T("v2.pages.signup.verificationInformation.toast.success"));
-        // TODO @Mehdi add redirection to Terms and condition
-        // router.push(NEXT_ROUTER.signup.termsAndConditions);
+        router.push(NEXT_ROUTER.signup.onboarding.termsAndConditions);
       },
       onError: () => {
         toast.error(T("v2.pages.signup.verificationInformation.toast.error"));
@@ -89,14 +92,6 @@ export default function VerificationInformationPage() {
   const renderFooter = useMemo(() => {
     return (
       <div className="flex justify-end gap-1">
-        {/*TODO @Mehdi check with Paul if we can remove this button and just let user disconnect if wrong tunnel*/}
-        <Button
-          variant="secondary-light"
-          size="l"
-          translate={{ token: "v2.pages.signup.verificationInformation.footer.back" }}
-          startIcon={{ remixName: "ri-arrow-left-s-line" }}
-          isDisabled={userProfileIsLoading || isPendingSetMyProfile}
-        />
         <Button
           type={"submit"}
           variant="primary"

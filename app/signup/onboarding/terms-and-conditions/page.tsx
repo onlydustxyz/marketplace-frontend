@@ -71,6 +71,8 @@ function TermsAndConditionsPage() {
   function handleSubmit() {
     if (!user?.hasAcceptedLatestTermsAndConditions) {
       setMe({ hasAcceptedTermsAndConditions: isTermsAccepted });
+    } else if (user?.hasAcceptedLatestTermsAndConditions) {
+      router.push(NEXT_ROUTER.signup.onboarding.root);
     }
   }
 
