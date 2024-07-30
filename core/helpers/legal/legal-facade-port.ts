@@ -3,4 +3,6 @@ export interface LegalFacadePort {
     terms: string;
     privacy: string;
   };
+  getTermsAndConditionsUrl(): string;
+  getPrivacyPolicyUrl(): string;
 }
