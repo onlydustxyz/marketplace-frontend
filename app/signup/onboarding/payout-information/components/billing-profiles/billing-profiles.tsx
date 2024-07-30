@@ -95,6 +95,7 @@ export function BillingProfiles(_: TBillingProfiles.Props) {
                 value: type,
                 componentProps: { type },
               }))}
+              classNames={{ base: "gap-4" }}
             />
           </div>
         )}
