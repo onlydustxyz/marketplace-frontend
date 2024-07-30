@@ -37,19 +37,6 @@ describe("createContact", () => {
     });
   });
 
-  it("should create an EMAIL contact with correct visibility", () => {
-    const result = createContact({
-      channel: "EMAIL",
-      contact: "foobar@gmail.com",
-      isPublic: false,
-    });
-    expect(result).toEqual({
-      channel: "EMAIL",
-      contact: "foobar@gmail.com",
-      visibility: "private",
-    });
-  });
-
   it("should create a LINKEDIN contact with sanitized URL", () => {
     const result = createContact({
       channel: "LINKEDIN",
@@ -135,6 +122,7 @@ describe("formatToData", () => {
       ],
       allocatedTimeToContribute: TProfileForm.ALLOCATED_TIME.NONE,
       isLookingForAJob: true,
+      contactEmail: "john@mail.com",
       ...baseMockData,
     };
 
@@ -144,6 +132,7 @@ describe("formatToData", () => {
       avatarUrl: "https://example.com/avatar.jpg",
       location: "Earth",
       bio: "Just a bio",
+      contactEmail: "john@mail.com",
       website: "https://example.com",
       telegram: { contact: "contact", isPublic: true },
       whatsapp: { contact: "", isPublic: false },
@@ -165,6 +154,7 @@ describe("formatToData", () => {
       location: "Mars",
       bio: "Another bio",
       isLookingForAJob: false,
+      contactEmail: "john@mail.com",
       ...baseMockData,
     };
 
@@ -174,6 +164,7 @@ describe("formatToData", () => {
       avatarUrl: "https://example.com/avatar.jpg",
       location: "Mars",
       bio: "Another bio",
+      contactEmail: "john@mail.com",
       website: "",
       telegram: { contact: "", isPublic: false },
       whatsapp: { contact: "", isPublic: false },

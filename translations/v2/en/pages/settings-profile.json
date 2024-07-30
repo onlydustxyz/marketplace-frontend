@@ -9,6 +9,10 @@
       "edit": "Edit on Github"
     }
   },
+  "notificationSettings": {
+    "title": "Notification",
+    "subtitle": "Enter a contact email. This email will be used by OnlyDust to send you notifications and to get in touch with you."
+  },
   "informations": {
     "avatar": "Avatar",
     "location": "Location",

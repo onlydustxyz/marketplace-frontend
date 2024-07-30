@@ -66,7 +66,7 @@ export function RewardButton({ project }: TRewardButton.Props) {
             lead_last_name: user?.lastName,
             lead_github: user?.login,
             lead_telegram: findContact(Channel.Telegram),
-            lead_email: findContact(Channel.Email),
+            lead_email: userProfile?.contactEmail,
             project_id: project.id,
             project_name: project.name,
           }}

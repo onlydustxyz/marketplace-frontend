@@ -24,6 +24,7 @@ export namespace TProfileForm {
     firstName?: string;
     lastName?: string;
     avatarUrl?: string;
+    contactEmail?: string;
     location: string;
     bio: string;
     website: string;
