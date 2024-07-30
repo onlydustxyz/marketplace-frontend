@@ -42,6 +42,7 @@ export function CustomRadioComponent({
       content: [
         "v2.pages.signup.payoutInformation.fields.company.points.1",
         "v2.pages.signup.payoutInformation.fields.company.points.2",
+        "v2.pages.signup.payoutInformation.fields.company.points.3",
       ],
       icon: "ri-building-line",
     },
