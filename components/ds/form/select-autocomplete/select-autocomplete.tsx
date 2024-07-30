@@ -40,6 +40,8 @@ export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
     whileElementsMounted: autoUpdate,
     transform: false,
   });
+  const floatingTop = floatingStyles.top ? Number(floatingStyles.top) : 0;
+  const top = floatingTop >= 0 ? -12 : floatingTop + 46;
 
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (controlledSearch) {
@@ -99,7 +101,7 @@ export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
                 ref={refs.setFloating}
                 style={{
                   ...floatingStyles,
-                  top: "-12px",
+                  top,
                 }}
                 enter="transform transition duration-100 ease-out"
                 enterFrom="scale-95 opacity-0"
@@ -121,7 +123,12 @@ export function SelectAutocomplete<T extends TSelectAutocomplete.Item>({
                   }
                 )}
               >
-                <Combobox.Options className="p-1 py-2 pt-[54px]">
+                <Combobox.Options
+                  className={cn("px-1 py-2", {
+                    "pt-14": floatingTop >= 0,
+                    "pb-14": floatingTop < 0,
+                  })}
+                >
                   <div className="max-h-60 divide-y divide-card-border-light overflow-auto px-2 scrollbar-thin scrollbar-thumb-white/12 scrollbar-thumb-rounded scrollbar-w-1.5">
                     <Options
                       selectedItems={selectedItems}
