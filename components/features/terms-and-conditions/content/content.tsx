@@ -4,7 +4,7 @@ import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 
 export function Content() {
   return (
-    <div className="mt-3 overflow-hidden">
+    <div className="overflow-hidden">
       <Paper container="3" size="s" classNames={{ base: "h-full" }}>
         <ScrollView>
           <div className="flex h-full flex-col gap-6">
@@ -14,14 +14,14 @@ export function Content() {
                 weight="medium"
                 color="text-2"
                 translate={{
-                  token: "v2.pages.signup.onboarding.terms.terms.onlydust.title",
+                  token: "v2.pages.legalNotice.common.terms.onlydust.title",
                 }}
               />
               <Typo
                 size="s"
                 color="text-2"
                 translate={{
-                  token: "v2.pages.signup.onboarding.terms.terms.onlydust.description",
+                  token: "v2.pages.legalNotice.common.terms.onlydust.description",
                 }}
               />
             </div>
@@ -32,14 +32,14 @@ export function Content() {
                 weight="medium"
                 color="text-2"
                 translate={{
-                  token: "v2.pages.signup.onboarding.terms.terms.access.title",
+                  token: "v2.pages.legalNotice.common.terms.access.title",
                 }}
               />
               <Typo
                 size="s"
                 color="text-2"
                 translate={{
-                  token: "v2.pages.signup.onboarding.terms.terms.access.description",
+                  token: "v2.pages.legalNotice.common.terms.access.description",
                 }}
               />
             </div>
@@ -50,7 +50,7 @@ export function Content() {
                 weight="medium"
                 color="text-2"
                 translate={{
-                  token: "v2.pages.signup.onboarding.terms.terms.responsability.title",
+                  token: "v2.pages.legalNotice.common.terms.responsability.title",
                 }}
               />
 

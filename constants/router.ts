@@ -83,4 +83,7 @@ export const NEXT_ROUTER = {
       payoutInformation: "/signup/onboarding/payout-information",
     },
   },
+  legalNotice: {
+    root: "/legal-notice",
+  },
 } as const;

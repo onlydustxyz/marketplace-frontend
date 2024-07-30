@@ -1,5 +1,4 @@
 import { Menu, Transition } from "@headlessui/react";
-import { bootstrap } from "core/bootstrap";
 import { Fragment, PropsWithChildren, useState } from "react";
 import { useSponsorGuard } from "utils/guards/sponsor-guard.hooks";
 
@@ -170,20 +169,11 @@ export function View({ avatarUrl, login, hideProfileItems, labelToken, redirecti
                 </div>
               </MenuItem>
 
-              <BaseLink href={bootstrap.legalHelperPort.getTermsAndConditionsUrl()}>
-                <MenuItem>
-                  <Icon remixName="ri-bill-line" size={20} />
-                  <div className="grow">
-                    <Translate token="v2.features.menu.terms" />
-                  </div>
-                </MenuItem>
-              </BaseLink>
-
-              <BaseLink href={bootstrap.legalHelperPort.getPrivacyPolicyUrl()}>
+              <BaseLink href={NEXT_ROUTER.legalNotice.root}>
                 <MenuItem>
                   <Icon remixName="ri-lock-line" size={20} />
                   <div className="grow">
-                    <Translate token="v2.features.menu.privacy" />
+                    <Translate token="v2.features.menu.legalNotice" />
                   </div>
                 </MenuItem>
               </BaseLink>

@@ -1,4 +1,3 @@
-import { bootstrap } from "core/bootstrap";
 import { useState } from "react";
 import { useSponsorGuard } from "utils/guards/sponsor-guard.hooks";
 
@@ -190,21 +189,12 @@ export function BurgerMenu() {
             ) : null}
 
             <BaseLink
-              href={bootstrap.legalHelperPort.getTermsAndConditionsUrl()}
+              href={NEXT_ROUTER.legalNotice.root}
               onClick={() => setPanelOpen(false)}
-              className="flex w-full items-center gap-3 rounded-md p-4"
-            >
-              <Icon remixName="ri-bill-line" size={20} />
-              <Translate token="v2.features.menu.terms" />
-            </BaseLink>
-
-            <BaseLink
-              href={bootstrap.legalHelperPort.getPrivacyPolicyUrl()}
-              onClick={() => setPanelOpen(false)}
-              className="flex w-full items-center gap-3 rounded-md p-4"
+              className="flex w-full items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8"
             >
               <Icon remixName="ri-lock-line" size={20} />
-              <Translate token="v2.features.menu.privacy" />
+              <Translate token="v2.features.menu.legalNotice" />
             </BaseLink>
           </div>
 
