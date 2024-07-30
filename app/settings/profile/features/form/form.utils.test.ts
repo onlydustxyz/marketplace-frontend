@@ -122,6 +122,7 @@ describe("formatToData", () => {
       ],
       allocatedTimeToContribute: TProfileForm.ALLOCATED_TIME.NONE,
       isLookingForAJob: true,
+      contactEmail: "john@mail.com",
       ...baseMockData,
     };
 
@@ -131,6 +132,7 @@ describe("formatToData", () => {
       avatarUrl: "https://example.com/avatar.jpg",
       location: "Earth",
       bio: "Just a bio",
+      contactEmail: "john@mail.com",
       website: "https://example.com",
       telegram: { contact: "contact", isPublic: true },
       whatsapp: { contact: "", isPublic: false },
