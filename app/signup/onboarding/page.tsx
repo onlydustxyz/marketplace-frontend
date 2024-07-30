@@ -53,7 +53,7 @@ function OnboardingPage() {
             icon={{ remixName: "ri-checkbox-circle-line" }}
             type={"mandatory"}
             isDone={user.hasCompletedVerificationInformation}
-            path={"/signup"}
+            path={NEXT_ROUTER.signup.onboarding.verificationInformation}
           />
           <TunnelStep
             title={{ token: "v2.pages.signup.onboarding.tunnel.steps.terms.title" }}
@@ -61,7 +61,7 @@ function OnboardingPage() {
             icon={{ remixName: "ri-file-text-line" }}
             type={"mandatory"}
             isDone={user.hasAcceptedLatestTermsAndConditions}
-            path={"/signup"}
+            path={NEXT_ROUTER.signup.onboarding.termsAndConditions}
           />
           <TunnelStep
             title={{ token: "v2.pages.signup.onboarding.tunnel.steps.project.title" }}
@@ -77,7 +77,7 @@ function OnboardingPage() {
             icon={{ remixName: "ri-user-line" }}
             type={"optional"}
             isDone={user.hasCompletedProfile}
-            path={"/signup"}
+            path={NEXT_ROUTER.signup.onboarding.completeYourProfile}
           />
           <TunnelStep
             title={{ token: "v2.pages.signup.onboarding.tunnel.steps.payout.title" }}
@@ -85,7 +85,7 @@ function OnboardingPage() {
             icon={{ remixName: "ri-building-line" }}
             type={"optional"}
             isDone={user.hasCompletePayoutInformation}
-            path={"/signup"}
+            path={NEXT_ROUTER.signup.onboarding.payoutInformation}
           />
         </div>
       </Paper>
