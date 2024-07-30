@@ -73,7 +73,7 @@ export default function PayoutInformationPage() {
         />
       </div>
     );
-  }, [handleSubmit, isPendingCreateBillingProfile]);
+  }, [isPendingCreateBillingProfile]);
 
   return (
     <FormProvider {...formMethods}>
