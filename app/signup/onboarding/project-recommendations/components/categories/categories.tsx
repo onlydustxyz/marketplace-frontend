@@ -10,9 +10,7 @@ import { TProjectRecommendationContext } from "app/signup/onboarding/project-rec
 import { Paper } from "components/atoms/paper";
 import { CheckboxButton } from "components/molecules/checkbox-button";
 
-import { TCategories } from "./categories.types";
-
-export function Categories(_: TCategories.Props) {
+export function Categories() {
   const { categories } = useContext(ProjectRecommendationContext);
   const { control, setValue } = useFormContext<TProjectRecommendationContext.form>();
 

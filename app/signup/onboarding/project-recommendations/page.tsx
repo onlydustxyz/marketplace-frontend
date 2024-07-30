@@ -21,6 +21,7 @@ import { Goals } from "./components/goals/goals";
 import { Languages } from "./components/languages/languages";
 
 function Footer() {
+  const { isInvalid } = useContext(ProjectRecommendationContext);
   return (
     <div className="flex w-full flex-row justify-end gap-2">
       <Button
@@ -34,6 +35,7 @@ function Footer() {
         translate={{ token: "v2.pages.signup.onboarding.projectRecommendations.actions.next" }}
         endIcon={{ remixName: "ri-arrow-right-s-line" }}
         type={"submit"}
+        isDisabled={isInvalid}
       />
     </div>
   );
