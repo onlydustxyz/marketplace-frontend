@@ -23,35 +23,23 @@ import { Key, useIntl } from "hooks/translate/use-translate";
 type Card = {
   title: Key;
   content: Key;
-  cta?: { label: Key; href: string };
 };
 
-function Card({ title, content, cta }: Card) {
+function Card({ title, content }: Card) {
   const { T } = useIntl();
 
   return (
-    <Paper size={"s"} container={"3"} classNames={{ base: "grid gap-2 content-start" }}>
+    <Paper size={"s"} container={"3"} classNames={{ base: "flex md:flex-col gap-2 content-start items-center" }}>
       <img
         // TODO @hayden handle real images
         src={IMAGES.logo.space}
         alt={T("title")}
-        className={"rounded-lg border border-container-stroke-separator"}
+        className={"max-w-24 rounded-lg border border-container-stroke-separator md:max-w-full"}
       />
       <div className={"grid"}>
         <Typo size={"l"} weight={"medium"} translate={{ token: title }} />
         <Typo size={"s"} color={"text-2"} translate={{ token: content }} />
       </div>
-      {cta ? (
-        <div>
-          <Button
-            as={BaseLink}
-            htmlProps={{
-              href: cta.href,
-            }}
-            translate={{ token: cta.label }}
-          ></Button>
-        </div>
-      ) : null}
     </Paper>
   );
 }
@@ -80,10 +68,6 @@ export function OnboardingCompletedModal() {
     {
       title: "v2.pages.signup.onboarding.completed.sections.submitProject.title",
       content: "v2.pages.signup.onboarding.completed.sections.submitProject.content",
-      cta: {
-        label: "v2.pages.signup.onboarding.completed.sections.submitProject.cta",
-        href: NEXT_ROUTER.projects.creation,
-      },
     },
     {
       title: "v2.pages.signup.onboarding.completed.sections.exploreEcosystems.title",
@@ -130,6 +114,7 @@ export function OnboardingCompletedModal() {
       canDismiss={false}
       size={"l"}
       container={"1"}
+      classNames={{ body: "gap-6 md:gap-3" }}
     >
       <Paper size={"l"} container={"2"} classNames={{ base: "grid gap-6" }}>
         <div className="grid gap-3">
@@ -141,7 +126,7 @@ export function OnboardingCompletedModal() {
           />
         </div>
 
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid gap-2 md:grid-cols-3">
           {cards.map(card => (
             <Card key={card.title} {...card} />
           ))}
@@ -164,12 +149,45 @@ export function OnboardingCompletedModal() {
         ) : null}
       </Paper>
 
-      <footer className={"flex justify-end"}>
+      <footer className={"hidden items-center justify-end gap-2 md:flex"}>
+        {isMaintainer ? (
+          <Button
+            as={BaseLink}
+            htmlProps={{
+              href: NEXT_ROUTER.projects.creation,
+            }}
+            translate={{ token: "v2.pages.signup.onboarding.completed.sections.submitProject.cta" }}
+          />
+        ) : null}
+
         <Button
           variant={"secondary-light"}
           translate={{ token: "v2.pages.signup.onboarding.completed.cta" }}
           endIcon={{ remixName: "ri-arrow-right-s-line" }}
           onClick={handleClose}
+        />
+      </footer>
+
+      <footer className={"flex flex-col items-center justify-end gap-6 md:hidden"}>
+        {isMaintainer ? (
+          <Button
+            as={BaseLink}
+            htmlProps={{
+              href: NEXT_ROUTER.projects.creation,
+            }}
+            size={"l"}
+            translate={{ token: "v2.pages.signup.onboarding.completed.sections.submitProject.cta" }}
+            classNames={{ base: "w-full" }}
+          />
+        ) : null}
+
+        <Button
+          variant={"secondary-light"}
+          size={"l"}
+          translate={{ token: "v2.pages.signup.onboarding.completed.cta" }}
+          endIcon={{ remixName: "ri-arrow-right-s-line" }}
+          onClick={handleClose}
+          classNames={{ base: "w-full" }}
         />
       </footer>
     </Modal>
