@@ -30,13 +30,13 @@ export default function SignupPage() {
   } = useClientBootstrapContext();
   const { isAuthenticated = false } = authProvider ?? {};
 
-  const { data: userOnboarding, isLoading: isLoadingUserOnboarding } = UserReactQueryAdapter.client.useGetMyOnboarding({
+  const { data: userOnboarding } = UserReactQueryAdapter.client.useGetMyOnboarding({
     options: {
       enabled: isAuthenticated,
     },
   });
 
-  const { data: userProfile, isLoading: isLoadingUserProfile } = UserReactQueryAdapter.client.useGetMyProfile({
+  const { data: userProfile } = UserReactQueryAdapter.client.useGetMyProfile({
     options: {
       enabled: isAuthenticated,
     },
@@ -69,13 +69,17 @@ export default function SignupPage() {
   }
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      return;
+    }
+
     if (userOnboarding?.completed) {
       router.push(NEXT_ROUTER.home.all);
       return;
     }
 
     handleSignupDispatcher();
-  }, [userOnboarding, userProfile, searchParams]);
+  }, [userOnboarding, userProfile, searchParams, isAuthenticated]);
 
   return (
     <SignupTemplate header={<AccountAlreadyExist showDisconnectButton={false} />}>
