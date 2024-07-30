@@ -25,6 +25,7 @@ export class UserProfile implements UserProfileInterface {
   location!: UserProfileResponse["location"];
   login!: UserProfileResponse["login"];
   website!: UserProfileResponse["website"];
+  joiningReason!: UserProfileResponse["joiningReason"];
 
   constructor(props: UserProfileResponse) {
     Object.assign(this, props);
@@ -76,5 +77,9 @@ export class UserProfile implements UserProfileInterface {
     this.contacts = this.contacts?.map(c =>
       c.channel === channel ? { ...c, contact: this.sanitizeChannelContact(contact), visibility } : c
     );
+  }
+
+  static isValidJoiningReason(joiningReason?: string): joiningReason is UserProfileResponse["joiningReason"] {
+    return joiningReason === "CONTRIBUTOR" || joiningReason === "MAINTAINER" || joiningReason === "SPONSOR";
   }
 }

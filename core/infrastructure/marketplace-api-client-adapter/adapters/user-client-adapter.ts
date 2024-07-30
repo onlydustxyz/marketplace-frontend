@@ -48,7 +48,7 @@ export class UserClientAdapter implements UserStoragePort {
 
   setMyProfile = () => {
     const path = this.routes["setMyProfile"];
-    const method = "PUT";
+    const method = "PATCH";
     const tag = HttpClient.buildTag({ path });
 
     const request = async (body: SetMyProfileBody) => {

@@ -41,6 +41,7 @@ export default function VerificationInformationPage() {
       onSuccess: () => {
         toast.default(T("v2.pages.signup.verificationInformation.toast.success"));
         // TODO @Mehdi add redirection to Terms and condition
+        // router.push(NEXT_ROUTER.signup.termsAndConditions);
       },
       onError: () => {
         toast.error(T("v2.pages.signup.verificationInformation.toast.error"));
@@ -88,12 +89,12 @@ export default function VerificationInformationPage() {
   const renderFooter = useMemo(() => {
     return (
       <div className="flex justify-end gap-1">
+        {/*TODO @Mehdi check with Paul if we can remove this button and just let user disconnect if wrong tunnel*/}
         <Button
           variant="secondary-light"
           size="l"
           translate={{ token: "v2.pages.signup.verificationInformation.footer.back" }}
           startIcon={{ remixName: "ri-arrow-left-s-line" }}
-          // TODO @Mehdi add back redirection to step 1
           isDisabled={userProfileIsLoading || isPendingSetMyProfile}
         />
         <Button
