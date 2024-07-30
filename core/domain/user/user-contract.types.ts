@@ -1,4 +1,5 @@
 import { UserInterface } from "core/domain/user/models/user-model";
+import { UserOnboardingInterface } from "core/domain/user/models/user-onboarding-model";
 import { UserProfileInterface } from "core/domain/user/models/user-profile-model";
 import {
   HttpClientParameters,
@@ -76,3 +77,11 @@ export type SetMeBody = components["schemas"]["PatchMeContract"];
 export type SetMePortParams = HttpClientParameters<object>;
 
 export type SetMePortResponse = HttpStorageResponse<UserInterface, SetMeBody>;
+
+/* --------------------------------- Get my Onboarding -------------------------------- */
+
+export type GetMyOnboardingResponse = components["schemas"]["OnboardingCompletionResponse"];
+
+export type GetMyOnboardingResponsePortParams = HttpClientParameters<object>;
+
+export type GetMyOnboardingResponsePortResponse = HttpStorageResponse<UserOnboardingInterface>;

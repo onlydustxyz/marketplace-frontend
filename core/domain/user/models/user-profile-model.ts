@@ -23,6 +23,7 @@ export class UserProfile implements UserProfileInterface {
   location!: UserProfileResponse["location"];
   login!: UserProfileResponse["login"];
   website!: UserProfileResponse["website"];
+  joiningReason!: UserProfileResponse["joiningReason"];
 
   constructor(props: UserProfileResponse) {
     Object.assign(this, props);
@@ -68,5 +69,9 @@ export class UserProfile implements UserProfileInterface {
     visibility?: "public" | "private";
   }) {
     return { channel, contact: this.sanitizeChannelContact(contact), visibility };
+  }
+
+  static isValidJoiningReason(joiningReason?: string) {
+    return joiningReason === "CONTRIBUTOR" || joiningReason === "MAINTAINER" || joiningReason === "SPONSOR";
   }
 }

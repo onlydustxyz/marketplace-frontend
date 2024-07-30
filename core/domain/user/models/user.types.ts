@@ -1,3 +1,5 @@
+import { components } from "src/__generated/api";
+
 export enum UserProfileContactChannel {
   discord = "DISCORD",
   linkedin = "LINKEDIN",
@@ -11,3 +13,5 @@ export interface UserProfileContact {
   contact?: string;
   visibility: "public" | "private";
 }
+
+export type UserJoiningReason = components["schemas"]["UserProfileUpdateRequest"]["joiningReason"];
