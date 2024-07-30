@@ -5,7 +5,7 @@ export namespace TBillingProfiles {
   export interface Props extends PropsWithChildren {}
 
   export const validation = z.object({
-    name: z.string(),
+    name: z.string().min(1),
     type: z.string(),
   });
 

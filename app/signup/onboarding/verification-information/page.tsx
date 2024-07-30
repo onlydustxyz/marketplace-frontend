@@ -39,6 +39,7 @@ export default function VerificationInformationPage() {
     options: {
       onSuccess: () => {
         toast.default(T("v2.pages.signup.verificationInformation.toast.success"));
+        // TODO @Mehdi add redirection to Terms and condition
       },
       onError: () => {
         toast.error(T("v2.pages.signup.verificationInformation.toast.error"));
@@ -77,8 +78,6 @@ export default function VerificationInformationPage() {
           visibility: userProfile?.contacts?.find(contact => contact.channel === "TELEGRAM")?.visibility ?? "public",
         },
       ],
-    }).then(() => {
-      // TODO @Mehdi add redirection to Terms and condition
     });
   }
 
@@ -99,7 +98,6 @@ export default function VerificationInformationPage() {
           size="l"
           translate={{ token: "v2.pages.signup.verificationInformation.footer.next" }}
           endIcon={{ remixName: "ri-arrow-right-s-line" }}
-          // onClick={handleSubmit(handleSetMyProfile)}
           isLoading={isPendingSetMyProfile}
           isDisabled={userProfileIsLoading || isPendingSetMyProfile}
         />

@@ -17,8 +17,8 @@
     "next": "Next"
   },
   "toast": {
-    "error": "An error occurred while saving your information. Please try again later.",
-    "success": "Information saved successfully."
+    "error": "An error occurred while creating your billing profile. Please try again later.",
+    "success": "Billing profile created successfully."
   },
   "fields": {
     "individual": {
