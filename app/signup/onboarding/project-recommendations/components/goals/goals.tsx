@@ -9,6 +9,7 @@ import { TProjectRecommendationContext } from "app/signup/onboarding/project-rec
 
 import { Paper } from "components/atoms/paper";
 import { RadioGroup } from "components/atoms/radio-group";
+import { Switch } from "components/atoms/switch";
 import { Typo } from "components/atoms/typo";
 
 import { Key } from "hooks/translate/use-translate";
@@ -18,21 +19,21 @@ import { TGoals } from "./goals.types";
 export function CustomRadioComponent({
   goal,
   children,
-}: { goal: TProjectRecommendationContext.Goals } & PropsWithChildren): ReactNode {
-  const translates: { [key in TProjectRecommendationContext.Goals]: { title: Key; content: Key } } = {
-    earn: {
+}: { goal: TProjectRecommendationContext.Goal } & PropsWithChildren): ReactNode {
+  const translates: { [key in TProjectRecommendationContext.Goal]: { title: Key; content: Key } } = {
+    EARN: {
       title: "v2.pages.signup.onboarding.projectRecommendations.goal.choices.money.title",
       content: "v2.pages.signup.onboarding.projectRecommendations.goal.choices.money.content",
     },
-    learn: {
+    LEARN: {
       title: "v2.pages.signup.onboarding.projectRecommendations.goal.choices.skill.title",
       content: "v2.pages.signup.onboarding.projectRecommendations.goal.choices.skill.content",
     },
-    challenge: {
+    CHALLENGE: {
       title: "v2.pages.signup.onboarding.projectRecommendations.goal.choices.challenge.title",
       content: "v2.pages.signup.onboarding.projectRecommendations.goal.choices.challenge.content",
     },
-    notoriety: {
+    NOTORIETY: {
       title: "v2.pages.signup.onboarding.projectRecommendations.goal.choices.notoriety.title",
       content: "v2.pages.signup.onboarding.projectRecommendations.goal.choices.notoriety.content",
     },
@@ -80,6 +81,36 @@ export function Goals(_: TGoals.Props) {
               }))}
             />
           </div>
+        )}
+      />
+      <Controller
+        control={control}
+        name={"isLookingForAJob"}
+        render={({ field: { value, onChange } }) => (
+          <Paper
+            size={"s"}
+            container={"transparent"}
+            classNames={{ base: "flex flex-row gap-2 items-center justify-start" }}
+          >
+            <Paper
+              size={"m"}
+              container={"3"}
+              classNames={{ base: "flex items-center justify-center rounded-lg px-2.5" }}
+            >
+              <Switch isActive={value || false} onChange={onChange} />
+            </Paper>
+            <div className="flex flex-1 flex-col">
+              <Typo
+                size="l"
+                weight={"medium"}
+                translate={{ token: "v2.pages.signup.onboarding.projectRecommendations.goal.lookingForAJob.title" }}
+              />
+              <Typo
+                size="s"
+                translate={{ token: "v2.pages.signup.onboarding.projectRecommendations.goal.lookingForAJob.content" }}
+              />
+            </div>
+          </Paper>
         )}
       />
     </Paper>

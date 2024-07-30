@@ -13,7 +13,7 @@ import { Translate } from "components/layout/translate/translate";
 
 import { NEXT_ROUTER } from "constants/router";
 
-export function AccountAlreadyExist({ showDisconnectButton }: TAccountAlreadyExist.Props) {
+export function AccountAlreadyExist({ showDisconnectButton = true }: TAccountAlreadyExist.Props) {
   const { handleLogout } = useLogout();
   const {
     clientBootstrap: { authProvider },

@@ -3,8 +3,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ProjectCategoriesReactQueryAdapter } from "core/application/react-query-adapter/project-categories";
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
+import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 import { useRouter } from "next/navigation";
-import { createContext } from "react";
+import { createContext, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { toast } from "components/atoms/toaster";
@@ -23,11 +24,23 @@ export const ProjectRecommendationContext = createContext<TProjectRecommendation
 export function ProjectRecommendationContextProvider({ children }: TProjectRecommendationContext.Props) {
   const { data: categories } = ProjectCategoriesReactQueryAdapter.client.useGetProjectCategories({});
   const router = useRouter();
+  const {
+    clientBootstrap: { authProvider },
+  } = useClientBootstrapContext();
+  const { isAuthenticated = false } = authProvider ?? {};
+
+  const { data: userProfile } = UserReactQueryAdapter.client.useGetMyProfile({
+    options: {
+      enabled: isAuthenticated,
+    },
+  });
+
   const form = useForm<TProjectRecommendationContext.form>({
     mode: "all",
     resolver: zodResolver(TProjectRecommendationContext.validation),
     defaultValues: {
-      categoriesIds: [],
+      preferredCategories: [],
+      isLookingForAJob: false,
     },
   });
 
@@ -43,15 +56,26 @@ export function ProjectRecommendationContextProvider({ children }: TProjectRecom
     },
   });
 
+  useEffect(() => {
+    if (userProfile) {
+      form.reset({
+        isLookingForAJob: userProfile.isLookingForAJob,
+      });
+    }
+  }, [userProfile]);
+
   async function onSubmit(data: TProjectRecommendationContext.form) {
-    await setMyProfile({ ...data, goal: data.goal as TProjectRecommendationContext.Goals });
+    await setMyProfile({
+      ...data,
+      goal: data.goal as TProjectRecommendationContext.Goal,
+    });
   }
 
   return (
     <ProjectRecommendationContext.Provider
       value={{
         categories: categories?.categories || [],
-        goals: ["earn", "learn", "challenge", "notoriety"],
+        goals: ["LEARN", "CHALLENGE", "EARN", "NOTORIETY"],
         onSubmit: form.handleSubmit(onSubmit),
       }}
     >

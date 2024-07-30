@@ -6,6 +6,7 @@ import {
   GetMeResponse,
   GetMyNotificationSettingsResponse,
   GetMyProfileResponse,
+  SetMeBody,
   SetMyNotificationSettingsBody,
   SetMyProfileBody,
   SetMyProfileResponse,
@@ -23,6 +24,7 @@ export class UserClientAdapter implements UserStoragePort {
     setMyNotificationSettings: "me/notification-settings/projects/:projectId",
     getMyNotificationSettings: "me/notification-settings/projects/:projectId",
     getMe: "me",
+    setMe: "me",
   } as const;
 
   registerToHackathon = ({ pathParams }: FirstParameter<UserStoragePort["registerToHackathon"]>) => {
@@ -143,6 +145,25 @@ export class UserClientAdapter implements UserStoragePort {
 
       return new User(data);
     };
+
+    return {
+      request,
+      tag,
+    };
+  };
+
+  setMe = () => {
+    const path = this.routes["setMe"];
+    const method = "PATCH";
+    const tag = HttpClient.buildTag({ path });
+
+    const request = async (body: SetMeBody) =>
+      this.client.request<never>({
+        path,
+        method,
+        tag,
+        body: JSON.stringify(body),
+      });
 
     return {
       request,

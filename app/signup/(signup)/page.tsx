@@ -1,5 +1,3 @@
-import React from "react";
-
 import { SignupCtas } from "app/signup/(signup)/features/signup-ctas/signup-ctas";
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
 import { StepHeader } from "app/signup/components/step-header/step-header";
@@ -14,7 +12,7 @@ import { SigninCta } from "./features/signin-cta/signin-cta";
 
 export default function SignupPage() {
   return (
-    <SignupTemplate header={<AccountAlreadyExist />}>
+    <SignupTemplate header={<AccountAlreadyExist showDisconnectButton={false} />}>
       <div className="flex h-full flex-col gap-3">
         <Paper size={"l"} container={"3"} classNames={{ base: "grid gap-6" }}>
           <Title

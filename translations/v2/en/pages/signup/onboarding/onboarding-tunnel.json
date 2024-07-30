@@ -30,6 +30,7 @@
   },
   "actions": {
     "skip": "Skip",
-    "back": "Back"
+    "back": "Back",
+    "next": "Next"
   }
 }

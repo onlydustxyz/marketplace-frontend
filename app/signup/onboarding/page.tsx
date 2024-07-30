@@ -1,7 +1,6 @@
 "use client";
 
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
-import React from "react";
 
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
 import { StepHeader } from "app/signup/components/step-header/step-header";
@@ -42,7 +41,7 @@ function OnboardingPage() {
   return (
     <SignupTemplate header={<AccountAlreadyExist />} footer={<Footer />}>
       <Paper container={"2"} classNames={{ base: "flex flex-col gap-3 min-h-full" }}>
-        <StepHeader step={2} stepPath={"/signup/onboarding"} />
+        <StepHeader step={2} stepPath={NEXT_ROUTER.signup.onboarding.root} />
         <Title
           title={{ token: "v2.pages.signup.onboarding.tunnel.title" }}
           content={{ token: "v2.pages.signup.onboarding.tunnel.content" }}
@@ -54,7 +53,7 @@ function OnboardingPage() {
             icon={{ remixName: "ri-checkbox-circle-line" }}
             type={"mandatory"}
             isDone={user.hasCompletedVerificationInformation}
-            path={"/signup"}
+            path={NEXT_ROUTER.signup.onboarding.verificationInformation}
           />
           <TunnelStep
             title={{ token: "v2.pages.signup.onboarding.tunnel.steps.terms.title" }}
@@ -62,7 +61,7 @@ function OnboardingPage() {
             icon={{ remixName: "ri-file-text-line" }}
             type={"mandatory"}
             isDone={user.hasAcceptedLatestTermsAndConditions}
-            path={"/signup"}
+            path={NEXT_ROUTER.signup.onboarding.termsAndConditions}
           />
           <TunnelStep
             title={{ token: "v2.pages.signup.onboarding.tunnel.steps.project.title" }}
@@ -78,7 +77,7 @@ function OnboardingPage() {
             icon={{ remixName: "ri-user-line" }}
             type={"optional"}
             isDone={user.hasCompletedProfile}
-            path={"/signup"}
+            path={NEXT_ROUTER.signup.onboarding.completeYourProfile}
           />
           <TunnelStep
             title={{ token: "v2.pages.signup.onboarding.tunnel.steps.payout.title" }}
@@ -86,7 +85,7 @@ function OnboardingPage() {
             icon={{ remixName: "ri-building-line" }}
             type={"optional"}
             isDone={user.hasCompletePayoutInformation}
-            path={"/signup"}
+            path={NEXT_ROUTER.signup.onboarding.payoutInformation}
           />
         </div>
       </Paper>

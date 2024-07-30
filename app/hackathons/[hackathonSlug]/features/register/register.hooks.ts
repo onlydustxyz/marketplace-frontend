@@ -91,7 +91,7 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
   async function handleTelegramSubmit(data: TRegister.form) {
     if (!userProfile) return;
 
-    const currentUserProfileTelegram = userProfile.getContact(UserProfileContactChannel.telegram);
+    const currentUserProfileTelegram = userProfile.getContactTelegram();
 
     userProfile.setContact({
       channel: UserProfileContactChannel.telegram,
@@ -104,7 +104,6 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
       location: userProfile.location,
       bio: userProfile.bio,
       website: userProfile.website,
-      technologies: userProfile.technologies,
       contacts: userProfile.contacts,
       allocatedTimeToContribute: userProfile.allocatedTimeToContribute,
       isLookingForAJob: userProfile.isLookingForAJob,

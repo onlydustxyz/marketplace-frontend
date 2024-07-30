@@ -77,7 +77,7 @@ const useApplyProject = ({
   });
 };
 
-export type UseUpdateProfileBody = components["schemas"]["UserProfileRequest"];
+export type UseUpdateProfileBody = components["schemas"]["UserProfileUpdateRequest"];
 export type UseUpdateProfileResponse = components["schemas"]["PrivateUserProfileResponse"];
 
 const useUpdateProfile = ({ options = {} }: UseMutationProps<UseUpdateProfileResponse, UseUpdateProfileBody>) => {

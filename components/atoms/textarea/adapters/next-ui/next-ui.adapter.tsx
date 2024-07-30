@@ -20,14 +20,12 @@ export const TextareaNextUiAdapter = forwardRef(function TextareaNextUiAdapter(
     isError,
     startContent,
     endContent,
+    label,
+    placeholder,
   }: TextareaPort,
   ref: ForwardedRef<HTMLTextAreaElement>
 ) {
   const slots = TextareaNextUiVariants({ isDisabled, isError });
-
-  function handleChange(value: string) {
-    onChange?.(value);
-  }
 
   return (
     <NextTextarea
@@ -46,16 +44,18 @@ export const TextareaNextUiAdapter = forwardRef(function TextareaNextUiAdapter(
         description: cn(slots.description(), classNames?.description),
       }}
       variant="bordered"
+      label={label}
       labelPlacement="outside-left"
       isDisabled={isDisabled}
       disabled={isDisabled}
-      onValueChange={handleChange}
+      onChange={onChange}
       value={value}
       minRows={minRows}
       maxRows={maxRows}
       disableAutosize={disableAutosize}
       startContent={startContent}
       endContent={endContent}
+      placeholder={placeholder}
     />
   );
 });

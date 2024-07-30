@@ -19,11 +19,7 @@ export type RegisterToHackathonPortResponse = HttpStorageResponse;
 
 /* --------------------------------- Set my profile -------------------------------- */
 
-export type SetMyProfileBody = components["schemas"]["UserProfileRequest"] & {
-  // MOCK
-  goal?: "learn" | "challenge" | "earn" | "notoriety";
-  categoriesIds?: string[];
-};
+export type SetMyProfileBody = components["schemas"]["UserProfileUpdateRequest"];
 
 export type SetMyProfileResponse = components["schemas"]["PrivateUserProfileResponse"];
 
@@ -72,3 +68,11 @@ export type GetMeResponse = components["schemas"]["GetMeResponse"];
 export type GetMeResponsePortParams = HttpClientParameters<object>;
 
 export type GetMeResponsePortResponse = HttpStorageResponse<UserInterface>;
+
+/* --------------------------------- Set me --------------------------------- */
+
+export type SetMeBody = components["schemas"]["PatchMeContract"];
+
+export type SetMePortParams = HttpClientParameters<object>;
+
+export type SetMePortResponse = HttpStorageResponse<UserInterface, SetMeBody>;

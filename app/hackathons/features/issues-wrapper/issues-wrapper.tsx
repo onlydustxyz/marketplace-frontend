@@ -23,6 +23,8 @@ export function IssuesWrapper({ projectId, hackathonId, queryParams, Wrapper = F
     queryParams: {
       ...queryParams,
       hackathonId,
+      sort: "CREATED_AT",
+      direction: "DESC",
       pageSize: 100,
     },
   });

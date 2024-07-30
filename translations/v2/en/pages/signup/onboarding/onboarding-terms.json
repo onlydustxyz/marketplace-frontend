@@ -1,0 +1,26 @@
+{
+  "title": "Terms & Conditions",
+  "content": "You must read and accept the Terms & Conditions to access the app.",
+  "terms": {
+    "onlydust": {
+      "title": "What’s Only Dust?",
+      "description": "Only Dust is a platform provided by Wagmi SAS designed to optimize the financing of open source projects using blockchain protocols. On behalf of foundations supporting the development of protocols, we organize connections between open source projects and developers and organize the funding of the latter's contributions."
+    },
+    "access": {
+      "title": "How to access Only Dust?",
+      "description": "To use our platform, you must be of legal age (+ 16 years), not be a sanctioned person, and, of course, accept and observe the T&Cs in full. To obtain your rewards, you will need to comply with KYC/KYB requirements."
+    },
+    "responsability": {
+      "title": "What are your responsibilities?"
+    }
+  },
+  "agree": {
+    "title": "Terms & Conditions",
+    "description": {
+      "full": "I agree to the full",
+      "terms": "terms & conditions",
+      "and": "&",
+      "privacy": "the privacy policy"
+    }
+  }
+}

@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
+import { UserProfileContactChannel } from "core/domain/user/models/user.types";
 import React, { useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -50,34 +51,37 @@ export default function VerificationInformationPage() {
   const { control, handleSubmit, reset } = useForm<TVerificationInformation.form>({
     resolver: zodResolver(TVerificationInformation.validation),
     defaultValues: {
-      email: userProfile?.contacts?.find(contact => contact.channel === "EMAIL")?.contact,
-      telegram: userProfile?.contacts?.find(contact => contact.channel === "TELEGRAM")?.contact,
+      email: userProfile?.getContactEmail()?.contact,
+      telegram: userProfile?.getContactTelegram()?.contact,
     },
   });
 
   useEffect(() => {
     if (userProfile) {
       reset({
-        email: userProfile?.contacts?.find(contact => contact.channel === "EMAIL")?.contact,
-        telegram: userProfile?.contacts?.find(contact => contact.channel === "TELEGRAM")?.contact,
+        email: userProfile.getContactEmail()?.contact,
+        telegram: userProfile.getContactTelegram()?.contact,
       });
     }
   }, [userProfile]);
 
   async function handleSetMyProfile(data: TVerificationInformation.form) {
+    if (!userProfile) return;
+
+    userProfile.setContact({
+      channel: UserProfileContactChannel.email,
+      contact: data.email,
+      visibility: userProfile?.getContactEmail()?.visibility,
+    });
+
+    userProfile.setContact({
+      channel: UserProfileContactChannel.telegram,
+      contact: data.telegram,
+      visibility: userProfile?.getContactTelegram()?.visibility,
+    });
+
     await setMyProfile({
-      contacts: [
-        {
-          channel: "EMAIL",
-          contact: data.email,
-          visibility: userProfile?.contacts?.find(contact => contact.channel === "EMAIL")?.visibility ?? "public",
-        },
-        {
-          channel: "TELEGRAM",
-          contact: data.telegram,
-          visibility: userProfile?.contacts?.find(contact => contact.channel === "TELEGRAM")?.visibility ?? "public",
-        },
-      ],
+      contacts: userProfile.contacts,
     });
   }
 
@@ -107,7 +111,7 @@ export default function VerificationInformationPage() {
 
   return (
     <form onSubmit={handleSubmit(handleSetMyProfile)} className="h-full">
-      <SignupTemplate header={<AccountAlreadyExist showDisconnectButton />} footer={renderFooter}>
+      <SignupTemplate header={<AccountAlreadyExist />} footer={renderFooter}>
         <Paper size={"l"} container={"3"} classNames={{ base: "flex flex-col gap-3 min-h-full" }}>
           <StepHeader
             step={2}
