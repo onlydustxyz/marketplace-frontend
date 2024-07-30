@@ -13,7 +13,6 @@ export function ProfileSummary(props: TProfileSummary.Props) {
   const { bio, contacts, signedUpOnGithubAt, signedUpAt, htmlUrl } = props;
 
   const contactIconMapping: Record<Partial<PublicProfileChannelsUnion | "GITHUB">, RemixIconsName> = {
-    EMAIL: "ri-mail-line",
     TELEGRAM: "ri-telegram-2-fill",
     TWITTER: "ri-twitter-x-fill",
     DISCORD: "ri-discord-fill",
@@ -54,7 +53,7 @@ export function ProfileSummary(props: TProfileSummary.Props) {
             <Icon remixName={contactIconMapping["GITHUB"]} size={24} />
           </SocialLink>
           {contacts
-            ?.filter(item => item.channel !== "EMAIL" && item.visibility !== "private")
+            ?.filter(item => item.visibility !== "private")
             .map(c => {
               return (
                 <SocialLink key={c.contact} {...getArgs(c.channel, c.contact)}>
