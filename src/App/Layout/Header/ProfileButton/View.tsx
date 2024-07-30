@@ -1,10 +1,10 @@
 import { Menu, Transition } from "@headlessui/react";
+import { bootstrap } from "core/bootstrap";
 import { Fragment, PropsWithChildren, useState } from "react";
 import { useSponsorGuard } from "utils/guards/sponsor-guard.hooks";
 
 import { useStackFeedback } from "src/App/Stacks/Stacks";
 import { withTooltip } from "src/components/Tooltip";
-import { useSidePanel } from "src/hooks/useSidePanel";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import { cn } from "src/utils/cn";
 
@@ -52,7 +52,6 @@ export function View({ avatarUrl, login, hideProfileItems, labelToken, redirecti
   const { T } = useIntl();
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
-  const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
   const { handleLogout } = useLogout();
   const [openFeedback] = useStackFeedback();
   const { sponsors } = useSponsorGuard();
@@ -171,19 +170,23 @@ export function View({ avatarUrl, login, hideProfileItems, labelToken, redirecti
                 </div>
               </MenuItem>
 
-              <MenuItem onClick={openFullTermsAndConditions}>
-                <Icon remixName="ri-bill-line" size={20} />
-                <div className="grow">
-                  <Translate token="v2.features.menu.terms" />
-                </div>
-              </MenuItem>
+              <BaseLink href={bootstrap.legalHelperPort.getTermsAndConditionsUrl()}>
+                <MenuItem>
+                  <Icon remixName="ri-bill-line" size={20} />
+                  <div className="grow">
+                    <Translate token="v2.features.menu.terms" />
+                  </div>
+                </MenuItem>
+              </BaseLink>
 
-              <MenuItem onClick={openPrivacyPolicy}>
-                <Icon remixName="ri-lock-line" size={20} />
-                <div className="grow">
-                  <Translate token="v2.features.menu.privacy" />
-                </div>
-              </MenuItem>
+              <BaseLink href={bootstrap.legalHelperPort.getPrivacyPolicyUrl()}>
+                <MenuItem>
+                  <Icon remixName="ri-lock-line" size={20} />
+                  <div className="grow">
+                    <Translate token="v2.features.menu.privacy" />
+                  </div>
+                </MenuItem>
+              </BaseLink>
 
               <span className="my-1 block h-px bg-greyscale-50/8" />
             </div>

@@ -1,3 +1,4 @@
+import { bootstrap } from "core/bootstrap";
 import { useState } from "react";
 import { useSponsorGuard } from "utils/guards/sponsor-guard.hooks";
 
@@ -5,7 +6,6 @@ import { useOnboarding } from "src/App/OnboardingProvider";
 import { useStackFeedback } from "src/App/Stacks/Stacks";
 import MeApi from "src/api/me";
 import SidePanel from "src/components/SidePanel";
-import { useSidePanel } from "src/hooks/useSidePanel";
 import { cn } from "src/utils/cn";
 
 import { Button } from "components/ds/button/button";
@@ -35,7 +35,6 @@ export function BurgerMenu() {
   };
 
   const [panelOpen, setPanelOpen] = useState(false);
-  const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
   const { handleLogout } = useLogout();
   const [openFeedback] = useStackFeedback();
   const { sponsors } = useSponsorGuard();
@@ -190,15 +189,23 @@ export function BurgerMenu() {
               </button>
             ) : null}
 
-            <button className="flex w-full items-center gap-3 rounded-md p-4" onClick={openFullTermsAndConditions}>
+            <BaseLink
+              href={bootstrap.legalHelperPort.getTermsAndConditionsUrl()}
+              onClick={() => setPanelOpen(false)}
+              className="flex w-full items-center gap-3 rounded-md p-4"
+            >
               <Icon remixName="ri-bill-line" size={20} />
               <Translate token="v2.features.menu.terms" />
-            </button>
+            </BaseLink>
 
-            <button className="flex w-full items-center gap-3 rounded-md p-4" onClick={openPrivacyPolicy}>
+            <BaseLink
+              href={bootstrap.legalHelperPort.getPrivacyPolicyUrl()}
+              onClick={() => setPanelOpen(false)}
+              className="flex w-full items-center gap-3 rounded-md p-4"
+            >
               <Icon remixName="ri-lock-line" size={20} />
               <Translate token="v2.features.menu.privacy" />
-            </button>
+            </BaseLink>
           </div>
 
           {githubUserId ? (
