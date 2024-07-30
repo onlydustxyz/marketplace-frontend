@@ -78,7 +78,7 @@ export function BillingProfiles(_: TBillingProfiles.Props) {
   const { T } = useIntl();
   const { control } = useFormContext<TBillingProfiles.form>();
 
-  const types = ["INDIVIDUAL", "SELF_EMPLOYED", "COMPANY"] as BillingProfileTypeUnion[];
+  const types: BillingProfileTypeUnion[] = ["INDIVIDUAL", "SELF_EMPLOYED", "COMPANY"];
 
   return (
     <div className="flex h-full flex-col gap-6">
