@@ -1,5 +1,5 @@
 /* --------------------------------- Get hackathons -------------------------------- */
-import { ProjectCategory } from "core/domain/project-categories/models/project-category-model";
+import { ProjectCategory } from "core/domain/project-category/models/project-category-model";
 import {
   HttpClientParameters,
   HttpStorageResponse,
