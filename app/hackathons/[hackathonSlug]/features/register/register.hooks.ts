@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { HackathonReactQueryAdapter } from "core/application/react-query-adapter/hackathon";
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
+import { UserProfile } from "core/domain/user/models/user-profile-model";
 import { UserProfileContactChannel } from "core/domain/user/models/user.types";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -93,22 +94,15 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
 
     const currentUserProfileTelegram = userProfile.getContactTelegram();
 
-    userProfile.setContact({
-      channel: UserProfileContactChannel.telegram,
-      contact: data.telegram,
-      visibility: currentUserProfileTelegram?.visibility,
-    });
-
     await setMyProfile({
-      avatarUrl: userProfile.avatarUrl,
-      location: userProfile.location,
-      bio: userProfile.bio,
-      website: userProfile.website,
-      contacts: userProfile.contacts,
-      allocatedTimeToContribute: userProfile.allocatedTimeToContribute,
-      isLookingForAJob: userProfile.isLookingForAJob,
-      firstName: userProfile.firstName,
-      lastName: userProfile.lastName,
+      contacts: [
+        ...(userProfile.contacts?.filter(c => c.channel !== UserProfileContactChannel.telegram) ?? []),
+        UserProfile.buildContact({
+          channel: UserProfileContactChannel.telegram,
+          contact: data.telegram,
+          visibility: currentUserProfileTelegram?.visibility,
+        }),
+      ],
     });
 
     await registerForHackathon();
