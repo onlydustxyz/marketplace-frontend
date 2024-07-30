@@ -51,7 +51,9 @@ function TermsAndConditionsPage() {
   const { data: user } = UserReactQueryAdapter.client.useGetMe({});
 
   function handleSwitchChange() {
-    setIsTermsAccepted(!isTermsAccepted);
+    if (!user?.hasAcceptedLatestTermsAndConditions) {
+      setIsTermsAccepted(!isTermsAccepted);
+    }
   }
 
   const { mutateAsync: setMe } = UserReactQueryAdapter.client.useSetMe({
@@ -67,7 +69,9 @@ function TermsAndConditionsPage() {
   });
 
   function handleSubmit() {
-    setMe({ hasAcceptedTermsAndConditions: isTermsAccepted });
+    if (!user?.hasAcceptedLatestTermsAndConditions) {
+      setMe({ hasAcceptedTermsAndConditions: isTermsAccepted });
+    }
   }
 
   useEffect(() => {
