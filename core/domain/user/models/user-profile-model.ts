@@ -7,9 +7,7 @@ type UserProfileResponse = components["schemas"]["PrivateUserProfileResponse"];
 export interface UserProfileInterface extends UserProfileResponse {
   hasContact(channel: UserProfileContactChannel): boolean;
   getContact(channel: UserProfileContactChannel): UserProfileContact | undefined;
-  getContactEmail(): UserProfileContact | undefined;
   getContactTelegram(): UserProfileContact | undefined;
-  setContact(params: { channel: UserProfileContactChannel; contact: string; visibility?: "public" | "private" }): void;
 }
 
 export class UserProfile implements UserProfileInterface {
@@ -38,15 +36,11 @@ export class UserProfile implements UserProfileInterface {
     return this.contacts?.find(c => c.channel === channel && c.contact);
   }
 
-  getContactEmail() {
-    return this.getContact(UserProfileContactChannel.email);
-  }
-
   getContactTelegram() {
     return this.getContact(UserProfileContactChannel.telegram);
   }
 
-  private sanitizeChannelContact(contact: string) {
+  static sanitizeChannelContact(contact: string) {
     let sanitizedContact = contact;
 
     if (contact.endsWith("/")) {
@@ -64,7 +58,7 @@ export class UserProfile implements UserProfileInterface {
     return sanitizedContact;
   }
 
-  setContact({
+  static buildContact({
     channel,
     contact,
     visibility = "private",
@@ -73,8 +67,6 @@ export class UserProfile implements UserProfileInterface {
     contact: string;
     visibility?: "public" | "private";
   }) {
-    this.contacts = this.contacts?.map(c =>
-      c.channel === channel ? { ...c, contact: this.sanitizeChannelContact(contact), visibility } : c
-    );
+    return { channel, contact: this.sanitizeChannelContact(contact), visibility };
   }
 }
