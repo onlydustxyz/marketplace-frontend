@@ -3,9 +3,15 @@
   "stepTitle": "Payout information",
   "subtitle": "You can create multiple billing profiles if necessary. Also don’t worry about picking the wrong type, you can update your setup anytime",
   "form": {
-
+    "name": {
+      "label": "Give your billing profile a name",
+      "placeholder": "Enter a billing profile name"
+    }
   },
-  "specialMention": "",
+  "specialMention": {
+    "title": "If you are an employee",
+    "description": "please ask your company's administrator to create a billing profile and add you as a collaborator. This will allow you to begin working together seamlessly."
+  },
   "footer": {
     "back": "Back",
     "next": "Next"

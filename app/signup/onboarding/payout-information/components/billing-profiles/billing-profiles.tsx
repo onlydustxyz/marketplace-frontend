@@ -1,17 +1,19 @@
-import { zodResolver } from "@hookform/resolvers/zod";
+"use client";
+
 import { BillingProfileTypeUnion } from "core/domain/billing-profile/billing-profile-contract.types";
 import React, { PropsWithChildren, ReactNode } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 
 import { TBillingProfiles } from "app/signup/onboarding/payout-information/components/billing-profiles/billing-profiles.types";
 
+import { Input } from "components/atoms/input";
 import { Paper } from "components/atoms/paper";
 import { RadioGroup } from "components/atoms/radio-group";
 import { Typo } from "components/atoms/typo";
 import { Icon } from "components/layout/icon/icon";
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 
-import { Key } from "hooks/translate/use-translate";
+import { Key, useIntl } from "hooks/translate/use-translate";
 
 export function CustomRadioComponent({
   type,
@@ -72,20 +74,13 @@ export function CustomRadioComponent({
 }
 
 export function BillingProfiles(_: TBillingProfiles.Props) {
-  const { control, handleSubmit, reset } = useForm<TBillingProfiles.form>({
-    resolver: zodResolver(TBillingProfiles.validation),
-    defaultValues: {
-      name: "",
-      type: "INDIVIDUAL" as BillingProfileTypeUnion,
-    },
-  });
+  const { T } = useIntl();
+  const { control } = useFormContext<TBillingProfiles.form>();
 
   const types = ["INDIVIDUAL", "SELF_EMPLOYED", "COMPANY"] as BillingProfileTypeUnion[];
 
-  function handleCreateBillingProfile(data: TBillingProfiles.form) {}
-
   return (
-    <form onSubmit={handleSubmit(handleCreateBillingProfile)} className="h-full">
+    <div className="flex h-full flex-col gap-6">
       <Controller
         control={control}
         name={"type"}
@@ -103,6 +98,26 @@ export function BillingProfiles(_: TBillingProfiles.Props) {
           </div>
         )}
       />
-    </form>
+      <div className="grid gap-2">
+        <Typo
+          size={"s"}
+          weight={"medium"}
+          color={"text-1"}
+          translate={{ token: "v2.pages.signup.payoutInformation.form.name.label" }}
+        />
+
+        <Controller
+          name="name"
+          control={control}
+          render={({ field, fieldState }) => (
+            <Input
+              {...field}
+              placeholder={T("v2.pages.signup.payoutInformation.form.name.placeholder")}
+              isError={!!fieldState.error}
+            />
+          )}
+        />
+      </div>
+    </div>
   );
 }
