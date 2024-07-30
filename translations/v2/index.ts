@@ -56,9 +56,10 @@ import en_signup_onboarding_common from "./en/pages/signup/onboarding/onboarding
 import en_signup_onboarding_project_recommendations from "./en/pages/signup/onboarding/onboarding-project-recommendations.json";
 import en_signup_onboarding_terms from "./en/pages/signup/onboarding/onboarding-terms.json";
 import en_signup_onboarding_tunnel from "./en/pages/signup/onboarding/onboarding-tunnel.json";
+import en_signup_payout_information from "./en/pages/signup/onboarding/payout-information.json";
+import en_signup_verification_information from "./en/pages/signup/onboarding/verification-information.json";
 import en_signup_signin_section from "./en/pages/signup/signin-section.json";
 import en_signup_signup_section from "./en/pages/signup/signup-section.json";
-import en_signup_verification_information from "./en/pages/signup/verification-information.json";
 import en_page_sponsor from "./en/pages/sponsor.json";
 import en_stack_mandate from "./en/pages/stacks-mandate.json";
 import en_stack_request_payments from "./en/pages/stacks-request-payments.json";
@@ -145,6 +146,7 @@ export const en = {
         signinSection: en_signup_signin_section,
         signupSection: en_signup_signup_section,
         verificationInformation: en_signup_verification_information,
+        payoutInformation: en_signup_payout_information,
         accountAlreadyExist: en_signup_account_already_exist,
         onboarding: {
           common: en_signup_onboarding_common,

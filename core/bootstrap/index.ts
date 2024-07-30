@@ -1,3 +1,4 @@
+import { BillingProfileStoragePort } from "core/domain/billing-profile/outputs/biling-profile-storage-port";
 import { HackathonStoragePort } from "core/domain/hackathon/outputs/hackathon-storage-port";
 import { ProjectCategoriesStoragePort } from "core/domain/project-categories/outputs/project-categories-storage-port";
 import { ProjectStoragePort } from "core/domain/project/outputs/project-storage-port";
@@ -12,6 +13,7 @@ import { LegalAdapter } from "core/helpers/legal/legal-adapter";
 import { LegalFacadePort } from "core/helpers/legal/legal-facade-port";
 import { UrlAdapter } from "core/helpers/url/url-adapter";
 import { UrlFacadePort } from "core/helpers/url/url-facade-port";
+import { BillingProfileClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/billing-profile-client-adapter";
 import { HackathonClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/hackathon-client-adapter";
 import { ProjectCategoriesClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/project-categories-client-adapter";
 import { ProjectClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/project-client-adapter";
@@ -27,6 +29,8 @@ export interface BootstrapConstructor {
   hackathonStoragePortForServer: HackathonStoragePort;
   userStoragePortForClient: UserStoragePort;
   userStoragePortForServer: UserStoragePort;
+  billingProfileStoragePortForClient: BillingProfileStoragePort;
+  billingProfileStoragePortForServer: BillingProfileStoragePort;
   projectCategoriesStoragePortForClient: ProjectCategoriesStoragePort;
   projectCategoriesStoragePortForServer: ProjectCategoriesStoragePort;
   dateHelperPort: DateFacadePort;
@@ -46,6 +50,8 @@ export class Bootstrap {
   hackathonStoragePortForServer: HackathonStoragePort;
   userStoragePortForClient: UserStoragePort;
   userStoragePortForServer: UserStoragePort;
+  billingProfileStoragePortForClient: BillingProfileStoragePort;
+  billingProfileStoragePortForServer: BillingProfileStoragePort;
   projectCategoriesStoragePortForClient: ProjectCategoriesStoragePort;
   projectCategoriesStoragePortForServer: ProjectCategoriesStoragePort;
   dateHelperPort: DateFacadePort;
@@ -61,6 +67,8 @@ export class Bootstrap {
     this.hackathonStoragePortForServer = constructor.hackathonStoragePortForServer;
     this.userStoragePortForClient = constructor.userStoragePortForClient;
     this.userStoragePortForServer = constructor.userStoragePortForServer;
+    this.billingProfileStoragePortForClient = constructor.billingProfileStoragePortForClient;
+    this.billingProfileStoragePortForServer = constructor.billingProfileStoragePortForServer;
     this.projectCategoriesStoragePortForClient = constructor.projectCategoriesStoragePortForClient;
     this.projectCategoriesStoragePortForServer = constructor.projectCategoriesStoragePortForServer;
     this.dateHelperPort = constructor.dateHelperPort;
@@ -118,6 +126,14 @@ export class Bootstrap {
     return this.userStoragePortForServer;
   }
 
+  getBillingProfileStoragePortForClient() {
+    return this.billingProfileStoragePortForClient;
+  }
+
+  getBillingProfileStoragePortForServer() {
+    return this.billingProfileStoragePortForServer;
+  }
+
   getDateHelperPort() {
     return this.dateHelperPort;
   }
@@ -147,6 +163,8 @@ export class Bootstrap {
         hackathonStoragePortForServer: new HackathonClientAdapter(new FetchHttpClient()),
         userStoragePortForClient: new UserClientAdapter(new FetchHttpClient()),
         userStoragePortForServer: new UserClientAdapter(new FetchHttpClient()),
+        billingProfileStoragePortForClient: new BillingProfileClientAdapter(new FetchHttpClient()),
+        billingProfileStoragePortForServer: new BillingProfileClientAdapter(new FetchHttpClient()),
         projectCategoriesStoragePortForClient: new ProjectCategoriesClientAdapter(new FetchHttpClient()),
         projectCategoriesStoragePortForServer: new ProjectCategoriesClientAdapter(new FetchHttpClient()),
         dateHelperPort: DateFnsAdapter,

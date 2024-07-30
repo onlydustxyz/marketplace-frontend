@@ -1,0 +1,48 @@
+{
+  "title": "Which type of profile is relevant to you?",
+  "stepTitle": "Payout information",
+  "subtitle": "You can create multiple billing profiles if necessary. Also don’t worry about picking the wrong type, you can update your setup anytime.",
+  "form": {
+    "name": {
+      "label": "Give your billing profile a name",
+      "placeholder": "Enter a billing profile name"
+    }
+  },
+  "specialMention": {
+    "title": "If you are an employee",
+    "description": "Please ask your company's administrator to create a billing profile and add you as a collaborator. This will allow you to begin working together seamlessly."
+  },
+  "footer": {
+    "back": "Back",
+    "next": "Next"
+  },
+  "toast": {
+    "error": "An error occurred while creating your billing profile. Please try again later.",
+    "success": "Billing profile created successfully."
+  },
+  "fields": {
+    "individual": {
+      "title": "Individual",
+      "points": {
+        "1": "When you don’t have a legal structure",
+        "2": "The annual reward amount is limited based on your tax residency.",
+        "3": "Requires identity verification"
+      }
+    },
+    "selfEmployed": {
+      "title": "Self-employed",
+      "points": {
+        "1": "When you have a legal structure for yourself",
+        "2": "Requires business verification"
+      }
+    },
+    "company": {
+      "title": "Organisation",
+      "points": {
+        "1": "When you have a legal structure",
+        "2": "When you manage a team of contributors",
+        "3": "Requires business verification required"
+      }
+    }
+  }
+}
