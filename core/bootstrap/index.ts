@@ -1,7 +1,7 @@
 import { BillingProfileStoragePort } from "core/domain/billing-profile/outputs/biling-profile-storage-port";
 import { HackathonStoragePort } from "core/domain/hackathon/outputs/hackathon-storage-port";
 import { LanguagesStoragePort } from "core/domain/languages/outputs/languages-storage-port";
-import { ProjectCategoriesStoragePort } from "core/domain/project-categories/outputs/project-categories-storage-port";
+import { ProjectCategoryStoragePort } from "core/domain/project-category/outputs/project-category-storage-port";
 import { ProjectStoragePort } from "core/domain/project/outputs/project-storage-port";
 import { UserStoragePort } from "core/domain/user/outputs/user-storage-port";
 import { ContactAdapter } from "core/helpers/contact/contact-adapter";
@@ -17,7 +17,7 @@ import { UrlFacadePort } from "core/helpers/url/url-facade-port";
 import { BillingProfileClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/billing-profile-client-adapter";
 import { HackathonClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/hackathon-client-adapter";
 import { LanguagesClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/languages-client-adapter";
-import { ProjectCategoriesClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/project-categories-client-adapter";
+import { ProjectCategoryClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/project-category-client-adapter";
 import { ProjectClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/project-client-adapter";
 import { UserClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/user-client-adapter";
 import { AuthProvider } from "core/infrastructure/marketplace-api-client-adapter/auth/auth-provider";
@@ -33,8 +33,8 @@ export interface BootstrapConstructor {
   userStoragePortForServer: UserStoragePort;
   billingProfileStoragePortForClient: BillingProfileStoragePort;
   billingProfileStoragePortForServer: BillingProfileStoragePort;
-  projectCategoriesStoragePortForClient: ProjectCategoriesStoragePort;
-  projectCategoriesStoragePortForServer: ProjectCategoriesStoragePort;
+  projectCategoryStoragePortForClient: ProjectCategoryStoragePort;
+  projectCategoryStoragePortForServer: ProjectCategoryStoragePort;
   languagesStoragePortForClient: LanguagesStoragePort;
   languagesStoragePortForServer: LanguagesStoragePort;
   dateHelperPort: DateFacadePort;
@@ -56,8 +56,8 @@ export class Bootstrap {
   userStoragePortForServer: UserStoragePort;
   billingProfileStoragePortForClient: BillingProfileStoragePort;
   billingProfileStoragePortForServer: BillingProfileStoragePort;
-  projectCategoriesStoragePortForClient: ProjectCategoriesStoragePort;
-  projectCategoriesStoragePortForServer: ProjectCategoriesStoragePort;
+  projectCategoryStoragePortForClient: ProjectCategoryStoragePort;
+  projectCategoryStoragePortForServer: ProjectCategoryStoragePort;
   languagesStoragePortForClient: LanguagesStoragePort;
   languagesStoragePortForServer: LanguagesStoragePort;
   dateHelperPort: DateFacadePort;
@@ -75,8 +75,8 @@ export class Bootstrap {
     this.userStoragePortForServer = constructor.userStoragePortForServer;
     this.billingProfileStoragePortForClient = constructor.billingProfileStoragePortForClient;
     this.billingProfileStoragePortForServer = constructor.billingProfileStoragePortForServer;
-    this.projectCategoriesStoragePortForClient = constructor.projectCategoriesStoragePortForClient;
-    this.projectCategoriesStoragePortForServer = constructor.projectCategoriesStoragePortForServer;
+    this.projectCategoryStoragePortForClient = constructor.projectCategoryStoragePortForClient;
+    this.projectCategoryStoragePortForServer = constructor.projectCategoryStoragePortForServer;
     this.languagesStoragePortForClient = constructor.languagesStoragePortForClient;
     this.languagesStoragePortForServer = constructor.languagesStoragePortForServer;
     this.dateHelperPort = constructor.dateHelperPort;
@@ -122,12 +122,12 @@ export class Bootstrap {
     return this.userStoragePortForClient;
   }
 
-  getProjectCategoriesStoragePortForServer() {
-    return this.projectCategoriesStoragePortForServer;
+  getProjectCategoryStoragePortForServer() {
+    return this.projectCategoryStoragePortForServer;
   }
 
-  getProjectCategoriesStoragePortForClient() {
-    return this.projectCategoriesStoragePortForClient;
+  getProjectCategoryStoragePortForClient() {
+    return this.projectCategoryStoragePortForClient;
   }
 
   getLanguagesStoragePortForServer() {
@@ -181,8 +181,8 @@ export class Bootstrap {
         userStoragePortForServer: new UserClientAdapter(new FetchHttpClient()),
         billingProfileStoragePortForClient: new BillingProfileClientAdapter(new FetchHttpClient()),
         billingProfileStoragePortForServer: new BillingProfileClientAdapter(new FetchHttpClient()),
-        projectCategoriesStoragePortForClient: new ProjectCategoriesClientAdapter(new FetchHttpClient()),
-        projectCategoriesStoragePortForServer: new ProjectCategoriesClientAdapter(new FetchHttpClient()),
+        projectCategoryStoragePortForClient: new ProjectCategoryClientAdapter(new FetchHttpClient()),
+        projectCategoryStoragePortForServer: new ProjectCategoryClientAdapter(new FetchHttpClient()),
         languagesStoragePortForClient: new LanguagesClientAdapter(new FetchHttpClient()),
         languagesStoragePortForServer: new LanguagesClientAdapter(new FetchHttpClient()),
         dateHelperPort: DateFnsAdapter,

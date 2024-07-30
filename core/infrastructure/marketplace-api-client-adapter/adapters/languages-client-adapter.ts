@@ -1,5 +1,5 @@
 import { GetLanguagesResponse } from "core/domain/languages/languages-contract.types";
-import { ListLanguage } from "core/domain/languages/models/languages-list.model";
+import { LanguageList } from "core/domain/languages/models/languages-list.model";
 import { LanguagesStoragePort } from "core/domain/languages/outputs/languages-storage-port";
 import { HttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/http-client/http-client";
 
@@ -21,7 +21,7 @@ export class LanguagesClientAdapter implements LanguagesStoragePort {
         tag,
       });
 
-      return new ListLanguage(data);
+      return new LanguageList(data);
     };
 
     return {

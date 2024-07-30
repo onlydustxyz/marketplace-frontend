@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LanguagesReactQueryAdapter } from "core/application/react-query-adapter/languages";
-import { ProjectCategoriesReactQueryAdapter } from "core/application/react-query-adapter/project-categories";
+import { ProjectCategoryReactQueryAdapter } from "core/application/react-query-adapter/project-category";
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 import { useRouter } from "next/navigation";
@@ -25,7 +25,7 @@ export const ProjectRecommendationContext = createContext<TProjectRecommendation
 });
 
 export function ProjectRecommendationContextProvider({ children }: TProjectRecommendationContext.Props) {
-  const { data: categories } = ProjectCategoriesReactQueryAdapter.client.useGetProjectCategories({});
+  const { data: categories } = ProjectCategoryReactQueryAdapter.client.useGetProjectCategories({});
   const { data: languages } = LanguagesReactQueryAdapter.client.useGetLanguages({});
   const router = useRouter();
   const {
