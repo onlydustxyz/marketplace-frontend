@@ -1,6 +1,7 @@
 "use client";
 
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
+import { useRouter } from "next/navigation";
 
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
 import { StepHeader } from "app/signup/components/step-header/step-header";
@@ -9,25 +10,37 @@ import { TunnelStep } from "app/signup/onboarding/components/tunnel-step/tunnel-
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
-import { BaseLink } from "components/layout/base-link/base-link";
+import { toast } from "components/atoms/toaster";
+import { Translate } from "components/layout/translate/translate";
 import { SignupTemplate } from "components/templates/signup-template/signup-template";
 
 import { NEXT_ROUTER } from "constants/router";
 
 function Footer() {
+  const router = useRouter();
+  const { mutateAsync: setMe } = UserReactQueryAdapter.client.useSetMe({
+    options: {
+      onSuccess: () => {
+        toast.default(<Translate token={"v2.pages.signup.onboarding.common.updateProfile.toast.success"} />);
+        router.push(`${NEXT_ROUTER.home.all}?onboardingCompleted=true`);
+      },
+      onError: () => {
+        toast.error(<Translate token={"v2.pages.signup.onboarding.common.updateProfile.toast.error"} />);
+      },
+    },
+  });
+
+  function handleSubmit() {
+    setMe({ hasCompletedOnboarding: true });
+  }
+
   return (
     <div className="flex w-full flex-row justify-end gap-2">
       <Button
         variant={"secondary-light"}
-        translate={{ token: "v2.pages.signup.onboarding.tunnel.actions.back" }}
-        as={BaseLink}
-        htmlProps={{ href: NEXT_ROUTER.signup.root }}
-        startIcon={{ remixName: "ri-arrow-left-s-line" }}
-      />
-      <Button
-        variant={"secondary-light"}
         translate={{ token: "v2.pages.signup.onboarding.tunnel.actions.skip" }}
         endIcon={{ remixName: "ri-arrow-right-s-line" }}
+        onClick={handleSubmit}
       />
     </div>
   );
