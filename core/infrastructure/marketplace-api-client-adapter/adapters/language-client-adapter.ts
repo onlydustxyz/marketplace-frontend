@@ -1,9 +1,9 @@
-import { GetLanguagesResponse } from "core/domain/languages/languages-contract.types";
-import { LanguageList } from "core/domain/languages/models/languages-list.model";
-import { LanguagesStoragePort } from "core/domain/languages/outputs/languages-storage-port";
+import { GetLanguagesResponse } from "core/domain/language/language-contract.types";
+import { LanguageList } from "core/domain/language/models/language-list.model";
+import { LanguageStoragePort } from "core/domain/language/outputs/language-storage-port";
 import { HttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/http-client/http-client";
 
-export class LanguagesClientAdapter implements LanguagesStoragePort {
+export class LanguageClientAdapter implements LanguageStoragePort {
   constructor(private readonly client: HttpClient) {}
 
   routes = {

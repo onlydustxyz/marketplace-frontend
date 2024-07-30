@@ -1,4 +1,4 @@
-import { Language } from "core/domain/languages/models/language-model";
+import { Language } from "core/domain/language/models/language-model";
 
 import { components } from "src/__generated/api";
 

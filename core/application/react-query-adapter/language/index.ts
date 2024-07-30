@@ -1,5 +1,5 @@
 import * as client from "./client";
 
-export const LanguagesReactQueryAdapter = {
+export const LanguageReactQueryAdapter = {
   client,
 };

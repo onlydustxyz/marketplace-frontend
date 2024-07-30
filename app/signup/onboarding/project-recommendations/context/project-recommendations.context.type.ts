@@ -1,4 +1,4 @@
-import { LanguageInterface } from "core/domain/languages/models/language-model";
+import { LanguageInterface } from "core/domain/language/models/language-model";
 import { ProjectCategoryInterface } from "core/domain/project-category/models/project-category-model";
 import { SetMyProfileBody } from "core/domain/user/user-contract.types";
 import { PropsWithChildren } from "react";

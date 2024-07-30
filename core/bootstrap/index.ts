@@ -1,6 +1,6 @@
 import { BillingProfileStoragePort } from "core/domain/billing-profile/outputs/biling-profile-storage-port";
 import { HackathonStoragePort } from "core/domain/hackathon/outputs/hackathon-storage-port";
-import { LanguagesStoragePort } from "core/domain/languages/outputs/languages-storage-port";
+import { LanguageStoragePort } from "core/domain/language/outputs/language-storage-port";
 import { ProjectCategoryStoragePort } from "core/domain/project-category/outputs/project-category-storage-port";
 import { ProjectStoragePort } from "core/domain/project/outputs/project-storage-port";
 import { UserStoragePort } from "core/domain/user/outputs/user-storage-port";
@@ -16,7 +16,7 @@ import { UrlAdapter } from "core/helpers/url/url-adapter";
 import { UrlFacadePort } from "core/helpers/url/url-facade-port";
 import { BillingProfileClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/billing-profile-client-adapter";
 import { HackathonClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/hackathon-client-adapter";
-import { LanguagesClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/languages-client-adapter";
+import { LanguageClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/language-client-adapter";
 import { ProjectCategoryClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/project-category-client-adapter";
 import { ProjectClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/project-client-adapter";
 import { UserClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/user-client-adapter";
@@ -35,8 +35,8 @@ export interface BootstrapConstructor {
   billingProfileStoragePortForServer: BillingProfileStoragePort;
   projectCategoryStoragePortForClient: ProjectCategoryStoragePort;
   projectCategoryStoragePortForServer: ProjectCategoryStoragePort;
-  languagesStoragePortForClient: LanguagesStoragePort;
-  languagesStoragePortForServer: LanguagesStoragePort;
+  languageStoragePortForClient: LanguageStoragePort;
+  languageStoragePortForServer: LanguageStoragePort;
   dateHelperPort: DateFacadePort;
   urlHelperPort: UrlFacadePort;
   imageHelperPort: ImageFacadePort;
@@ -58,8 +58,8 @@ export class Bootstrap {
   billingProfileStoragePortForServer: BillingProfileStoragePort;
   projectCategoryStoragePortForClient: ProjectCategoryStoragePort;
   projectCategoryStoragePortForServer: ProjectCategoryStoragePort;
-  languagesStoragePortForClient: LanguagesStoragePort;
-  languagesStoragePortForServer: LanguagesStoragePort;
+  languageStoragePortForClient: LanguageStoragePort;
+  languageStoragePortForServer: LanguageStoragePort;
   dateHelperPort: DateFacadePort;
   urlHelperPort: UrlFacadePort;
   imageHelperPort: ImageFacadePort;
@@ -77,8 +77,8 @@ export class Bootstrap {
     this.billingProfileStoragePortForServer = constructor.billingProfileStoragePortForServer;
     this.projectCategoryStoragePortForClient = constructor.projectCategoryStoragePortForClient;
     this.projectCategoryStoragePortForServer = constructor.projectCategoryStoragePortForServer;
-    this.languagesStoragePortForClient = constructor.languagesStoragePortForClient;
-    this.languagesStoragePortForServer = constructor.languagesStoragePortForServer;
+    this.languageStoragePortForClient = constructor.languageStoragePortForClient;
+    this.languageStoragePortForServer = constructor.languageStoragePortForServer;
     this.dateHelperPort = constructor.dateHelperPort;
     this.urlHelperPort = constructor.urlHelperPort;
     this.imageHelperPort = constructor.imageHelperPort;
@@ -131,11 +131,11 @@ export class Bootstrap {
   }
 
   getLanguagesStoragePortForServer() {
-    return this.languagesStoragePortForServer;
+    return this.languageStoragePortForServer;
   }
 
   getLanguagesStoragePortForClient() {
-    return this.languagesStoragePortForClient;
+    return this.languageStoragePortForClient;
   }
 
   getUserStoragePortForServer() {
@@ -183,8 +183,8 @@ export class Bootstrap {
         billingProfileStoragePortForServer: new BillingProfileClientAdapter(new FetchHttpClient()),
         projectCategoryStoragePortForClient: new ProjectCategoryClientAdapter(new FetchHttpClient()),
         projectCategoryStoragePortForServer: new ProjectCategoryClientAdapter(new FetchHttpClient()),
-        languagesStoragePortForClient: new LanguagesClientAdapter(new FetchHttpClient()),
-        languagesStoragePortForServer: new LanguagesClientAdapter(new FetchHttpClient()),
+        languageStoragePortForClient: new LanguageClientAdapter(new FetchHttpClient()),
+        languageStoragePortForServer: new LanguageClientAdapter(new FetchHttpClient()),
         dateHelperPort: DateFnsAdapter,
         urlHelperPort: UrlAdapter,
         imageHelperPort: new ImageAdapter(),

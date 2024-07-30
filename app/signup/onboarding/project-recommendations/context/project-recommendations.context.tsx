@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LanguagesReactQueryAdapter } from "core/application/react-query-adapter/languages";
+import { LanguageReactQueryAdapter } from "core/application/react-query-adapter/language";
 import { ProjectCategoryReactQueryAdapter } from "core/application/react-query-adapter/project-category";
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
@@ -26,7 +26,7 @@ export const ProjectRecommendationContext = createContext<TProjectRecommendation
 
 export function ProjectRecommendationContextProvider({ children }: TProjectRecommendationContext.Props) {
   const { data: categories } = ProjectCategoryReactQueryAdapter.client.useGetProjectCategories({});
-  const { data: languages } = LanguagesReactQueryAdapter.client.useGetLanguages({});
+  const { data: languages } = LanguageReactQueryAdapter.client.useGetLanguages({});
   const router = useRouter();
   const {
     clientBootstrap: { authProvider },
