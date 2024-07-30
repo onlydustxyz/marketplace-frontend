@@ -75,7 +75,7 @@ export function ProjectsFilters({ showOn }: { showOn: "mobile" | "desktop" }) {
       <div className="border-b-1 border-card-border-light px-6 py-4">
         <FiltersEcosystems />
       </div>
-      <div className="px-6 py-4">
+      <div className="border-b-1 border-card-border-light px-6 py-4">
         <FiltersLanguages />
       </div>
       <div className="px-6 py-4">
