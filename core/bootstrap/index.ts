@@ -8,6 +8,8 @@ import { DateFacadePort } from "core/helpers/date/date-facade-port";
 import { DateFnsAdapter } from "core/helpers/date/date-fns-adapter";
 import { ImageAdapter } from "core/helpers/image/image-adapter";
 import { ImageFacadePort } from "core/helpers/image/image-facade-port";
+import { LegalAdapter } from "core/helpers/legal/legal-adapter";
+import { LegalFacadePort } from "core/helpers/legal/legal-facade-port";
 import { UrlAdapter } from "core/helpers/url/url-adapter";
 import { UrlFacadePort } from "core/helpers/url/url-facade-port";
 import { HackathonClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/hackathon-client-adapter";
@@ -31,6 +33,7 @@ export interface BootstrapConstructor {
   urlHelperPort: UrlFacadePort;
   imageHelperPort: ImageFacadePort;
   contactHelperPort: ContactFacadePort;
+  legalHelperPort: LegalFacadePort;
 }
 
 export class Bootstrap {
@@ -49,6 +52,7 @@ export class Bootstrap {
   urlHelperPort: UrlFacadePort;
   imageHelperPort: ImageFacadePort;
   contactHelperPort: ContactFacadePort;
+  legalHelperPort: LegalFacadePort;
 
   constructor(constructor: BootstrapConstructor) {
     this.projectStoragePortForClient = constructor.projectStoragePortForClient;
@@ -63,6 +67,7 @@ export class Bootstrap {
     this.urlHelperPort = constructor.urlHelperPort;
     this.imageHelperPort = constructor.imageHelperPort;
     this.contactHelperPort = constructor.contactHelperPort;
+    this.legalHelperPort = constructor.legalHelperPort;
   }
 
   getAuthProvider() {
@@ -129,6 +134,10 @@ export class Bootstrap {
     return this.contactHelperPort;
   }
 
+  getLegalHelperPort() {
+    return this.legalHelperPort;
+  }
+
   public static get getBootstrap(): Bootstrap {
     if (!Bootstrap.#instance) {
       this.newBootstrap({
@@ -144,6 +153,7 @@ export class Bootstrap {
         urlHelperPort: UrlAdapter,
         imageHelperPort: new ImageAdapter(),
         contactHelperPort: new ContactAdapter(),
+        legalHelperPort: new LegalAdapter(),
       });
     }
 
