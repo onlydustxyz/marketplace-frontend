@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BillingProfileReactQueryAdapter } from "core/application/react-query-adapter/billing-profile";
-import { BillingProfileTypeUnion } from "core/domain/billing-profile/billing-profile-contract.types";
+import { BillingProfileTypeUnion } from "core/domain/billing-profile/models/billing-profile.types";
 import React, { useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 

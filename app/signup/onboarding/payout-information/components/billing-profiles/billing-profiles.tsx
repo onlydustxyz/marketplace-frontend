@@ -1,6 +1,6 @@
 "use client";
 
-import { BillingProfileTypeUnion } from "core/domain/billing-profile/billing-profile-contract.types";
+import { BillingProfileTypeUnion } from "core/domain/billing-profile/models/billing-profile.types";
 import React, { PropsWithChildren, ReactNode } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 

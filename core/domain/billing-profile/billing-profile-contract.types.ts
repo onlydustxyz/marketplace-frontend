@@ -5,8 +5,6 @@ import {
 
 import { components } from "src/__generated/api";
 
-export type BillingProfileTypeUnion = components["schemas"]["BillingProfileResponse"]["type"];
-
 /* --------------------------------- Create Billing profile -------------------------------- */
 
 export type CreateBillingProfileBody = components["schemas"]["BillingProfileRequest"];
