@@ -79,7 +79,7 @@ export class UserProfile implements UserProfileInterface {
     );
   }
 
-  static isValidJoiningReason(joiningReason?: string): joiningReason is UserProfileResponse["joiningReason"] {
+  static isValidJoiningReason(joiningReason?: string) {
     return joiningReason === "CONTRIBUTOR" || joiningReason === "MAINTAINER" || joiningReason === "SPONSOR";
   }
 }
