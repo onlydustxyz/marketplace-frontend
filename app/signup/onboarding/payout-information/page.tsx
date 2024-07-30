@@ -28,11 +28,14 @@ export default function PayoutInformationPage() {
     },
   });
 
+  const { handleSubmit, reset } = formMethods;
+
   const { mutateAsync: createBillingProfile, isPending: isPendingCreateBillingProfile } =
     BillingProfileReactQueryAdapter.client.useCreateBillingProfile({
       options: {
         onSuccess: () => {
           toast.default(<Translate token="v2.pages.signup.verificationInformation.toast.success" />);
+          reset();
           // TODO @Mehdi add redirection to next step
         },
         onError: () => {
@@ -40,8 +43,6 @@ export default function PayoutInformationPage() {
         },
       },
     });
-
-  const { handleSubmit } = formMethods;
 
   async function handleCreateBillingProfile(data: TBillingProfiles.form) {
     await createBillingProfile({
