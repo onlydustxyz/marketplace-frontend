@@ -1,3 +1,5 @@
+import { bootstrap } from "core/bootstrap";
+
 import { components } from "src/__generated/api";
 import { BILLING_PROFILES_PATH } from "src/api/BillingProfiles/path";
 import { BILLING_PROFILES_TAGS } from "src/api/BillingProfiles/tags";
@@ -23,6 +25,8 @@ export type UseUpdateCoworkerRoleBody = components["schemas"]["UpdateCoworkerRol
 const useCreateBillingProfile = ({
   options = {},
 }: UseMutationProps<UseCreateBillingProfileResponse, unknown, UseCreateBillingProfileBody>) => {
+  const userStoragePort = bootstrap.getUserStoragePortForClient();
+
   return useBaseMutation<UseCreateBillingProfileBody, UseCreateBillingProfileResponse>({
     resourcePath: BILLING_PROFILES_PATH.ROOT,
     method: "POST",
@@ -32,6 +36,7 @@ const useCreateBillingProfile = ({
       { queryKey: BILLING_PROFILES_TAGS.me, exact: false },
       { queryKey: ME_TAGS.payoutPreferences(), exact: false },
       { queryKey: ME_TAGS.rewards(), exact: false },
+      { queryKey: userStoragePort.getMyOnboarding({}).tag, exact: false },
     ],
     ...options,
   });
