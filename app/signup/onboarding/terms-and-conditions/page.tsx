@@ -25,7 +25,7 @@ function Footer({ isDisabled, onClick }: { isDisabled: boolean; onClick: () => v
         variant={"secondary-light"}
         translate={{ token: "v2.pages.signup.onboarding.projectRecommendations.actions.back" }}
         as={BaseLink}
-        htmlProps={{ href: NEXT_ROUTER.signup.onboarding.verificationInformation }}
+        htmlProps={{ href: NEXT_ROUTER.signup.onboarding.verifyInformation }}
         startIcon={{ remixName: "ri-arrow-left-s-line" }}
       />
       <Button

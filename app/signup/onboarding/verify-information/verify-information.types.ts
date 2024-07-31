@@ -1,7 +1,7 @@
 import { bootstrap } from "core/bootstrap";
 import { z } from "zod";
 
-export namespace TVerificationInformation {
+export namespace TVerifyInformation {
   export const validation = z.object({
     email: z.string().min(1),
     telegram: z

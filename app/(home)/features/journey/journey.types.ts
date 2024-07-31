@@ -9,10 +9,10 @@ export namespace TJourney {
   }
 
   export const stepMapping: Record<string, { icon: RemixIconsName; link: string }> = {
-    // Verification information
+    // Verify information
     step1: {
       icon: "ri-checkbox-circle-line",
-      link: NEXT_ROUTER.signup.onboarding.verificationInformation,
+      link: NEXT_ROUTER.signup.onboarding.verifyInformation,
     },
     // Terms & conditions
     step2: {
@@ -29,7 +29,7 @@ export namespace TJourney {
       icon: "ri-user-line",
       link: NEXT_ROUTER.signup.onboarding.completeYourProfile,
     },
-    // Payout informations
+    // Payout information
     step5: {
       icon: "ri-building-line",
       link: NEXT_ROUTER.signup.onboarding.payoutInformation,

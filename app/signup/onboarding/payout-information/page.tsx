@@ -34,12 +34,12 @@ export default function PayoutInformationPage() {
     BillingProfileReactQueryAdapter.client.useCreateBillingProfile({
       options: {
         onSuccess: () => {
-          toast.default(<Translate token="v2.pages.signup.verificationInformation.toast.success" />);
+          toast.default(<Translate token="v2.pages.signup.payoutInformation.toast.success" />);
           reset();
           // TODO @Mehdi add redirection to next step
         },
         onError: () => {
-          toast.error(<Translate token="v2.pages.signup.verificationInformation.toast.error" />);
+          toast.error(<Translate token="v2.pages.signup.payoutInformation.toast.error" />);
         },
       },
     });
