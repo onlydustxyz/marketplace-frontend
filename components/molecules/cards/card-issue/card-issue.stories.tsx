@@ -24,7 +24,6 @@ const defaultProps: CardIssuePort<"div"> = {
     children: "View application",
   },
   tokens: {
-    githubLink: "View on Github",
     createdBy: "By",
     applicantsCount: "applicants",
   },

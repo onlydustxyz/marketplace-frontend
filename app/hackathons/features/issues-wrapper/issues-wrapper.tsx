@@ -1,6 +1,7 @@
 "use client";
 
 import { ProjectReactQueryAdapter } from "core/application/react-query-adapter/project";
+import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { IssueListInterface } from "core/domain/issue/models/issue-list-model";
 import { AnyType } from "core/helpers/types";
 import { Fragment, useMemo } from "react";
@@ -17,6 +18,8 @@ import { NEXT_ROUTER } from "constants/router";
 export function IssuesWrapper({ projectId, hackathonId, queryParams, Wrapper = Fragment }: TIssuesWrapper.Props) {
   const applyIssueDrawerState = useApplyIssueDrawerState();
   const [, setApplyIssueDrawerState] = applyIssueDrawerState;
+
+  const { data: user } = UserReactQueryAdapter.client.useGetMe({});
 
   const { data, isLoading } = ProjectReactQueryAdapter.client.useGetProjectPublicIssues({
     pathParams: { projectId },
@@ -97,8 +100,10 @@ export function IssuesWrapper({ projectId, hackathonId, queryParams, Wrapper = F
                 }),
               children: <Translate token="v2.pages.hackathons.details.issues.card.viewApplication" />,
             }}
+            assignedActionProps={{
+              children: <Translate token="v2.pages.hackathons.details.issues.card.assigned" />,
+            }}
             tokens={{
-              githubLink: <Translate token="v2.pages.hackathons.details.issues.card.viewOnGithub" />,
               createdBy: <Translate token="v2.pages.hackathons.details.issues.card.createdBy" />,
               applicantsCount: (
                 <Translate
@@ -124,6 +129,7 @@ export function IssuesWrapper({ projectId, hackathonId, queryParams, Wrapper = F
               avatarUrl: applicant.avatarUrl,
             }))}
             assignee={buildFirstAssignee(issue)}
+            githubUsername={user?.login}
             applicantsCount={issue.applicants.length}
             tags={issue.labels.map(label => ({
               children: label.name,
