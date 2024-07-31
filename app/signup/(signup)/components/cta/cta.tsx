@@ -30,7 +30,7 @@ export function Cta({ title, subtitle, iconProps, wrapperProps = {} }: TCta.Prop
         <Icon
           size={24}
           className={cn(
-            "min-w-16 flex h-16 w-16 items-center justify-center rounded-lg border border-container-stroke-separator",
+            "flex h-16 w-16 min-w-16 items-center justify-center rounded-lg border border-container-stroke-separator",
             iconClassName
           )}
           {...restIconProps}

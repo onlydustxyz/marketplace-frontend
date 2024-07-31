@@ -58,7 +58,7 @@ export function CustomRadioComponent({
     >
       <Icon
         size={24}
-        className="min-w-16 flex h-16 w-16 items-center justify-center rounded-lg border border-container-stroke-separator"
+        className="flex h-16 w-16 min-w-16 items-center justify-center rounded-lg border border-container-stroke-separator"
         remixName={icon}
       />
       <div className="flex flex-1 items-center gap-3">
