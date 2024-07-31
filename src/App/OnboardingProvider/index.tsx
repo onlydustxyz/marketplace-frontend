@@ -1,9 +1,8 @@
 "use client";
 
+import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { useRouter } from "next/navigation";
 import { PropsWithChildren, createContext, useContext } from "react";
-
-import MeApi from "src/api/me";
 
 import { useImpersonation } from "components/features/impersonation/use-impersonation";
 
@@ -21,16 +20,16 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
   const { isImpersonating } = useImpersonation();
   const router = useRouter();
 
-  const { data, isLoading } = MeApi.queries.useGetMe({});
+  const { data: user, isLoading } = UserReactQueryAdapter.client.useGetMe({});
 
   const isOnboardingPage = useMatchPath(NEXT_ROUTER.onboarding, { exact: false });
-  const isTermsPage = useMatchPath(NEXT_ROUTER.termsAndConditions, { exact: false });
+  const isTermsPage = useMatchPath(NEXT_ROUTER.legalNotice.root, { exact: false });
   const onboardingInProgress = isOnboardingPage || isTermsPage;
 
-  const skipRedirection = onboardingInProgress || !data?.id || isLoading;
+  const skipRedirection = onboardingInProgress || !user?.id || isLoading;
 
-  const showOnboarding = !skipRedirection && !data?.hasSeenOnboardingWizard && !isImpersonating;
-  const showTermsAndConditions = !skipRedirection && !data?.hasAcceptedLatestTermsAndConditions && !isImpersonating;
+  const showOnboarding = !skipRedirection && !user?.hasSeenOnboardingWizard && !isImpersonating;
+  const showTermsAndConditions = !skipRedirection && !user?.hasAcceptedLatestTermsAndConditions && !isImpersonating;
 
   if (showOnboarding) {
     router.push(NEXT_ROUTER.onboarding);
@@ -38,7 +37,7 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
   }
 
   if (showTermsAndConditions) {
-    router.push(NEXT_ROUTER.termsAndConditions);
+    router.push(NEXT_ROUTER.legalNotice.root);
     return null;
   }
 

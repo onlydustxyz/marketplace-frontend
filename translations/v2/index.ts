@@ -33,6 +33,7 @@ import en_ecosystems from "./en/pages/ecosystems";
 import en_hackathons_details from "./en/pages/hackathons-details.json";
 import en_hackathons from "./en/pages/hackathons.json";
 import en_home from "./en/pages/home";
+import en_legal_notice_common from "./en/pages/legal-notice/legal-notice-common.json";
 import en_project_applications_table from "./en/pages/project-applications/project-applications-table.json";
 import en_project_details_application_details from "./en/pages/project-details/project-application-details.json";
 import en_project_details_header from "./en/pages/project-details/project-header.json";
@@ -155,6 +156,9 @@ export const en = {
           projectRecommendations: en_signup_onboarding_project_recommendations,
           completeYourProfile: en_signup_onboarding_complete_your_profile,
         },
+      },
+      legalNotice: {
+        common: en_legal_notice_common,
       },
     },
   },

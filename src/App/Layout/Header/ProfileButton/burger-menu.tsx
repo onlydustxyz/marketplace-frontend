@@ -5,7 +5,6 @@ import { useOnboarding } from "src/App/OnboardingProvider";
 import { useStackFeedback } from "src/App/Stacks/Stacks";
 import MeApi from "src/api/me";
 import SidePanel from "src/components/SidePanel";
-import { useSidePanel } from "src/hooks/useSidePanel";
 import { cn } from "src/utils/cn";
 
 import { Button } from "components/ds/button/button";
@@ -35,7 +34,6 @@ export function BurgerMenu() {
   };
 
   const [panelOpen, setPanelOpen] = useState(false);
-  const { openFullTermsAndConditions, openPrivacyPolicy } = useSidePanel();
   const { handleLogout } = useLogout();
   const [openFeedback] = useStackFeedback();
   const { sponsors } = useSponsorGuard();
@@ -190,15 +188,14 @@ export function BurgerMenu() {
               </button>
             ) : null}
 
-            <button className="flex w-full items-center gap-3 rounded-md p-4" onClick={openFullTermsAndConditions}>
-              <Icon remixName="ri-bill-line" size={20} />
-              <Translate token="v2.features.menu.terms" />
-            </button>
-
-            <button className="flex w-full items-center gap-3 rounded-md p-4" onClick={openPrivacyPolicy}>
+            <BaseLink
+              href={NEXT_ROUTER.legalNotice.root}
+              onClick={() => setPanelOpen(false)}
+              className="flex w-full items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8"
+            >
               <Icon remixName="ri-lock-line" size={20} />
-              <Translate token="v2.features.menu.privacy" />
-            </button>
+              <Translate token="v2.features.menu.legalNotice" />
+            </BaseLink>
           </div>
 
           {githubUserId ? (
