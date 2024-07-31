@@ -7,12 +7,12 @@
   },
   "steps": {
     "step1": {
-      "title": "Verification Information",
+      "title": "Verify Information",
       "content": "To create your account, we need some basic information."
     },
     "step2": {
       "title": "Terms & Conditions",
-      "content": "To access at the app, You need to approved our Terms & Conditions."
+      "content": "To access at the app, you need to accept our Terms & Conditions."
     },
     "step3": {
       "title": "Project Recommendations",
@@ -23,7 +23,7 @@
       "content": "To help you connect with other members and showcase your expertise."
     },
     "step5": {
-      "title": "Payout Informations",
+      "title": "Payout Information",
       "content": "To claim rewards, you will need to verify your identity or business."
     }
   },
