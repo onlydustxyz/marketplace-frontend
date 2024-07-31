@@ -12,7 +12,6 @@ export class User implements UserInterface {
   githubUserId!: UserResponse["githubUserId"];
   hasAcceptedLatestTermsAndConditions!: UserResponse["hasAcceptedLatestTermsAndConditions"];
   hasCompletedOnboarding!: UserResponse["hasCompletedOnboarding"];
-  hasSeenOnboardingWizard!: UserResponse["hasSeenOnboardingWizard"];
   hasCompletedVerificationInformation!: UserResponse["hasCompletedVerificationInformation"];
   id!: UserResponse["id"];
   isAdmin!: UserResponse["isAdmin"];
