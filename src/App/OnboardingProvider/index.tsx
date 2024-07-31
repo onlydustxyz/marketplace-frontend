@@ -1,6 +1,7 @@
 "use client";
 
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
+import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 import { useRouter } from "next/navigation";
 import { PropsWithChildren, createContext, useContext } from "react";
 
@@ -20,7 +21,16 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
   const { isImpersonating } = useImpersonation();
   const router = useRouter();
 
-  const { data: user, isLoading } = UserReactQueryAdapter.client.useGetMe({});
+  const {
+    clientBootstrap: { authProvider },
+  } = useClientBootstrapContext();
+  const { isAuthenticated = false } = authProvider ?? {};
+
+  const { data: user, isLoading } = UserReactQueryAdapter.client.useGetMe({
+    options: {
+      enabled: isAuthenticated,
+    },
+  });
 
   const isOnboardingPage = useMatchPath(NEXT_ROUTER.onboarding, { exact: false });
   const isTermsPage = useMatchPath(NEXT_ROUTER.legalNotice.root, { exact: false });
