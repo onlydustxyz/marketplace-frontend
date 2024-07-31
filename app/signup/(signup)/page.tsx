@@ -30,7 +30,7 @@ export default function SignupPage() {
   } = useClientBootstrapContext();
   const { isAuthenticated = false } = authProvider ?? {};
 
-  const { data: userOnboarding } = UserReactQueryAdapter.client.useGetMyOnboarding({
+  const { data: userOnboarding, isPending: isPendingUserOnboarding } = UserReactQueryAdapter.client.useGetMyOnboarding({
     options: {
       enabled: isAuthenticated,
     },
@@ -53,6 +53,10 @@ export default function SignupPage() {
       await setMyProfile({
         joiningReason: joiningReason as UserJoiningReason,
       });
+    }
+
+    if (!userOnboarding || isPendingUserOnboarding) {
+      return;
     }
 
     if (!userOnboarding?.verificationInformationProvided) {
@@ -79,7 +83,7 @@ export default function SignupPage() {
     }
 
     handleSignupDispatcher();
-  }, [userOnboarding, userProfile, searchParams, isAuthenticated]);
+  }, [userOnboarding, userProfile, searchParams, isAuthenticated, isPendingUserOnboarding]);
 
   return (
     <SignupTemplate header={<AccountAlreadyExist showDisconnectButton={false} />}>
