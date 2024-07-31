@@ -105,7 +105,7 @@ export default function VerificationInformationPage() {
   return (
     <form onSubmit={handleSubmit(handleSetMyProfile)} className="h-full">
       <SignupTemplate header={<AccountAlreadyExist />} footer={renderFooter}>
-        <Paper size={"l"} container={"3"} classNames={{ base: "flex flex-col gap-3 min-h-full" }}>
+        <Paper size={"l"} container={"2"} classNames={{ base: "flex flex-col gap-3 min-h-full" }}>
           <StepHeader
             step={2}
             stepPath={"/signup/onboarding"}
