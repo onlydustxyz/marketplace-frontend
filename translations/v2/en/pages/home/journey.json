@@ -7,24 +7,24 @@
   },
   "steps": {
     "step1": {
-      "title": "Verification information",
-      "description": "To create your account, we need some basic information."
+      "title": "Verification Information",
+      "content": "To create your account, we need some basic information."
     },
     "step2": {
-      "title": "Terms & conditions",
-      "description": "To access at the app, You need to approved our terms & conditions."
+      "title": "Terms & Conditions",
+      "content": "To access at the app, You need to approved our Terms & Conditions."
     },
     "step3": {
-      "title": "Project recommendations",
-      "description": "Help us recommend projects that match your interests."
+      "title": "Project Recommendations",
+      "content": "Help us recommend projects that match your interests."
     },
     "step4": {
-      "title": "Complete your profile",
-      "description": "To help you connect with other members and showcase your expertise."
+      "title": "Complete Your Profile",
+      "content": "To help you connect with other members and showcase your expertise."
     },
     "step5": {
-      "title": "Payout informations",
-      "description": "To claim rewards, you will need to verify your identity or business."
+      "title": "Payout Informations",
+      "content": "To claim rewards, you will need to verify your identity or business."
     }
   },
   "public": {
