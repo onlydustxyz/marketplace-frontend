@@ -11,6 +11,8 @@ import { useImpersonation } from "components/features/impersonation/use-imperson
 
 import { NEXT_ROUTER } from "constants/router";
 
+import { useMatchPath } from "hooks/router/useMatchPath";
+
 type Onboarding = {
   isLoading: boolean;
 };
@@ -21,6 +23,8 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
   const { isImpersonating } = useImpersonation();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const isSignup = useMatchPath(NEXT_ROUTER.signup.root, { exact: false });
+
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -59,7 +63,8 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
       }
 
       if (userOnboarding.completed) {
-        router.push(NEXT_ROUTER.home.all);
+        if (isSignup) router.push(NEXT_ROUTER.home.all);
+
         return;
       }
 
@@ -83,7 +88,7 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
 
       router.push(NEXT_ROUTER.signup.onboarding.root);
     })();
-  }, [userOnboarding, userProfile, searchParams, isAuthenticated, isLoadingUserOnboarding, isImpersonating]);
+  }, [userOnboarding, userProfile, searchParams, isAuthenticated, isLoadingUserOnboarding, isImpersonating, isSignup]);
 
   return <OnboardingContext.Provider value={{ isLoading }}>{children}</OnboardingContext.Provider>;
 }
