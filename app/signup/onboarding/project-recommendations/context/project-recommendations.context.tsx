@@ -71,7 +71,7 @@ export function ProjectRecommendationContextProvider({ children }: TProjectRecom
   async function onSubmit(data: TProjectRecommendationContext.form) {
     await setMyProfile({
       ...data,
-      goal: data.goal as TProjectRecommendationContext.Goal,
+      joiningGoal: data.goal as TProjectRecommendationContext.Goal,
     });
   }
 
