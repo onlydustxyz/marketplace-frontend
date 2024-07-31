@@ -5,6 +5,7 @@ import { cn } from "src/utils/cn";
 import { Badge } from "components/atoms/badge";
 import { ButtonPort } from "components/atoms/button/button.types";
 import { Typo } from "components/atoms/typo";
+import { BaseLink } from "components/layout/base-link/base-link";
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { Translate } from "components/layout/translate/translate";
 import { CardEvent } from "components/molecules/cards/card-event";
@@ -23,12 +24,20 @@ export function EventWrapper({ event, index }: TEventWrapper.Props) {
   const shouldHaveMultipleSteps = !isToday || index === 1;
   const primaryAction = event.links?.[0];
   const secondaryAction = event.links?.[1];
-  const primaryActionProps: ButtonPort<"a"> | undefined = primaryAction
-    ? { htmlProps: { href: primaryAction.url }, children: primaryAction.value }
+  const primaryActionProps: ButtonPort<typeof BaseLink> | undefined = primaryAction
+    ? {
+        as: BaseLink,
+        htmlProps: { href: primaryAction.url },
+        children: primaryAction.value,
+      }
     : undefined;
 
-  const secondaryActionProps: ButtonPort<"a"> | undefined = secondaryAction
-    ? { htmlProps: { href: secondaryAction.url }, children: secondaryAction.value }
+  const secondaryActionProps: ButtonPort<typeof BaseLink> | undefined = secondaryAction
+    ? {
+        as: BaseLink,
+        htmlProps: { href: secondaryAction.url },
+        children: secondaryAction.value,
+      }
     : undefined;
 
   return (
