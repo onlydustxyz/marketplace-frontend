@@ -19,7 +19,7 @@
       "content": "To help you connect with other members and showcase your expertise."
     },
     "payout": {
-      "title": "Payout informations",
+      "title": "Payout Informations",
       "content": "To claim rewards, you will need to verify your identity or business."
     }
   },
@@ -32,5 +32,10 @@
     "skip": "Skip",
     "back": "Back",
     "next": "Next"
+  },
+  "aside": {
+    "changeLog": "Change log",
+    "faq": "FAQ",
+    "privacyPolicy": "Privacy policy"
   }
 }
