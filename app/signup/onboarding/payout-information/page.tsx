@@ -2,8 +2,11 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BillingProfileReactQueryAdapter } from "core/application/react-query-adapter/billing-profile";
+import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
+import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 import { BillingProfileTypeUnion } from "core/domain/billing-profile/models/billing-profile.types";
-import React, { useMemo } from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
@@ -19,7 +22,27 @@ import { Typo } from "components/atoms/typo";
 import { Translate } from "components/layout/translate/translate";
 import { SignupTemplate } from "components/templates/signup-template/signup-template";
 
+import { NEXT_ROUTER } from "constants/router";
+
 export default function PayoutInformationPage() {
+  const router = useRouter();
+  const {
+    clientBootstrap: { authProvider },
+  } = useClientBootstrapContext();
+  const { isAuthenticated = false } = authProvider ?? {};
+
+  const { data: userOnboarding } = UserReactQueryAdapter.client.useGetMyOnboarding({
+    options: {
+      enabled: isAuthenticated,
+    },
+  });
+
+  useEffect(() => {
+    if (userOnboarding?.payoutInformationProvided) {
+      router.push(NEXT_ROUTER.signup.onboarding.root);
+    }
+  }, [userOnboarding]);
+
   const formMethods = useForm<TBillingProfiles.form>({
     resolver: zodResolver(TBillingProfiles.validation),
     defaultValues: {
