@@ -16,12 +16,10 @@ export function Auth0ProviderWithNavigate({ children }: { children: ReactNode })
   const { capture } = usePosthog();
   const [scopeStorage] = useLocalStorage("dynamic-github-public-repo-scope");
 
-  const onRedirectCallback = (appState: AppState | undefined, user?: User) => {
+  const onRedirectCallback = (_: AppState | undefined, user?: User) => {
     if (user) {
       capture("user_logged_in");
     }
-
-    window.location.href = appState?.returnTo || window.location.pathname;
   };
 
   if (!(domain && clientId && redirectUri && audience)) {

@@ -2,56 +2,90 @@
 
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
-import { useRouter } from "next/navigation";
-import { PropsWithChildren, createContext, useContext } from "react";
+import { UserProfile } from "core/domain/user/models/user-profile-model";
+import { UserJoiningReason } from "core/domain/user/models/user.types";
+import { useRouter, useSearchParams } from "next/navigation";
+import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
 
 import { useImpersonation } from "components/features/impersonation/use-impersonation";
 
 import { NEXT_ROUTER } from "constants/router";
 
-import { useMatchPath } from "hooks/router/useMatchPath";
-
 type Onboarding = {
-  onboardingInProgress: boolean;
+  isLoading: boolean;
 };
 
-export const OnboardingContext = createContext<Onboarding>({ onboardingInProgress: false });
+export const OnboardingContext = createContext<Onboarding>({ isLoading: false });
 
 export default function OnboardingProvider({ children }: PropsWithChildren) {
   const { isImpersonating } = useImpersonation();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     clientBootstrap: { authProvider },
   } = useClientBootstrapContext();
   const { isAuthenticated = false } = authProvider ?? {};
 
-  const { data: user, isLoading } = UserReactQueryAdapter.client.useGetMe({
+  const { data: userOnboarding, isLoading: isLoadingUserOnboarding } = UserReactQueryAdapter.client.useGetMyOnboarding({
     options: {
       enabled: isAuthenticated,
     },
   });
 
-  const isOnboardingPage = useMatchPath(NEXT_ROUTER.onboarding, { exact: false });
-  const isTermsPage = useMatchPath(NEXT_ROUTER.legalNotice.root, { exact: false });
-  const onboardingInProgress = isOnboardingPage || isTermsPage;
+  const { data: userProfile, isLoading: isLoadingUserProfile } = UserReactQueryAdapter.client.useGetMyProfile({
+    options: {
+      enabled: isAuthenticated,
+    },
+  });
 
-  const skipRedirection = onboardingInProgress || !user?.id || isLoading;
+  const { mutateAsync: setMyProfile, isPending: isPendingSetMyProfile } = UserReactQueryAdapter.client.useSetMyProfile(
+    {}
+  );
 
-  const showOnboarding = !skipRedirection && !user?.hasSeenOnboardingWizard && !isImpersonating;
-  const showTermsAndConditions = !skipRedirection && !user?.hasAcceptedLatestTermsAndConditions && !isImpersonating;
+  useEffect(() => {
+    (async () => {
+      setIsLoading(isLoadingUserOnboarding || isLoadingUserProfile || isPendingSetMyProfile);
+      if (
+        !isAuthenticated ||
+        !userOnboarding ||
+        isLoadingUserOnboarding ||
+        !userProfile ||
+        isLoadingUserProfile ||
+        isImpersonating
+      ) {
+        return;
+      }
 
-  if (showOnboarding) {
-    router.push(NEXT_ROUTER.onboarding);
-    return null;
-  }
+      if (userOnboarding.completed) {
+        router.push(NEXT_ROUTER.home.all);
+        return;
+      }
 
-  if (showTermsAndConditions) {
-    router.push(NEXT_ROUTER.legalNotice.root);
-    return null;
-  }
+      const joiningReason = searchParams.get("joiningReason") ?? "";
 
-  return <OnboardingContext.Provider value={{ onboardingInProgress }}>{children}</OnboardingContext.Provider>;
+      if (!userProfile?.joiningReason && UserProfile.isValidJoiningReason(joiningReason)) {
+        await setMyProfile({
+          joiningReason: joiningReason as UserJoiningReason,
+        });
+      }
+
+      if (!userOnboarding.verificationInformationProvided) {
+        router.push(NEXT_ROUTER.signup.onboarding.verificationInformation);
+        return;
+      }
+
+      if (!userOnboarding.termsAndConditionsAccepted) {
+        router.push(NEXT_ROUTER.signup.onboarding.termsAndConditions);
+        return;
+      }
+
+      router.push(NEXT_ROUTER.signup.onboarding.root);
+    })();
+  }, [userOnboarding, userProfile, searchParams, isAuthenticated, isLoadingUserOnboarding, isImpersonating]);
+
+  return <OnboardingContext.Provider value={{ isLoading }}>{children}</OnboardingContext.Provider>;
 }
 
 export const useOnboarding = (): Onboarding => {
