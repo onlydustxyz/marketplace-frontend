@@ -12,16 +12,11 @@ export function LinkDefaultAdapter({ classNames, children, ...props }: LinkPort)
 
   return (
     <BaseLink className={cn(slots.base(), classNames?.base)} {...linkProps}>
-      {({ isExternal, isExternalIconVisible }) => (
+      {({ isExternal }) => (
         <>
           {children}
           {isExternal ? (
-            <Icon
-              remixName="ri-external-link-line"
-              className={cn("ml-1 text-inherit", {
-                "invisible group-hover/link:visible": !isExternalIconVisible,
-              })}
-            />
+            <Icon remixName="ri-external-link-line" className="invisible ml-1 text-inherit group-hover/link:visible" />
           ) : null}
         </>
       )}

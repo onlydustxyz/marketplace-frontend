@@ -18,7 +18,6 @@ export function BaseLink({
   children,
   matchPathOptions,
   onClick,
-  isExternalIconVisible,
   ...props
 }: TBaseLink.Props) {
   const { block } = useNavigationState();
@@ -53,7 +52,7 @@ export function BaseLink({
       prefetch={true}
       {...props}
     >
-      {typeof children === "function" ? children?.({ isExternal, isExternalIconVisible, isActive }) : children}
+      {typeof children === "function" ? children?.({ isExternal, isActive }) : children}
     </NextLink>
   );
 }

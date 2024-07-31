@@ -23,13 +23,13 @@ export function SignupAside() {
       <div className="absolute inset-0 -z-[1] h-full w-full rounded-xl border-1 border-container-stroke-separator" />
       <Image src={logo} alt="Onlydust" className="h-auto w-[163px]" />
       <div className="flex flex-col justify-start gap-2">
-        <Link href="https://blog.onlydust.com/changelog/" isExternalIconVisible>
+        <Link href="https://blog.onlydust.com/changelog/">
           <Translate token="v2.pages.signup.onboarding.tunnel.aside.changeLog" />
         </Link>
-        <Link href="https://blog.onlydust.com/docs/" isExternalIconVisible>
+        <Link href="https://blog.onlydust.com/docs/">
           <Translate token="v2.pages.signup.onboarding.tunnel.aside.faq" />
         </Link>
-        <Link href={bootstrap.legalHelperPort.getPrivacyPolicyUrl()} isExternalIconVisible>
+        <Link href={bootstrap.legalHelperPort.getPrivacyPolicyUrl()}>
           <Translate token="v2.pages.signup.onboarding.tunnel.aside.privacyPolicy" />
         </Link>
       </div>

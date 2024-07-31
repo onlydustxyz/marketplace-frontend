@@ -5,19 +5,8 @@ import { useMatchPath } from "hooks/router/useMatchPath";
 
 export namespace TBaseLink {
   export interface Props extends LinkProps, Pick<AnchorHTMLAttributes<HTMLAnchorElement>, "target" | "rel" | "title"> {
-    children?:
-      | (({
-          isExternal,
-          isExternalIconVisible,
-          isActive,
-        }: {
-          isExternal: boolean;
-          isExternalIconVisible?: boolean;
-          isActive: boolean;
-        }) => JSX.Element)
-      | ReactNode;
+    children?: (({ isExternal, isActive }: { isExternal: boolean; isActive: boolean }) => JSX.Element) | ReactNode;
     className?: string;
     matchPathOptions?: Parameters<typeof useMatchPath>[1] & { pattern?: string };
-    isExternalIconVisible?: boolean;
   }
 }
