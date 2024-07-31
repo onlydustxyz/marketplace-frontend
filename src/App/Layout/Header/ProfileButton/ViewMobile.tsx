@@ -7,7 +7,6 @@ interface Props extends TUseMenu.Return {
   avatarUrl: string | null;
   login: string;
   githubUserId?: number;
-  hideProfileItems?: boolean;
 }
 
 export function ViewMobile({ avatarUrl, login, errorColor, error }: Props) {
