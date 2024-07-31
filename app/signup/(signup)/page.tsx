@@ -55,7 +55,7 @@ export default function SignupPage() {
       });
     }
 
-    if (!userOnboarding || isPendingUserOnboarding) {
+    if (!userOnboarding || isLoadingUserOnboarding) {
       return;
     }
 
@@ -83,7 +83,7 @@ export default function SignupPage() {
     }
 
     handleSignupDispatcher();
-  }, [userOnboarding, userProfile, searchParams, isAuthenticated, isPendingUserOnboarding]);
+  }, [userOnboarding, userProfile, searchParams, isAuthenticated, isLoadingUserOnboarding]);
 
   return (
     <SignupTemplate header={<AccountAlreadyExist showDisconnectButton={false} />}>
