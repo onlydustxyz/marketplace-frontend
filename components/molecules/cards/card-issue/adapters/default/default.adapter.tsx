@@ -95,7 +95,7 @@ export function CardIssueDefaultAdapter<C extends ElementType = "div">({
       {...htmlProps}
     >
       <div className="flex flex-col gap-2">
-        <div className="flex w-full justify-between gap-2">
+        <div className="flex w-full items-center justify-between gap-2">
           <div className="line-clamp-2 flex-1">
             <Typo size="s" weight="medium" as="div">
               {title}
