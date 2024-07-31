@@ -136,8 +136,6 @@ export function OnboardingCompletedModal() {
     router.replace(`${origin}${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`);
   }
 
-  // TODO @hayden handle mobile scroll
-
   return (
     <Modal
       isOpen={isOpen}
