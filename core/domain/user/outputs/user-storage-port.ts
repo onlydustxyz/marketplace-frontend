@@ -1,6 +1,8 @@
 import {
   GetMeResponsePortParams,
   GetMeResponsePortResponse,
+  GetMyBillingProfilesResponsePortParams,
+  GetMyBillingProfilesResponsePortResponse,
   GetMyNotificationSettingsPortParams,
   GetMyNotificationSettingsPortResponse,
   GetMyOnboardingResponsePortParams,
@@ -27,4 +29,5 @@ export interface UserStoragePort {
   getMe(params: GetMeResponsePortParams): GetMeResponsePortResponse;
   setMe(params: SetMePortParams): SetMePortResponse;
   getMyOnboarding(params: GetMyOnboardingResponsePortParams): GetMyOnboardingResponsePortResponse;
+  getMyBillingProfiles(params: GetMyBillingProfilesResponsePortParams): GetMyBillingProfilesResponsePortResponse;
 }

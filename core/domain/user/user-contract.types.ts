@@ -1,3 +1,4 @@
+import { BillingProfileShortInterface } from "core/domain/billing-profile/models/billing-profile-short-model";
 import { UserInterface } from "core/domain/user/models/user-model";
 import { UserOnboardingInterface } from "core/domain/user/models/user-onboarding-model";
 import { UserProfileInterface } from "core/domain/user/models/user-profile-model";
@@ -85,3 +86,11 @@ export type GetMyOnboardingResponse = components["schemas"]["OnboardingCompletio
 export type GetMyOnboardingResponsePortParams = HttpClientParameters<object>;
 
 export type GetMyOnboardingResponsePortResponse = HttpStorageResponse<UserOnboardingInterface>;
+
+/* --------------------------------- Get my billing profiles -------------------------------- */
+
+export type GetMyBillingProfilesResponse = components["schemas"]["ShortBillingProfileResponse"];
+
+export type GetMyBillingProfilesResponsePortParams = HttpClientParameters<object>;
+
+export type GetMyBillingProfilesResponsePortResponse = HttpStorageResponse<BillingProfileShortInterface>;
