@@ -14,7 +14,9 @@ export type GetHackathonsResponse = components["schemas"]["HackathonsListRespons
 
 export type GetHackathonsPortParams = HttpClientParameters<object>;
 
-export type GetHackathonsPortResponse = HttpStorageResponse<{ hackathons: HackathonListInterface[] }>;
+export type GetHackathonsPortResponse = HttpStorageResponse<
+  Omit<GetHackathonsResponse, "hackathons"> & { hackathons: HackathonListInterface[] }
+>;
 
 /* --------------------------------- Get hackathon by slug -------------------------------- */
 
