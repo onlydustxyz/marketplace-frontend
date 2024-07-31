@@ -1,6 +1,5 @@
 import { useMediaQuery } from "usehooks-ts";
 
-import { useOnboarding } from "src/App/OnboardingProvider";
 import MeApi from "src/api/me";
 import { viewportConfig } from "src/config";
 
@@ -18,8 +17,6 @@ const ProfileButton = () => {
 
   const { githubUserId, login = "", avatarUrl = "" } = userInfo || {};
 
-  const { onboardingInProgress } = useOnboarding();
-
   const props = {
     githubUserId,
     avatarUrl,
@@ -27,7 +24,6 @@ const ProfileButton = () => {
     labelToken,
     redirection,
     errorColor,
-    hideProfileItems: onboardingInProgress,
   };
   return isXl ? <View {...props} /> : <ViewMobile {...props} />;
 };

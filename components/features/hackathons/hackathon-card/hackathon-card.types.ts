@@ -42,6 +42,7 @@ export interface HackathonCardPort<C extends ElementType> extends Partial<Varian
     endDate: string;
     startTime: string;
   };
+  showCta?: boolean;
 }
 
 export interface HackathonCardMiniPort<C extends ElementType> extends Partial<Variants> {

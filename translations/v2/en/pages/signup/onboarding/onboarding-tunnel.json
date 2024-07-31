@@ -3,12 +3,12 @@
   "content": "To personalize your experience, please follow these steps. The first two steps are mandatory, while the following ones are optional but highly recommended to enhance your experience.",
   "steps": {
     "information": {
-      "title": "Verification Information",
+      "title": "Verify Information",
       "content": "To create your account, we need some basic information."
     },
     "terms": {
       "title": "Terms & Conditions",
-      "content": "To access at the app, You need to approved our Terms & Conditions."
+      "content": "To access at the app, you need to accept our Terms & Conditions."
     },
     "project": {
       "title": "Project Recommendations",
@@ -19,7 +19,7 @@
       "content": "To help you connect with other members and showcase your expertise."
     },
     "payout": {
-      "title": "Payout informations",
+      "title": "Payout Information",
       "content": "To claim rewards, you will need to verify your identity or business."
     }
   },
@@ -32,5 +32,10 @@
     "skip": "Skip",
     "back": "Back",
     "next": "Next"
+  },
+  "aside": {
+    "changeLog": "Change log",
+    "faq": "FAQ",
+    "privacyPolicy": "Privacy policy"
   }
 }

@@ -32,9 +32,7 @@ export default function Providers({ children }: PropsWithChildren) {
     <ClientBootstrapProvider>
       <PosthogProvider>
         <ImpersonationProvider>
-          <InitBootstrapImpersonation />
           <Auth0ProviderWithNavigate>
-            <InitBootstrapAuth />
             <IntlProvider>
               <QueryProvider>
                 <NextUIProvider>
@@ -43,11 +41,13 @@ export default function Providers({ children }: PropsWithChildren) {
                       <StackProvider>
                         <SidePanelStackProvider>
                           <ToasterProvider>
-                            {children}
+                            <ToasterAtom />
+                            <InitBootstrapImpersonation />
+                            <InitBootstrapAuth />
                             <Stacks />
                             <Toaster />
                             {/* Hide tooltips on mobile */ isSm && <Tooltip />}
-                            <ToasterAtom />
+                            {children}
                           </ToasterProvider>
                         </SidePanelStackProvider>
                       </StackProvider>

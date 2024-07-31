@@ -44,10 +44,9 @@ const MenuItem = ({ onClick, isProfile, children, ...rest }: MenuItemProps) => (
 interface Props extends TUseMenu.Return {
   avatarUrl: string | null;
   login: string;
-  hideProfileItems?: boolean;
 }
 
-export function View({ avatarUrl, login, hideProfileItems, labelToken, redirection, errorColor, error }: Props) {
+export function View({ avatarUrl, login, labelToken, redirection, errorColor, error }: Props) {
   const { T } = useIntl();
   const [menuItemsVisible, setMenuItemsVisible] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
@@ -108,47 +107,45 @@ export function View({ avatarUrl, login, hideProfileItems, labelToken, redirecti
 						overflow-hidden rounded-md bg-whiteFakeOpacity-5 p-3 shadow-lg ring-1
 						ring-greyscale-50/8 focus:outline-none"
           >
-            {!hideProfileItems && (
-              <div>
-                <BaseLink href={redirection}>
-                  <MenuItem isProfile>
-                    {avatarUrl ? (
-                      <img className="h-7 w-7 rounded-full" src={avatarUrl} loading="lazy" alt={login} />
-                    ) : null}
+            <div>
+              <BaseLink href={redirection}>
+                <MenuItem isProfile>
+                  {avatarUrl ? (
+                    <img className="h-7 w-7 rounded-full" src={avatarUrl} loading="lazy" alt={login} />
+                  ) : null}
 
-                    <Flex direction="col" alignItems="start">
-                      <Typography variant="title-s" className="text-sm leading-4">
-                        {login}
-                      </Typography>
+                  <Flex direction="col" alignItems="start">
+                    <Typography variant="title-s" className="text-sm leading-4">
+                      {login}
+                    </Typography>
 
-                      <Typography
-                        variant="body-s"
-                        translate={{
-                          token: labelToken,
-                        }}
-                        className={cn("mt-1 text-spaceBlue-200", {
-                          "text-orange-500": errorColor === TUseMenu.ERROR_COLORS.WARNING,
-                          "text-github-red": errorColor === TUseMenu.ERROR_COLORS.ERROR,
-                        })}
-                      />
-                    </Flex>
+                    <Typography
+                      variant="body-s"
+                      translate={{
+                        token: labelToken,
+                      }}
+                      className={cn("mt-1 text-spaceBlue-200", {
+                        "text-orange-500": errorColor === TUseMenu.ERROR_COLORS.WARNING,
+                        "text-github-red": errorColor === TUseMenu.ERROR_COLORS.ERROR,
+                      })}
+                    />
+                  </Flex>
+                </MenuItem>
+              </BaseLink>
+
+              {sponsors.length ? (
+                <BaseLink href={NEXT_ROUTER.sponsor.details.root(sponsors[0].id)}>
+                  <MenuItem>
+                    <Icon remixName="ri-service-line" size={20} />
+                    <div className="grow">
+                      <Translate token="v2.features.menu.sponsoring" />
+                    </div>
                   </MenuItem>
                 </BaseLink>
+              ) : null}
 
-                {sponsors.length ? (
-                  <BaseLink href={NEXT_ROUTER.sponsor.details.root(sponsors[0].id)}>
-                    <MenuItem>
-                      <Icon remixName="ri-service-line" size={20} />
-                      <div className="grow">
-                        <Translate token="v2.features.menu.sponsoring" />
-                      </div>
-                    </MenuItem>
-                  </BaseLink>
-                ) : null}
-
-                <span className="my-1 block h-px bg-greyscale-50/8" />
-              </div>
-            )}
+              <span className="my-1 block h-px bg-greyscale-50/8" />
+            </div>
 
             <div>
               {login ? (

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext } from "react";
+import { useContext } from "react";
 
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
 import { StepHeader } from "app/signup/components/step-header/step-header";
@@ -44,7 +44,7 @@ function Footer() {
 function SafeProjectRecommendationsPage() {
   const { onSubmit } = useContext(ProjectRecommendationContext);
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} className="h-full">
       <SignupTemplate header={<AccountAlreadyExist />} footer={<Footer />}>
         <div className="flex w-full flex-col gap-3">
           <Paper container={"2"}>

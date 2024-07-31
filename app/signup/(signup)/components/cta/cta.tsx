@@ -1,3 +1,6 @@
+import { Spinner } from "@nextui-org/react";
+
+import { useOnboarding } from "src/App/OnboardingProvider";
 import { cn } from "src/utils/cn";
 
 import { Paper } from "components/atoms/paper";
@@ -7,6 +10,8 @@ import { Icon } from "components/layout/icon/icon";
 import { TCta } from "./cta.types";
 
 export function Cta({ title, subtitle, iconProps, wrapperProps = {} }: TCta.Props) {
+  const { isLoading } = useOnboarding();
+
   const { className: iconClassName, ...restIconProps } = iconProps;
   const { classNames: wrapperClassNames, ...restWrapperProps } = wrapperProps;
 
@@ -14,7 +19,11 @@ export function Cta({ title, subtitle, iconProps, wrapperProps = {} }: TCta.Prop
     <Paper
       size={"s"}
       container={"transparent"}
-      classNames={{ base: cn("flex items-center gap-3 justify-between text-left", wrapperClassNames?.base) }}
+      classNames={{
+        base: cn("flex items-center gap-3 justify-between text-left", wrapperClassNames?.base, {
+          "pointer-events-none": isLoading,
+        }),
+      }}
       {...restWrapperProps}
     >
       <div className={"flex items-center gap-3"}>
@@ -33,7 +42,7 @@ export function Cta({ title, subtitle, iconProps, wrapperProps = {} }: TCta.Prop
         </div>
       </div>
 
-      <Icon remixName={"ri-arrow-right-s-line"} />
+      {isLoading ? <Spinner size="sm" /> : <Icon remixName={"ri-arrow-right-s-line"} />}
     </Paper>
   );
 }
