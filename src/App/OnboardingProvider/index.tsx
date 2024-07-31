@@ -38,7 +38,7 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
 
   const skipRedirection = onboardingInProgress || !user?.id || isLoading;
 
-  const showOnboarding = !skipRedirection && false;
+  const showOnboarding = !skipRedirection && !user?.hasSeenOnboardingWizard && !isImpersonating;
   const showTermsAndConditions = !skipRedirection && !user?.hasAcceptedLatestTermsAndConditions && !isImpersonating;
 
   if (showOnboarding) {
