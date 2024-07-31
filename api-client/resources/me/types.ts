@@ -44,11 +44,11 @@ export type MyRewards = components["schemas"]["MyRewardPageItemResponse"];
 
 export type GetRecommendedProjectsPageResponse = components["schemas"]["RecommendedProjectsPageResponse"];
 
-/* --------------------------------- Me Journey -------------------------------- */
+/* --------------------------------- Me Onboarding -------------------------------- */
 
-type MyJourneyResponse = components["schemas"]["JourneyCompletionResponse"];
+type MyOnboardingResponse = components["schemas"]["OnboardingCompletionResponse"];
 
-export interface GetMyJourneyResponse extends MyJourneyResponse {}
+export interface GetMyOnboardingResponse extends MyOnboardingResponse {}
 
 /* --------------------------------- My Applications -------------------------------- */
 

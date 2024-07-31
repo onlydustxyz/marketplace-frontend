@@ -7,28 +7,24 @@
   },
   "steps": {
     "step1": {
-      "title": "Create and validate your first billing profile",
-      "description": "To be able to receive rewards you need to validate a billing profile."
+      "title": "Verify Information",
+      "content": "To create your account, we need some basic information."
     },
     "step2": {
-      "title": "Add and validate a company billing profile",
-      "description": "To be able to receive more than $5k per year you need a company."
+      "title": "Terms & Conditions",
+      "content": "To access at the app, you need to accept our Terms & Conditions."
     },
     "step3": {
-      "title": "Update your description",
-      "description": "To showcase who you are and why your the perfect contributor."
+      "title": "Project Recommendations",
+      "content": "Help us recommend projects that match your interests."
     },
     "step4": {
-      "title": "Update your Telegram contact information",
-      "description": "You can control who has access to this information."
+      "title": "Complete Your Profile",
+      "content": "To help you connect with other members and showcase your expertise."
     },
     "step5": {
-      "title": "Get your first reward",
-      "description": "Contribute on a project, create value and get your first reward."
-    },
-    "step6": {
-      "title": "Request your rewards",
-      "description": "To receive the reward on your wallets you need to request the payment."
+      "title": "Payout Information",
+      "content": "To claim rewards, you will need to verify your identity or business."
     }
   },
   "public": {
