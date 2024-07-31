@@ -3,13 +3,15 @@
 import { HackathonReactQueryAdapter } from "core/application/react-query-adapter/hackathon";
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
+import Completed1 from "public/images/onboarding/completed-1.png";
+import Completed2 from "public/images/onboarding/completed-2.png";
+import Completed3 from "public/images/onboarding/completed-3.png";
 import { useEffect, useState } from "react";
 
 import { StepHeader } from "app/signup/components/step-header/step-header";
 import { Title } from "app/signup/components/title/title";
-
-import { IMAGES } from "src/assets/img";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
@@ -25,16 +27,22 @@ import { Key, useIntl } from "hooks/translate/use-translate";
 type Card = {
   title: Key;
   content: Key;
+  image: 1 | 2 | 3;
 };
 
-function Card({ title, content }: Card) {
+function Card({ title, content, image }: Card) {
   const { T } = useIntl();
+
+  const images = {
+    1: Completed1,
+    2: Completed2,
+    3: Completed3,
+  };
 
   return (
     <Paper size={"s"} container={"3"} classNames={{ base: "flex md:flex-col gap-2 content-start items-center" }}>
-      <img
-        // TODO @hayden handle real images
-        src={IMAGES.logo.space}
+      <Image
+        src={images[image]}
         alt={T("title")}
         className={"max-w-24 rounded-lg border border-container-stroke-separator md:max-w-full"}
       />
@@ -52,14 +60,17 @@ const maintainerCards: Card[] = [
   {
     title: "v2.pages.signup.onboarding.completed.sections.submitProject.title",
     content: "v2.pages.signup.onboarding.completed.sections.submitProject.content",
+    image: 1,
   },
   {
     title: "v2.pages.signup.onboarding.completed.sections.exploreEcosystems.title",
     content: "v2.pages.signup.onboarding.completed.sections.exploreEcosystems.content",
+    image: 2,
   },
   {
     title: "v2.pages.signup.onboarding.completed.sections.applyGrant.title",
     content: "v2.pages.signup.onboarding.completed.sections.applyGrant.content",
+    image: 3,
   },
 ];
 
@@ -67,14 +78,17 @@ const contributorCards: Card[] = [
   {
     title: "v2.pages.signup.onboarding.completed.sections.exploreProjects.title",
     content: "v2.pages.signup.onboarding.completed.sections.exploreProjects.content",
+    image: 1,
   },
   {
     title: "v2.pages.signup.onboarding.completed.sections.joinProject.title",
     content: "v2.pages.signup.onboarding.completed.sections.joinProject.content",
+    image: 2,
   },
   {
     title: "v2.pages.signup.onboarding.completed.sections.earnRewards.title",
     content: "v2.pages.signup.onboarding.completed.sections.earnRewards.content",
+    image: 3,
   },
 ];
 
