@@ -30,7 +30,7 @@ export default function SignupPage() {
   } = useClientBootstrapContext();
   const { isAuthenticated = false } = authProvider ?? {};
 
-  const { data: userOnboarding, isLoading: isPendingUserOnboarding } = UserReactQueryAdapter.client.useGetMyOnboarding({
+  const { data: userOnboarding, isLoading: isLoadingUserOnboarding } = UserReactQueryAdapter.client.useGetMyOnboarding({
     options: {
       enabled: isAuthenticated,
     },
