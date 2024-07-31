@@ -75,7 +75,7 @@ function OnboardingPage() {
             icon={{ remixName: "ri-checkbox-circle-line" }}
             type={"mandatory"}
             isDone={userOnboarding.verificationInformationProvided}
-            path={NEXT_ROUTER.signup.onboarding.verificationInformation}
+            path={NEXT_ROUTER.signup.onboarding.verifyInformation}
           />
           <TunnelStep
             title={{ token: "v2.pages.signup.onboarding.tunnel.steps.terms.title" }}

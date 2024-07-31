@@ -51,10 +51,14 @@ export function CustomRadioComponent({
   const { title, content, icon } = translates[type] || { title: "", content: "", icon: "" };
 
   return (
-    <Paper size={"s"} container={"3"} classNames={{ base: "flex items-start gap-3 justify-between text-left" }}>
+    <Paper
+      size={"s"}
+      container={"transparent"}
+      classNames={{ base: "flex items-start gap-3 justify-between text-left" }}
+    >
       <Icon
         size={24}
-        className="flex h-16 w-16 min-w-16 items-center justify-center rounded-lg border border-container-stroke-separator"
+        className="min-w-16 flex h-16 w-16 items-center justify-center rounded-lg border border-container-stroke-separator"
         remixName={icon}
       />
       <div className="flex flex-1 items-center gap-3">

@@ -75,7 +75,7 @@ export const NEXT_ROUTER = {
     onboarding: {
       root: "/signup/onboarding",
       projectRecommendations: "/signup/onboarding/project-recommendations",
-      verificationInformation: "/signup/onboarding/verification-information",
+      verifyInformation: "/signup/onboarding/verify-information",
       completeYourProfile: "/signup/onboarding/complete-your-profile",
       termsAndConditions: "/signup/onboarding/terms-and-conditions",
       payoutInformation: "/signup/onboarding/payout-information",

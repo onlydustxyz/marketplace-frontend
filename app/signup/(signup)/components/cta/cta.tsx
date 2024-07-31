@@ -30,14 +30,20 @@ export function Cta({ title, subtitle, iconProps, wrapperProps = {} }: TCta.Prop
         <Icon
           size={24}
           className={cn(
-            "flex h-16 w-16 min-w-16 items-center justify-center rounded-lg border border-container-stroke-separator",
+            "min-w-16 flex h-16 w-16 items-center justify-center rounded-lg border border-container-stroke-separator",
             iconClassName
           )}
           {...restIconProps}
         />
 
         <div className={"grid"}>
-          <Typo size={"l"} weight={"medium"} color={"text-1"} translate={{ token: title }} />
+          <Typo
+            size={"l"}
+            weight={"medium"}
+            color={"text-1"}
+            translate={{ token: title }}
+            classNames={{ base: "capitalize" }}
+          />
           <Typo size={"s"} color={"text-2"} translate={{ token: subtitle }} />
         </div>
       </div>

@@ -34,12 +34,12 @@ export default function PayoutInformationPage() {
     BillingProfileReactQueryAdapter.client.useCreateBillingProfile({
       options: {
         onSuccess: () => {
-          toast.default(<Translate token="v2.pages.signup.verificationInformation.toast.success" />);
+          toast.default(<Translate token="v2.pages.signup.payoutInformation.toast.success" />);
           reset();
           // TODO @Mehdi add redirection to next step
         },
         onError: () => {
-          toast.error(<Translate token="v2.pages.signup.verificationInformation.toast.error" />);
+          toast.error(<Translate token="v2.pages.signup.payoutInformation.toast.error" />);
         },
       },
     });
@@ -79,7 +79,7 @@ export default function PayoutInformationPage() {
     <FormProvider {...formMethods}>
       <form onSubmit={handleSubmit(handleCreateBillingProfile)} className="h-full">
         <SignupTemplate header={<AccountAlreadyExist />} footer={renderFooter}>
-          <Paper size={"l"} container={"3"} classNames={{ base: "flex flex-col gap-6 min-h-full" }}>
+          <Paper size={"l"} container={"2"} classNames={{ base: "flex flex-col gap-6 min-h-full" }}>
             <StepHeader
               step={2}
               stepPath={"/signup/onboarding"}

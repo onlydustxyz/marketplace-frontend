@@ -72,7 +72,7 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
       }
 
       if (!userOnboarding.verificationInformationProvided) {
-        router.push(NEXT_ROUTER.signup.onboarding.verificationInformation);
+        router.push(NEXT_ROUTER.signup.onboarding.verifyInformation);
         return;
       }
 
