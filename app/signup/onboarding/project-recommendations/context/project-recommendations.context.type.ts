@@ -7,7 +7,7 @@ import { z } from "zod";
 export namespace TProjectRecommendationContext {
   export interface Props extends PropsWithChildren {}
 
-  export type Goal = NonNullable<SetMyProfileBody["goal"]>;
+  export type Goal = NonNullable<SetMyProfileBody["joiningGoal"]>;
 
   export interface Return {
     categories: ProjectCategoryInterface[];
