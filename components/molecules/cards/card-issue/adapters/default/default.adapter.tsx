@@ -87,16 +87,21 @@ export function CardIssueDefaultAdapter<C extends ElementType = "div">({
             {title}
           </Typo>
         </div>
+
         <div className="flex flex-row justify-end gap-1">{actions.map(action => action)}</div>
       </div>
+
       <div className="flex w-full flex-row flex-wrap justify-start gap-x-2 gap-y-1">
         <LabelledIcon iconName={"ri-time-line"}>{_createdAt}</LabelledIcon>
+
         <LabelledIcon avatar={createdBy?.avatar} childrenPrefix={tokens.createdBy}>
           {createdBy?.name}
         </LabelledIcon>
+
         <LabelledIcon iconName={"ri-github-line"} as={"a"} htmlProps={{ href: repo?.href, target: "_blank" }}>
           {repo?.name}
         </LabelledIcon>
+
         {!!applicants?.length && (
           <div className="flex flex-row items-center justify-start gap-1">
             <AvatarGroup avatars={applicants.map(({ avatarUrl }) => ({ src: avatarUrl }))} size="xs" maxAvatars={4} />
@@ -108,6 +113,7 @@ export function CardIssueDefaultAdapter<C extends ElementType = "div">({
           </div>
         )}
       </div>
+
       {!!tags?.length && (
         <div className="flex w-full flex-wrap justify-start gap-1">
           {tags?.map((t, key) => (
