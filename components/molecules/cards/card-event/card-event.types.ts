@@ -2,6 +2,7 @@ import { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
 
 import { ButtonPort } from "components/atoms/button/button.types";
 import { TagPort } from "components/atoms/tag";
+import { BaseLink } from "components/layout/base-link/base-link";
 import { TIcon } from "components/layout/icon/icon.types";
 
 interface ClassNames {
@@ -19,6 +20,6 @@ export interface CardEventPort<C extends ElementType> {
   text?: ReactNode;
   tagProps?: TagPort<"span">;
   status?: CardEventStatus;
-  primaryActionProps?: ButtonPort<"a">;
-  secondaryActionProps?: ButtonPort<"a">;
+  primaryActionProps?: ButtonPort<typeof BaseLink>;
+  secondaryActionProps?: ButtonPort<typeof BaseLink>;
 }
