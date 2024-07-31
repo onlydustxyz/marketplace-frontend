@@ -1,4 +1,3 @@
-import { Auth0ClientAdapter } from "core/application/auth0-client-adapter";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 import { useMemo } from "react";
 import { useMediaQuery } from "usehooks-ts";
@@ -13,10 +12,13 @@ import { Button } from "components/atoms/button/variants/button-default";
 import { Card } from "components/ds/card/card";
 import { Link } from "components/ds/link/link";
 import { Contributor } from "components/features/contributor/contributor";
+import { BaseLink } from "components/layout/base-link/base-link";
 import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { ApplyButton } from "./components/apply-button/apply-button";
 import { TIssueCard } from "./issue-card.types";
@@ -29,15 +31,16 @@ export function IssueCard({ issue, onDrawerOpen }: TIssueCard.Props) {
   const {
     clientBootstrap: { authProvider },
   } = useClientBootstrapContext();
-  const { isAuthenticated = false, loginWithRedirect } = authProvider ?? {};
+  const { isAuthenticated = false } = authProvider ?? {};
 
   const renderApplyButton = useMemo(() => {
     if (!isAuthenticated) {
       return (
         <Button
-          onClick={
-            loginWithRedirect ? () => Auth0ClientAdapter.helpers.handleLoginWithRedirect(loginWithRedirect) : undefined
-          }
+          as={BaseLink}
+          htmlProps={{
+            href: NEXT_ROUTER.signup.root,
+          }}
         >
           <Translate token={"v2.pages.project.overview.goodFirstIssues.button.connectAndApply"} />
         </Button>
@@ -45,7 +48,7 @@ export function IssueCard({ issue, onDrawerOpen }: TIssueCard.Props) {
     }
 
     return <ApplyButton hasApplied={hasApplied} onDrawerOpen={onDrawerOpen} />;
-  }, [isAuthenticated, loginWithRedirect, hasApplied, onDrawerOpen]);
+  }, [isAuthenticated, hasApplied, onDrawerOpen]);
 
   return (
     <Card key={issue.id} background="base" hasPadding={false}>

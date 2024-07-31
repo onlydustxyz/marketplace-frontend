@@ -1,24 +1,19 @@
-import { useAuth0 } from "@auth0/auth0-react";
-
 import OnlyDustLogo, { OnlyDustLogoWidth } from "src/App/Layout/Header/OnlyDustLogo";
 import Card from "src/components/Card";
 
 import { Button } from "components/ds/button/button";
-import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
+import { BaseLink } from "components/layout/base-link/base-link";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { useIntl } from "hooks/translate/use-translate";
 
 export function CommitteePublicPage({ type }: { type: "applicant" | "jury" }) {
   const { T } = useIntl();
-  const { loginWithRedirect } = useAuth0();
 
   const isApplicant = type === "applicant";
-
-  function handleLogin() {
-    handleLoginWithRedirect(loginWithRedirect);
-  }
 
   return (
     <Card className="relative m-auto flex max-w-3xl justify-center px-6 pb-12 pt-20 lg:px-12 xl:px-24" padded={false}>
@@ -45,7 +40,7 @@ export function CommitteePublicPage({ type }: { type: "applicant" | "jury" }) {
         />
 
         <div className="flex flex-col items-center gap-6">
-          <Button size={"l"} onClick={handleLogin}>
+          <Button as={BaseLink} href={NEXT_ROUTER.signup.root} size={"l"}>
             <Icon remixName={"ri-github-fill"} size={20} />
             {T("v2.pages.committees.applicant.public.login")}
           </Button>

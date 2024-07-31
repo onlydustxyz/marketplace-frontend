@@ -1,6 +1,6 @@
 "use client";
 
-import { Auth0ClientAdapter } from "core/application/auth0-client-adapter";
+import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { Controller } from "react-hook-form";
 
@@ -11,6 +11,8 @@ import { HackathonCardMini } from "components/features/hackathons/hackathon-card
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Modal } from "components/molecules/modal";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { useIntl } from "hooks/translate/use-translate";
 
@@ -28,20 +30,12 @@ export function Register({
   hackathonIsLive,
 }: TRegister.Props) {
   const { T } = useIntl();
-  const {
-    modal,
-    form,
-    isAuthenticated,
-    loginWithRedirect,
-    registerForHackathon,
-    isLoading,
-    isPending,
-    hasTelegram,
-    hasRegistered,
-  } = useRegister({
-    hackathonId,
-    hackathonSlug,
-  });
+  const router = useRouter();
+  const { modal, form, isAuthenticated, registerForHackathon, isLoading, isPending, hasTelegram, hasRegistered } =
+    useRegister({
+      hackathonId,
+      hackathonSlug,
+    });
 
   const {
     issues: { open, isOpen },
@@ -66,12 +60,7 @@ export function Register({
 
     if (!isAuthenticated) {
       return (
-        <Button
-          onClick={
-            loginWithRedirect ? () => Auth0ClientAdapter.helpers.handleLoginWithRedirect(loginWithRedirect) : undefined
-          }
-          {...buttonProps}
-        >
+        <Button onClick={() => router.push(NEXT_ROUTER.signup.root)} {...buttonProps}>
           <Translate token={"v2.pages.hackathons.details.info.connectToRegister"} />
         </Button>
       );

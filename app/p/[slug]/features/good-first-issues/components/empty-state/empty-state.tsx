@@ -1,4 +1,3 @@
-import { Auth0ClientAdapter } from "core/application/auth0-client-adapter";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 import Image from "next/image";
 import { useMediaQuery } from "usehooks-ts";
@@ -11,9 +10,12 @@ import { viewportConfig } from "src/config";
 import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
 import { Switch } from "components/atoms/switch";
+import { BaseLink } from "components/layout/base-link/base-link";
 import { Flex } from "components/layout/flex/flex";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { useIntl } from "hooks/translate/use-translate";
 
@@ -25,7 +27,7 @@ export function EmptyState({ projectId }: TEmptyState.Props) {
   const {
     clientBootstrap: { authProvider },
   } = useClientBootstrapContext();
-  const { isAuthenticated = false, loginWithRedirect } = authProvider ?? {};
+  const { isAuthenticated = false } = authProvider ?? {};
 
   const { isNotificationEnabled, handleSetMyNotificationSettings } = useGoodFirstIssuesNotification({ projectId });
 
@@ -65,9 +67,10 @@ export function EmptyState({ projectId }: TEmptyState.Props) {
         </Paper>
       ) : (
         <Button
-          onClick={
-            loginWithRedirect ? () => Auth0ClientAdapter.helpers.handleLoginWithRedirect(loginWithRedirect) : undefined
-          }
+          as={BaseLink}
+          htmlProps={{
+            href: NEXT_ROUTER.signup.root,
+          }}
         >
           <Translate token={"v2.pages.project.overview.goodFirstIssues.empty.connectToFillForm"} />
         </Button>

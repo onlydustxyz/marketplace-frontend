@@ -1,14 +1,15 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef } from "react";
 
 import { ClaimUtils } from "src/App/Stacks/GithubWorkflow/ClaimSidePanel/claim.utils";
 import { useStackGithubWorkflowClaim } from "src/App/Stacks/Stacks";
 
 import { Banner } from "components/ds/banner/banner";
-import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { useDeleteSearchParams } from "hooks/router/useDeleteSearchParams";
 
@@ -18,7 +19,8 @@ export function ClaimBanner({ project }: TClaimBanner.Props) {
   const { slug = "" } = useParams<{ slug: string }>();
   const searchParams = useSearchParams();
   const deleteSearchParams = useDeleteSearchParams();
-  const { isAuthenticated, loginWithRedirect } = useAuth0();
+  const { isAuthenticated } = useAuth0();
+  const router = useRouter();
 
   const isPanelOpen = useRef(false);
   const [openClaimPanel] = useStackGithubWorkflowClaim();
@@ -33,7 +35,7 @@ export function ClaimBanner({ project }: TClaimBanner.Props) {
         openClaimPanel({ projectSlug: slug });
       }
     } else {
-      await handleLoginWithRedirect(loginWithRedirect);
+      router.push(NEXT_ROUTER.signup.root);
     }
   };
 

@@ -1,6 +1,5 @@
 "use client";
 
-import { useAuth0 } from "@auth0/auth0-react";
 import Image from "next/image";
 import process from "process";
 import odCommunityTips from "public/images/od-community-tips.png";
@@ -13,21 +12,18 @@ import { Banner } from "components/ds/banner/banner";
 import { Button } from "components/ds/button/button";
 import { Card } from "components/ds/card/card";
 import { IconTag } from "components/ds/icon-tag/icon-tag";
-import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
 import { BaseLink } from "components/layout/base-link/base-link";
 import { Icon } from "components/layout/icon/icon";
 import { Section } from "components/layout/section/section";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
+import { NEXT_ROUTER } from "constants/router";
+
 import { useIntl } from "hooks/translate/use-translate";
 
 export function JourneyPublic() {
-  const { loginWithRedirect } = useAuth0();
   const { T } = useIntl();
-  function handleLogin() {
-    handleLoginWithRedirect(loginWithRedirect);
-  }
 
   const blogUrl = process.env.NEXT_PUBLIC_OD_BLOG_COMMUNITY_TIP ?? "";
 
@@ -42,7 +38,8 @@ export function JourneyPublic() {
         }}
       >
         <Button
-          onClick={handleLogin}
+          as={BaseLink}
+          href={NEXT_ROUTER.signup.root}
           className="flex h-20 w-full !bg-transparent p-0 text-left text-snow hover:text-snow"
         >
           <Banner

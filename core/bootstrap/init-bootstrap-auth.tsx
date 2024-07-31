@@ -8,8 +8,14 @@ export function InitBootstrapAuth() {
   const { setClientBootstrap } = useClientBootstrapContext();
 
   useEffect(() => {
-    const { isAuthenticated, getAccessTokenSilently: getAccessToken, logout, loginWithRedirect } = auth0;
-    const authProvider = { isAuthenticated, getAccessToken, logout, loginWithRedirect };
+    const {
+      isAuthenticated,
+      getAccessTokenSilently: getAccessToken,
+      logout,
+      loginWithRedirect,
+      loginWithPopup,
+    } = auth0;
+    const authProvider = { isAuthenticated, getAccessToken, logout, loginWithRedirect, loginWithPopup };
 
     bootstrap.setAuthProvider(authProvider);
 

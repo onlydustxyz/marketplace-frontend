@@ -6,7 +6,6 @@ import { STORAGE_KEY_CREATE_PROJECT_STEP } from "src/_pages/ProjectCreation/hook
 
 import { Button } from "components/ds/button/button";
 import { Popover } from "components/ds/modals/popover/popover";
-import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
 
 import { NEXT_ROUTER } from "constants/router";
 
@@ -14,7 +13,7 @@ import { AddProjectModal } from "../modal/add-project-modal";
 import { TAddProjectButton } from "./add-project-button.types";
 
 export function AddProjectButton({ buttonProps }: TAddProjectButton.Props) {
-  const { isAuthenticated, loginWithRedirect } = useAuth0();
+  const { isAuthenticated } = useAuth0();
   const canResume = useMemo(() => !!localStorage.getItem(STORAGE_KEY_CREATE_PROJECT_STEP), []);
   const router = useRouter();
 
@@ -22,7 +21,7 @@ export function AddProjectButton({ buttonProps }: TAddProjectButton.Props) {
     if (isAuthenticated) {
       router.push(NEXT_ROUTER.projects.creation);
     } else {
-      await handleLoginWithRedirect(loginWithRedirect);
+      router.push(NEXT_ROUTER.signup.root);
     }
   };
 
