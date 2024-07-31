@@ -1,0 +1,32 @@
+{
+  "title": "Congratulations, you’re all set!",
+  "content": "Welcome to OnlyDust! You’re now ready to start your journey in our vibrant open-source community. Here are your next steps to get the most out of your experience:",
+  "sections": {
+    "submitProject": {
+      "title": "Submit a project",
+      "content": "Make your project public to attract contributors and collaborators.",
+      "cta": "Submit a project"
+    },
+    "exploreEcosystems": {
+      "title": "Explore ecosystems",
+      "content": "Discover other projects and communities within the ecosystem to gain insights and make connections."
+    },
+    "applyGrant": {
+      "title": "Apply for a grant",
+      "content": "Find sponsors to help finance and support your project."
+    },
+    "exploreProjects": {
+      "title": "Explore projects",
+      "content": "Discover a variety of open-source projects tailored to your interests. Dive into the ones that excite you and match your skills."
+    },
+    "joinProject": {
+      "title": "Join a project",
+      "content": "Find projects that need your expertise and start contributing. Collaborate with others and make an impact."
+    },
+    "earnRewards": {
+      "title": "Earn rewards",
+      "content": "Participate in projects and earn rewards for your contributions, there’s something for everyone."
+    }
+  },
+  "cta": "Explore OnlyDust app"
+}

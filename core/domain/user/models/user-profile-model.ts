@@ -8,6 +8,7 @@ export interface UserProfileInterface extends UserProfileResponse {
   hasContact(channel: UserProfileContactChannel): boolean;
   getContact(channel: UserProfileContactChannel): UserProfileContact | undefined;
   getContactTelegram(): UserProfileContact | undefined;
+  isMaintainer(): boolean;
 }
 
 export class UserProfile implements UserProfileInterface {
@@ -19,11 +20,11 @@ export class UserProfile implements UserProfileInterface {
   githubUserId!: UserProfileResponse["githubUserId"];
   id!: UserProfileResponse["id"];
   isLookingForAJob!: UserProfileResponse["isLookingForAJob"];
+  joiningReason!: UserProfileResponse["joiningReason"];
   lastName!: UserProfileResponse["lastName"];
   location!: UserProfileResponse["location"];
   login!: UserProfileResponse["login"];
   website!: UserProfileResponse["website"];
-  joiningReason!: UserProfileResponse["joiningReason"];
 
   constructor(props: UserProfileResponse) {
     Object.assign(this, props);
@@ -73,5 +74,9 @@ export class UserProfile implements UserProfileInterface {
 
   static isValidJoiningReason(joiningReason?: string) {
     return joiningReason === "CONTRIBUTOR" || joiningReason === "MAINTAINER" || joiningReason === "SPONSOR";
+  }
+
+  isMaintainer() {
+    return this.joiningReason === "MAINTAINER";
   }
 }

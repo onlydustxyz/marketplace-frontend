@@ -116,6 +116,7 @@ export function HackathonCard<C extends ElementType = "div">({
   issueCount,
   adaptMapStatusToTag = mapHackathonStatusToTag,
   dates,
+  showCta = true,
 }: HackathonCardPort<C>) {
   const Component = slug ? BaseLink : "article";
   const paperHtmlProps = slug
@@ -227,7 +228,7 @@ export function HackathonCard<C extends ElementType = "div">({
           ) : null}
         </div>
 
-        {slug ? (
+        {slug && showCta ? (
           <Button
             as={"div"}
             variant={status === "closed" ? "secondary-light" : "primary"}

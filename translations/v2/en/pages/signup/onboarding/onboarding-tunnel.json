@@ -32,5 +32,10 @@
     "skip": "Skip",
     "back": "Back",
     "next": "Next"
+  },
+  "aside": {
+    "changeLog": "Change log",
+    "faq": "FAQ",
+    "privacyPolicy": "Privacy policy"
   }
 }

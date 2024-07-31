@@ -54,13 +54,11 @@ export default function CompleteYourProfilePage() {
       >
         <Paper container={"2"} classNames={{ base: "flex flex-col gap-6 min-h-full" }}>
           <div className="grid gap-3">
-            <div className={"flex items-center justify-between gap-3"}>
-              <StepHeader
-                step={2}
-                stepPath={"/signup/onboarding"}
-                subStep={{ token: "v2.pages.signup.onboarding.completeYourProfile.title" }}
-              />
-            </div>
+            <StepHeader
+              step={2}
+              stepPath={"/signup/onboarding"}
+              subStep={{ token: "v2.pages.signup.onboarding.completeYourProfile.title" }}
+            />
 
             <Title
               title={{ token: "v2.pages.signup.onboarding.completeYourProfile.title" }}

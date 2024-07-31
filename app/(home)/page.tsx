@@ -18,59 +18,64 @@ import { TrendyProjects } from "app/(home)/features/trendy-projects/trendy-proje
 import { TrendyProjectsLoading } from "app/(home)/features/trendy-projects/trendy-projects.loading";
 
 import { RequiredAuthGuard, RequiredUnauthGuard } from "components/features/auth0/guards/auth-guard";
+import { OnboardingCompletedModal } from "components/features/onboarding-completed-modal/onboarding-completed-modal";
 import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 import { Container } from "components/layout/container/container";
 import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 
 export default function HomePage() {
   return (
-    <ScrollView>
-      <Container>
-        <PosthogOnMount eventName={"home_dashboard_viewed"} />
-        <PageGrid>
-          <RequiredAuthGuard>
-            <Profile />
-            <JourneyPrivate />
-            <ErrorBoundary fallback={null}>
-              <Suspense fallback={<RewardsLoading />}>
-                <Rewards />
-              </Suspense>
-            </ErrorBoundary>
-            <ErrorBoundary fallback={null}>
-              <Suspense fallback={<LeadProjectsLoading />}>
-                <LeadProjects />
-              </Suspense>
-            </ErrorBoundary>
-            <ErrorBoundary fallback={null}>
-              <Suspense fallback={<RecommendedProjectsLoading />}>
-                <RecommendedProjects />
-              </Suspense>
-            </ErrorBoundary>
-          </RequiredAuthGuard>
+    <>
+      <ScrollView>
+        <Container>
+          <PosthogOnMount eventName={"home_dashboard_viewed"} />
+          <PageGrid>
+            <RequiredAuthGuard>
+              <Profile />
+              <JourneyPrivate />
+              <ErrorBoundary fallback={null}>
+                <Suspense fallback={<RewardsLoading />}>
+                  <Rewards />
+                </Suspense>
+              </ErrorBoundary>
+              <ErrorBoundary fallback={null}>
+                <Suspense fallback={<LeadProjectsLoading />}>
+                  <LeadProjects />
+                </Suspense>
+              </ErrorBoundary>
+              <ErrorBoundary fallback={null}>
+                <Suspense fallback={<RecommendedProjectsLoading />}>
+                  <RecommendedProjects />
+                </Suspense>
+              </ErrorBoundary>
+            </RequiredAuthGuard>
 
-          <RequiredUnauthGuard
-            fallback={
-              <>
-                <JourneyPublicLoading />
-                <TrendyProjectsLoading />
-                <ActivityLoading />
-              </>
-            }
-          >
-            <JourneyPublic />
-            <ErrorBoundary fallback={null}>
-              <Suspense fallback={<TrendyProjectsLoading />}>
-                <TrendyProjects />
-              </Suspense>
-            </ErrorBoundary>
-            <ErrorBoundary fallback={null}>
-              <Suspense fallback={<ActivityLoading />}>
-                <Activity />
-              </Suspense>
-            </ErrorBoundary>
-          </RequiredUnauthGuard>
-        </PageGrid>
-      </Container>
-    </ScrollView>
+            <RequiredUnauthGuard
+              fallback={
+                <>
+                  <JourneyPublicLoading />
+                  <TrendyProjectsLoading />
+                  <ActivityLoading />
+                </>
+              }
+            >
+              <JourneyPublic />
+              <ErrorBoundary fallback={null}>
+                <Suspense fallback={<TrendyProjectsLoading />}>
+                  <TrendyProjects />
+                </Suspense>
+              </ErrorBoundary>
+              <ErrorBoundary fallback={null}>
+                <Suspense fallback={<ActivityLoading />}>
+                  <Activity />
+                </Suspense>
+              </ErrorBoundary>
+            </RequiredUnauthGuard>
+          </PageGrid>
+        </Container>
+      </ScrollView>
+
+      <OnboardingCompletedModal />
+    </>
   );
 }

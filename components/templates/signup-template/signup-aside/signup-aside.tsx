@@ -1,10 +1,12 @@
 "use client";
 
+import { bootstrap } from "core/bootstrap";
 import Image from "next/image";
 import logo from "public/images/logo-full.svg";
 import background from "public/images/signup-template/signup-aside-background.jpg";
 
 import { Link } from "components/atoms/link";
+import { Translate } from "components/layout/translate/translate";
 
 export function SignupAside() {
   return (
@@ -21,10 +23,15 @@ export function SignupAside() {
       <div className="absolute inset-0 -z-[1] h-full w-full rounded-xl border-1 border-container-stroke-separator" />
       <Image src={logo} alt="Onlydust" className="h-auto w-[163px]" />
       <div className="flex flex-col justify-start gap-2">
-        {/*// TODO: Replace with actual links*/}
-        <Link href={"#"}>Support</Link>
-        <Link href={"#"}>FAQ</Link>
-        <Link href={"#"}>Privacy Policy</Link>
+        <Link href="https://blog.onlydust.com/changelog/">
+          <Translate token="v2.pages.signup.onboarding.tunnel.aside.changeLog" />
+        </Link>
+        <Link href="https://blog.onlydust.com/docs/">
+          <Translate token="v2.pages.signup.onboarding.tunnel.aside.faq" />
+        </Link>
+        <Link href={bootstrap.legalHelperPort.getPrivacyPolicyUrl()}>
+          <Translate token="v2.pages.signup.onboarding.tunnel.aside.privacyPolicy" />
+        </Link>
       </div>
     </div>
   );

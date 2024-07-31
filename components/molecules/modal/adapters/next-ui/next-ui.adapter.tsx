@@ -19,9 +19,12 @@ export function ModalNextUiAdapter<C extends ElementType = "div">({
   closeButtonProps,
   footer,
   canDismiss = true,
+  size,
+  container,
 }: ModalPort<C>) {
   const Inner = as || "div";
-  const slots = ModalNextUiVariants();
+  const slots = ModalNextUiVariants({ size, container });
+  const hasTitle = Boolean(titleProps?.translate || titleProps?.children);
 
   return (
     <Modal
@@ -42,8 +45,8 @@ export function ModalNextUiAdapter<C extends ElementType = "div">({
         {onClose => (
           <>
             <Inner {...(htmlProps ?? {})}>
-              <ModalHeader>
-                <Typo {...titleProps} classNames={{ base: "truncate" }} />
+              <ModalHeader className={"empty:hidden"}>
+                {hasTitle ? <Typo {...titleProps} classNames={{ base: "truncate" }} /> : null}
                 {canDismiss ? (
                   <Button {...closeButtonProps} hideText startIcon={{ remixName: "ri-close-line" }} onClick={onClose} />
                 ) : null}

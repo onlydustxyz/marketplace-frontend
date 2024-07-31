@@ -12,6 +12,8 @@ import { components, operations } from "src/__generated/api";
 
 export type GetHackathonsResponse = components["schemas"]["HackathonsListResponse"];
 
+export type GetHackathonsPortParams = HttpClientParameters<object>;
+
 export type GetHackathonsPortResponse = HttpStorageResponse<
   Omit<GetHackathonsResponse, "hackathons"> & { hackathons: HackathonListInterface[] }
 >;
