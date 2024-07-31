@@ -19,6 +19,7 @@ import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
 import { toast } from "components/atoms/toaster";
 import { Typo } from "components/atoms/typo";
+import { BaseLink } from "components/layout/base-link/base-link";
 import { Translate } from "components/layout/translate/translate";
 import { SignupTemplate } from "components/templates/signup-template/signup-template";
 
@@ -59,7 +60,7 @@ export default function PayoutInformationPage() {
         onSuccess: () => {
           toast.default(<Translate token="v2.pages.signup.verificationInformation.toast.success" />);
           reset();
-          // TODO @Mehdi add redirection to next step
+          router.push(NEXT_ROUTER.signup.onboarding.root);
         },
         onError: () => {
           toast.error(<Translate token="v2.pages.signup.verificationInformation.toast.error" />);
@@ -82,8 +83,9 @@ export default function PayoutInformationPage() {
           size="l"
           translate={{ token: "v2.pages.signup.payoutInformation.footer.back" }}
           startIcon={{ remixName: "ri-arrow-left-s-line" }}
-          // TODO @Mehdi add back redirection to previous step
+          as={BaseLink}
           isDisabled={isPendingCreateBillingProfile}
+          htmlProps={{ href: NEXT_ROUTER.signup.onboarding.root }}
         />
         <Button
           type={"submit"}
