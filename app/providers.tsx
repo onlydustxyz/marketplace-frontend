@@ -13,11 +13,11 @@ import { Stacks } from "src/App/Stacks/Stacks.components";
 import { Toaster } from "src/components/Toaster";
 import Tooltip from "src/components/Tooltip";
 import { viewportConfig } from "src/config";
-import { SidePanelProvider } from "src/hooks/useSidePanel";
 import { SidePanelStackProvider } from "src/hooks/useSidePanelStack";
 import { ToasterProvider } from "src/hooks/useToaster";
 import { StackProvider } from "src/libs/react-stack";
 
+import { Toaster as ToasterAtom } from "components/atoms/toaster";
 import { QueryProvider } from "components/features/api/providers/query-provider";
 import { Auth0ProviderWithNavigate } from "components/features/auth0/providers/auth0-provider-with-navigate";
 import { ImpersonationProvider } from "components/features/impersonation/impersonation.provider";
@@ -42,14 +42,13 @@ export default function Providers({ children }: PropsWithChildren) {
                     <NavigationStateProvider>
                       <StackProvider>
                         <SidePanelStackProvider>
-                          <SidePanelProvider>
-                            <ToasterProvider>
-                              {children}
-                              <Stacks />
-                              <Toaster />
-                              {/* Hide tooltips on mobile */ isSm && <Tooltip />}
-                            </ToasterProvider>
-                          </SidePanelProvider>
+                          <ToasterProvider>
+                            {children}
+                            <Stacks />
+                            <Toaster />
+                            {/* Hide tooltips on mobile */ isSm && <Tooltip />}
+                            <ToasterAtom />
+                          </ToasterProvider>
                         </SidePanelStackProvider>
                       </StackProvider>
                     </NavigationStateProvider>

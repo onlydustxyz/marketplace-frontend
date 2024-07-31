@@ -19,7 +19,8 @@ export function useSetMyProfile({
     useMutationAdapter({
       ...userStoragePort.setMyProfile({}),
       options: {
-        onSuccess: async () => {
+        ...options,
+        onSuccess: async (data, variables, context) => {
           // TODO @hayden invalidate all /me queries like before
           //  /api/v1/me/payout-preferences
           //  /api/v1/me
@@ -36,8 +37,9 @@ export function useSetMyProfile({
           });
 
           await revalidateNextJsPath("/u/[githubLogin]", "page");
+
+          options?.onSuccess?.(data, variables, context);
         },
-        ...options,
       },
     })
   );

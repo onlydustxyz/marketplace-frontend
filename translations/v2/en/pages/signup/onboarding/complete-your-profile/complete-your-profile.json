@@ -1,0 +1,30 @@
+{
+  "title": "Complete your profile",
+  "content": "Provide additional information to help maintainers better match you with suitable projects. Your detailed profile can make a significant difference.",
+  "form": {
+    "firstName": {
+      "label": "First Name",
+      "placeholder": "Enter your first name"
+    },
+    "lastName": {
+      "label": "Last Name",
+      "placeholder": "Enter your last name"
+    },
+    "location": {
+      "label": "Location",
+      "placeholder": "Enter your location"
+    },
+    "bio": {
+      "label": "Biography",
+      "placeholder": "Enter your biography"
+    },
+    "website": {
+      "label": "Website",
+      "placeholder": "Enter your website"
+    },
+    "toast": {
+        "success": "Completed profile successfully.",
+        "error": "Profile completion failed."
+    }
+  }
+}

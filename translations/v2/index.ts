@@ -33,6 +33,7 @@ import en_ecosystems from "./en/pages/ecosystems";
 import en_hackathons_details from "./en/pages/hackathons-details.json";
 import en_hackathons from "./en/pages/hackathons.json";
 import en_home from "./en/pages/home";
+import en_legal_notice_common from "./en/pages/legal-notice/legal-notice-common.json";
 import en_project_applications_table from "./en/pages/project-applications/project-applications-table.json";
 import en_project_details_application_details from "./en/pages/project-details/project-application-details.json";
 import en_project_details_header from "./en/pages/project-details/project-header.json";
@@ -50,7 +51,16 @@ import en_settings_invoices from "./en/pages/settings-invoices.json";
 import en_settings_payout_preferences from "./en/pages/settings-payout-preferences.json";
 import en_settings_payout from "./en/pages/settings-payout.json";
 import en_settings_profile from "./en/pages/settings-profile.json";
+import en_signup_account_already_exist from "./en/pages/signup/account-already-exist.json";
+import en_signup_onboarding_complete_your_profile from "./en/pages/signup/onboarding/complete-your-profile/complete-your-profile.json";
+import en_signup_onboarding_common from "./en/pages/signup/onboarding/onboarding-common.json";
+import en_signup_onboarding_project_recommendations from "./en/pages/signup/onboarding/onboarding-project-recommendations.json";
+import en_signup_onboarding_terms from "./en/pages/signup/onboarding/onboarding-terms.json";
+import en_signup_onboarding_tunnel from "./en/pages/signup/onboarding/onboarding-tunnel.json";
+import en_signup_payout_information from "./en/pages/signup/onboarding/payout-information.json";
+import en_signup_verification_information from "./en/pages/signup/onboarding/verification-information.json";
 import en_signup_signin_section from "./en/pages/signup/signin-section.json";
+import en_signup_signup_section from "./en/pages/signup/signup-section.json";
 import en_page_sponsor from "./en/pages/sponsor.json";
 import en_stack_mandate from "./en/pages/stacks-mandate.json";
 import en_stack_request_payments from "./en/pages/stacks-request-payments.json";
@@ -135,6 +145,20 @@ export const en = {
       applications: en_applications,
       signup: {
         signinSection: en_signup_signin_section,
+        signupSection: en_signup_signup_section,
+        verificationInformation: en_signup_verification_information,
+        payoutInformation: en_signup_payout_information,
+        accountAlreadyExist: en_signup_account_already_exist,
+        onboarding: {
+          common: en_signup_onboarding_common,
+          tunnel: en_signup_onboarding_tunnel,
+          terms: en_signup_onboarding_terms,
+          projectRecommendations: en_signup_onboarding_project_recommendations,
+          completeYourProfile: en_signup_onboarding_complete_your_profile,
+        },
+      },
+      legalNotice: {
+        common: en_legal_notice_common,
       },
     },
   },

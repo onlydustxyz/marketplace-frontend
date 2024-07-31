@@ -1,7 +1,8 @@
+import { AnyType } from "core/helpers/types";
+
 export interface AuthProvider {
   isAuthenticated: boolean;
   getAccessToken: () => Promise<string>;
-  logout: () => void;
-  //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  loginWithRedirect: (...args: any) => Promise<void>;
+  logout: (params: { logoutParams: { returnTo: string } }) => void;
+  loginWithRedirect: (...args: AnyType) => Promise<void>;
 }

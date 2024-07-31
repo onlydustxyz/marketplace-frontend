@@ -4,7 +4,6 @@ import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 
 export enum Channel {
   Discord = "DISCORD",
-  Email = "EMAIL",
   LinkedIn = "LINKEDIN",
   Telegram = "TELEGRAM",
   Twitter = "TWITTER",
@@ -24,8 +23,6 @@ export type UserProfileInfo = {
   website: string;
   login: string;
   isGithubHandlePublic: boolean;
-  email: string;
-  isEmailPublic: boolean;
   telegram: string;
   isTelegramPublic: boolean;
   whatsapp: string;
@@ -56,8 +53,6 @@ export const fromFragment = (profile: UseGetMyProfileInfoResponse): UserProfileI
     login: login ?? "",
     isGithubHandlePublic: true,
     avatarUrl: profile.avatarUrl,
-    email: getContactInfo(Channel.Email) ?? "",
-    isEmailPublic: isContactPublic(Channel.Email),
     telegram: getContactInfo(Channel.Telegram)?.split("/").at(-1) ?? "",
     isTelegramPublic: isContactPublic(Channel.Telegram),
     whatsapp: getContactInfo(Channel.Whatsapp) ?? "",
@@ -81,13 +76,11 @@ export const mapFormDataToSchema = (profile: UserProfileInfo): UseUpdateProfileB
     location,
     website,
     weeklyAllocatedTime,
-    email,
     telegram,
     whatsapp,
     twitter,
     discord,
     linkedin,
-    isEmailPublic,
     isTelegramPublic,
     isWhatsappPublic,
     isTwitterPublic,
@@ -97,7 +90,6 @@ export const mapFormDataToSchema = (profile: UserProfileInfo): UseUpdateProfileB
   return {
     bio,
     contacts: [
-      createContact(Channel.Email, email, isEmailPublic),
       createContact(Channel.Telegram, telegram, isTelegramPublic, "https://t.me/"),
       createContact(Channel.Whatsapp, whatsapp, isWhatsappPublic),
       createContact(Channel.Twitter, twitter, isTwitterPublic, "https://twitter.com/"),

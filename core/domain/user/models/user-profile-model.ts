@@ -1,26 +1,13 @@
+import { UserProfileContact, UserProfileContactChannel } from "core/domain/user/models/user.types";
+
 import { components } from "src/__generated/api";
 
 type UserProfileResponse = components["schemas"]["PrivateUserProfileResponse"];
 
-export enum UserProfileContactChannel {
-  Discord = "DISCORD",
-  Email = "EMAIL",
-  LinkedIn = "LINKEDIN",
-  Telegram = "TELEGRAM",
-  Twitter = "TWITTER",
-  Whatsapp = "WHATSAPP",
-}
-
 export interface UserProfileInterface extends UserProfileResponse {
   hasContact(channel: UserProfileContactChannel): boolean;
-  getContact(channel: UserProfileContactChannel):
-    | {
-        channel: `${UserProfileContactChannel}`;
-        contact?: string;
-        visibility: "public" | "private";
-      }
-    | undefined;
-  setContact(params: { channel: UserProfileContactChannel; contact: string; visibility?: "public" | "private" }): void;
+  getContact(channel: UserProfileContactChannel): UserProfileContact | undefined;
+  getContactTelegram(): UserProfileContact | undefined;
 }
 
 export class UserProfile implements UserProfileInterface {
@@ -35,8 +22,8 @@ export class UserProfile implements UserProfileInterface {
   lastName!: UserProfileResponse["lastName"];
   location!: UserProfileResponse["location"];
   login!: UserProfileResponse["login"];
-  technologies!: UserProfileResponse["technologies"];
   website!: UserProfileResponse["website"];
+  joiningReason!: UserProfileResponse["joiningReason"];
 
   constructor(props: UserProfileResponse) {
     Object.assign(this, props);
@@ -50,7 +37,11 @@ export class UserProfile implements UserProfileInterface {
     return this.contacts?.find(c => c.channel === channel && c.contact);
   }
 
-  private sanitizeChannelContact(contact: string) {
+  getContactTelegram() {
+    return this.getContact(UserProfileContactChannel.telegram);
+  }
+
+  static sanitizeChannelContact(contact: string) {
     let sanitizedContact = contact;
 
     if (contact.endsWith("/")) {
@@ -68,7 +59,7 @@ export class UserProfile implements UserProfileInterface {
     return sanitizedContact;
   }
 
-  setContact({
+  static buildContact({
     channel,
     contact,
     visibility = "private",
@@ -77,8 +68,10 @@ export class UserProfile implements UserProfileInterface {
     contact: string;
     visibility?: "public" | "private";
   }) {
-    this.contacts = this.contacts?.map(c =>
-      c.channel === channel ? { ...c, contact: this.sanitizeChannelContact(contact), visibility } : c
-    );
+    return { channel, contact: this.sanitizeChannelContact(contact), visibility };
+  }
+
+  static isValidJoiningReason(joiningReason?: string) {
+    return joiningReason === "CONTRIBUTOR" || joiningReason === "MAINTAINER" || joiningReason === "SPONSOR";
   }
 }

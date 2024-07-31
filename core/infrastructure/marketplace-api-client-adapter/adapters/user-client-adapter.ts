@@ -1,11 +1,14 @@
 import { User } from "core/domain/user/models/user-model";
 import { UserNotifications } from "core/domain/user/models/user-notifications-model";
+import { UserOnboarding } from "core/domain/user/models/user-onboarding-model";
 import { UserProfile } from "core/domain/user/models/user-profile-model";
 import { UserStoragePort } from "core/domain/user/outputs/user-storage-port";
 import {
   GetMeResponse,
   GetMyNotificationSettingsResponse,
+  GetMyOnboardingResponse,
   GetMyProfileResponse,
+  SetMeBody,
   SetMyNotificationSettingsBody,
   SetMyProfileBody,
   SetMyProfileResponse,
@@ -23,6 +26,8 @@ export class UserClientAdapter implements UserStoragePort {
     setMyNotificationSettings: "me/notification-settings/projects/:projectId",
     getMyNotificationSettings: "me/notification-settings/projects/:projectId",
     getMe: "me",
+    setMe: "me",
+    getMyOnboarding: "me/onboarding",
   } as const;
 
   registerToHackathon = ({ pathParams }: FirstParameter<UserStoragePort["registerToHackathon"]>) => {
@@ -46,7 +51,7 @@ export class UserClientAdapter implements UserStoragePort {
 
   setMyProfile = () => {
     const path = this.routes["setMyProfile"];
-    const method = "PUT";
+    const method = "PATCH";
     const tag = HttpClient.buildTag({ path });
 
     const request = async (body: SetMyProfileBody) => {
@@ -142,6 +147,46 @@ export class UserClientAdapter implements UserStoragePort {
       });
 
       return new User(data);
+    };
+
+    return {
+      request,
+      tag,
+    };
+  };
+
+  setMe = () => {
+    const path = this.routes["setMe"];
+    const method = "PATCH";
+    const tag = HttpClient.buildTag({ path });
+
+    const request = async (body: SetMeBody) =>
+      this.client.request<never>({
+        path,
+        method,
+        tag,
+        body: JSON.stringify(body),
+      });
+
+    return {
+      request,
+      tag,
+    };
+  };
+
+  getMyOnboarding = () => {
+    const path = this.routes["getMyOnboarding"];
+    const method = "GET";
+    const tag = HttpClient.buildTag({ path });
+
+    const request = async () => {
+      const data = await this.client.request<GetMyOnboardingResponse>({
+        path,
+        method,
+        tag,
+      });
+
+      return new UserOnboarding(data);
     };
 
     return {

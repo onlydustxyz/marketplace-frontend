@@ -2,7 +2,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { HackathonReactQueryAdapter } from "core/application/react-query-adapter/hackathon";
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
-import { UserProfileContactChannel } from "core/domain/user/models/user-profile-model";
+import { UserProfile } from "core/domain/user/models/user-profile-model";
+import { UserProfileContactChannel } from "core/domain/user/models/user.types";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -91,25 +92,17 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
   async function handleTelegramSubmit(data: TRegister.form) {
     if (!userProfile) return;
 
-    const currentUserProfileTelegram = userProfile.getContact(UserProfileContactChannel.Telegram);
-
-    userProfile.setContact({
-      channel: UserProfileContactChannel.Telegram,
-      contact: data.telegram,
-      visibility: currentUserProfileTelegram?.visibility,
-    });
+    const currentUserProfileTelegram = userProfile.getContactTelegram();
 
     await setMyProfile({
-      avatarUrl: userProfile.avatarUrl,
-      location: userProfile.location,
-      bio: userProfile.bio,
-      website: userProfile.website,
-      technologies: userProfile.technologies,
-      contacts: userProfile.contacts,
-      allocatedTimeToContribute: userProfile.allocatedTimeToContribute,
-      isLookingForAJob: userProfile.isLookingForAJob,
-      firstName: userProfile.firstName,
-      lastName: userProfile.lastName,
+      contacts: [
+        ...(userProfile.contacts?.filter(c => c.channel !== UserProfileContactChannel.telegram) ?? []),
+        UserProfile.buildContact({
+          channel: UserProfileContactChannel.telegram,
+          contact: data.telegram,
+          visibility: currentUserProfileTelegram?.visibility,
+        }),
+      ],
     });
 
     await registerForHackathon();
@@ -131,7 +124,7 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
     registerForHackathon,
     isLoading: userProfileIsLoading || hackathonIsLoading,
     isPending: restRegister.isPending || restSetMyProfile.isPending,
-    hasTelegram: userProfile?.hasContact(UserProfileContactChannel.Telegram),
+    hasTelegram: userProfile?.hasContact(UserProfileContactChannel.telegram),
     hasRegistered: hackathon?.me.hasRegistered,
   };
 }

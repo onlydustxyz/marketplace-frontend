@@ -58,7 +58,6 @@ export const NEXT_ROUTER = {
   },
   notFound: "/not-found",
   onboarding: "/onboarding",
-  termsAndConditions: "/terms-and-conditions",
   maintenance: "/maintenance",
   hackathons: {
     root: "/hackathons",
@@ -71,5 +70,19 @@ export const NEXT_ROUTER = {
     details: {
       root: (slug: string) => `/ecosystems/${slug}`,
     },
+  },
+  signup: {
+    root: "/signup",
+    onboarding: {
+      root: "/signup/onboarding",
+      projectRecommendations: "/signup/onboarding/project-recommendations",
+      verificationInformation: "/signup/onboarding/verification-information",
+      completeYourProfile: "/signup/onboarding/complete-your-profile",
+      termsAndConditions: "/signup/onboarding/terms-and-conditions",
+      payoutInformation: "/signup/onboarding/payout-information",
+    },
+  },
+  legalNotice: {
+    root: "/legal-notice",
   },
 } as const;
