@@ -8,5 +8,5 @@ export default {
     `${apiResources.me}-committees-${committeeId}-${projectId}`,
   my_rewards: () => createTag(apiResources.me, "my-rewards"),
   recommended_projects: () => createTag(apiResources.me, "recommended-projects"),
-  my_journey: () => createTag(apiResources.me, "my-journey"),
+  my_onboarding: () => createTag(apiResources.me, "my-onboarding"),
 };

@@ -9,35 +9,30 @@ export namespace TJourney {
   }
 
   export const stepMapping: Record<string, { icon: RemixIconsName; link: string }> = {
-    // billingProfileVerified
+    // Verification information
     step1: {
-      icon: "ri-user-line",
-      link: NEXT_ROUTER.settings.payoutPreferences,
+      icon: "ri-checkbox-circle-line",
+      link: NEXT_ROUTER.signup.onboarding.verificationInformation,
     },
-    // companyBillingProfileVerified
+    // Terms & conditions
     step2: {
-      icon: "ri-suitcase-line",
-      link: NEXT_ROUTER.settings.payoutPreferences,
+      icon: "ri-file-text-line",
+      link: NEXT_ROUTER.signup.onboarding.termsAndConditions,
     },
-    // descriptionUpdated
+    // Project recommendations
     step3: {
-      icon: "ri-file-edit-line",
-      link: NEXT_ROUTER.settings.profile,
-    },
-    // telegramAdded
-    step4: {
-      icon: "ri-telegram-line",
-      link: NEXT_ROUTER.settings.profile,
-    },
-    // rewardClaimed
-    step5: {
-      icon: "ri-git-pull-request-line",
-      link: NEXT_ROUTER.projects.allWithParams({ hasGoodFirstIssues: "true" }),
-    },
-    // rewardReceived
-    step6: {
       icon: "ri-medal-2-fill",
-      link: NEXT_ROUTER.rewards.all,
+      link: NEXT_ROUTER.signup.onboarding.projectRecommendations,
+    },
+    // Complete your profile
+    step4: {
+      icon: "ri-user-line",
+      link: NEXT_ROUTER.signup.onboarding.completeYourProfile,
+    },
+    // Payout informations
+    step5: {
+      icon: "ri-building-line",
+      link: NEXT_ROUTER.signup.onboarding.payoutInformation,
     },
   };
 }

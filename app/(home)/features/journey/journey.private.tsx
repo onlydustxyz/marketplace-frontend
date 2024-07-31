@@ -15,17 +15,16 @@ import { Section } from "components/layout/section/section";
 import { Typography } from "components/layout/typography/typography";
 
 export function JourneyPrivate() {
-  const { data, isLoading } = meApiClient.queries.useGetMyJourney({});
+  const { data, isLoading } = meApiClient.queries.useGetMyOnboarding({});
 
   const steps = useMemo(() => {
     if (!data) return [];
     return [
-      { stepName: "step1", completion: data?.billingProfileVerified },
-      { stepName: "step2", completion: data?.companyBillingProfileVerified },
-      { stepName: "step3", completion: data?.descriptionUpdated },
-      { stepName: "step4", completion: data?.telegramAdded },
-      { stepName: "step5", completion: data?.rewardClaimed },
-      { stepName: "step6", completion: data?.rewardReceived },
+      { stepName: "step1", completion: data?.verificationInformationProvided },
+      { stepName: "step2", completion: data?.termsAndConditionsAccepted },
+      { stepName: "step3", completion: data?.projectPreferencesProvided },
+      { stepName: "step4", completion: data?.profileCompleted },
+      { stepName: "step5", completion: data?.payoutInformationProvided },
     ];
   }, [data]);
 
