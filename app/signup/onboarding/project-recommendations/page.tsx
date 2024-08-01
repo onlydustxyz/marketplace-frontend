@@ -26,12 +26,14 @@ function Footer() {
     <div className="flex w-full flex-row justify-end gap-2">
       <Button
         variant={"secondary-light"}
+        size={"l"}
         translate={{ token: "v2.pages.signup.onboarding.projectRecommendations.actions.back" }}
         as={BaseLink}
         htmlProps={{ href: NEXT_ROUTER.signup.onboarding.root }}
         startIcon={{ remixName: "ri-arrow-left-s-line" }}
       />
       <Button
+        size={"l"}
         translate={{ token: "v2.pages.signup.onboarding.projectRecommendations.actions.next" }}
         endIcon={{ remixName: "ri-arrow-right-s-line" }}
         type={"submit"}
