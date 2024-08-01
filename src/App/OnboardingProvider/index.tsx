@@ -67,14 +67,6 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
         return;
       }
 
-      if (userOnboarding.completed) {
-        // User shouldn't be able to view signup or onboarding pages once onboarding completed
-        if (isSignup || isOnboarding) router.push(NEXT_ROUTER.home.all);
-
-        // Onboarding completed, don't need to redirect
-        return;
-      }
-
       if (isSignup) {
         const joiningReason = searchParams.get("joiningReason") ?? "";
 
@@ -89,22 +81,24 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
         }
       }
 
-      // User must verify information before continuing
-      if (!userOnboarding.verificationInformationProvided) {
-        router.push(NEXT_ROUTER.signup.onboarding.verifyInformation);
-        return;
-      }
+      if (userOnboarding.shouldGoToOnboarding(isOnboarding)) {
+        if (userOnboarding.shouldGoToOnboardingVerifyInformation()) {
+          router.push(NEXT_ROUTER.signup.onboarding.verifyInformation);
+          return;
+        }
 
-      // User must accept terms and conditions before continuing
-      if (!userOnboarding.termsAndConditionsAccepted) {
-        router.push(NEXT_ROUTER.signup.onboarding.termsAndConditions);
-        return;
-      }
+        if (userOnboarding.shouldGoToOnboardingTermsAndConditions()) {
+          router.push(NEXT_ROUTER.signup.onboarding.termsAndConditions);
+          return;
+        }
 
-      // Here the user has not completed the onboarding flow
-      // If they are not already in the onboarding flow, redirect them to the dispatcher
-      if (!isOnboarding) {
         router.push(NEXT_ROUTER.signup.onboarding.root);
+        return;
+      }
+
+      if (userOnboarding.shouldGoToHome(isSignup)) {
+        router.push(NEXT_ROUTER.home.all);
+        return;
       }
     })();
   }, [

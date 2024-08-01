@@ -18,7 +18,8 @@ export function useSetMe({
     useMutationAdapter({
       ...userStoragePort.setMe({}),
       options: {
-        onSuccess: async () => {
+        ...options,
+        onSuccess: async (data, variables, context) => {
           await queryClient.invalidateQueries({
             queryKey: userStoragePort.getMe({}).tag,
             exact: false,
@@ -28,8 +29,9 @@ export function useSetMe({
             queryKey: userStoragePort.getMyOnboarding({}).tag,
             exact: false,
           });
+
+          options?.onSuccess?.(data, variables, context);
         },
-        ...options,
       },
     })
   );

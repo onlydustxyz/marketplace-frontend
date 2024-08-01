@@ -4,7 +4,6 @@ import React, { useContext } from "react";
 
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
 import { StepHeader } from "app/signup/components/step-header/step-header";
-import { StepGuard } from "app/signup/onboarding/components/step-guard/step-guard";
 import {
   ProjectRecommendationContext,
   ProjectRecommendationContextProvider,
@@ -66,7 +65,6 @@ function SafeProjectRecommendationsPage() {
 function projectRecommendationsPage() {
   return (
     <ProjectRecommendationContextProvider>
-      <StepGuard step={"projectPreferencesProvided"} />
       <SafeProjectRecommendationsPage />
     </ProjectRecommendationContextProvider>
   );

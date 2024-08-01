@@ -7,7 +7,6 @@ import React, { useEffect, useState } from "react";
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
 import { StepHeader } from "app/signup/components/step-header/step-header";
 import { Title } from "app/signup/components/title/title";
-import { StepGuard } from "app/signup/onboarding/components/step-guard/step-guard";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
@@ -80,34 +79,31 @@ function TermsAndConditionsPage() {
   }, [user]);
 
   return (
-    <>
-      <StepGuard step={"termsAndConditionsAccepted"} />
-      <SignupTemplate
-        header={<AccountAlreadyExist />}
-        footer={<Footer isDisabled={!isTermsAccepted} onClick={handleSubmit} />}
-      >
-        <Paper container="2" classNames={{ base: "flex flex-col gap-3 h-full" }}>
-          <StepHeader
-            step={2}
-            stepPath={NEXT_ROUTER.signup.onboarding.root}
-            subStep={{ token: "v2.pages.signup.onboarding.tunnel.steps.terms.title" }}
-          />
+    <SignupTemplate
+      header={<AccountAlreadyExist />}
+      footer={<Footer isDisabled={!isTermsAccepted} onClick={handleSubmit} />}
+    >
+      <Paper container="2" classNames={{ base: "flex flex-col gap-3 h-full" }}>
+        <StepHeader
+          step={2}
+          stepPath={NEXT_ROUTER.signup.onboarding.root}
+          subStep={{ token: "v2.pages.signup.onboarding.tunnel.steps.terms.title" }}
+        />
 
-          <div className="mb-3">
-            <Title
-              title={{ token: "v2.pages.signup.onboarding.terms.title" }}
-              content={{ token: "v2.pages.signup.onboarding.terms.content" }}
-            />
-          </div>
-
-          <Layout
-            handleTerms={handleSwitchChange}
-            isTermsAccepted={isTermsAccepted}
-            hasAlreadyAccepted={user?.hasAcceptedLatestTermsAndConditions}
+        <div className="mb-3">
+          <Title
+            title={{ token: "v2.pages.signup.onboarding.terms.title" }}
+            content={{ token: "v2.pages.signup.onboarding.terms.content" }}
           />
-        </Paper>
-      </SignupTemplate>
-    </>
+        </div>
+
+        <Layout
+          handleTerms={handleSwitchChange}
+          isTermsAccepted={isTermsAccepted}
+          hasAlreadyAccepted={user?.hasAcceptedLatestTermsAndConditions}
+        />
+      </Paper>
+    </SignupTemplate>
   );
 }
 

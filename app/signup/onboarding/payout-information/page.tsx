@@ -10,7 +10,6 @@ import { FormProvider, useForm } from "react-hook-form";
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
 import { StepHeader } from "app/signup/components/step-header/step-header";
 import { Title } from "app/signup/components/title/title";
-import { StepGuard } from "app/signup/onboarding/components/step-guard/step-guard";
 import { BillingProfiles } from "app/signup/onboarding/payout-information/components/billing-profiles/billing-profiles";
 import { TBillingProfiles } from "app/signup/onboarding/payout-information/components/billing-profiles/billing-profiles.types";
 
@@ -84,40 +83,37 @@ export default function PayoutInformationPage() {
   }, [isPendingCreateBillingProfile]);
 
   return (
-    <>
-      <StepGuard step={"payoutInformationProvided"} />
-      <FormProvider {...formMethods}>
-        <form onSubmit={handleSubmit(handleCreateBillingProfile)} className="h-full">
-          <SignupTemplate header={<AccountAlreadyExist />} footer={renderFooter}>
-            <Paper size={"l"} container={"2"} classNames={{ base: "flex flex-col gap-6 min-h-full" }}>
-              <StepHeader
-                step={2}
-                stepPath={"/signup/onboarding"}
-                subStep={{ token: "v2.pages.signup.payoutInformation.stepTitle" }}
+    <FormProvider {...formMethods}>
+      <form onSubmit={handleSubmit(handleCreateBillingProfile)} className="h-full">
+        <SignupTemplate header={<AccountAlreadyExist />} footer={renderFooter}>
+          <Paper size={"l"} container={"2"} classNames={{ base: "flex flex-col gap-6 min-h-full" }}>
+            <StepHeader
+              step={2}
+              stepPath={"/signup/onboarding"}
+              subStep={{ token: "v2.pages.signup.payoutInformation.stepTitle" }}
+            />
+            <Title
+              title={{ token: "v2.pages.signup.payoutInformation.title" }}
+              content={{ token: "v2.pages.signup.payoutInformation.subtitle" }}
+            />
+            <BillingProfiles />
+            <Paper size={"s"} container={"3"} classNames={{ base: "flex flex-col gap-2" }}>
+              <Typo
+                size={"xs"}
+                weight={"medium"}
+                color={"text-1"}
+                translate={{ token: "v2.pages.signup.payoutInformation.specialMention.title" }}
               />
-              <Title
-                title={{ token: "v2.pages.signup.payoutInformation.title" }}
-                content={{ token: "v2.pages.signup.payoutInformation.subtitle" }}
+              <Typo
+                size={"xs"}
+                weight={"medium"}
+                color={"text-2"}
+                translate={{ token: "v2.pages.signup.payoutInformation.specialMention.description" }}
               />
-              <BillingProfiles />
-              <Paper size={"s"} container={"3"} classNames={{ base: "flex flex-col gap-2" }}>
-                <Typo
-                  size={"xs"}
-                  weight={"medium"}
-                  color={"text-1"}
-                  translate={{ token: "v2.pages.signup.payoutInformation.specialMention.title" }}
-                />
-                <Typo
-                  size={"xs"}
-                  weight={"medium"}
-                  color={"text-2"}
-                  translate={{ token: "v2.pages.signup.payoutInformation.specialMention.description" }}
-                />
-              </Paper>
             </Paper>
-          </SignupTemplate>
-        </form>
-      </FormProvider>
-    </>
+          </Paper>
+        </SignupTemplate>
+      </form>
+    </FormProvider>
   );
 }
