@@ -22,7 +22,7 @@ export function TunnelStep({ icon, type, title, content, isDone, path }: TTunnel
       htmlProps={{ href: path }}
     >
       <div className="flex flex-1 flex-row items-center gap-3">
-        <div className="min-h-16 min-w-16 flex items-center justify-center rounded-lg border-1 border-container-stroke-separator">
+        <div className="flex min-h-16 min-w-16 items-center justify-center rounded-lg border-1 border-container-stroke-separator">
           <Icon {...icon} size={24} />
         </div>
         <div className="flex w-full flex-col">
