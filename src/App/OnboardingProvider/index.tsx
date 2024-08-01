@@ -67,8 +67,6 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
         return;
       }
 
-      // TODO handle onboarding guard on each page
-
       if (userOnboarding.completed) {
         // User shouldn't be able to view /signup pages once onboarding completed
         if (isSignup) router.push(NEXT_ROUTER.home.all);
