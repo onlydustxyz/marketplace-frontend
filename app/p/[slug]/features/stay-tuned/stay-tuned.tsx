@@ -60,7 +60,7 @@ export function StayTuned({ projectId, moreInfos }: TStayTuned.Props) {
             ) : null}
             {communityLinks?.map(link => {
               const validUrl = link.url ? urlHelperPort.validateUrl(link.url) : "";
-              return (
+              return link.value && validUrl ? (
                 <Button
                   key={link.url}
                   as={Link}
@@ -72,7 +72,7 @@ export function StayTuned({ projectId, moreInfos }: TStayTuned.Props) {
                 >
                   {link.value}
                 </Button>
-              );
+              ) : null;
             })}
           </div>
         </div>
