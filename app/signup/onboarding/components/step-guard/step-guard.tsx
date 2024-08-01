@@ -24,7 +24,7 @@ export function StepGuard({
     if (userOnboarding?.[step]) {
       router.push(NEXT_ROUTER.signup.onboarding.root);
     }
-  }, [userOnboarding]);
+  }, [userOnboarding, step]);
 
   return null;
 }
