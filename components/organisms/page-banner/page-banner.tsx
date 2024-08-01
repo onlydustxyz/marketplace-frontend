@@ -71,7 +71,7 @@ export function PageBanner({ message, cta, onClose }: PageBannerProps) {
         priority
       />
 
-      <div className="flex w-full items-center justify-between gap-1">
+      <div className="flex w-full flex-wrap items-center justify-between gap-1">
         <div className="hidden md:block" />
 
         <div className={"relative z-10 flex items-center gap-4"}>
@@ -84,7 +84,7 @@ export function PageBanner({ message, cta, onClose }: PageBannerProps) {
           </div>
         </div>
 
-        <div className="flex items-center gap-1">
+        <div className="flex w-full items-center justify-between gap-1 md:w-fit">
           <div className="block md:hidden">
             <Cta cta={cta} />
           </div>
