@@ -7,7 +7,7 @@ export namespace TVerifyInformation {
     telegram: z
       .string()
       .regex(bootstrap.getContactHelperPort().regex.telegram, "v2.commons.form.errors.invalidUsername")
-      .min(1),
+      .optional(),
   });
 
   export type form = z.infer<typeof validation>;
