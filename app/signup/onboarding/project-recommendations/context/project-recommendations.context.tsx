@@ -26,7 +26,7 @@ export const ProjectRecommendationContext = createContext<TProjectRecommendation
 
 export function ProjectRecommendationContextProvider({ children }: TProjectRecommendationContext.Props) {
   const { data: categories } = ProjectCategoryReactQueryAdapter.client.useGetProjectCategories({});
-  const { data: languages } = LanguageReactQueryAdapter.client.useGetLanguages({});
+  const { data: languages } = LanguageReactQueryAdapter.client.useGetNotifications({});
   const router = useRouter();
   const {
     clientBootstrap: { authProvider },
