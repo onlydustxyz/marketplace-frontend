@@ -45,15 +45,15 @@ export class UserProfile implements UserProfileInterface {
   static sanitizeChannelContact(contact: string) {
     let sanitizedContact = contact;
 
-    if (contact?.endsWith("/")) {
+    if (contact.endsWith("/")) {
       sanitizedContact = sanitizedContact.slice(0, -1);
     }
 
-    if (contact?.includes("/")) {
+    if (contact.includes("/")) {
       sanitizedContact = sanitizedContact.split("/").at(-1) ?? "";
     }
 
-    if (contact?.startsWith("@")) {
+    if (contact.startsWith("@")) {
       sanitizedContact = sanitizedContact.substring(1);
     }
 
