@@ -17,7 +17,7 @@ import { SignupTemplate } from "components/templates/signup-template/signup-temp
 
 import { NEXT_ROUTER } from "constants/router";
 
-function Footer() {
+function Footer({ isDisabled }: { isDisabled: boolean }) {
   const router = useRouter();
   const { mutateAsync: setMe } = UserReactQueryAdapter.client.useSetMe({
     options: {
@@ -41,6 +41,7 @@ function Footer() {
         translate={{ token: "v2.pages.signup.onboarding.tunnel.actions.skip" }}
         endIcon={{ remixName: "ri-arrow-right-s-line" }}
         onClick={handleSubmit}
+        isDisabled={isDisabled}
       />
     </div>
   );
@@ -61,7 +62,14 @@ function OnboardingPage() {
   if (!userOnboarding) return null;
 
   return (
-    <SignupTemplate header={<AccountAlreadyExist />} footer={<Footer />}>
+    <SignupTemplate
+      header={<AccountAlreadyExist />}
+      footer={
+        <Footer
+          isDisabled={!userOnboarding?.verificationInformationProvided || !userOnboarding?.termsAndConditionsAccepted}
+        />
+      }
+    >
       <Paper container={"2"} classNames={{ base: "flex flex-col gap-3 min-h-full" }}>
         <StepHeader step={2} stepPath={NEXT_ROUTER.signup.onboarding.root} />
         <Title
