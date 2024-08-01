@@ -104,9 +104,7 @@ export default function VerifyInformationPage() {
   }, [handleSubmit, userProfileIsLoading, isPendingSetMyProfile]);
 
   return (
-    <>
-      <StepGuard step={"verificationInformationProvided"} />
-
+    <StepGuard step={"verificationInformationProvided"}>
       <form onSubmit={handleSubmit(handleSetMyProfile)} className="h-full">
         <SignupTemplate header={<AccountAlreadyExist />} footer={renderFooter}>
           <Paper size={"l"} container={"2"} classNames={{ base: "flex flex-col gap-3 min-h-full" }}>
@@ -206,6 +204,6 @@ export default function VerifyInformationPage() {
           </Paper>
         </SignupTemplate>
       </form>
-    </>
+    </StepGuard>
   );
 }

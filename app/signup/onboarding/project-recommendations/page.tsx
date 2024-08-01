@@ -66,8 +66,9 @@ function SafeProjectRecommendationsPage() {
 function projectRecommendationsPage() {
   return (
     <ProjectRecommendationContextProvider>
-      <StepGuard step={"projectPreferencesProvided"} />
-      <SafeProjectRecommendationsPage />
+      <StepGuard step={"projectPreferencesProvided"}>
+        <SafeProjectRecommendationsPage />
+      </StepGuard>
     </ProjectRecommendationContextProvider>
   );
 }

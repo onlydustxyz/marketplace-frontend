@@ -80,8 +80,7 @@ function TermsAndConditionsPage() {
   }, [user]);
 
   return (
-    <>
-      <StepGuard step={"termsAndConditionsAccepted"} />
+    <StepGuard step={"termsAndConditionsAccepted"}>
       <SignupTemplate
         header={<AccountAlreadyExist />}
         footer={<Footer isDisabled={!isTermsAccepted} onClick={handleSubmit} />}
@@ -107,7 +106,7 @@ function TermsAndConditionsPage() {
           />
         </Paper>
       </SignupTemplate>
-    </>
+    </StepGuard>
   );
 }
 
