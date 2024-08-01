@@ -33,7 +33,6 @@ interface Applicants {
 }
 
 interface Tokens {
-  githubLink: ReactNode;
   createdBy: ReactNode;
   applicantsCount: ReactNode;
 }
@@ -49,6 +48,7 @@ export interface CardIssuePort<C extends ElementType> {
   tags?: Array<TagPort<"div">>;
   applyActionProps?: ButtonPort<"button">;
   viewActionProps?: ButtonPort<"button">;
+  assignedActionProps?: ButtonPort<"button">;
   githubLink?: string;
   assignee?: Assignee;
   createdAt?: Date;
@@ -56,4 +56,5 @@ export interface CardIssuePort<C extends ElementType> {
   repo?: Repo;
   applicants?: Applicants[];
   applicantsCount?: number;
+  githubUsername?: string;
 }
