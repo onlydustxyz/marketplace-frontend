@@ -3,7 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BillingProfileReactQueryAdapter } from "core/application/react-query-adapter/billing-profile";
 import { BillingProfileTypeUnion } from "core/domain/billing-profile/models/billing-profile.types";
-import React, { useMemo } from "react";
+import { useRouter } from "next/navigation";
+import { useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
@@ -16,10 +17,15 @@ import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
 import { toast } from "components/atoms/toaster";
 import { Typo } from "components/atoms/typo";
+import { BaseLink } from "components/layout/base-link/base-link";
 import { Translate } from "components/layout/translate/translate";
 import { SignupTemplate } from "components/templates/signup-template/signup-template";
 
+import { NEXT_ROUTER } from "constants/router";
+
 export default function PayoutInformationPage() {
+  const router = useRouter();
+
   const formMethods = useForm<TBillingProfiles.form>({
     resolver: zodResolver(TBillingProfiles.validation),
     defaultValues: {
@@ -34,12 +40,12 @@ export default function PayoutInformationPage() {
     BillingProfileReactQueryAdapter.client.useCreateBillingProfile({
       options: {
         onSuccess: () => {
-          toast.default(<Translate token="v2.pages.signup.verificationInformation.toast.success" />);
+          toast.default(<Translate token="v2.pages.signup.payoutInformation.toast.success" />);
           reset();
-          // TODO @Mehdi add redirection to next step
+          router.push(NEXT_ROUTER.signup.onboarding.root);
         },
         onError: () => {
-          toast.error(<Translate token="v2.pages.signup.verificationInformation.toast.error" />);
+          toast.error(<Translate token="v2.pages.signup.payoutInformation.toast.error" />);
         },
       },
     });
@@ -59,8 +65,9 @@ export default function PayoutInformationPage() {
           size="l"
           translate={{ token: "v2.pages.signup.payoutInformation.footer.back" }}
           startIcon={{ remixName: "ri-arrow-left-s-line" }}
-          // TODO @Mehdi add back redirection to previous step
+          as={BaseLink}
           isDisabled={isPendingCreateBillingProfile}
+          htmlProps={{ href: NEXT_ROUTER.signup.onboarding.root }}
         />
         <Button
           type={"submit"}
@@ -79,7 +86,7 @@ export default function PayoutInformationPage() {
     <FormProvider {...formMethods}>
       <form onSubmit={handleSubmit(handleCreateBillingProfile)} className="h-full">
         <SignupTemplate header={<AccountAlreadyExist />} footer={renderFooter}>
-          <Paper size={"l"} container={"3"} classNames={{ base: "flex flex-col gap-6 min-h-full" }}>
+          <Paper size={"l"} container={"2"} classNames={{ base: "flex flex-col gap-6 min-h-full" }}>
             <StepHeader
               step={2}
               stepPath={"/signup/onboarding"}

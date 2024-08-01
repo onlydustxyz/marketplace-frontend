@@ -22,7 +22,10 @@ function Radio<V extends string, C extends ElementType = "div">({
   const slots = RadioGroupNextUiVariants({ isDisabled, isActive: isSelected, mixed, color });
 
   return (
-    <Component {...getBaseProps()} className={cn(slots.item(), { "pointer-events-none": isDisabled })}>
+    <Component
+      {...getBaseProps()}
+      className={cn(slots.item(), classNames?.item, { "pointer-events-none": isDisabled })}
+    >
       <InnerComponent {...componentProps}>
         <VisuallyHidden>
           <input {...getInputProps()} />
@@ -68,7 +71,7 @@ export function RadioGroupNextUiAdapter<V extends string, C extends ElementType 
       value={value}
     >
       {items.map(item => (
-        <Radio key={item.value} as={Component} {...props} {...item} />
+        <Radio key={item.value} as={Component} classNames={classNames} {...props} {...item} />
       ))}
     </NextRadioGroup>
   );

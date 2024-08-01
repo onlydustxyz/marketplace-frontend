@@ -12,7 +12,7 @@ import { Controller, useForm } from "react-hook-form";
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
 import { StepHeader } from "app/signup/components/step-header/step-header";
 import { Title } from "app/signup/components/title/title";
-import { TVerificationInformation } from "app/signup/onboarding/verification-information/verification-information.types";
+import { TVerifyInformation } from "app/signup/onboarding/verify-information/verify-information.types";
 
 import { Avatar } from "components/atoms/avatar";
 import { Button } from "components/atoms/button/variants/button-default";
@@ -27,7 +27,7 @@ import { NEXT_ROUTER } from "constants/router";
 
 import { useIntl } from "hooks/translate/use-translate";
 
-export default function VerificationInformationPage() {
+export default function VerifyInformationPage() {
   const { T } = useIntl();
   const router = useRouter();
   const {
@@ -44,17 +44,17 @@ export default function VerificationInformationPage() {
   const { mutateAsync: setMyProfile, isPending: isPendingSetMyProfile } = UserReactQueryAdapter.client.useSetMyProfile({
     options: {
       onSuccess: () => {
-        toast.default(T("v2.pages.signup.verificationInformation.toast.success"));
+        toast.default(T("v2.pages.signup.verifyInformation.toast.success"));
         router.push(NEXT_ROUTER.signup.onboarding.termsAndConditions);
       },
       onError: () => {
-        toast.error(T("v2.pages.signup.verificationInformation.toast.error"));
+        toast.error(T("v2.pages.signup.verifyInformation.toast.error"));
       },
     },
   });
 
-  const { control, handleSubmit, reset } = useForm<TVerificationInformation.form>({
-    resolver: zodResolver(TVerificationInformation.validation),
+  const { control, handleSubmit, reset } = useForm<TVerifyInformation.form>({
+    resolver: zodResolver(TVerifyInformation.validation),
     defaultValues: {
       email: userProfile?.contactEmail,
       telegram: userProfile?.getContactTelegram()?.contact,
@@ -70,20 +70,26 @@ export default function VerificationInformationPage() {
     }
   }, [userProfile]);
 
-  async function handleSetMyProfile(data: TVerificationInformation.form) {
+  async function handleSetMyProfile(data: TVerifyInformation.form) {
     if (!userProfile) return;
 
-    await setMyProfile({
-      contactEmail: data.email,
-      contacts: [
-        ...(userProfile.contacts?.filter(c => c.channel !== UserProfileContactChannel.telegram) ?? []),
-        UserProfile.buildContact({
-          channel: UserProfileContactChannel.telegram,
-          contact: data.telegram,
-          visibility: userProfile?.getContactTelegram()?.visibility,
-        }),
-      ],
-    });
+    if (data.telegram) {
+      await setMyProfile({
+        contactEmail: data.email,
+        contacts: [
+          ...(userProfile.contacts?.filter(c => c.channel !== UserProfileContactChannel.telegram) ?? []),
+          UserProfile.buildContact({
+            channel: UserProfileContactChannel.telegram,
+            contact: data.telegram,
+            visibility: userProfile?.getContactTelegram()?.visibility,
+          }),
+        ],
+      });
+    } else {
+      await setMyProfile({
+        contactEmail: data.email,
+      });
+    }
   }
 
   const renderFooter = useMemo(() => {
@@ -93,7 +99,7 @@ export default function VerificationInformationPage() {
           type={"submit"}
           variant="primary"
           size="l"
-          translate={{ token: "v2.pages.signup.verificationInformation.footer.next" }}
+          translate={{ token: "v2.pages.signup.verifyInformation.footer.next" }}
           endIcon={{ remixName: "ri-arrow-right-s-line" }}
           isLoading={isPendingSetMyProfile}
           isDisabled={userProfileIsLoading || isPendingSetMyProfile}
@@ -105,15 +111,15 @@ export default function VerificationInformationPage() {
   return (
     <form onSubmit={handleSubmit(handleSetMyProfile)} className="h-full">
       <SignupTemplate header={<AccountAlreadyExist />} footer={renderFooter}>
-        <Paper size={"l"} container={"3"} classNames={{ base: "flex flex-col gap-3 min-h-full" }}>
+        <Paper size={"l"} container={"2"} classNames={{ base: "flex flex-col gap-3 min-h-full" }}>
           <StepHeader
             step={2}
             stepPath={"/signup/onboarding"}
-            subStep={{ token: "v2.pages.signup.verificationInformation.title" }}
+            subStep={{ token: "v2.pages.signup.verifyInformation.title" }}
           />
           <Title
-            title={{ token: "v2.pages.signup.verificationInformation.title" }}
-            content={{ token: "v2.pages.signup.verificationInformation.subtitle" }}
+            title={{ token: "v2.pages.signup.verifyInformation.title" }}
+            content={{ token: "v2.pages.signup.verifyInformation.subtitle" }}
           />
           <div className="flex flex-col gap-2">
             <Paper size={"s"} container={"transparent"} classNames={{ base: "grid gap-6" }}>
@@ -122,13 +128,13 @@ export default function VerificationInformationPage() {
                   size={"s"}
                   weight={"medium"}
                   color={"text-1"}
-                  translate={{ token: "v2.pages.signup.verificationInformation.form.githubAccount.label" }}
+                  translate={{ token: "v2.pages.signup.verifyInformation.form.githubAccount.label" }}
                 />
                 <div className="flex gap-2">
                   <Avatar size="l" shape="square" src={userProfile?.avatarUrl} />
                   <Input
                     type={"text"}
-                    placeholder={T("v2.pages.signup.verificationInformation.form.contactEmail.placeholder")}
+                    placeholder={T("v2.pages.signup.verifyInformation.form.contactEmail.placeholder")}
                     value={userProfile?.login ?? ""}
                     isDisabled
                   />
@@ -140,13 +146,13 @@ export default function VerificationInformationPage() {
                     size={"s"}
                     weight={"medium"}
                     color={"text-1"}
-                    translate={{ token: "v2.pages.signup.verificationInformation.form.contactEmail.label" }}
+                    translate={{ token: "v2.pages.signup.verifyInformation.form.contactEmail.label" }}
                   />
                   <Tag
                     color="purple"
                     style="fill"
                     size="xs"
-                    translate={{ token: "v2.pages.signup.verificationInformation.form.contactEmail.tag" }}
+                    translate={{ token: "v2.pages.signup.verifyInformation.form.contactEmail.tag" }}
                   />
                 </div>
 
@@ -156,7 +162,7 @@ export default function VerificationInformationPage() {
                   render={({ field, fieldState }) => (
                     <Input
                       {...field}
-                      placeholder={T("v2.pages.signup.verificationInformation.form.contactEmail.placeholder")}
+                      placeholder={T("v2.pages.signup.verifyInformation.form.contactEmail.placeholder")}
                       isError={!!fieldState.error}
                     />
                   )}
@@ -169,13 +175,13 @@ export default function VerificationInformationPage() {
                     size={"s"}
                     weight={"medium"}
                     color={"text-1"}
-                    translate={{ token: "v2.pages.signup.verificationInformation.form.telegram.label" }}
+                    translate={{ token: "v2.pages.signup.verifyInformation.form.telegram.label" }}
                   />
                   <Tag
-                    color="pink"
+                    color="green"
                     style="fill"
                     size="xs"
-                    translate={{ token: "v2.pages.signup.verificationInformation.form.telegram.tag" }}
+                    translate={{ token: "v2.pages.signup.verifyInformation.form.telegram.tag" }}
                   />
                 </div>
 
@@ -185,7 +191,7 @@ export default function VerificationInformationPage() {
                   render={({ field, fieldState }) => (
                     <Input
                       {...field}
-                      placeholder={T("v2.pages.signup.verificationInformation.form.telegram.placeholder")}
+                      placeholder={T("v2.pages.signup.verifyInformation.form.telegram.placeholder")}
                       isError={!!fieldState.error}
                     />
                   )}
@@ -196,7 +202,7 @@ export default function VerificationInformationPage() {
               size={"xxs"}
               weight={"regular"}
               color={"text-2"}
-              translate={{ token: "v2.pages.signup.verificationInformation.specialMention" }}
+              translate={{ token: "v2.pages.signup.verifyInformation.specialMention" }}
             />
           </div>
         </Paper>

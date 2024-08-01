@@ -1,7 +1,6 @@
 "use client";
 
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
-import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 import { useRouter } from "next/navigation";
 
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
@@ -17,7 +16,7 @@ import { SignupTemplate } from "components/templates/signup-template/signup-temp
 
 import { NEXT_ROUTER } from "constants/router";
 
-function Footer() {
+function Footer({ isDisabled }: { isDisabled: boolean }) {
   const router = useRouter();
   const { mutateAsync: setMe } = UserReactQueryAdapter.client.useSetMe({
     options: {
@@ -41,27 +40,22 @@ function Footer() {
         translate={{ token: "v2.pages.signup.onboarding.tunnel.actions.skip" }}
         endIcon={{ remixName: "ri-arrow-right-s-line" }}
         onClick={handleSubmit}
+        isDisabled={isDisabled}
       />
     </div>
   );
 }
 
 function OnboardingPage() {
-  const {
-    clientBootstrap: { authProvider },
-  } = useClientBootstrapContext();
-  const { isAuthenticated = false } = authProvider ?? {};
-
-  const { data: userOnboarding } = UserReactQueryAdapter.client.useGetMyOnboarding({
-    options: {
-      enabled: isAuthenticated,
-    },
-  });
+  const { data: userOnboarding } = UserReactQueryAdapter.client.useGetMyOnboarding({});
 
   if (!userOnboarding) return null;
 
   return (
-    <SignupTemplate header={<AccountAlreadyExist />} footer={<Footer />}>
+    <SignupTemplate
+      header={<AccountAlreadyExist />}
+      footer={<Footer isDisabled={!userOnboarding.hasCompletedMandatoryOnboarding()} />}
+    >
       <Paper container={"2"} classNames={{ base: "flex flex-col gap-3 min-h-full" }}>
         <StepHeader step={2} stepPath={NEXT_ROUTER.signup.onboarding.root} />
         <Title
@@ -75,7 +69,7 @@ function OnboardingPage() {
             icon={{ remixName: "ri-checkbox-circle-line" }}
             type={"mandatory"}
             isDone={userOnboarding.verificationInformationProvided}
-            path={NEXT_ROUTER.signup.onboarding.verificationInformation}
+            path={NEXT_ROUTER.signup.onboarding.verifyInformation}
           />
           <TunnelStep
             title={{ token: "v2.pages.signup.onboarding.tunnel.steps.terms.title" }}

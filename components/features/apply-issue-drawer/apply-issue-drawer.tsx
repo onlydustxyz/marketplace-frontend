@@ -1,5 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { differenceInDays } from "date-fns";
+import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 
@@ -18,7 +19,6 @@ import { SkeletonEl } from "components/ds/skeleton/skeleton";
 import { useApplyIssueDrawer } from "components/features/apply-issue-drawer/apply-issue-drawer.hooks";
 import { ApplyIssueDrawerLoading } from "components/features/apply-issue-drawer/apply-issue-drawer.loading";
 import { TApplyIssueDrawer } from "components/features/apply-issue-drawer/apply-issue-drawer.types";
-import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
 import { GrantPermission } from "components/features/grant-permission/grant-permission";
 import { usePublicRepoScope } from "components/features/grant-permission/hooks/use-public-repo-scope";
 import { BaseLink } from "components/layout/base-link/base-link";
@@ -26,15 +26,18 @@ import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Drawer } from "components/molecules/drawer";
 
+import { NEXT_ROUTER } from "constants/router";
+
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 export function ApplyIssueDrawer({ state }: TApplyIssueDrawer.Props) {
   const [{ isOpen, issueId, applicationId }, setState] = state;
   const hasApplied = Boolean(applicationId);
   const [isOpenGrantPermission, setIsOpenGrantPermission] = useState(false);
-  const { isAuthenticated, loginWithRedirect } = useAuth0();
+  const { isAuthenticated } = useAuth0();
   const { capture } = usePosthog();
   const { user } = useCurrentUser();
+  const router = useRouter();
   const {
     project: { data: project },
     form: { control, reset, setValue, getValues, handleSubmit },
@@ -93,7 +96,7 @@ export function ApplyIssueDrawer({ state }: TApplyIssueDrawer.Props) {
 
   function handleApplication(actionType: TApplyIssueDrawer.ActionType) {
     if (!isAuthenticated) {
-      handleLoginWithRedirect(loginWithRedirect);
+      router.push(NEXT_ROUTER.signup.root);
       return;
     }
 

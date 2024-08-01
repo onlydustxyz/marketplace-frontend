@@ -17,6 +17,7 @@ export function StepHeader({ step, subStep, stepPath }: TStepHeader.Props) {
             },
             ...(subStep ? [{ id: "step-sub", label: <Translate {...subStep} /> }] : []),
           ]}
+          classNames={{ base: "capitalize" }}
         />
       </div>
 

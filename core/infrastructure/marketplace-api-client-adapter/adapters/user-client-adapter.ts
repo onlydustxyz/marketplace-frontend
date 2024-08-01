@@ -1,3 +1,4 @@
+import { BillingProfileShort } from "core/domain/billing-profile/models/billing-profile-short-model";
 import { User } from "core/domain/user/models/user-model";
 import { UserNotifications } from "core/domain/user/models/user-notifications-model";
 import { UserOnboarding } from "core/domain/user/models/user-onboarding-model";
@@ -5,6 +6,7 @@ import { UserProfile } from "core/domain/user/models/user-profile-model";
 import { UserStoragePort } from "core/domain/user/outputs/user-storage-port";
 import {
   GetMeResponse,
+  GetMyBillingProfilesResponse,
   GetMyNotificationSettingsResponse,
   GetMyOnboardingResponse,
   GetMyProfileResponse,
@@ -28,6 +30,7 @@ export class UserClientAdapter implements UserStoragePort {
     getMe: "me",
     setMe: "me",
     getMyOnboarding: "me/onboarding",
+    getMyBillingProfiles: "me/billing-profiles",
   } as const;
 
   registerToHackathon = ({ pathParams }: FirstParameter<UserStoragePort["registerToHackathon"]>) => {
@@ -187,6 +190,27 @@ export class UserClientAdapter implements UserStoragePort {
       });
 
       return new UserOnboarding(data);
+    };
+
+    return {
+      request,
+      tag,
+    };
+  };
+
+  getMyBillingProfiles = () => {
+    const path = this.routes["getMyBillingProfiles"];
+    const method = "GET";
+    const tag = HttpClient.buildTag({ path });
+
+    const request = async () => {
+      const data = await this.client.request<GetMyBillingProfilesResponse>({
+        path,
+        method,
+        tag,
+      });
+
+      return new BillingProfileShort(data);
     };
 
     return {

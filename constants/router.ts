@@ -57,7 +57,6 @@ export const NEXT_ROUTER = {
     root: (githubLogin: string) => `/u/${githubLogin}`,
   },
   notFound: "/not-found",
-  onboarding: "/onboarding",
   maintenance: "/maintenance",
   hackathons: {
     root: "/hackathons",
@@ -76,7 +75,7 @@ export const NEXT_ROUTER = {
     onboarding: {
       root: "/signup/onboarding",
       projectRecommendations: "/signup/onboarding/project-recommendations",
-      verificationInformation: "/signup/onboarding/verification-information",
+      verifyInformation: "/signup/onboarding/verify-information",
       completeYourProfile: "/signup/onboarding/complete-your-profile",
       termsAndConditions: "/signup/onboarding/terms-and-conditions",
       payoutInformation: "/signup/onboarding/payout-information",

@@ -22,7 +22,7 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
   const {
     clientBootstrap: { authProvider },
   } = useClientBootstrapContext();
-  const { isAuthenticated = false, loginWithRedirect } = authProvider ?? {};
+  const { isAuthenticated = false } = authProvider ?? {};
 
   const { data: userProfile, isLoading: userProfileIsLoading } = UserReactQueryAdapter.client.useGetMyProfile({
     options: {
@@ -120,7 +120,6 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
       handleSubmit: handleSubmit(handleTelegramSubmit),
     },
     isAuthenticated,
-    loginWithRedirect,
     registerForHackathon,
     isLoading: userProfileIsLoading || hackathonIsLoading,
     isPending: restRegister.isPending || restSetMyProfile.isPending,

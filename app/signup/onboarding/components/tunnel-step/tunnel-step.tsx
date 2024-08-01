@@ -15,7 +15,9 @@ export function TunnelStep({ icon, type, title, content, isDone, path }: TTunnel
     <Paper
       container="transparent"
       size={"s"}
-      classNames={{ base: "flex flex-row gap-1 justify-between" }}
+      classNames={{
+        base: "flex flex-row gap-1 justify-between",
+      }}
       as={BaseLink}
       htmlProps={{ href: path }}
     >

@@ -1,9 +1,9 @@
-import { useAuth0 } from "@auth0/auth0-react";
-
 import GithubLogo, { Size } from "src/icons/GithubLogo";
 import { cn } from "src/utils/cn";
 
-import { handleLoginWithRedirect } from "components/features/auth0/handlers/handle-login";
+import { BaseLink } from "components/layout/base-link/base-link";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { useIntl } from "hooks/translate/use-translate";
 
@@ -20,13 +20,9 @@ export default function GithubLink({
   showText?: boolean;
 }) {
   const { T } = useIntl();
-  const { loginWithRedirect } = useAuth0();
-  const loginHandler = () => {
-    handleLoginWithRedirect(loginWithRedirect);
-  };
 
   return (
-    <button className="z-10" onClick={loginHandler} data-testid="github-signin-button">
+    <BaseLink href={NEXT_ROUTER.signup.root} className="z-10" data-testid="github-signin-button">
       <div className="m-px w-fit overflow-hidden rounded-full p-px blur-0 transition duration-300 hover:m-0 hover:p-0.5">
         <div
           className={cn(
@@ -47,6 +43,6 @@ export default function GithubLink({
           </div>
         </div>
       </div>
-    </button>
+    </BaseLink>
   );
 }

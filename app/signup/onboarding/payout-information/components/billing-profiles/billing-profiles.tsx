@@ -1,7 +1,7 @@
 "use client";
 
 import { BillingProfileTypeUnion } from "core/domain/billing-profile/models/billing-profile.types";
-import React, { PropsWithChildren, ReactNode } from "react";
+import { PropsWithChildren, ReactNode } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 import { TBillingProfiles } from "app/signup/onboarding/payout-information/components/billing-profiles/billing-profiles.types";
@@ -51,7 +51,11 @@ export function CustomRadioComponent({
   const { title, content, icon } = translates[type] || { title: "", content: "", icon: "" };
 
   return (
-    <Paper size={"s"} container={"3"} classNames={{ base: "flex items-start gap-3 justify-between text-left" }}>
+    <Paper
+      size={"s"}
+      container={"transparent"}
+      classNames={{ base: "flex items-start gap-3 justify-between text-left" }}
+    >
       <Icon
         size={24}
         className="flex h-16 w-16 min-w-16 items-center justify-center rounded-lg border border-container-stroke-separator"
@@ -95,7 +99,7 @@ export function BillingProfiles(_: TBillingProfiles.Props) {
                 value: type,
                 componentProps: { type },
               }))}
-              classNames={{ base: "gap-4" }}
+              classNames={{ base: "gap-4", item: "w-full" }}
             />
           </div>
         )}

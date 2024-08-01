@@ -37,7 +37,13 @@ export function Cta({ title, subtitle, iconProps, wrapperProps = {} }: TCta.Prop
         />
 
         <div className={"grid"}>
-          <Typo size={"l"} weight={"medium"} color={"text-1"} translate={{ token: title }} />
+          <Typo
+            size={"l"}
+            weight={"medium"}
+            color={"text-1"}
+            translate={{ token: title }}
+            classNames={{ base: "capitalize" }}
+          />
           <Typo size={"s"} color={"text-2"} translate={{ token: subtitle }} />
         </div>
       </div>
