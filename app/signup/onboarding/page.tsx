@@ -16,7 +16,7 @@ import { SignupTemplate } from "components/templates/signup-template/signup-temp
 
 import { NEXT_ROUTER } from "constants/router";
 
-function Footer({ isDisabled }: { isDisabled: boolean }) {
+function Footer({ isDisabled, hasCompletedAllSteps }: { isDisabled: boolean; hasCompletedAllSteps: boolean }) {
   const router = useRouter();
   const { mutateAsync: setMe } = UserReactQueryAdapter.client.useSetMe({
     options: {
@@ -37,7 +37,11 @@ function Footer({ isDisabled }: { isDisabled: boolean }) {
     <div className="flex w-full justify-end">
       <Button
         variant={"secondary-light"}
-        translate={{ token: "v2.pages.signup.onboarding.tunnel.actions.skip" }}
+        translate={{
+          token: hasCompletedAllSteps
+            ? "v2.pages.signup.onboarding.tunnel.actions.skip"
+            : "v2.pages.signup.onboarding.tunnel.actions.done",
+        }}
         endIcon={{ remixName: "ri-arrow-right-s-line" }}
         onClick={handleSubmit}
         isDisabled={isDisabled}
@@ -54,7 +58,12 @@ function OnboardingPage() {
   return (
     <SignupTemplate
       header={<AccountAlreadyExist />}
-      footer={<Footer isDisabled={!userOnboarding.hasCompletedMandatoryOnboarding()} />}
+      footer={
+        <Footer
+          isDisabled={!userOnboarding.hasCompletedMandatorySteps()}
+          hasCompletedAllSteps={userOnboarding.hasCompletedAllSteps()}
+        />
+      }
     >
       <Paper container={"2"} classNames={{ base: "flex flex-col gap-3 min-h-full" }}>
         <StepHeader step={2} stepPath={NEXT_ROUTER.signup.onboarding.root} />
