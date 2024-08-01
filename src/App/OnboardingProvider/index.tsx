@@ -11,6 +11,8 @@ import { useImpersonation } from "components/features/impersonation/use-imperson
 
 import { NEXT_ROUTER } from "constants/router";
 
+import { useMatchPath } from "hooks/router/useMatchPath";
+
 type Onboarding = {
   isLoading: boolean;
 };
@@ -21,6 +23,9 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
   const { isImpersonating } = useImpersonation();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const isSignup = useMatchPath(NEXT_ROUTER.signup.root);
+  const isOnboarding = useMatchPath(NEXT_ROUTER.signup.onboarding.root, { exact: false });
+
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -28,11 +33,9 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
   } = useClientBootstrapContext();
   const { isAuthenticated = false } = authProvider ?? {};
 
-  const { data: userOnboarding, isLoading: isLoadingUserOnboarding } = UserReactQueryAdapter.client.useGetMyOnboarding({
-    options: {
-      enabled: isAuthenticated,
-    },
-  });
+  const { data: userOnboarding, isLoading: isLoadingUserOnboarding } = UserReactQueryAdapter.client.useGetMyOnboarding(
+    {}
+  );
 
   const { data: userProfile, isLoading: isLoadingUserProfile } = UserReactQueryAdapter.client.useGetMyProfile({
     options: {
@@ -46,44 +49,70 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     (async () => {
+      // Add loader to signup/signin CTAs while app redirects
       setIsLoading(isLoadingUserOnboarding || isLoadingUserProfile || isPendingSetMyProfile);
+
       if (
+        // If user is not auth there is no onboarding or user profile data
         !isAuthenticated ||
+        // Can't redirect if no onboarding data
         !userOnboarding ||
         isLoadingUserOnboarding ||
+        // Can't set joiningReason if no user profile data
         !userProfile ||
         isLoadingUserProfile ||
+        // No need to show onboarding if impersonating a user
         isImpersonating
       ) {
         return;
       }
 
-      if (userOnboarding.completed) {
+      if (isSignup) {
+        const joiningReason = searchParams.get("joiningReason") ?? "";
+
+        // We can't tell the difference if the user has just logged in or created a new account.
+        // So we check if a joiningReason is already present.
+        // If user has no joiningReason and one is present in the search params it must be set before continuing
+        if (!userProfile?.joiningReason && UserProfile.isValidJoiningReason(joiningReason)) {
+          // Must wait for this request before redirecting to the next step or the mutation will be cancelled
+          await setMyProfile({
+            joiningReason: joiningReason as UserJoiningReason,
+          });
+        }
+      }
+
+      if (userOnboarding.shouldGoToOnboarding(isOnboarding)) {
+        if (userOnboarding.shouldGoToOnboardingVerifyInformation()) {
+          router.push(NEXT_ROUTER.signup.onboarding.verifyInformation);
+          return;
+        }
+
+        if (userOnboarding.shouldGoToOnboardingTermsAndConditions()) {
+          router.push(NEXT_ROUTER.signup.onboarding.termsAndConditions);
+          return;
+        }
+
+        router.push(NEXT_ROUTER.signup.onboarding.root);
+        return;
+      }
+
+      if (userOnboarding.shouldGoToHome(isSignup)) {
         router.push(NEXT_ROUTER.home.all);
         return;
       }
-
-      const joiningReason = searchParams.get("joiningReason") ?? "";
-
-      if (!userProfile?.joiningReason && UserProfile.isValidJoiningReason(joiningReason)) {
-        await setMyProfile({
-          joiningReason: joiningReason as UserJoiningReason,
-        });
-      }
-
-      if (!userOnboarding.verificationInformationProvided) {
-        router.push(NEXT_ROUTER.signup.onboarding.verifyInformation);
-        return;
-      }
-
-      if (!userOnboarding.termsAndConditionsAccepted) {
-        router.push(NEXT_ROUTER.signup.onboarding.termsAndConditions);
-        return;
-      }
-
-      router.push(NEXT_ROUTER.signup.onboarding.root);
     })();
-  }, [userOnboarding, userProfile, searchParams, isAuthenticated, isLoadingUserOnboarding, isImpersonating]);
+  }, [
+    isAuthenticated,
+    userOnboarding,
+    isLoadingUserOnboarding,
+    userProfile,
+    isLoadingUserProfile,
+    isImpersonating,
+    isPendingSetMyProfile,
+    searchParams,
+    isSignup,
+    isOnboarding,
+  ]);
 
   return <OnboardingContext.Provider value={{ isLoading }}>{children}</OnboardingContext.Provider>;
 }
