@@ -16,7 +16,7 @@ const useTunnelStepTags = (type: TTunnelStep.stepType): TagPort<AnyType> | undef
 
   if (type === "recommended") {
     return {
-      color: "red",
+      color: "pink",
       style: "fill",
       children: <Translate token={"v2.pages.signup.onboarding.tunnel.stepsTags.recommended"} />,
     };

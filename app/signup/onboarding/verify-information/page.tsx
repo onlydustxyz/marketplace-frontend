@@ -172,7 +172,7 @@ export default function VerifyInformationPage() {
                     translate={{ token: "v2.pages.signup.verifyInformation.form.telegram.label" }}
                   />
                   <Tag
-                    color="pink"
+                    color="green"
                     style="fill"
                     size="xs"
                     translate={{ token: "v2.pages.signup.verifyInformation.form.telegram.tag" }}
