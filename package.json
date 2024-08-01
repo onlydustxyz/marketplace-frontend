@@ -19,6 +19,7 @@
     "component": "ts-node tools/create-component.js",
     "ds": "ts-node tools/create-ds.js",
     "ds:adapter": "ts-node tools/add-adapter.js",
+    "core:domain": "ts-node tools/create-domain.js",
     "hook": "ts-node tools/create-hook.js"
   },
   "dependencies": {

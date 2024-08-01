@@ -6,6 +6,7 @@ import { LegalAdapterMock } from "core/helpers/legal/legal-adapter-mock";
 import { UrlAdapterMock } from "core/helpers/url/url-adapter-mock";
 import { HackathonClientAdapterMock } from "core/infrastructure/marketplace-api-client-adapter/mock-adapters/hackathon-client-adapter-mock";
 import { LanguagesClientAdapterMock } from "core/infrastructure/marketplace-api-client-adapter/mock-adapters/languages-client-adapter-mock";
+import { NotificationClientAdapterMock } from "core/infrastructure/marketplace-api-client-adapter/mock-adapters/notification-client-adapter-mock";
 import { ProjectCategoryClientAdapterMock } from "core/infrastructure/marketplace-api-client-adapter/mock-adapters/project-category-client-adapter-mock";
 import { ProjectClientAdapterMock } from "core/infrastructure/marketplace-api-client-adapter/mock-adapters/project-client-adapter-mock";
 import { UserClientAdapterMock } from "core/infrastructure/marketplace-api-client-adapter/mock-adapters/user-client-adapter-mock";
@@ -21,6 +22,8 @@ export const bootstrapConstructorMock: BootstrapConstructor = {
   projectCategoryStoragePortForServer: new ProjectCategoryClientAdapterMock(),
   languageStoragePortForClient: new LanguagesClientAdapterMock(),
   languageStoragePortForServer: new LanguagesClientAdapterMock(),
+  notificationsStoragePortForClient: new NotificationClientAdapterMock(),
+  notificationsStoragePortForServer: new NotificationClientAdapterMock(),
   dateHelperPort: DateAdapterMock,
   urlHelperPort: UrlAdapterMock,
   imageHelperPort: new ImageAdapterMock(),
