@@ -1,6 +1,7 @@
 "use client";
 
 import { ProjectReactQueryAdapter } from "core/application/react-query-adapter/project";
+import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { IssueListInterface } from "core/domain/issue/models/issue-list-model";
 import { AnyType } from "core/helpers/types";
 import { Fragment, useMemo } from "react";
@@ -14,13 +15,11 @@ import { CardIssue, CardIssueLoading, CardIssuePort } from "components/molecules
 
 import { NEXT_ROUTER } from "constants/router";
 
-import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
-
 export function IssuesWrapper({ projectId, hackathonId, queryParams, Wrapper = Fragment }: TIssuesWrapper.Props) {
   const applyIssueDrawerState = useApplyIssueDrawerState();
   const [, setApplyIssueDrawerState] = applyIssueDrawerState;
 
-  const { user } = useCurrentUser();
+  const { data: user } = UserReactQueryAdapter.client.useGetMe({});
 
   const { data, isLoading } = ProjectReactQueryAdapter.client.useGetProjectPublicIssues({
     pathParams: { projectId },
