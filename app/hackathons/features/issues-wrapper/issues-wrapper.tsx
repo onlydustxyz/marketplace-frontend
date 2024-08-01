@@ -7,6 +7,8 @@ import { Fragment, useMemo } from "react";
 
 import { TIssuesWrapper } from "app/hackathons/features/issues-wrapper/issues-wrapper.types";
 
+import MeApi from "src/api/me";
+
 import { ApplyIssueDrawer } from "components/features/apply-issue-drawer/apply-issue-drawer";
 import { useApplyIssueDrawerState } from "components/features/apply-issue-drawer/apply-issue-drawer.hooks";
 import { Translate } from "components/layout/translate/translate";
@@ -17,6 +19,10 @@ import { NEXT_ROUTER } from "constants/router";
 export function IssuesWrapper({ projectId, hackathonId, queryParams, Wrapper = Fragment }: TIssuesWrapper.Props) {
   const applyIssueDrawerState = useApplyIssueDrawerState();
   const [, setApplyIssueDrawerState] = applyIssueDrawerState;
+
+  // TODO: @NeoxAzrot Update with the new archi when MEP
+  // const { data: user } = UserReactQueryAdapter.client.useGetMe({});
+  const { data: user } = MeApi.queries.useGetMe({});
 
   const { data, isLoading } = ProjectReactQueryAdapter.client.useGetProjectPublicIssues({
     pathParams: { projectId },
@@ -97,8 +103,10 @@ export function IssuesWrapper({ projectId, hackathonId, queryParams, Wrapper = F
                 }),
               children: <Translate token="v2.pages.hackathons.details.issues.card.viewApplication" />,
             }}
+            assignedActionProps={{
+              children: <Translate token="v2.pages.hackathons.details.issues.card.assigned" />,
+            }}
             tokens={{
-              githubLink: <Translate token="v2.pages.hackathons.details.issues.card.viewOnGithub" />,
               createdBy: <Translate token="v2.pages.hackathons.details.issues.card.createdBy" />,
               applicantsCount: (
                 <Translate
@@ -124,6 +132,7 @@ export function IssuesWrapper({ projectId, hackathonId, queryParams, Wrapper = F
               avatarUrl: applicant.avatarUrl,
             }))}
             assignee={buildFirstAssignee(issue)}
+            githubUsername={user?.login}
             applicantsCount={issue.applicants.length}
             tags={issue.labels.map(label => ({
               children: label.name,
