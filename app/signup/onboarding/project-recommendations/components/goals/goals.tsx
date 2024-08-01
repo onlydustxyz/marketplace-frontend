@@ -68,7 +68,7 @@ export function Goals(_: TGoals.Props) {
       />
       <Controller
         control={control}
-        name={"goal"}
+        name={"joiningGoal"}
         render={({ field: { value, onChange } }) => (
           <div className="flex w-full flex-col flex-wrap gap-2">
             <RadioGroup

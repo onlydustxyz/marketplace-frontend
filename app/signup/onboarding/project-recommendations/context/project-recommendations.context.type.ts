@@ -18,7 +18,7 @@ export namespace TProjectRecommendationContext {
   }
 
   export const validation = z.object({
-    goal: z.string(),
+    joiningGoal: z.string(),
     preferredCategories: z.array(z.string()).optional(),
     preferredLanguages: z.array(z.string()).optional(),
     isLookingForAJob: z.boolean().optional(),
