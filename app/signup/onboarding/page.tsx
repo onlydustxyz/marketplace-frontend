@@ -1,7 +1,6 @@
 "use client";
 
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
-import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 import { useRouter } from "next/navigation";
 
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
@@ -47,16 +46,7 @@ function Footer() {
 }
 
 function OnboardingPage() {
-  const {
-    clientBootstrap: { authProvider },
-  } = useClientBootstrapContext();
-  const { isAuthenticated = false } = authProvider ?? {};
-
-  const { data: userOnboarding } = UserReactQueryAdapter.client.useGetMyOnboarding({
-    options: {
-      enabled: isAuthenticated,
-    },
-  });
+  const { data: userOnboarding } = UserReactQueryAdapter.client.useGetMyOnboarding({});
 
   if (!userOnboarding) return null;
 

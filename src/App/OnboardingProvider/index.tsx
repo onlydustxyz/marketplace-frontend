@@ -33,11 +33,9 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
   } = useClientBootstrapContext();
   const { isAuthenticated = false } = authProvider ?? {};
 
-  const { data: userOnboarding, isLoading: isLoadingUserOnboarding } = UserReactQueryAdapter.client.useGetMyOnboarding({
-    options: {
-      enabled: isAuthenticated,
-    },
-  });
+  const { data: userOnboarding, isLoading: isLoadingUserOnboarding } = UserReactQueryAdapter.client.useGetMyOnboarding(
+    {}
+  );
 
   const { data: userProfile, isLoading: isLoadingUserProfile } = UserReactQueryAdapter.client.useGetMyProfile({
     options: {
