@@ -3,17 +3,10 @@
 import { HackathonReactQueryAdapter } from "core/application/react-query-adapter/hackathon";
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import applyGrant from "public/images/onboarding/apply-grant.svg";
-import earnRewards from "public/images/onboarding/earn-rewards.svg";
-import exploreProjects from "public/images/onboarding/explore-projects.svg";
-import joinProject from "public/images/onboarding/join-project.svg";
-import manageContributors from "public/images/onboarding/manage-contributors.svg";
 import onboardingCompleted from "public/images/onboarding/onboarding-completed.png";
-import submitProject from "public/images/onboarding/submit-project.svg";
-import { useEffect, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 
 import { StepHeader } from "app/signup/components/step-header/step-header";
 import { Title } from "app/signup/components/title/title";
@@ -22,6 +15,12 @@ import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
 import { Typo } from "components/atoms/typo";
 import { HackathonCard } from "components/features/hackathons/hackathon-card";
+import { ApplyGrant } from "components/icons/onboarding/apply-grant";
+import { EarnRewards } from "components/icons/onboarding/earn-rewards";
+import { ExploreProjects } from "components/icons/onboarding/explore-projects";
+import { JoinProject } from "components/icons/onboarding/join-project";
+import { ManageContributors } from "components/icons/onboarding/manage-contributors";
+import { SubmitProject } from "components/icons/onboarding/submit-project";
 import { BaseLink } from "components/layout/base-link/base-link";
 import { Modal } from "components/molecules/modal";
 
@@ -32,10 +31,10 @@ import { Key, useIntl } from "hooks/translate/use-translate";
 type Card = {
   title: Key;
   content: Key;
-  icon: StaticImport;
+  Icon: FunctionComponent<{ className?: string }>;
 };
 
-function Card({ title, content, icon }: Card) {
+function Card({ title, content, Icon }: Card) {
   const { T } = useIntl();
 
   return (
@@ -43,13 +42,14 @@ function Card({ title, content, icon }: Card) {
       <div className="relative">
         <Image
           src={onboardingCompleted}
-          alt={""}
+          alt={T("title")}
           className={
             "max-w-24 flex rounded-lg border border-container-stroke-separator object-cover aspect-square md:max-w-full md:aspect-auto"
           }
+          priority
         />
         <div className="absolute inset-0 flex items-center justify-center">
-          <Image src={icon} alt={T("title")} className={"w-1/2 lg:w-auto"} />
+          <Icon className={"w-1/2 lg:w-auto"} />
         </div>
       </div>
       <div className={"grid"}>
@@ -66,17 +66,17 @@ const maintainerCards: Card[] = [
   {
     title: "v2.pages.signup.onboarding.completed.sections.submitProject.title",
     content: "v2.pages.signup.onboarding.completed.sections.submitProject.content",
-    icon: submitProject,
+    Icon: SubmitProject,
   },
   {
     title: "v2.pages.signup.onboarding.completed.sections.manageContributors.title",
     content: "v2.pages.signup.onboarding.completed.sections.manageContributors.content",
-    icon: manageContributors,
+    Icon: ManageContributors,
   },
   {
     title: "v2.pages.signup.onboarding.completed.sections.applyGrant.title",
     content: "v2.pages.signup.onboarding.completed.sections.applyGrant.content",
-    icon: applyGrant,
+    Icon: ApplyGrant,
   },
 ];
 
@@ -84,17 +84,17 @@ const contributorCards: Card[] = [
   {
     title: "v2.pages.signup.onboarding.completed.sections.exploreProjects.title",
     content: "v2.pages.signup.onboarding.completed.sections.exploreProjects.content",
-    icon: exploreProjects,
+    Icon: ExploreProjects,
   },
   {
     title: "v2.pages.signup.onboarding.completed.sections.joinProject.title",
     content: "v2.pages.signup.onboarding.completed.sections.joinProject.content",
-    icon: joinProject,
+    Icon: JoinProject,
   },
   {
     title: "v2.pages.signup.onboarding.completed.sections.earnRewards.title",
     content: "v2.pages.signup.onboarding.completed.sections.earnRewards.content",
-    icon: earnRewards,
+    Icon: EarnRewards,
   },
 ];
 
