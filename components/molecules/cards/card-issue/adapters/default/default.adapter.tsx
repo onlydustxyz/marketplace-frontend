@@ -7,6 +7,7 @@ import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
 import { Tag } from "components/atoms/tag";
 import { Typo } from "components/atoms/typo";
+import { BaseLink } from "components/layout/base-link/base-link";
 import { Icon } from "components/layout/icon/icon";
 import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { AvatarGroup } from "components/molecules/avatar-group";
@@ -102,13 +103,15 @@ export function CardIssueDefaultAdapter<C extends ElementType = "div">({
             </Typo>
           </div>
 
-          <Button
-            as="a"
-            variant="secondary-light"
-            htmlProps={{ href: githubLink, target: "_blank" }}
-            startIcon={{ remixName: "ri-github-line" }}
-            hideText
-          />
+          {githubLink ? (
+            <Button
+              as={BaseLink}
+              variant="secondary-light"
+              htmlProps={{ href: githubLink }}
+              startIcon={{ remixName: "ri-github-line" }}
+              hideText
+            />
+          ) : null}
         </div>
 
         <div className="flex w-full flex-wrap gap-x-2 gap-y-1">
