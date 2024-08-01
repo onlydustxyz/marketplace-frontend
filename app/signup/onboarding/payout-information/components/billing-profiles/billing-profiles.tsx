@@ -1,7 +1,7 @@
 "use client";
 
 import { BillingProfileTypeUnion } from "core/domain/billing-profile/models/billing-profile.types";
-import { PropsWithChildren, ReactNode } from "react";
+import React, { PropsWithChildren, ReactNode } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 import { TBillingProfiles } from "app/signup/onboarding/payout-information/components/billing-profiles/billing-profiles.types";
@@ -95,7 +95,7 @@ export function BillingProfiles(_: TBillingProfiles.Props) {
                 value: type,
                 componentProps: { type },
               }))}
-              classNames={{ base: "gap-4", item: "w-full" }}
+              classNames={{ base: "gap-4" }}
             />
           </div>
         )}

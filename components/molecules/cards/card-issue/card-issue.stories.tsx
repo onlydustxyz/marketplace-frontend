@@ -23,10 +23,8 @@ const defaultProps: CardIssuePort<"div"> = {
   viewActionProps: {
     children: "View application",
   },
-  assignedActionProps: {
-    children: "Assigned",
-  },
   tokens: {
+    githubLink: "View on Github",
     createdBy: "By",
     applicantsCount: "applicants",
   },

@@ -1,6 +1,6 @@
 "use client";
 
-import { PropsWithChildren, ReactNode, useContext } from "react";
+import React, { PropsWithChildren, ReactNode, useContext } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 import { Title } from "app/signup/components/title/title";
@@ -79,9 +79,6 @@ export function Goals(_: TGoals.Props) {
                 value: goal,
                 componentProps: { goal },
               }))}
-              classNames={{
-                item: "w-full",
-              }}
             />
           </div>
         )}
