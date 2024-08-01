@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { BillingProfileReactQueryAdapter } from "core/application/react-query-adapter/billing-profile";
 import { BillingProfileTypeUnion } from "core/domain/billing-profile/models/billing-profile.types";
 import { useRouter } from "next/navigation";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
