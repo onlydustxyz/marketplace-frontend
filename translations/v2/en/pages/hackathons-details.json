@@ -63,7 +63,7 @@
     "card": {
       "apply": "Apply",
       "viewApplication": "View application",
-      "viewOnGithub": "View on GitHub",
+      "assigned": "Assigned",
       "createdBy": "By",
       "applicantsCount": {
         "zero": "applicants",
