@@ -39,8 +39,8 @@ function Footer({ isDisabled, hasCompletedAllSteps }: { isDisabled: boolean; has
         variant={"secondary-light"}
         translate={{
           token: hasCompletedAllSteps
-            ? "v2.pages.signup.onboarding.tunnel.actions.skip"
-            : "v2.pages.signup.onboarding.tunnel.actions.done",
+            ? "v2.pages.signup.onboarding.tunnel.actions.done"
+            : "v2.pages.signup.onboarding.tunnel.actions.skip",
         }}
         endIcon={{ remixName: "ri-arrow-right-s-line" }}
         onClick={handleSubmit}
