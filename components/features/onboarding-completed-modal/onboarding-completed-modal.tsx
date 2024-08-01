@@ -5,10 +5,8 @@ import { UserReactQueryAdapter } from "core/application/react-query-adapter/user
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import Completed1 from "public/images/onboarding/completed-1.png";
-import Completed2 from "public/images/onboarding/completed-2.png";
-import Completed3 from "public/images/onboarding/completed-3.png";
-import { useEffect, useState } from "react";
+import onboardingCompleted from "public/images/onboarding/onboarding-completed.png";
+import { FunctionComponent, useEffect, useState } from "react";
 
 import { StepHeader } from "app/signup/components/step-header/step-header";
 import { Title } from "app/signup/components/title/title";
@@ -17,6 +15,12 @@ import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
 import { Typo } from "components/atoms/typo";
 import { HackathonCard } from "components/features/hackathons/hackathon-card";
+import { ApplyGrant } from "components/icons/onboarding/apply-grant";
+import { EarnRewards } from "components/icons/onboarding/earn-rewards";
+import { ExploreProjects } from "components/icons/onboarding/explore-projects";
+import { JoinProject } from "components/icons/onboarding/join-project";
+import { ManageContributors } from "components/icons/onboarding/manage-contributors";
+import { SubmitProject } from "components/icons/onboarding/submit-project";
 import { BaseLink } from "components/layout/base-link/base-link";
 import { Modal } from "components/molecules/modal";
 
@@ -27,27 +31,29 @@ import { Key, useIntl } from "hooks/translate/use-translate";
 type Card = {
   title: Key;
   content: Key;
-  image: 1 | 2 | 3;
+  Icon: FunctionComponent<{ className?: string }>;
 };
 
-function Card({ title, content, image }: Card) {
+function Card({ title, content, Icon }: Card) {
   const { T } = useIntl();
-
-  const images = {
-    1: Completed1,
-    2: Completed2,
-    3: Completed3,
-  };
 
   return (
     <Paper size={"s"} container={"3"} classNames={{ base: "flex md:flex-col gap-2 content-start items-center" }}>
-      <Image
-        src={images[image]}
-        alt={T("title")}
-        className={"max-w-24 rounded-lg border border-container-stroke-separator md:max-w-full"}
-      />
+      <div className="relative">
+        <Image
+          src={onboardingCompleted}
+          alt={T("title")}
+          className={
+            "max-w-24 flex rounded-lg border border-container-stroke-separator object-cover aspect-square md:max-w-full md:aspect-auto"
+          }
+          priority
+        />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Icon className={"w-1/2 lg:w-auto"} />
+        </div>
+      </div>
       <div className={"grid"}>
-        <Typo size={"l"} weight={"medium"} translate={{ token: title }} />
+        <Typo size={"l"} weight={"medium"} translate={{ token: title }} classNames={{ base: "capitalize" }} />
         <Typo size={"s"} color={"text-2"} translate={{ token: content }} />
       </div>
     </Paper>
@@ -60,17 +66,17 @@ const maintainerCards: Card[] = [
   {
     title: "v2.pages.signup.onboarding.completed.sections.submitProject.title",
     content: "v2.pages.signup.onboarding.completed.sections.submitProject.content",
-    image: 1,
+    Icon: SubmitProject,
   },
   {
-    title: "v2.pages.signup.onboarding.completed.sections.exploreEcosystems.title",
-    content: "v2.pages.signup.onboarding.completed.sections.exploreEcosystems.content",
-    image: 2,
+    title: "v2.pages.signup.onboarding.completed.sections.manageContributors.title",
+    content: "v2.pages.signup.onboarding.completed.sections.manageContributors.content",
+    Icon: ManageContributors,
   },
   {
     title: "v2.pages.signup.onboarding.completed.sections.applyGrant.title",
     content: "v2.pages.signup.onboarding.completed.sections.applyGrant.content",
-    image: 3,
+    Icon: ApplyGrant,
   },
 ];
 
@@ -78,17 +84,17 @@ const contributorCards: Card[] = [
   {
     title: "v2.pages.signup.onboarding.completed.sections.exploreProjects.title",
     content: "v2.pages.signup.onboarding.completed.sections.exploreProjects.content",
-    image: 1,
+    Icon: ExploreProjects,
   },
   {
     title: "v2.pages.signup.onboarding.completed.sections.joinProject.title",
     content: "v2.pages.signup.onboarding.completed.sections.joinProject.content",
-    image: 2,
+    Icon: JoinProject,
   },
   {
     title: "v2.pages.signup.onboarding.completed.sections.earnRewards.title",
     content: "v2.pages.signup.onboarding.completed.sections.earnRewards.content",
-    image: 3,
+    Icon: EarnRewards,
   },
 ];
 
