@@ -86,6 +86,7 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
         return;
       }
 
+      // TODO handle other steps by excluding them from the following condition
       router.push(NEXT_ROUTER.signup.onboarding.root);
     })();
   }, [userOnboarding, userProfile, searchParams, isAuthenticated, isLoadingUserOnboarding, isImpersonating, isSignup]);
