@@ -68,8 +68,8 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
       }
 
       if (userOnboarding.completed) {
-        // User shouldn't be able to view /signup pages once onboarding completed
-        if (isSignup) router.push(NEXT_ROUTER.home.all);
+        // User shouldn't be able to view signup or onboarding pages once onboarding completed
+        if (isSignup || isOnboarding) router.push(NEXT_ROUTER.home.all);
 
         // Onboarding completed, don't need to redirect
         return;
