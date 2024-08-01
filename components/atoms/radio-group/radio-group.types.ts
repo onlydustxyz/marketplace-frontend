@@ -8,6 +8,7 @@ export interface Variants {
 
 interface ClassNames {
   base: string;
+  item: string;
   indicator: string;
   indicatorIcon: string;
 }
