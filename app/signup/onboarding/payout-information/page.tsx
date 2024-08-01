@@ -84,7 +84,8 @@ export default function PayoutInformationPage() {
   }, [isPendingCreateBillingProfile]);
 
   return (
-    <StepGuard step={"payoutInformationProvided"}>
+    <>
+      <StepGuard step={"payoutInformationProvided"} />
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(handleCreateBillingProfile)} className="h-full">
           <SignupTemplate header={<AccountAlreadyExist />} footer={renderFooter}>
@@ -117,6 +118,6 @@ export default function PayoutInformationPage() {
           </SignupTemplate>
         </form>
       </FormProvider>
-    </StepGuard>
+    </>
   );
 }

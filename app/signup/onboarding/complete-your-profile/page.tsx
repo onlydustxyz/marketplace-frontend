@@ -49,7 +49,8 @@ export default function CompleteYourProfilePage() {
   const { userProfile, form, setMyProfileMutation, handleFormSubmit } = useCompleteYourProfile();
 
   return (
-    <StepGuard step={"profileCompleted"}>
+    <>
+      <StepGuard step={"profileCompleted"} />
       <form className={"h-full"} onSubmit={form.handleSubmit(handleFormSubmit)}>
         <SignupTemplate
           header={<AccountAlreadyExist />}
@@ -146,6 +147,6 @@ export default function CompleteYourProfilePage() {
           </Paper>
         </SignupTemplate>
       </form>
-    </StepGuard>
+    </>
   );
 }
