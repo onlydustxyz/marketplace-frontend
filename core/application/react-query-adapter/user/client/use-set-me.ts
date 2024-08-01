@@ -20,7 +20,12 @@ export function useSetMe({
       options: {
         onSuccess: async () => {
           await queryClient.invalidateQueries({
-            queryKey: userStoragePort.setMe({}).tag,
+            queryKey: userStoragePort.getMe({}).tag,
+            exact: false,
+          });
+
+          await queryClient.invalidateQueries({
+            queryKey: userStoragePort.getMyOnboarding({}).tag,
             exact: false,
           });
         },

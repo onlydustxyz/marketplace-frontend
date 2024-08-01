@@ -19,6 +19,7 @@ export function useCreateBillingProfile({
   CreateBillingProfileBody
 > = {}) {
   const billingProfileStoragePort = bootstrap.getBillingProfileStoragePortForClient();
+  const userStoragePort = bootstrap.getUserStoragePortForClient();
   const queryClient = useQueryClient();
 
   return useMutation(
@@ -29,6 +30,11 @@ export function useCreateBillingProfile({
         onSuccess: async (data, variables, context) => {
           await queryClient.invalidateQueries({
             queryKey: ME_BILLING_TAGS.allProfiles(),
+            exact: false,
+          });
+
+          await queryClient.invalidateQueries({
+            queryKey: userStoragePort.getMyOnboarding({}).tag,
             exact: false,
           });
 
