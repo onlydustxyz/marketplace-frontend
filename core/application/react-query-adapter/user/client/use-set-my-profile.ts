@@ -36,6 +36,11 @@ export function useSetMyProfile({
             exact: false,
           });
 
+          await queryClient.invalidateQueries({
+            queryKey: userStoragePort.getMyOnboarding({}).tag,
+            exact: false,
+          });
+
           await revalidateNextJsPath("/u/[githubLogin]", "page");
 
           options?.onSuccess?.(data, variables, context);

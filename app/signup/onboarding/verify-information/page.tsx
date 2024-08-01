@@ -73,17 +73,23 @@ export default function VerifyInformationPage() {
   async function handleSetMyProfile(data: TVerifyInformation.form) {
     if (!userProfile) return;
 
-    await setMyProfile({
-      contactEmail: data.email,
-      contacts: [
-        ...(userProfile.contacts?.filter(c => c.channel !== UserProfileContactChannel.telegram) ?? []),
-        UserProfile.buildContact({
-          channel: UserProfileContactChannel.telegram,
-          contact: data.telegram,
-          visibility: userProfile?.getContactTelegram()?.visibility,
-        }),
-      ],
-    });
+    if (data.telegram) {
+      await setMyProfile({
+        contactEmail: data.email,
+        contacts: [
+          ...(userProfile.contacts?.filter(c => c.channel !== UserProfileContactChannel.telegram) ?? []),
+          UserProfile.buildContact({
+            channel: UserProfileContactChannel.telegram,
+            contact: data.telegram,
+            visibility: userProfile?.getContactTelegram()?.visibility,
+          }),
+        ],
+      });
+    } else {
+      await setMyProfile({
+        contactEmail: data.email,
+      });
+    }
   }
 
   const renderFooter = useMemo(() => {
@@ -172,7 +178,7 @@ export default function VerifyInformationPage() {
                     translate={{ token: "v2.pages.signup.verifyInformation.form.telegram.label" }}
                   />
                   <Tag
-                    color="pink"
+                    color="green"
                     style="fill"
                     size="xs"
                     translate={{ token: "v2.pages.signup.verifyInformation.form.telegram.tag" }}

@@ -1,3 +1,4 @@
+import { bootstrap } from "core/bootstrap";
 import { revalidateNextJsPath } from "core/infrastructure/marketplace-api-client-adapter/helpers/revalidate-nextjs-path";
 
 import { components } from "src/__generated/api";
@@ -14,10 +15,18 @@ import { ME_PATH } from "./path";
 export type UseUpdateMeMeBody = components["schemas"]["PatchMeContract"];
 
 const useUpdateMe = ({ options = {} }: UseMutationProps<unknown, unknown, UseUpdateMeMeBody>) => {
+  const userStoragePort = bootstrap.getUserStoragePortForClient();
+
   return useBaseMutation<UseUpdateMeMeBody, unknown>({
     resourcePath: ME_PATH.ROOT,
     method: "PATCH",
-    invalidatesTags: [{ queryKey: MeApi.tags.user, exact: false }],
+    invalidatesTags: [
+      { queryKey: MeApi.tags.user, exact: false },
+      {
+        queryKey: userStoragePort.getMyOnboarding({}).tag,
+        exact: false,
+      },
+    ],
     ...options,
   });
 };
@@ -81,9 +90,17 @@ export type UseUpdateProfileBody = components["schemas"]["UserProfileUpdateReque
 export type UseUpdateProfileResponse = components["schemas"]["PrivateUserProfileResponse"];
 
 const useUpdateProfile = ({ options = {} }: UseMutationProps<UseUpdateProfileResponse, UseUpdateProfileBody>) => {
+  const userStoragePort = bootstrap.getUserStoragePortForClient();
+
   return useBaseMutation<UseUpdateProfileBody, UseUpdateProfileResponse>({
     resourcePath: ME_PATH.PROFILE,
-    invalidatesTags: [{ queryKey: MeApi.tags.all, exact: false }],
+    invalidatesTags: [
+      { queryKey: MeApi.tags.all, exact: false },
+      {
+        queryKey: userStoragePort.getMyOnboarding({}).tag,
+        exact: false,
+      },
+    ],
     onSuccess: () => revalidateNextJsPath("/u/[githubLogin]", "page"),
     method: "PATCH",
     ...options,
