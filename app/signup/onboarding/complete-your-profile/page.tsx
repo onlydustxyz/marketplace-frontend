@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { Controller } from "react-hook-form";
 
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
