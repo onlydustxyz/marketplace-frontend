@@ -11,9 +11,11 @@ export class UserClientAdapterMock implements UserStoragePort {
 
   registerToHackathon = mockHttpStorageResponseWithParams<UserStoragePort["registerToHackathon"]>;
 
-  setMyProfile = mockHttpStorageResponseWithParams<UserStoragePort["setMyProfile"]>;
+  replaceMyProfile = mockHttpStorageResponse<UserStoragePort["replaceMyProfile"]>;
 
-  getMyProfile = mockHttpStorageResponseWithParams<UserStoragePort["getMyProfile"]>;
+  setMyProfile = mockHttpStorageResponse<UserStoragePort["setMyProfile"]>;
+
+  getMyProfile = mockHttpStorageResponse<UserStoragePort["getMyProfile"]>;
 
   getMe = mockHttpStorageResponse<UserStoragePort["getMe"]>;
 
