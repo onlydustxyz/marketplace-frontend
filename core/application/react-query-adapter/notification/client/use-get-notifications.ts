@@ -2,11 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import { UseQueryFacadeParams, useQueryAdapter } from "core/application/react-query-adapter/helpers/use-query-adapter";
 import { bootstrap } from "core/bootstrap";
 import { NotificationFacadePort } from "core/domain/notification/input/notification-facade-port";
-import { GetNotificationsWithModelResponse } from "core/domain/notification/notification-contract.types";
+import { GetNotificationsModel } from "core/domain/notification/notification-contract.types";
 
 export function useGetNotifications({
   options,
-}: UseQueryFacadeParams<NotificationFacadePort["getNotifications"], GetNotificationsWithModelResponse>) {
+}: UseQueryFacadeParams<NotificationFacadePort["getNotifications"], GetNotificationsModel>) {
   const notificationStoragePort = bootstrap.getNotificationStoragePortForClient();
 
   return useQuery(

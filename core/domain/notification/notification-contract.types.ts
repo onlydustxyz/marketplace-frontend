@@ -8,11 +8,11 @@ import { components } from "src/__generated/api";
 
 // Get notifications
 export type GetNotificationsResponse = components["schemas"]["NotificationPageResponse"];
-export type GetNotificationsWithModelResponse = Omit<GetNotificationsResponse, "notifications"> & {
+export type GetNotificationsModel = Omit<GetNotificationsResponse, "notifications"> & {
   notifications: NotificationInterface[];
 };
 
-export type GetNotificationsPortResponse = HttpStorageResponse<GetNotificationsWithModelResponse>;
+export type GetNotificationsPortResponse = HttpStorageResponse<GetNotificationsModel>;
 
 export type GetNotificationsPortParams = HttpClientParameters<object>;
 
