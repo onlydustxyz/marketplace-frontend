@@ -3,7 +3,8 @@ import { components } from "src/__generated/api";
 type UserOnboardingResponse = components["schemas"]["OnboardingCompletionResponse"];
 
 export interface UserOnboardingInterface extends UserOnboardingResponse {
-  hasCompletedMandatoryOnboarding(): boolean;
+  hasCompletedMandatorySteps(): boolean;
+  hasCompletedAllSteps(): boolean;
   shouldGoToHome(isOnSignupPage: boolean): boolean;
   shouldGoToOnboarding(isOnOnboardingPage: boolean): boolean;
   shouldGoToOnboardingVerifyInformation(): boolean;
@@ -23,8 +24,18 @@ export class UserOnboarding implements UserOnboardingInterface {
     Object.assign(this, props);
   }
 
-  hasCompletedMandatoryOnboarding() {
+  hasCompletedMandatorySteps() {
     return this.verificationInformationProvided && this.termsAndConditionsAccepted;
+  }
+
+  hasCompletedAllSteps() {
+    return (
+      this.verificationInformationProvided &&
+      this.termsAndConditionsAccepted &&
+      this.projectPreferencesProvided &&
+      this.profileCompleted &&
+      this.payoutInformationProvided
+    );
   }
 
   shouldGoToHome(isOnSignupPage: boolean) {

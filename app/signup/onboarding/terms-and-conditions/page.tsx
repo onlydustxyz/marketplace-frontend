@@ -21,6 +21,7 @@ function Footer({ isDisabled, onClick }: { isDisabled: boolean; onClick: () => v
   return (
     <div className="flex w-full flex-row justify-end gap-2">
       <Button
+        size={"l"}
         translate={{ token: "v2.pages.signup.onboarding.projectRecommendations.actions.next" }}
         endIcon={{ remixName: "ri-arrow-right-s-line" }}
         isDisabled={isDisabled}
