@@ -1,1 +1,1 @@
-export * from "core/application/react-query-adapter/language/client/use-get-notifications";
+export * from "./use-get-languages";
