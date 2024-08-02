@@ -6,8 +6,16 @@ import { Popover } from "components/atoms/popover";
 import { Typo } from "components/atoms/typo";
 
 export function NotificationButton() {
-  const { data } = NotificationReactQueryAdapter.client.useGetNotificationsCount({ queryParams: { status: "UNREAD" } });
-  const hasUnreadNotifications = !!data?.count;
+  const { data: unreadNotificationCount } = NotificationReactQueryAdapter.client.useGetNotificationsCount({
+    queryParams: { status: "UNREAD" },
+  });
+
+  // const { data: notification } = NotificationReactQueryAdapter.client.useGetNotifications({
+  //   queryParams: { status: "UNREAD" },
+  // });
+  const hasUnreadNotifications = !!unreadNotificationCount?.count;
+
+  // console.log("notification", notification);
 
   return (
     <Popover>
@@ -27,7 +35,7 @@ export function NotificationButton() {
                 colors="brand-2"
                 classNames={{ base: "absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 pointer-events-none" }}
               >
-                {data?.count}
+                {unreadNotificationCount?.count}
               </Badge>
             )}
           </div>

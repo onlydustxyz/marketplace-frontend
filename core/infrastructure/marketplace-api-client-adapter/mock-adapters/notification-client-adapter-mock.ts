@@ -55,7 +55,7 @@ export class NotificationClientAdapterMock implements NotificationStoragePort {
 
     return {
       request,
-      tag: [""],
+      tag: ["getNotifications"],
     };
   };
 
@@ -69,7 +69,7 @@ export class NotificationClientAdapterMock implements NotificationStoragePort {
 
     return {
       request,
-      tag: [""],
+      tag: ["getNotificationsCount"],
     };
   };
 }
