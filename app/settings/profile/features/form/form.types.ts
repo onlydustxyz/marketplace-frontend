@@ -25,9 +25,9 @@ export namespace TProfileForm {
     lastName?: string;
     avatarUrl?: string;
     contactEmail?: string;
-    location: string;
-    bio: string;
-    website: string;
+    location?: string;
+    bio?: string;
+    website?: string;
     telegram: ContactProps;
     whatsapp: ContactProps;
     twitter: ContactProps;

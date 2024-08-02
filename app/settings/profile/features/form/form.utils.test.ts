@@ -243,11 +243,11 @@ describe("formatToSchema", () => {
   it("should handle partial data correctly", () => {
     const partialData: TProfileForm.Data = {
       firstName: "John",
-      lastName: "",
-      avatarUrl: "",
-      location: "",
-      bio: "",
-      website: "",
+      lastName: undefined,
+      avatarUrl: undefined,
+      location: undefined,
+      bio: undefined,
+      website: undefined,
       telegram: { contact: "", isPublic: false },
       whatsapp: { contact: "", isPublic: false },
       twitter: { contact: "", isPublic: false },
@@ -259,11 +259,11 @@ describe("formatToSchema", () => {
 
     const expectedSchema = {
       firstName: "John",
-      lastName: "",
-      avatarUrl: "",
-      location: "",
-      bio: "",
-      website: "",
+      lastName: undefined,
+      avatarUrl: undefined,
+      location: undefined,
+      bio: undefined,
+      website: undefined,
       contacts: [
         { channel: "TELEGRAM", contact: "", visibility: "private" },
         { channel: "WHATSAPP", contact: "", visibility: "private" },
