@@ -1,4 +1,5 @@
 import { NotificationInterface } from "core/domain/notification/models/notification.types";
+import { NotificationStatusUnion } from "core/domain/notification/notification-constants";
 import {
   HttpClientParameters,
   HttpStorageResponse,
@@ -10,6 +11,7 @@ import { components } from "src/__generated/api";
 export type GetNotificationsResponse = components["schemas"]["NotificationPageResponse"];
 export type GetNotificationsModel = Omit<GetNotificationsResponse, "notifications"> & {
   notifications: NotificationInterface[];
+  status: NotificationStatusUnion;
 };
 
 export type GetNotificationsPortResponse = HttpStorageResponse<GetNotificationsModel>;

@@ -1,5 +1,6 @@
 import { Notification } from "core/domain/notification/models/notification-model";
 import { NotificationInterface } from "core/domain/notification/models/notification.types";
+import { NotificationStatus } from "core/domain/notification/notification-constants";
 
 export class MaintainerCommitteeApplicationCreated implements NotificationInterface {
   constructor(private notification: Notification) {}
@@ -11,8 +12,12 @@ export class MaintainerCommitteeApplicationCreated implements NotificationInterf
     return this.notification.timestamp;
   }
 
-  isRead() {
-    return this.notification.status === "READ";
+  getStatus() {
+    return this.notification.status;
+  }
+
+  hasRead() {
+    return this.notification.status === NotificationStatus.READ;
   }
   getTitle() {
     return "New committee application";

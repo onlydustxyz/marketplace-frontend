@@ -13,7 +13,7 @@ export function NotificationItem({ notification, onClick }: TNotificationItem.Pr
   const description = notification.getDescription();
   const title = notification.getTitle();
   const time = dateService.formatDistanceToNow(new Date(notification.getTimestamp()));
-  const isRead = notification.isRead();
+  const hasRead = notification.hasRead();
   const url = notification.getUrl();
   const isClickable = !!url;
 
@@ -34,7 +34,7 @@ export function NotificationItem({ notification, onClick }: TNotificationItem.Pr
     >
       <div className="relative">
         <Tag hideText={true} icon={{ remixName: "ri-square-line" }} />
-        {!isRead && (
+        {!hasRead && (
           <BadgeDot size="s" colors="brand-2" classNames={{ base: "absolute top-0 left-0  pointer-events-none" }} />
         )}
       </div>
