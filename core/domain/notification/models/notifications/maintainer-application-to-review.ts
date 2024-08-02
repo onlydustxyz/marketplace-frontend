@@ -1,7 +1,7 @@
 import { Notification } from "core/domain/notification/models/notification-model";
 import { NotificationInterface } from "core/domain/notification/models/notification.types";
 
-import { NEXT_ROUTER } from "constants/router";
+import { NEXT_ROUTER } from "../../../../../constants/router";
 
 export class MaintainerApplicationToReview implements NotificationInterface {
   constructor(private notification: Notification) {}
