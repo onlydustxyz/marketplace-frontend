@@ -4,10 +4,7 @@ import { NotificationInterface } from "core/domain/notification/models/notificat
 import { NEXT_ROUTER } from "constants/router";
 
 export class MaintainerApplicationToReview implements NotificationInterface {
-  private notification: Notification;
-  constructor(notification: Notification) {
-    this.notification = notification;
-  }
+  constructor(private notification: Notification) {}
 
   getId() {
     return this.notification.id;

@@ -6,6 +6,7 @@ import {
 
 import { components } from "src/__generated/api";
 
+// Get notifications
 export type GetNotificationsResponse = components["schemas"]["NotificationPageResponse"];
 
 export type GetNotificationsPortResponse = HttpStorageResponse<
@@ -16,7 +17,7 @@ export type GetNotificationsPortResponse = HttpStorageResponse<
 
 export type GetNotificationsPortParams = HttpClientParameters<object>;
 
-// NOTIFICATION COUNT
+// Get notifications count
 
 export type GetNotificationsCountResponse = components["schemas"]["NotificationCountResponse"];
 

@@ -25,7 +25,10 @@ export class NotificationClientAdapter implements NotificationStoragePort {
         tag,
       });
 
-      return new NotificationList(data);
+      return {
+        ...data,
+        ...new NotificationList(data),
+      };
     };
 
     return {

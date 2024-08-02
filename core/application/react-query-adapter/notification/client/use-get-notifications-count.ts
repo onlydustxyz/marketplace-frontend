@@ -6,7 +6,7 @@ import { GetNotificationsCountResponse } from "core/domain/notification/notifica
 
 export function useGetNotificationsCount({
   options,
-}: UseQueryFacadeParams<NotificationFacadePort["getNotifications"], GetNotificationsCountResponse>) {
+}: UseQueryFacadeParams<NotificationFacadePort["getNotificationsCount"], GetNotificationsCountResponse>) {
   const notificationStoragePort = bootstrap.getNotificationStoragePortForClient();
 
   return useQuery(

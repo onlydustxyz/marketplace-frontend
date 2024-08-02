@@ -2,10 +2,7 @@ import { Notification } from "core/domain/notification/models/notification-model
 import { NotificationInterface } from "core/domain/notification/models/notification.types";
 
 export class MaintainerCommitteeApplicationCreated implements NotificationInterface {
-  private notification: Notification;
-  constructor(notification: Notification) {
-    this.notification = notification;
-  }
+  constructor(private notification: Notification) {}
   getId() {
     return this.notification.id;
   }
