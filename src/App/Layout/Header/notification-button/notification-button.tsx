@@ -1,4 +1,5 @@
 import { NotificationReactQueryAdapter } from "core/application/react-query-adapter/notification";
+import { NotificationStatus } from "core/domain/notification/notification-constants";
 import { useState } from "react";
 
 import { NotificationItem } from "src/App/Layout/Header/notification-button/components/notification-item/notification-item";
@@ -47,7 +48,7 @@ function Trigger({
 function Content({ onClose }: { onClose: () => void }) {
   const isSm = useClientMediaQuery(`(max-width: ${viewportConfig.breakpoints.sm}px)`);
   const { data: notification } = NotificationReactQueryAdapter.client.useGetNotifications({
-    queryParams: { status: "UNREAD" },
+    queryParams: { status: NotificationStatus.UNREAD },
   });
 
   return (
@@ -77,7 +78,7 @@ export function NotificationButton() {
   const [isMobileModalOpen, setIsMobileModalOpen] = useState(false);
   const isSm = useClientMediaQuery(`(max-width: ${viewportConfig.breakpoints.sm}px)`);
   const { data: unreadNotificationCount } = NotificationReactQueryAdapter.client.useGetNotificationsCount({
-    queryParams: { status: "UNREAD" },
+    queryParams: { status: NotificationStatus.UNREAD },
   });
 
   const hasUnreadNotifications = !!unreadNotificationCount?.count;
