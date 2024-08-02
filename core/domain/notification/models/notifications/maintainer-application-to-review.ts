@@ -14,8 +14,8 @@ export class MaintainerApplicationToReview implements NotificationInterface {
     return this.notification.timestamp;
   }
 
-  getStatus() {
-    return this.notification.status;
+  isRead() {
+    return this.notification.status === "READ";
   }
 
   getTitle() {

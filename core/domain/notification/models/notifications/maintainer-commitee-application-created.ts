@@ -11,8 +11,8 @@ export class MaintainerCommitteeApplicationCreated implements NotificationInterf
     return this.notification.timestamp;
   }
 
-  getStatus() {
-    return this.notification.status;
+  isRead() {
+    return this.notification.status === "READ";
   }
   getTitle() {
     return "New committee application";

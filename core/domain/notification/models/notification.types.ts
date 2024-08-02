@@ -5,8 +5,8 @@ export type NotificationResponse = components["schemas"]["NotificationPageItemRe
 export interface NotificationInterface {
   getTitle(): string | undefined;
   getDescription(): string | undefined;
+  isRead(): boolean;
   getUrl(): string | undefined;
   getId(): NotificationResponse["id"];
   getTimestamp(): NotificationResponse["timestamp"];
-  getStatus(): NotificationResponse["status"];
 }
