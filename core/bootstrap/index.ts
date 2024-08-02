@@ -1,6 +1,7 @@
 import { BillingProfileStoragePort } from "core/domain/billing-profile/outputs/biling-profile-storage-port";
 import { HackathonStoragePort } from "core/domain/hackathon/outputs/hackathon-storage-port";
 import { LanguageStoragePort } from "core/domain/language/outputs/language-storage-port";
+import { NotificationStoragePort } from "core/domain/notification/outputs/notification-storage-port";
 import { ProjectCategoryStoragePort } from "core/domain/project-category/outputs/project-category-storage-port";
 import { ProjectStoragePort } from "core/domain/project/outputs/project-storage-port";
 import { UserStoragePort } from "core/domain/user/outputs/user-storage-port";
@@ -23,6 +24,7 @@ import { UserClientAdapter } from "core/infrastructure/marketplace-api-client-ad
 import { AuthProvider } from "core/infrastructure/marketplace-api-client-adapter/auth/auth-provider";
 import { FetchHttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/fetch-http-client/fetch-http-client";
 import { ImpersonationProvider } from "core/infrastructure/marketplace-api-client-adapter/impersonation/impersonation-provider";
+import { NotificationClientAdapterMock } from "core/infrastructure/marketplace-api-client-adapter/mock-adapters/notification-client-adapter-mock";
 
 export interface BootstrapConstructor {
   projectStoragePortForClient: ProjectStoragePort;
@@ -37,6 +39,8 @@ export interface BootstrapConstructor {
   projectCategoryStoragePortForServer: ProjectCategoryStoragePort;
   languageStoragePortForClient: LanguageStoragePort;
   languageStoragePortForServer: LanguageStoragePort;
+  notificationStoragePortForClient: NotificationStoragePort;
+  notificationStoragePortForServer: NotificationStoragePort;
   dateHelperPort: DateFacadePort;
   urlHelperPort: UrlFacadePort;
   imageHelperPort: ImageFacadePort;
@@ -60,6 +64,8 @@ export class Bootstrap {
   projectCategoryStoragePortForServer: ProjectCategoryStoragePort;
   languageStoragePortForClient: LanguageStoragePort;
   languageStoragePortForServer: LanguageStoragePort;
+  notificationStoragePortForClient: NotificationStoragePort;
+  notificationStoragePortForServer: NotificationStoragePort;
   dateHelperPort: DateFacadePort;
   urlHelperPort: UrlFacadePort;
   imageHelperPort: ImageFacadePort;
@@ -79,6 +85,8 @@ export class Bootstrap {
     this.projectCategoryStoragePortForServer = constructor.projectCategoryStoragePortForServer;
     this.languageStoragePortForClient = constructor.languageStoragePortForClient;
     this.languageStoragePortForServer = constructor.languageStoragePortForServer;
+    this.notificationStoragePortForClient = constructor.notificationStoragePortForClient;
+    this.notificationStoragePortForServer = constructor.notificationStoragePortForServer;
     this.dateHelperPort = constructor.dateHelperPort;
     this.urlHelperPort = constructor.urlHelperPort;
     this.imageHelperPort = constructor.imageHelperPort;
@@ -138,6 +146,14 @@ export class Bootstrap {
     return this.languageStoragePortForClient;
   }
 
+  getNotificationStoragePortForServer() {
+    return this.notificationStoragePortForServer;
+  }
+
+  getNotificationStoragePortForClient() {
+    return this.notificationStoragePortForClient;
+  }
+
   getUserStoragePortForServer() {
     return this.userStoragePortForServer;
   }
@@ -185,6 +201,8 @@ export class Bootstrap {
         projectCategoryStoragePortForServer: new ProjectCategoryClientAdapter(new FetchHttpClient()),
         languageStoragePortForClient: new LanguageClientAdapter(new FetchHttpClient()),
         languageStoragePortForServer: new LanguageClientAdapter(new FetchHttpClient()),
+        notificationStoragePortForClient: new NotificationClientAdapterMock(),
+        notificationStoragePortForServer: new NotificationClientAdapterMock(),
         dateHelperPort: DateFnsAdapter,
         urlHelperPort: UrlAdapter,
         imageHelperPort: new ImageAdapter(),
