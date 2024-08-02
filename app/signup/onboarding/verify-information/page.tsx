@@ -5,10 +5,7 @@ import { UserReactQueryAdapter } from "core/application/react-query-adapter/user
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 import { UserProfile } from "core/domain/user/models/user-profile-model";
 import { UserJoiningReason, UserProfileContactChannel } from "core/domain/user/models/user.types";
-import {
-  LOCAL_STORAGE_JOINING_REASON_KEY,
-  USER_PROFILE_JOINING_REASON_CONTRIBUTOR,
-} from "core/domain/user/user-constants";
+import { LOCAL_STORAGE_JOINING_REASON_KEY, USER_PROFILE_JOINING_REASON } from "core/domain/user/user-constants";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -88,7 +85,7 @@ export default function VerifyInformationPage() {
       if (UserProfile.isValidJoiningReason(joiningReason)) {
         setMyProfileVariables.joiningReason = joiningReason;
       } else {
-        setMyProfileVariables.joiningReason = USER_PROFILE_JOINING_REASON_CONTRIBUTOR;
+        setMyProfileVariables.joiningReason = USER_PROFILE_JOINING_REASON.CONTRIBUTOR;
       }
     }
 

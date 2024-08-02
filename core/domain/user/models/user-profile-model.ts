@@ -1,9 +1,5 @@
 import { UserJoiningReason, UserProfileContact, UserProfileContactChannel } from "core/domain/user/models/user.types";
-import {
-  USER_PROFILE_JOINING_REASON_CONTRIBUTOR,
-  USER_PROFILE_JOINING_REASON_MAINTAINER,
-  USER_PROFILE_JOINING_REASON_SPONSOR,
-} from "core/domain/user/user-constants";
+import { USER_PROFILE_JOINING_REASON } from "core/domain/user/user-constants";
 
 import { components } from "src/__generated/api";
 
@@ -79,13 +75,13 @@ export class UserProfile implements UserProfileInterface {
 
   static isValidJoiningReason(joiningReason?: string): joiningReason is UserJoiningReason {
     return (
-      joiningReason === USER_PROFILE_JOINING_REASON_CONTRIBUTOR ||
-      joiningReason === USER_PROFILE_JOINING_REASON_MAINTAINER ||
-      joiningReason === USER_PROFILE_JOINING_REASON_SPONSOR
+      joiningReason === USER_PROFILE_JOINING_REASON.CONTRIBUTOR ||
+      joiningReason === USER_PROFILE_JOINING_REASON.MAINTAINER ||
+      joiningReason === USER_PROFILE_JOINING_REASON.SPONSOR
     );
   }
 
   isMaintainer() {
-    return this.joiningReason === USER_PROFILE_JOINING_REASON_MAINTAINER;
+    return this.joiningReason === USER_PROFILE_JOINING_REASON.MAINTAINER;
   }
 }
