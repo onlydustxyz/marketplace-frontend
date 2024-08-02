@@ -64,6 +64,9 @@ export function ProjectRecommendationContextProvider({ children }: TProjectRecom
     if (userProfile) {
       form.reset({
         isLookingForAJob: userProfile.isLookingForAJob,
+        preferredCategories: userProfile.preferredCategories?.map(category => category.id) || [],
+        preferredLanguages: userProfile.preferredLanguages?.map(language => language.id) || [],
+        joiningGoal: userProfile.joiningGoal,
       });
     }
   }, [userProfile]);

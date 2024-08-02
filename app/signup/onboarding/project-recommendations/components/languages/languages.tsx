@@ -41,6 +41,7 @@ export function Languages() {
           <div className="flex w-full flex-row flex-wrap gap-2">
             {languages.map(language => (
               <CheckboxButton
+                value={(value || []).includes(language.id)}
                 key={language.id}
                 onChange={(checked: boolean) => onLanguageChange(value, language.id, checked)}
               >

@@ -42,6 +42,7 @@ export function Categories() {
           <div className="flex w-full flex-row flex-wrap gap-2">
             {categories.map(category => (
               <CheckboxButton
+                value={(value || []).includes(category.id)}
                 key={category.id}
                 onChange={(checked: boolean) => onCategoryChange(value, category.id, checked)}
               >
