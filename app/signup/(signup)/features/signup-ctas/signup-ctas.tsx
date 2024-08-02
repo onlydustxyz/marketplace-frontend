@@ -3,15 +3,22 @@
 import { Auth0ClientAdapter } from "core/application/auth0-client-adapter";
 import { bootstrap } from "core/bootstrap";
 import { UserJoiningReason } from "core/domain/user/models/user.types";
+import { LOCAL_STORAGE_JOINING_REASON_KEY } from "core/domain/user/user-constants";
+import { useLocalStorage } from "react-use";
 
 import { Cta } from "../../components/cta/cta";
 
 export function SignupCtas() {
-  function handleSignin(joiningReason: NonNullable<UserJoiningReason>) {
+  const [, setJoiningReason] = useLocalStorage<UserJoiningReason>(LOCAL_STORAGE_JOINING_REASON_KEY);
+
+  function handleSignup(joiningReason: NonNullable<UserJoiningReason>) {
     const { loginWithRedirect } = bootstrap.getAuthProvider() ?? {};
 
-    if (loginWithRedirect)
-      Auth0ClientAdapter.helpers.handleLoginWithRedirect(loginWithRedirect, { queryParam: { joiningReason } });
+    if (loginWithRedirect) {
+      setJoiningReason(joiningReason);
+
+      Auth0ClientAdapter.helpers.handleLoginWithRedirect(loginWithRedirect);
+    }
   }
 
   return (
@@ -27,7 +34,7 @@ export function SignupCtas() {
           as: "button",
           htmlProps: {
             type: "button",
-            onClick: () => handleSignin("CONTRIBUTOR"),
+            onClick: () => handleSignup("CONTRIBUTOR"),
           },
         }}
       />
@@ -42,7 +49,7 @@ export function SignupCtas() {
           as: "button",
           htmlProps: {
             type: "button",
-            onClick: () => handleSignin("MAINTAINER"),
+            onClick: () => handleSignup("MAINTAINER"),
           },
         }}
       />
@@ -58,7 +65,7 @@ export function SignupCtas() {
           // as: "button",
           // htmlProps: {
           //   type: "button",
-          //   onClick: () => handleSignin("sponsor"),
+          //   onClick: () => handleSignup("SPONSOR"),
           // },
           classNames: { base: "opacity-50" },
         }}
