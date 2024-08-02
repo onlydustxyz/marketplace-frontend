@@ -1,17 +1,17 @@
+import { NotificationInterface } from "core/domain/notification/models/notification.types";
 import {
   HttpClientParameters,
   HttpStorageResponse,
 } from "core/infrastructure/marketplace-api-client-adapter/http/http-client/http-client.types";
 
-// export type GetNotificationResponse = components["schemas"]["NotificationResponse"];
-export type GetNotificationsResponse = {
-  notifications: {
-    id: string;
-    timestamp: string;
-    status: "READ" | "UNREAD";
-  }[];
-};
+import { components } from "src/__generated/api";
 
-export type GetNotificationsPortResponse = HttpStorageResponse<GetNotificationsResponse>;
+export type GetNotificationsResponse = components["schemas"]["NotificationPageResponse"];
+
+export type GetNotificationsPortResponse = HttpStorageResponse<
+  Omit<GetNotificationsResponse, "notifications"> & {
+    notifications: NotificationInterface[];
+  }
+>;
 
 export type GetNotificationsPortParams = HttpClientParameters<object>;

@@ -1,16 +1,11 @@
-// export type NotificationResponse = components["schemas"]["NotificationResponse"];
-export type NotificationResponse = {
-  id: string;
-  timestamp: string;
-  status: "READ" | "UNREAD";
-};
+import { NotificationResponse } from "core/domain/notification/models/notification.types";
 
-export interface NotificationInterface extends NotificationResponse {}
-
-export class Notification implements NotificationInterface {
+export class Notification implements NotificationResponse {
   id!: NotificationResponse["id"];
   timestamp!: NotificationResponse["timestamp"];
   status!: NotificationResponse["status"];
+  type!: NotificationResponse["type"];
+  data!: NotificationResponse["data"];
   constructor(props: NotificationResponse) {
     Object.assign(this, props);
   }

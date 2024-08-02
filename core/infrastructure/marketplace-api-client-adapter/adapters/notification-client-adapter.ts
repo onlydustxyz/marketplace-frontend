@@ -8,6 +8,7 @@ export class NotificationClientAdapter implements NotificationStoragePort {
 
   routes = {
     getNotifications: "me/notifications",
+    getNotificationsCount: "me/notifications/count",
   } as const;
 
   getNotifications = () => {
@@ -22,6 +23,24 @@ export class NotificationClientAdapter implements NotificationStoragePort {
       });
 
       return new NotificationList(data);
+    };
+
+    return {
+      request,
+      tag,
+    };
+  };
+
+  getNotificationsCount = () => {
+    const path = this.routes["getNotificationsCount"];
+    const method = "GET";
+    const tag = HttpClient.buildTag({ path });
+    const request = async () => {
+      return this.client.request<GetNotificationsResponse>({
+        path,
+        method,
+        tag,
+      });
     };
 
     return {
