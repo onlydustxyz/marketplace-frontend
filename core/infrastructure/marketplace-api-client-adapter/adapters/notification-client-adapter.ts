@@ -1,4 +1,4 @@
-import { NotificationList } from "core/domain/notification/models/notification-list-model";
+import { NotificationFactory } from "core/domain/notification/models/notification-model-factory";
 import {
   GetNotificationsCountResponse,
   GetNotificationsResponse,
@@ -27,7 +27,7 @@ export class NotificationClientAdapter implements NotificationStoragePort {
 
       return {
         ...data,
-        ...new NotificationList(data),
+        notifications: data.notifications.map(notification => NotificationFactory.createNotification(notification)),
       };
     };
 
