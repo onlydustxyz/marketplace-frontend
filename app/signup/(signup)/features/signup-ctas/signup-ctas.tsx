@@ -3,7 +3,11 @@
 import { Auth0ClientAdapter } from "core/application/auth0-client-adapter";
 import { bootstrap } from "core/bootstrap";
 import { UserJoiningReason } from "core/domain/user/models/user.types";
-import { LOCAL_STORAGE_JOINING_REASON_KEY } from "core/domain/user/user-constants";
+import {
+  LOCAL_STORAGE_JOINING_REASON_KEY,
+  USER_PROFILE_JOINING_REASON_CONTRIBUTOR,
+  USER_PROFILE_JOINING_REASON_MAINTAINER,
+} from "core/domain/user/user-constants";
 import { useLocalStorage } from "react-use";
 
 import { Cta } from "../../components/cta/cta";
@@ -34,7 +38,7 @@ export function SignupCtas() {
           as: "button",
           htmlProps: {
             type: "button",
-            onClick: () => handleSignup("CONTRIBUTOR"),
+            onClick: () => handleSignup(USER_PROFILE_JOINING_REASON_CONTRIBUTOR),
           },
         }}
       />
@@ -49,7 +53,7 @@ export function SignupCtas() {
           as: "button",
           htmlProps: {
             type: "button",
-            onClick: () => handleSignup("MAINTAINER"),
+            onClick: () => handleSignup(USER_PROFILE_JOINING_REASON_MAINTAINER),
           },
         }}
       />
@@ -65,7 +69,7 @@ export function SignupCtas() {
           // as: "button",
           // htmlProps: {
           //   type: "button",
-          //   onClick: () => handleSignup("SPONSOR"),
+          //   onClick: () => handleSignup(USER_PROFILE_JOINING_REASON_SPONSOR),
           // },
           classNames: { base: "opacity-50" },
         }}
