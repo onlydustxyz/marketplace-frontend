@@ -1,4 +1,5 @@
 import { BurgerMenu } from "src/App/Layout/Header/ProfileButton/burger-menu";
+import { NotificationButton } from "src/App/Layout/Header/notification-button/notification-button";
 import SkeletonEl from "src/components/New/Skeleton/Skeleton";
 
 import ProfileButton from ".";
@@ -17,6 +18,7 @@ export function ProfileButtonDisplay({ isLoading, isAuthenticated }: ProfileButt
     if (isAuthenticated) {
       return (
         <div className="flex flex-row items-center justify-end gap-2">
+          {process.env.NEXT_PUBLIC_NOTIFICATIONS_ENABLED === "true" ? <NotificationButton /> : null}
           <ProfileButton />
           <BurgerMenu />
         </div>
