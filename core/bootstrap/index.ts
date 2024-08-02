@@ -18,13 +18,13 @@ import { UrlFacadePort } from "core/helpers/url/url-facade-port";
 import { BillingProfileClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/billing-profile-client-adapter";
 import { HackathonClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/hackathon-client-adapter";
 import { LanguageClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/language-client-adapter";
-import { NotificationClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/notification-client-adapter";
 import { ProjectCategoryClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/project-category-client-adapter";
 import { ProjectClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/project-client-adapter";
 import { UserClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/user-client-adapter";
 import { AuthProvider } from "core/infrastructure/marketplace-api-client-adapter/auth/auth-provider";
 import { FetchHttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/fetch-http-client/fetch-http-client";
 import { ImpersonationProvider } from "core/infrastructure/marketplace-api-client-adapter/impersonation/impersonation-provider";
+import { NotificationClientAdapterMock } from "core/infrastructure/marketplace-api-client-adapter/mock-adapters/notification-client-adapter-mock";
 
 export interface BootstrapConstructor {
   projectStoragePortForClient: ProjectStoragePort;
@@ -201,8 +201,8 @@ export class Bootstrap {
         projectCategoryStoragePortForServer: new ProjectCategoryClientAdapter(new FetchHttpClient()),
         languageStoragePortForClient: new LanguageClientAdapter(new FetchHttpClient()),
         languageStoragePortForServer: new LanguageClientAdapter(new FetchHttpClient()),
-        notificationStoragePortForClient: new NotificationClientAdapter(new FetchHttpClient()),
-        notificationStoragePortForServer: new NotificationClientAdapter(new FetchHttpClient()),
+        notificationStoragePortForClient: new NotificationClientAdapterMock(),
+        notificationStoragePortForServer: new NotificationClientAdapterMock(),
         dateHelperPort: DateFnsAdapter,
         urlHelperPort: UrlAdapter,
         imageHelperPort: new ImageAdapter(),
