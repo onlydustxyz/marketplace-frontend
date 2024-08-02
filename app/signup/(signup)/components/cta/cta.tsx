@@ -9,10 +9,10 @@ import { Icon } from "components/layout/icon/icon";
 
 import { TCta } from "./cta.types";
 
-export function Cta({ title, subtitle, iconProps, wrapperProps = {} }: TCta.Props) {
+export function Cta({ title, subtitle, iconProps: _, wrapperProps = {} }: TCta.Props) {
   const { isLoading } = useOnboarding();
 
-  const { className: iconClassName, ...restIconProps } = iconProps;
+  //const { className: iconClassName, ...restIconProps } = iconProps;
   const { classNames: wrapperClassNames, ...restWrapperProps } = wrapperProps;
 
   return (
@@ -27,14 +27,14 @@ export function Cta({ title, subtitle, iconProps, wrapperProps = {} }: TCta.Prop
       {...restWrapperProps}
     >
       <div className={"flex items-center gap-3"}>
-        <Icon
-          size={24}
-          className={cn(
-            "flex h-16 w-16 min-w-16 items-center justify-center rounded-lg border border-container-stroke-separator",
-            iconClassName
-          )}
-          {...restIconProps}
-        />
+        {/*<Icon*/}
+        {/*  size={24}*/}
+        {/*  className={cn(*/}
+        {/*    "flex h-16 w-16 min-w-16 items-center justify-center rounded-lg border border-container-stroke-separator",*/}
+        {/*    iconClassName*/}
+        {/*  )}*/}
+        {/*  {...restIconProps}*/}
+        {/*/>*/}
 
         <div className={"grid"}>
           <Typo
