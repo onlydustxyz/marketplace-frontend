@@ -1,4 +1,5 @@
-import { UserProfileContact, UserProfileContactChannel } from "core/domain/user/models/user.types";
+import { UserJoiningReason, UserProfileContact, UserProfileContactChannel } from "core/domain/user/models/user.types";
+import { USER_PROFILE_JOINING_REASON } from "core/domain/user/user-constants";
 
 import { components } from "src/__generated/api";
 
@@ -72,11 +73,15 @@ export class UserProfile implements UserProfileInterface {
     return { channel, contact: this.sanitizeChannelContact(contact), visibility };
   }
 
-  static isValidJoiningReason(joiningReason?: string) {
-    return joiningReason === "CONTRIBUTOR" || joiningReason === "MAINTAINER" || joiningReason === "SPONSOR";
+  static isValidJoiningReason(joiningReason?: string): joiningReason is UserJoiningReason {
+    return (
+      joiningReason === USER_PROFILE_JOINING_REASON.CONTRIBUTOR ||
+      joiningReason === USER_PROFILE_JOINING_REASON.MAINTAINER ||
+      joiningReason === USER_PROFILE_JOINING_REASON.SPONSOR
+    );
   }
 
   isMaintainer() {
-    return this.joiningReason === "MAINTAINER";
+    return this.joiningReason === USER_PROFILE_JOINING_REASON.MAINTAINER;
   }
 }

@@ -4,10 +4,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 import { UserProfile } from "core/domain/user/models/user-profile-model";
-import { UserProfileContactChannel } from "core/domain/user/models/user.types";
+import { UserJoiningReason, UserProfileContactChannel } from "core/domain/user/models/user.types";
+import { LOCAL_STORAGE_JOINING_REASON_KEY, USER_PROFILE_JOINING_REASON } from "core/domain/user/user-constants";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useLocalStorage } from "react-use";
 
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
 import { StepHeader } from "app/signup/components/step-header/step-header";
@@ -30,6 +32,8 @@ import { useIntl } from "hooks/translate/use-translate";
 export default function VerifyInformationPage() {
   const { T } = useIntl();
   const router = useRouter();
+  const [joiningReason, setJoiningReason] = useLocalStorage<UserJoiningReason>(LOCAL_STORAGE_JOINING_REASON_KEY);
+
   const {
     clientBootstrap: { authProvider },
   } = useClientBootstrapContext();
@@ -79,23 +83,32 @@ export default function VerifyInformationPage() {
   async function handleSetMyProfile(data: TVerifyInformation.form) {
     if (!userProfile) return;
 
-    if (data.telegram) {
-      await setMyProfile({
-        contactEmail: data.email,
-        contacts: [
-          ...(userProfile.contacts?.filter(c => c.channel !== UserProfileContactChannel.telegram) ?? []),
-          UserProfile.buildContact({
-            channel: UserProfileContactChannel.telegram,
-            contact: data.telegram,
-            visibility: userProfile?.getContactTelegram()?.visibility,
-          }),
-        ],
-      });
-    } else {
-      await setMyProfile({
-        contactEmail: data.email,
-      });
+    const setMyProfileVariables: Parameters<typeof setMyProfile>[0] = {
+      contactEmail: data.email,
+    };
+
+    if (!userProfile.joiningReason) {
+      if (UserProfile.isValidJoiningReason(joiningReason)) {
+        setMyProfileVariables.joiningReason = joiningReason;
+      } else {
+        setMyProfileVariables.joiningReason = USER_PROFILE_JOINING_REASON.CONTRIBUTOR;
+      }
     }
+
+    if (data.telegram) {
+      setMyProfileVariables.contacts = [
+        ...(userProfile.contacts?.filter(c => c.channel !== UserProfileContactChannel.telegram) ?? []),
+        UserProfile.buildContact({
+          channel: UserProfileContactChannel.telegram,
+          contact: data.telegram,
+          visibility: userProfile?.getContactTelegram()?.visibility,
+        }),
+      ];
+    }
+
+    await setMyProfile(setMyProfileVariables);
+
+    setJoiningReason(undefined);
   }
 
   const renderFooter = useMemo(() => {
