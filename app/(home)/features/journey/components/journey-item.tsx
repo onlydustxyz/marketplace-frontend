@@ -28,7 +28,7 @@ export function JourneyItem({ stepName, completion }: TJourney.JourneyItemProps)
           <div className="flex-1">
             <Typography translate={{ token: `v2.pages.home.journey.steps.${stepName}.title` }} variant="body-m" />
             <Typography
-              translate={{ token: `v2.pages.home.journey.steps.${stepName}.description` }}
+              translate={{ token: `v2.pages.home.journey.steps.${stepName}.content` }}
               variant="body-s"
               className="text-spaceBlue-200"
             />
@@ -46,7 +46,7 @@ export function JourneyItem({ stepName, completion }: TJourney.JourneyItemProps)
         <div className="flex-1">
           <Typography translate={{ token: `v2.pages.home.journey.steps.${stepName}.title` }} variant="body-m" />
           <Typography
-            translate={{ token: `v2.pages.home.journey.steps.${stepName}.description` }}
+            translate={{ token: `v2.pages.home.journey.steps.${stepName}.content` }}
             variant="body-s"
             className="text-spaceBlue-200"
           />
