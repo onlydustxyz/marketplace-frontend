@@ -5,5 +5,3 @@ export const NotificationStatus: { [key in status]: key } = {
   READ: "READ",
   UNREAD: "UNREAD",
 };
-
-export type NotificationStatusUnion = keyof typeof NotificationStatus;
