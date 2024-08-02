@@ -59,7 +59,7 @@ export default function PayoutInformationPage() {
 
   const renderFooter = useMemo(() => {
     return (
-      <div className="flex justify-end gap-1">
+      <div className="flex justify-end gap-2">
         <Button
           variant="secondary-light"
           size="l"
