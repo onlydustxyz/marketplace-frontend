@@ -1,5 +1,8 @@
 import { NotificationList } from "core/domain/notification/models/notification-list-model";
-import { GetNotificationsResponse } from "core/domain/notification/notification-contract.types";
+import {
+  GetNotificationsCountResponse,
+  GetNotificationsResponse,
+} from "core/domain/notification/notification-contract.types";
 import { NotificationStoragePort } from "core/domain/notification/outputs/notification-storage-port";
 import { HttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/http-client/http-client";
 
@@ -36,7 +39,7 @@ export class NotificationClientAdapter implements NotificationStoragePort {
     const method = "GET";
     const tag = HttpClient.buildTag({ path });
     const request = async () => {
-      return this.client.request<GetNotificationsResponse>({
+      return this.client.request<GetNotificationsCountResponse>({
         path,
         method,
         tag,

@@ -15,3 +15,11 @@ export type GetNotificationsPortResponse = HttpStorageResponse<
 >;
 
 export type GetNotificationsPortParams = HttpClientParameters<object>;
+
+// NOTIFICATION COUNT
+
+export type GetNotificationsCountResponse = components["schemas"]["NotificationCountResponse"];
+
+export type GetNotificationsCountPortResponse = HttpStorageResponse<GetNotificationsCountResponse>;
+
+export type GetNotificationsCountPortParams = HttpClientParameters<object>;
