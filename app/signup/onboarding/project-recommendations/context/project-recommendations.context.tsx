@@ -9,6 +9,8 @@ import { useRouter } from "next/navigation";
 import { createContext, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
+import { sanitizeData } from "app/signup/onboarding/onboarding.utils";
+
 import { toast } from "components/atoms/toaster";
 import { Translate } from "components/layout/translate/translate";
 
@@ -70,8 +72,10 @@ export function ProjectRecommendationContextProvider({ children }: TProjectRecom
 
   async function onSubmit(data: TProjectRecommendationContext.form) {
     await setMyProfile({
-      ...data,
-      joiningGoal: data.joiningGoal as TProjectRecommendationContext.Goal,
+      ...sanitizeData("joiningGoal", data.joiningGoal),
+      ...sanitizeData("isLookingForAJob", data.isLookingForAJob),
+      ...sanitizeData("preferredCategories", data.preferredCategories),
+      ...sanitizeData("preferredLanguages", data.preferredLanguages),
     });
   }
 

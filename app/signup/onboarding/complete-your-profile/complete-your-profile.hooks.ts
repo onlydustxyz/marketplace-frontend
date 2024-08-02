@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { TCompleteYourProfile } from "app/signup/onboarding/complete-your-profile/complete-your-profile.types";
+import { sanitizeData } from "app/signup/onboarding/onboarding.utils";
 
 import { toast } from "components/atoms/toaster";
 
@@ -69,14 +70,14 @@ export function useCompleteYourProfile() {
 
     await setMyProfile({
       avatarUrl: userProfile.avatarUrl,
-      location: values.location,
-      bio: values.bio,
-      website: values.website,
       contacts: userProfile.contacts,
       allocatedTimeToContribute: userProfile.allocatedTimeToContribute,
       isLookingForAJob: userProfile.isLookingForAJob,
-      firstName: values.firstName,
-      lastName: values.lastName,
+      ...sanitizeData("firstName", values.firstName),
+      ...sanitizeData("lastName", values.lastName),
+      ...sanitizeData("location", values.location),
+      ...sanitizeData("bio", values.bio),
+      ...sanitizeData("website", values.website),
     });
   }
 
