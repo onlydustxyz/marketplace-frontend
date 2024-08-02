@@ -46,6 +46,7 @@ export function ProjectRecommendationContextProvider({ children }: TProjectRecom
     resolver: zodResolver(TProjectRecommendationContext.validation),
     defaultValues: {
       preferredCategories: [],
+      preferredLanguages: [],
       isLookingForAJob: false,
     },
   });
@@ -65,7 +66,7 @@ export function ProjectRecommendationContextProvider({ children }: TProjectRecom
   useEffect(() => {
     if (userProfile) {
       form.reset({
-        isLookingForAJob: userProfile.isLookingForAJob,
+        isLookingForAJob: userProfile.isLookingForAJob || false,
         preferredCategories: userProfile.preferredCategories?.map(category => category.id) || [],
         preferredLanguages: userProfile.preferredLanguages?.map(language => language.id) || [],
         joiningGoal: userProfile.joiningGoal,
