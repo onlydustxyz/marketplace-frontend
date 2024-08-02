@@ -19,15 +19,21 @@ export type RegisterToHackathonPortParams = HttpClientParameters<{
 
 export type RegisterToHackathonPortResponse = HttpStorageResponse;
 
+/* --------------------------------- Replace my profile -------------------------------- */
+
+export type ReplaceMyProfileBody = components["schemas"]["UserProfileUpdateRequest"];
+
+export type ReplaceMyProfilePortParams = HttpClientParameters<object>;
+
+export type ReplaceMyProfilePortResponse = HttpStorageResponse<never, ReplaceMyProfileBody>;
+
 /* --------------------------------- Set my profile -------------------------------- */
 
 export type SetMyProfileBody = components["schemas"]["UserProfileUpdateRequest"];
 
-export type SetMyProfileResponse = components["schemas"]["PrivateUserProfileResponse"];
-
 export type SetMyProfilePortParams = HttpClientParameters<object>;
 
-export type SetMyProfilePortResponse = HttpStorageResponse<UserProfileInterface, SetMyProfileBody>;
+export type SetMyProfilePortResponse = HttpStorageResponse<never, SetMyProfileBody>;
 
 /* --------------------------------- Get my profile -------------------------------- */
 

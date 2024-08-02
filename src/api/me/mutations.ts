@@ -1,5 +1,4 @@
 import { bootstrap } from "core/bootstrap";
-import { revalidateNextJsPath } from "core/infrastructure/marketplace-api-client-adapter/helpers/revalidate-nextjs-path";
 
 import { components } from "src/__generated/api";
 import { BILLING_PROFILES_TAGS } from "src/api/BillingProfiles/tags";
@@ -86,27 +85,6 @@ const useApplyProject = ({
   });
 };
 
-export type UseUpdateProfileBody = components["schemas"]["UserProfileUpdateRequest"];
-export type UseUpdateProfileResponse = components["schemas"]["PrivateUserProfileResponse"];
-
-const useUpdateProfile = ({ options = {} }: UseMutationProps<UseUpdateProfileResponse, UseUpdateProfileBody>) => {
-  const userStoragePort = bootstrap.getUserStoragePortForClient();
-
-  return useBaseMutation<UseUpdateProfileBody, UseUpdateProfileResponse>({
-    resourcePath: ME_PATH.PROFILE,
-    invalidatesTags: [
-      { queryKey: MeApi.tags.all, exact: false },
-      {
-        queryKey: userStoragePort.getMyOnboarding({}).tag,
-        exact: false,
-      },
-    ],
-    onSuccess: () => revalidateNextJsPath("/u/[githubLogin]", "page"),
-    method: "PATCH",
-    ...options,
-  });
-};
-
 const useUploadProfilePicture = ({ options = {} }: UseUploaderProps<{ url: string }, undefined>) => {
   return useBaseUploader<{ url: string }>({
     resourcePath: ME_PATH.PROFILE_PICTURE,
@@ -149,7 +127,6 @@ export default {
   usePayoutSettings,
   useApplyProject,
   useUpdateMe,
-  useUpdateProfile,
   useUploadProfilePicture,
   useMarkInvoicesAsReceived,
   useUpdatePayoutPreferences,

@@ -2,6 +2,7 @@
 
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -90,7 +91,7 @@ function SettingsProfilePage() {
     mutate: updateUserProfileInfo,
     isPending: userProfilInformationIsPending,
     ...restUpdateProfileMutation
-  } = MeApi.mutations.useUpdateProfile({});
+  } = UserReactQueryAdapter.client.useReplaceMyProfile({});
 
   useMutationAlert({
     mutation: restUpdateProfileMutation,

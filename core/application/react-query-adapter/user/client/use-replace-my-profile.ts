@@ -6,20 +6,25 @@ import {
 import { bootstrap } from "core/bootstrap";
 import { UserFacadePort } from "core/domain/user/inputs/user-facade-port";
 import { UserProfileInterface } from "core/domain/user/models/user-profile-model";
-import { SetMyProfileBody } from "core/domain/user/user-contract.types";
+import { ReplaceMyProfileBody } from "core/domain/user/user-contract.types";
 import { revalidateNextJsPath } from "core/infrastructure/marketplace-api-client-adapter/helpers/revalidate-nextjs-path";
 
 import MeApi from "src/api/me";
 
-export function useSetMyProfile({
+export function useReplaceMyProfile({
   options,
-}: UseMutationFacadeParams<UserFacadePort["setMyProfile"], undefined, UserProfileInterface, SetMyProfileBody> = {}) {
+}: UseMutationFacadeParams<
+  UserFacadePort["replaceMyProfile"],
+  undefined,
+  UserProfileInterface,
+  ReplaceMyProfileBody
+> = {}) {
   const userStoragePort = bootstrap.getUserStoragePortForClient();
   const queryClient = useQueryClient();
 
   return useMutation(
     useMutationAdapter({
-      ...userStoragePort.setMyProfile({}),
+      ...userStoragePort.replaceMyProfile({}),
       options: {
         ...options,
         onSuccess: async (data, variables, context) => {
