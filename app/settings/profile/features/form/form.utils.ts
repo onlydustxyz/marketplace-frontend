@@ -83,13 +83,13 @@ export function formatToSchema(data: TProfileForm.Data) {
   } = data;
 
   return {
-    firstName,
-    lastName,
-    avatarUrl,
-    location,
-    contactEmail,
-    bio,
-    website,
+    firstName: firstName || undefined,
+    lastName: lastName || undefined,
+    avatarUrl: avatarUrl || undefined,
+    location: location || undefined,
+    contactEmail: contactEmail || undefined,
+    bio: bio || undefined,
+    website: website || undefined,
     contacts: [
       createContact({
         channel: "TELEGRAM",

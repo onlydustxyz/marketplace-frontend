@@ -11,6 +11,8 @@ import {
   GetMyProfilePortResponse,
   RegisterToHackathonPortParams,
   RegisterToHackathonPortResponse,
+  ReplaceMyProfilePortParams,
+  ReplaceMyProfilePortResponse,
   SetMePortParams,
   SetMePortResponse,
   SetMyNotificationSettingsPortParams,
@@ -22,6 +24,7 @@ import {
 export interface UserStoragePort {
   routes: Record<string, string>;
   registerToHackathon(params: RegisterToHackathonPortParams): RegisterToHackathonPortResponse;
+  replaceMyProfile(params: ReplaceMyProfilePortParams): ReplaceMyProfilePortResponse;
   setMyProfile(params: SetMyProfilePortParams): SetMyProfilePortResponse;
   getMyProfile(params: GetMyProfilePortParams): GetMyProfilePortResponse;
   getMyNotificationSettings(params: GetMyNotificationSettingsPortParams): GetMyNotificationSettingsPortResponse;

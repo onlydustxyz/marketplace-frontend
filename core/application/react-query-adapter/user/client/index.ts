@@ -6,3 +6,4 @@ export * from "./use-set-me";
 export * from "./use-set-my-notifications-settings";
 export * from "./use-set-my-profile";
 export * from "./use-get-my-onboarding";
+export * from "./use-replace-my-profile";

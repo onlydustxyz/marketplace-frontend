@@ -10,10 +10,10 @@ import {
   GetMyNotificationSettingsResponse,
   GetMyOnboardingResponse,
   GetMyProfileResponse,
+  ReplaceMyProfileBody,
   SetMeBody,
   SetMyNotificationSettingsBody,
   SetMyProfileBody,
-  SetMyProfileResponse,
 } from "core/domain/user/user-contract.types";
 import { FirstParameter } from "core/helpers/types";
 import { HttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/http-client/http-client";
@@ -23,6 +23,7 @@ export class UserClientAdapter implements UserStoragePort {
 
   routes = {
     registerToHackathon: "me/hackathons/:hackathonId/registrations",
+    replaceMyProfile: "me/profile",
     setMyProfile: "me/profile",
     getMyProfile: "me/profile",
     setMyNotificationSettings: "me/notification-settings/projects/:projectId",
@@ -52,21 +53,37 @@ export class UserClientAdapter implements UserStoragePort {
     };
   };
 
-  setMyProfile = () => {
-    const path = this.routes["setMyProfile"];
-    const method = "PATCH";
+  replaceMyProfile = () => {
+    const path = this.routes["replaceMyProfile"];
+    const method = "PUT";
     const tag = HttpClient.buildTag({ path });
 
-    const request = async (body: SetMyProfileBody) => {
-      const data = await this.client.request<SetMyProfileResponse>({
+    const request = async (body: ReplaceMyProfileBody) =>
+      this.client.request<never>({
         path,
         method,
         tag,
         body: JSON.stringify(body),
       });
 
-      return new UserProfile(data);
+    return {
+      request,
+      tag,
     };
+  };
+
+  setMyProfile = () => {
+    const path = this.routes["setMyProfile"];
+    const method = "PATCH";
+    const tag = HttpClient.buildTag({ path });
+
+    const request = async (body: SetMyProfileBody) =>
+      this.client.request<never>({
+        path,
+        method,
+        tag,
+        body: JSON.stringify(body),
+      });
 
     return {
       request,
