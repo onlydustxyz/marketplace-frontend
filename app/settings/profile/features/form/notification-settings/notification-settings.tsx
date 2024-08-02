@@ -12,11 +12,7 @@ export function NotificationSettings() {
     <Card background="base">
       <Flex direction="col" className="flex-1 gap-3">
         <Flex direction="col" className="flex-1 gap-1">
-          <Typography
-            variant="body-s-bold"
-            className="text-spaceBlue-200"
-            translate={{ token: "v2.pages.settings.profile.notificationSettings.title" }}
-          />
+          <Typography variant="title-s" translate={{ token: "v2.pages.settings.profile.notificationSettings.title" }} />
           <Typography
             variant="body-s"
             className="text-spaceBlue-200"
