@@ -9,6 +9,7 @@ export interface UserOnboardingInterface extends UserOnboardingResponse {
   shouldGoToOnboarding(isOnOnboardingPage: boolean): boolean;
   shouldGoToOnboardingVerifyInformation(): boolean;
   shouldGoToOnboardingTermsAndConditions(): boolean;
+  shouldGoToTermsAndConditions(isLegalNoticePage: boolean): boolean;
 }
 
 export class UserOnboarding implements UserOnboardingInterface {
@@ -52,5 +53,9 @@ export class UserOnboarding implements UserOnboardingInterface {
 
   shouldGoToOnboardingTermsAndConditions() {
     return !this.termsAndConditionsAccepted;
+  }
+
+  shouldGoToTermsAndConditions(isLegalNoticePage: boolean) {
+    return this.completed && !this.termsAndConditionsAccepted && !isLegalNoticePage;
   }
 }

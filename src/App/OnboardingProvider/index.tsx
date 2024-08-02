@@ -23,6 +23,7 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
   const searchParams = useSearchParams();
   const isSignup = useMatchPath(NEXT_ROUTER.signup.root);
   const isOnboarding = useMatchPath(NEXT_ROUTER.signup.onboarding.root, { exact: false });
+  const isLegalNotice = useMatchPath(NEXT_ROUTER.legalNotice.root, { exact: false });
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -76,6 +77,12 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
         return;
       }
 
+      // The case when the terms and conditions have been updated and the user has not yet accepted
+      if (userOnboarding.shouldGoToTermsAndConditions(isLegalNotice)) {
+        router.push(NEXT_ROUTER.legalNotice.root);
+        return;
+      }
+
       if (userOnboarding.shouldGoToHome(isSignup)) {
         router.push(NEXT_ROUTER.home.all);
         return;
@@ -91,6 +98,7 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
     searchParams,
     isSignup,
     isOnboarding,
+    isLegalNotice,
   ]);
 
   return <OnboardingContext.Provider value={{ isLoading }}>{children}</OnboardingContext.Provider>;
