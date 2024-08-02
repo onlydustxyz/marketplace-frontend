@@ -1,6 +1,6 @@
 "use client";
 
-import { meApiClient } from "api-client/resources/me";
+import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { useMemo } from "react";
 
 import { JourneyItem } from "app/(home)/features/journey/components/journey-item";
@@ -15,7 +15,7 @@ import { Section } from "components/layout/section/section";
 import { Typography } from "components/layout/typography/typography";
 
 export function JourneyPrivate() {
-  const { data, isLoading } = meApiClient.queries.useGetMyOnboarding({});
+  const { data, isLoading } = UserReactQueryAdapter.client.useGetMyOnboarding({});
 
   const steps = useMemo(() => {
     if (!data) return [];
@@ -30,7 +30,7 @@ export function JourneyPrivate() {
 
   if (isLoading) return <JourneyPrivateLoading />;
 
-  if (!data || data?.completed) return null;
+  if (!data || data.hasCompletedAllSteps()) return null;
 
   return (
     <div className={cn("w-full", styles.areaJourney)}>

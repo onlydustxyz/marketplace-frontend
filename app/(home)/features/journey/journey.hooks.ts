@@ -1,10 +1,11 @@
-import { meApiClient } from "api-client/resources/me";
+import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 
 export function useJourney() {
-  const { data, isLoading, isError } = meApiClient.queries.useGetMyOnboarding({});
+  const { data, isLoading, isError } = UserReactQueryAdapter.client.useGetMyOnboarding({});
+
   return {
     isLoading,
     isError,
-    completed: data?.completed || false,
+    completed: data?.hasCompletedAllSteps() || false,
   };
 }
