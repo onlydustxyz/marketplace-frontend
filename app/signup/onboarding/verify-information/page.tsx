@@ -62,8 +62,8 @@ export default function VerifyInformationPage() {
   const { control, handleSubmit, reset } = useForm<TVerifyInformation.form>({
     resolver: zodResolver(TVerifyInformation.validation),
     defaultValues: {
-      email: userProfile?.contactEmail ?? userMe?.email,
-      telegram: userProfile?.getContactTelegram()?.contact,
+      email: "",
+      telegram: "",
     },
   });
 
