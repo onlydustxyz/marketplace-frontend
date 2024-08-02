@@ -35,6 +35,12 @@ export default function VerifyInformationPage() {
   } = useClientBootstrapContext();
   const { isAuthenticated = false } = authProvider ?? {};
 
+  const { data: userMe, isLoading: userMeIsLoading } = UserReactQueryAdapter.client.useGetMe({
+    options: {
+      enabled: isAuthenticated,
+    },
+  });
+
   const { data: userProfile, isLoading: userProfileIsLoading } = UserReactQueryAdapter.client.useGetMyProfile({
     options: {
       enabled: isAuthenticated,
@@ -56,19 +62,19 @@ export default function VerifyInformationPage() {
   const { control, handleSubmit, reset } = useForm<TVerifyInformation.form>({
     resolver: zodResolver(TVerifyInformation.validation),
     defaultValues: {
-      email: userProfile?.contactEmail,
-      telegram: userProfile?.getContactTelegram()?.contact,
+      email: "",
+      telegram: "",
     },
   });
 
   useEffect(() => {
     if (userProfile) {
       reset({
-        email: userProfile.contactEmail,
+        email: userProfile.contactEmail ?? userMe?.email,
         telegram: userProfile.getContactTelegram()?.contact,
       });
     }
-  }, [userProfile]);
+  }, [userProfile, userMe]);
 
   async function handleSetMyProfile(data: TVerifyInformation.form) {
     if (!userProfile) return;
@@ -102,11 +108,11 @@ export default function VerifyInformationPage() {
           translate={{ token: "v2.pages.signup.verifyInformation.footer.next" }}
           endIcon={{ remixName: "ri-arrow-right-s-line" }}
           isLoading={isPendingSetMyProfile}
-          isDisabled={userProfileIsLoading || isPendingSetMyProfile}
+          isDisabled={userProfileIsLoading || isPendingSetMyProfile || userMeIsLoading}
         />
       </div>
     );
-  }, [handleSubmit, userProfileIsLoading, isPendingSetMyProfile]);
+  }, [handleSubmit, userProfileIsLoading, isPendingSetMyProfile, userMeIsLoading]);
 
   return (
     <form onSubmit={handleSubmit(handleSetMyProfile)} className="h-full">
