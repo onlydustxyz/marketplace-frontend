@@ -44,7 +44,7 @@ function Card({ title, content, Icon }: Card) {
           src={onboardingCompleted}
           alt={T("title")}
           className={
-            "max-w-24 flex rounded-lg border border-container-stroke-separator object-cover aspect-square md:max-w-full md:aspect-auto"
+            "flex max-w-24 rounded-lg border border-container-stroke-separator object-cover aspect-square md:max-w-full md:aspect-auto"
           }
           priority
         />
