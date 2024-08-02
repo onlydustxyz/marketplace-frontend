@@ -12,6 +12,7 @@ import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
 import { toast } from "components/atoms/toaster";
 import { Layout } from "components/features/terms-and-conditions/layout/layout";
+import { BaseLink } from "components/layout/base-link/base-link";
 import { Translate } from "components/layout/translate/translate";
 import { SignupTemplate } from "components/templates/signup-template/signup-template";
 
@@ -20,6 +21,14 @@ import { NEXT_ROUTER } from "constants/router";
 function Footer({ isDisabled, onClick }: { isDisabled: boolean; onClick: () => void }) {
   return (
     <div className="flex w-full flex-row justify-end gap-2">
+      <Button
+        variant={"secondary-light"}
+        size={"l"}
+        translate={{ token: "v2.pages.signup.onboarding.projectRecommendations.actions.back" }}
+        as={BaseLink}
+        htmlProps={{ href: NEXT_ROUTER.signup.onboarding.verifyInformation }}
+        startIcon={{ remixName: "ri-arrow-left-s-line" }}
+      />
       <Button
         size={"l"}
         translate={{ token: "v2.pages.signup.onboarding.projectRecommendations.actions.next" }}

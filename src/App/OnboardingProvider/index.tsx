@@ -2,8 +2,6 @@
 
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
-import { UserProfile } from "core/domain/user/models/user-profile-model";
-import { UserJoiningReason } from "core/domain/user/models/user.types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
 
@@ -43,14 +41,10 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
     },
   });
 
-  const { mutateAsync: setMyProfile, isPending: isPendingSetMyProfile } = UserReactQueryAdapter.client.useSetMyProfile(
-    {}
-  );
-
   useEffect(() => {
     (async () => {
       // Add loader to signup/signin CTAs while app redirects
-      setIsLoading(isLoadingUserOnboarding || isLoadingUserProfile || isPendingSetMyProfile);
+      setIsLoading(isLoadingUserOnboarding || isLoadingUserProfile);
 
       if (
         // If user is not auth there is no onboarding or user profile data
@@ -65,20 +59,6 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
         isImpersonating
       ) {
         return;
-      }
-
-      if (isSignup) {
-        const joiningReason = searchParams.get("joiningReason") ?? "";
-
-        // We can't tell the difference if the user has just logged in or created a new account.
-        // So we check if a joiningReason is already present.
-        // If user has no joiningReason and one is present in the search params it must be set before continuing
-        if (!userProfile?.joiningReason && UserProfile.isValidJoiningReason(joiningReason)) {
-          // Must wait for this request before redirecting to the next step or the mutation will be cancelled
-          await setMyProfile({
-            joiningReason: joiningReason as UserJoiningReason,
-          });
-        }
       }
 
       if (userOnboarding.shouldGoToOnboarding(isOnboarding)) {
@@ -108,7 +88,6 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
     userProfile,
     isLoadingUserProfile,
     isImpersonating,
-    isPendingSetMyProfile,
     searchParams,
     isSignup,
     isOnboarding,
