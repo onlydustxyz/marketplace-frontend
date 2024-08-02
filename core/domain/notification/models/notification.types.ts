@@ -16,5 +16,7 @@ export interface NotificationInterface {
   getTitle(): string | undefined;
   getDescription(): string | undefined;
   getUrl(): string | undefined;
-  getId(): string;
+  getId(): _NotificationResponse["id"];
+  getTimestamp(): _NotificationResponse["timestamp"];
+  getStatus(): _NotificationResponse["status"];
 }

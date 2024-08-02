@@ -1,25 +1,38 @@
 import { Notification } from "core/domain/notification/models/notification-model";
 import { NotificationInterface } from "core/domain/notification/models/notification.types";
 
+import { NEXT_ROUTER } from "constants/router";
+
 export class MaintainerApplicationToReview implements NotificationInterface {
   private notification: Notification;
   constructor(notification: Notification) {
     this.notification = notification;
   }
 
-  getId(): string {
+  getId() {
     return this.notification.id;
   }
 
+  getTimestamp() {
+    return this.notification.timestamp;
+  }
+
+  getStatus() {
+    return this.notification.status;
+  }
+
   getTitle() {
-    return `New application`;
+    return "New application";
   }
 
   getDescription() {
-    return `View application`;
+    const project = this.notification.data.maintainerApplicationToReview?.project;
+    const user = this.notification.data.maintainerApplicationToReview?.applicant;
+    return `${user?.login} applied to ${project?.name}`;
   }
 
   getUrl() {
-    return `${this.notification.data.maintainerApplicationToReview?.project.slug}`;
+    const slug = this.notification.data.maintainerApplicationToReview?.project?.slug;
+    return NEXT_ROUTER.projects.details.root(slug ?? "");
   }
 }
