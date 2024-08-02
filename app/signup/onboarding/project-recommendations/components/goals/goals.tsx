@@ -49,7 +49,7 @@ export function CustomRadioComponent({
     >
       <div className="flex flex-1 flex-col">
         <Typo size="l" weight={"medium"} translate={{ token: title }} />
-        <Typo size="s" translate={{ token: content }} />
+        <Typo size="s" color="text-2" translate={{ token: content }} />
       </div>
       {children}
     </Paper>
