@@ -7,4 +7,6 @@ export class NotificationClientAdapterMock implements NotificationStoragePort {
   routes = {};
 
   getNotifications = mockHttpStorageResponse<NotificationStoragePort["getNotifications"]>;
+
+  getNotificationsCount = mockHttpStorageResponse<NotificationStoragePort["getNotificationsCount"]>;
 }
