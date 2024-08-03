@@ -13,7 +13,9 @@ export function ReadOnlyQuestions({ questions }: TReadOnlyQuestions.Props) {
             <Typography variant={"body-s"} className="text-spaceBlue-200">
               {question.question}
             </Typography>
-            <Typography variant={"body-s"}>{question.answer ?? "--"}</Typography>
+            <Typography variant={"body-s"} className="break-all">
+              {question.answer ?? "--"}
+            </Typography>
           </li>
         ))}
       </ul>
