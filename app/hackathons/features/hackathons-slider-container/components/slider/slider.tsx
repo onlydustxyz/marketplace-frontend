@@ -4,7 +4,7 @@ import { cn } from "@nextui-org/react";
 import { useKeenSlider } from "keen-slider/react";
 import { useState } from "react";
 
-import { SliderStepper } from "app/ecosystems/components/slider-stepper/slider-stepper";
+import { SliderStepper } from "app/(v1)/ecosystems/components/slider-stepper/slider-stepper";
 
 import { viewportConfig } from "src/config";
 
