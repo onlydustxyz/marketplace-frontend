@@ -62,7 +62,7 @@ function Content({ onClose }: { onClose: () => void }) {
   const notifications = data?.notifications || [];
 
   function handleReadAll() {
-    readAllNotifications({} as never);
+    readAllNotifications({});
   }
 
   async function handleRead(notificationId: string, url?: string) {

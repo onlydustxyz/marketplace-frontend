@@ -8,7 +8,7 @@ import { NotificationFacadePort } from "core/domain/notification/input/notificat
 
 export function useReadAllNotifications({
   options,
-}: UseMutationFacadeParams<NotificationFacadePort["readAllNotifications"], undefined, never, never>) {
+}: UseMutationFacadeParams<NotificationFacadePort["readAllNotifications"], undefined, never, object>) {
   const notificationStoragePort = bootstrap.getNotificationStoragePortForClient();
   const queryClient = useQueryClient();
 
