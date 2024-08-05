@@ -3,9 +3,10 @@ import { TNotificationSwitch } from "app/settings/profile/features/form/notifica
 import { TTranslate } from "components/layout/translate/translate.types";
 
 export namespace TNotificationSettingsItem {
-  interface item extends TNotificationSwitch.Props {
+  interface item {
     label: TTranslate.Props;
     content: TTranslate.Props;
+    switch: [TNotificationSwitch.Props, TNotificationSwitch.Props];
   }
   export interface Props {
     title: TTranslate.Props;

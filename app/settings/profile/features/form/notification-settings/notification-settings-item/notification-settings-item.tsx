@@ -1,3 +1,5 @@
+import { NotificationSwitch } from "app/settings/profile/features/form/notification-settings/notification-switch/notification-switch";
+
 import { Flex } from "src/components/New/Layout/Flex";
 
 import { Tooltip } from "components/atoms/tooltip";
@@ -17,14 +19,14 @@ export function NotificationSettingsItem({ title, items }: TNotificationSettings
             <Typography translate={title} variant={"body-s"} />
           </div>
           <Flex direction="row" className="w-fit items-center justify-end">
-            <div className="flex h-auto w-44 flex-col items-end justify-start gap-1">
+            <div className="flex h-auto w-48 flex-col items-end justify-start gap-1">
               <Typography
                 translate={{ token: "v2.pages.settings.profile.notificationSettings.email" }}
                 variant={"body-s-bold"}
               />
             </div>
-            <div className="flex h-auto w-44 flex-col items-end justify-start gap-1">
-              <div className="flex w-fit flex-row items-center justify-end">
+            <div className="flex h-auto w-48 flex-col items-end justify-start gap-1">
+              <div className="flex w-fit flex-row items-center justify-end gap-1">
                 <Typography
                   translate={{ token: "v2.pages.settings.profile.notificationSettings.weeklySummary" }}
                   variant={"body-s-bold"}
@@ -32,13 +34,24 @@ export function NotificationSettingsItem({ title, items }: TNotificationSettings
                 <Tooltip
                   content={<Translate token={"v2.pages.settings.profile.notificationSettings.weeklySummaryTooltip"} />}
                 >
-                  <Icon remixName={"ri-info-i-line"} />
+                  <Icon remixName={"ri-information-line"} />
                 </Tooltip>
               </div>
             </div>
           </Flex>
         </Flex>
-        <div>NOTIFICATION SETTINGS</div>
+        {items.map((item, key) => (
+          <Flex key={key} direction="row" className="w-full items-center justify-between">
+            <Flex direction="col" className="flex-1 gap-1">
+              <Typography variant="body-s-bold" translate={item.label} />
+              <Typography variant="body-s" className="text-spaceBlue-200" translate={item.content} />
+            </Flex>
+            <Flex direction="row" className="w-fit items-center justify-end">
+              <NotificationSwitch {...item.switch[0]} />
+              <NotificationSwitch {...item.switch[1]} />
+            </Flex>
+          </Flex>
+        ))}
       </Flex>
     </Card>
   );

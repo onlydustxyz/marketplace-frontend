@@ -7,12 +7,23 @@ import { Card } from "components/ds/card/card";
 import { Flex } from "components/layout/flex/flex";
 import { Typography } from "components/layout/typography/typography";
 
+enum Channel {
+  EMAIL = "Email",
+  WEEKLY = "Weekly",
+}
+
+enum Notification {
+  BILLING_PROFILE = "billing-profile",
+}
 export function NotificationSettings() {
   const { control } = useFormContext();
-
-  function handleEnableAll(type: "Email" | "Weekly", v: boolean) {
+  function handleEnableAll(type: Channel, v: boolean) {
     console.log("ENABLE ALL", type, v);
     return false;
+  }
+
+  function onEnableOne(type: Notification, channel: Channel, value: boolean) {
+    console.log("ENABLE one", type, channel, value);
   }
 
   return (
@@ -34,12 +45,12 @@ export function NotificationSettings() {
             <NotificationSwitch
               label={{ token: "v2.pages.settings.profile.notificationSettings.enableAll" }}
               value={false}
-              onChange={v => handleEnableAll("Email", v)}
+              onChange={v => handleEnableAll(Channel.EMAIL, v)}
             />
             <NotificationSwitch
               label={{ token: "v2.pages.settings.profile.notificationSettings.enableAll" }}
               value={false}
-              onChange={v => handleEnableAll("Weekly", v)}
+              onChange={v => handleEnableAll(Channel.WEEKLY, v)}
             />
           </Flex>
         </Flex>
@@ -47,7 +58,26 @@ export function NotificationSettings() {
         {/*// */}
         <NotificationSettingsItem
           title={{ token: "v2.pages.settings.profile.notificationSettings.global.title" }}
-          items={[]}
+          items={[
+            {
+              label: {
+                token: "v2.pages.settings.profile.notificationSettings.notifications.global.billingProfile.label",
+              },
+              content: {
+                token: "v2.pages.settings.profile.notificationSettings.notifications.global.billingProfile.content",
+              },
+              switch: [
+                {
+                  value: false,
+                  onChange: v => onEnableOne(Notification.BILLING_PROFILE, Channel.EMAIL, v),
+                },
+                {
+                  value: false,
+                  onChange: v => onEnableOne(Notification.BILLING_PROFILE, Channel.WEEKLY, v),
+                },
+              ],
+            },
+          ]}
         />
       </Flex>
     </Card>
