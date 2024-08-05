@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
 
-import { PageBanner } from "app/features/page-banner/page-banner";
+import { PageBanner } from "app/(v1)/features/page-banner/page-banner";
 
 import Header from "src/App/Layout/Header";
 
