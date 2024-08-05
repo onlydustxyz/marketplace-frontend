@@ -3,7 +3,7 @@
 import Countdown from "react-countdown";
 import { isInMaintenanceMode } from "utils/maintenance/maintenance";
 
-import { withMaintenanceEnabled } from "app/maintenance/features/guard/maintenance-guard";
+import { withMaintenanceEnabled } from "app/(v1)/maintenance/features/guard/maintenance-guard";
 
 import { IMAGES } from "src/assets/img";
 
