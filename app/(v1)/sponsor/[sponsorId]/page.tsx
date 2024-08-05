@@ -3,7 +3,7 @@
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { withSponsorGuard } from "utils/guards/sponsor-guard";
 
-import { SponsorSelect } from "app/sponsor/[sponsorId]/features/sponsor-select/sponsor-select";
+import { SponsorSelect } from "app/(v1)/sponsor/[sponsorId]/features/sponsor-select/sponsor-select";
 
 import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 import { SponsorSidePanels } from "components/features/sponsor/sponsor-side-panels";

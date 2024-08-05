@@ -3,8 +3,8 @@ import { useCallback, useMemo } from "react";
 import {
   SponsorProjectCard,
   SponsorProjectCardSkeleton,
-} from "app/sponsor/[sponsorId]/components/sponsor-project-card/sponsor-project-card";
-import { useSponsorDetail } from "app/sponsor/[sponsorId]/hooks/use-sponsor-detail/use-sponsor-detail";
+} from "app/(v1)/sponsor/[sponsorId]/components/sponsor-project-card/sponsor-project-card";
+import { useSponsorDetail } from "app/(v1)/sponsor/[sponsorId]/hooks/use-sponsor-detail/use-sponsor-detail";
 
 import { Card } from "components/ds/card/card";
 import { SponsorSidePanels } from "components/features/sponsor/sponsor-side-panels";

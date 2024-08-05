@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
-import { SponsorHistoryCard } from "app/sponsor/[sponsorId]/components/sponsor-history-card/sponsor-history-card";
-import { useSponsorHistory } from "app/sponsor/[sponsorId]/hooks/use-sponsor-history/use-sponsor-history";
+import { SponsorHistoryCard } from "app/(v1)/sponsor/[sponsorId]/components/sponsor-history-card/sponsor-history-card";
+import { useSponsorHistory } from "app/(v1)/sponsor/[sponsorId]/hooks/use-sponsor-history/use-sponsor-history";
 
 import { IMAGES } from "src/assets/img";
 import { ShowMore } from "src/components/Table/ShowMore";

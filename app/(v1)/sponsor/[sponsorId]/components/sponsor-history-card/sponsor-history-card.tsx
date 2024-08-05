@@ -1,8 +1,8 @@
 import { format } from "date-fns";
 import { Money } from "utils/Money/Money";
 
-import { TSponsorHistoryCard } from "app/sponsor/[sponsorId]/components/sponsor-history-card/sponsor-history-card.types";
-import { SponsorHistoryTransaction } from "app/sponsor/[sponsorId]/components/sponsor-history-transaction/sponsor-history-transaction";
+import { TSponsorHistoryCard } from "app/(v1)/sponsor/[sponsorId]/components/sponsor-history-card/sponsor-history-card.types";
+import { SponsorHistoryTransaction } from "app/(v1)/sponsor/[sponsorId]/components/sponsor-history-transaction/sponsor-history-transaction";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";

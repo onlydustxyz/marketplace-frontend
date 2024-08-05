@@ -1,7 +1,7 @@
 import { useMediaQuery } from "usehooks-ts";
 import { Money } from "utils/Money/Money";
 
-import { TSponsorBudgetCard } from "app/sponsor/[sponsorId]/components/sponsor-budget-card/sponsor-budget-card.types";
+import { TSponsorBudgetCard } from "app/(v1)/sponsor/[sponsorId]/components/sponsor-budget-card/sponsor-budget-card.types";
 
 import { viewportConfig } from "src/config";
 

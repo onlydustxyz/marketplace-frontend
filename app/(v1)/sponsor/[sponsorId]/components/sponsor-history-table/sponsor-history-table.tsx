@@ -5,11 +5,11 @@ import { DateRange } from "react-day-picker";
 import { useLocalStorage } from "react-use";
 import { Money } from "utils/Money/Money";
 
-import { TSponsorHistoryTable } from "app/sponsor/[sponsorId]/components/sponsor-history-table/sponsor-history-table.types";
-import { SponsorHistoryTransaction } from "app/sponsor/[sponsorId]/components/sponsor-history-transaction/sponsor-history-transaction";
-import { useSponsorDetail } from "app/sponsor/[sponsorId]/hooks/use-sponsor-detail/use-sponsor-detail";
-import { useSponsorHistory } from "app/sponsor/[sponsorId]/hooks/use-sponsor-history/use-sponsor-history";
-import { TUseSponsorHistory } from "app/sponsor/[sponsorId]/hooks/use-sponsor-history/use-sponsor-history.types";
+import { TSponsorHistoryTable } from "app/(v1)/sponsor/[sponsorId]/components/sponsor-history-table/sponsor-history-table.types";
+import { SponsorHistoryTransaction } from "app/(v1)/sponsor/[sponsorId]/components/sponsor-history-transaction/sponsor-history-transaction";
+import { useSponsorDetail } from "app/(v1)/sponsor/[sponsorId]/hooks/use-sponsor-detail/use-sponsor-detail";
+import { useSponsorHistory } from "app/(v1)/sponsor/[sponsorId]/hooks/use-sponsor-history/use-sponsor-history";
+import { TUseSponsorHistory } from "app/(v1)/sponsor/[sponsorId]/hooks/use-sponsor-history/use-sponsor-history.types";
 
 import { Chip } from "src/components/Chip/Chip";
 import { CurrencyIcons } from "src/components/Currency/CurrencyIcon";

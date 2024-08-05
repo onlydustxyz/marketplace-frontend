@@ -3,9 +3,9 @@ import { useCallback } from "react";
 import {
   SponsorBudgetCard,
   SponsorBudgetCardSkeleton,
-} from "app/sponsor/[sponsorId]/components/sponsor-budget-card/sponsor-budget-card";
-import { SponsorDepositCard } from "app/sponsor/[sponsorId]/components/sponsor-deposit-card/sponsor-deposit-card";
-import { useSponsorDetail } from "app/sponsor/[sponsorId]/hooks/use-sponsor-detail/use-sponsor-detail";
+} from "app/(v1)/sponsor/[sponsorId]/components/sponsor-budget-card/sponsor-budget-card";
+import { SponsorDepositCard } from "app/(v1)/sponsor/[sponsorId]/components/sponsor-deposit-card/sponsor-deposit-card";
+import { useSponsorDetail } from "app/(v1)/sponsor/[sponsorId]/hooks/use-sponsor-detail/use-sponsor-detail";
 
 import { Card } from "components/ds/card/card";
 import { Translate } from "components/layout/translate/translate";

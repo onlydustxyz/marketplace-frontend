@@ -1,7 +1,7 @@
 import { useMediaQuery } from "usehooks-ts";
 
-import { SponsorHistoryCards } from "app/sponsor/[sponsorId]/components/sponsor-history-cards/sponsor-history-cards";
-import { SponsorHistoryTable } from "app/sponsor/[sponsorId]/components/sponsor-history-table/sponsor-history-table";
+import { SponsorHistoryCards } from "app/(v1)/sponsor/[sponsorId]/components/sponsor-history-cards/sponsor-history-cards";
+import { SponsorHistoryTable } from "app/(v1)/sponsor/[sponsorId]/components/sponsor-history-table/sponsor-history-table";
 
 import { viewportConfig } from "src/config";
 

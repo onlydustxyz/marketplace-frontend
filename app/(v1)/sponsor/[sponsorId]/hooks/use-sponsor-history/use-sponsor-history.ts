@@ -1,6 +1,6 @@
 import { useParams } from "next/navigation";
 
-import { TUseSponsorHistory } from "app/sponsor/[sponsorId]/hooks/use-sponsor-history/use-sponsor-history.types";
+import { TUseSponsorHistory } from "app/(v1)/sponsor/[sponsorId]/hooks/use-sponsor-history/use-sponsor-history.types";
 
 import SponsorApi from "src/api/Sponsors";
 

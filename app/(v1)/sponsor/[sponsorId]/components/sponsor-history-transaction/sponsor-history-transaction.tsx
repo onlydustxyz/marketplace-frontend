@@ -1,4 +1,4 @@
-import { TSponsorHistoryTransaction } from "app/sponsor/[sponsorId]/components/sponsor-history-transaction/sponsor-history-transaction.types";
+import { TSponsorHistoryTransaction } from "app/(v1)/sponsor/[sponsorId]/components/sponsor-history-transaction/sponsor-history-transaction.types";
 
 import { cn } from "src/utils/cn";
 
