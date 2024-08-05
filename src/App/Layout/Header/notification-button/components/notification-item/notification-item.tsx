@@ -1,36 +1,41 @@
 import { bootstrap } from "core/bootstrap";
+import { useRouter } from "next/navigation";
+import { useRef } from "react";
 
 import { BadgeDot } from "components/atoms/badge/variants/badge-dot";
 import { Paper } from "components/atoms/paper";
 import { Tag } from "components/atoms/tag";
 import { Typo } from "components/atoms/typo";
-import { BaseLink } from "components/layout/base-link/base-link";
 
 import { TNotificationItem } from "./notification-item.types";
 
 export function NotificationItem({ notification, onClick }: TNotificationItem.Props) {
   const dateService = bootstrap.getDateHelperPort();
   const description = notification.getDescription();
+  const id = notification.getId();
   const title = notification.getTitle();
   const time = dateService.formatDistanceToNow(new Date(notification.getTimestamp()));
   const hasRead = notification.hasRead();
   const url = notification.getUrl();
-  const isClickable = !!url;
+  const router = useRouter();
+  const hasPrefetch = useRef<boolean>(false);
+  function handleClick() {
+    onClick(id, url);
+  }
+
+  function onHover() {
+    if (url && !hasPrefetch.current) {
+      hasPrefetch.current = true;
+      router.prefetch(url);
+    }
+  }
 
   return (
     <Paper
       size="s"
       container="transparent"
-      classNames={{ base: "flex flex-row justify-between gap-2 items-start w-full" }}
-      as={isClickable ? BaseLink : "div"}
-      htmlProps={
-        isClickable
-          ? {
-              href: url,
-              onClick,
-            }
-          : {}
-      }
+      classNames={{ base: "flex flex-row justify-between gap-2 items-start w-full cursor-pointer" }}
+      htmlProps={{ onClick: handleClick, onMouseEnter: onHover }}
     >
       <div className="relative">
         <Tag hideText={true} icon={{ remixName: "ri-square-line" }} />
