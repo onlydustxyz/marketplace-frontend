@@ -1,3 +1,5 @@
+"use client";
+
 import { useRouter } from "next/navigation";
 import { useNatifBlock } from "providers/navigation-state/hooks/useNatifBlock";
 import { NavigationStateContext } from "providers/navigation-state/navigation-state.context";

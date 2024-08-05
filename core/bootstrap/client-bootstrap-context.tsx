@@ -1,3 +1,5 @@
+"use client";
+
 import { bootstrap } from "core/bootstrap/index";
 import { AuthProvider } from "core/infrastructure/marketplace-api-client-adapter/auth/auth-provider";
 import { ImpersonationProvider } from "core/infrastructure/marketplace-api-client-adapter/impersonation/impersonation-provider";
@@ -32,5 +34,11 @@ export function ClientBootstrapProvider({ children }: PropsWithChildren) {
 }
 
 export function useClientBootstrapContext() {
-  return useContext(ClientBootstrapContext);
+  const context = useContext(ClientBootstrapContext);
+
+  if (!context) {
+    throw new Error("useClientBootstrapContext must be used within a ClientBootstrapProvider");
+  }
+
+  return context;
 }

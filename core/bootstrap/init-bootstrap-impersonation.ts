@@ -1,3 +1,5 @@
+"use client";
+
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 import { bootstrap } from "core/bootstrap/index";
 import { buildImpersonationHeadersFromClaim } from "core/infrastructure/marketplace-api-client-adapter/impersonation/impersonation-helpers";

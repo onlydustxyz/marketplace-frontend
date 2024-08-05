@@ -1,3 +1,5 @@
+"use client";
+
 import { useAuth0 } from "@auth0/auth0-react";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
 import { bootstrap } from "core/bootstrap/index";
