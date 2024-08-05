@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { REGEX } from "app/settings/profile/features/form/form.regex";
+import { REGEX } from "app/(v1)/settings/profile/features/form/form.regex";
 
 import { ButtonDefaultPort } from "components/atoms/button/button.types";
 import { TooltipPort } from "components/atoms/tooltip";
