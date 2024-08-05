@@ -97,14 +97,7 @@ export const Stacks = () => {
       <RegisterStack<TBillingCreateStack.Props> name={StackRoute.BillingCreate}>
         {({ params }) => <BillingCreateStack {...params} />}
       </RegisterStack>
-      <RegisterStack<StackRouterParams["Verify"]>
-        name={StackRoute.Verify}
-        option={{
-          panel: {
-            theme: "light",
-          },
-        }}
-      >
+      <RegisterStack<StackRouterParams["Verify"]> name={StackRoute.Verify}>
         {({ params }) => <VerifySidePanel {...params} />}
       </RegisterStack>
       <RegisterStack<TRequestPaymentsStacks.Props> name={StackRoute.RequestPayments}>
