@@ -6,12 +6,9 @@ import { components } from "src/__generated/api";
 
 import { NEXT_ROUTER } from "../../../../../constants/router";
 
-export class MaintainerApplicationToReview implements NotificationInterface {
-  data: components["schemas"]["NotificationMaintainerApplicationToReview"] | undefined;
-  constructor(private notification: Notification) {
-    this.data = notification.data.maintainerApplicationToReview;
-  }
-
+export class ContributorInvoiceRejected implements NotificationInterface {
+  data: components["schemas"]["NotificationContributorInvoiceRejected"] | undefined;
+  constructor(private notification: Notification) {}
   getId() {
     return this.notification.id;
   }
@@ -27,18 +24,17 @@ export class MaintainerApplicationToReview implements NotificationInterface {
   hasRead() {
     return this.notification.status === NotificationStatus.READ;
   }
-
   getTitle() {
-    return "New application";
+    return "Your invoice has been rejected";
   }
 
   getDescription() {
-    const { projectName } = this.data || {};
-    return `${projectName} applied to ${projectName}`;
+    const { invoiceName, rejectionReason } = this.data || {};
+    return `Your invoice ${invoiceName} has been rejected because of : ${rejectionReason}`;
   }
 
   getUrl() {
-    const { projectSlug } = this.data || {};
-    return NEXT_ROUTER.projects.details.root(projectSlug ?? "");
+    const { billingProfileId } = this.data || {};
+    return NEXT_ROUTER.settings.billing.invoices(billingProfileId ?? "");
   }
 }

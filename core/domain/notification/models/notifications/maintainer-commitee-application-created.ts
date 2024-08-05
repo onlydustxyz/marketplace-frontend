@@ -2,7 +2,10 @@ import { Notification } from "core/domain/notification/models/notification-model
 import { NotificationInterface } from "core/domain/notification/models/notification.types";
 import { NotificationStatus } from "core/domain/notification/notification-constants";
 
+import { components } from "src/__generated/api";
+
 export class MaintainerCommitteeApplicationCreated implements NotificationInterface {
+  data: components["schemas"]["NotificationMaintainerCommitteeApplicationCreated"] | undefined;
   constructor(private notification: Notification) {}
   getId() {
     return this.notification.id;
@@ -24,7 +27,7 @@ export class MaintainerCommitteeApplicationCreated implements NotificationInterf
   }
 
   getDescription() {
-    const committeeName = this.notification.data.maintainerCommitteeApplicationCreated?.committeeName;
+    const { committeeName } = this.data || {};
     return `You have applied to ${committeeName} committee.`;
   }
 

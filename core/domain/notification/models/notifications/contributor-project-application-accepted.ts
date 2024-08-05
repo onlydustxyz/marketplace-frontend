@@ -4,14 +4,11 @@ import { NotificationStatus } from "core/domain/notification/notification-consta
 
 import { components } from "src/__generated/api";
 
-import { NEXT_ROUTER } from "../../../../../constants/router";
+import { NEXT_ROUTER } from "constants/router";
 
-export class MaintainerApplicationToReview implements NotificationInterface {
-  data: components["schemas"]["NotificationMaintainerApplicationToReview"] | undefined;
-  constructor(private notification: Notification) {
-    this.data = notification.data.maintainerApplicationToReview;
-  }
-
+export class ContributorProjectApplicationAccepted implements NotificationInterface {
+  data: components["schemas"]["NotificationContributorProjectApplicationAccepted"] | undefined;
+  constructor(private notification: Notification) {}
   getId() {
     return this.notification.id;
   }
@@ -27,18 +24,16 @@ export class MaintainerApplicationToReview implements NotificationInterface {
   hasRead() {
     return this.notification.status === NotificationStatus.READ;
   }
-
   getTitle() {
-    return "New application";
+    return "You application has been accepted";
   }
 
   getDescription() {
-    const { projectName } = this.data || {};
-    return `${projectName} applied to ${projectName}`;
+    const { issueId } = this.data || {};
+    return `You application for ${issueId} has been accepted`;
   }
 
   getUrl() {
-    const { projectSlug } = this.data || {};
-    return NEXT_ROUTER.projects.details.root(projectSlug ?? "");
+    return NEXT_ROUTER.applications.all;
   }
 }

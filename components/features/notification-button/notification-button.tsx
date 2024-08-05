@@ -84,7 +84,9 @@ function Content({ onClose }: { onClose: () => void }) {
     await readNotifications({
       notifications: [{ id: notificationId, status: NotificationStatus.READ }],
     });
+
     onClose();
+
     if (url) {
       router.push(url);
     }
