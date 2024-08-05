@@ -1,4 +1,4 @@
-import { ActivityLoading } from "app/(home)/features/activity/activity.loading";
+import { ActivityLoading } from "app/(v1)/(home)/features/activity/activity.loading";
 import { MostActiveEcosystemsLoading } from "app/u/[githubLogin]/features/profile-overview/components/most-active-ecosystems/most-active-ecosystems.loading";
 import { MostActiveLanguagesLoading } from "app/u/[githubLogin]/features/profile-overview/components/most-active-languages/most-active-languages.loading";
 import { TotalEarnedGraphLoading } from "app/u/[githubLogin]/features/total-earned-graph/total-earned-graph.loading";
