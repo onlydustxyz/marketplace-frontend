@@ -8,8 +8,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import onboardingCompleted from "public/images/onboarding/onboarding-completed.png";
 import { FunctionComponent, useEffect, useState } from "react";
 
-import { StepHeader } from "app/signup/components/step-header/step-header";
-import { Title } from "app/signup/components/title/title";
+import { StepHeader } from "app/(v1)/signup/components/step-header/step-header";
+import { Title } from "app/(v1)/signup/components/title/title";
 
 import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
