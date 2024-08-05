@@ -2,7 +2,7 @@ import { usersApiClient } from "api-client/resources/users";
 import Image from "next/image";
 import { Suspense, useMemo } from "react";
 
-import { TotalEarnedGraphClient } from "app/u/[githubLogin]/features/total-earned-graph/total-earned-graph.client";
+import { TotalEarnedGraphClient } from "app/(v1)/u/[githubLogin]/features/total-earned-graph/total-earned-graph.client";
 
 import { IMAGES } from "src/assets/img";
 

@@ -1,4 +1,4 @@
-import { ActivityGraph } from "app/u/[githubLogin]/features/activity-graph/activity-graph";
+import { ActivityGraph } from "app/(v1)/u/[githubLogin]/features/activity-graph/activity-graph";
 
 import { Card } from "components/ds/card/card";
 import { Flex } from "components/layout/flex/flex";

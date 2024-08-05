@@ -1,4 +1,4 @@
-import { DotsStatus } from "app/u/[githubLogin]/components/dots-status/dots-status";
+import { DotsStatus } from "app/(v1)/u/[githubLogin]/components/dots-status/dots-status";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
