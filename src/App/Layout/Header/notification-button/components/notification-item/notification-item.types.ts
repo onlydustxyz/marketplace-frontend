@@ -3,6 +3,6 @@ import { NotificationInterface } from "core/domain/notification/models/notificat
 export namespace TNotificationItem {
   export interface Props {
     notification: NotificationInterface;
-    onClick: () => void;
+    onClick: (id: string, url?: string) => void;
   }
 }
