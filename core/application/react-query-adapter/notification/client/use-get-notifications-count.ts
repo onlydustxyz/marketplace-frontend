@@ -12,7 +12,11 @@ export function useGetNotificationsCount({
   return useQuery(
     useQueryAdapter({
       ...notificationStoragePort.getNotificationsCount({}),
-      options,
+      options: {
+        ...options,
+        refetchOnWindowFocus: false,
+        refetchInterval: 5000,
+      },
     })
   );
 }

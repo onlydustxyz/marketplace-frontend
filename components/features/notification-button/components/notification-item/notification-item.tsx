@@ -6,8 +6,7 @@ import { BadgeDot } from "components/atoms/badge/variants/badge-dot";
 import { Paper } from "components/atoms/paper";
 import { Tag } from "components/atoms/tag";
 import { Typo } from "components/atoms/typo";
-
-import { TNotificationItem } from "./notification-item.types";
+import { TNotificationItem } from "components/features/notification-button/components/notification-item/notification-item.types";
 
 export function NotificationItem({ notification, onClick }: TNotificationItem.Props) {
   const dateService = bootstrap.getDateHelperPort();
