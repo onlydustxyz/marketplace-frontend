@@ -4,8 +4,8 @@ import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 
-import { ApplyIssueCard } from "app/p/[slug]/components/apply-issue-card/apply-issue-card";
-import { ApplyIssueMarkdown } from "app/p/[slug]/components/apply-issue-markdown/apply-issue-markdown";
+import { ApplyIssueCard } from "app/(v1)/p/[slug]/components/apply-issue-card/apply-issue-card";
+import { ApplyIssueMarkdown } from "app/(v1)/p/[slug]/components/apply-issue-markdown/apply-issue-markdown";
 
 import { usePosthog } from "src/hooks/usePosthog";
 

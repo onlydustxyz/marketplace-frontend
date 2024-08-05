@@ -3,7 +3,7 @@
 import { applicationsApiClient } from "api-client/resources/applications";
 import { useMemo } from "react";
 
-import { mapIssueToContribution } from "app/p/[slug]/applications/features/applications-table/application-table.utils";
+import { mapIssueToContribution } from "app/(v1)/p/[slug]/applications/features/applications-table/application-table.utils";
 
 import { useStackProjectOverview } from "src/App/Stacks/Stacks";
 import { Contribution } from "src/components/Contribution/Contribution";
