@@ -1,16 +1,10 @@
 import { GoogleTagManager } from "@next/third-parties/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import "index.css";
-import "keen-slider/keen-slider.min.css";
 import type { Metadata } from "next";
 import { PropsWithChildren } from "react";
-import "remixicon/fonts/remixicon.css";
 
 import Providers from "app/providers";
 
-import "src/assets/fonts/Alfreda/stylesheet.css";
-import "src/assets/fonts/Belwe/stylesheet.css";
-import "src/assets/fonts/GTWalsheimPro/stylesheet.css";
 import config from "src/config";
 
 import { PosthogIdentifyUser } from "components/features/posthog/components/posthog-identify-user";
