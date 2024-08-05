@@ -1,0 +1,32 @@
+"use client";
+
+import { useContext } from "react";
+
+import { HackathonContext } from "app/(v1)/hackathons/[hackathonSlug]/context/hackathon.context";
+import { TOpenTimeline } from "app/(v1)/hackathons/[hackathonSlug]/features/open-timeline/open-timeline.types";
+
+import { Badge } from "components/atoms/badge";
+import { Button } from "components/atoms/button/variants/button-default";
+import { Translate } from "components/layout/translate/translate";
+
+export function OpenTimeline({ eventsCount = 0 }: TOpenTimeline.Props) {
+  const {
+    timeline: { open },
+  } = useContext(HackathonContext);
+
+  return (
+    <Button
+      variant={"secondary-light"}
+      size={"l"}
+      classNames={{ base: "w-full md:w-fit whitespace-nowrap flex-1" }}
+      onClick={open}
+      endContent={
+        <Badge size={"s"} colors={"brand-2"}>
+          {eventsCount}
+        </Badge>
+      }
+    >
+      <Translate token={"v2.pages.hackathons.details.info.seeEvents"} />
+    </Button>
+  );
+}
