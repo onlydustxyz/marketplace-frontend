@@ -6,12 +6,12 @@ import { useParams, usePathname, useRouter, useSearchParams } from "next/navigat
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
-import { TPrivatePage } from "app/c/[committeeId]/applicant/features/private-page/private-page.types";
-import { ProjectSelection } from "app/c/[committeeId]/applicant/features/project-selection/project-selection";
-import { ProjectSummary } from "app/c/[committeeId]/components/project-summary/project-summary";
-import { ReadOnlyQuestions } from "app/c/[committeeId]/components/read-only-questions/read-only-questions";
-import { Steps } from "app/c/[committeeId]/components/steps/steps";
-import { CommitteeErrorPage } from "app/c/[committeeId]/features/error-page/error-page";
+import { TPrivatePage } from "app/(v1)/c/[committeeId]/applicant/features/private-page/private-page.types";
+import { ProjectSelection } from "app/(v1)/c/[committeeId]/applicant/features/project-selection/project-selection";
+import { ProjectSummary } from "app/(v1)/c/[committeeId]/components/project-summary/project-summary";
+import { ReadOnlyQuestions } from "app/(v1)/c/[committeeId]/components/read-only-questions/read-only-questions";
+import { Steps } from "app/(v1)/c/[committeeId]/components/steps/steps";
+import { CommitteeErrorPage } from "app/(v1)/c/[committeeId]/features/error-page/error-page";
 
 import useMutationAlert from "src/api/useMutationAlert";
 import { IMAGES } from "src/assets/img";

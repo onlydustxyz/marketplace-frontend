@@ -1,11 +1,11 @@
 import { meApiClient } from "api-client/resources/me";
 import { useParams } from "next/navigation";
 
-import { Steps } from "app/c/[committeeId]/components/steps/steps";
-import { CommitteeErrorPage } from "app/c/[committeeId]/features/error-page/error-page";
-import { CommitteeLoadingPage } from "app/c/[committeeId]/features/loading-page/loading-page";
-import { ProjectsAccordion } from "app/c/[committeeId]/jury/features/projects-accordion/projects-accordion";
-import { CommitteeContext } from "app/c/[committeeId]/utils/committee-context";
+import { Steps } from "app/(v1)/c/[committeeId]/components/steps/steps";
+import { CommitteeErrorPage } from "app/(v1)/c/[committeeId]/features/error-page/error-page";
+import { CommitteeLoadingPage } from "app/(v1)/c/[committeeId]/features/loading-page/loading-page";
+import { ProjectsAccordion } from "app/(v1)/c/[committeeId]/jury/features/projects-accordion/projects-accordion";
+import { CommitteeContext } from "app/(v1)/c/[committeeId]/utils/committee-context";
 
 import { BaseLink } from "components/layout/base-link/base-link";
 import { Typography } from "components/layout/typography/typography";

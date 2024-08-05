@@ -1,7 +1,7 @@
 import { Selection } from "@nextui-org/react";
 import { useMemo } from "react";
 
-import { TProjectSelection } from "app/c/[committeeId]/applicant/features/project-selection/project-selection.types";
+import { TProjectSelection } from "app/(v1)/c/[committeeId]/applicant/features/project-selection/project-selection.types";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { Select } from "components/ds/form/select/select";

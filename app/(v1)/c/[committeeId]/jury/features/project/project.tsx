@@ -1,11 +1,11 @@
 import { meApiClient } from "api-client/resources/me";
 import { useParams } from "next/navigation";
 
-import { ProjectSummary } from "app/c/[committeeId]/components/project-summary/project-summary";
-import { ReadOnlyQuestions } from "app/c/[committeeId]/components/read-only-questions/read-only-questions";
-import { ProjectError } from "app/c/[committeeId]/jury/features/project-error/project-error";
-import { ProjectVote } from "app/c/[committeeId]/jury/features/project-vote/project-vote";
-import { TProject } from "app/c/[committeeId]/jury/features/project/project.types";
+import { ProjectSummary } from "app/(v1)/c/[committeeId]/components/project-summary/project-summary";
+import { ReadOnlyQuestions } from "app/(v1)/c/[committeeId]/components/read-only-questions/read-only-questions";
+import { ProjectError } from "app/(v1)/c/[committeeId]/jury/features/project-error/project-error";
+import { ProjectVote } from "app/(v1)/c/[committeeId]/jury/features/project-vote/project-vote";
+import { TProject } from "app/(v1)/c/[committeeId]/jury/features/project/project.types";
 
 import { Spinner } from "src/components/Spinner/Spinner";
 

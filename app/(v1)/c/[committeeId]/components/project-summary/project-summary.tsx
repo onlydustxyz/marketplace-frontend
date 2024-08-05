@@ -1,4 +1,4 @@
-import { TProjectSummary } from "app/c/[committeeId]/components/project-summary/project-summary.types";
+import { TProjectSummary } from "app/(v1)/c/[committeeId]/components/project-summary/project-summary.types";
 
 import { useStackProjectOverview } from "src/App/Stacks/Stacks";
 import MarkdownPreview from "src/components/MarkdownPreview";

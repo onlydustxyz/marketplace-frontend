@@ -1,4 +1,4 @@
-import { TProjectStatus } from "app/c/[committeeId]/jury/components/project-status/project-status.types";
+import { TProjectStatus } from "app/(v1)/c/[committeeId]/jury/components/project-status/project-status.types";
 
 import { OnlyDust } from "src/icons/OnlyDust";
 import { cn } from "src/utils/cn";

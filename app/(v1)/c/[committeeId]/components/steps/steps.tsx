@@ -1,7 +1,7 @@
 import { ComponentProps } from "react";
 
-import { StepStatus } from "app/c/[committeeId]/components/step-status/step-status";
-import { TProjectApplicationSteps } from "app/c/[committeeId]/components/steps/steps.types";
+import { StepStatus } from "app/(v1)/c/[committeeId]/components/step-status/step-status";
+import { TProjectApplicationSteps } from "app/(v1)/c/[committeeId]/components/steps/steps.types";
 
 import { Icon } from "components/layout/icon/icon";
 

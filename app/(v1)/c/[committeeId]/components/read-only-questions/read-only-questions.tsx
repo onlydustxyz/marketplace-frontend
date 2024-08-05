@@ -1,4 +1,4 @@
-import { TReadOnlyQuestions } from "app/c/[committeeId]/components/read-only-questions/read-only-questions.types";
+import { TReadOnlyQuestions } from "app/(v1)/c/[committeeId]/components/read-only-questions/read-only-questions.types";
 
 import { Typography } from "components/layout/typography/typography";
 

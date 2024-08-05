@@ -4,8 +4,8 @@ import { useParams } from "next/navigation";
 import { useContext } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
-import { TProjectVote } from "app/c/[committeeId]/jury/features/project-vote/project-vote.types";
-import { CommitteeContext } from "app/c/[committeeId]/utils/committee-context";
+import { TProjectVote } from "app/(v1)/c/[committeeId]/jury/features/project-vote/project-vote.types";
+import { CommitteeContext } from "app/(v1)/c/[committeeId]/utils/committee-context";
 
 import useMutationAlert from "src/api/useMutationAlert";
 import { Spinner } from "src/components/Spinner/Spinner";

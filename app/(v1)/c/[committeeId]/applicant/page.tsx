@@ -3,10 +3,10 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMemo, useState } from "react";
 
-import { CommitteeApplicantPrivatePage } from "app/c/[committeeId]/applicant/features/private-page/private-page";
-import { CommitteeLoadingPage } from "app/c/[committeeId]/features/loading-page/loading-page";
-import { CommitteePublicPage } from "app/c/[committeeId]/features/public-page/public-page";
-import { CommitteeSuccessPage } from "app/c/[committeeId]/features/success-page/success-page";
+import { CommitteeApplicantPrivatePage } from "app/(v1)/c/[committeeId]/applicant/features/private-page/private-page";
+import { CommitteeLoadingPage } from "app/(v1)/c/[committeeId]/features/loading-page/loading-page";
+import { CommitteePublicPage } from "app/(v1)/c/[committeeId]/features/public-page/public-page";
+import { CommitteeSuccessPage } from "app/(v1)/c/[committeeId]/features/success-page/success-page";
 
 export default function CommitteeApplicantPage() {
   const [hasSubmitted, setHasSubmitted] = useState(false);

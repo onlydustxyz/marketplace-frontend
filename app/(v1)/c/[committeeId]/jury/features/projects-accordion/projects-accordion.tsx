@@ -2,9 +2,9 @@ import { Selection } from "@nextui-org/react";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import { useState } from "react";
 
-import { ProjectStatus } from "app/c/[committeeId]/jury/components/project-status/project-status";
-import { Project } from "app/c/[committeeId]/jury/features/project/project";
-import { TProjectAccordion } from "app/c/[committeeId]/jury/features/projects-accordion/projects-accordion.types";
+import { ProjectStatus } from "app/(v1)/c/[committeeId]/jury/components/project-status/project-status";
+import { Project } from "app/(v1)/c/[committeeId]/jury/features/project/project";
+import { TProjectAccordion } from "app/(v1)/c/[committeeId]/jury/features/projects-accordion/projects-accordion.types";
 
 import { cn } from "src/utils/cn";
 
