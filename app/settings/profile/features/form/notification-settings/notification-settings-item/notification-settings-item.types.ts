@@ -1,4 +1,4 @@
-import { TNotificationSwitch } from "app/settings/profile/features/form/notification-settings/notification-switch/notification-switch.types";
+import { ReactElement } from "react";
 
 import { TTranslate } from "components/layout/translate/translate.types";
 
@@ -6,7 +6,7 @@ export namespace TNotificationSettingsItem {
   interface item {
     label: TTranslate.Props;
     content: TTranslate.Props;
-    switch: [TNotificationSwitch.Props, TNotificationSwitch.Props];
+    switch: [ReactElement, ReactElement];
   }
   export interface Props {
     title: TTranslate.Props;

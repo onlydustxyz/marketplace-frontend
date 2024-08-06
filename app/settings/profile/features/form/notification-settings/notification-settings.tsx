@@ -1,5 +1,7 @@
-import { useFormContext } from "react-hook-form";
+import { UserNotificationCategories } from "core/domain/user/user-constants";
+import { Controller, useFormContext } from "react-hook-form";
 
+import { TProfileForm } from "app/settings/profile/features/form/form.types";
 import { NotificationSettingsItem } from "app/settings/profile/features/form/notification-settings/notification-settings-item/notification-settings-item";
 import { NotificationSwitch } from "app/settings/profile/features/form/notification-settings/notification-switch/notification-switch";
 
@@ -9,21 +11,17 @@ import { Typography } from "components/layout/typography/typography";
 
 enum Channel {
   EMAIL = "Email",
-  WEEKLY = "Weekly",
+  SUMMARY = "summary",
 }
 
-enum Notification {
-  BILLING_PROFILE = "billing-profile",
-}
 export function NotificationSettings() {
-  const { control } = useFormContext();
+  const { control, setValue } = useFormContext<TProfileForm.Data>();
   function handleEnableAll(type: Channel, v: boolean) {
-    console.log("ENABLE ALL", type, v);
-    return false;
-  }
-
-  function onEnableOne(type: Notification, channel: Channel, value: boolean) {
-    console.log("ENABLE one", type, channel, value);
+    if (type === Channel.EMAIL) {
+      setValue(`notifications.${UserNotificationCategories.MAINTAINER_PROJECT_CONTRIBUTOR}.email`, v);
+    } else {
+      setValue(`notifications.${UserNotificationCategories.MAINTAINER_PROJECT_CONTRIBUTOR}.summary`, v);
+    }
   }
 
   return (
@@ -50,12 +48,11 @@ export function NotificationSettings() {
             <NotificationSwitch
               label={{ token: "v2.pages.settings.profile.notificationSettings.enableAll" }}
               value={false}
-              onChange={v => handleEnableAll(Channel.WEEKLY, v)}
+              onChange={v => handleEnableAll(Channel.SUMMARY, v)}
             />
           </Flex>
         </Flex>
 
-        {/*// */}
         <NotificationSettingsItem
           title={{ token: "v2.pages.settings.profile.notificationSettings.global.title" }}
           items={[
@@ -67,14 +64,18 @@ export function NotificationSettings() {
                 token: "v2.pages.settings.profile.notificationSettings.notifications.global.billingProfile.content",
               },
               switch: [
-                {
-                  value: false,
-                  onChange: v => onEnableOne(Notification.BILLING_PROFILE, Channel.EMAIL, v),
-                },
-                {
-                  value: false,
-                  onChange: v => onEnableOne(Notification.BILLING_PROFILE, Channel.WEEKLY, v),
-                },
+                <Controller
+                  key={"email"}
+                  name={`notifications.${UserNotificationCategories.MAINTAINER_PROJECT_CONTRIBUTOR}.email`}
+                  control={control}
+                  render={({ field }) => <NotificationSwitch {...field} />}
+                />,
+                <Controller
+                  key={"summary"}
+                  name={`notifications.${UserNotificationCategories.MAINTAINER_PROJECT_CONTRIBUTOR}.summary`}
+                  control={control}
+                  render={({ field }) => <NotificationSwitch {...field} />}
+                />,
               ],
             },
           ]}

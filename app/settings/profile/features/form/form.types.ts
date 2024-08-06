@@ -20,6 +20,10 @@ export namespace TProfileForm {
     prefixUrl?: string;
   }
 
+  interface notification {
+    email: boolean;
+    summary: boolean;
+  }
   export interface Data {
     firstName?: string;
     lastName?: string;
@@ -35,5 +39,8 @@ export namespace TProfileForm {
     linkedin: ContactProps;
     weeklyAllocatedTime: components["schemas"]["PrivateUserProfileResponse"]["allocatedTimeToContribute"];
     lookingForAJob: boolean;
+    notifications: {
+      ["MAINTAINER_PROJECT_CONTRIBUTOR"]: notification;
+    };
   }
 }

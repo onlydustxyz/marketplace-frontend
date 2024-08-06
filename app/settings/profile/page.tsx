@@ -65,6 +65,7 @@ const formSchema = z.object({
   }),
   weeklyAllocatedTime: z.nativeEnum(TProfileForm.ALLOCATED_TIME),
   lookingForAJob: z.boolean(),
+  notifications: z.any(),
 });
 
 // TODO: Select input to do with NextUI
@@ -103,7 +104,8 @@ function SettingsProfilePage() {
     },
   });
 
-  const onSubmit = (formData: TProfileForm.Data) => {
+  const onSubmit = ({ notifications, ...formData }: TProfileForm.Data) => {
+    console.log("SAVE", notifications);
     updateUserProfileInfo(formatToSchema(formData));
   };
 

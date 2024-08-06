@@ -1,5 +1,3 @@
-import { NotificationSwitch } from "app/settings/profile/features/form/notification-settings/notification-switch/notification-switch";
-
 import { Flex } from "src/components/New/Layout/Flex";
 
 import { Tooltip } from "components/atoms/tooltip";
@@ -47,8 +45,8 @@ export function NotificationSettingsItem({ title, items }: TNotificationSettings
               <Typography variant="body-s" className="text-spaceBlue-200" translate={item.content} />
             </Flex>
             <Flex direction="row" className="w-fit items-center justify-end">
-              <NotificationSwitch {...item.switch[0]} />
-              <NotificationSwitch {...item.switch[1]} />
+              {item.switch[0]}
+              {item.switch[1]}
             </Flex>
           </Flex>
         ))}

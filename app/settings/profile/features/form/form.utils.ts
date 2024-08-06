@@ -61,10 +61,16 @@ export function formatToData(data: UseGetMyProfileInfoResponse): TProfileForm.Da
     linkedin: getContactInfo("LINKEDIN"),
     weeklyAllocatedTime: allocatedTimeToContribute ?? TProfileForm.ALLOCATED_TIME.NONE,
     lookingForAJob: data.isLookingForAJob ?? false,
+    notifications: {
+      ["MAINTAINER_PROJECT_CONTRIBUTOR"]: {
+        email: false,
+        summary: false,
+      },
+    },
   };
 }
 
-export function formatToSchema(data: TProfileForm.Data) {
+export function formatToSchema(data: Omit<TProfileForm.Data, "notifications">) {
   const {
     firstName,
     lastName,
