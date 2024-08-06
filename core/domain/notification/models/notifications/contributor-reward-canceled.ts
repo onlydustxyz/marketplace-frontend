@@ -8,7 +8,9 @@ import { NEXT_ROUTER } from "constants/router";
 
 export class ContributorRewardCanceled implements NotificationInterface {
   data: components["schemas"]["NotificationContributorRewardCanceled"] | undefined;
-  constructor(private notification: Notification) {}
+  constructor(private notification: Notification) {
+    this.data = notification.data.contributorRewardCanceled;
+  }
   getId() {
     return this.notification.id;
   }

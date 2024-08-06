@@ -113,23 +113,32 @@ function Content({ onClose }: { onClose: () => void }) {
           </div>
         )}
         {!isLoading ? (
-          <div className="flex w-full flex-col gap-2">
-            {notifications.map(notification => (
-              <NotificationItem key={notification.getId()} notification={notification} onClick={handleRead} />
-            ))}
-            {hasNextPage && (
-              <div className="pt-2">
-                <InView
-                  className="flex h-10 w-full justify-center"
-                  onChange={inView => {
-                    if (inView) fetchNextPage();
-                  }}
-                >
-                  {isFetchingNextPage ? <Spinner /> : null}
-                </InView>
+          <>
+            {notifications?.length ? (
+              <div className="flex w-full flex-col gap-2">
+                {notifications.map(notification => (
+                  <NotificationItem key={notification.getId()} notification={notification} onClick={handleRead} />
+                ))}
+                {hasNextPage && (
+                  <div className="pt-2">
+                    <InView
+                      className="flex h-10 w-full justify-center"
+                      onChange={inView => {
+                        if (inView) fetchNextPage();
+                      }}
+                    >
+                      {isFetchingNextPage ? <Spinner /> : null}
+                    </InView>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="flex w-full flex-col items-center gap-1  py-4">
+                <Typo variant="brand" translate={{ token: "v2.features.notifications..empty.title" }} />
+                <Typo size="s" translate={{ token: "v2.features.notifications..empty.content" }} />
               </div>
             )}
-          </div>
+          </>
         ) : (
           <Loading />
         )}

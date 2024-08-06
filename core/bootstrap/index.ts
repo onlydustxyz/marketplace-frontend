@@ -201,8 +201,6 @@ export class Bootstrap {
         projectCategoryStoragePortForServer: new ProjectCategoryClientAdapter(new FetchHttpClient()),
         languageStoragePortForClient: new LanguageClientAdapter(new FetchHttpClient()),
         languageStoragePortForServer: new LanguageClientAdapter(new FetchHttpClient()),
-        // notificationStoragePortForClient: new NotificationClientAdapterMock(),
-        // notificationStoragePortForServer: new NotificationClientAdapterMock(),
         notificationStoragePortForClient: new NotificationClientAdapter(new FetchHttpClient()),
         notificationStoragePortForServer: new NotificationClientAdapter(new FetchHttpClient()),
         dateHelperPort: DateFnsAdapter,

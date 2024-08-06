@@ -6,7 +6,9 @@ import { components } from "src/__generated/api";
 
 export class MaintainerCommitteeApplicationCreated implements NotificationInterface {
   data: components["schemas"]["NotificationMaintainerCommitteeApplicationCreated"] | undefined;
-  constructor(private notification: Notification) {}
+  constructor(private notification: Notification) {
+    this.data = notification.data.maintainerCommitteeApplicationCreated;
+  }
   getId() {
     return this.notification.id;
   }

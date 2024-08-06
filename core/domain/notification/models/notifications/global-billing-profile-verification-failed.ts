@@ -8,7 +8,9 @@ import { NEXT_ROUTER } from "constants/router";
 
 export class GlobalBillingProfileVerificationFailed implements NotificationInterface {
   data: components["schemas"]["NotificationGlobalBillingProfileVerificationFailed"] | undefined;
-  constructor(private notification: Notification) {}
+  constructor(private notification: Notification) {
+    this.data = notification.data.globalBillingProfileVerificationFailed;
+  }
   getId() {
     return this.notification.id;
   }
