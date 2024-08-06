@@ -1,5 +1,6 @@
 import { Notification } from "core/domain/notification/models/notification-model";
 import { NotificationInterface } from "core/domain/notification/models/notification.types";
+import { NotificationStatus } from "core/domain/notification/notification-constants";
 
 import { NEXT_ROUTER } from "../../../../../constants/router";
 
@@ -16,6 +17,10 @@ export class MaintainerApplicationToReview implements NotificationInterface {
 
   getStatus() {
     return this.notification.status;
+  }
+
+  hasRead() {
+    return this.notification.status === NotificationStatus.READ;
   }
 
   getTitle() {

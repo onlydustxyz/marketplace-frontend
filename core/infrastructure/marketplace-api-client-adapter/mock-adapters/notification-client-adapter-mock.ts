@@ -1,5 +1,7 @@
 import { NotificationFactory } from "core/domain/notification/models/notification-model-factory";
+import { UpdateNotificationsBody } from "core/domain/notification/notification-contract.types";
 import { NotificationStoragePort } from "core/domain/notification/outputs/notification-storage-port";
+import { FirstParameter } from "core/helpers/types";
 
 export class NotificationClientAdapterMock implements NotificationStoragePort {
   constructor() {}
@@ -8,7 +10,7 @@ export class NotificationClientAdapterMock implements NotificationStoragePort {
 
   // getNotifications = mockHttpStorageResponse<NotificationStoragePort["getNotifications"]>;
 
-  getNotifications = () => {
+  getNotifications = (_: FirstParameter<NotificationStoragePort["getNotifications"]>) => {
     const request = async () => {
       return {
         totalPageNumber: 0,
@@ -55,12 +57,12 @@ export class NotificationClientAdapterMock implements NotificationStoragePort {
 
     return {
       request,
-      tag: [""],
+      tag: ["getNotifications"],
     };
   };
 
   // getNotificationsCount = mockHttpStorageResponse<NotificationStoragePort["getNotificationsCount"]>
-  getNotificationsCount = () => {
+  getNotificationsCount = (_: FirstParameter<NotificationStoragePort["getNotificationsCount"]>) => {
     const request = async () => {
       return {
         count: 2,
@@ -69,7 +71,32 @@ export class NotificationClientAdapterMock implements NotificationStoragePort {
 
     return {
       request,
-      tag: [""],
+      tag: ["getNotificationsCount"],
+    };
+  };
+
+  // updateNotifications = mockHttpStorageResponse<NotificationStoragePort["getNotificationsCount"]>
+
+  updateNotifications = () => {
+    const request = async (_: UpdateNotificationsBody) => {
+      return true as never;
+    };
+
+    return {
+      request,
+      tag: ["updateNotifications"],
+    };
+  };
+
+  // readAllNotifications = mockHttpStorageResponse<NotificationStoragePort["getNotificationsCount"]>
+  readAllNotifications = () => {
+    const request = async () => {
+      return true as never;
+    };
+
+    return {
+      request,
+      tag: ["readAllNotifications"],
     };
   };
 }
