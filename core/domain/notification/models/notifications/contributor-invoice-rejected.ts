@@ -35,6 +35,9 @@ export class ContributorInvoiceRejected implements NotificationInterface {
 
   getUrl() {
     const { billingProfileId } = this.data || {};
-    return NEXT_ROUTER.settings.billing.invoices(billingProfileId ?? "");
+    if (billingProfileId) {
+      return NEXT_ROUTER.settings.billing.invoices(billingProfileId);
+    }
+    return undefined;
   }
 }

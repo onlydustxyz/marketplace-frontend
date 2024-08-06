@@ -35,6 +35,9 @@ export class GlobalBillingProfileVerificationFailed implements NotificationInter
 
   getUrl() {
     const { billingProfileId } = this.data || {};
-    return NEXT_ROUTER.settings.billing.generalInformation(billingProfileId ?? "");
+    if (billingProfileId) {
+      return NEXT_ROUTER.settings.billing.generalInformation(billingProfileId);
+    }
+    return undefined;
   }
 }

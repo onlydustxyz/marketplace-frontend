@@ -33,12 +33,15 @@ export class MaintainerApplicationToReview implements NotificationInterface {
   }
 
   getDescription() {
-    const { projectName } = this.data || {};
-    return `${projectName} applied to ${projectName}`;
+    const { projectName, applicationLogin, issueName } = this.data || {};
+    return `${applicationLogin} applied to ${issueName} on ${projectName}`;
   }
 
   getUrl() {
     const { projectSlug } = this.data || {};
-    return NEXT_ROUTER.projects.details.root(projectSlug ?? "");
+    if (projectSlug) {
+      return NEXT_ROUTER.projects.details.applications.root(projectSlug);
+    }
+    return undefined;
   }
 }

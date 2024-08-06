@@ -18,6 +18,7 @@ export function NotificationItem({ notification, onClick }: TNotificationItem.Pr
   const url = notification.getUrl();
   const router = useRouter();
   const hasPrefetch = useRef<boolean>(false);
+
   function handleClick() {
     onClick(id, url);
   }

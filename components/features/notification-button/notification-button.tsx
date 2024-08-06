@@ -65,19 +65,16 @@ function Content({ onClose }: { onClose: () => void }) {
   const isSm = useClientMediaQuery(`(max-width: ${viewportConfig.breakpoints.sm}px)`);
 
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    NotificationReactQueryAdapter.client.useGetNotifications({
-      queryParams: {
-        status: NotificationStatus.UNREAD,
-      },
-    });
+    NotificationReactQueryAdapter.client.useGetNotifications({});
 
   const { mutateAsync: readNotifications } = NotificationReactQueryAdapter.client.useUpdateNotifications({});
-  const { mutate: readAllNotifications } = NotificationReactQueryAdapter.client.useReadAllNotifications({});
+  const { mutateAsync: readAllNotifications } = NotificationReactQueryAdapter.client.useReadAllNotifications({});
 
   const notifications = data?.pages.flatMap(page => page.notifications) || [];
 
-  function handleReadAll() {
-    readAllNotifications({});
+  async function handleReadAll() {
+    await readAllNotifications({});
+    onClose();
   }
 
   async function handleRead(notificationId: string, url?: string) {

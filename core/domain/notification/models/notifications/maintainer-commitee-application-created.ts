@@ -32,6 +32,10 @@ export class MaintainerCommitteeApplicationCreated implements NotificationInterf
   }
 
   getUrl() {
-    return `${this.notification.id}`;
+    const { committeeId } = this.data || {};
+    if (committeeId) {
+      return `/c/${committeeId}/applicant`;
+    }
+    return undefined;
   }
 }

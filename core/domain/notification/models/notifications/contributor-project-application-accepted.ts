@@ -29,8 +29,8 @@ export class ContributorProjectApplicationAccepted implements NotificationInterf
   }
 
   getDescription() {
-    const { issueId } = this.data || {};
-    return `You application for ${issueId} has been accepted`;
+    const { issueName } = this.data || {};
+    return `You application for ${issueName} has been accepted`;
   }
 
   getUrl() {
