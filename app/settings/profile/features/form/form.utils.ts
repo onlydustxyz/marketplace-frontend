@@ -1,3 +1,5 @@
+import { UserNotificationSettingsInterface } from "core/domain/user/models/user-notification-settings-model";
+
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 
 import { TProfileForm } from "./form.types";
@@ -33,7 +35,10 @@ export function createContact({
   };
 }
 
-export function formatToData(data: UseGetMyProfileInfoResponse): TProfileForm.Data {
+export function formatToData(
+  data: UseGetMyProfileInfoResponse,
+  notificationSettings: UserNotificationSettingsInterface
+): TProfileForm.Data {
   const { firstName, lastName, contactEmail, avatarUrl, location, bio, website, contacts, allocatedTimeToContribute } =
     data;
 
@@ -62,10 +67,11 @@ export function formatToData(data: UseGetMyProfileInfoResponse): TProfileForm.Da
     weeklyAllocatedTime: allocatedTimeToContribute ?? TProfileForm.ALLOCATED_TIME.NONE,
     lookingForAJob: data.isLookingForAJob ?? false,
     notifications: {
-      ["MAINTAINER_PROJECT_CONTRIBUTOR"]: {
-        email: false,
-        summary: false,
-      },
+      MAINTAINER_PROJECT_CONTRIBUTOR: notificationSettings.findCategory("MAINTAINER_PROJECT_CONTRIBUTOR"),
+      MAINTAINER_PROJECT_PROGRAM: notificationSettings.findCategory("MAINTAINER_PROJECT_PROGRAM"),
+      CONTRIBUTOR_REWARD: notificationSettings.findCategory("CONTRIBUTOR_REWARD"),
+      CONTRIBUTOR_PROJECT: notificationSettings.findCategory("CONTRIBUTOR_PROJECT"),
+      KYC_KYB_BILLING_PROFILE: notificationSettings.findCategory("KYC_KYB_BILLING_PROFILE"),
     },
   };
 }

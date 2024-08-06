@@ -15,3 +15,9 @@ export interface UserProfileContact {
 }
 
 export type UserJoiningReason = components["schemas"]["UserProfileUpdateRequest"]["joiningReason"];
+
+export type UserNotificationSettingsChannelType =
+  components["schemas"]["NotificationSettingsResponse"]["notificationSettings"][0]["channels"][0];
+
+export type UserNotificationSettingsCategoryType =
+  components["schemas"]["NotificationSettingsResponse"]["notificationSettings"][0]["category"];

@@ -7,6 +7,8 @@ import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { Form } from "app/settings/profile/features/form/form";
+
 import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
 
@@ -17,7 +19,6 @@ import { Key, useIntl } from "hooks/translate/use-translate";
 
 import { FormFooter } from "../components/form-footer/form-footer";
 import { SettingsHeader } from "../components/settings-header/settings-header";
-import { ProfileForm } from "./features/form/form";
 import { REGEX } from "./features/form/form.regex";
 import { TProfileForm } from "./features/form/form.types";
 import { formatToData, formatToSchema } from "./features/form/form.utils";
@@ -74,6 +75,9 @@ function SettingsProfilePage() {
   const { T } = useIntl();
 
   const { data } = MeApi.queries.useGetMyProfileInfo({});
+  const { data: settings } = UserReactQueryAdapter.client.useGetMyNotificationsSettings({});
+
+  console.log("settings", settings);
 
   const formMethods = useForm<TProfileForm.Data>({
     mode: "all",
@@ -83,10 +87,10 @@ function SettingsProfilePage() {
   const { handleSubmit, reset } = formMethods;
 
   useEffect(() => {
-    if (data) {
-      reset(formatToData(data));
+    if (data && settings) {
+      reset(formatToData(data, settings));
     }
-  }, [data]);
+  }, [data, settings]);
 
   const {
     mutate: updateUserProfileInfo,
@@ -118,7 +122,7 @@ function SettingsProfilePage() {
           <Flex direction="col" className="gap-4">
             <ProfileGithubAccount />
 
-            <ProfileForm />
+            <Form />
           </Flex>
         </Flex>
 

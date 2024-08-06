@@ -9,7 +9,6 @@ import {
   GetMeResponse,
   GetMyBillingProfilesResponse,
   GetMyNotificationSettingsForProjectResponse,
-  GetMyNotificationSettingsResponse,
   GetMyOnboardingResponse,
   GetMyProfileResponse,
   ReplaceMyProfileBody,
@@ -167,13 +166,25 @@ export class UserClientAdapter implements UserStoragePort {
     const tag = HttpClient.buildTag({ path });
 
     const request = async () => {
-      const data = await this.client.request<GetMyNotificationSettingsResponse>({
-        path,
-        method,
-        tag,
-      });
+      // const data = await this.client.request<GetMyNotificationSettingsResponse>({
+      //   path,
+      //   method,
+      //   tag,
+      // });
 
-      return new UserNotificationSettings(data);
+      // return new UserNotificationSettings(data);
+      return new UserNotificationSettings({
+        notificationSettings: [
+          {
+            channels: ["EMAIL"],
+            category: "MAINTAINER_PROJECT_CONTRIBUTOR",
+          },
+          {
+            channels: ["EMAIL", "SUMMARY_EMAIL"],
+            category: "CONTRIBUTOR_REWARD",
+          },
+        ],
+      });
     };
 
     return {

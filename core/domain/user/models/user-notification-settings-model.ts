@@ -1,12 +1,15 @@
+import { UserNotificationSettingsCategoryType } from "core/domain/user/models/user.types";
+import { UserNotificationChannels } from "core/domain/user/user-constants";
+
 import { components } from "src/__generated/api";
 
 type UserNotificationSettingsResponse = components["schemas"]["NotificationSettingsResponse"];
-type UserNotificationSettingsChannel = UserNotificationSettingsResponse["notificationSettings"][0]["channels"][0];
 
 export interface UserNotificationSettingsInterface extends UserNotificationSettingsResponse {
-  isAllNotificationsEnabled(channel: UserNotificationSettingsChannel): boolean;
-  isAllEmailNotificationsEnabled(): boolean;
-  isAllSummaryEmailNotificationsEnabled(): boolean;
+  findCategory(category: UserNotificationSettingsCategoryType): {
+    [UserNotificationChannels.EMAIL]: boolean;
+    [UserNotificationChannels.SUMMARY_EMAIL]: boolean;
+  };
 }
 
 class UserNotificationSettings implements UserNotificationSettingsInterface {
@@ -16,16 +19,12 @@ class UserNotificationSettings implements UserNotificationSettingsInterface {
     Object.assign(this, props);
   }
 
-  isAllNotificationsEnabled(channel: UserNotificationSettingsChannel) {
-    return this.notificationSettings.every(setting => setting.channels.includes(channel));
-  }
-
-  isAllEmailNotificationsEnabled() {
-    return this.isAllNotificationsEnabled("EMAIL");
-  }
-
-  isAllSummaryEmailNotificationsEnabled() {
-    return this.isAllNotificationsEnabled("SUMMARY_EMAIL");
+  findCategory(category: UserNotificationSettingsCategoryType) {
+    const cat = this.notificationSettings.find(setting => setting.category === category);
+    return {
+      [UserNotificationChannels.EMAIL]: cat?.channels.includes(UserNotificationChannels.EMAIL) || false,
+      [UserNotificationChannels.SUMMARY_EMAIL]: cat?.channels.includes(UserNotificationChannels.SUMMARY_EMAIL) || false,
+    };
   }
 }
 
