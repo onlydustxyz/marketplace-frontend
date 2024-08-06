@@ -4,15 +4,15 @@ import { bootstrap } from "core/bootstrap";
 import { UserFacadePort } from "core/domain/user/inputs/user-facade-port";
 import { UserNotificationsInterface } from "core/domain/user/models/user-notifications-model";
 
-export function useGetMyNotificationsSettings({
+export function useGetMyNotificationsSettingsForProject({
   pathParams,
   options,
-}: UseQueryFacadeParams<UserFacadePort["getMyNotificationSettings"], UserNotificationsInterface>) {
+}: UseQueryFacadeParams<UserFacadePort["getMyNotificationSettingsForProject"], UserNotificationsInterface>) {
   const userStoragePort = bootstrap.getUserStoragePortForClient();
 
   return useQuery(
     useQueryAdapter({
-      ...userStoragePort.getMyNotificationSettings({ pathParams }),
+      ...userStoragePort.getMyNotificationSettingsForProject({ pathParams }),
       options,
     })
   );

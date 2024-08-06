@@ -6,27 +6,27 @@ import {
 import { bootstrap } from "core/bootstrap";
 import { UserFacadePort } from "core/domain/user/inputs/user-facade-port";
 import { UserNotificationsInterface } from "core/domain/user/models/user-notifications-model";
-import { SetMyNotificationSettingsBody } from "core/domain/user/user-contract.types";
+import { SetMyNotificationSettingsForProjectBody } from "core/domain/user/user-contract.types";
 
-export function useSetMyNotificationsSettings({
+export function useSetMyNotificationsSettingsForProject({
   pathParams,
   options,
 }: UseMutationFacadeParams<
-  UserFacadePort["setMyNotificationSettings"],
+  UserFacadePort["setMyNotificationSettingsForProject"],
   undefined,
   UserNotificationsInterface,
-  SetMyNotificationSettingsBody
+  SetMyNotificationSettingsForProjectBody
 > = {}) {
   const userStoragePort = bootstrap.getUserStoragePortForClient();
   const queryClient = useQueryClient();
 
   return useMutation(
     useMutationAdapter({
-      ...userStoragePort.setMyNotificationSettings({ pathParams }),
+      ...userStoragePort.setMyNotificationSettingsForProject({ pathParams }),
       options: {
         onSuccess: async () => {
           await queryClient.invalidateQueries({
-            queryKey: userStoragePort.getMyNotificationSettings({}).tag,
+            queryKey: userStoragePort.getMyNotificationSettingsForProject({}).tag,
             exact: false,
           });
         },

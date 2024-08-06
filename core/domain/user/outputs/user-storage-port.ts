@@ -3,8 +3,8 @@ import {
   GetMeResponsePortResponse,
   GetMyBillingProfilesResponsePortParams,
   GetMyBillingProfilesResponsePortResponse,
-  GetMyNotificationSettingsPortParams,
-  GetMyNotificationSettingsPortResponse,
+  GetMyNotificationSettingsForProjectPortParams,
+  GetMyNotificationSettingsForProjectPortResponse,
   GetMyOnboardingResponsePortParams,
   GetMyOnboardingResponsePortResponse,
   GetMyProfilePortParams,
@@ -15,8 +15,8 @@ import {
   ReplaceMyProfilePortResponse,
   SetMePortParams,
   SetMePortResponse,
-  SetMyNotificationSettingsPortParams,
-  SetMyNotificationSettingsPortResponse,
+  SetMyNotificationSettingsForProjectPortParams,
+  SetMyNotificationSettingsForProjectPortResponse,
   SetMyProfilePortParams,
   SetMyProfilePortResponse,
 } from "core/domain/user/user-contract.types";
@@ -27,8 +27,12 @@ export interface UserStoragePort {
   replaceMyProfile(params: ReplaceMyProfilePortParams): ReplaceMyProfilePortResponse;
   setMyProfile(params: SetMyProfilePortParams): SetMyProfilePortResponse;
   getMyProfile(params: GetMyProfilePortParams): GetMyProfilePortResponse;
-  getMyNotificationSettings(params: GetMyNotificationSettingsPortParams): GetMyNotificationSettingsPortResponse;
-  setMyNotificationSettings(params: SetMyNotificationSettingsPortParams): SetMyNotificationSettingsPortResponse;
+  getMyNotificationSettingsForProject(
+    params: GetMyNotificationSettingsForProjectPortParams
+  ): GetMyNotificationSettingsForProjectPortResponse;
+  setMyNotificationSettingsForProject(
+    params: SetMyNotificationSettingsForProjectPortParams
+  ): SetMyNotificationSettingsForProjectPortResponse;
   getMe(params: GetMeResponsePortParams): GetMeResponsePortResponse;
   setMe(params: SetMePortParams): SetMePortResponse;
   getMyOnboarding(params: GetMyOnboardingResponsePortParams): GetMyOnboardingResponsePortResponse;

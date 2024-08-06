@@ -14,7 +14,7 @@ export function useGoodFirstIssuesNotification({ projectId }: { projectId: strin
   } = useClientBootstrapContext();
   const { isAuthenticated = false } = authProvider ?? {};
 
-  const { data: myNotificationSettings } = UserReactQueryAdapter.client.useGetMyNotificationsSettings({
+  const { data: myNotificationSettings } = UserReactQueryAdapter.client.useGetMyNotificationsSettingsForProject({
     pathParams: {
       projectId,
     },
@@ -30,7 +30,7 @@ export function useGoodFirstIssuesNotification({ projectId }: { projectId: strin
   }, [myNotificationSettings]);
 
   const { mutateAsync: setMyNotificationSettings, ...restSetMyNotificationSettings } =
-    UserReactQueryAdapter.client.useSetMyNotificationsSettings({ pathParams: { projectId } });
+    UserReactQueryAdapter.client.useSetMyNotificationsSettingsForProject({ pathParams: { projectId } });
 
   useMutationAlert({
     mutation: restSetMyNotificationSettings,

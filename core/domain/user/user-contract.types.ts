@@ -45,29 +45,35 @@ export type GetMyProfilePortResponse = HttpStorageResponse<UserProfileInterface>
 
 /* --------------------------------- Get my notification settings -------------------------------- */
 
-export type GetMyNotificationSettingsResponse = components["schemas"]["NotificationSettingsForProjectResponse"];
+export type GetMyNotificationSettingsForProjectResponse =
+  components["schemas"]["NotificationSettingsForProjectResponse"];
 
-export type GetMyNotificationSettingsPathParams =
+export type GetMyNotificationSettingsForProjectPathParams =
   operations["getMyNotificationSettingsForProject"]["parameters"]["path"];
 
-export type GetMyNotificationSettingsPortParams = HttpClientParameters<{
-  PathParams: GetMyNotificationSettingsPathParams;
+export type GetMyNotificationSettingsForProjectPortParams = HttpClientParameters<{
+  PathParams: GetMyNotificationSettingsForProjectPathParams;
 }>;
 
-export type GetMyNotificationSettingsPortResponse = HttpStorageResponse<GetMyNotificationSettingsResponse>;
+export type GetMyNotificationSettingsForProjectPortResponse =
+  HttpStorageResponse<GetMyNotificationSettingsForProjectResponse>;
 
 /* --------------------------------- Set my notification settings -------------------------------- */
 
-export type SetMyNotificationSettingsBody = components["schemas"]["NotificationSettingsForProjectPatchRequest"];
+export type SetMyNotificationSettingsForProjectBody =
+  components["schemas"]["NotificationSettingsForProjectPatchRequest"];
 
-export type SetMyNotificationSettingsPathParams =
+export type SetMyNotificationSettingsForProjectPathParams =
   operations["getMyNotificationSettingsForProject"]["parameters"]["path"];
 
-export type SetMyNotificationSettingsPortParams = HttpClientParameters<{
-  PathParams: SetMyNotificationSettingsPathParams;
+export type SetMyNotificationSettingsForProjectPortParams = HttpClientParameters<{
+  PathParams: SetMyNotificationSettingsForProjectPathParams;
 }>;
 
-export type SetMyNotificationSettingsPortResponse = HttpStorageResponse<never, SetMyNotificationSettingsBody>;
+export type SetMyNotificationSettingsForProjectPortResponse = HttpStorageResponse<
+  never,
+  SetMyNotificationSettingsForProjectBody
+>;
 
 /* --------------------------------- Get me -------------------------------- */
 
@@ -100,3 +106,11 @@ export type GetMyBillingProfilesResponse = components["schemas"]["ShortBillingPr
 export type GetMyBillingProfilesResponsePortParams = HttpClientParameters<object>;
 
 export type GetMyBillingProfilesResponsePortResponse = HttpStorageResponse<BillingProfileShortInterface>;
+
+/* --------------------------------- Get my notification settings -------------------------------- */
+
+export type GetMyNotificationSettingsResponse = components["schemas"]["NotificationSettingsResponse"];
+
+export type GetMyNotificationSettingsResponsePortParams = HttpClientParameters<object>;
+
+export type GetMyNotificationSettingsResponsePortResponse = HttpStorageResponse<BillingProfileShortInterface>;
