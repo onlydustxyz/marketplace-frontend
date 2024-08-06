@@ -4,10 +4,12 @@ import { NotificationStatus } from "core/domain/notification/notification-consta
 
 import { components } from "src/__generated/api";
 
-export class MaintainerCommitteeApplicationCreated implements NotificationInterface {
-  data: components["schemas"]["NotificationMaintainerCommitteeApplicationCreated"] | undefined;
+import { NEXT_ROUTER } from "../../../../../constants/router";
+
+export class GlobalBillingProfileVerificationFailed implements NotificationInterface {
+  data: components["schemas"]["NotificationGlobalBillingProfileVerificationFailed"] | undefined;
   constructor(private notification: Notification) {
-    this.data = notification.data.maintainerCommitteeApplicationCreated;
+    this.data = notification.data.globalBillingProfileVerificationFailed;
   }
   getId() {
     return this.notification.id;
@@ -25,18 +27,18 @@ export class MaintainerCommitteeApplicationCreated implements NotificationInterf
     return this.notification.status === NotificationStatus.READ;
   }
   getTitle() {
-    return "New committee application";
+    return "Your billing profile verification has failed";
   }
 
   getDescription() {
-    const { committeeName } = this.data || {};
-    return `You have applied to ${committeeName} committee.`;
+    const { billingProfileName } = this.data || {};
+    return `Your verification for your billing profile ${billingProfileName} has failed`;
   }
 
   getUrl() {
-    const { committeeId } = this.data || {};
-    if (committeeId) {
-      return `/c/${committeeId}/applicant`;
+    const { billingProfileId } = this.data || {};
+    if (billingProfileId) {
+      return NEXT_ROUTER.settings.billing.generalInformation(billingProfileId);
     }
     return undefined;
   }

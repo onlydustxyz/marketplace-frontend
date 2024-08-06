@@ -3,8 +3,10 @@ import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-conte
 import { useEffect, useState } from "react";
 
 import useMutationAlert from "src/api/useMutationAlert";
+import { usePosthog } from "src/hooks/usePosthog";
 
 export function useGoodFirstIssuesNotification({ projectId }: { projectId: string }) {
+  const { capture } = usePosthog();
   const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
 
   const {
@@ -40,6 +42,11 @@ export function useGoodFirstIssuesNotification({ projectId }: { projectId: strin
   async function handleSetMyNotificationSettings() {
     await setMyNotificationSettings({
       onGoodFirstIssueAdded: !isNotificationEnabled,
+    });
+    capture("project_issues_notifications_switched", {
+      project_id: projectId,
+      project_name: myNotificationSettings?.name,
+      enabled: !isNotificationEnabled,
     });
   }
 

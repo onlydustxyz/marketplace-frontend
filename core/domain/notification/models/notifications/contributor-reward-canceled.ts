@@ -4,10 +4,12 @@ import { NotificationStatus } from "core/domain/notification/notification-consta
 
 import { components } from "src/__generated/api";
 
-export class MaintainerCommitteeApplicationCreated implements NotificationInterface {
-  data: components["schemas"]["NotificationMaintainerCommitteeApplicationCreated"] | undefined;
+import { NEXT_ROUTER } from "../../../../../constants/router";
+
+export class ContributorRewardCanceled implements NotificationInterface {
+  data: components["schemas"]["NotificationContributorRewardCanceled"] | undefined;
   constructor(private notification: Notification) {
-    this.data = notification.data.maintainerCommitteeApplicationCreated;
+    this.data = notification.data.contributorRewardCanceled;
   }
   getId() {
     return this.notification.id;
@@ -25,19 +27,15 @@ export class MaintainerCommitteeApplicationCreated implements NotificationInterf
     return this.notification.status === NotificationStatus.READ;
   }
   getTitle() {
-    return "New committee application";
+    return "Your reward has been canceled";
   }
 
   getDescription() {
-    const { committeeName } = this.data || {};
-    return `You have applied to ${committeeName} committee.`;
+    const { projectName, currencyCode, amount } = this.data || {};
+    return `Your reward of ${amount} ${currencyCode} has been canceled for the project ${projectName}`;
   }
 
   getUrl() {
-    const { committeeId } = this.data || {};
-    if (committeeId) {
-      return `/c/${committeeId}/applicant`;
-    }
-    return undefined;
+    return NEXT_ROUTER.rewards.all;
   }
 }

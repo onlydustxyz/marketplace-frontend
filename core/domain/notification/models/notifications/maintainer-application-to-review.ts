@@ -2,10 +2,15 @@ import { Notification } from "core/domain/notification/models/notification-model
 import { NotificationInterface } from "core/domain/notification/models/notification.types";
 import { NotificationStatus } from "core/domain/notification/notification-constants";
 
+import { components } from "src/__generated/api";
+
 import { NEXT_ROUTER } from "../../../../../constants/router";
 
 export class MaintainerApplicationToReview implements NotificationInterface {
-  constructor(private notification: Notification) {}
+  data: components["schemas"]["NotificationMaintainerApplicationToReview"] | undefined;
+  constructor(private notification: Notification) {
+    this.data = notification.data.maintainerApplicationToReview;
+  }
 
   getId() {
     return this.notification.id;
@@ -28,13 +33,15 @@ export class MaintainerApplicationToReview implements NotificationInterface {
   }
 
   getDescription() {
-    const project = this.notification.data.maintainerApplicationToReview?.project;
-    const user = this.notification.data.maintainerApplicationToReview?.applicant;
-    return `${user?.login} applied to ${project?.name}`;
+    const { projectName, applicationLogin, issueName } = this.data || {};
+    return `${applicationLogin} applied to ${issueName} on ${projectName}`;
   }
 
   getUrl() {
-    const slug = this.notification.data.maintainerApplicationToReview?.project?.slug;
-    return NEXT_ROUTER.projects.details.root(slug ?? "");
+    const { projectSlug } = this.data || {};
+    if (projectSlug) {
+      return NEXT_ROUTER.projects.details.applications.root(projectSlug);
+    }
+    return undefined;
   }
 }
