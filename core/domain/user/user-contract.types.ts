@@ -1,5 +1,6 @@
 import { BillingProfileShortInterface } from "core/domain/billing-profile/models/billing-profile-short-model";
 import { UserInterface } from "core/domain/user/models/user-model";
+import { UserNotificationSettings } from "core/domain/user/models/user-notification-settings-model";
 import { UserOnboardingInterface } from "core/domain/user/models/user-onboarding-model";
 import { UserProfileInterface } from "core/domain/user/models/user-profile-model";
 import {
@@ -113,4 +114,4 @@ export type GetMyNotificationSettingsResponse = components["schemas"]["Notificat
 
 export type GetMyNotificationSettingsResponsePortParams = HttpClientParameters<object>;
 
-export type GetMyNotificationSettingsResponsePortResponse = HttpStorageResponse<BillingProfileShortInterface>;
+export type GetMyNotificationSettingsResponsePortResponse = HttpStorageResponse<UserNotificationSettings>;

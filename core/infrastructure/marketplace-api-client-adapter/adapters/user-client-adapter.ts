@@ -1,5 +1,6 @@
 import { BillingProfileShort } from "core/domain/billing-profile/models/billing-profile-short-model";
 import { User } from "core/domain/user/models/user-model";
+import { UserNotificationSettings } from "core/domain/user/models/user-notification-settings-model";
 import { UserNotifications } from "core/domain/user/models/user-notifications-model";
 import { UserOnboarding } from "core/domain/user/models/user-onboarding-model";
 import { UserProfile } from "core/domain/user/models/user-profile-model";
@@ -8,6 +9,7 @@ import {
   GetMeResponse,
   GetMyBillingProfilesResponse,
   GetMyNotificationSettingsForProjectResponse,
+  GetMyNotificationSettingsResponse,
   GetMyOnboardingResponse,
   GetMyProfileResponse,
   ReplaceMyProfileBody,
@@ -28,6 +30,7 @@ export class UserClientAdapter implements UserStoragePort {
     getMyProfile: "me/profile",
     setMyNotificationSettingsForProject: "me/notification-settings/projects/:projectId",
     getMyNotificationSettingsForProject: "me/notification-settings/projects/:projectId",
+    getMyNotificationSettings: "me/notification-settings",
     getMe: "me",
     setMe: "me",
     getMyOnboarding: "me/onboarding",
@@ -150,6 +153,27 @@ export class UserClientAdapter implements UserStoragePort {
       });
 
       return new UserNotifications(data);
+    };
+
+    return {
+      request,
+      tag,
+    };
+  };
+
+  getMyNotificationSettings = (_: FirstParameter<UserStoragePort["getMyNotificationSettings"]>) => {
+    const path = this.routes["getMyNotificationSettings"];
+    const method = "GET";
+    const tag = HttpClient.buildTag({ path });
+
+    const request = async () => {
+      const data = await this.client.request<GetMyNotificationSettingsResponse>({
+        path,
+        method,
+        tag,
+      });
+
+      return new UserNotificationSettings(data);
     };
 
     return {

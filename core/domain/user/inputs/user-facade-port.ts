@@ -5,6 +5,8 @@ import {
   GetMyBillingProfilesResponsePortResponse,
   GetMyNotificationSettingsForProjectPortParams,
   GetMyNotificationSettingsForProjectPortResponse,
+  GetMyNotificationSettingsResponsePortParams,
+  GetMyNotificationSettingsResponsePortResponse,
   GetMyOnboardingResponsePortParams,
   GetMyOnboardingResponsePortResponse,
   GetMyProfilePortParams,
@@ -36,5 +38,7 @@ export interface UserFacadePort {
   setMe(params: SetMePortParams): SetMePortResponse;
   getMyOnboarding(params: GetMyOnboardingResponsePortParams): GetMyOnboardingResponsePortResponse;
   getMyBillingProfiles(params: GetMyBillingProfilesResponsePortParams): GetMyBillingProfilesResponsePortResponse;
-  getMyNotificationSettings(params: GetMyBillingProfilesResponsePortParams): GetMyBillingProfilesResponsePortResponse;
+  getMyNotificationSettings(
+    params: GetMyNotificationSettingsResponsePortParams
+  ): GetMyNotificationSettingsResponsePortResponse;
 }
