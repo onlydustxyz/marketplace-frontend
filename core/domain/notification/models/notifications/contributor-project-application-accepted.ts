@@ -4,7 +4,7 @@ import { NotificationStatus } from "core/domain/notification/notification-consta
 
 import { components } from "src/__generated/api";
 
-import { NEXT_ROUTER } from "constants/router";
+import { NEXT_ROUTER } from "../../../../../constants/router";
 
 export class ContributorProjectApplicationAccepted implements NotificationInterface {
   data: components["schemas"]["NotificationContributorProjectApplicationAccepted"] | undefined;
