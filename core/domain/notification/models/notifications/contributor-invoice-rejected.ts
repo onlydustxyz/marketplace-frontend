@@ -4,10 +4,12 @@ import { NotificationStatus } from "core/domain/notification/notification-consta
 
 import { components } from "src/__generated/api";
 
-export class MaintainerCommitteeApplicationCreated implements NotificationInterface {
-  data: components["schemas"]["NotificationMaintainerCommitteeApplicationCreated"] | undefined;
+import { NEXT_ROUTER } from "../../../../../constants/router";
+
+export class ContributorInvoiceRejected implements NotificationInterface {
+  data: components["schemas"]["NotificationContributorInvoiceRejected"] | undefined;
   constructor(private notification: Notification) {
-    this.data = notification.data.maintainerCommitteeApplicationCreated;
+    this.data = notification.data.contributorInvoiceRejected;
   }
   getId() {
     return this.notification.id;
@@ -25,18 +27,18 @@ export class MaintainerCommitteeApplicationCreated implements NotificationInterf
     return this.notification.status === NotificationStatus.READ;
   }
   getTitle() {
-    return "New committee application";
+    return "Your invoice has been rejected";
   }
 
   getDescription() {
-    const { committeeName } = this.data || {};
-    return `You have applied to ${committeeName} committee.`;
+    const { invoiceName, rejectionReason } = this.data || {};
+    return `Your invoice ${invoiceName} has been rejected because of : ${rejectionReason}`;
   }
 
   getUrl() {
-    const { committeeId } = this.data || {};
-    if (committeeId) {
-      return `/c/${committeeId}/applicant`;
+    const { billingProfileId } = this.data || {};
+    if (billingProfileId) {
+      return NEXT_ROUTER.settings.billing.invoices(billingProfileId);
     }
     return undefined;
   }

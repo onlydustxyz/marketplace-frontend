@@ -6,13 +6,18 @@ import { GetNotificationsCountResponse } from "core/domain/notification/notifica
 
 export function useGetNotificationsCount({
   options,
+  queryParams,
 }: UseQueryFacadeParams<NotificationFacadePort["getNotificationsCount"], GetNotificationsCountResponse>) {
   const notificationStoragePort = bootstrap.getNotificationStoragePortForClient();
 
   return useQuery(
     useQueryAdapter({
-      ...notificationStoragePort.getNotificationsCount({}),
-      options,
+      ...notificationStoragePort.getNotificationsCount({ queryParams }),
+      options: {
+        ...options,
+        refetchOnWindowFocus: false,
+        refetchInterval: 5000,
+      },
     })
   );
 }
