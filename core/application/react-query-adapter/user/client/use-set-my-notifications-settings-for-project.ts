@@ -24,13 +24,15 @@ export function useSetMyNotificationsSettingsForProject({
     useMutationAdapter({
       ...userStoragePort.setMyNotificationSettingsForProject({ pathParams }),
       options: {
-        onSuccess: async () => {
+        ...options,
+        onSuccess: async (data, variables, context) => {
           await queryClient.invalidateQueries({
             queryKey: userStoragePort.getMyNotificationSettingsForProject({}).tag,
             exact: false,
           });
+
+          options?.onSuccess?.(data, variables, context);
         },
-        ...options,
       },
     })
   );

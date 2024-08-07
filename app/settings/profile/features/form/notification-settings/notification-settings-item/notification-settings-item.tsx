@@ -6,7 +6,6 @@ import { Typography } from "components/layout/typography/typography";
 import { TNotificationSettingsItem } from "./notification-settings-item.types";
 
 export function NotificationSettingsItem({ title, items }: TNotificationSettingsItem.Props) {
-  console.log("title", title);
   return (
     <Card background={false} border={"medium"}>
       <Flex direction="col" className="w-full gap-3">
