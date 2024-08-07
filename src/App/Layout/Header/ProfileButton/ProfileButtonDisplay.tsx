@@ -19,7 +19,7 @@ export function ProfileButtonDisplay({ isLoading, isAuthenticated }: ProfileButt
     if (isAuthenticated) {
       return (
         <div className="flex flex-row items-center justify-end gap-2">
-          {process.env.NEXT_PUBLIC_NOTIFICATIONS_ENABLED === "true" ? <NotificationButton /> : null}
+          <NotificationButton />
           <ProfileButton />
           <BurgerMenu />
         </div>
