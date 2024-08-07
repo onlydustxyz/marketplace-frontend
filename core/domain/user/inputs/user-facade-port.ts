@@ -19,6 +19,8 @@ import {
   SetMePortResponse,
   SetMyNotificationSettingsForProjectPortParams,
   SetMyNotificationSettingsForProjectPortResponse,
+  SetMyNotificationSettingsPortParams,
+  SetMyNotificationSettingsPortResponse,
   SetMyProfilePortParams,
   SetMyProfilePortResponse,
 } from "core/domain/user/user-contract.types";
@@ -41,4 +43,5 @@ export interface UserFacadePort {
   getMyNotificationSettings(
     params: GetMyNotificationSettingsResponsePortParams
   ): GetMyNotificationSettingsResponsePortResponse;
+  setMyNotificationSettings(params: SetMyNotificationSettingsPortParams): SetMyNotificationSettingsPortResponse;
 }

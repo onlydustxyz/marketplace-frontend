@@ -21,7 +21,7 @@ import { FormFooter } from "../components/form-footer/form-footer";
 import { SettingsHeader } from "../components/settings-header/settings-header";
 import { REGEX } from "./features/form/form.regex";
 import { TProfileForm } from "./features/form/form.types";
-import { formatToData, formatToSchema } from "./features/form/form.utils";
+import { formatSettingsToSchema, formatToData, formatToSchema } from "./features/form/form.utils";
 import { ProfileGithubAccount } from "./features/github-account/github-account";
 
 const INVALID_URL = "invalidUrl";
@@ -98,6 +98,9 @@ function SettingsProfilePage() {
     ...restUpdateProfileMutation
   } = UserReactQueryAdapter.client.useReplaceMyProfile({});
 
+  const { mutateAsync: setNotificationsSettings, isPending: setNotificationsSettingsIsPending } =
+    UserReactQueryAdapter.client.useSetMyNotificationsSettings({});
+
   useMutationAlert({
     mutation: restUpdateProfileMutation,
     success: {
@@ -108,8 +111,8 @@ function SettingsProfilePage() {
     },
   });
 
-  const onSubmit = ({ notifications, ...formData }: TProfileForm.Data) => {
-    console.log("SAVE", notifications);
+  const onSubmit = async ({ notifications, ...formData }: TProfileForm.Data) => {
+    await setNotificationsSettings(formatSettingsToSchema({ notifications }));
     updateUserProfileInfo(formatToSchema(formData));
   };
 
@@ -126,7 +129,7 @@ function SettingsProfilePage() {
           </Flex>
         </Flex>
 
-        <FormFooter isPending={userProfilInformationIsPending} hasPreviewButton />
+        <FormFooter isPending={userProfilInformationIsPending || setNotificationsSettingsIsPending} hasPreviewButton />
       </form>
     </FormProvider>
   );

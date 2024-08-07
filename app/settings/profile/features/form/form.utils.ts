@@ -1,4 +1,5 @@
 import { UserNotificationSettingsInterface } from "core/domain/user/models/user-notification-settings-model";
+import { SetMyNotificationSettingsBody } from "core/domain/user/user-contract.types";
 
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 
@@ -74,6 +75,50 @@ export function formatToData(
       KYC_KYB_BILLING_PROFILE: notificationSettings.findCategory("KYC_KYB_BILLING_PROFILE"),
     },
   };
+}
+
+export function formatSettingsToSchema(data: Pick<TProfileForm.Data, "notifications">): SetMyNotificationSettingsBody {
+  function findChannel(
+    notification: TProfileForm.Data["notifications"]["MAINTAINER_PROJECT_CONTRIBUTOR"]
+  ): SetMyNotificationSettingsBody[0]["channels"] {
+    const channels: SetMyNotificationSettingsBody[0]["channels"] = [];
+
+    if (notification.EMAIL) {
+      channels.push("EMAIL");
+    }
+
+    if (notification.SUMMARY_EMAIL) {
+      channels.push("SUMMARY_EMAIL");
+    }
+
+    return channels;
+  }
+
+  if (data.notifications) {
+    return [
+      {
+        category: "MAINTAINER_PROJECT_CONTRIBUTOR",
+        channels: findChannel(data.notifications.MAINTAINER_PROJECT_CONTRIBUTOR),
+      },
+      {
+        category: "MAINTAINER_PROJECT_PROGRAM",
+        channels: findChannel(data.notifications.MAINTAINER_PROJECT_PROGRAM),
+      },
+      {
+        category: "CONTRIBUTOR_REWARD",
+        channels: findChannel(data.notifications.CONTRIBUTOR_REWARD),
+      },
+      {
+        category: "CONTRIBUTOR_PROJECT",
+        channels: findChannel(data.notifications.CONTRIBUTOR_PROJECT),
+      },
+      {
+        category: "KYC_KYB_BILLING_PROFILE",
+        channels: findChannel(data.notifications.KYC_KYB_BILLING_PROFILE),
+      },
+    ];
+  }
+  return [];
 }
 
 export function formatToSchema(data: Omit<TProfileForm.Data, "notifications">) {

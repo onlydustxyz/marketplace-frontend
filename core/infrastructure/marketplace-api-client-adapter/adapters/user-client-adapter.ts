@@ -13,6 +13,7 @@ import {
   GetMyProfileResponse,
   ReplaceMyProfileBody,
   SetMeBody,
+  SetMyNotificationSettingsBody,
   SetMyNotificationSettingsForProjectBody,
   SetMyProfileBody,
 } from "core/domain/user/user-contract.types";
@@ -30,6 +31,7 @@ export class UserClientAdapter implements UserStoragePort {
     setMyNotificationSettingsForProject: "me/notification-settings/projects/:projectId",
     getMyNotificationSettingsForProject: "me/notification-settings/projects/:projectId",
     getMyNotificationSettings: "me/notification-settings",
+    setMyNotificationSettings: "me/notification-settings",
     getMe: "me",
     setMe: "me",
     getMyOnboarding: "me/onboarding",
@@ -186,6 +188,25 @@ export class UserClientAdapter implements UserStoragePort {
         ],
       });
     };
+
+    return {
+      request,
+      tag,
+    };
+  };
+
+  setMyNotificationSettings = (_: FirstParameter<UserStoragePort["setMyNotificationSettings"]>) => {
+    const path = this.routes["setMyNotificationSettings"];
+    const method = "PATCH";
+    const tag = HttpClient.buildTag({ path });
+
+    const request = async (body: SetMyNotificationSettingsBody) =>
+      this.client.request<never>({
+        path,
+        method,
+        tag,
+        body: JSON.stringify(body),
+      });
 
     return {
       request,

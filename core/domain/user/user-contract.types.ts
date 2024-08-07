@@ -115,3 +115,11 @@ export type GetMyNotificationSettingsResponse = components["schemas"]["Notificat
 export type GetMyNotificationSettingsResponsePortParams = HttpClientParameters<object>;
 
 export type GetMyNotificationSettingsResponsePortResponse = HttpStorageResponse<UserNotificationSettings>;
+
+/* --------------------------------- Set my notification settings -------------------------------- */
+
+export type SetMyNotificationSettingsBody = components["schemas"]["NotificationSettingPutRequest"][];
+
+export type SetMyNotificationSettingsPortParams = HttpClientParameters<object>;
+
+export type SetMyNotificationSettingsPortResponse = HttpStorageResponse<never, SetMyNotificationSettingsBody>;

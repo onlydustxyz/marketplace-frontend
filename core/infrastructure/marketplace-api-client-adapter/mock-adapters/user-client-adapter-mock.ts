@@ -23,6 +23,10 @@ export class UserClientAdapterMock implements UserStoragePort {
 
   setMyNotificationSettingsForProject = mockHttpStorageResponse<UserStoragePort["setMyNotificationSettingsForProject"]>;
 
+  getMyNotificationSettings = mockHttpStorageResponse<UserStoragePort["getMyNotificationSettings"]>;
+
+  setMyNotificationSettings = mockHttpStorageResponse<UserStoragePort["setMyNotificationSettings"]>;
+
   setMe = mockHttpStorageResponse<UserStoragePort["setMe"]>;
 
   getMyOnboarding = mockHttpStorageResponse<UserStoragePort["getMyOnboarding"]>;
