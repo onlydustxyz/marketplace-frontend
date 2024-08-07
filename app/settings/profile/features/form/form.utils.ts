@@ -1,5 +1,4 @@
 import { UserNotificationSettingsInterface } from "core/domain/user/models/user-notification-settings-model";
-import { UserNotificationSettingsChannelType } from "core/domain/user/models/user.types";
 import { UserNotificationCategories } from "core/domain/user/user-constants";
 import { SetMyNotificationSettingsBody } from "core/domain/user/user-contract.types";
 
@@ -80,10 +79,8 @@ export function formatToData(
 }
 
 export function formatSettingsToSchema(data: Pick<TProfileForm.Data, "notifications">): SetMyNotificationSettingsBody {
-  function findChannel(
-    notification: TProfileForm.Data["notifications"]["MAINTAINER_PROJECT_CONTRIBUTOR"]
-  ): UserNotificationSettingsChannelType[] {
-    const channels: UserNotificationSettingsChannelType[] = [];
+  function findChannel(notification: TProfileForm.Data["notifications"]["MAINTAINER_PROJECT_CONTRIBUTOR"]) {
+    const channels: SetMyNotificationSettingsBody["notificationSettings"][0]["channels"] = ["IN_APP"];
 
     if (notification.EMAIL) {
       channels.push("EMAIL");

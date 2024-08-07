@@ -31,8 +31,8 @@ export class ContributorRewardReceived implements NotificationInterface {
   }
 
   getDescription() {
-    const { projectName, currencyCode, amount } = this.data || {};
-    return `${projectName} sent you a new reward of ${amount} ${currencyCode}`;
+    const { projectName, currencyCode, amount, sentByGithubLogin } = this.data || {};
+    return `${sentByGithubLogin} sent you a new reward of ${amount} ${currencyCode} on project ${projectName}`;
   }
 
   getUrl() {

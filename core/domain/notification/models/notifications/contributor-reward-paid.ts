@@ -27,12 +27,12 @@ export class ContributorRewardPaid implements NotificationInterface {
     return this.notification.status === NotificationStatus.READ;
   }
   getTitle() {
-    return "You rewards has been paid";
+    return "Your rewards has been paid";
   }
 
   getDescription() {
     const { numberOfRewardPaid, totalAmountDollarsEquivalent } = this.data || {};
-    return `${numberOfRewardPaid} rewards has been paid for a total of ${totalAmountDollarsEquivalent} USD`;
+    return `${numberOfRewardPaid} reward(s) has been paid for a total of ${totalAmountDollarsEquivalent} USD`;
   }
 
   getUrl() {
