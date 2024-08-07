@@ -57,11 +57,12 @@ export function NotificationSettings() {
               value={isChannelEnabled(UserNotificationChannels.EMAIL)}
               onChange={v => enableAll("EMAIL", v)}
             />
-            <NotificationSwitch
-              label={{ token: "v2.pages.settings.profile.notificationSettings.enableAll" }}
-              value={isChannelEnabled(UserNotificationChannels.SUMMARY_EMAIL)}
-              onChange={v => enableAll("SUMMARY_EMAIL", v)}
-            />
+            {/*// TODO KEEP THIS WHEN BACKEND IS READY FOR SUMMARY EMAIL */}
+            {/*<NotificationSwitch*/}
+            {/*  label={{ token: "v2.pages.settings.profile.notificationSettings.enableAll" }}*/}
+            {/*  value={isChannelEnabled(UserNotificationChannels.SUMMARY_EMAIL)}*/}
+            {/*  onChange={v => enableAll("SUMMARY_EMAIL", v)}*/}
+            {/*/>*/}
           </Flex>
         </Flex>
 

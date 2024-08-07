@@ -27,12 +27,12 @@ export class GlobalBillingProfileVerificationFailed implements NotificationInter
     return this.notification.status === NotificationStatus.READ;
   }
   getTitle() {
-    return "Your billing profile verification has failed";
+    return "Your billing profile requires an action.";
   }
 
   getDescription() {
     const { billingProfileName } = this.data || {};
-    return `Your verification for your billing profile ${billingProfileName} has failed`;
+    return `An anomaly has occurred in the verification process for your billing profile ${billingProfileName}. Please refer to the following steps to redo the verification and resolve the issue.`;
   }
 
   getUrl() {

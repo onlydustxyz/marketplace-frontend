@@ -1,9 +1,6 @@
 import { Flex } from "src/components/New/Layout/Flex";
 
-import { Tooltip } from "components/atoms/tooltip";
 import { Card } from "components/ds/card/card";
-import { Icon } from "components/layout/icon/icon";
-import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
 import { TNotificationSettingsItem } from "./notification-settings-item.types";
@@ -23,19 +20,20 @@ export function NotificationSettingsItem({ title, items }: TNotificationSettings
                 variant={"body-s-bold"}
               />
             </div>
-            <div className="flex h-auto w-48 flex-col items-end justify-start gap-1">
-              <div className="flex w-fit flex-row items-center justify-end gap-1">
-                <Typography
-                  translate={{ token: "v2.pages.settings.profile.notificationSettings.weeklySummary" }}
-                  variant={"body-s-bold"}
-                />
-                <Tooltip
-                  content={<Translate token={"v2.pages.settings.profile.notificationSettings.weeklySummaryTooltip"} />}
-                >
-                  <Icon remixName={"ri-information-line"} />
-                </Tooltip>
-              </div>
-            </div>
+            {/*// TODO KEEP THIS WHEN BACKEND IS READY FOR SUMMARY EMAIL */}
+            {/*<div className="flex h-auto w-48 flex-col items-end justify-start gap-1">*/}
+            {/*  <div className="flex w-fit flex-row items-center justify-end gap-1">*/}
+            {/*    <Typography*/}
+            {/*      translate={{ token: "v2.pages.settings.profile.notificationSettings.weeklySummary" }}*/}
+            {/*      variant={"body-s-bold"}*/}
+            {/*    />*/}
+            {/*    <Tooltip*/}
+            {/*      content={<Translate token={"v2.pages.settings.profile.notificationSettings.weeklySummaryTooltip"} />}*/}
+            {/*    >*/}
+            {/*      <Icon remixName={"ri-information-line"} />*/}
+            {/*    </Tooltip>*/}
+            {/*  </div>*/}
+            {/*</div>*/}
           </Flex>
         </Flex>
         {items.map((item, key) => (
@@ -46,7 +44,8 @@ export function NotificationSettingsItem({ title, items }: TNotificationSettings
             </Flex>
             <Flex direction="row" className="w-fit items-center justify-end">
               {item.switch[0]}
-              {item.switch[1]}
+              {/*// TODO KEEP THIS WHEN BACKEND IS READY FOR SUMMARY EMAIL */}
+              {/*{item.switch[1]}*/}
             </Flex>
           </Flex>
         ))}
