@@ -23,4 +23,5 @@ type channels = components["schemas"]["NotificationSettingResponse"]["channels"]
 export const UserNotificationChannels: { [key in channels]: key } = {
   EMAIL: "EMAIL",
   SUMMARY_EMAIL: "SUMMARY_EMAIL",
+  IN_APP: "IN_APP",
 };

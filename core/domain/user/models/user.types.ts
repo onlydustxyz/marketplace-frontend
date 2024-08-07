@@ -16,8 +16,10 @@ export interface UserProfileContact {
 
 export type UserJoiningReason = components["schemas"]["UserProfileUpdateRequest"]["joiningReason"];
 
-export type UserNotificationSettingsChannelType =
-  components["schemas"]["NotificationSettingsResponse"]["notificationSettings"][0]["channels"][0];
+export type UserNotificationSettingsChannelType = Exclude<
+  components["schemas"]["NotificationSettingsResponse"]["notificationSettings"][0]["channels"][0],
+  "IN_APP"
+>;
 
 export type UserNotificationSettingsCategoryType =
   components["schemas"]["NotificationSettingsResponse"]["notificationSettings"][0]["category"];

@@ -32,7 +32,7 @@ export function NotificationSettings() {
   function enableAll(channel: UserNotificationSettingsChannelType, v: boolean) {
     if (!notifications) return false;
     return getAllCategories().forEach(cat => {
-      setValue(`notifications.${cat}.${channel}`, v);
+      setValue(`notifications.${cat}.${channel}`, v, { shouldDirty: true });
     });
   }
 

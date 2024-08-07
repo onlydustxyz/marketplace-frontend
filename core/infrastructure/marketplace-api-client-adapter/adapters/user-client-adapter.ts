@@ -9,6 +9,7 @@ import {
   GetMeResponse,
   GetMyBillingProfilesResponse,
   GetMyNotificationSettingsForProjectResponse,
+  GetMyNotificationSettingsResponse,
   GetMyOnboardingResponse,
   GetMyProfileResponse,
   ReplaceMyProfileBody,
@@ -168,25 +169,13 @@ export class UserClientAdapter implements UserStoragePort {
     const tag = HttpClient.buildTag({ path });
 
     const request = async () => {
-      // const data = await this.client.request<GetMyNotificationSettingsResponse>({
-      //   path,
-      //   method,
-      //   tag,
-      // });
-
-      // return new UserNotificationSettings(data);
-      return new UserNotificationSettings({
-        notificationSettings: [
-          {
-            channels: ["EMAIL"],
-            category: "MAINTAINER_PROJECT_CONTRIBUTOR",
-          },
-          {
-            channels: ["EMAIL", "SUMMARY_EMAIL"],
-            category: "CONTRIBUTOR_REWARD",
-          },
-        ],
+      const data = await this.client.request<GetMyNotificationSettingsResponse>({
+        path,
+        method,
+        tag,
       });
+
+      return new UserNotificationSettings(data);
     };
 
     return {
@@ -197,7 +186,7 @@ export class UserClientAdapter implements UserStoragePort {
 
   setMyNotificationSettings = (_: FirstParameter<UserStoragePort["setMyNotificationSettings"]>) => {
     const path = this.routes["setMyNotificationSettings"];
-    const method = "PATCH";
+    const method = "PUT";
     const tag = HttpClient.buildTag({ path });
 
     const request = async (body: SetMyNotificationSettingsBody) =>
