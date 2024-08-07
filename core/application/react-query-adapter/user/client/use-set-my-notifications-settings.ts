@@ -5,7 +5,6 @@ import {
 } from "core/application/react-query-adapter/helpers/use-mutation-adapter";
 import { bootstrap } from "core/bootstrap";
 import { UserFacadePort } from "core/domain/user/inputs/user-facade-port";
-import { UserNotificationsInterface } from "core/domain/user/models/user-notifications-model";
 import { SetMyNotificationSettingsBody } from "core/domain/user/user-contract.types";
 
 export function useSetMyNotificationsSettings({
@@ -14,7 +13,7 @@ export function useSetMyNotificationsSettings({
 }: UseMutationFacadeParams<
   UserFacadePort["setMyNotificationSettings"],
   undefined,
-  UserNotificationsInterface,
+  never,
   SetMyNotificationSettingsBody
 > = {}) {
   const userStoragePort = bootstrap.getUserStoragePortForClient();

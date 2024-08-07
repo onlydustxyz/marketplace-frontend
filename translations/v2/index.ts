@@ -17,6 +17,7 @@ import en_features_filters from "./en/features/filters.json";
 import en_features_hackathon_card from "./en/features/hackathon-card.json";
 import en_features_leaders from "./en/features/leaders.json";
 import en_features_menu from "./en/features/menu.json";
+import en_features_notifications from "./en/features/notifications-panel.json";
 import en_features_payout_status from "./en/features/payout-status.json";
 import en_features_profile_card from "./en/features/profile-card.json";
 import en_features_project_side_overview from "./en/features/project-side-overview.json";
@@ -77,6 +78,7 @@ export const en = {
     features: {
       ...en_features,
       filters: en_features_filters,
+      notifications: en_features_notifications,
       banners: en_features_banners,
       contributors: en_features_contributors,
       leaders: en_features_leaders,

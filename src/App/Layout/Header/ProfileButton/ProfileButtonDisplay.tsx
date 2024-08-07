@@ -1,6 +1,8 @@
 import { BurgerMenu } from "src/App/Layout/Header/ProfileButton/burger-menu";
 import SkeletonEl from "src/components/New/Skeleton/Skeleton";
 
+import { NotificationButton } from "components/features/notification-button/notification-button";
+
 import ProfileButton from ".";
 import GithubLink from "../GithubLink";
 
@@ -17,6 +19,7 @@ export function ProfileButtonDisplay({ isLoading, isAuthenticated }: ProfileButt
     if (isAuthenticated) {
       return (
         <div className="flex flex-row items-center justify-end gap-2">
+          <NotificationButton />
           <ProfileButton />
           <BurgerMenu />
         </div>

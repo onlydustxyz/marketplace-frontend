@@ -1,3 +1,7 @@
+import { UserNotificationSettingsInterface } from "core/domain/user/models/user-notification-settings-model";
+import { UserNotificationCategories } from "core/domain/user/user-constants";
+import { SetMyNotificationSettingsBody } from "core/domain/user/user-contract.types";
+
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 
 import { TProfileForm } from "./form.types";
@@ -33,7 +37,10 @@ export function createContact({
   };
 }
 
-export function formatToData(data: UseGetMyProfileInfoResponse): TProfileForm.Data {
+export function formatToData(
+  data: UseGetMyProfileInfoResponse,
+  notificationSettings: UserNotificationSettingsInterface
+): TProfileForm.Data {
   const { firstName, lastName, contactEmail, avatarUrl, location, bio, website, contacts, allocatedTimeToContribute } =
     data;
 
@@ -61,10 +68,62 @@ export function formatToData(data: UseGetMyProfileInfoResponse): TProfileForm.Da
     linkedin: getContactInfo("LINKEDIN"),
     weeklyAllocatedTime: allocatedTimeToContribute ?? TProfileForm.ALLOCATED_TIME.NONE,
     lookingForAJob: data.isLookingForAJob ?? false,
+    notifications: {
+      MAINTAINER_PROJECT_CONTRIBUTOR: notificationSettings.findCategory("MAINTAINER_PROJECT_CONTRIBUTOR"),
+      MAINTAINER_PROJECT_PROGRAM: notificationSettings.findCategory("MAINTAINER_PROJECT_PROGRAM"),
+      CONTRIBUTOR_REWARD: notificationSettings.findCategory("CONTRIBUTOR_REWARD"),
+      CONTRIBUTOR_PROJECT: notificationSettings.findCategory("CONTRIBUTOR_PROJECT"),
+      KYC_KYB_BILLING_PROFILE: notificationSettings.findCategory("KYC_KYB_BILLING_PROFILE"),
+    },
   };
 }
 
-export function formatToSchema(data: TProfileForm.Data) {
+export function formatSettingsToSchema(data: Pick<TProfileForm.Data, "notifications">): SetMyNotificationSettingsBody {
+  function findChannel(notification: TProfileForm.Data["notifications"]["MAINTAINER_PROJECT_CONTRIBUTOR"]) {
+    const channels: SetMyNotificationSettingsBody["notificationSettings"][0]["channels"] = ["IN_APP"];
+
+    if (notification.EMAIL) {
+      channels.push("EMAIL");
+    }
+
+    if (notification.SUMMARY_EMAIL) {
+      channels.push("SUMMARY_EMAIL");
+    }
+
+    return channels;
+  }
+
+  if (data.notifications) {
+    return {
+      notificationSettings: [
+        {
+          category: UserNotificationCategories.MAINTAINER_PROJECT_CONTRIBUTOR,
+          channels: findChannel(data.notifications.MAINTAINER_PROJECT_CONTRIBUTOR),
+        },
+        {
+          category: UserNotificationCategories.MAINTAINER_PROJECT_PROGRAM,
+          channels: findChannel(data.notifications.MAINTAINER_PROJECT_PROGRAM),
+        },
+        {
+          category: UserNotificationCategories.CONTRIBUTOR_REWARD,
+          channels: findChannel(data.notifications.CONTRIBUTOR_REWARD),
+        },
+        {
+          category: UserNotificationCategories.CONTRIBUTOR_PROJECT,
+          channels: findChannel(data.notifications.CONTRIBUTOR_PROJECT),
+        },
+        {
+          category: UserNotificationCategories.KYC_KYB_BILLING_PROFILE,
+          channels: findChannel(data.notifications.KYC_KYB_BILLING_PROFILE),
+        },
+      ].filter(({ channels }) => channels.length > 0) as SetMyNotificationSettingsBody["notificationSettings"],
+    };
+  }
+
+  return { notificationSettings: [] };
+}
+
+export function formatToSchema(data: Omit<TProfileForm.Data, "notifications">) {
   const {
     firstName,
     lastName,

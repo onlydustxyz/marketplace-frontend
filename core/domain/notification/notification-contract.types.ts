@@ -4,7 +4,7 @@ import {
   HttpStorageResponse,
 } from "core/infrastructure/marketplace-api-client-adapter/http/http-client/http-client.types";
 
-import { components } from "src/__generated/api";
+import { components, operations } from "src/__generated/api";
 
 // Get notifications
 export type GetNotificationsResponse = components["schemas"]["NotificationPageResponse"];
@@ -12,9 +12,13 @@ export type GetNotificationsModel = Omit<GetNotificationsResponse, "notification
   notifications: NotificationInterface[];
 };
 
+type GetNotificationsQueryParams = operations["getMyNotifications"]["parameters"]["query"];
+
 export type GetNotificationsPortResponse = HttpStorageResponse<GetNotificationsModel>;
 
-export type GetNotificationsPortParams = HttpClientParameters<object>;
+export type GetNotificationsPortParams = HttpClientParameters<{
+  QueryParams: GetNotificationsQueryParams;
+}>;
 
 // Get notifications count
 
@@ -22,4 +26,22 @@ export type GetNotificationsCountResponse = components["schemas"]["NotificationC
 
 export type GetNotificationsCountPortResponse = HttpStorageResponse<GetNotificationsCountResponse>;
 
-export type GetNotificationsCountPortParams = HttpClientParameters<object>;
+type GetNotificationsCountQueryParams = operations["getMyNotificationsCount"]["parameters"]["query"];
+
+export type GetNotificationsCountPortParams = HttpClientParameters<{
+  QueryParams: GetNotificationsCountQueryParams;
+}>;
+
+// Update notifications
+
+export type UpdateNotificationsBody = components["schemas"]["NotificationsPatchRequest"];
+
+export type UpdateNotificationsPortParams = HttpClientParameters<object>;
+
+export type UpdateNotificationsPortResponse = HttpStorageResponse<never, UpdateNotificationsBody>;
+
+// Read All notifications
+
+export type ReadAllNotificationsPortParams = HttpClientParameters<object>;
+
+export type ReadAllNotificationsPortResponse = HttpStorageResponse<never, never>;
