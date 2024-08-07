@@ -9,9 +9,52 @@
       "edit": "Edit on Github"
     }
   },
+  "contactEmail": {
+    "title": "Contact Email",
+    "subtitle": "This email address will be used to receive notifications. Ensure it is up-to-date to stay informed."
+  },
   "notificationSettings": {
-    "title": "Notification",
-    "subtitle": "Enter a contact email. This email will be used by OnlyDust to send you notifications and to get in touch with you."
+    "title": "Notification Preferences",
+    "subtitle": "Customize your notification settings to stay informed about important updates.",
+    "enableAll": "Enable all",
+    "email": "Email Notifications",
+    "weeklySummary": "Weekly Summary Email",
+    "weeklySummaryTooltip": "The Weekly Summary Email is a digest that consolidates all notifications into a single email sent every week.",
+    "notifications": {
+      "global": {
+        "title": "Global",
+        "billingProfile": {
+          "label": "Billing Profile",
+          "content": "Manage your billing profile with notifications for document verification and identity checks."
+        },
+        "marketing": {
+          "label": "Marketing",
+          "content": "Get alerts about upcoming events and community calls by joining the marketing list."
+        }
+      },
+      "contributor": {
+        "title": "Contributor",
+        "project": {
+          "label": "Project",
+          "content": "Stay informed about project-related updates, including assigned and available issues."
+        },
+        "reward": {
+          "label": "Reward",
+          "content": "Receive updates on all stages of your rewards, from receipt to payment."
+        }
+      },
+      "maintainer": {
+        "title": "Maintainer",
+        "contributors": {
+          "label": "Project x Contributors",
+          "content": "Receive notifications about new applications and contributions from contributors."
+        },
+        "program": {
+          "label": "Project x Program",
+          "content": "Get updates on new grants and committee applications within your programs."
+        }
+      }
+    }
   },
   "informations": {
     "avatar": "Avatar",

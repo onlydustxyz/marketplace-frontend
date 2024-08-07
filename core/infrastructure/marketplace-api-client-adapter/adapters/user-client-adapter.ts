@@ -1,5 +1,6 @@
 import { BillingProfileShort } from "core/domain/billing-profile/models/billing-profile-short-model";
 import { User } from "core/domain/user/models/user-model";
+import { UserNotificationSettings } from "core/domain/user/models/user-notification-settings-model";
 import { UserNotifications } from "core/domain/user/models/user-notifications-model";
 import { UserOnboarding } from "core/domain/user/models/user-onboarding-model";
 import { UserProfile } from "core/domain/user/models/user-profile-model";
@@ -7,12 +8,14 @@ import { UserStoragePort } from "core/domain/user/outputs/user-storage-port";
 import {
   GetMeResponse,
   GetMyBillingProfilesResponse,
+  GetMyNotificationSettingsForProjectResponse,
   GetMyNotificationSettingsResponse,
   GetMyOnboardingResponse,
   GetMyProfileResponse,
   ReplaceMyProfileBody,
   SetMeBody,
   SetMyNotificationSettingsBody,
+  SetMyNotificationSettingsForProjectBody,
   SetMyProfileBody,
 } from "core/domain/user/user-contract.types";
 import { FirstParameter } from "core/helpers/types";
@@ -26,8 +29,10 @@ export class UserClientAdapter implements UserStoragePort {
     replaceMyProfile: "me/profile",
     setMyProfile: "me/profile",
     getMyProfile: "me/profile",
-    setMyNotificationSettings: "me/notification-settings/projects/:projectId",
-    getMyNotificationSettings: "me/notification-settings/projects/:projectId",
+    setMyNotificationSettingsForProject: "me/notification-settings/projects/:projectId",
+    getMyNotificationSettingsForProject: "me/notification-settings/projects/:projectId",
+    getMyNotificationSettings: "me/notification-settings",
+    setMyNotificationSettings: "me/notification-settings",
     getMe: "me",
     setMe: "me",
     getMyOnboarding: "me/onboarding",
@@ -112,12 +117,14 @@ export class UserClientAdapter implements UserStoragePort {
     };
   };
 
-  setMyNotificationSettings = ({ pathParams }: FirstParameter<UserStoragePort["setMyNotificationSettings"]>) => {
-    const path = this.routes["setMyNotificationSettings"];
+  setMyNotificationSettingsForProject = ({
+    pathParams,
+  }: FirstParameter<UserStoragePort["setMyNotificationSettingsForProject"]>) => {
+    const path = this.routes["setMyNotificationSettingsForProject"];
     const method = "PATCH";
     const tag = HttpClient.buildTag({ path, pathParams });
 
-    const request = async (body: SetMyNotificationSettingsBody) =>
+    const request = async (body: SetMyNotificationSettingsForProjectBody) =>
       this.client.request<never>({
         path,
         method,
@@ -132,13 +139,15 @@ export class UserClientAdapter implements UserStoragePort {
     };
   };
 
-  getMyNotificationSettings = ({ pathParams }: FirstParameter<UserStoragePort["getMyNotificationSettings"]>) => {
-    const path = this.routes["getMyNotificationSettings"];
+  getMyNotificationSettingsForProject = ({
+    pathParams,
+  }: FirstParameter<UserStoragePort["getMyNotificationSettingsForProject"]>) => {
+    const path = this.routes["getMyNotificationSettingsForProject"];
     const method = "GET";
     const tag = HttpClient.buildTag({ path, pathParams });
 
     const request = async () => {
-      const data = await this.client.request<GetMyNotificationSettingsResponse>({
+      const data = await this.client.request<GetMyNotificationSettingsForProjectResponse>({
         path,
         method,
         tag,
@@ -147,6 +156,46 @@ export class UserClientAdapter implements UserStoragePort {
 
       return new UserNotifications(data);
     };
+
+    return {
+      request,
+      tag,
+    };
+  };
+
+  getMyNotificationSettings = () => {
+    const path = this.routes["getMyNotificationSettings"];
+    const method = "GET";
+    const tag = HttpClient.buildTag({ path });
+
+    const request = async () => {
+      const data = await this.client.request<GetMyNotificationSettingsResponse>({
+        path,
+        method,
+        tag,
+      });
+
+      return new UserNotificationSettings(data);
+    };
+
+    return {
+      request,
+      tag,
+    };
+  };
+
+  setMyNotificationSettings = () => {
+    const path = this.routes["setMyNotificationSettings"];
+    const method = "PUT";
+    const tag = HttpClient.buildTag({ path });
+
+    const request = async (body: SetMyNotificationSettingsBody) =>
+      this.client.request<never>({
+        path,
+        method,
+        tag,
+        body: JSON.stringify(body),
+      });
 
     return {
       request,

@@ -3,8 +3,10 @@ import {
   GetMeResponsePortResponse,
   GetMyBillingProfilesResponsePortParams,
   GetMyBillingProfilesResponsePortResponse,
-  GetMyNotificationSettingsPortParams,
-  GetMyNotificationSettingsPortResponse,
+  GetMyNotificationSettingsForProjectPortParams,
+  GetMyNotificationSettingsForProjectPortResponse,
+  GetMyNotificationSettingsResponsePortParams,
+  GetMyNotificationSettingsResponsePortResponse,
   GetMyOnboardingResponsePortParams,
   GetMyOnboardingResponsePortResponse,
   GetMyProfilePortParams,
@@ -15,6 +17,8 @@ import {
   ReplaceMyProfilePortResponse,
   SetMePortParams,
   SetMePortResponse,
+  SetMyNotificationSettingsForProjectPortParams,
+  SetMyNotificationSettingsForProjectPortResponse,
   SetMyNotificationSettingsPortParams,
   SetMyNotificationSettingsPortResponse,
   SetMyProfilePortParams,
@@ -26,10 +30,18 @@ export interface UserFacadePort {
   replaceMyProfile(params: ReplaceMyProfilePortParams): ReplaceMyProfilePortResponse;
   setMyProfile(params: SetMyProfilePortParams): SetMyProfilePortResponse;
   getMyProfile(params: GetMyProfilePortParams): GetMyProfilePortResponse;
-  getMyNotificationSettings(params: GetMyNotificationSettingsPortParams): GetMyNotificationSettingsPortResponse;
-  setMyNotificationSettings(params: SetMyNotificationSettingsPortParams): SetMyNotificationSettingsPortResponse;
+  getMyNotificationSettingsForProject(
+    params: GetMyNotificationSettingsForProjectPortParams
+  ): GetMyNotificationSettingsForProjectPortResponse;
+  setMyNotificationSettingsForProject(
+    params: SetMyNotificationSettingsForProjectPortParams
+  ): SetMyNotificationSettingsForProjectPortResponse;
   getMe(params: GetMeResponsePortParams): GetMeResponsePortResponse;
   setMe(params: SetMePortParams): SetMePortResponse;
   getMyOnboarding(params: GetMyOnboardingResponsePortParams): GetMyOnboardingResponsePortResponse;
   getMyBillingProfiles(params: GetMyBillingProfilesResponsePortParams): GetMyBillingProfilesResponsePortResponse;
+  getMyNotificationSettings(
+    params: GetMyNotificationSettingsResponsePortParams
+  ): GetMyNotificationSettingsResponsePortResponse;
+  setMyNotificationSettings(params: SetMyNotificationSettingsPortParams): SetMyNotificationSettingsPortResponse;
 }

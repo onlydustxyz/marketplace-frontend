@@ -1,3 +1,6 @@
+import { UserNotificationSettingsCategoryType } from "core/domain/user/models/user.types";
+import { UserNotificationChannels } from "core/domain/user/user-constants";
+
 import { components } from "src/__generated/api";
 
 export namespace TProfileForm {
@@ -20,6 +23,10 @@ export namespace TProfileForm {
     prefixUrl?: string;
   }
 
+  interface notification {
+    [UserNotificationChannels.EMAIL]: boolean;
+    [UserNotificationChannels.SUMMARY_EMAIL]: boolean;
+  }
   export interface Data {
     firstName?: string;
     lastName?: string;
@@ -35,5 +42,6 @@ export namespace TProfileForm {
     linkedin: ContactProps;
     weeklyAllocatedTime: components["schemas"]["PrivateUserProfileResponse"]["allocatedTimeToContribute"];
     lookingForAJob: boolean;
+    notifications: Record<UserNotificationSettingsCategoryType, notification>;
   }
 }

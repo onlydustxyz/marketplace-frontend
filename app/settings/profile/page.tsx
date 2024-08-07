@@ -7,6 +7,8 @@ import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { Form } from "app/settings/profile/features/form/form";
+
 import MeApi from "src/api/me";
 import useMutationAlert from "src/api/useMutationAlert";
 
@@ -17,10 +19,9 @@ import { Key, useIntl } from "hooks/translate/use-translate";
 
 import { FormFooter } from "../components/form-footer/form-footer";
 import { SettingsHeader } from "../components/settings-header/settings-header";
-import { ProfileForm } from "./features/form/form";
 import { REGEX } from "./features/form/form.regex";
 import { TProfileForm } from "./features/form/form.types";
-import { formatToData, formatToSchema } from "./features/form/form.utils";
+import { formatSettingsToSchema, formatToData, formatToSchema } from "./features/form/form.utils";
 import { ProfileGithubAccount } from "./features/github-account/github-account";
 
 const INVALID_URL = "invalidUrl";
@@ -65,6 +66,7 @@ const formSchema = z.object({
   }),
   weeklyAllocatedTime: z.nativeEnum(TProfileForm.ALLOCATED_TIME),
   lookingForAJob: z.boolean(),
+  notifications: z.any(),
 });
 
 // TODO: Select input to do with NextUI
@@ -73,6 +75,7 @@ function SettingsProfilePage() {
   const { T } = useIntl();
 
   const { data } = MeApi.queries.useGetMyProfileInfo({});
+  const { data: settings } = UserReactQueryAdapter.client.useGetMyNotificationsSettings({});
 
   const formMethods = useForm<TProfileForm.Data>({
     mode: "all",
@@ -82,16 +85,19 @@ function SettingsProfilePage() {
   const { handleSubmit, reset } = formMethods;
 
   useEffect(() => {
-    if (data) {
-      reset(formatToData(data));
+    if (data && settings) {
+      reset(formatToData(data, settings));
     }
-  }, [data]);
+  }, [data, settings]);
 
   const {
     mutate: updateUserProfileInfo,
     isPending: userProfilInformationIsPending,
     ...restUpdateProfileMutation
   } = UserReactQueryAdapter.client.useReplaceMyProfile({});
+
+  const { mutateAsync: setNotificationsSettings, isPending: setNotificationsSettingsIsPending } =
+    UserReactQueryAdapter.client.useSetMyNotificationsSettings({});
 
   useMutationAlert({
     mutation: restUpdateProfileMutation,
@@ -103,7 +109,8 @@ function SettingsProfilePage() {
     },
   });
 
-  const onSubmit = (formData: TProfileForm.Data) => {
+  const onSubmit = async ({ notifications, ...formData }: TProfileForm.Data) => {
+    await setNotificationsSettings(formatSettingsToSchema({ notifications }));
     updateUserProfileInfo(formatToSchema(formData));
   };
 
@@ -116,11 +123,11 @@ function SettingsProfilePage() {
           <Flex direction="col" className="gap-4">
             <ProfileGithubAccount />
 
-            <ProfileForm />
+            <Form />
           </Flex>
         </Flex>
 
-        <FormFooter isPending={userProfilInformationIsPending} hasPreviewButton />
+        <FormFooter isPending={userProfilInformationIsPending || setNotificationsSettingsIsPending} hasPreviewButton />
       </form>
     </FormProvider>
   );
