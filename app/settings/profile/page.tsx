@@ -77,8 +77,6 @@ function SettingsProfilePage() {
   const { data } = MeApi.queries.useGetMyProfileInfo({});
   const { data: settings } = UserReactQueryAdapter.client.useGetMyNotificationsSettings({});
 
-  console.log("settings", settings);
-
   const formMethods = useForm<TProfileForm.Data>({
     mode: "all",
     resolver: zodResolver(formSchema),
