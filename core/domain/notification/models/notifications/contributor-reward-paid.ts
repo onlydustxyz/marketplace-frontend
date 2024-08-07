@@ -4,10 +4,12 @@ import { NotificationStatus } from "core/domain/notification/notification-consta
 
 import { components } from "src/__generated/api";
 
-export class MaintainerCommitteeApplicationCreated implements NotificationInterface {
-  data: components["schemas"]["NotificationMaintainerCommitteeApplicationCreated"] | undefined;
+import { NEXT_ROUTER } from "../../../../../constants/router";
+
+export class ContributorRewardPaid implements NotificationInterface {
+  data: components["schemas"]["NotificationContributorRewardsPaid"] | undefined;
   constructor(private notification: Notification) {
-    this.data = notification.data.maintainerCommitteeApplicationCreated;
+    this.data = notification.data.contributorRewardsPaid;
   }
   getId() {
     return this.notification.id;
@@ -25,19 +27,15 @@ export class MaintainerCommitteeApplicationCreated implements NotificationInterf
     return this.notification.status === NotificationStatus.READ;
   }
   getTitle() {
-    return "New committee application";
+    return "Your rewards has been paid";
   }
 
   getDescription() {
-    const { committeeName } = this.data || {};
-    return `You have applied to ${committeeName} committee.`;
+    const { numberOfRewardPaid, totalAmountDollarsEquivalent } = this.data || {};
+    return `${numberOfRewardPaid} reward(s) has been paid for a total of ${totalAmountDollarsEquivalent} USD`;
   }
 
   getUrl() {
-    const { committeeId } = this.data || {};
-    if (committeeId) {
-      return `/c/${committeeId}/applicant`;
-    }
-    return undefined;
+    return NEXT_ROUTER.rewards.all;
   }
 }

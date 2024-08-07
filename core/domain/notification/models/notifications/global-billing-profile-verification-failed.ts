@@ -6,12 +6,11 @@ import { components } from "src/__generated/api";
 
 import { NEXT_ROUTER } from "../../../../../constants/router";
 
-export class MaintainerApplicationToReview implements NotificationInterface {
-  data: components["schemas"]["NotificationMaintainerApplicationToReview"] | undefined;
+export class GlobalBillingProfileVerificationFailed implements NotificationInterface {
+  data: components["schemas"]["NotificationGlobalBillingProfileVerificationFailed"] | undefined;
   constructor(private notification: Notification) {
-    this.data = notification.data.maintainerApplicationToReview;
+    this.data = notification.data.globalBillingProfileVerificationFailed;
   }
-
   getId() {
     return this.notification.id;
   }
@@ -27,20 +26,19 @@ export class MaintainerApplicationToReview implements NotificationInterface {
   hasRead() {
     return this.notification.status === NotificationStatus.READ;
   }
-
   getTitle() {
-    return "New application";
+    return "Your billing profile requires an action.";
   }
 
   getDescription() {
-    const { projectName, applicationLogin, issueName } = this.data || {};
-    return `${applicationLogin} applied to ${issueName} on ${projectName}`;
+    const { billingProfileName } = this.data || {};
+    return `An anomaly has occurred in the verification process for your billing profile ${billingProfileName}. Please refer to the following steps to redo the verification and resolve the issue.`;
   }
 
   getUrl() {
-    const { projectSlug } = this.data || {};
-    if (projectSlug) {
-      return NEXT_ROUTER.projects.details.applications.root(projectSlug);
+    const { billingProfileId } = this.data || {};
+    if (billingProfileId) {
+      return NEXT_ROUTER.settings.billing.generalInformation(billingProfileId);
     }
     return undefined;
   }

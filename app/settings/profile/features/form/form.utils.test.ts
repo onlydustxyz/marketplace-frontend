@@ -1,9 +1,12 @@
+import { UserNotificationSettings } from "core/domain/user/models/user-notification-settings-model";
 import { describe, expect, it } from "vitest";
 
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
 
 import { TProfileForm } from "./form.types";
 import { createContact, formatToData, formatToSchema, sanitizeContactHandle } from "./form.utils";
+
+type formData = Omit<TProfileForm.Data, "notifications">;
 
 describe("sanitizeContactHandle", () => {
   it("should remove trailing slash", () => {
@@ -126,7 +129,7 @@ describe("formatToData", () => {
       ...baseMockData,
     };
 
-    const expectedData: TProfileForm.Data = {
+    const expectedData: formData = {
       firstName: "John",
       lastName: "Doe",
       avatarUrl: "https://example.com/avatar.jpg",
@@ -143,7 +146,17 @@ describe("formatToData", () => {
       lookingForAJob: true,
     };
 
-    const result = formatToData(mockData);
+    const { notifications: _, ...result } = formatToData(
+      mockData,
+      new UserNotificationSettings({
+        notificationSettings: [
+          {
+            channels: ["EMAIL"],
+            category: "MAINTAINER_PROJECT_CONTRIBUTOR",
+          },
+        ],
+      })
+    );
     expect(result).toEqual(expectedData);
   });
 
@@ -158,7 +171,7 @@ describe("formatToData", () => {
       ...baseMockData,
     };
 
-    const expectedData: TProfileForm.Data = {
+    const expectedData: formData = {
       firstName: "John",
       lastName: "",
       avatarUrl: "https://example.com/avatar.jpg",
@@ -175,14 +188,24 @@ describe("formatToData", () => {
       lookingForAJob: false,
     };
 
-    const result = formatToData(mockData);
+    const { notifications: _, ...result } = formatToData(
+      mockData,
+      new UserNotificationSettings({
+        notificationSettings: [
+          {
+            channels: ["EMAIL"],
+            category: "MAINTAINER_PROJECT_CONTRIBUTOR",
+          },
+        ],
+      })
+    );
     expect(result).toEqual(expectedData);
   });
 });
 
 describe("formatToSchema", () => {
   it("should convert formatted data to schema correctly", () => {
-    const formattedData: TProfileForm.Data = {
+    const formattedData: formData = {
       firstName: "John",
       lastName: "Doe",
       avatarUrl: "https://example.com/avatar.jpg",
@@ -241,7 +264,7 @@ describe("formatToSchema", () => {
   });
 
   it("should handle partial data correctly", () => {
-    const partialData: TProfileForm.Data = {
+    const partialData: formData = {
       firstName: "John",
       lastName: undefined,
       avatarUrl: undefined,

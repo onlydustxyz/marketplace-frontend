@@ -4,10 +4,12 @@ import { NotificationStatus } from "core/domain/notification/notification-consta
 
 import { components } from "src/__generated/api";
 
-export class MaintainerCommitteeApplicationCreated implements NotificationInterface {
-  data: components["schemas"]["NotificationMaintainerCommitteeApplicationCreated"] | undefined;
+import { NEXT_ROUTER } from "../../../../../constants/router";
+
+export class ContributorProjectApplicationAccepted implements NotificationInterface {
+  data: components["schemas"]["NotificationContributorProjectApplicationAccepted"] | undefined;
   constructor(private notification: Notification) {
-    this.data = notification.data.maintainerCommitteeApplicationCreated;
+    this.data = notification.data.contributorProjectApplicationAccepted;
   }
   getId() {
     return this.notification.id;
@@ -25,19 +27,15 @@ export class MaintainerCommitteeApplicationCreated implements NotificationInterf
     return this.notification.status === NotificationStatus.READ;
   }
   getTitle() {
-    return "New committee application";
+    return "You application has been accepted";
   }
 
   getDescription() {
-    const { committeeName } = this.data || {};
-    return `You have applied to ${committeeName} committee.`;
+    const { issueName } = this.data || {};
+    return `Your application for ${issueName} has been accepted`;
   }
 
   getUrl() {
-    const { committeeId } = this.data || {};
-    if (committeeId) {
-      return `/c/${committeeId}/applicant`;
-    }
-    return undefined;
+    return NEXT_ROUTER.applications.all;
   }
 }

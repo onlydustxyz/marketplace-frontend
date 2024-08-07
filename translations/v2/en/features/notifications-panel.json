@@ -1,4 +1,8 @@
 {
   "title": "Notifications",
-  "readAll": "Mark all as read"
+  "readAll": "Mark all as read",
+  "empty": {
+    "title": "No Notifications",
+    "content": "You have no notifications at the moment."
+  }
 }

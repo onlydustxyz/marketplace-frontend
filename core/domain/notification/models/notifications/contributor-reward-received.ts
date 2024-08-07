@@ -4,10 +4,12 @@ import { NotificationStatus } from "core/domain/notification/notification-consta
 
 import { components } from "src/__generated/api";
 
-export class MaintainerCommitteeApplicationCreated implements NotificationInterface {
-  data: components["schemas"]["NotificationMaintainerCommitteeApplicationCreated"] | undefined;
+import { NEXT_ROUTER } from "../../../../../constants/router";
+
+export class ContributorRewardReceived implements NotificationInterface {
+  data: components["schemas"]["NotificationContributorRewardReceived"] | undefined;
   constructor(private notification: Notification) {
-    this.data = notification.data.maintainerCommitteeApplicationCreated;
+    this.data = notification.data.contributorRewardReceived;
   }
   getId() {
     return this.notification.id;
@@ -25,19 +27,15 @@ export class MaintainerCommitteeApplicationCreated implements NotificationInterf
     return this.notification.status === NotificationStatus.READ;
   }
   getTitle() {
-    return "New committee application";
+    return "You have received a new reward";
   }
 
   getDescription() {
-    const { committeeName } = this.data || {};
-    return `You have applied to ${committeeName} committee.`;
+    const { projectName, currencyCode, amount, sentByGithubLogin } = this.data || {};
+    return `${sentByGithubLogin} sent you a new reward of ${amount} ${currencyCode} on project ${projectName}`;
   }
 
   getUrl() {
-    const { committeeId } = this.data || {};
-    if (committeeId) {
-      return `/c/${committeeId}/applicant`;
-    }
-    return undefined;
+    return NEXT_ROUTER.rewards.all;
   }
 }
