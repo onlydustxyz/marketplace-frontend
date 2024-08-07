@@ -1,4 +1,4 @@
-import { AnyType } from "core/helpers/types";
+import { UserNotificationSettings } from "core/domain/user/models/user-notification-settings-model";
 import { describe, expect, it } from "vitest";
 
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
@@ -146,7 +146,17 @@ describe("formatToData", () => {
       lookingForAJob: true,
     };
 
-    const result = formatToData(mockData, { notificationSettings: [] } as AnyType);
+    const { notifications: _, ...result } = formatToData(
+      mockData,
+      new UserNotificationSettings({
+        notificationSettings: [
+          {
+            channels: ["EMAIL"],
+            category: "MAINTAINER_PROJECT_CONTRIBUTOR",
+          },
+        ],
+      })
+    );
     expect(result).toEqual(expectedData);
   });
 
@@ -178,7 +188,17 @@ describe("formatToData", () => {
       lookingForAJob: false,
     };
 
-    const result = formatToData(mockData, { notificationSettings: [] } as AnyType);
+    const { notifications: _, ...result } = formatToData(
+      mockData,
+      new UserNotificationSettings({
+        notificationSettings: [
+          {
+            channels: ["EMAIL"],
+            category: "MAINTAINER_PROJECT_CONTRIBUTOR",
+          },
+        ],
+      })
+    );
     expect(result).toEqual(expectedData);
   });
 });
