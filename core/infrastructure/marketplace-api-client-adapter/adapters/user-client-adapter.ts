@@ -163,7 +163,7 @@ export class UserClientAdapter implements UserStoragePort {
     };
   };
 
-  getMyNotificationSettings = (_: FirstParameter<UserStoragePort["getMyNotificationSettings"]>) => {
+  getMyNotificationSettings = () => {
     const path = this.routes["getMyNotificationSettings"];
     const method = "GET";
     const tag = HttpClient.buildTag({ path });
@@ -184,7 +184,7 @@ export class UserClientAdapter implements UserStoragePort {
     };
   };
 
-  setMyNotificationSettings = (_: FirstParameter<UserStoragePort["setMyNotificationSettings"]>) => {
+  setMyNotificationSettings = () => {
     const path = this.routes["setMyNotificationSettings"];
     const method = "PUT";
     const tag = HttpClient.buildTag({ path });

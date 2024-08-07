@@ -44,7 +44,7 @@ export type GetMyProfilePortParams = HttpClientParameters<object>;
 
 export type GetMyProfilePortResponse = HttpStorageResponse<UserProfileInterface>;
 
-/* --------------------------------- Get my notification settings -------------------------------- */
+/* --------------------------------- Get my notification settings for project -------------------------------- */
 
 export type GetMyNotificationSettingsForProjectResponse =
   components["schemas"]["NotificationSettingsForProjectResponse"];
@@ -59,7 +59,7 @@ export type GetMyNotificationSettingsForProjectPortParams = HttpClientParameters
 export type GetMyNotificationSettingsForProjectPortResponse =
   HttpStorageResponse<GetMyNotificationSettingsForProjectResponse>;
 
-/* --------------------------------- Set my notification settings -------------------------------- */
+/* --------------------------------- Set my notification settings for project -------------------------------- */
 
 export type SetMyNotificationSettingsForProjectBody =
   components["schemas"]["NotificationSettingsForProjectPatchRequest"];

@@ -1,5 +1,6 @@
 import { UserNotificationSettingsInterface } from "core/domain/user/models/user-notification-settings-model";
 import { UserNotificationSettingsChannelType } from "core/domain/user/models/user.types";
+import { UserNotificationCategories } from "core/domain/user/user-constants";
 import { SetMyNotificationSettingsBody } from "core/domain/user/user-contract.types";
 
 import { UseGetMyProfileInfoResponse } from "src/api/me/queries";
@@ -99,23 +100,23 @@ export function formatSettingsToSchema(data: Pick<TProfileForm.Data, "notificati
     return {
       notificationSettings: [
         {
-          category: "MAINTAINER_PROJECT_CONTRIBUTOR",
+          category: UserNotificationCategories.MAINTAINER_PROJECT_CONTRIBUTOR,
           channels: findChannel(data.notifications.MAINTAINER_PROJECT_CONTRIBUTOR),
         },
         {
-          category: "MAINTAINER_PROJECT_PROGRAM",
+          category: UserNotificationCategories.MAINTAINER_PROJECT_PROGRAM,
           channels: findChannel(data.notifications.MAINTAINER_PROJECT_PROGRAM),
         },
         {
-          category: "CONTRIBUTOR_REWARD",
+          category: UserNotificationCategories.CONTRIBUTOR_REWARD,
           channels: findChannel(data.notifications.CONTRIBUTOR_REWARD),
         },
         {
-          category: "CONTRIBUTOR_PROJECT",
+          category: UserNotificationCategories.CONTRIBUTOR_PROJECT,
           channels: findChannel(data.notifications.CONTRIBUTOR_PROJECT),
         },
         {
-          category: "KYC_KYB_BILLING_PROFILE",
+          category: UserNotificationCategories.KYC_KYB_BILLING_PROFILE,
           channels: findChannel(data.notifications.KYC_KYB_BILLING_PROFILE),
         },
       ].filter(({ channels }) => channels.length > 0) as SetMyNotificationSettingsBody["notificationSettings"],

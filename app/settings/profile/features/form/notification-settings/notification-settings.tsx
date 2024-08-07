@@ -67,7 +67,7 @@ export function NotificationSettings() {
         </Flex>
 
         <NotificationSettingsItem
-          title={{ token: "v2.pages.settings.profile.notificationSettings.global.title" }}
+          title={{ token: "v2.pages.settings.profile.notificationSettings.notifications.global.title" }}
           items={[
             {
               label: {
@@ -95,7 +95,7 @@ export function NotificationSettings() {
         />
 
         <NotificationSettingsItem
-          title={{ token: "v2.pages.settings.profile.notificationSettings.contributor.title" }}
+          title={{ token: "v2.pages.settings.profile.notificationSettings.notifications.contributor.title" }}
           items={[
             {
               label: {
@@ -145,7 +145,7 @@ export function NotificationSettings() {
         />
 
         <NotificationSettingsItem
-          title={{ token: "v2.pages.settings.profile.notificationSettings.maintainer.title" }}
+          title={{ token: "v2.pages.settings.profile.notificationSettings.notifications.maintainer.title" }}
           items={[
             {
               label: {
