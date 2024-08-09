@@ -63,7 +63,7 @@ const formSchema = z
     aptosAddress: z
       .union([z.string().regex(REGEX.aptosAddress, keys.invalidAptosAddress), z.string().length(0)])
       .optional(),
-    stellarAddress: z
+    stellarAccountId: z
       .union([z.string().regex(REGEX.stellarAccountId, keys.invalidStellarAccountId), z.string().length(0)])
       .optional(),
     bankAccount: z.object({
