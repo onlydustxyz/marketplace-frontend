@@ -98,6 +98,23 @@ export function PayoutForm() {
         )}
       />
 
+      <Controller
+        name="stellarAddress"
+        control={control}
+        render={({ field, fieldState }) => (
+          <Input
+            {...field}
+            {...fieldState}
+            isInvalid={!!fieldState.error}
+            errorMessage={fieldState.error?.message ? <Translate token={fieldState.error.message} /> : null}
+            isInvalidFromBackend={data?.missingStellarWallet}
+            label={T("v2.pages.settings.billing.payout.wallets.stellar.label")}
+            placeholder={T("v2.pages.settings.billing.payout.wallets.stellar.placeholder")}
+            description={<Currencies currencies={[Money.Static.Currency.APT]} />}
+          />
+        )}
+      />
+
       <Flex className="flex-col gap-4 md:flex-row">
         <Controller
           name="bankAccount.number"
