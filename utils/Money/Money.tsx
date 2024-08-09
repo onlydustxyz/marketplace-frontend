@@ -129,9 +129,11 @@ export namespace Money {
       APT = "APT",
       OP = "OP",
       USDC = "USDC",
+      WLD = "WLD",
+      XLM = "XLM",
     }
 
-    export const CurrencyOrder = ["USDC", "USD", "ETH", "STRK", "OP", "APT", "LORDS"];
+    export const CurrencyOrder = ["USDC", "USD", "ETH", "STRK", "OP", "APT", "LORDS", "WLD", "XLM"];
   }
 
   export type Currency = components["schemas"]["ShortCurrencyResponse"];

@@ -3,4 +3,5 @@ export const REGEX = {
   starknetAddress: /^0x[a-fA-F0-9]{64}$/,
   optimismAddress: /^0x[a-fA-F0-9]{40}$/,
   aptosAddress: /^0x[a-fA-F0-9]{64}$/,
+  stellarAccountId: /^G[A-Z2-7]{55}$/,
 };
