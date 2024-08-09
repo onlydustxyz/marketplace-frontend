@@ -17,6 +17,10 @@
       "label": "Aptos wallet address",
       "placeholder": "Aptos wallet address"
     },
+    "stellar": {
+      "label": "Stellar wallet address",
+      "placeholder": "Stellar wallet adress"
+    },
     "sepa": {
       "iban": {
         "label": "Account number",
