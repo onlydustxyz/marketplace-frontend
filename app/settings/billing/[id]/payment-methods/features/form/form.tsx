@@ -40,7 +40,12 @@ export function PayoutForm() {
             placeholder={T("v2.pages.settings.billing.payout.wallets.ethereum.placeholder")}
             description={
               <Currencies
-                currencies={[Money.Static.Currency.USDC, Money.Static.Currency.ETH, Money.Static.Currency.LORDS]}
+                currencies={[
+                  Money.Static.Currency.ETH,
+                  Money.Static.Currency.USDC,
+                  Money.Static.Currency.LORDS,
+                  Money.Static.Currency.STRK,
+                ]}
               />
             }
           />
@@ -59,7 +64,11 @@ export function PayoutForm() {
             isInvalidFromBackend={data?.missingStarknetWallet}
             label={T("v2.pages.settings.billing.payout.wallets.starknet.label")}
             placeholder={T("v2.pages.settings.billing.payout.wallets.starknet.placeholder")}
-            description={<Currencies currencies={[Money.Static.Currency.STRK]} />}
+            description={
+              <Currencies
+                currencies={[Money.Static.Currency.ETH, Money.Static.Currency.USDC, Money.Static.Currency.STRK]}
+              />
+            }
           />
         )}
       />
@@ -76,7 +85,11 @@ export function PayoutForm() {
             isInvalidFromBackend={data?.missingOptimismWallet}
             label={T("v2.pages.settings.billing.payout.wallets.optimism.label")}
             placeholder={T("v2.pages.settings.billing.payout.wallets.optimism.placeholder")}
-            description={<Currencies currencies={[Money.Static.Currency.OP]} />}
+            description={
+              <Currencies
+                currencies={[Money.Static.Currency.WLD, Money.Static.Currency.USDC, Money.Static.Currency.OP]}
+              />
+            }
           />
         )}
       />
@@ -94,6 +107,23 @@ export function PayoutForm() {
             label={T("v2.pages.settings.billing.payout.wallets.aptos.label")}
             placeholder={T("v2.pages.settings.billing.payout.wallets.aptos.placeholder")}
             description={<Currencies currencies={[Money.Static.Currency.APT]} />}
+          />
+        )}
+      />
+
+      <Controller
+        name="stellarAccountId"
+        control={control}
+        render={({ field, fieldState }) => (
+          <Input
+            {...field}
+            {...fieldState}
+            isInvalid={!!fieldState.error}
+            errorMessage={fieldState.error?.message ? <Translate token={fieldState.error.message} /> : null}
+            isInvalidFromBackend={data?.missingStellarWallet}
+            label={T("v2.pages.settings.billing.payout.wallets.stellar.label")}
+            placeholder={T("v2.pages.settings.billing.payout.wallets.stellar.placeholder")}
+            description={<Currencies currencies={[Money.Static.Currency.XLM, Money.Static.Currency.USDC]} />}
           />
         )}
       />

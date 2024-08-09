@@ -28,6 +28,9 @@
         "aptos": {
           "invalid": "Invalid Aptos wallet address"
         },
+        "stellar": {
+          "invalid": "Invalid Stellar wallet address"
+        },
         "sepa": {
           "iban": {
             "required": "IBAN is required when BIC is provided"
