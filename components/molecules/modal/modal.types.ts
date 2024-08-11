@@ -29,4 +29,5 @@ export interface ModalPort<C extends ElementType> extends Partial<Variants>, Pro
     endContent?: ReactNode;
   };
   canDismiss?: boolean;
+  hideCloseButton?: boolean;
 }
