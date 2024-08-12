@@ -13,6 +13,7 @@ describe("formatToData", () => {
       starknetAddress: "0x456",
       optimismAddress: "0x789",
       aptosAddress: "0xabc",
+      stellarAccountId: "GDEF4",
       bankAccount: {
         number: "DE89 3704 0044 0532 0130 00",
         bic: "COLSDE33",
@@ -24,6 +25,7 @@ describe("formatToData", () => {
       starknetAddress: "0x456",
       optimismAddress: "0x789",
       aptosAddress: "0xabc",
+      stellarAccountId: "GDEF4",
       bankAccount: {
         number: "DE89 3704 0044 0532 0130 00",
         bic: "COLSDE33",
@@ -44,6 +46,7 @@ describe("formatToData", () => {
       starknetAddress: "",
       optimismAddress: "",
       aptosAddress: "",
+      stellarAccountId: "",
       bankAccount: {
         number: "",
         bic: "",
@@ -62,6 +65,7 @@ describe("formatToSchema", () => {
       starknetAddress: "0x456",
       optimismAddress: "0x789",
       aptosAddress: "0xabc",
+      stellarAccountId: "GDEF4",
       bankAccount: {
         number: "DE89 3704 0044 0532 0130 00",
         bic: "COLSDE33",
@@ -73,6 +77,7 @@ describe("formatToSchema", () => {
       starknetAddress: "0x456",
       optimismAddress: "0x789",
       aptosAddress: "0xabc",
+      stellarAccountId: "GDEF4",
       bankAccount: {
         number: "DE89 3704 0044 0532 0130 00",
         bic: "COLSDE33",
@@ -89,6 +94,7 @@ describe("formatToSchema", () => {
       starknetAddress: "",
       optimismAddress: "",
       aptosAddress: "",
+      stellarAccountId: "",
       bankAccount: {
         number: "",
         bic: "",
@@ -100,6 +106,7 @@ describe("formatToSchema", () => {
       starknetAddress: undefined,
       optimismAddress: undefined,
       aptosAddress: undefined,
+      stellarAccountId: undefined,
     };
 
     const result = formatToSchema(formattedData);
