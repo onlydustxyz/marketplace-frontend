@@ -10,7 +10,7 @@ interface Wallets {
     number?: string;
   };
 }
-type Network = "SEPA" | "ETHEREUM" | "OPTIMISM" | "APTOS" | "STARKNET";
+type Network = "SEPA" | "ETHEREUM" | "OPTIMISM" | "APTOS" | "STARKNET" | "STELLAR";
 interface IuseMatchNetworkAndWallet {
   wallets: Wallets;
   networks: Array<Network | undefined>;
