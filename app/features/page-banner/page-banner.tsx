@@ -12,7 +12,11 @@ import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 export function PageBanner() {
   const [showBanner, setShowBanner] = useState(true);
   const { user } = useCurrentUser();
-  const { data } = bannerApiClient.queries.useGetBanner({});
+  const { data } = bannerApiClient.queries.useGetBanner({
+    queryParams: {
+      hiddenIgnoredByMe: true,
+    },
+  });
   const { mutate } = meApiClient.mutations.useDeleteBannerById({ bannerId: data?.id ?? "" });
 
   function getCta(): ComponentProps<typeof PageBannerOrganism>["cta"] {
@@ -33,11 +37,11 @@ export function PageBanner() {
     }
   }
 
-  if (!data || !data.text || !showBanner) return null;
+  if (!data || !data.shortDescription || !showBanner) return null;
 
   return (
     <section className={"bg-black md:p-6"}>
-      <PageBannerOrganism message={data.text} cta={getCta()} onClose={handleClose} />
+      <PageBannerOrganism message={data.shortDescription} cta={getCta()} onClose={handleClose} />
     </section>
   );
 }

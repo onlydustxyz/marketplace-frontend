@@ -5,8 +5,11 @@ import { ParametersInterfaceWithReactQuery } from "api-client/types/parameters-i
 import { getBanner } from "../fetch";
 import { GetBannerResponse } from "../types";
 
-export const useGetBanner = ({ options, ...fetch }: ParametersInterfaceWithReactQuery<typeof getBanner>) => {
-  const { query } = useReactQueryAdapter<GetBannerResponse>(getBanner(fetch), options);
+export const useGetBanner = ({ options, queryParams }: ParametersInterfaceWithReactQuery<typeof getBanner>) => {
+  const { query } = useReactQueryAdapter<GetBannerResponse>(getBanner({ queryParams }));
 
-  return useQuery<GetBannerResponse>(query);
+  return useQuery<GetBannerResponse>({
+    ...query,
+    ...options,
+  });
 };
