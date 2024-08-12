@@ -19,6 +19,7 @@ import { NEXT_ROUTER } from "constants/router";
 
 import { useIntl } from "hooks/translate/use-translate";
 
+// TODO: @NeoxAzrot Disabled all back button if hasCompletedOnboarding is true and redirect to home if hasCompletedOnboarding is true
 function Footer({ isLoading, isDisabled }: { isLoading: boolean; isDisabled: boolean }) {
   return (
     <div className="flex w-full flex-row justify-end gap-2">
