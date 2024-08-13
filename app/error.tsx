@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 import { Error as ErrorLayout } from "components/layout/error/error";
 
@@ -8,13 +9,13 @@ import { NEXT_ROUTER } from "constants/router";
 
 import { useIntl } from "hooks/translate/use-translate";
 
-export default function Error({ error: _, reset }: { error: Error & { digest?: string }; reset: () => void }) {
+export default function Error({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   const { T } = useIntl();
   const router = useRouter();
 
-  // useEffect(() => {
-  // TODO Log the error to an error reporting service
-  // }, [error]);
+  useEffect(() => {
+    console.error(error);
+  }, [error]);
 
   const [descStart, descLink, descEnd] = T("v2.commons.globalState.error.description").split("_");
 
