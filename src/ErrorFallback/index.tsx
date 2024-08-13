@@ -1,38 +1,23 @@
 import { useRouter } from "next/navigation";
-import { createPortal } from "react-dom";
-import { FallbackProps, useErrorBoundary } from "react-error-boundary";
+import { useEffect } from "react";
 
 import { NEXT_ROUTER } from "constants/router";
 
 import View from "./View";
 
-type Props = {
-  isFixed?: boolean;
-} & Partial<FallbackProps>;
-
-export default function ErrorFallback(props?: Props) {
-  const { isFixed = false } = props ?? {};
-  const { resetBoundary } = useErrorBoundary();
+export default function ErrorFallback({ error }: { error?: Error }) {
   const router = useRouter();
 
-  if (isFixed) {
-    return createPortal(
-      <View
-        isFixed={isFixed}
-        onBackClicked={() => {
-          resetBoundary();
-          router.push(NEXT_ROUTER.home.all);
-        }}
-        onRefreshClicked={router.refresh}
-      />,
-      document.body
-    );
-  }
+  useEffect(() => {
+    if (error) {
+      console.error(error);
+    }
+  }, [error]);
+
   return (
     <View
-      isFixed={isFixed}
+      isFixed={false}
       onBackClicked={() => {
-        resetBoundary();
         router.push(NEXT_ROUTER.home.all);
       }}
       onRefreshClicked={router.refresh}
