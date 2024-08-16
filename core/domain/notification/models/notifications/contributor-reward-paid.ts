@@ -11,6 +11,7 @@ export class ContributorRewardPaid implements NotificationInterface {
   constructor(private notification: Notification) {
     this.data = notification.data.contributorRewardsPaid;
   }
+
   getId() {
     return this.notification.id;
   }
@@ -26,6 +27,7 @@ export class ContributorRewardPaid implements NotificationInterface {
   hasRead() {
     return this.notification.status === NotificationStatus.READ;
   }
+
   getTitle() {
     return "Your rewards has been paid";
   }

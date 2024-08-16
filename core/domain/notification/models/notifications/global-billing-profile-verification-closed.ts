@@ -6,10 +6,10 @@ import { components } from "src/__generated/api";
 
 import { NEXT_ROUTER } from "../../../../../constants/router";
 
-export class ContributorRewardReceived implements NotificationInterface {
-  data: components["schemas"]["NotificationContributorRewardReceived"] | undefined;
+export class GlobalBillingProfileVerificationClosed implements NotificationInterface {
+  data: components["schemas"]["NotificationGlobalBillingProfileVerificationClosed"] | undefined;
   constructor(private notification: Notification) {
-    this.data = notification.data.contributorRewardReceived;
+    this.data = notification.data.globalBillingProfileVerificationClosed;
   }
 
   getId() {
@@ -29,15 +29,19 @@ export class ContributorRewardReceived implements NotificationInterface {
   }
 
   getTitle() {
-    return "You have received a new reward";
+    return "Your billing profile has been closed";
   }
 
   getDescription() {
-    const { projectName, currencyCode, amount, sentByGithubLogin } = this.data || {};
-    return `${sentByGithubLogin} sent you a new reward of ${amount} ${currencyCode} on project ${projectName}`;
+    const { billingProfileName } = this.data || {};
+    return `Your billing profile ${billingProfileName} has been closed, please contact support for more information`;
   }
 
   getUrl() {
-    return NEXT_ROUTER.rewards.all;
+    const { billingProfileId } = this.data || {};
+    if (billingProfileId) {
+      return NEXT_ROUTER.settings.billing.generalInformation(billingProfileId);
+    }
+    return undefined;
   }
 }
