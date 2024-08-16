@@ -2,9 +2,9 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BillingProfileReactQueryAdapter } from "core/application/react-query-adapter/billing-profile";
+import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { BillingProfileTypeUnion } from "core/domain/billing-profile/models/billing-profile.types";
 import { useRouter } from "next/navigation";
-import { useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { AccountAlreadyExist } from "app/signup/components/account-already-exist/account-already-exist";
@@ -13,18 +13,20 @@ import { Title } from "app/signup/components/title/title";
 import { BillingProfiles } from "app/signup/onboarding/payout-information/components/billing-profiles/billing-profiles";
 import { TBillingProfiles } from "app/signup/onboarding/payout-information/components/billing-profiles/billing-profiles.types";
 
-import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
 import { toast } from "components/atoms/toaster";
 import { Typo } from "components/atoms/typo";
-import { BaseLink } from "components/layout/base-link/base-link";
 import { Translate } from "components/layout/translate/translate";
 import { SignupTemplate } from "components/templates/signup-template/signup-template";
 
 import { NEXT_ROUTER } from "constants/router";
 
+import { Footer } from "../components/footer/footer";
+
 export default function PayoutInformationPage() {
   const router = useRouter();
+
+  const { data: user } = UserReactQueryAdapter.client.useGetMe({});
 
   const formMethods = useForm<TBillingProfiles.form>({
     resolver: zodResolver(TBillingProfiles.validation),
@@ -42,7 +44,7 @@ export default function PayoutInformationPage() {
         onSuccess: () => {
           toast.default(<Translate token="v2.pages.signup.payoutInformation.toast.success" />);
           reset();
-          router.push(NEXT_ROUTER.signup.onboarding.root);
+          router.push(user?.hasCompletedOnboarding ? NEXT_ROUTER.home.all : NEXT_ROUTER.signup.onboarding.root);
         },
         onError: () => {
           toast.error(<Translate token="v2.pages.signup.payoutInformation.toast.error" />);
@@ -57,35 +59,24 @@ export default function PayoutInformationPage() {
     });
   }
 
-  const renderFooter = useMemo(() => {
-    return (
-      <div className="flex justify-end gap-2">
-        <Button
-          variant="secondary-light"
-          size="l"
-          translate={{ token: "v2.pages.signup.payoutInformation.footer.back" }}
-          startIcon={{ remixName: "ri-arrow-left-s-line" }}
-          as={BaseLink}
-          isDisabled={isPendingCreateBillingProfile}
-          htmlProps={{ href: NEXT_ROUTER.signup.onboarding.root }}
-        />
-        <Button
-          type={"submit"}
-          variant="primary"
-          size="l"
-          translate={{ token: "v2.pages.signup.payoutInformation.footer.next" }}
-          endIcon={{ remixName: "ri-arrow-right-s-line" }}
-          isLoading={isPendingCreateBillingProfile}
-          isDisabled={isPendingCreateBillingProfile}
-        />
-      </div>
-    );
-  }, [isPendingCreateBillingProfile]);
-
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={handleSubmit(handleCreateBillingProfile)} className="h-full">
-        <SignupTemplate header={<AccountAlreadyExist />} footer={renderFooter}>
+        <SignupTemplate
+          header={<AccountAlreadyExist />}
+          footer={
+            <Footer
+              backButtonProps={{
+                isDisabled: isPendingCreateBillingProfile,
+              }}
+              nextButtonProps={{
+                type: "submit",
+                isLoading: isPendingCreateBillingProfile,
+                isDisabled: isPendingCreateBillingProfile,
+              }}
+            />
+          }
+        >
           <Paper size={"l"} container={"2"} classNames={{ base: "flex flex-col gap-6 min-h-full" }}>
             <StepHeader
               step={2}
