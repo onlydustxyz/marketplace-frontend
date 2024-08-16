@@ -29,6 +29,7 @@ export function Header() {
       count,
       set,
       clear,
+      isCleared,
       values: { search, availability, languageIds },
       options: { languages },
     },
@@ -82,11 +83,14 @@ export function Header() {
             <div className="flex max-w-[360px] flex-col gap-3">
               <div className="flex items-center justify-between gap-2">
                 <Typo translate={{ token: "v2.pages.hackathons.details.issues.filters.modal.title" }} />
-                <ButtonSecondaryLight
-                  onClick={clear}
-                  size="s"
-                  translate={{ token: "v2.pages.hackathons.details.issues.filters.modal.clear" }}
-                />
+
+                {!isCleared ? (
+                  <ButtonSecondaryLight
+                    onClick={clear}
+                    size="s"
+                    translate={{ token: "v2.pages.hackathons.details.issues.filters.modal.clear" }}
+                  />
+                ) : null}
               </div>
 
               <div className="flex flex-col gap-3">
