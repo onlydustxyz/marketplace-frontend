@@ -8,37 +8,15 @@ import { AccountAlreadyExist } from "app/signup/components/account-already-exist
 import { StepHeader } from "app/signup/components/step-header/step-header";
 import { Title } from "app/signup/components/title/title";
 
-import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
 import { toast } from "components/atoms/toaster";
 import { Layout } from "components/features/terms-and-conditions/layout/layout";
-import { BaseLink } from "components/layout/base-link/base-link";
 import { Translate } from "components/layout/translate/translate";
 import { SignupTemplate } from "components/templates/signup-template/signup-template";
 
 import { NEXT_ROUTER } from "constants/router";
 
-function Footer({ isDisabled, onClick }: { isDisabled: boolean; onClick: () => void }) {
-  return (
-    <div className="flex w-full flex-row justify-end gap-2">
-      <Button
-        variant={"secondary-light"}
-        size={"l"}
-        translate={{ token: "v2.pages.signup.onboarding.projectRecommendations.actions.back" }}
-        as={BaseLink}
-        htmlProps={{ href: NEXT_ROUTER.signup.onboarding.verifyInformation }}
-        startIcon={{ remixName: "ri-arrow-left-s-line" }}
-      />
-      <Button
-        size={"l"}
-        translate={{ token: "v2.pages.signup.onboarding.projectRecommendations.actions.next" }}
-        endIcon={{ remixName: "ri-arrow-right-s-line" }}
-        isDisabled={isDisabled}
-        onClick={onClick}
-      />
-    </div>
-  );
-}
+import { Footer } from "../components/footer/footer";
 
 // * Big paragraph is not translated because of the complexity of the translation
 function TermsAndConditionsPage() {
@@ -70,7 +48,7 @@ function TermsAndConditionsPage() {
     if (!user?.hasAcceptedLatestTermsAndConditions) {
       setMe({ hasAcceptedTermsAndConditions: isTermsAccepted });
     } else if (user?.hasAcceptedLatestTermsAndConditions) {
-      router.push(NEXT_ROUTER.signup.onboarding.root);
+      router.push(user?.hasCompletedOnboarding ? NEXT_ROUTER.home.all : NEXT_ROUTER.signup.onboarding.root);
     }
   }
 
@@ -83,7 +61,17 @@ function TermsAndConditionsPage() {
   return (
     <SignupTemplate
       header={<AccountAlreadyExist />}
-      footer={<Footer isDisabled={!isTermsAccepted} onClick={handleSubmit} />}
+      footer={
+        <Footer
+          backButtonProps={{
+            htmlProps: { href: NEXT_ROUTER.signup.onboarding.verifyInformation },
+          }}
+          nextButtonProps={{
+            isDisabled: !isTermsAccepted,
+            onClick: handleSubmit,
+          }}
+        />
+      }
     >
       <Paper container="2" classNames={{ base: "flex flex-col gap-3 h-full" }}>
         <StepHeader

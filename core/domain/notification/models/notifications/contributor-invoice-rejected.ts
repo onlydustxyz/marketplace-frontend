@@ -11,6 +11,7 @@ export class ContributorInvoiceRejected implements NotificationInterface {
   constructor(private notification: Notification) {
     this.data = notification.data.contributorInvoiceRejected;
   }
+
   getId() {
     return this.notification.id;
   }
@@ -26,6 +27,7 @@ export class ContributorInvoiceRejected implements NotificationInterface {
   hasRead() {
     return this.notification.status === NotificationStatus.READ;
   }
+
   getTitle() {
     return "Your invoice has been rejected";
   }
