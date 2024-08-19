@@ -8,7 +8,6 @@ import { StepHeader } from "app/signup/components/step-header/step-header";
 import { Title } from "app/signup/components/title/title";
 import { TunnelStep } from "app/signup/onboarding/components/tunnel-step/tunnel-step";
 
-import { Button } from "components/atoms/button/variants/button-default";
 import { Paper } from "components/atoms/paper";
 import { toast } from "components/atoms/toaster";
 import { Translate } from "components/layout/translate/translate";
@@ -16,8 +15,12 @@ import { SignupTemplate } from "components/templates/signup-template/signup-temp
 
 import { NEXT_ROUTER } from "constants/router";
 
-function Footer({ isDisabled, hasCompletedAllSteps }: { isDisabled: boolean; hasCompletedAllSteps: boolean }) {
+import { Footer } from "./components/footer/footer";
+
+function OnboardingPage() {
   const router = useRouter();
+  const { data: userOnboarding } = UserReactQueryAdapter.client.useGetMyOnboarding({});
+
   const { mutateAsync: setMe } = UserReactQueryAdapter.client.useSetMe({
     options: {
       onSuccess: () => {
@@ -33,26 +36,6 @@ function Footer({ isDisabled, hasCompletedAllSteps }: { isDisabled: boolean; has
     setMe({ hasCompletedOnboarding: true });
   }
 
-  return (
-    <div className="flex w-full justify-end">
-      <Button
-        variant={"secondary-light"}
-        translate={{
-          token: hasCompletedAllSteps
-            ? "v2.pages.signup.onboarding.tunnel.actions.done"
-            : "v2.pages.signup.onboarding.tunnel.actions.skip",
-        }}
-        endIcon={{ remixName: "ri-arrow-right-s-line" }}
-        onClick={handleSubmit}
-        isDisabled={isDisabled}
-      />
-    </div>
-  );
-}
-
-function OnboardingPage() {
-  const { data: userOnboarding } = UserReactQueryAdapter.client.useGetMyOnboarding({});
-
   if (!userOnboarding) return null;
 
   return (
@@ -60,8 +43,16 @@ function OnboardingPage() {
       header={<AccountAlreadyExist />}
       footer={
         <Footer
-          isDisabled={!userOnboarding.hasCompletedMandatorySteps()}
-          hasCompletedAllSteps={userOnboarding.hasCompletedAllSteps()}
+          nextButtonProps={{
+            variant: "secondary-light",
+            translate: {
+              token: userOnboarding.hasCompletedAllSteps()
+                ? "v2.pages.signup.onboarding.tunnel.actions.done"
+                : "v2.pages.signup.onboarding.tunnel.actions.skip",
+            },
+            isDisabled: !userOnboarding.hasCompletedMandatorySteps(),
+            onClick: handleSubmit,
+          }}
         />
       }
     >

@@ -9,6 +9,7 @@ export class MaintainerCommitteeApplicationCreated implements NotificationInterf
   constructor(private notification: Notification) {
     this.data = notification.data.maintainerCommitteeApplicationCreated;
   }
+
   getId() {
     return this.notification.id;
   }
@@ -24,6 +25,7 @@ export class MaintainerCommitteeApplicationCreated implements NotificationInterf
   hasRead() {
     return this.notification.status === NotificationStatus.READ;
   }
+
   getTitle() {
     return "New committee application";
   }

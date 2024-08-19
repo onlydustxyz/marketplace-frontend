@@ -28,6 +28,7 @@ export function HackathonIssues() {
           },
           badgeProps: {
             children: projectIssue.issueCount,
+            fitContent: (projectIssue.issueCount || 0) > 9,
           },
           startContent: <Avatar size="xs" shape="square" src={projectIssue.project.logoUrl} />,
           content: (

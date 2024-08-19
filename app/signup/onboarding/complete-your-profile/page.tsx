@@ -7,40 +7,15 @@ import { StepHeader } from "app/signup/components/step-header/step-header";
 import { Title } from "app/signup/components/title/title";
 import { useCompleteYourProfile } from "app/signup/onboarding/complete-your-profile/complete-your-profile.hooks";
 
-import { Button } from "components/atoms/button/variants/button-default";
 import { Input } from "components/atoms/input";
 import { Paper } from "components/atoms/paper";
 import { Textarea } from "components/atoms/textarea";
-import { BaseLink } from "components/layout/base-link/base-link";
 import { Translate } from "components/layout/translate/translate";
 import { SignupTemplate } from "components/templates/signup-template/signup-template";
 
-import { NEXT_ROUTER } from "constants/router";
-
 import { useIntl } from "hooks/translate/use-translate";
 
-function Footer({ isLoading, isDisabled }: { isLoading: boolean; isDisabled: boolean }) {
-  return (
-    <div className="flex w-full flex-row justify-end gap-2">
-      <Button
-        variant={"secondary-light"}
-        size={"l"}
-        translate={{ token: "v2.pages.signup.onboarding.tunnel.actions.back" }}
-        as={BaseLink}
-        htmlProps={{ href: NEXT_ROUTER.signup.onboarding.root }}
-        startIcon={{ remixName: "ri-arrow-left-s-line" }}
-      />
-      <Button
-        type={"submit"}
-        size={"l"}
-        translate={{ token: "v2.pages.signup.onboarding.tunnel.actions.next" }}
-        endIcon={{ remixName: "ri-arrow-right-s-line" }}
-        isLoading={isLoading}
-        isDisabled={isDisabled}
-      />
-    </div>
-  );
-}
+import { Footer } from "../components/footer/footer";
 
 export default function CompleteYourProfilePage() {
   const { T } = useIntl();
@@ -50,7 +25,15 @@ export default function CompleteYourProfilePage() {
     <form className={"h-full"} onSubmit={form.handleSubmit(handleFormSubmit)}>
       <SignupTemplate
         header={<AccountAlreadyExist />}
-        footer={<Footer isLoading={setMyProfileMutation.isPending} isDisabled={!userProfile} />}
+        footer={
+          <Footer
+            backButtonProps={{}}
+            nextButtonProps={{
+              isLoading: setMyProfileMutation.isPending,
+              isDisabled: !userProfile,
+            }}
+          />
+        }
       >
         <Paper container={"2"} classNames={{ base: "flex flex-col gap-6 min-h-full" }}>
           <div className="grid gap-3">

@@ -11,6 +11,7 @@ export class ContributorProjectApplicationAccepted implements NotificationInterf
   constructor(private notification: Notification) {
     this.data = notification.data.contributorProjectApplicationAccepted;
   }
+
   getId() {
     return this.notification.id;
   }
@@ -26,8 +27,9 @@ export class ContributorProjectApplicationAccepted implements NotificationInterf
   hasRead() {
     return this.notification.status === NotificationStatus.READ;
   }
+
   getTitle() {
-    return "You application has been accepted";
+    return "Your application has been accepted";
   }
 
   getDescription() {

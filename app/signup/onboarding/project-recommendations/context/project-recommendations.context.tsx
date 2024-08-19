@@ -41,6 +41,8 @@ export function ProjectRecommendationContextProvider({ children }: TProjectRecom
     },
   });
 
+  const { data: user } = UserReactQueryAdapter.client.useGetMe({});
+
   const form = useForm<TProjectRecommendationContext.form>({
     mode: "all",
     resolver: zodResolver(TProjectRecommendationContext.validation),
@@ -55,7 +57,7 @@ export function ProjectRecommendationContextProvider({ children }: TProjectRecom
     options: {
       onSuccess: () => {
         toast.default(<Translate token={"v2.pages.signup.onboarding.common.updateProfile.toast.success"} />);
-        router.push(NEXT_ROUTER.signup.onboarding.root);
+        router.push(user?.hasCompletedOnboarding ? NEXT_ROUTER.home.all : NEXT_ROUTER.signup.onboarding.root);
       },
       onError: () => {
         toast.error(<Translate token={"v2.pages.signup.onboarding.common.updateProfile.toast.error"} />);

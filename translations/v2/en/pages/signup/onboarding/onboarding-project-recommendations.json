@@ -1,9 +1,5 @@
 {
   "title": "Project Recommendations",
-  "actions": {
-    "next": "Next",
-    "back": "Back"
-  },
   "languages": {
     "title": "Choose Your Preferred Programming Languages",
     "content": "Please select the programming languages you are most comfortable with or interested in. You can choose multiple languages to tailor your experience on OnlyDust."
