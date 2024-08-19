@@ -11,6 +11,7 @@ export class ContributorRewardCanceled implements NotificationInterface {
   constructor(private notification: Notification) {
     this.data = notification.data.contributorRewardCanceled;
   }
+
   getId() {
     return this.notification.id;
   }
@@ -26,6 +27,7 @@ export class ContributorRewardCanceled implements NotificationInterface {
   hasRead() {
     return this.notification.status === NotificationStatus.READ;
   }
+
   getTitle() {
     return "Your reward has been canceled";
   }

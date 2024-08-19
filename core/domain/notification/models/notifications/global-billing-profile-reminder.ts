@@ -6,11 +6,12 @@ import { components } from "src/__generated/api";
 
 import { NEXT_ROUTER } from "../../../../../constants/router";
 
-export class GlobalBillingProfileVerificationFailed implements NotificationInterface {
-  data: components["schemas"]["NotificationGlobalBillingProfileVerificationFailed"] | undefined;
+export class GlobalBillingProfileReminder implements NotificationInterface {
+  data: components["schemas"]["NotificationGlobalBillingProfileReminder"] | undefined;
   constructor(private notification: Notification) {
-    this.data = notification.data.globalBillingProfileVerificationFailed;
+    this.data = notification.data.globalBillingProfileReminder;
   }
+
   getId() {
     return this.notification.id;
   }
@@ -26,13 +27,14 @@ export class GlobalBillingProfileVerificationFailed implements NotificationInter
   hasRead() {
     return this.notification.status === NotificationStatus.READ;
   }
+
   getTitle() {
-    return "Your billing profile requires an action.";
+    return "Your billing profile is incomplete";
   }
 
   getDescription() {
     const { billingProfileName } = this.data || {};
-    return `An anomaly has occurred in the verification process for your billing profile ${billingProfileName}. Please refer to the following steps to redo the verification and resolve the issue.`;
+    return `Your billing profile ${billingProfileName} is incomplete, please update it to complete the process`;
   }
 
   getUrl() {
