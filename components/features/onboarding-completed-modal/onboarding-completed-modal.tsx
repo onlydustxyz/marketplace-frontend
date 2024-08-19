@@ -146,20 +146,16 @@ export function OnboardingCompletedModal() {
     <Modal
       isOpen={isOpen}
       onOpenChange={isModalOpen => (!isModalOpen ? handleClose() : null)}
-      hideCloseButton
+      customHeader={<StepHeader step={3} />}
       size={"l"}
       container={"1"}
       classNames={{ body: "gap-6 md:gap-3" }}
     >
       <Paper size={"l"} container={"2"} classNames={{ base: "grid gap-6" }}>
-        <div className="grid gap-3">
-          <StepHeader step={3} handleClose={handleClose} />
-
-          <Title
-            title={{ token: "v2.pages.signup.onboarding.completed.title" }}
-            content={{ token: "v2.pages.signup.onboarding.completed.content" }}
-          />
-        </div>
+        <Title
+          title={{ token: "v2.pages.signup.onboarding.completed.title" }}
+          content={{ token: "v2.pages.signup.onboarding.completed.content" }}
+        />
 
         <div className="grid gap-2 md:grid-cols-3">
           {cards.map(card => (

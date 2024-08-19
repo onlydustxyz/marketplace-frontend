@@ -5,6 +5,5 @@ export namespace TStepHeader {
     step: 1 | 2 | 3;
     stepPath?: string;
     subStep?: TTranslate.Props;
-    handleClose?: () => void;
   }
 }
