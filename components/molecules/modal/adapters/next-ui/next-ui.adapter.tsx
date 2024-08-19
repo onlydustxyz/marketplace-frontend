@@ -48,6 +48,7 @@ export function ModalNextUiAdapter<C extends ElementType = "div">({
             <Inner {...(htmlProps ?? {})}>
               <ModalHeader className={"empty:hidden"}>
                 {hasTitle ? <Typo {...titleProps} classNames={{ base: "truncate" }} /> : null}
+                {!hasTitle && !customHeader ? <div /> : null}
 
                 {customHeader}
 
