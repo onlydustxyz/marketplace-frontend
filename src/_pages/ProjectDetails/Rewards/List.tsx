@@ -121,7 +121,7 @@ const RewardList: React.FC = () => {
   }, [filterState.currency]);
 
   if (error) {
-    return <ErrorFallback />;
+    return <ErrorFallback error={error} />;
   }
 
   return (
