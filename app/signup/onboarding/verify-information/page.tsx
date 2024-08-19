@@ -7,7 +7,7 @@ import { UserProfile } from "core/domain/user/models/user-profile-model";
 import { UserJoiningReason, UserProfileContactChannel } from "core/domain/user/models/user.types";
 import { LOCAL_STORAGE_JOINING_REASON_KEY, USER_PROFILE_JOINING_REASON } from "core/domain/user/user-constants";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useLocalStorage } from "react-use";
 
@@ -17,7 +17,6 @@ import { Title } from "app/signup/components/title/title";
 import { TVerifyInformation } from "app/signup/onboarding/verify-information/verify-information.types";
 
 import { Avatar } from "components/atoms/avatar";
-import { Button } from "components/atoms/button/variants/button-default";
 import { Input } from "components/atoms/input";
 import { Paper } from "components/atoms/paper";
 import { Tag } from "components/atoms/tag";
@@ -28,6 +27,8 @@ import { SignupTemplate } from "components/templates/signup-template/signup-temp
 import { NEXT_ROUTER } from "constants/router";
 
 import { useIntl } from "hooks/translate/use-translate";
+
+import { Footer } from "../components/footer/footer";
 
 export default function VerifyInformationPage() {
   const { T } = useIntl();
@@ -55,7 +56,9 @@ export default function VerifyInformationPage() {
     options: {
       onSuccess: () => {
         toast.default(T("v2.pages.signup.verifyInformation.toast.success"));
-        router.push(NEXT_ROUTER.signup.onboarding.termsAndConditions);
+        router.push(
+          userMe?.hasCompletedOnboarding ? NEXT_ROUTER.home.all : NEXT_ROUTER.signup.onboarding.termsAndConditions
+        );
       },
       onError: () => {
         toast.error(T("v2.pages.signup.verifyInformation.toast.error"));
@@ -111,25 +114,20 @@ export default function VerifyInformationPage() {
     setJoiningReason(undefined);
   }
 
-  const renderFooter = useMemo(() => {
-    return (
-      <div className="flex justify-end gap-1">
-        <Button
-          type={"submit"}
-          variant="primary"
-          size="l"
-          translate={{ token: "v2.pages.signup.verifyInformation.footer.next" }}
-          endIcon={{ remixName: "ri-arrow-right-s-line" }}
-          isLoading={isPendingSetMyProfile}
-          isDisabled={userProfileIsLoading || isPendingSetMyProfile || userMeIsLoading}
-        />
-      </div>
-    );
-  }, [handleSubmit, userProfileIsLoading, isPendingSetMyProfile, userMeIsLoading]);
-
   return (
     <form onSubmit={handleSubmit(handleSetMyProfile)} className="h-full">
-      <SignupTemplate header={<AccountAlreadyExist />} footer={renderFooter}>
+      <SignupTemplate
+        header={<AccountAlreadyExist />}
+        footer={
+          <Footer
+            nextButtonProps={{
+              type: "submit",
+              isLoading: isPendingSetMyProfile,
+              isDisabled: userProfileIsLoading || isPendingSetMyProfile || userMeIsLoading,
+            }}
+          />
+        }
+      >
         <Paper size={"l"} container={"2"} classNames={{ base: "flex flex-col gap-3 min-h-full" }}>
           <StepHeader
             step={2}

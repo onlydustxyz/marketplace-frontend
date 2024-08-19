@@ -31,11 +31,13 @@ export function useCompleteYourProfile() {
     },
   });
 
+  const { data: user } = UserReactQueryAdapter.client.useGetMe({});
+
   const { mutateAsync: setMyProfile, ...setMyProfileMutation } = UserReactQueryAdapter.client.useSetMyProfile({
     options: {
       onSuccess: () => {
         toast.default(T("v2.pages.signup.onboarding.completeYourProfile.form.toast.success"));
-        router.push(NEXT_ROUTER.signup.onboarding.root);
+        router.push(user?.hasCompletedOnboarding ? NEXT_ROUTER.home.all : NEXT_ROUTER.signup.onboarding.root);
       },
       onError: () => {
         toast.error(T("v2.pages.signup.onboarding.completeYourProfile.form.toast.error"));
