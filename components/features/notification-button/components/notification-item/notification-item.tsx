@@ -38,7 +38,7 @@ export function NotificationItem({ notification, onClick }: TNotificationItem.Pr
       htmlProps={{ onClick: handleClick, onMouseEnter: onHover }}
     >
       <div className="relative">
-        <Tag hideText={true} icon={{ remixName: "ri-square-line" }} />
+        <Tag hideText={true} icon={{ remixName: "ri-notification-line" }} />
         {!hasRead && (
           <BadgeDot size="s" colors="brand-2" classNames={{ base: "absolute top-0 left-0  pointer-events-none" }} />
         )}
