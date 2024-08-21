@@ -7,6 +7,7 @@
   "rewards": "Rewards",
   "hackathons": "Hackathons",
   "publicProfile": "Public profile",
+  "program": "Program",
   "feedback": "Feedback",
   "legalNotice": "Legal notice",
   "logout": "Log out",
@@ -17,6 +18,5 @@
   },
   "tooltip": {
     "unableToReceiveRewards": "You're unable to receive rewards. Click to fill in required info"
-  },
-  "sponsoring": "Sponsoring"
+  }
 }
