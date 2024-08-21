@@ -105,13 +105,13 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
               <div className="flex flex-1 flex-col gap-2 overflow-hidden">
                 <div className="flex-1 truncate font-belwe text-2xl font-medium">{project.name}</div>
                 {tags?.length ? (
-                  <Flex direction="row" className="justify-start gap-2 md:hidden">
+                  <Flex direction="row" className="flex-wrap justify-start gap-2 md:hidden">
                     <ProjectTags tags={tags} />
                   </Flex>
                 ) : null}
               </div>
               {tags?.length ? (
-                <Flex direction="row" className="hidden justify-end gap-2 md:flex">
+                <Flex direction="row" className="hidden flex-wrap justify-end gap-2 md:flex">
                   <ProjectTags tags={tags} />
                 </Flex>
               ) : null}

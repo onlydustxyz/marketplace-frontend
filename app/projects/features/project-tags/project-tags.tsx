@@ -23,7 +23,7 @@ export function ProjectTags({ tags }: ProjectTagsProps) {
       {tags.map(tag => {
         if (tag === "HAS_GOOD_FIRST_ISSUES") {
           return (
-            <Tag key={tag} tooltipContent={<Translate token={tagMapping[tag].tooltip} />}>
+            <Tag key={tag} tooltipContent={<Translate token={tagMapping[tag].tooltip} />} className="whitespace-nowrap">
               <Icon {...tagMapping[tag].icon} />
               <Translate token={tagMapping[tag].label} />
             </Tag>
