@@ -134,11 +134,11 @@ export function View({ avatarUrl, login, labelToken, redirection, errorColor, er
               </BaseLink>
 
               {sponsors.length ? (
-                <BaseLink href={NEXT_ROUTER.sponsor.details.root(sponsors[0].id)}>
+                <BaseLink href={`${process.env.NEXT_PUBLIC_SAAS_URL}/programs`}>
                   <MenuItem>
                     <Icon remixName="ri-service-line" size={20} />
                     <div className="grow">
-                      <Translate token="v2.features.menu.sponsoring" />
+                      <Translate token="v2.features.menu.program" />
                     </div>
                   </MenuItem>
                 </BaseLink>
