@@ -1,11 +1,13 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { createContext, useEffect, useMemo, useState } from "react";
 import { useDebounce } from "usehooks-ts";
 
 import ProjectApi from "src/api/Project";
 import { useInfiniteBaseQueryProps } from "src/api/useInfiniteBaseQuery";
+
+import { NEXT_ROUTER } from "constants/router";
 
 import { TProjectContext } from "./project.context.types";
 
@@ -31,7 +33,6 @@ export const ProjectsContext = createContext<TProjectContext.Return>({
 });
 
 export function ProjectsContextProvider({ children }: TProjectContext.Props) {
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   const getFiltersFromURL = () => {
@@ -122,7 +123,8 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
       urlParams.set("sort", filters.sorting);
     }
 
-    router.replace(`?${urlParams.toString()}`);
+    // https://nextjs.org/docs/app/building-your-application/routing/linking-and-navigating#using-the-native-history-api
+    window.history.replaceState(null, "", `${NEXT_ROUTER.projects.all}?${urlParams.toString()}`);
   };
 
   useEffect(() => {
