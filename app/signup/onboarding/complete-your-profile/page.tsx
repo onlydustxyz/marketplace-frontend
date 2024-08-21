@@ -29,6 +29,7 @@ export default function CompleteYourProfilePage() {
           <Footer
             backButtonProps={{}}
             nextButtonProps={{
+              type: "submit",
               isLoading: setMyProfileMutation.isPending,
               isDisabled: !userProfile,
             }}
