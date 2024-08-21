@@ -76,12 +76,12 @@ export function BurgerMenu() {
 
               {sponsors.length ? (
                 <BaseLink
-                  href={NEXT_ROUTER.sponsor.details.root(sponsors[0].id)}
+                  href={`${process.env.NEXT_PUBLIC_SAAS_URL}/programs`}
                   onClick={() => setPanelOpen(false)}
                   className="flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8"
                 >
                   <Icon remixName="ri-service-line" size={20} />
-                  <Translate token="v2.features.menu.sponsoring" />
+                  <Translate token="v2.features.menu.program" />
                 </BaseLink>
               ) : null}
             </div>
