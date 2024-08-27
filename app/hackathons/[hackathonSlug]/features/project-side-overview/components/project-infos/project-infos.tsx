@@ -3,6 +3,8 @@ import { useMemo } from "react";
 
 import { TProjectInfos } from "app/hackathons/[hackathonSlug]/features/project-side-overview/components/project-infos/project-infos.types";
 
+import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
+
 import { Avatar } from "components/atoms/avatar";
 import { Paper } from "components/atoms/paper";
 import { Tag } from "components/atoms/tag";
@@ -12,8 +14,8 @@ import { BaseLink } from "components/layout/base-link/base-link";
 import { Translate } from "components/layout/translate/translate";
 import { AvatarGroup } from "components/molecules/avatar-group";
 
-function Programs({ programs }: { programs: TProjectInfos.Program[] }) {
-  if (programs.length > 2) {
+function Programs({ programs }: { programs: UseGetProjectBySlugResponse["programs"] }) {
+  if (programs?.length && programs?.length > 2) {
     return (
       <InfoDropdown
         targetLabel={
@@ -29,7 +31,7 @@ function Programs({ programs }: { programs: TProjectInfos.Program[] }) {
 
   return (
     <div className={"flex flex-wrap gap-2"}>
-      {programs.map(p => {
+      {programs?.map(p => {
         const validUrl = p.url ? urlHelperPort.validateUrl(p.url) : "";
         return (
           <Tag

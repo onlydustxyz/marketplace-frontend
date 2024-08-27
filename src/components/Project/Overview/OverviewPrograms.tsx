@@ -14,7 +14,7 @@ export interface ProjectOverviewProgramsProps {
 }
 
 interface LinkContentProps {
-  program: components["schemas"]["ProgramLinkResponse"];
+  program: components["schemas"]["ProgramShortResponse"];
 }
 
 const LinkContent = ({ program }: LinkContentProps) => {
