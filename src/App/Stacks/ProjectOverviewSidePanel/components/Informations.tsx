@@ -6,7 +6,7 @@ import { ProjectOverviewEcosystem } from "src/components/Project/Overview/Overvi
 import { ProjectOverviewLanguages } from "src/components/Project/Overview/OverviewLanguages";
 import { ProjectOverviewLead } from "src/components/Project/Overview/OverviewLead";
 import { ProjectOverviewMoreInfo } from "src/components/Project/Overview/OverviewMoreInfo";
-import { ProjectOverviewSponsors } from "src/components/Project/Overview/OverviewSponsors";
+import { ProjectOverviewPrograms } from "src/components/Project/Overview/OverviewPrograms";
 import isDefined from "src/utils/isDefined";
 
 import { Card } from "components/ds/card/card";
@@ -25,14 +25,14 @@ export const ProjectOverviewInformations = ({ project }: ProjectOverviewInformat
     invitedLeaders,
     moreInfos,
     ecosystems,
-    sponsors,
+    programs,
     languages,
     categories,
   } = project;
   const projectLeads = leaders?.filter(lead => isDefined(lead?.login)) || [];
   const projectInvited = invitedLeaders?.filter(lead => isDefined(lead?.login)) || [];
 
-  if (!projectLeads.length && !contributorCount && !sponsors?.length && !moreInfos?.length) {
+  if (!projectLeads.length && !contributorCount && !programs?.length && !moreInfos?.length) {
     return (
       <Card>
         <EmptyState
@@ -47,7 +47,7 @@ export const ProjectOverviewInformations = ({ project }: ProjectOverviewInformat
       <ProjectOverviewLead projectId={project?.id} projectLeads={projectLeads} projectInvited={projectInvited} />
       <ProjectOverviewContributor contributorCount={contributorCount} topContributors={topContributors} />
       <ProjectOverviewEcosystem ecosystems={ecosystems} />
-      <ProjectOverviewSponsors sponsors={sponsors} />
+      <ProjectOverviewPrograms programs={programs} />
       <ProjectOverviewLanguages languages={languages} />
       <ProjectOverviewCategories categories={categories} />
       <ProjectOverviewMoreInfo moreInfos={moreInfos} />
