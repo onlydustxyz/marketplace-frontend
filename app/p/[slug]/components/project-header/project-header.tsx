@@ -1,11 +1,13 @@
+import Link from "next/link";
+
 import { cn } from "src/utils/cn";
 
+import { Button } from "components/atoms/button/variants/button-default";
 import { Flex } from "components/layout/flex/flex";
 import { Typography } from "components/layout/typography/typography";
 
 import { EditButton } from "./components/edit-button/edit-button";
 import { RewardButton } from "./components/reward-button/reward-button";
-import { SponsorButton } from "./components/sponsor-button/sponsor-button";
 import { TProjectHeader } from "./project-header.types";
 
 export function ProjectHeader({ isProjectLeader, hasOrgsWithUnauthorizedRepos, project }: TProjectHeader.Props) {
@@ -31,9 +33,13 @@ export function ProjectHeader({ isProjectLeader, hasOrgsWithUnauthorizedRepos, p
       ) : null}
 
       {!isProjectLeader ? (
-        <Flex>
-          <SponsorButton project={project} />
-        </Flex>
+        <Button
+          as={Link}
+          htmlProps={{ href: `${process.env.NEXT_PUBLIC_SAAS_URL}/programs`, target: "_blank" }}
+          classNames={{ content: "flex gap-2" }}
+          startIcon={{ remixName: "ri-service-line" }}
+          translate={{ token: "v2.pages.project.details.header.buttons.sponsor" }}
+        />
       ) : null}
     </Flex>
   );
