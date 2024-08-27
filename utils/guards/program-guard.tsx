@@ -1,10 +1,10 @@
 import { useRouter } from "next/navigation";
 import { ComponentType, useEffect, useMemo } from "react";
-import { useProgramGuard } from "utils/guards/sponsor-guard.hooks";
+import { useProgramGuard } from "utils/guards/program-guard.hooks";
 
 import { NEXT_ROUTER } from "constants/router";
 
-export const withSponsorGuard = <P extends object>(Component: ComponentType<P>) => {
+export const withProgramGuard = <P extends object>(Component: ComponentType<P>) => {
   return function SponsorGuard(props: P) {
     const router = useRouter();
     const { programs, isLoading, isRefetching } = useProgramGuard();

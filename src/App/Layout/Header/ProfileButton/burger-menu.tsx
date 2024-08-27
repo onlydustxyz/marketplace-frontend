@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useProgramGuard } from "utils/guards/sponsor-guard.hooks";
+import { useProgramGuard } from "utils/guards/program-guard.hooks";
 
 import { useStackFeedback } from "src/App/Stacks/Stacks";
 import MeApi from "src/api/me";
