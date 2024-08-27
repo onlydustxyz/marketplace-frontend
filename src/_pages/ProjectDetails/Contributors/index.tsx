@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useForm, useWatch } from "react-hook-form";
 
@@ -7,7 +8,6 @@ import ErrorFallback from "src/ErrorFallback";
 import ContributorsTable from "src/_pages/ProjectDetails/Contributors/ContributorsTable";
 import { Fields } from "src/_pages/ProjectDetails/Contributors/ContributorsTable/Headers";
 import Title from "src/_pages/ProjectDetails/Title";
-import { SponsorProjectButton } from "src/_pages/ProjectDetails/components/SponsorProjectButton";
 import ProjectApi from "src/api/Project";
 import { IMAGES } from "src/assets/img";
 import FormToggle from "src/components/FormToggle";
@@ -21,6 +21,7 @@ import EyeOffLine from "src/icons/EyeOffLine";
 import { RewardDisabledReason } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
+import { Button } from "components/atoms/button/variants/button-default";
 import { Card } from "components/ds/card/card";
 import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
@@ -128,7 +129,13 @@ export default function Contributors() {
 
           {!isProjectLeader ? (
             <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
-              <SponsorProjectButton project={project} />
+              <Button
+                as={Link}
+                htmlProps={{ href: `${process.env.NEXT_PUBLIC_SAAS_URL}/programs`, target: "_blank" }}
+                classNames={{ content: "flex gap-2" }}
+                startIcon={{ remixName: "ri-service-line" }}
+                translate={{ token: "v2.pages.project.details.header.buttons.sponsor" }}
+              />
             </Flex>
           ) : null}
         </div>
