@@ -19,7 +19,7 @@ function Programs({ programs }: { programs: TProjectInfos.Program[] }) {
         targetLabel={
           <Translate token={"v2.features.projectSideOverview.countPrograms"} params={{ count: programs.length }} />
         }
-        dropdownTitleToken={"v2.features.projectSideOverview.sponsors"}
+        dropdownTitleToken={"v2.features.projectSideOverview.programs"}
         links={programs}
       />
     );
