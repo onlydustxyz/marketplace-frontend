@@ -111,7 +111,7 @@ export function ProjectInfos({ project }: TProjectInfos.Props) {
         {renderContributors}
         {project?.programs?.length ? (
           <div className={"grid gap-1"}>
-            <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.features.projectSideOverview.sponsors" }} />
+            <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.features.projectSideOverview.programs" }} />
             <Programs programs={project.programs} />
           </div>
         ) : null}

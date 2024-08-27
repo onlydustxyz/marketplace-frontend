@@ -1,8 +1,5 @@
-import Link from "next/link";
-
 import { cn } from "src/utils/cn";
 
-import { Button } from "components/atoms/button/variants/button-default";
 import { Flex } from "components/layout/flex/flex";
 import { Typography } from "components/layout/typography/typography";
 
@@ -30,16 +27,6 @@ export function ProjectHeader({ isProjectLeader, hasOrgsWithUnauthorizedRepos, p
           <EditButton slug={project.slug} />
           <RewardButton project={project} />
         </Flex>
-      ) : null}
-
-      {!isProjectLeader ? (
-        <Button
-          as={Link}
-          htmlProps={{ href: `${process.env.NEXT_PUBLIC_SAAS_URL}/programs`, target: "_blank" }}
-          classNames={{ content: "flex gap-2" }}
-          startIcon={{ remixName: "ri-service-line" }}
-          translate={{ token: "v2.pages.project.details.header.buttons.sponsor" }}
-        />
       ) : null}
     </Flex>
   );
