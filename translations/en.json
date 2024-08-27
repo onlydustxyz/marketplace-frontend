@@ -1390,10 +1390,6 @@
       "full": "Reward contributor",
       "short": "Reward"
     },
-    "sponsorButton": {
-      "full": "Sponsor project",
-      "short": "Sponsor"
-    },
     "addBudgetButton": "Add budget",
     "sponsorsCount": "__count__ sponsors",
     "ledBy": {
