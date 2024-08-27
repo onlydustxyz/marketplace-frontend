@@ -17,7 +17,7 @@ function Programs({ programs }: { programs: TProjectInfos.Program[] }) {
     return (
       <InfoDropdown
         targetLabel={
-          <Translate token={"v2.features.projectSideOverview.countSponsors"} params={{ count: programs.length }} />
+          <Translate token={"v2.features.projectSideOverview.countPrograms"} params={{ count: programs.length }} />
         }
         dropdownTitleToken={"v2.features.projectSideOverview.sponsors"}
         links={programs}
