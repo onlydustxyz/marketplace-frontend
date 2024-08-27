@@ -5,7 +5,7 @@ import { useProgramGuard } from "utils/guards/program-guard.hooks";
 import { NEXT_ROUTER } from "constants/router";
 
 export const withProgramGuard = <P extends object>(Component: ComponentType<P>) => {
-  return function SponsorGuard(props: P) {
+  return function ProgramGuard(props: P) {
     const router = useRouter();
     const { programs, isLoading, isRefetching } = useProgramGuard();
 
