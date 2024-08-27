@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSponsorGuard } from "utils/guards/sponsor-guard.hooks";
+import { useProgramGuard } from "utils/guards/sponsor-guard.hooks";
 
 import { useStackFeedback } from "src/App/Stacks/Stacks";
 import MeApi from "src/api/me";
@@ -29,7 +29,7 @@ export function BurgerMenu() {
   const [panelOpen, setPanelOpen] = useState(false);
   const { handleLogout } = useLogout();
   const [openFeedback] = useStackFeedback();
-  const { sponsors } = useSponsorGuard();
+  const { programs } = useProgramGuard();
   function handleFeedback() {
     setPanelOpen(false);
     openFeedback();
@@ -43,7 +43,7 @@ export function BurgerMenu() {
 
       <SidePanel withBackdrop open={panelOpen} setOpen={setPanelOpen} hasCloseButton={false} placement="bottom">
         <div className="flex flex-col divide-y divide-greyscale-50/8 bg-whiteFakeOpacity-5 p-3 font-walsheim text-sm">
-          {githubUserId || sponsors.length ? (
+          {githubUserId || programs.length ? (
             <div>
               {githubUserId ? (
                 <BaseLink
@@ -74,7 +74,7 @@ export function BurgerMenu() {
                 </BaseLink>
               ) : null}
 
-              {sponsors.length ? (
+              {programs.length ? (
                 <BaseLink
                   href={`${process.env.NEXT_PUBLIC_SAAS_URL}/programs`}
                   onClick={() => setPanelOpen(false)}

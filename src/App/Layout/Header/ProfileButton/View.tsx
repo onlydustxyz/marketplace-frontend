@@ -1,6 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, PropsWithChildren, useState } from "react";
-import { useSponsorGuard } from "utils/guards/sponsor-guard.hooks";
+import { useProgramGuard } from "utils/guards/sponsor-guard.hooks";
 
 import { useStackFeedback } from "src/App/Stacks/Stacks";
 import { withTooltip } from "src/components/Tooltip";
@@ -52,7 +52,7 @@ export function View({ avatarUrl, login, labelToken, redirection, errorColor, er
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const { handleLogout } = useLogout();
   const [openFeedback] = useStackFeedback();
-  const { sponsors } = useSponsorGuard();
+  const { programs } = useProgramGuard();
 
   return (
     <div className="relative">
@@ -133,7 +133,7 @@ export function View({ avatarUrl, login, labelToken, redirection, errorColor, er
                 </MenuItem>
               </BaseLink>
 
-              {sponsors.length ? (
+              {programs.length ? (
                 <BaseLink href={`${process.env.NEXT_PUBLIC_SAAS_URL}/programs`}>
                   <MenuItem>
                     <Icon remixName="ri-service-line" size={20} />
