@@ -16,7 +16,7 @@ export function Programs({ programs }: TPrograms.Props) {
   return (
     <Section
       title={{
-        token: "v2.pages.project.overview.projectDetails.sponsors",
+        token: "v2.pages.project.overview.projectDetails.programs",
         params: { count: programs.length },
       }}
       remixIconName="ri-service-line"
