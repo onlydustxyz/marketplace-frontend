@@ -7,7 +7,6 @@ import ErrorFallback from "src/ErrorFallback";
 import ContributorsTable from "src/_pages/ProjectDetails/Contributors/ContributorsTable";
 import { Fields } from "src/_pages/ProjectDetails/Contributors/ContributorsTable/Headers";
 import Title from "src/_pages/ProjectDetails/Title";
-import { SponsorProjectButton } from "src/_pages/ProjectDetails/components/SponsorProjectButton";
 import ProjectApi from "src/api/Project";
 import { IMAGES } from "src/assets/img";
 import FormToggle from "src/components/FormToggle";
@@ -123,12 +122,6 @@ export default function Contributors() {
             <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
               <EditProjectButton projectKey={slug} />
               <RewardProjectButton project={project} />
-            </Flex>
-          ) : null}
-
-          {!isProjectLeader ? (
-            <Flex className="w-full justify-start gap-2 md:w-auto md:justify-end">
-              <SponsorProjectButton project={project} />
             </Flex>
           ) : null}
         </div>

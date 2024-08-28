@@ -2,6 +2,7 @@ import { useMemo } from "react";
 
 import { Categories } from "app/p/[slug]/features/project-details/components/categories/categories";
 import { Languages } from "app/p/[slug]/features/project-details/components/languages/languages";
+import { Programs } from "app/p/[slug]/features/project-details/components/programs/programs";
 
 import { IMAGES } from "src/assets/img";
 import isDefined from "src/utils/isDefined";
@@ -16,7 +17,6 @@ import { Contributors } from "./components/contributors/contributors";
 import { Ecosystems } from "./components/ecosystems/ecosystems";
 import { MoreInfos } from "./components/more-infos/more-infos";
 import { ProjectLeads } from "./components/project-leads/project-leads";
-import { Sponsors } from "./components/sponsors/sponsors";
 import { TProjectDetails } from "./project-details.types";
 
 export function ProjectDetails({ project }: TProjectDetails.Props) {
@@ -28,7 +28,7 @@ export function ProjectDetails({ project }: TProjectDetails.Props) {
     moreInfos,
     ecosystems,
     categories,
-    sponsors,
+    programs,
     languages,
   } = project;
 
@@ -69,7 +69,7 @@ export function ProjectDetails({ project }: TProjectDetails.Props) {
         <Contributors contributorCount={contributorCount} topContributors={topContributors} />
         <Ecosystems ecosystems={ecosystems} />
         <Categories categories={categories} />
-        <Sponsors sponsors={sponsors} />
+        <Programs programs={programs} />
         <Languages languages={languages} />
         <MoreInfos moreInfos={nonCommunityMoreInfos} />
       </Flex>

@@ -3,6 +3,8 @@ import { useMemo } from "react";
 
 import { TProjectInfos } from "app/hackathons/[hackathonSlug]/features/project-side-overview/components/project-infos/project-infos.types";
 
+import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
+
 import { Avatar } from "components/atoms/avatar";
 import { Paper } from "components/atoms/paper";
 import { Tag } from "components/atoms/tag";
@@ -12,15 +14,15 @@ import { BaseLink } from "components/layout/base-link/base-link";
 import { Translate } from "components/layout/translate/translate";
 import { AvatarGroup } from "components/molecules/avatar-group";
 
-function Sponsors({ sponsors }: { sponsors: TProjectInfos.Sponsor[] }) {
-  if (sponsors.length > 2) {
+function Programs({ programs }: { programs: UseGetProjectBySlugResponse["programs"] }) {
+  if (programs?.length && programs?.length > 2) {
     return (
       <InfoDropdown
         targetLabel={
-          <Translate token={"v2.features.projectSideOverview.countSponsors"} params={{ count: sponsors.length }} />
+          <Translate token={"v2.features.projectSideOverview.countPrograms"} params={{ count: programs.length }} />
         }
-        dropdownTitleToken={"v2.features.projectSideOverview.sponsors"}
-        links={sponsors}
+        dropdownTitleToken={"v2.features.projectSideOverview.programs"}
+        links={programs}
       />
     );
   }
@@ -29,19 +31,19 @@ function Sponsors({ sponsors }: { sponsors: TProjectInfos.Sponsor[] }) {
 
   return (
     <div className={"flex flex-wrap gap-2"}>
-      {sponsors.map(s => {
-        const validUrl = s.url ? urlHelperPort.validateUrl(s.url) : "";
+      {programs?.map(p => {
+        const validUrl = p.url ? urlHelperPort.validateUrl(p.url) : "";
         return (
           <Tag
-            key={s.id}
+            key={p.id}
             as={validUrl ? BaseLink : "span"}
             htmlProps={{ href: validUrl }}
-            avatar={{ src: s.logoUrl, alt: s.name }}
+            avatar={{ src: p.logoUrl, alt: p.name }}
             style={"outline"}
             color={"white"}
             size={"s"}
           >
-            {s.name}
+            {p.name}
           </Tag>
         );
       })}
@@ -109,10 +111,10 @@ export function ProjectInfos({ project }: TProjectInfos.Props) {
       <div className={"flex flex-wrap gap-4"}>
         {renderLeaders}
         {renderContributors}
-        {project?.sponsors?.length ? (
+        {project?.programs?.length ? (
           <div className={"grid gap-1"}>
-            <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.features.projectSideOverview.sponsors" }} />
-            <Sponsors sponsors={project.sponsors} />
+            <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.features.projectSideOverview.programs" }} />
+            <Programs programs={project.programs} />
           </div>
         ) : null}
       </div>

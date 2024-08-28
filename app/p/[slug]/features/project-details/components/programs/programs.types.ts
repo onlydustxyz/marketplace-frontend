@@ -1,7 +1,7 @@
 import { UseGetProjectBySlugResponse } from "src/api/Project/queries";
 
-export namespace TSponsorButton {
+export namespace TPrograms {
   export interface Props {
-    project: UseGetProjectBySlugResponse;
+    programs?: UseGetProjectBySlugResponse["programs"];
   }
 }
