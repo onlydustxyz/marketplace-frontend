@@ -11,6 +11,7 @@ import { MaintainerCommitteeApplicationCreated } from "core/domain/notification/
 
 import { GlobalBillingProfileVerificationClosed } from "./notifications/global-billing-profile-verification-closed";
 import { GlobalBillingProfileVerificationRejected } from "./notifications/global-billing-profile-verification-rejected";
+import {ContributorProjectApplicationRefused} from "./notifications/contributor-project-application-refused";
 
 export class NotificationFactory {
   static createNotification(notificationResponse: NotificationResponse): NotificationInterface {
@@ -37,6 +38,8 @@ export class NotificationFactory {
         return new GlobalBillingProfileVerificationClosed(notification);
       case "GLOBAL_BILLING_PROFILE_VERIFICATION_REJECTED":
         return new GlobalBillingProfileVerificationRejected(notification);
+      case "CONTRIBUTOR_PROJECT_APPLICATION_REFUSED":
+        return new ContributorProjectApplicationRefused(notification);
     }
   }
 }
