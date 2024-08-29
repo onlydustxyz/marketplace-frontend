@@ -33,7 +33,7 @@ export function ProjectSideOverview({ isLive }: TProjectSideOverview.Props) {
 
   useEffect(() => {
     if (projectId) {
-      capture("project_viewed", { id_project: projectId, type: "hackathon" });
+      capture("project_viewed", { id_project: projectId, project_id: projectId, type: "hackathon" });
     }
   }, [projectId]);
 
