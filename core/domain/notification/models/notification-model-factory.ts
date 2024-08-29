@@ -1,17 +1,26 @@
-import { Notification } from "core/domain/notification/models/notification-model";
-import { NotificationInterface, NotificationResponse } from "core/domain/notification/models/notification.types";
-import { ContributorInvoiceRejected } from "core/domain/notification/models/notifications/contributor-invoice-rejected";
-import { ContributorProjectApplicationAccepted } from "core/domain/notification/models/notifications/contributor-project-application-accepted";
-import { ContributorRewardCanceled } from "core/domain/notification/models/notifications/contributor-reward-canceled";
-import { ContributorRewardPaid } from "core/domain/notification/models/notifications/contributor-reward-paid";
-import { ContributorRewardReceived } from "core/domain/notification/models/notifications/contributor-reward-received";
-import { GlobalBillingProfileReminder } from "core/domain/notification/models/notifications/global-billing-profile-reminder";
-import { MaintainerApplicationToReview } from "core/domain/notification/models/notifications/maintainer-application-to-review";
-import { MaintainerCommitteeApplicationCreated } from "core/domain/notification/models/notifications/maintainer-commitee-application-created";
+import {Notification} from "core/domain/notification/models/notification-model";
+import {NotificationInterface, NotificationResponse} from "core/domain/notification/models/notification.types";
+import {ContributorInvoiceRejected} from "core/domain/notification/models/notifications/contributor-invoice-rejected";
+import {
+  ContributorProjectApplicationAccepted
+} from "core/domain/notification/models/notifications/contributor-project-application-accepted";
+import {ContributorRewardCanceled} from "core/domain/notification/models/notifications/contributor-reward-canceled";
+import {ContributorRewardPaid} from "core/domain/notification/models/notifications/contributor-reward-paid";
+import {ContributorRewardReceived} from "core/domain/notification/models/notifications/contributor-reward-received";
+import {
+  GlobalBillingProfileReminder
+} from "core/domain/notification/models/notifications/global-billing-profile-reminder";
+import {
+  MaintainerApplicationToReview
+} from "core/domain/notification/models/notifications/maintainer-application-to-review";
+import {
+  MaintainerCommitteeApplicationCreated
+} from "core/domain/notification/models/notifications/maintainer-commitee-application-created";
 
-import { GlobalBillingProfileVerificationClosed } from "./notifications/global-billing-profile-verification-closed";
-import { GlobalBillingProfileVerificationRejected } from "./notifications/global-billing-profile-verification-rejected";
+import {GlobalBillingProfileVerificationClosed} from "./notifications/global-billing-profile-verification-closed";
+import {GlobalBillingProfileVerificationRejected} from "./notifications/global-billing-profile-verification-rejected";
 import {ContributorProjectApplicationRefused} from "./notifications/contributor-project-application-refused";
+import {ContributorProjectGoodFirstIssueCreated} from "./notifications/contributor-project-good-first-issue-created";
 
 export class NotificationFactory {
   static createNotification(notificationResponse: NotificationResponse): NotificationInterface {
@@ -40,6 +49,8 @@ export class NotificationFactory {
         return new GlobalBillingProfileVerificationRejected(notification);
       case "CONTRIBUTOR_PROJECT_APPLICATION_REFUSED":
         return new ContributorProjectApplicationRefused(notification);
+      case "CONTRIBUTOR_PROJECT_GOOD_FIRST_ISSUE_CREATED":
+        return new ContributorProjectGoodFirstIssueCreated(notification)
     }
   }
 }
