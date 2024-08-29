@@ -21,6 +21,9 @@ export function ProjectList() {
       languages: filters.values.languages.map(({ label }) => label),
       ecosystems: filters.values.ecosystems.map(({ label }) => label),
       tags: filters.values.tags,
+      categories: filters.values.categories.map(({ label }) => label),
+      sorting: filters.values.sorting,
+      hasGoodFirstIssues: filters.values.hasGoodFirstIssues,
     });
   }, [filters]);
 
