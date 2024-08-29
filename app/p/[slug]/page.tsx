@@ -76,7 +76,12 @@ function ProjectPage() {
 
   useEffect(() => {
     if (project) {
-      capture("project_viewed", { id_project: project.id, type: "full", issues: project.goodFirstIssueCount });
+      capture("project_viewed", {
+        id_project: project.id,
+        project_id: project.id,
+        type: "full",
+        issues: project.goodFirstIssueCount,
+      });
     }
   }, [project]);
 

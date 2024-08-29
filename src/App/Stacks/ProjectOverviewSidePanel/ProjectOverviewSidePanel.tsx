@@ -24,7 +24,12 @@ export const ProjectOverviewSidePanel = ({ slug }: Props) => {
 
   useEffect(() => {
     if (project) {
-      capture("project_viewed", { id_project: project.id, type: "panel", issues: project.goodFirstIssueCount });
+      capture("project_viewed", {
+        id_project: project.id,
+        project_id: project.id,
+        type: "panel",
+        issues: project.goodFirstIssueCount,
+      });
     }
   }, [project]);
 
