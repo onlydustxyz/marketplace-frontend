@@ -6,10 +6,10 @@ import { components } from "src/__generated/api";
 
 import { NEXT_ROUTER } from "../../../../../constants/router";
 
-export class MaintainerApplicationToReview implements NotificationInterface {
-  data: components["schemas"]["NotificationMaintainerApplicationToReview"] | undefined;
+export class ContributorProjectGoodFirstIssueCreated implements NotificationInterface {
+  data: components["schemas"]["NotificationContributorProjectGoodFirstIssueCreated"] | undefined;
   constructor(private notification: Notification) {
-    this.data = notification.data.maintainerApplicationToReview;
+    this.data = notification.data.contributorProjectGoodFirstIssueCreated;
   }
 
   getId() {
@@ -29,15 +29,15 @@ export class MaintainerApplicationToReview implements NotificationInterface {
   }
 
   getTitle() {
-    return "New application";
+    return "Good first issue created";
   }
 
   getDescription() {
-    const { projectName, applicationLogin, issueName } = this.data || {};
-    return `${applicationLogin} applied to ${issueName} on ${projectName}`;
+    const { issueName, projectName } = this.data || {};
+    return `Good first issue ${issueName} created on project ${projectName}`;
   }
 
   getUrl() {
-    return NEXT_ROUTER.projects.details.applications.details(this.data!.projectSlug, this.data!.issueId.toString());
+    return NEXT_ROUTER.projects.details.root(this.data!.projectSlug);
   }
 }
