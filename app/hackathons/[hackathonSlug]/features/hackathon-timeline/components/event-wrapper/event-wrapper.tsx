@@ -68,7 +68,7 @@ export function EventWrapper({ event, index }: TEventWrapper.Props) {
             weight={"medium"}
             classNames={{ base: cn({ "text-text-2 font-regular": isPast }) }}
           >
-            {dateService.format(startDate, "MMMM d, yyyy")}
+            {dateService.formatInEuropeTimeZone(startDate, "MMMM d, yyyy")}
           </Typo>
         </div>
         <div className="flex flex-1 justify-end">
