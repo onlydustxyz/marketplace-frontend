@@ -10,7 +10,6 @@ import { StacksParams } from "src/libs/react-stack/types/Stack";
 import { TBillingCreateStack } from "components/features/stacks/billing-create-stack/billing-create-stack.types";
 import { TBillingInviteTeamMember } from "components/features/stacks/billing-invite-team-member/billing-invite-team-member.types";
 import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks.types";
-import { TSponsorProjectStack } from "components/features/stacks/sponsor-project-stack/sponsor-project-stack.types";
 import { BaseLink } from "components/layout/base-link/base-link";
 
 import { NEXT_ROUTER } from "constants/router";
@@ -30,7 +29,6 @@ export enum StackRoute {
   Feedback = "feedback",
   BillingInviteTeamMember = "billing-invite-team-member",
   MandateDetail = "mandate-detail",
-  SponsorProject = "sponsor-project",
 }
 export interface StackRouterParams {
   ProjectOverview: {
@@ -55,12 +53,7 @@ export interface StackRouterParams {
     projectSlug: string;
   };
   Verify: TVerifySidePanel.Props;
-  SponsorProject: TSponsorProjectStack.Props;
 }
-
-export const useStackSponsorProject = () => {
-  return useStackNavigation<TSponsorProjectStack.Props>(StackRoute.SponsorProject);
-};
 
 export const useStackMandate = () => {
   return useStackNavigation(StackRoute.MandateDetail);

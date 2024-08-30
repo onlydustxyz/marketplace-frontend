@@ -25,7 +25,7 @@ export function Filter({ ecosystems, value, onChange }: TFilter.Props) {
 
   const selectedEcosystem = useMemo(() => _ecosystems.find(s => s.value === value), [_ecosystems, value]);
 
-  function handleSponsorChange(keys: Selection) {
+  function handleProgramChange(keys: Selection) {
     const [ecosystemId] = keys;
 
     if (ecosystemId === "") {
@@ -44,7 +44,7 @@ export function Filter({ ecosystems, value, onChange }: TFilter.Props) {
       disabledKeys={[value ?? ""]}
       startContent={selectedEcosystem?.startContent}
       items={_ecosystems}
-      onSelectionChange={handleSponsorChange}
+      onSelectionChange={handleProgramChange}
       classNames={{
         base: "w-full sm:w-[250px]",
       }}

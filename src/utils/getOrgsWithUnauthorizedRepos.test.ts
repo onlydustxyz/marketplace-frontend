@@ -77,7 +77,7 @@ const mockProject: Parameters<typeof getOrgsWithUnauthorizedRepos>[0] = {
     },
   ],
   invitedLeaders: [],
-  sponsors: [],
+  programs: [],
   languages: [
     {
       id: "123",

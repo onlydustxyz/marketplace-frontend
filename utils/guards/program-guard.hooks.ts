@@ -2,10 +2,10 @@ import { useMemo } from "react";
 
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
-export function useSponsorGuard() {
+export function useProgramGuard() {
   const { user, ...rest } = useCurrentUser();
 
-  const sponsors = useMemo(() => user?.sponsors ?? [], [user]);
+  const programs = useMemo(() => user?.programs ?? [], [user]);
 
-  return { sponsors, ...rest };
+  return { programs, ...rest };
 }

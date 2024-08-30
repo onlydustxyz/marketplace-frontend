@@ -1,43 +1,43 @@
 import { Fragment } from "react";
 
+import { TPrograms } from "app/p/[slug]/features/project-details/components/programs/programs.types";
+import { Section } from "app/p/[slug]/features/project-details/components/section/section";
+
 import { Avatar } from "components/ds/avatar/avatar";
 import { Link } from "components/ds/link/link";
 import { Flex } from "components/layout/flex/flex";
 import { Typography } from "components/layout/typography/typography";
 
-import { Section } from "../section/section";
-import { TSponsors } from "./sponsors.types";
-
-export function Sponsors({ sponsors }: TSponsors.Props) {
-  if (!sponsors?.length) {
+export function Programs({ programs }: TPrograms.Props) {
+  if (!programs?.length) {
     return null;
   }
 
   return (
     <Section
       title={{
-        token: "v2.pages.project.overview.projectDetails.sponsors",
-        params: { count: sponsors.length },
+        token: "v2.pages.project.overview.projectDetails.programs",
+        params: { count: programs.length },
       }}
       remixIconName="ri-service-line"
     >
       <Flex wrap="wrap" className="gap-3">
-        {sponsors.map(sponsor => (
-          <Fragment key={sponsor.id}>
-            {sponsor.url ? (
-              <Link href={sponsor.url} className="gap-2">
-                <Avatar src={sponsor.logoUrl} alt={sponsor.name} size="s" />
+        {programs.map(program => (
+          <Fragment key={program.id}>
+            {program.url ? (
+              <Link href={program.url} className="gap-2">
+                <Avatar src={program.logoUrl} alt={program.name} size="s" />
 
                 <Typography variant="body-s" className="truncate">
-                  {sponsor.name}
+                  {program.name}
                 </Typography>
               </Link>
             ) : (
               <Flex alignItems="center" className="gap-2">
-                <Avatar src={sponsor.logoUrl} alt={sponsor.name} size="s" />
+                <Avatar src={program.logoUrl} alt={program.name} size="s" />
 
                 <Typography variant="body-s" className="truncate">
-                  {sponsor.name}
+                  {program.name}
                 </Typography>
               </Flex>
             )}

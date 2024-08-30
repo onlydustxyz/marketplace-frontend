@@ -1,15 +1,15 @@
 import { useRouter } from "next/navigation";
 import { ComponentType, useEffect, useMemo } from "react";
-import { useSponsorGuard } from "utils/guards/sponsor-guard.hooks";
+import { useProgramGuard } from "utils/guards/program-guard.hooks";
 
 import { NEXT_ROUTER } from "constants/router";
 
-export const withSponsorGuard = <P extends object>(Component: ComponentType<P>) => {
-  return function SponsorGuard(props: P) {
+export const withProgramGuard = <P extends object>(Component: ComponentType<P>) => {
+  return function ProgramGuard(props: P) {
     const router = useRouter();
-    const { sponsors, isLoading, isRefetching } = useSponsorGuard();
+    const { programs, isLoading, isRefetching } = useProgramGuard();
 
-    const isAllowed = useMemo(() => sponsors.length > 0, [sponsors]);
+    const isAllowed = useMemo(() => programs.length > 0, [programs]);
 
     useEffect(() => {
       if (isLoading || isRefetching || isAllowed) return;
