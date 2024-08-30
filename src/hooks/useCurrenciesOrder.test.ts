@@ -15,6 +15,8 @@ describe("useCurrenciesOrder", () => {
       { currency: Money.fromSchema({ code: "OP" }) },
       { currency: Money.fromSchema({ code: "LORDS" }) },
       { currency: Money.fromSchema({ code: "USDC" }) },
+      { currency: Money.fromSchema({ code: "WLD" }) },
+      { currency: Money.fromSchema({ code: "XLM" }) },
     ];
 
     const { result } = renderHook(() => useCurrenciesOrder({ currencies }));

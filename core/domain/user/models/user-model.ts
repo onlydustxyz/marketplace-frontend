@@ -23,6 +23,7 @@ export class User implements UserInterface {
   pendingProjectsLed!: UserResponse["pendingProjectsLed"];
   projectsLed!: UserResponse["projectsLed"];
   sponsors!: UserResponse["sponsors"];
+  programs!: UserResponse["programs"];
 
   constructor(props: UserResponse) {
     Object.assign(this, props);

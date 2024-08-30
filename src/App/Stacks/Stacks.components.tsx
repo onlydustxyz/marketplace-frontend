@@ -8,7 +8,6 @@ import { RegisterStack } from "src/libs/react-stack";
 import { TBillingCreateStack } from "components/features/stacks/billing-create-stack/billing-create-stack.types";
 import { TBillingInviteTeamMember } from "components/features/stacks/billing-invite-team-member/billing-invite-team-member.types";
 import { TRequestPaymentsStacks } from "components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks.types";
-import { TSponsorProjectStack } from "components/features/stacks/sponsor-project-stack/sponsor-project-stack.types";
 
 const BillingCreateStack = dynamic(
   () =>
@@ -52,13 +51,6 @@ const RequestPaymentsStacks = dynamic(
   () =>
     import("components/features/stacks/payments-flow/request-payments-stacks/request-payments-stacks").then(
       res => res.RequestPaymentsStacks
-    ),
-  { ssr: false }
-);
-const SponsorProjectStack = dynamic(
-  () =>
-    import("components/features/stacks/sponsor-project-stack/sponsor-project-stack").then(
-      res => res.SponsorProjectStack
     ),
   { ssr: false }
 );
@@ -115,9 +107,6 @@ export const Stacks = () => {
         {({ params }) => <BillingInviteTeamMember {...params} />}
       </RegisterStack>
       <RegisterStack name={StackRoute.MandateDetail}>{() => <MandateDetailStack />}</RegisterStack>
-      <RegisterStack<TSponsorProjectStack.Props> name={StackRoute.SponsorProject}>
-        {({ params }) => <SponsorProjectStack {...params} />}
-      </RegisterStack>
     </>
   );
 };

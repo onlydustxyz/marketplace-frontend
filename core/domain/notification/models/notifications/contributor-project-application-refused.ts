@@ -6,10 +6,10 @@ import { components } from "src/__generated/api";
 
 import { NEXT_ROUTER } from "../../../../../constants/router";
 
-export class MaintainerApplicationToReview implements NotificationInterface {
-  data: components["schemas"]["NotificationMaintainerApplicationToReview"] | undefined;
+export class ContributorProjectApplicationRefused implements NotificationInterface {
+  data: components["schemas"]["NotificationContributorProjectApplicationRefused"] | undefined;
   constructor(private notification: Notification) {
-    this.data = notification.data.maintainerApplicationToReview;
+    this.data = notification.data.contributorProjectApplicationRefused;
   }
 
   getId() {
@@ -29,15 +29,15 @@ export class MaintainerApplicationToReview implements NotificationInterface {
   }
 
   getTitle() {
-    return "New application";
+    return "Your application has been refused";
   }
 
   getDescription() {
-    const { projectName, applicationLogin, issueName } = this.data || {};
-    return `${applicationLogin} applied to ${issueName} on ${projectName}`;
+    const { issueName } = this.data || {};
+    return `Your application for ${issueName} has been refused`;
   }
 
   getUrl() {
-    return NEXT_ROUTER.projects.details.applications.details(this.data!.projectSlug, this.data!.issueId.toString());
+    return NEXT_ROUTER.applications.all;
   }
 }

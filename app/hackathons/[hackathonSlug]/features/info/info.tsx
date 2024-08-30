@@ -47,7 +47,7 @@ function Sponsors({ sponsors }: { sponsors: TInfo.Sponsor[] }) {
     return (
       <InfoDropdown
         targetLabel={
-          <Translate token={"v2.pages.hackathons.details.info.countSponsors"} params={{ count: sponsors.length }} />
+          <Translate token={"v2.pages.hackathons.details.info.countPrograms"} params={{ count: sponsors.length }} />
         }
         dropdownTitleToken={"v2.pages.hackathons.details.info.sponsors"}
         links={sponsors}
