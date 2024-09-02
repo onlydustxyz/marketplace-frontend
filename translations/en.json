@@ -1038,9 +1038,9 @@
           "title": "Repositories",
           "add": "Add repository"
         },
-        "sponsors": {
-          "many": "Sponsors",
-          "one": "Sponsor"
+        "programs": {
+          "many": "Programs",
+          "one": "Program"
         },
         "ecosystems": {
           "many": "Ecosystems",

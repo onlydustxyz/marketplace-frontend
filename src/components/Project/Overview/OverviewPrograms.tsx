@@ -31,9 +31,9 @@ export const ProjectOverviewPrograms = ({ programs }: ProjectOverviewProgramsPro
 
   return programs?.length ? (
     <Section
-      testId="sponsors"
+      testId="programs"
       icon={SectionIcon.Service}
-      title={T("project.details.overview.sponsors", { count: programs?.length || 0 })}
+      title={T("project.details.overview.programs", { count: programs?.length || 0 })}
     >
       <div data-testid="sponsors" className="flex flex-row flex-wrap gap-3">
         {programs.map(program => (
