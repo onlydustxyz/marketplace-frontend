@@ -17,7 +17,8 @@ export function NotificationSettings() {
   function getAllCategories() {
     if (!notifications) return [];
     return [
-      UserNotificationCategories.KYC_KYB_BILLING_PROFILE,
+      UserNotificationCategories.GLOBAL_BILLING_PROFILE,
+      UserNotificationCategories.GLOBAL_MARKETING,
       UserNotificationCategories.CONTRIBUTOR_PROJECT,
       UserNotificationCategories.CONTRIBUTOR_REWARD,
       UserNotificationCategories.MAINTAINER_PROJECT_CONTRIBUTOR,
@@ -78,13 +79,35 @@ export function NotificationSettings() {
               switch: [
                 <Controller
                   key={"email"}
-                  name={`notifications.${UserNotificationCategories.KYC_KYB_BILLING_PROFILE}.EMAIL`}
+                  name={`notifications.${UserNotificationCategories.GLOBAL_BILLING_PROFILE}.EMAIL`}
                   control={control}
                   render={({ field }) => <NotificationSwitch {...field} />}
                 />,
                 <Controller
                   key={"summary"}
-                  name={`notifications.${UserNotificationCategories.KYC_KYB_BILLING_PROFILE}.SUMMARY_EMAIL`}
+                  name={`notifications.${UserNotificationCategories.GLOBAL_BILLING_PROFILE}.SUMMARY_EMAIL`}
+                  control={control}
+                  render={({ field }) => <NotificationSwitch {...field} />}
+                />,
+              ],
+            },
+            {
+              label: {
+                token: "v2.pages.settings.profile.notificationSettings.notifications.global.marketing.label",
+              },
+              content: {
+                token: "v2.pages.settings.profile.notificationSettings.notifications.global.marketing.content",
+              },
+              switch: [
+                <Controller
+                  key={"email"}
+                  name={`notifications.${UserNotificationCategories.GLOBAL_MARKETING}.EMAIL`}
+                  control={control}
+                  render={({ field }) => <NotificationSwitch {...field} />}
+                />,
+                <Controller
+                  key={"summary"}
+                  name={`notifications.${UserNotificationCategories.GLOBAL_MARKETING}.SUMMARY_EMAIL`}
                   control={control}
                   render={({ field }) => <NotificationSwitch {...field} />}
                 />,
