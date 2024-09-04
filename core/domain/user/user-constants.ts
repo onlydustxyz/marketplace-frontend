@@ -15,7 +15,8 @@ export const UserNotificationCategories: { [key in categories]: key } = {
   MAINTAINER_PROJECT_PROGRAM: "MAINTAINER_PROJECT_PROGRAM",
   CONTRIBUTOR_REWARD: "CONTRIBUTOR_REWARD",
   CONTRIBUTOR_PROJECT: "CONTRIBUTOR_PROJECT",
-  KYC_KYB_BILLING_PROFILE: "KYC_KYB_BILLING_PROFILE",
+  GLOBAL_BILLING_PROFILE: "GLOBAL_BILLING_PROFILE",
+  GLOBAL_MARKETING: "GLOBAL_MARKETING",
 };
 
 type channels = components["schemas"]["NotificationSettingResponse"]["channels"][0];
