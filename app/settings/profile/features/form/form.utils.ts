@@ -75,6 +75,8 @@ export function formatToData(
       CONTRIBUTOR_PROJECT: notificationSettings.findCategory("CONTRIBUTOR_PROJECT"),
       GLOBAL_BILLING_PROFILE: notificationSettings.findCategory("GLOBAL_BILLING_PROFILE"),
       GLOBAL_MARKETING: notificationSettings.findCategory("GLOBAL_MARKETING"),
+      SPONSOR_LEAD: notificationSettings.findCategory("SPONSOR_LEAD"),
+      PROGRAM_LEAD: notificationSettings.findCategory("PROGRAM_LEAD"),
     },
   };
 }
@@ -120,6 +122,14 @@ export function formatSettingsToSchema(data: Pick<TProfileForm.Data, "notificati
         {
           category: UserNotificationCategories.GLOBAL_MARKETING,
           channels: findChannel(data.notifications.GLOBAL_MARKETING),
+        },
+        {
+          category: UserNotificationCategories.PROGRAM_LEAD,
+          channels: findChannel(data.notifications.PROGRAM_LEAD),
+        },
+        {
+          category: UserNotificationCategories.SPONSOR_LEAD,
+          channels: findChannel(data.notifications.SPONSOR_LEAD),
         },
       ].filter(({ channels }) => channels.length > 0) as SetMyNotificationSettingsBody["notificationSettings"],
     };

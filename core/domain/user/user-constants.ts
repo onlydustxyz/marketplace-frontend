@@ -17,6 +17,8 @@ export const UserNotificationCategories: { [key in categories]: key } = {
   CONTRIBUTOR_PROJECT: "CONTRIBUTOR_PROJECT",
   GLOBAL_BILLING_PROFILE: "GLOBAL_BILLING_PROFILE",
   GLOBAL_MARKETING: "GLOBAL_MARKETING",
+  PROGRAM_LEAD: "PROGRAM_LEAD",
+  SPONSOR_LEAD: "SPONSOR_LEAD",
 };
 
 type channels = components["schemas"]["NotificationSettingResponse"]["channels"][0];
