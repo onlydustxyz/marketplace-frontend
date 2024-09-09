@@ -1437,7 +1437,7 @@
       "NAME": "Project name",
       "REPO_COUNT": "Number of repositories",
       "CONTRIBUTOR_COUNT": "Number of contributors",
-      "RANK": "Trending projects"
+      "RANK": "Recommendations"
     },
     "tags": {
       "tooltips": {
