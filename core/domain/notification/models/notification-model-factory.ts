@@ -21,6 +21,10 @@ import {GlobalBillingProfileVerificationClosed} from "./notifications/global-bil
 import {GlobalBillingProfileVerificationRejected} from "./notifications/global-billing-profile-verification-rejected";
 import {ContributorProjectApplicationRefused} from "./notifications/contributor-project-application-refused";
 import {ContributorProjectGoodFirstIssueCreated} from "./notifications/contributor-project-good-first-issue-created";
+import {ProgramLeadFundsAllocatedToProgram} from "./notifications/program-lead-funds-allocated-to-program";
+import {SponsorLeadDepositApproved} from "./notifications/sponsor-lead-deposit-approved";
+import {SponsorLeadDepositRejected} from "./notifications/sponsor-lead-deposit-rejected";
+import {SponsorLeadFundsUnallocatedFromProgram} from "./notifications/sponsor-lead-funds-unallocated-from-program";
 
 export class NotificationFactory {
   static createNotification(notificationResponse: NotificationResponse): NotificationInterface {
@@ -50,7 +54,15 @@ export class NotificationFactory {
       case "CONTRIBUTOR_PROJECT_APPLICATION_REFUSED":
         return new ContributorProjectApplicationRefused(notification);
       case "CONTRIBUTOR_PROJECT_GOOD_FIRST_ISSUE_CREATED":
-        return new ContributorProjectGoodFirstIssueCreated(notification)
+        return new ContributorProjectGoodFirstIssueCreated(notification);
+      case "PROGRAM_LEAD_FUNDS_ALLOCATED_TO_PROGRAM":
+        return new ProgramLeadFundsAllocatedToProgram(notification);
+      case "SPONSOR_LEAD_DEPOSIT_APPROVED":
+        return new SponsorLeadDepositApproved(notification);
+      case "SPONSOR_LEAD_DEPOSIT_REJECTED":
+        return new SponsorLeadDepositRejected(notification);
+      case "SPONSOR_LEAD_FUNDS_UNALLOCATED_FROM_PROGRAM":
+        return new SponsorLeadFundsUnallocatedFromProgram(notification);
     }
   }
 }
