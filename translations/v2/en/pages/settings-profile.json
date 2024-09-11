@@ -32,6 +32,20 @@
           "content": "Get alerts about upcoming events and community calls by joining the marketing list."
         }
       },
+      "programs": {
+        "title": "Global",
+        "transactions": {
+          "label": "Transactions",
+          "content": "Receive notifications about allocations & granted"
+        }
+      },
+      "sponsors": {
+        "title": "Sponsors",
+        "transactions": {
+          "label": "Transactions",
+          "content": "Receive notifications about deposit & allocations"
+        }
+      },
       "contributor": {
         "title": "Contributor",
         "project": {
