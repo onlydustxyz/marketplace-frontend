@@ -1,8 +1,8 @@
-import {Notification} from "core/domain/notification/models/notification-model";
-import {NotificationInterface} from "core/domain/notification/models/notification.types";
-import {NotificationStatus} from "core/domain/notification/notification-constants";
+import { Notification } from "core/domain/notification/models/notification-model";
+import { NotificationInterface } from "core/domain/notification/models/notification.types";
+import { NotificationStatus } from "core/domain/notification/notification-constants";
 
-import {components} from "src/__generated/api";
+import { components } from "src/__generated/api";
 
 export class SponsorLeadDepositRejected implements NotificationInterface {
   data: components["schemas"]["NotificationSponsorLeadDepositRejected"] | undefined;
@@ -32,7 +32,7 @@ export class SponsorLeadDepositRejected implements NotificationInterface {
   }
 
   getDescription() {
-    return `Your deposit ${this.data?.currencyCode} ${this.data?.amount} from ${this.data?.timestamp} was rejected. Please check the details and try again.`;
+    return `Your deposit ${this.data?.amount} ${this.data?.currencyCode} from ${this.data?.timestamp} was rejected. Please check the details and try again.`;
   }
 
   getUrl() {
