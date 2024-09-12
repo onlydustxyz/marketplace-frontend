@@ -23,6 +23,8 @@ export function NotificationSettings() {
       UserNotificationCategories.CONTRIBUTOR_REWARD,
       UserNotificationCategories.MAINTAINER_PROJECT_CONTRIBUTOR,
       UserNotificationCategories.MAINTAINER_PROJECT_PROGRAM,
+      UserNotificationCategories.SPONSOR_LEAD,
+      UserNotificationCategories.PROGRAM_LEAD,
     ];
   }
   function isChannelEnabled(channel: UserNotificationSettingsChannelType) {
@@ -208,6 +210,62 @@ export function NotificationSettings() {
                 <Controller
                   key={"summary"}
                   name={`notifications.${UserNotificationCategories.MAINTAINER_PROJECT_PROGRAM}.SUMMARY_EMAIL`}
+                  control={control}
+                  render={({ field }) => <NotificationSwitch {...field} />}
+                />,
+              ],
+            },
+          ]}
+        />
+
+        <NotificationSettingsItem
+          title={{ token: "v2.pages.settings.profile.notificationSettings.notifications.programs.title" }}
+          items={[
+            {
+              label: {
+                token: "v2.pages.settings.profile.notificationSettings.notifications.programs.transactions.label",
+              },
+              content: {
+                token: "v2.pages.settings.profile.notificationSettings.notifications.programs.transactions.content",
+              },
+              switch: [
+                <Controller
+                  key={"email"}
+                  name={`notifications.${UserNotificationCategories.PROGRAM_LEAD}.EMAIL`}
+                  control={control}
+                  render={({ field }) => <NotificationSwitch {...field} />}
+                />,
+                <Controller
+                  key={"summary"}
+                  name={`notifications.${UserNotificationCategories.PROGRAM_LEAD}.SUMMARY_EMAIL`}
+                  control={control}
+                  render={({ field }) => <NotificationSwitch {...field} />}
+                />,
+              ],
+            },
+          ]}
+        />
+
+        <NotificationSettingsItem
+          title={{ token: "v2.pages.settings.profile.notificationSettings.notifications.sponsors.title" }}
+          items={[
+            {
+              label: {
+                token: "v2.pages.settings.profile.notificationSettings.notifications.sponsors.transactions.label",
+              },
+              content: {
+                token: "v2.pages.settings.profile.notificationSettings.notifications.sponsors.transactions.content",
+              },
+              switch: [
+                <Controller
+                  key={"email"}
+                  name={`notifications.${UserNotificationCategories.SPONSOR_LEAD}.EMAIL`}
+                  control={control}
+                  render={({ field }) => <NotificationSwitch {...field} />}
+                />,
+                <Controller
+                  key={"summary"}
+                  name={`notifications.${UserNotificationCategories.SPONSOR_LEAD}.SUMMARY_EMAIL`}
                   control={control}
                   render={({ field }) => <NotificationSwitch {...field} />}
                 />,
