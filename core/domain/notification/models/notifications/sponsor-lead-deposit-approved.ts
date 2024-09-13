@@ -1,8 +1,8 @@
-import {Notification} from "core/domain/notification/models/notification-model";
-import {NotificationInterface} from "core/domain/notification/models/notification.types";
-import {NotificationStatus} from "core/domain/notification/notification-constants";
+import { Notification } from "core/domain/notification/models/notification-model";
+import { NotificationInterface } from "core/domain/notification/models/notification.types";
+import { NotificationStatus } from "core/domain/notification/notification-constants";
 
-import {components} from "src/__generated/api";
+import { components } from "src/__generated/api";
 
 export class SponsorLeadDepositApproved implements NotificationInterface {
   data: components["schemas"]["NotificationSponsorLeadDepositApproved"] | undefined;
@@ -32,7 +32,7 @@ export class SponsorLeadDepositApproved implements NotificationInterface {
   }
 
   getDescription() {
-    return `Your deposit ${this.data?.currencyCode} ${this.data?.amount} from ${this.data?.timestamp} was approved. Funds are now available for allocations.`;
+    return `Your deposit ${this.data?.amount} ${this.data?.currencyCode} from ${this.data?.timestamp} was approved. Funds are now available for allocations.`;
   }
 
   getUrl() {
