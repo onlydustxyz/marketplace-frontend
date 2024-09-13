@@ -1,8 +1,8 @@
-import {Notification} from "core/domain/notification/models/notification-model";
-import {NotificationInterface} from "core/domain/notification/models/notification.types";
-import {NotificationStatus} from "core/domain/notification/notification-constants";
+import { Notification } from "core/domain/notification/models/notification-model";
+import { NotificationInterface } from "core/domain/notification/models/notification.types";
+import { NotificationStatus } from "core/domain/notification/notification-constants";
 
-import {components} from "src/__generated/api";
+import { components } from "src/__generated/api";
 
 export class ProgramLeadFundsAllocatedToProgram implements NotificationInterface {
   data: components["schemas"]["NotificationProgramLeadFundsAllocatedToProgram"] | undefined;
@@ -32,7 +32,7 @@ export class ProgramLeadFundsAllocatedToProgram implements NotificationInterface
   }
 
   getDescription() {
-    return `You have received a new allocation from ${this.data?.sponsor.name}: ${this.data?.currencyCode} ${this.data?.amount}.`;
+    return `You have received a new allocation from ${this.data?.sponsor.name}: ${this.data?.amount} ${this.data?.currencyCode}.`;
   }
 
   getUrl() {
