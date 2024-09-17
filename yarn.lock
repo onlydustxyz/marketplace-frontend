@@ -1554,17 +1554,17 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
-"@datadog/browser-core@4.45.0":
-  version "4.45.0"
-  resolved "https://registry.yarnpkg.com/@datadog/browser-core/-/browser-core-4.45.0.tgz#fe6ed4d2df6680746adc8ef9ec07636778de5f9c"
-  integrity sha512-w0zlk5xiZsg+1XCU5PvI9tymnGhe35j0tLWMgcuwgulKfcUHfXZlYX1NRxWrgRvpFosAi/xwY8viNA6LLSYowQ==
+"@datadog/browser-core@5.26.0":
+  version "5.26.0"
+  resolved "https://registry.yarnpkg.com/@datadog/browser-core/-/browser-core-5.26.0.tgz#5ff355b2eacef7ea3d81ad325ca11266cb603dbb"
+  integrity sha512-/UAS6q7xkc9bsjn5ziPC6PDs3B0Fyd+4PM/hxmXIvOxMFkJa1KmgWcqlkxq3i7TW/i2k2tOgtgTFUtjp4SyEmg==
 
-"@datadog/browser-logs@^4.16.1":
-  version "4.45.0"
-  resolved "https://registry.yarnpkg.com/@datadog/browser-logs/-/browser-logs-4.45.0.tgz#ce137a5f8453fa4043b7dfb8208f7f78701dfce4"
-  integrity sha512-EZp2L1skwyMJzu1GqYHwLJKQm4cdJrKk0oObqmyBqOBcOOQjAykMo9+Jxvo/l1HyogFhDhcJjYd8zPrqfQ1dFQ==
+"@datadog/browser-logs@^5.26.0":
+  version "5.26.0"
+  resolved "https://registry.yarnpkg.com/@datadog/browser-logs/-/browser-logs-5.26.0.tgz#e726e0ce3fa9a8d7b4cb3b9d43de136c39d4cd04"
+  integrity sha512-udyBI3+XoqN2zbTEGZjig1rfk5phwwkvb3W2Fqd4JWZiTrlct/bJ2BNV6yrzaSLtTHabOaoebaQCQ87jcq+XpA==
   dependencies:
-    "@datadog/browser-core" "4.45.0"
+    "@datadog/browser-core" "5.26.0"
 
 "@datadog/datadog-ci@^2.4.0":
   version "2.4.0"
