@@ -59,6 +59,14 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
         // No need to show onboarding if impersonating a user
         isImpersonating
       ) {
+        console.error("OnboardingProvider: Could not determine onboarding state", {
+          isAuthenticated,
+          userOnboarding,
+          isLoadingUserOnboarding,
+          userProfile,
+          isLoadingUserProfile,
+          isImpersonating,
+        });
         return;
       }
 

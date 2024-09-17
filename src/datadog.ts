@@ -1,3 +1,5 @@
+"use client";
+
 import { datadogLogs } from "@datadog/browser-logs";
 
 if (process.env.NEXT_PUBLIC_ENV && process.env.NEXT_PUBLIC_ENABLE_DATADOG_LOG === "true") {
@@ -8,6 +10,7 @@ if (process.env.NEXT_PUBLIC_ENV && process.env.NEXT_PUBLIC_ENABLE_DATADOG_LOG ==
     env: process.env.NEXT_PUBLIC_ENV,
     version: process.env.APP_COMMIT_HASH,
     forwardErrorsToLogs: true,
+    forwardConsoleLogs: ["error"],
     proxy: process.env.NEXT_PUBLIC_DATADOG_INTAKE_PROXY_URL,
   });
 }
