@@ -42,38 +42,6 @@ function Links({ links }: { links: TInfo.Link[] }) {
   );
 }
 
-function Sponsors({ sponsors }: { sponsors: TInfo.Sponsor[] }) {
-  if (sponsors.length > 2) {
-    return (
-      <InfoDropdown
-        targetLabel={
-          <Translate token={"v2.pages.hackathons.details.info.countPrograms"} params={{ count: sponsors.length }} />
-        }
-        dropdownTitleToken={"v2.pages.hackathons.details.info.sponsors"}
-        links={sponsors}
-      />
-    );
-  }
-
-  return (
-    <div className={"flex flex-wrap gap-2"}>
-      {sponsors.map(s => (
-        <Tag
-          key={s.id}
-          as={s.url ? BaseLink : "span"}
-          htmlProps={{ href: s.url ?? "" }}
-          avatar={{ src: s.logoUrl, alt: s.name }}
-          style={"outline"}
-          color={"white"}
-          size={"s"}
-        >
-          {s.name}
-        </Tag>
-      ))}
-    </div>
-  );
-}
-
 export function Info({ hackathon }: TInfo.Props) {
   const isClosed = hackathon.getStatus() === "closed";
 
@@ -104,13 +72,6 @@ export function Info({ hackathon }: TInfo.Props) {
             <Tag style={"outline"} color={"white"} size={"s"} icon={{ remixName: "ri-coin-line" }}>
               {hackathon.totalBudget}
             </Tag>
-          </div>
-        ) : null}
-
-        {hackathon.sponsors.length ? (
-          <div className={"grid gap-1"}>
-            <Typo size={"xs"} color={"text-2"} translate={{ token: "v2.pages.hackathons.details.info.sponsors" }} />
-            <Sponsors sponsors={hackathon.sponsors} />
           </div>
         ) : null}
       </div>

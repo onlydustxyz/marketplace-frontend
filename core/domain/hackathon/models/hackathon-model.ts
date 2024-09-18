@@ -19,7 +19,6 @@ export class Hackathon extends HackathonList implements HackathonInterface {
   description!: HackathonsDetailsResponse["description"];
   links!: HackathonsDetailsResponse["links"];
   me!: HackathonsDetailsResponse["me"];
-  sponsors!: HackathonsDetailsResponse["sponsors"];
   totalBudget!: HackathonsDetailsResponse["totalBudget"];
   events!: HackathonEventInterface[];
 
