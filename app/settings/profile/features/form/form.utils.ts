@@ -73,7 +73,10 @@ export function formatToData(
       MAINTAINER_PROJECT_PROGRAM: notificationSettings.findCategory("MAINTAINER_PROJECT_PROGRAM"),
       CONTRIBUTOR_REWARD: notificationSettings.findCategory("CONTRIBUTOR_REWARD"),
       CONTRIBUTOR_PROJECT: notificationSettings.findCategory("CONTRIBUTOR_PROJECT"),
-      KYC_KYB_BILLING_PROFILE: notificationSettings.findCategory("KYC_KYB_BILLING_PROFILE"),
+      GLOBAL_BILLING_PROFILE: notificationSettings.findCategory("GLOBAL_BILLING_PROFILE"),
+      GLOBAL_MARKETING: notificationSettings.findCategory("GLOBAL_MARKETING"),
+      SPONSOR_LEAD: notificationSettings.findCategory("SPONSOR_LEAD"),
+      PROGRAM_LEAD: notificationSettings.findCategory("PROGRAM_LEAD"),
     },
   };
 }
@@ -113,8 +116,20 @@ export function formatSettingsToSchema(data: Pick<TProfileForm.Data, "notificati
           channels: findChannel(data.notifications.CONTRIBUTOR_PROJECT),
         },
         {
-          category: UserNotificationCategories.KYC_KYB_BILLING_PROFILE,
-          channels: findChannel(data.notifications.KYC_KYB_BILLING_PROFILE),
+          category: UserNotificationCategories.GLOBAL_BILLING_PROFILE,
+          channels: findChannel(data.notifications.GLOBAL_BILLING_PROFILE),
+        },
+        {
+          category: UserNotificationCategories.GLOBAL_MARKETING,
+          channels: findChannel(data.notifications.GLOBAL_MARKETING),
+        },
+        {
+          category: UserNotificationCategories.PROGRAM_LEAD,
+          channels: findChannel(data.notifications.PROGRAM_LEAD),
+        },
+        {
+          category: UserNotificationCategories.SPONSOR_LEAD,
+          channels: findChannel(data.notifications.SPONSOR_LEAD),
         },
       ].filter(({ channels }) => channels.length > 0) as SetMyNotificationSettingsBody["notificationSettings"],
     };
