@@ -31,7 +31,11 @@ export function Ecosystems({ ecosystems }: TEcosystems.Props) {
     >
       <Flex wrap="wrap" className="gap-3">
         {sortedByName.map(ecosystem => (
-          <Link key={ecosystem.id} href={NEXT_ROUTER.ecosystems.details.root(ecosystem.slug)} className="gap-2">
+          <Link
+            key={ecosystem.id}
+            href={ecosystem.hidden ? ecosystem.url : NEXT_ROUTER.ecosystems.details.root(ecosystem.slug)}
+            className="gap-2"
+          >
             <Avatar src={ecosystem.logoUrl} alt={ecosystem.name} size="s" />
 
             <Typography variant="body-s" className="truncate">
