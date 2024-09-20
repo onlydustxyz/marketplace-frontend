@@ -16,9 +16,15 @@ export function Auth0ProviderWithNavigate({ children }: { children: ReactNode })
   const { capture } = usePosthog();
   const [scopeStorage] = useLocalStorage("dynamic-github-public-repo-scope");
 
-  const onRedirectCallback = (_: AppState | undefined, user?: User) => {
+  const onRedirectCallback = (appState: AppState | undefined, user?: User) => {
     if (user) {
       capture("user_logged_in");
+    }
+
+    if (!user) {
+      console.error("Auth0Provider: user does not exist.", {
+        appState,
+      });
     }
   };
 

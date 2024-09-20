@@ -20,7 +20,7 @@ export function useGetMyOnboarding({
       ...userStoragePort.getMyOnboarding({}),
       options: {
         ...options,
-        enabled: isAuthenticated && options?.enabled,
+        enabled: isAuthenticated && (options?.enabled ?? true),
       },
     })
   );
