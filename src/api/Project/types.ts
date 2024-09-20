@@ -25,7 +25,7 @@ export namespace ProjectTypes {
   export type TagsUnion = `${Tags}`;
 
   export type Leader = components["schemas"]["RegisteredUserResponse"];
-  export type EcoSystem = components["schemas"]["EcosystemResponse"];
+  export type EcoSystem = components["schemas"]["EcosystemLinkResponse"];
 
   export interface TagMapping {
     icon: TIcon.Props;
