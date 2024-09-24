@@ -20,7 +20,7 @@ export function useGetMyProfile({
       ...userStoragePort.getMyProfile({}),
       options: {
         ...options,
-        enabled: isAuthenticated && options?.enabled,
+        enabled: isAuthenticated && (options?.enabled ?? true),
       },
     })
   );

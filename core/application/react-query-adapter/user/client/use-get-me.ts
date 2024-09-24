@@ -18,7 +18,7 @@ export function useGetMe({ options }: UseQueryFacadeParams<UserFacadePort["getMe
       ...userStoragePort.getMe({}),
       options: {
         ...options,
-        enabled: isAuthenticated && options?.enabled,
+        enabled: isAuthenticated && (options?.enabled ?? true),
       },
     })
   );
