@@ -17,6 +17,7 @@ import { ProgramLeadFundsAllocatedToProgram } from "./notifications/program-lead
 import { SponsorLeadDepositApproved } from "./notifications/sponsor-lead-deposit-approved";
 import { SponsorLeadDepositRejected } from "./notifications/sponsor-lead-deposit-rejected";
 import { SponsorLeadFundsUnallocatedFromProgram } from "./notifications/sponsor-lead-funds-unallocated-from-program";
+import { ProgramLeadFundsUngrantedFromProject } from "./notifications/program-lead-funds-ungranted-from-project";
 
 export class NotificationFactory {
   static createNotification(notificationResponse: NotificationResponse): NotificationInterface {
@@ -49,6 +50,8 @@ export class NotificationFactory {
         return new ContributorProjectGoodFirstIssueCreated(notification);
       case "PROGRAM_LEAD_FUNDS_ALLOCATED_TO_PROGRAM":
         return new ProgramLeadFundsAllocatedToProgram(notification);
+      case "PROGRAM_LEAD_FUNDS_UNGRANTED_FROM_PROJECT":
+        return new ProgramLeadFundsUngrantedFromProject(notification);
       case "SPONSOR_LEAD_DEPOSIT_APPROVED":
         return new SponsorLeadDepositApproved(notification);
       case "SPONSOR_LEAD_DEPOSIT_REJECTED":
