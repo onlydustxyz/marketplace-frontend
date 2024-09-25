@@ -2,7 +2,7 @@
 
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
 import { useClientBootstrapContext } from "core/bootstrap/client-bootstrap-context";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
 
 import { useImpersonation } from "components/features/impersonation/use-impersonation";
@@ -21,6 +21,7 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
   const { isImpersonating } = useImpersonation();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const currentPath = usePathname();
   const isSignup = useMatchPath(NEXT_ROUTER.signup.root);
   const isOnboarding = useMatchPath(NEXT_ROUTER.signup.onboarding.root, { exact: false });
   const isLegalNotice = useMatchPath(NEXT_ROUTER.legalNotice.root, { exact: false });
@@ -84,14 +85,17 @@ export default function OnboardingProvider({ children }: PropsWithChildren) {
         return;
       }
 
-      console.error("OnboardingProvider: End of redirection flow, should not be here.", {
-        isAuthenticated,
-        userOnboarding,
-        isLoadingUserOnboarding,
-        userProfile,
-        isLoadingUserProfile,
-        isImpersonating,
-      });
+      if (isSignup) {
+        console.error("OnboardingProvider: End of redirection flow, should not be here.", {
+          currentPath,
+          isAuthenticated,
+          userOnboarding,
+          isLoadingUserOnboarding,
+          userProfile,
+          isLoadingUserProfile,
+          isImpersonating,
+        });
+      }
     })();
   }, [
     isAuthenticated,
