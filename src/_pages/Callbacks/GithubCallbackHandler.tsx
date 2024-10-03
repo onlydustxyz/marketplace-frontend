@@ -16,6 +16,11 @@ function handleNavigation(searchParams: ReturnType<typeof useSearchParams>, rout
   } else if (installationId && state) {
     const isEdit = state.includes(GithubState.edit);
     const isClaim = state.includes(GithubState.claim);
+    const isGeneric = state.includes(GithubState.generic);
+    if (isGeneric) {
+      window.location.href = `${process.env.NEXT_PUBLIC_SAAS_URL}/github-callback`;
+      return;
+    }
     if (isEdit) {
       router.push(
         `${NEXT_ROUTER.projects.details.edit(state.replace(GithubState.edit, ""))}?installation_id=${installationId}`
