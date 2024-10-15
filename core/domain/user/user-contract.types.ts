@@ -1,4 +1,8 @@
 import { BillingProfileShortInterface } from "core/domain/billing-profile/models/billing-profile-short-model";
+import {
+  UserHackathonRegistrationInterface,
+  UserHackathonRegistrationResponse,
+} from "core/domain/user/models/user-hackathon-registration-model";
 import { UserInterface } from "core/domain/user/models/user-model";
 import { UserNotificationSettings } from "core/domain/user/models/user-notification-settings-model";
 import { UserOnboardingInterface } from "core/domain/user/models/user-onboarding-model";
@@ -123,3 +127,16 @@ export type SetMyNotificationSettingsBody = components["schemas"]["NotificationS
 export type SetMyNotificationSettingsPortParams = HttpClientParameters<object>;
 
 export type SetMyNotificationSettingsPortResponse = HttpStorageResponse<never, SetMyNotificationSettingsBody>;
+
+/* --------------------------------- Get my hackathon registration -------------------------------- */
+
+export type GetMyHackathonRegistrationResponse = UserHackathonRegistrationResponse;
+export type GetMyHackathonRegistrationModel = UserHackathonRegistrationInterface;
+
+export type GetMyHackathonRegistrationPathParams = operations["getHackathonRegistration"]["parameters"]["path"];
+
+export type GetMyHackathonRegistrationPortParams = HttpClientParameters<{
+  PathParams: GetMyHackathonRegistrationPathParams;
+}>;
+
+export type GetMyHackathonRegistrationPortResponse = HttpStorageResponse<GetMyHackathonRegistrationModel>;

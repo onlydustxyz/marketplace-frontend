@@ -9,3 +9,4 @@ export * from "./use-get-my-onboarding";
 export * from "./use-replace-my-profile";
 export * from "./use-get-my-notifications-settings";
 export * from "./use-set-my-notifications-settings";
+export * from "./use-get-my-hackathon-registration";
