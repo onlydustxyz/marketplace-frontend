@@ -90,7 +90,7 @@ function SettingsBillingPage() {
       </Card>
       <div className="flex flex-row items-center gap-4">
         <AdminContentWrapper role={profile?.data.me?.role}>
-          <ManageBillingProfile actionType={actionType} />
+          {!isBillingProfileIndividual ? <ManageBillingProfile actionType={actionType} /> : null}
         </AdminContentWrapper>
 
         {profile?.data.me.canLeave ? <LeaveBillingProfile actionType="leave" /> : null}
