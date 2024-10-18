@@ -3,6 +3,8 @@ import {
   GetMeResponsePortResponse,
   GetMyBillingProfilesResponsePortParams,
   GetMyBillingProfilesResponsePortResponse,
+  GetMyHackathonRegistrationPortParams,
+  GetMyHackathonRegistrationPortResponse,
   GetMyNotificationSettingsForProjectPortParams,
   GetMyNotificationSettingsForProjectPortResponse,
   GetMyNotificationSettingsResponsePortParams,
@@ -44,4 +46,5 @@ export interface UserFacadePort {
     params: GetMyNotificationSettingsResponsePortParams
   ): GetMyNotificationSettingsResponsePortResponse;
   setMyNotificationSettings(params: SetMyNotificationSettingsPortParams): SetMyNotificationSettingsPortResponse;
+  getMyHackathonRegistration(params: GetMyHackathonRegistrationPortParams): GetMyHackathonRegistrationPortResponse;
 }

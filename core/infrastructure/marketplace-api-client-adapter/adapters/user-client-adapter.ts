@@ -1,4 +1,5 @@
 import { BillingProfileShort } from "core/domain/billing-profile/models/billing-profile-short-model";
+import { UserHackathonRegistration } from "core/domain/user/models/user-hackathon-registration-model";
 import { User } from "core/domain/user/models/user-model";
 import { UserNotificationSettings } from "core/domain/user/models/user-notification-settings-model";
 import { UserNotifications } from "core/domain/user/models/user-notifications-model";
@@ -8,6 +9,7 @@ import { UserStoragePort } from "core/domain/user/outputs/user-storage-port";
 import {
   GetMeResponse,
   GetMyBillingProfilesResponse,
+  GetMyHackathonRegistrationResponse,
   GetMyNotificationSettingsForProjectResponse,
   GetMyNotificationSettingsResponse,
   GetMyOnboardingResponse,
@@ -37,6 +39,7 @@ export class UserClientAdapter implements UserStoragePort {
     setMe: "me",
     getMyOnboarding: "me/onboarding",
     getMyBillingProfiles: "me/billing-profiles",
+    getMyHackathonRegistration: "me/hackathons/:hackathonId/registrations",
   } as const;
 
   registerToHackathon = ({ pathParams }: FirstParameter<UserStoragePort["registerToHackathon"]>) => {
@@ -277,6 +280,28 @@ export class UserClientAdapter implements UserStoragePort {
       });
 
       return new BillingProfileShort(data);
+    };
+
+    return {
+      request,
+      tag,
+    };
+  };
+
+  getMyHackathonRegistration = ({ pathParams }: FirstParameter<UserStoragePort["getMyHackathonRegistration"]>) => {
+    const path = this.routes["getMyHackathonRegistration"];
+    const method = "GET";
+    const tag = HttpClient.buildTag({ path, pathParams });
+
+    const request = async () => {
+      const data = await this.client.request<GetMyHackathonRegistrationResponse>({
+        path,
+        method,
+        tag,
+        pathParams,
+      });
+
+      return new UserHackathonRegistration(data);
     };
 
     return {
