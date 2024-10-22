@@ -3,7 +3,7 @@ import { ApiResourcePaths } from "src/hooks/useRestfulData/config";
 import { useInfiniteRestfulData } from "src/hooks/useRestfulData/useRestfulData";
 import { QueryParams } from "src/utils/getEndpointUrl";
 
-export type RewardPageItemType = components["schemas"]["RewardPageItemResponse"];
+export type RewardPageItemType = components["schemas"]["RewardsPageItemResponse"];
 
 interface useInfiniteRewardsListProps {
   projectId: string;

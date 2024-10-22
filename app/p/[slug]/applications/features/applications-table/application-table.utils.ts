@@ -29,7 +29,7 @@ type Issue = {
 export function mapIssueToContribution(issue: Issue): ContributionT {
   return {
     id: String(issue.id),
-    githubId: issue.id,
+    uuid: String(issue.id),
     githubHtmlUrl: issue.htmlUrl,
     githubStatus: issue.status,
     githubTitle: issue.title,
