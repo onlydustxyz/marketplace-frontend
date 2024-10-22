@@ -1,4 +1,4 @@
-import { meApiClient } from "api-client/resources/me";
+import { RewardReactQueryAdapter } from "core/application/react-query-adapter/reward";
 import { formatDistanceToNowStrict } from "date-fns";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
@@ -13,15 +13,24 @@ import { PayoutStatus } from "components/features/payout-status/payout-status";
 import { NEXT_ROUTER } from "constants/router";
 
 import { useIntl } from "hooks/translate/use-translate";
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 export function useMyRewardsTable() {
   const { T } = useIntl();
   const router = useRouter();
 
-  const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } = meApiClient.queries.useGetMyRewards({
-    queryParams: { status: "PENDING_REQUEST", direction: "DESC" },
-    pagination: { pageSize: 3 },
-  });
+  // const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } = meApiClient.queries.useGetMyRewards({
+  //   queryParams: { status: "PENDING_REQUEST", direction: "DESC" },
+  //   pagination: { pageSize: 3 },
+  // });
+
+  const { githubUserId } = useCurrentUser();
+
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } =
+    RewardReactQueryAdapter.client.useGetRewards({
+      queryParams: { pageSize: 3, recipientIds: [githubUserId], statuses: ["PENDING_REQUEST"] },
+      options: { enabled: !!githubUserId },
+    });
 
   const flattenRewards = data?.pages.flatMap(({ rewards }) => rewards) ?? [];
 
@@ -76,9 +85,9 @@ export function useMyRewardsTable() {
         ) : (
           "-"
         );
-        const status = (
+        const status = row?.status ? (
           <PayoutStatus
-            status={row?.status}
+            status={row.status}
             dates={{ unlockDate: row?.unlockDate, processedAt: row?.processedAt }}
             projectId={row?.projectId}
             billingProfileId={row?.billingProfileId}
@@ -86,7 +95,7 @@ export function useMyRewardsTable() {
             rewardId={row.id}
             shouldOpenRequestPayment={true}
           />
-        );
+        ) : null;
 
         return {
           key,
