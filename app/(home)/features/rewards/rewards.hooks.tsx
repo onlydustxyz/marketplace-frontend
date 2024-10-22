@@ -24,7 +24,6 @@ export function useMyRewardsTable() {
     RewardReactQueryAdapter.client.useGetRewards({
       queryParams: {
         pageSize: 3,
-        recipientIds: [githubUserId],
         statuses: ["PENDING_REQUEST"],
         includeProjectLeds: false,
       },
