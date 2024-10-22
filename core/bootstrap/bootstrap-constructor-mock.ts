@@ -10,6 +10,7 @@ import { LanguagesClientAdapterMock } from "core/infrastructure/marketplace-api-
 import { NotificationClientAdapterMock } from "core/infrastructure/marketplace-api-client-adapter/mock-adapters/notification-client-adapter-mock";
 import { ProjectCategoryClientAdapterMock } from "core/infrastructure/marketplace-api-client-adapter/mock-adapters/project-category-client-adapter-mock";
 import { ProjectClientAdapterMock } from "core/infrastructure/marketplace-api-client-adapter/mock-adapters/project-client-adapter-mock";
+import { RewardClientAdapterMock } from "core/infrastructure/marketplace-api-client-adapter/mock-adapters/reward-client-adapter-mock";
 import { UserClientAdapterMock } from "core/infrastructure/marketplace-api-client-adapter/mock-adapters/user-client-adapter-mock";
 
 export const bootstrapConstructorMock: BootstrapConstructor = {
@@ -27,6 +28,8 @@ export const bootstrapConstructorMock: BootstrapConstructor = {
   languageStoragePortForServer: new LanguagesClientAdapterMock(),
   notificationStoragePortForClient: new NotificationClientAdapterMock(),
   notificationStoragePortForServer: new NotificationClientAdapterMock(),
+  rewardStoragePortForClient: new RewardClientAdapterMock(),
+  rewardStoragePortForServer: new RewardClientAdapterMock(),
   dateHelperPort: DateAdapterMock,
   urlHelperPort: UrlAdapterMock,
   imageHelperPort: new ImageAdapterMock(),
