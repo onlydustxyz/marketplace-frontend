@@ -25,19 +25,7 @@ export function RewardsMobile({ rewards, onClick }: { rewards: GetRewardsModel["
                     shape: "square",
                   }}
                   labelProps={{ title: reward.project?.name }}
-                >
-                  <Typography variant="title-s" className={"truncate"}>
-                    {reward.project?.name}
-                  </Typography>
-                  <Typography
-                    variant="body-xs"
-                    className={"text-spaceBlue-200"}
-                    translate={{
-                      token: "v2.pages.home.rewards.rewardsTable.rows.projectContribution",
-                      params: { id: reward.amount.prettyAmount, count: reward.numberOfRewardedContributions },
-                    }}
-                  />
-                </AvatarLabelled>
+                />
                 <Icon
                   remixName="ri-arrow-right-s-line"
                   size={24}
