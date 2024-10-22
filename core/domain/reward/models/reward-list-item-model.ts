@@ -9,7 +9,7 @@ export class RewardListItem implements RewardListItemInterface {
   from!: RewardListItemResponse["from"];
   id!: RewardListItemResponse["id"];
   processedAt!: RewardListItemResponse["processedAt"];
-  projectId!: RewardListItemResponse["projectId"];
+  project!: RewardListItemResponse["project"];
   requestedAt!: RewardListItemResponse["requestedAt"];
   status!: RewardListItemResponse["status"];
   to!: RewardListItemResponse["to"];

@@ -18,17 +18,16 @@ import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 export function useMyRewardsTable() {
   const { T } = useIntl();
   const router = useRouter();
-
-  // const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } = meApiClient.queries.useGetMyRewards({
-  //   queryParams: { status: "PENDING_REQUEST", direction: "DESC" },
-  //   pagination: { pageSize: 3 },
-  // });
-
   const { githubUserId } = useCurrentUser();
 
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } =
     RewardReactQueryAdapter.client.useGetRewards({
-      queryParams: { pageSize: 3, recipientIds: [githubUserId], statuses: ["PENDING_REQUEST"] },
+      queryParams: {
+        pageSize: 3,
+        recipientIds: [githubUserId],
+        statuses: ["PENDING_REQUEST"],
+        includeProjectLeds: false,
+      },
       options: { enabled: !!githubUserId },
     });
 
@@ -60,15 +59,15 @@ export function useMyRewardsTable() {
     () =>
       flattenRewards.map(row => {
         const key = row?.id ?? "";
-        const date = formatDistanceToNowStrict(new Date(row.requestedAt), { addSuffix: true });
+        const date = row?.requestedAt ? formatDistanceToNowStrict(new Date(row.requestedAt), { addSuffix: true }) : "";
         const project = (
           <Avatar.Labelled
-            avatarProps={{ size: "xs", shape: "square", src: row.rewardedOnProjectLogoUrl }}
+            avatarProps={{ size: "xs", shape: "square", src: row.project?.logoUrl }}
             labelProps={{
               className: "font-medium",
             }}
           >
-            {row.rewardedOnProjectName}
+            {row.project?.name}
           </Avatar.Labelled>
         );
         const amount = row?.amount.prettyAmount ? (
@@ -89,7 +88,7 @@ export function useMyRewardsTable() {
           <PayoutStatus
             status={row.status}
             dates={{ unlockDate: row?.unlockDate, processedAt: row?.processedAt }}
-            projectId={row?.projectId}
+            projectId={row?.project?.id}
             billingProfileId={row?.billingProfileId}
             shouldRedirect={true}
             rewardId={row.id}

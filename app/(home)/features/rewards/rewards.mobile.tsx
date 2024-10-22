@@ -1,4 +1,4 @@
-import { GetMyRewardsPageResponse } from "api-client/resources/me/types";
+import { GetRewardsModel } from "core/domain/reward/reward-contract.types";
 import { formatDistanceToNowStrict } from "date-fns";
 
 import { AvailableConversion } from "src/components/Currency/AvailableConversion";
@@ -9,13 +9,7 @@ import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
 
-export function RewardsMobile({
-  rewards,
-  onClick,
-}: {
-  rewards: GetMyRewardsPageResponse["rewards"];
-  onClick: () => void;
-}) {
+export function RewardsMobile({ rewards, onClick }: { rewards: GetRewardsModel["rewards"]; onClick: () => void }) {
   return (
     <Card background={"base"} hasPadding={false}>
       <div className="grid gap-4 p-4">
@@ -25,15 +19,15 @@ export function RewardsMobile({
               <div className="flex items-center justify-between gap-5">
                 <AvatarLabelled
                   avatarProps={{
-                    src: reward.rewardedOnProjectLogoUrl,
-                    alt: reward.rewardedOnProjectName,
+                    src: reward.project?.logoUrl,
+                    alt: reward.project?.name,
                     size: "m",
                     shape: "square",
                   }}
-                  labelProps={{ title: reward.rewardedOnProjectName }}
+                  labelProps={{ title: reward.project?.name }}
                 >
                   <Typography variant="title-s" className={"truncate"}>
-                    {reward.rewardedOnProjectName}
+                    {reward.project?.name}
                   </Typography>
                   <Typography
                     variant="body-xs"
@@ -79,7 +73,9 @@ export function RewardsMobile({
                     <Translate token={"v2.pages.home.rewards.mobile.sent"} />
                   </Typography>
                   <Typography variant="body-s">
-                    {formatDistanceToNowStrict(new Date(reward.requestedAt), { addSuffix: true })}
+                    {reward?.requestedAt
+                      ? formatDistanceToNowStrict(new Date(reward.requestedAt), { addSuffix: true })
+                      : ""}
                   </Typography>
                 </div>
               </div>
