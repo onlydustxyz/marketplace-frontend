@@ -1,4 +1,4 @@
-import { meApiClient } from "api-client/resources/me";
+import { RewardReactQueryAdapter } from "core/application/react-query-adapter/reward";
 import { formatDistanceToNowStrict } from "date-fns";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
@@ -13,15 +13,22 @@ import { PayoutStatus } from "components/features/payout-status/payout-status";
 import { NEXT_ROUTER } from "constants/router";
 
 import { useIntl } from "hooks/translate/use-translate";
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 export function useMyRewardsTable() {
   const { T } = useIntl();
   const router = useRouter();
+  const { githubUserId } = useCurrentUser();
 
-  const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } = meApiClient.queries.useGetMyRewards({
-    queryParams: { status: "PENDING_REQUEST", direction: "DESC" },
-    pagination: { pageSize: 3 },
-  });
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } =
+    RewardReactQueryAdapter.client.useGetRewards({
+      queryParams: {
+        pageSize: 3,
+        statuses: ["PENDING_REQUEST"],
+        includeProjectLeds: false,
+      },
+      options: { enabled: !!githubUserId },
+    });
 
   const flattenRewards = data?.pages.flatMap(({ rewards }) => rewards) ?? [];
 
@@ -51,15 +58,15 @@ export function useMyRewardsTable() {
     () =>
       flattenRewards.map(row => {
         const key = row?.id ?? "";
-        const date = formatDistanceToNowStrict(new Date(row.requestedAt), { addSuffix: true });
+        const date = row?.requestedAt ? formatDistanceToNowStrict(new Date(row.requestedAt), { addSuffix: true }) : "";
         const project = (
           <Avatar.Labelled
-            avatarProps={{ size: "xs", shape: "square", src: row.rewardedOnProjectLogoUrl }}
+            avatarProps={{ size: "xs", shape: "square", src: row.project?.logoUrl }}
             labelProps={{
               className: "font-medium",
             }}
           >
-            {row.rewardedOnProjectName}
+            {row.project?.name}
           </Avatar.Labelled>
         );
         const amount = row?.amount.prettyAmount ? (
@@ -76,17 +83,17 @@ export function useMyRewardsTable() {
         ) : (
           "-"
         );
-        const status = (
+        const status = row?.status ? (
           <PayoutStatus
-            status={row?.status}
+            status={row.status}
             dates={{ unlockDate: row?.unlockDate, processedAt: row?.processedAt }}
-            projectId={row?.projectId}
+            projectId={row?.project?.id}
             billingProfileId={row?.billingProfileId}
             shouldRedirect={true}
             rewardId={row.id}
             shouldOpenRequestPayment={true}
           />
-        );
+        ) : null;
 
         return {
           key,
