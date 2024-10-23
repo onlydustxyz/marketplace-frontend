@@ -32,4 +32,6 @@ export class UserClientAdapterMock implements UserStoragePort {
   getMyOnboarding = mockHttpStorageResponse<UserStoragePort["getMyOnboarding"]>;
 
   getMyBillingProfiles = mockHttpStorageResponse<UserStoragePort["getMyBillingProfiles"]>;
+
+  getMyHackathonRegistration = mockHttpStorageResponse<UserStoragePort["getMyHackathonRegistration"]>;
 }
