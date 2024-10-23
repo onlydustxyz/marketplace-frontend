@@ -29,11 +29,13 @@ export function HelperDefaultAdapter<C extends ElementType = "div">({
 
   return (
     <Component {...htmlProps} className={cn(slots.base(), classNames?.base)}>
-      {startContent}
-      <RenderWithProps Component={Avatar} props={avatar} overrideProps={{ size: "xl", shape: "square" }} />
-      <div className="flex flex-col items-start justify-start gap-1">
-        <RenderWithProps Component={Typo} props={title} overrideProps={{ size: "m", variant: "brand" }} />
-        <RenderWithProps Component={Typo} props={text} overrideProps={{ size: "s" }} />
+      <div className={"flex gap-4"}>
+        {startContent}
+        <RenderWithProps Component={Avatar} props={avatar} overrideProps={{ size: "xl", shape: "square" }} />
+        <div className="flex flex-col items-start justify-start gap-1">
+          <RenderWithProps Component={Typo} props={title} overrideProps={{ size: "m", variant: "brand" }} />
+          <RenderWithProps Component={Typo} props={text} overrideProps={{ size: "s" }} />
+        </div>
       </div>
       <div className={cn(slots.endContainer(), classNames?.endContainer)}>
         <RenderWithProps

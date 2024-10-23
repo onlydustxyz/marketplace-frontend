@@ -2,7 +2,7 @@ import { tv } from "tailwind-variants";
 
 export const HelperDefaultVariants = tv({
   slots: {
-    base: "flex h-auto w-full flex-row gap-4 rounded-xl bg-brand-1 p-4 text-text-1",
+    base: "flex h-auto w-full flex-col gap-4 rounded-xl bg-brand-1 p-4 text-text-1",
     endContainer: "flex flex-1 flex-row items-center justify-end gap-3",
   },
   variants: {
