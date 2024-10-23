@@ -47,6 +47,11 @@ export function useRegister({ hackathonId, hackathonSlug }: TRegister.HookProps)
           hackathonSlug,
         },
       },
+      getMyHackathonRegistration: {
+        pathParams: {
+          hackathonId,
+        },
+      },
     },
   });
 
