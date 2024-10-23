@@ -15,6 +15,7 @@ import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import { ContributionStatus, OrderBy } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
+import { NewAppHelper } from "components/features/new-app-helper/new-app-helper";
 import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
@@ -224,6 +225,8 @@ export default function Contributions() {
           </Flex>
         ) : null}
       </div>
+
+      <NewAppHelper projectSlug={slug} />
 
       {!project?.indexingComplete && !isLoadingProject ? <StillFetchingBanner /> : null}
 

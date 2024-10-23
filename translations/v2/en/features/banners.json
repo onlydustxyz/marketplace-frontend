@@ -31,5 +31,10 @@
     "hasToUpdatePayoutPreferencesDescription": "Please update your payout preferences to another billing profile (self-employed or organisation) to receive new rewards.",
     "addBillingProfileButtonLabel": "Add new billing profile",
     "updatePayoutPreferencesButtonLabel": "Update payout preferences"
+  },
+  "newApp": {
+    "title": "Discover the New Project Management Interface",
+    "text": "Streamline your project management with our new interface designed specifically for maintainers. Easily manage your contributors, track contributions, review applicants, and allocate rewards all in one place.",
+    "button": "Go to new app"
   }
 }

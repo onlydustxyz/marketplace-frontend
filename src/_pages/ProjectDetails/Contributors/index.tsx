@@ -21,6 +21,7 @@ import { RewardDisabledReason } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
 import { Card } from "components/ds/card/card";
+import { NewAppHelper } from "components/features/new-app-helper/new-app-helper";
 import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 
@@ -126,6 +127,8 @@ export default function Contributors() {
           ) : null}
         </div>
       </Title>
+
+      {isProjectLeader ? <NewAppHelper projectSlug={slug} /> : null}
 
       {!project?.indexingComplete ? <StillFetchingBanner /> : null}
 
