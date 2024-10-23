@@ -16,6 +16,7 @@ import Skeleton from "src/components/Skeleton";
 import Flex from "src/components/Utils/Flex";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
+import { NewAppHelper } from "components/features/new-app-helper/new-app-helper";
 import { PosthogOnMount } from "components/features/posthog/components/posthog-on-mount/posthog-on-mount";
 import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 
@@ -140,6 +141,8 @@ const RewardList: React.FC = () => {
           </Flex>
         ) : null}
       </div>
+
+      <NewAppHelper projectSlug={slug} />
 
       {project && !project?.indexingComplete ? <StillFetchingBanner /> : null}
 
