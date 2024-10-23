@@ -29,9 +29,7 @@ export function IssueCard({ issue, onDrawerOpen }: TIssueCard.Props) {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
   const { user } = useCurrentUser();
 
-  const hasApplied = Boolean(
-    issue.applicants.find(applicant => applicant.githubUserId === user?.githubUserId)?.githubUserId
-  );
+  const hasApplied = Boolean(issue.applicants.find(applicant => applicant.githubUserId === user?.githubUserId)?.id);
 
   const {
     clientBootstrap: { authProvider },
