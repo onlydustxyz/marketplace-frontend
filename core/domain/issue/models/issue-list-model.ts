@@ -9,6 +9,7 @@ export interface IssueListInterface extends GithubIssueListItemResponse {
   isAssigned(): boolean;
   isUserApplied(githubUserId: number): boolean;
   getFirstAssignee(): GithubIssueListItemResponse["assignees"][0];
+  getCurrentUserApplicationId(githubUserId: number): string;
 }
 export class IssueList implements IssueListInterface {
   applicants!: GithubIssueListItemResponse["applicants"];
@@ -35,6 +36,10 @@ export class IssueList implements IssueListInterface {
 
   isUserApplied(githubUserId: number): boolean {
     return this.applicants.some(applicant => applicant.githubUserId === githubUserId);
+  }
+
+  getCurrentUserApplicationId(githubUserId: number): string {
+    return this.applicants.find(applicant => applicant.githubUserId === githubUserId)?.applicationId ?? "";
   }
 
   getApplicationStatus(githubUserId: number): IssueApplicationStatus {
