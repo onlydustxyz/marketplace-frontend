@@ -20,13 +20,18 @@ import { Typography } from "components/layout/typography/typography";
 
 import { NEXT_ROUTER } from "constants/router";
 
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
+
 import { ApplyButton } from "./components/apply-button/apply-button";
 import { TIssueCard } from "./issue-card.types";
 
 export function IssueCard({ issue, onDrawerOpen }: TIssueCard.Props) {
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
+  const { user } = useCurrentUser();
 
-  const hasApplied = Boolean(issue.currentUserApplication);
+  const hasApplied = Boolean(
+    issue.applicants.find(applicant => applicant.githubUserId === user?.githubUserId)?.githubUserId
+  );
 
   const {
     clientBootstrap: { authProvider },

@@ -12,6 +12,8 @@ import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Typography } from "components/layout/typography/typography";
 
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
+
 import { EmptyState } from "./components/empty-state/empty-state";
 import { IssueCard } from "./components/issue-card/issue-card";
 import { TGoodFirstIssues } from "./good-first-issues.types";
@@ -19,6 +21,8 @@ import { TGoodFirstIssues } from "./good-first-issues.types";
 export function GoodFirstIssues({ projectId }: TGoodFirstIssues.Props) {
   const applyIssueDrawerState = useApplyIssueDrawerState();
   const [, setApplyIssueDrawerState] = applyIssueDrawerState;
+
+  const { user } = useCurrentUser();
 
   const { data, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } =
     ProjectApi.queries.useProjectGoodFirstIssuesInfiniteList({
@@ -57,7 +61,10 @@ export function GoodFirstIssues({ projectId }: TGoodFirstIssues.Props) {
                 setApplyIssueDrawerState({
                   isOpen: true,
                   issueId: issue.id,
-                  applicationId: issue.currentUserApplication?.id ?? "",
+                  applicationId:
+                    issue.applicants
+                      .find(applicant => applicant.githubUserId === user?.githubUserId)
+                      ?.githubUserId.toString() ?? "",
                 });
               }}
             />
