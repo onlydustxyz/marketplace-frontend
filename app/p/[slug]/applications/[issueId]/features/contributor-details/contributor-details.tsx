@@ -74,22 +74,11 @@ export function ContributorDetails({ githubId, applicationId }: TContributorDeta
             <Flex className="w-full flex-col gap-3">
               <Typography
                 variant={"body-m-bold"}
-                translate={{ token: "v2.pages.project.details.applicationDetails.profile.motivations.motivation" }}
+                translate={{ token: "v2.pages.project.details.applicationDetails.profile.motivations.comment" }}
               />
               <Paper size={"m"} container={"3"} border={"none"}>
                 <Typography variant="body-m" className="min-h-5 text-greyscale-200">
-                  {application?.motivation}
-                </Typography>
-              </Paper>
-            </Flex>
-            <Flex className="w-full flex-col gap-3">
-              <Typography
-                variant={"body-m-bold"}
-                translate={{ token: "v2.pages.project.details.applicationDetails.profile.motivations.approach" }}
-              />
-              <Paper size={"m"} container={"3"} border={"none"}>
-                <Typography variant="body-m" className="min-h-5 text-greyscale-200">
-                  {application?.problemSolvingApproach}
+                  {application?.githubComment}
                 </Typography>
               </Paper>
             </Flex>
