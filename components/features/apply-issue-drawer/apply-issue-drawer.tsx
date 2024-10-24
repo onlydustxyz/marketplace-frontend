@@ -105,6 +105,8 @@ export function ApplyIssueDrawer({ state }: TApplyIssueDrawer.Props) {
   });
 
   function handleApplication(actionType: TApplyIssueDrawer.ActionType) {
+    if (createIsPending || deleteIsPending) return;
+
     if (!isAuthenticated) {
       router.push(NEXT_ROUTER.signup.root);
       return;
