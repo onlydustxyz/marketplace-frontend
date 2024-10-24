@@ -10,8 +10,6 @@ export function ApplyIssueDrawerLoading() {
         <SkeletonEl width={"auto"} height={84} className={"col-span-3"} variant={"rounded"} />
 
         <SkeletonEl width={"auto"} height={84} className={"col-span-2"} variant={"rounded"} />
-        <SkeletonEl width={"auto"} height={84} className={"col-span-2"} variant={"rounded"} />
-        <SkeletonEl width={"auto"} height={84} className={"col-span-2"} variant={"rounded"} />
 
         <SkeletonEl width={"auto"} height={300} className={"col-span-full"} variant={"rounded"} />
       </div>
