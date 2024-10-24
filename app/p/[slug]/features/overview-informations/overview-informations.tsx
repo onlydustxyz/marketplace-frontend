@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 import { IMAGES } from "src/assets/img";
 import MarkdownPreview from "src/components/MarkdownPreview";
 import { withTooltip } from "src/components/Tooltip";
@@ -22,11 +20,10 @@ export function OverviewInformations({ project }: TOverviewInformations.Props) {
       <Flex direction="col" className="gap-4 px-6 py-4">
         <Flex direction="col" className="gap-2">
           <Flex alignItems="center" className="gap-1 md:gap-4">
-            <Image
+            <img
               alt={project.name}
               src={project?.logoUrl || IMAGES.logo.space}
               loading="lazy"
-              objectFit="cover"
               width={80}
               height={80}
               className="h-8 w-8 rounded-lg object-cover object-center md:h-20 md:w-20"
