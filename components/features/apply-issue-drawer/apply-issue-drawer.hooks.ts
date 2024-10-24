@@ -3,7 +3,7 @@ import { applicationsApiClient } from "api-client/resources/applications";
 import { issuesApiClient } from "api-client/resources/issues";
 import { meApiClient } from "api-client/resources/me";
 import { useParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import ProjectApi from "src/api/Project";
@@ -66,18 +66,14 @@ export function useApplyIssueDrawer({ state }: Pick<TApplyIssueDrawer.Props, "st
   const form = useForm<TApplyIssueDrawer.form>({
     resolver: zodResolver(TApplyIssueDrawer.validation),
     defaultValues: {
-      // TODO replace motivation by githubComment
-      githubComment: application?.motivation ?? "",
+      githubComment: application?.githubComment ?? "",
     },
   });
 
   useEffect(() => {
-    if (application) {
-      form.reset({
-        // TODO replace motivation by githubComment
-        githubComment: application?.motivation ?? "",
-      });
-    }
+    form.reset({
+      githubComment: application?.githubComment ?? "",
+    });
   }, [application]);
 
   async function getPermissionsOnError(err: FetchError) {
@@ -92,8 +88,7 @@ export function useApplyIssueDrawer({ state }: Pick<TApplyIssueDrawer.Props, "st
     createAsync({
       projectId: currentProjectId,
       issueId,
-      // TODO replace motivation by githubComment
-      motivation: values.githubComment,
+      githubComment: values.githubComment,
     })
       .then(() => {
         setState(prevState => ({ ...prevState, isOpen: false }));
@@ -104,7 +99,9 @@ export function useApplyIssueDrawer({ state }: Pick<TApplyIssueDrawer.Props, "st
   }
 
   function handleCancel(deleteComment: boolean) {
-    deleteAsync({})
+    deleteAsync({
+      deleteGithubComment: deleteComment,
+    })
       .then(() => {
         setState(prevState => ({ ...prevState, isOpen: false }));
         setTimeout(() => {
@@ -139,13 +136,6 @@ export function useApplyIssueDrawerState() {
 export function useApplyIssuePrefillLabel() {
   const arrayOfLabels = ApplyIssuesPrefillLabels;
   const randomIndex = Math.floor(Math.random() * arrayOfLabels.length);
-  const label = useRef<string | null>(null);
 
-  useEffect(() => {
-    if (!label.current) {
-      label.current = arrayOfLabels[randomIndex];
-    }
-  }, []);
-
-  return label.current;
+  return arrayOfLabels[randomIndex];
 }

@@ -85,8 +85,7 @@ export function ApplyIssueDrawer({ state }: TApplyIssueDrawer.Props) {
 
   useEffect(() => {
     if (application) {
-      // TODO RENAME motivation to githubComment
-      setValue("githubComment", application?.motivation ?? "");
+      setValue("githubComment", application?.githubComment ?? "");
     }
   }, [application]);
 
