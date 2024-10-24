@@ -11,6 +11,7 @@ import { FetchError } from "src/api/query.type";
 import { HttpStatusStrings } from "src/api/query.utils";
 import useMutationAlert from "src/api/useMutationAlert";
 
+import { ApplyIssuesPrefillLabels } from "components/features/apply-issue-drawer/apply-issue-drawer.constants";
 import { TApplyIssueDrawer } from "components/features/apply-issue-drawer/apply-issue-drawer.types";
 import { usePublicRepoScope } from "components/features/grant-permission/hooks/use-public-repo-scope";
 
@@ -43,15 +44,6 @@ export function useApplyIssueDrawer({ state }: Pick<TApplyIssueDrawer.Props, "st
     projectId: currentProjectId ?? "",
   });
 
-  const { mutateAsync: updateAsync, ...updateApplication } = meApiClient.mutations.useUpdateMyApplication(
-    {
-      pathParams: {
-        applicationId,
-      },
-    },
-    currentProjectId ?? ""
-  );
-
   const { mutateAsync: deleteAsync, ...deleteApplication } = applicationsApiClient.mutations.useDeleteApplication(
     {
       pathParams: {
@@ -71,31 +63,17 @@ export function useApplyIssueDrawer({ state }: Pick<TApplyIssueDrawer.Props, "st
     },
   });
 
-  useMutationAlert({
-    mutation: updateApplication,
-    success: {
-      message: T("v2.features.projects.applyIssueDrawer.toaster.updateSuccess"),
-    },
-    error: {
-      default: true,
-    },
-  });
-
   const form = useForm<TApplyIssueDrawer.form>({
     resolver: zodResolver(TApplyIssueDrawer.validation),
     defaultValues: {
-      motivations: application?.motivation ?? "",
-      problemSolvingApproach: application?.problemSolvingApproach ?? "",
+      githubComment: application?.githubComment ?? "",
     },
   });
 
   useEffect(() => {
-    if (application) {
-      form.reset({
-        motivations: application.motivation ?? "",
-        problemSolvingApproach: application.problemSolvingApproach ?? "",
-      });
-    }
+    form.reset({
+      githubComment: application?.githubComment ?? "",
+    });
   }, [application]);
 
   async function getPermissionsOnError(err: FetchError) {
@@ -110,8 +88,7 @@ export function useApplyIssueDrawer({ state }: Pick<TApplyIssueDrawer.Props, "st
     createAsync({
       projectId: currentProjectId,
       issueId,
-      motivation: values.motivations,
-      problemSolvingApproach: values.problemSolvingApproach,
+      githubComment: values.githubComment,
     })
       .then(() => {
         setState(prevState => ({ ...prevState, isOpen: false }));
@@ -121,21 +98,10 @@ export function useApplyIssueDrawer({ state }: Pick<TApplyIssueDrawer.Props, "st
       });
   }
 
-  function handleUpdate(values: TApplyIssueDrawer.form) {
-    updateAsync({
-      motivation: values.motivations,
-      problemSolvingApproach: values.problemSolvingApproach,
+  function handleCancel(deleteComment: boolean) {
+    deleteAsync({
+      deleteGithubComment: deleteComment,
     })
-      .then(() => {
-        setState(prevState => ({ ...prevState, isOpen: false }));
-      })
-      .catch(async (err: FetchError) => {
-        await getPermissionsOnError(err);
-      });
-  }
-
-  function handleCancel() {
-    deleteAsync({})
       .then(() => {
         setState(prevState => ({ ...prevState, isOpen: false }));
         setTimeout(() => {
@@ -155,10 +121,8 @@ export function useApplyIssueDrawer({ state }: Pick<TApplyIssueDrawer.Props, "st
     application,
     getApplication,
     createApplication,
-    updateApplication,
     deleteApplication,
     handleCreate,
-    handleUpdate,
     handleCancel,
   };
 }
@@ -167,4 +131,11 @@ export function useApplyIssueDrawerState() {
   return useState<{ isOpen: boolean; issueId?: number; applicationId?: string; projectId?: string }>({
     isOpen: false,
   });
+}
+
+export function useApplyIssuePrefillLabel() {
+  const arrayOfLabels = ApplyIssuesPrefillLabels;
+  const randomIndex = Math.floor(Math.random() * arrayOfLabels.length);
+
+  return arrayOfLabels[randomIndex];
 }

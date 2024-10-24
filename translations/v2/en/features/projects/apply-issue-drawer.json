@@ -10,15 +10,14 @@
     "days": "Days",
     "description": "Description",
     "applicationForm": {
-      "title": "Application Form",
-      "motivations": "Tell us about your background and how it can be leveraged: *",
-      "problemSolvingApproach": "How would you approach the problem?"
+      "title": "Comment in github"
     }
   },
   "footer": {
     "sendAnApplication": "Send an application",
     "applied": "Applied",
     "cancelApplication": "Cancel application",
+    "deleteComment": "Delete my github comment",
     "updateApplication": "Update application",
     "visibilityInformation": "Your application will be publicly visible on GitHub."
   },
