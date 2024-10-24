@@ -16,7 +16,10 @@ import { TagIcon } from "components/atoms/tag/variants/tag-icon";
 import { Textarea } from "components/atoms/textarea";
 import { Typo } from "components/atoms/typo/variants/typo-default";
 import { SkeletonEl } from "components/ds/skeleton/skeleton";
-import { useApplyIssueDrawer } from "components/features/apply-issue-drawer/apply-issue-drawer.hooks";
+import {
+  useApplyIssueDrawer,
+  useApplyIssuePrefillLabel,
+} from "components/features/apply-issue-drawer/apply-issue-drawer.hooks";
 import { ApplyIssueDrawerLoading } from "components/features/apply-issue-drawer/apply-issue-drawer.loading";
 import { TApplyIssueDrawer } from "components/features/apply-issue-drawer/apply-issue-drawer.types";
 import { GrantPermission } from "components/features/grant-permission/grant-permission";
@@ -24,6 +27,7 @@ import { usePublicRepoScope } from "components/features/grant-permission/hooks/u
 import { BaseLink } from "components/layout/base-link/base-link";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
+import { CheckboxButton } from "components/molecules/checkbox-button";
 import { Drawer } from "components/molecules/drawer";
 
 import { NEXT_ROUTER } from "constants/router";
@@ -36,24 +40,26 @@ export function ApplyIssueDrawer({ state }: TApplyIssueDrawer.Props) {
   const [isOpenGrantPermission, setIsOpenGrantPermission] = useState(false);
   const { isAuthenticated } = useAuth0();
   const { capture } = usePosthog();
+  const prefillLabel = useApplyIssuePrefillLabel();
   const { user } = useCurrentUser();
   const router = useRouter();
+  const [shouldDeleteGithubComment, setShouldDeleteGithubComment] = useState(false);
   const {
     project: { data: project },
-    form: { control, reset, setValue, getValues, handleSubmit },
+    form: { control, reset, setValue, getValues, handleSubmit, watch },
     issue,
     getIssue: { isLoading: issueIsLoading },
     application,
     getApplication: { isLoading: applicationIsLoading },
     createApplication: { isPending: createIsPending },
-    updateApplication: { isPending: updateIsPending },
     deleteApplication: { isPending: deleteIsPending },
     handleCreate,
-    handleUpdate,
     handleCancel,
   } = useApplyIssueDrawer({ state });
 
   const isLoading = issueIsLoading || applicationIsLoading;
+
+  const githubComment = watch("githubComment");
 
   useEffect(() => {
     if (isOpen && project) {
@@ -72,23 +78,28 @@ export function ApplyIssueDrawer({ state }: TApplyIssueDrawer.Props) {
   }, [isOpen]);
 
   useEffect(() => {
-    setValue("motivations", application?.motivation ?? "");
-    setValue("problemSolvingApproach", application?.problemSolvingApproach ?? "");
+    if (prefillLabel && !githubComment) {
+      setValue("githubComment", prefillLabel);
+    }
+  }, [prefillLabel, githubComment]);
+
+  useEffect(() => {
+    if (application) {
+      // TODO RENAME motivation to githubComment
+      setValue("githubComment", application?.motivation ?? "");
+    }
   }, [application]);
 
   const { canApply, handleVerifyPermissions } = usePublicRepoScope({
     onSuccessCallback: actionType => {
-      const payload = {
-        motivations: getValues("motivations"),
-        problemSolvingApproach: getValues("problemSolvingApproach"),
-      };
-
       switch (actionType) {
         case "create":
-          handleCreate(payload);
+          handleCreate({
+            githubComment: getValues("githubComment"),
+          });
           break;
-        case "update":
-          handleUpdate(payload);
+        case "delete":
+          handleCancel(shouldDeleteGithubComment);
           break;
       }
     },
@@ -152,11 +163,11 @@ export function ApplyIssueDrawer({ state }: TApplyIssueDrawer.Props) {
 
     const EndContent = hasApplied ? (
       <div className={"flex items-center gap-2.5"}>
-        <Button variant={"danger"} size={"l"} onClick={handleCancel} isLoading={deleteIsPending}>
+        <CheckboxButton value={shouldDeleteGithubComment} onChange={setShouldDeleteGithubComment}>
+          <Translate token={"v2.features.projects.applyIssueDrawer.footer.deleteComment"} />
+        </CheckboxButton>
+        <Button variant={"danger"} size={"l"} onClick={() => handleApplication("delete")} isLoading={deleteIsPending}>
           <Translate token={"v2.features.projects.applyIssueDrawer.footer.cancelApplication"} />
-        </Button>
-        <Button size={"l"} onClick={handleSubmit(() => handleApplication("update"))} isLoading={updateIsPending}>
-          <Translate token={"v2.features.projects.applyIssueDrawer.footer.updateApplication"} />
         </Button>
       </div>
     ) : (
@@ -295,39 +306,18 @@ export function ApplyIssueDrawer({ state }: TApplyIssueDrawer.Props) {
           </Suspense>
 
           <ApplyIssueCard
-            iconProps={{ remixName: "ri-bill-line" }}
             titleProps={{
               translate: {
                 token: "v2.features.projects.applyIssueDrawer.sections.applicationForm.title",
               },
+              size: "l",
+              weight: "medium",
             }}
             className={"col-span-full"}
           >
             <div className="grid gap-3 pt-3">
-              <Typo
-                as={"label"}
-                htmlProps={{ htmlFor: "motivations" }}
-                variant={"brand"}
-                size={"m"}
-                translate={{ token: "v2.features.projects.applyIssueDrawer.sections.applicationForm.motivations" }}
-              />
               <Controller
-                name="motivations"
-                control={control}
-                render={({ field, fieldState }) => <Textarea id={field.name} isError={!!fieldState.error} {...field} />}
-              />
-
-              <Typo
-                as={"label"}
-                htmlProps={{ htmlFor: "problemSolvingApproach" }}
-                variant={"brand"}
-                size={"m"}
-                translate={{
-                  token: "v2.features.projects.applyIssueDrawer.sections.applicationForm.problemSolvingApproach",
-                }}
-              />
-              <Controller
-                name="problemSolvingApproach"
+                name="githubComment"
                 control={control}
                 render={({ field, fieldState }) => <Textarea id={field.name} isError={!!fieldState.error} {...field} />}
               />
