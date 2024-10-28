@@ -46,7 +46,7 @@ export function JourneyPrivate() {
           <div className="flex items-center gap-2 px-3 py-4 pb-1.5 sm:px-5 sm:py-6 sm:pb-1.5">
             <ProgressBar
               maxValue={100}
-              value={data?.completion}
+              value={data.completion}
               color="spacePurple"
               classNames={{
                 track: "h-4",
@@ -54,7 +54,7 @@ export function JourneyPrivate() {
             />
             <Typography
               variant="body-l-bold"
-              translate={{ token: "v2.pages.home.journey.progressPercentage", params: { count: data.completion } }}
+              translate={{ token: "v2.pages.home.journey.progressPercentage", params: { count: data.completion ?? 0 } }}
               className="text-spaceBlue-200"
             />
           </div>
