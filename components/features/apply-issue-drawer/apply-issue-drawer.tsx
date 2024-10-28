@@ -40,13 +40,12 @@ export function ApplyIssueDrawer({ state }: TApplyIssueDrawer.Props) {
   const [isOpenGrantPermission, setIsOpenGrantPermission] = useState(false);
   const { isAuthenticated } = useAuth0();
   const { capture } = usePosthog();
-  const prefillLabel = useApplyIssuePrefillLabel();
   const { user } = useCurrentUser();
   const router = useRouter();
   const [shouldDeleteGithubComment, setShouldDeleteGithubComment] = useState(false);
   const {
     project: { data: project },
-    form: { control, reset, setValue, getValues, handleSubmit, watch },
+    form: { control, reset, getValues, handleSubmit },
     issue,
     getIssue: { isLoading: issueIsLoading },
     application,
@@ -57,9 +56,9 @@ export function ApplyIssueDrawer({ state }: TApplyIssueDrawer.Props) {
     handleCancel,
   } = useApplyIssueDrawer({ state });
 
-  const isLoading = issueIsLoading || applicationIsLoading;
+  const prefillLabel = useApplyIssuePrefillLabel();
 
-  const githubComment = watch("githubComment");
+  const isLoading = issueIsLoading || applicationIsLoading;
 
   useEffect(() => {
     if (isOpen && project) {
@@ -78,16 +77,10 @@ export function ApplyIssueDrawer({ state }: TApplyIssueDrawer.Props) {
   }, [isOpen]);
 
   useEffect(() => {
-    if (prefillLabel && !githubComment) {
-      setValue("githubComment", prefillLabel);
-    }
-  }, [prefillLabel, githubComment]);
-
-  useEffect(() => {
-    if (application) {
-      setValue("githubComment", application?.githubComment ?? "");
-    }
-  }, [application]);
+    reset({
+      githubComment: application?.githubComment ?? prefillLabel(),
+    });
+  }, [application, isOpen]);
 
   const { canApply, handleVerifyPermissions } = usePublicRepoScope({
     onSuccessCallback: actionType => {

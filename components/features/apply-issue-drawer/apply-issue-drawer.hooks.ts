@@ -3,7 +3,7 @@ import { applicationsApiClient } from "api-client/resources/applications";
 import { issuesApiClient } from "api-client/resources/issues";
 import { meApiClient } from "api-client/resources/me";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import ProjectApi from "src/api/Project";
@@ -70,12 +70,6 @@ export function useApplyIssueDrawer({ state }: Pick<TApplyIssueDrawer.Props, "st
     },
   });
 
-  useEffect(() => {
-    form.reset({
-      githubComment: application?.githubComment ?? "",
-    });
-  }, [application]);
-
   async function getPermissionsOnError(err: FetchError) {
     if (err.errorType === HttpStatusStrings.FORBIDDEN) {
       await getPermissions();
@@ -135,7 +129,9 @@ export function useApplyIssueDrawerState() {
 
 export function useApplyIssuePrefillLabel() {
   const arrayOfLabels = ApplyIssuesPrefillLabels;
-  const randomIndex = Math.floor(Math.random() * arrayOfLabels.length);
 
-  return arrayOfLabels[randomIndex];
+  return () => {
+    const randomIndex = Math.floor(Math.random() * arrayOfLabels.length);
+    return arrayOfLabels[randomIndex];
+  };
 }
