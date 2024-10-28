@@ -17,7 +17,11 @@ export function HackathonsSliderContainer({ title, icon, items }: THackathonsSli
           location={<Translate token={"v2.pages.hackathons.defaultLocation"} />}
           status={item.getStatus()}
           projects={item.projects}
+          subscriberCount={item.subscriberCount}
+          openIssueCount={item.openIssueCount}
+          issueCount={item.issueCount}
           dates={item.formatDisplayDates()}
+          displayCountHasTag
         />
       ))}
     </Slider>
