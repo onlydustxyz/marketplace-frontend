@@ -5,10 +5,11 @@ import { components } from "src/__generated/api";
 export type GithubIssueListItemResponse = components["schemas"]["GithubIssuePageItemResponse"];
 
 export interface IssueListInterface extends GithubIssueListItemResponse {
-  getApplicationStatus(): IssueApplicationStatus;
+  getApplicationStatus(githubUserId: number): IssueApplicationStatus;
   isAssigned(): boolean;
-  isApplied(): boolean;
+  isUserApplied(githubUserId: number): boolean;
   getFirstAssignee(): GithubIssueListItemResponse["assignees"][0];
+  getCurrentUserApplicationId(githubUserId: number): string;
 }
 export class IssueList implements IssueListInterface {
   applicants!: GithubIssueListItemResponse["applicants"];
@@ -17,7 +18,6 @@ export class IssueList implements IssueListInterface {
   body!: GithubIssueListItemResponse["body"];
   closedAt!: GithubIssueListItemResponse["closedAt"];
   createdAt!: GithubIssueListItemResponse["createdAt"];
-  currentUserApplication!: GithubIssueListItemResponse["currentUserApplication"];
   htmlUrl!: GithubIssueListItemResponse["htmlUrl"];
   id!: GithubIssueListItemResponse["id"];
   labels!: GithubIssueListItemResponse["labels"];
@@ -34,16 +34,20 @@ export class IssueList implements IssueListInterface {
     return this.assignees.length > 0;
   }
 
-  isApplied(): boolean {
-    return !!this.currentUserApplication;
+  isUserApplied(githubUserId: number): boolean {
+    return this.applicants.some(applicant => applicant.githubUserId === githubUserId);
   }
 
-  getApplicationStatus(): IssueApplicationStatus {
+  getCurrentUserApplicationId(githubUserId: number): string {
+    return this.applicants.find(applicant => applicant.githubUserId === githubUserId)?.applicationId ?? "";
+  }
+
+  getApplicationStatus(githubUserId: number): IssueApplicationStatus {
     if (this.isAssigned()) {
       return "assigned";
     }
 
-    if (this.isApplied()) {
+    if (this.isUserApplied(githubUserId)) {
       return "applied";
     }
 

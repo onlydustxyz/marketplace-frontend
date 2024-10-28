@@ -55,9 +55,6 @@ export interface GetMyOnboardingResponse extends MyOnboardingResponse {}
 export type PostProjectApplicationCreateRequest = components["schemas"]["ProjectApplicationCreateRequest"];
 export type PostProjectApplicationCreateResponse = components["schemas"]["ProjectApplicationCreateResponse"];
 
-export type ProjectApplicationUpdateRequest = components["schemas"]["ProjectApplicationUpdateRequest"];
-export type ProjectApplicationUpdatePathParams = operations["updateProjectApplication"]["parameters"]["path"];
-
 /* --------------------------------- My Banners -------------------------------- */
 
 export type CloseBannerPathParams = operations["closeBanner"]["parameters"]["path"];

@@ -8,8 +8,8 @@ export function ApplyIssueCard({ container = "2", iconProps, titleProps, childre
   return (
     <Paper container={container} border={"none"} classNames={{ base: className }}>
       <header className={"flex items-center gap-1 text-text-1"}>
-        <Icon {...iconProps} size={16} />
-        <Typo {...titleProps} size={"xs"} weight={"medium"} />
+        {iconProps ? <Icon {...iconProps} size={16} /> : null}
+        <Typo size={"xs"} weight={"medium"} {...titleProps} />
       </header>
       {children}
     </Paper>

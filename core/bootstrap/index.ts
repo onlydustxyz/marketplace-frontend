@@ -4,6 +4,7 @@ import { LanguageStoragePort } from "core/domain/language/outputs/language-stora
 import { NotificationStoragePort } from "core/domain/notification/outputs/notification-storage-port";
 import { ProjectCategoryStoragePort } from "core/domain/project-category/outputs/project-category-storage-port";
 import { ProjectStoragePort } from "core/domain/project/outputs/project-storage-port";
+import { RewardStoragePort } from "core/domain/reward/outputs/reward-storage-port";
 import { UserStoragePort } from "core/domain/user/outputs/user-storage-port";
 import { ContactAdapter } from "core/helpers/contact/contact-adapter";
 import { ContactFacadePort } from "core/helpers/contact/contact-facade-port";
@@ -21,6 +22,7 @@ import { LanguageClientAdapter } from "core/infrastructure/marketplace-api-clien
 import { NotificationClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/notification-client-adapter";
 import { ProjectCategoryClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/project-category-client-adapter";
 import { ProjectClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/project-client-adapter";
+import { RewardClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/reward-client-adapter";
 import { UserClientAdapter } from "core/infrastructure/marketplace-api-client-adapter/adapters/user-client-adapter";
 import { AuthProvider } from "core/infrastructure/marketplace-api-client-adapter/auth/auth-provider";
 import { FetchHttpClient } from "core/infrastructure/marketplace-api-client-adapter/http/fetch-http-client/fetch-http-client";
@@ -41,6 +43,8 @@ export interface BootstrapConstructor {
   languageStoragePortForServer: LanguageStoragePort;
   notificationStoragePortForClient: NotificationStoragePort;
   notificationStoragePortForServer: NotificationStoragePort;
+  rewardStoragePortForClient: RewardStoragePort;
+  rewardStoragePortForServer: RewardStoragePort;
   dateHelperPort: DateFacadePort;
   urlHelperPort: UrlFacadePort;
   imageHelperPort: ImageFacadePort;
@@ -66,6 +70,8 @@ export class Bootstrap {
   languageStoragePortForServer: LanguageStoragePort;
   notificationStoragePortForClient: NotificationStoragePort;
   notificationStoragePortForServer: NotificationStoragePort;
+  rewardStoragePortForClient: RewardStoragePort;
+  rewardStoragePortForServer: RewardStoragePort;
   dateHelperPort: DateFacadePort;
   urlHelperPort: UrlFacadePort;
   imageHelperPort: ImageFacadePort;
@@ -87,6 +93,8 @@ export class Bootstrap {
     this.languageStoragePortForServer = constructor.languageStoragePortForServer;
     this.notificationStoragePortForClient = constructor.notificationStoragePortForClient;
     this.notificationStoragePortForServer = constructor.notificationStoragePortForServer;
+    this.rewardStoragePortForClient = constructor.rewardStoragePortForClient;
+    this.rewardStoragePortForServer = constructor.rewardStoragePortForServer;
     this.dateHelperPort = constructor.dateHelperPort;
     this.urlHelperPort = constructor.urlHelperPort;
     this.imageHelperPort = constructor.imageHelperPort;
@@ -154,6 +162,14 @@ export class Bootstrap {
     return this.notificationStoragePortForClient;
   }
 
+  getRewardStoragePortForServer() {
+    return this.rewardStoragePortForServer;
+  }
+
+  getRewardStoragePortForClient() {
+    return this.rewardStoragePortForClient;
+  }
+
   getUserStoragePortForServer() {
     return this.userStoragePortForServer;
   }
@@ -203,6 +219,8 @@ export class Bootstrap {
         languageStoragePortForServer: new LanguageClientAdapter(new FetchHttpClient()),
         notificationStoragePortForClient: new NotificationClientAdapter(new FetchHttpClient()),
         notificationStoragePortForServer: new NotificationClientAdapter(new FetchHttpClient()),
+        rewardStoragePortForClient: new RewardClientAdapter(new FetchHttpClient()),
+        rewardStoragePortForServer: new RewardClientAdapter(new FetchHttpClient()),
         dateHelperPort: DateFnsAdapter,
         urlHelperPort: UrlAdapter,
         imageHelperPort: new ImageAdapter(),
