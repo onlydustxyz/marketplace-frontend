@@ -15,10 +15,11 @@ type Project = components["schemas"]["ProjectLinkResponse"];
 
 export interface HackathonCardStatusProps {
   status?: HackathonStatus;
-  subscriberCount?: number;
-  openIssueCount?: number;
-  issueCount?: number;
+  subscriberCount: number;
+  openIssueCount: number;
+  issueCount: number;
   adaptMapStatusToTag?: typeof mapHackathonStatusToTag;
+  displayCountHasTag?: boolean;
 }
 
 export interface HackathonCardPort<C extends ElementType> extends Partial<Variants> {
@@ -33,9 +34,9 @@ export interface HackathonCardPort<C extends ElementType> extends Partial<Varian
   status?: HackathonStatus;
   projects?: Project[];
   hasLayer?: boolean;
-  subscriberCount?: number;
-  openIssueCount?: number;
-  issueCount?: number;
+  subscriberCount: number;
+  openIssueCount: number;
+  issueCount: number;
   adaptMapStatusToTag?: typeof mapHackathonStatusToTag;
   dates: {
     startDate: string;
@@ -43,6 +44,7 @@ export interface HackathonCardPort<C extends ElementType> extends Partial<Varian
     startTime: string;
   };
   showCta?: boolean;
+  displayCountHasTag?: boolean;
 }
 
 export interface HackathonCardMiniPort<C extends ElementType> extends Partial<Variants> {

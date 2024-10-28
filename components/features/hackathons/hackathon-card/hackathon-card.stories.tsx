@@ -40,6 +40,9 @@ const defaultPort: HackathonCardPort<"div"> = {
   classNames: {
     base: "w-full",
   },
+  subscriberCount: 240,
+  openIssueCount: 23,
+  issueCount: 147,
 };
 
 const closedPort: HackathonCardPort<"div"> = {
