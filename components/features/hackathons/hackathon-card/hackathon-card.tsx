@@ -28,12 +28,13 @@ function HackathonCardStatus({
   openIssueCount,
   issueCount,
   adaptMapStatusToTag = mapHackathonStatusToTag,
+  displayCountHasTag,
 }: HackathonCardStatusProps) {
   const { tagIcon, tagText } = adaptMapStatusToTag(status);
 
   if (!status) return null;
 
-  if (status === "live" && (subscriberCount || (openIssueCount && issueCount))) {
+  if (!displayCountHasTag) {
     return (
       <>
         <div className="hidden items-center gap-3 sm:flex">
@@ -117,6 +118,7 @@ export function HackathonCard<C extends ElementType = "div">({
   adaptMapStatusToTag = mapHackathonStatusToTag,
   dates,
   showCta = true,
+  displayCountHasTag,
 }: HackathonCardPort<C>) {
   const Component = slug ? BaseLink : "article";
   const paperHtmlProps = slug
@@ -162,6 +164,7 @@ export function HackathonCard<C extends ElementType = "div">({
             openIssueCount={openIssueCount}
             issueCount={issueCount}
             adaptMapStatusToTag={adaptMapStatusToTag}
+            displayCountHasTag={displayCountHasTag}
           />
         </div>
 
@@ -225,6 +228,35 @@ export function HackathonCard<C extends ElementType = "div">({
                 classNames={{ base: "flex sm:hidden" }}
               />
             </>
+          ) : null}
+        </div>
+
+        <div
+          className={cn("flex items-center gap-1 sm:hidden", {
+            "sm:flex": displayCountHasTag,
+          })}
+        >
+          {subscriberCount ? (
+            <TagIcon color="blue" style="outline" icon={{ remixName: "ri-user-3-line" }} classNames={{ base: "h-fit" }}>
+              <Translate
+                token="v2.features.hackathonCard.tags.applicants"
+                params={{
+                  subscriberCount,
+                }}
+              />
+            </TagIcon>
+          ) : null}
+
+          {openIssueCount && issueCount ? (
+            <TagIcon color="blue" style="outline" icon={{ remixName: "ri-code-line" }} classNames={{ base: "h-fit" }}>
+              <Translate
+                token="v2.features.hackathonCard.tags.issues"
+                params={{
+                  openIssueCount,
+                  issueCount,
+                }}
+              />
+            </TagIcon>
           ) : null}
         </div>
 
