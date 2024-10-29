@@ -5,6 +5,7 @@ export namespace TPayoutForm {
     optimismAddress?: string;
     aptosAddress?: string;
     stellarAccountId?: string;
+    nearAccountId?: string;
     bankAccount: {
       number?: string;
       bic?: string;

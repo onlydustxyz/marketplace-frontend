@@ -128,6 +128,23 @@ export function PayoutForm() {
         )}
       />
 
+      <Controller
+        name="nearAccountId"
+        control={control}
+        render={({ field, fieldState }) => (
+          <Input
+            {...field}
+            {...fieldState}
+            isInvalid={!!fieldState.error}
+            errorMessage={fieldState.error?.message ? <Translate token={fieldState.error.message} /> : null}
+            isInvalidFromBackend={data?.missingNearWallet}
+            label={T("v2.pages.settings.billing.payout.wallets.near.label")}
+            placeholder={T("v2.pages.settings.billing.payout.wallets.near.placeholder")}
+            description={<Currencies currencies={[Money.Static.Currency.NEAR]} />}
+          />
+        )}
+      />
+
       <Flex className="flex-col gap-4 md:flex-row">
         <Controller
           name="bankAccount.number"

@@ -31,6 +31,9 @@
         "stellar": {
           "invalid": "Invalid Stellar wallet address"
         },
+        "near": {
+          "invalid": "Invalid Near wallet address"
+        },
         "sepa": {
           "iban": {
             "required": "IBAN is required when BIC is provided"

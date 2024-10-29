@@ -21,6 +21,10 @@
       "label": "Stellar wallet address",
       "placeholder": "Stellar wallet adress"
     },
+    "near": {
+      "label": "Near wallet address",
+      "placeholder": "Near wallet adress"
+    },
     "sepa": {
       "iban": {
         "label": "Account number",

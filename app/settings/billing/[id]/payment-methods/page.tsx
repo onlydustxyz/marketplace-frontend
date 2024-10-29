@@ -27,6 +27,7 @@ const INVALID_STARKNET_ADDRESS = "invalidStarknetAddress";
 const INVALID_OPTIMISM_ADDRESS = "invalidOptimismAddress";
 const INVALID_APTOS_ADDRESS = "invalidAptosAddress";
 const INVALID_STELLAR_ACCOUNT_ID = "invalidStellarAccountId";
+const INVALID_NEAR_ACCOUNT_ID = "invalidNearAccountId";
 const IBAN_IS_REQUIRED = "ibanIsRequired";
 const BIC_IS_REQUIRED = "bicIsRequired";
 
@@ -36,6 +37,7 @@ type KeyType =
   | typeof INVALID_OPTIMISM_ADDRESS
   | typeof INVALID_APTOS_ADDRESS
   | typeof INVALID_STELLAR_ACCOUNT_ID
+  | typeof INVALID_NEAR_ACCOUNT_ID
   | typeof IBAN_IS_REQUIRED
   | typeof BIC_IS_REQUIRED;
 
@@ -45,6 +47,7 @@ const keys: Record<KeyType, Key> = {
   [INVALID_OPTIMISM_ADDRESS]: "v2.commons.form.errors.wallets.optimism.invalid",
   [INVALID_APTOS_ADDRESS]: "v2.commons.form.errors.wallets.aptos.invalid",
   [INVALID_STELLAR_ACCOUNT_ID]: "v2.commons.form.errors.wallets.stellar.invalid",
+  [INVALID_NEAR_ACCOUNT_ID]: "v2.commons.form.errors.wallets.near.invalid",
   [IBAN_IS_REQUIRED]: "v2.commons.form.errors.wallets.sepa.iban.required",
   [BIC_IS_REQUIRED]: "v2.commons.form.errors.wallets.sepa.bic.required",
 };
@@ -66,6 +69,7 @@ const formSchema = z
     stellarAccountId: z
       .union([z.string().regex(REGEX.stellarAccountId, keys.invalidStellarAccountId), z.string().length(0)])
       .optional(),
+    nearAccountId: z.string().optional(),
     bankAccount: z.object({
       number: z.string().optional(),
       bic: z.string().optional(),
