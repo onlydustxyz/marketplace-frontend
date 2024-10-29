@@ -45,7 +45,6 @@ class MoneyClass implements IMoneyClass {
 
     /** need this to have fixed decimal places for compact notation */
     const maximumFractionDigits = notation === "compact" ? 1 : Math.min(currency?.decimals, 20);
-    console.log("-------maximumFractionDigits-------", maximumFractionDigits);
 
     return new Intl.NumberFormat(locale, {
       maximumFractionDigits,
