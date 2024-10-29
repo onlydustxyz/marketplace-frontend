@@ -5,12 +5,14 @@ interface Wallets {
   optimism?: string;
   aptos?: string;
   starknet?: string;
+  near?: string;
+  stellar?: string;
   bankAccount?: {
     bic?: string;
     number?: string;
   };
 }
-type Network = "SEPA" | "ETHEREUM" | "OPTIMISM" | "APTOS" | "STARKNET" | "STELLAR";
+type Network = "SEPA" | "ETHEREUM" | "OPTIMISM" | "APTOS" | "STARKNET" | "STELLAR" | "NEAR";
 interface IuseMatchNetworkAndWallet {
   wallets: Wallets;
   networks: Array<Network | undefined>;
@@ -67,6 +69,20 @@ export const useMatchNetworkAndWallet = ({
       matchWallet["STARKNET"] = {
         network: "STARKNET",
         wallet: wallets.starknet,
+      };
+    }
+
+    if (networks.includes("STELLAR")) {
+      matchWallet["STELLAR"] = {
+        network: "STELLAR",
+        wallet: wallets.stellar,
+      };
+    }
+
+    if (networks.includes("NEAR")) {
+      matchWallet["NEAR"] = {
+        network: "NEAR",
+        wallet: wallets.near,
       };
     }
 

@@ -5,7 +5,8 @@ import { UseGetBillingProfilePayout } from "src/api/BillingProfiles/queries";
 import { TPayoutForm } from "./form.types";
 
 export function formatToData(data: UseGetBillingProfilePayout): TPayoutForm.Data {
-  const { ethWallet, starknetAddress, optimismAddress, aptosAddress, stellarAccountId, bankAccount } = data;
+  const { ethWallet, starknetAddress, optimismAddress, aptosAddress, stellarAccountId, bankAccount, nearAccountId } =
+    data;
 
   return {
     ethWallet: ethWallet ?? "",
@@ -13,6 +14,7 @@ export function formatToData(data: UseGetBillingProfilePayout): TPayoutForm.Data
     optimismAddress: optimismAddress ?? "",
     aptosAddress: aptosAddress ?? "",
     stellarAccountId: stellarAccountId ?? "",
+    nearAccountId: nearAccountId ?? "",
     bankAccount: {
       number: bankAccount?.number ? IBANParser.printFormat(bankAccount?.number) : "",
       bic: bankAccount?.bic ?? "",
@@ -21,7 +23,8 @@ export function formatToData(data: UseGetBillingProfilePayout): TPayoutForm.Data
 }
 
 export function formatToSchema(data: TPayoutForm.Data) {
-  const { ethWallet, starknetAddress, optimismAddress, aptosAddress, stellarAccountId, bankAccount } = data;
+  const { ethWallet, starknetAddress, optimismAddress, aptosAddress, stellarAccountId, bankAccount, nearAccountId } =
+    data;
   const emptyStringToUndefined = (value?: string) => (value === "" ? undefined : value);
   const number = emptyStringToUndefined(bankAccount?.number);
   const bic = emptyStringToUndefined(bankAccount?.bic);
@@ -31,6 +34,7 @@ export function formatToSchema(data: TPayoutForm.Data) {
     optimismAddress: emptyStringToUndefined(optimismAddress),
     aptosAddress: emptyStringToUndefined(aptosAddress),
     stellarAccountId: emptyStringToUndefined(stellarAccountId),
+    nearAccountId: emptyStringToUndefined(nearAccountId),
     ...(number && bic
       ? {
           bankAccount: {

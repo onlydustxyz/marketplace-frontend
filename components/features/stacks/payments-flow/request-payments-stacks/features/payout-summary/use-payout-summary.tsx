@@ -25,6 +25,8 @@ export function usePayoutSummary({ billingProfileId, rewards }: TPayoutSummary.U
       optimism: payoutInfo?.optimismAddress,
       aptos: payoutInfo?.aptosAddress,
       starknet: payoutInfo?.starknetAddress,
+      near: payoutInfo?.nearAccountId,
+      stellar: payoutInfo?.stellarAccountId,
     },
     networks: rewards.map(reward => reward.networks).flat(),
   });

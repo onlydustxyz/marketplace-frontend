@@ -44,7 +44,7 @@ class MoneyClass implements IMoneyClass {
     const { locale = "en-US", notation } = options || {};
 
     /** need this to have fixed decimal places for compact notation */
-    const maximumFractionDigits = notation === "compact" ? 1 : currency?.decimals;
+    const maximumFractionDigits = notation === "compact" ? 1 : Math.min(currency?.decimals, 20);
 
     return new Intl.NumberFormat(locale, {
       maximumFractionDigits,
@@ -131,9 +131,10 @@ export namespace Money {
       USDC = "USDC",
       WLD = "WLD",
       XLM = "XLM",
+      NEAR = "NEAR",
     }
 
-    export const CurrencyOrder = ["USDC", "USD", "ETH", "STRK", "OP", "APT", "LORDS", "WLD", "XLM"];
+    export const CurrencyOrder = ["USDC", "USD", "ETH", "STRK", "OP", "APT", "LORDS", "WLD", "XLM", "NEAR"];
   }
 
   export type Currency = components["schemas"]["ShortCurrencyResponse"];
