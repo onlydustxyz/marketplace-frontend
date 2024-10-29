@@ -2,6 +2,7 @@ import apt from "public/images/currencyStatic/apt.png";
 import eth from "public/images/currencyStatic/eth.png";
 import eur from "public/images/currencyStatic/eur.png";
 import lords from "public/images/currencyStatic/lords.png";
+import near from "public/images/currencyStatic/near.png";
 import op from "public/images/currencyStatic/op.png";
 import strk from "public/images/currencyStatic/strk.png";
 import usd from "public/images/currencyStatic/usd.png";
@@ -80,6 +81,13 @@ export const MoneyStatic: { [key: string]: Money.Currency } = {
     decimals: 7,
     logoUrl: xlm.src,
     name: "Stellar",
+  },
+  NEAR: {
+    code: "NEAR",
+    id: "",
+    decimals: 24,
+    logoUrl: near.src,
+    name: "Near",
   },
 };
 
