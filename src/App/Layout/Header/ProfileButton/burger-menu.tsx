@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useEcosystemGuard } from "utils/guards/ecosystem-guard.hooks";
 import { useProgramGuard } from "utils/guards/program-guard.hooks";
 
 import { useStackFeedback } from "src/App/Stacks/Stacks";
@@ -30,6 +31,7 @@ export function BurgerMenu() {
   const { handleLogout } = useLogout();
   const [openFeedback] = useStackFeedback();
   const { programs } = useProgramGuard();
+  const { ecosystems } = useEcosystemGuard();
   function handleFeedback() {
     setPanelOpen(false);
     openFeedback();
@@ -43,7 +45,7 @@ export function BurgerMenu() {
 
       <SidePanel withBackdrop open={panelOpen} setOpen={setPanelOpen} hasCloseButton={false} placement="bottom">
         <div className="flex flex-col divide-y divide-greyscale-50/8 bg-whiteFakeOpacity-5 p-3 font-walsheim text-sm">
-          {githubUserId || programs.length ? (
+          {githubUserId || programs.length || ecosystems.length ? (
             <div>
               {githubUserId ? (
                 <BaseLink
@@ -74,7 +76,7 @@ export function BurgerMenu() {
                 </BaseLink>
               ) : null}
 
-              {programs.length ? (
+              {programs.length || ecosystems.length ? (
                 <BaseLink
                   href={`${process.env.NEXT_PUBLIC_SAAS_URL}/programs`}
                   onClick={() => setPanelOpen(false)}
