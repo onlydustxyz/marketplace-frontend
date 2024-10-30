@@ -14,6 +14,7 @@ describe("formatToData", () => {
       optimismAddress: "0x789",
       aptosAddress: "0xabc",
       stellarAccountId: "GDEF4",
+      nearAccountId: "GDEF5",
       bankAccount: {
         number: "DE89 3704 0044 0532 0130 00",
         bic: "COLSDE33",
@@ -26,6 +27,7 @@ describe("formatToData", () => {
       optimismAddress: "0x789",
       aptosAddress: "0xabc",
       stellarAccountId: "GDEF4",
+      nearAccountId: "GDEF5",
       bankAccount: {
         number: "DE89 3704 0044 0532 0130 00",
         bic: "COLSDE33",
@@ -47,6 +49,7 @@ describe("formatToData", () => {
       optimismAddress: "",
       aptosAddress: "",
       stellarAccountId: "",
+      nearAccountId: "",
       bankAccount: {
         number: "",
         bic: "",
@@ -66,6 +69,7 @@ describe("formatToSchema", () => {
       optimismAddress: "0x789",
       aptosAddress: "0xabc",
       stellarAccountId: "GDEF4",
+      nearAccountId: "GDEF5",
       bankAccount: {
         number: "DE89 3704 0044 0532 0130 00",
         bic: "COLSDE33",
@@ -78,6 +82,7 @@ describe("formatToSchema", () => {
       optimismAddress: "0x789",
       aptosAddress: "0xabc",
       stellarAccountId: "GDEF4",
+      nearAccountId: "GDEF5",
       bankAccount: {
         number: "DE89 3704 0044 0532 0130 00",
         bic: "COLSDE33",
@@ -95,6 +100,7 @@ describe("formatToSchema", () => {
       optimismAddress: "",
       aptosAddress: "",
       stellarAccountId: "",
+      nearAccountId: "",
       bankAccount: {
         number: "",
         bic: "",
@@ -107,6 +113,7 @@ describe("formatToSchema", () => {
       optimismAddress: undefined,
       aptosAddress: undefined,
       stellarAccountId: undefined,
+      nearAccountId: undefined,
     };
 
     const result = formatToSchema(formattedData);
