@@ -7,7 +7,7 @@
   },
   "button": "Explore",
   "applicants": "Applicants",
-  "issuesOpen": "Issues open",
+  "issuesOpen": "Open issues",
   "tags": {
     "applicants": "__subscriberCount__ applicants",
     "issues": "__openIssueCount__/__issueCount__ issues"
