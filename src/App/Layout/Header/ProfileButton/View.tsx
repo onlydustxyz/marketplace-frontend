@@ -1,5 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, PropsWithChildren, useState } from "react";
+import { useEcosystemGuard } from "utils/guards/ecosystem-guard.hooks";
 import { useProgramGuard } from "utils/guards/program-guard.hooks";
 
 import { useStackFeedback } from "src/App/Stacks/Stacks";
@@ -53,6 +54,7 @@ export function View({ avatarUrl, login, labelToken, redirection, errorColor, er
   const { handleLogout } = useLogout();
   const [openFeedback] = useStackFeedback();
   const { programs } = useProgramGuard();
+  const { ecosystems } = useEcosystemGuard();
 
   return (
     <div className="relative">
@@ -133,7 +135,7 @@ export function View({ avatarUrl, login, labelToken, redirection, errorColor, er
                 </MenuItem>
               </BaseLink>
 
-              {programs.length ? (
+              {programs.length || ecosystems.length ? (
                 <BaseLink href={`${process.env.NEXT_PUBLIC_SAAS_URL}/programs`}>
                   <MenuItem>
                     <Icon remixName="ri-service-line" size={20} />
