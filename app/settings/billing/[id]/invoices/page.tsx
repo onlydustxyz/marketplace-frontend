@@ -38,7 +38,13 @@ function InvoicesPage() {
     fetchNextPage,
     isFetchingNextPage,
   } = BillingProfilesApi.queries.useBillingProfileInvoices({
-    params: { billingProfileId: id },
+    params: {
+      billingProfileId: id,
+      queryParams: {
+        sort: "CREATED_AT",
+        direction: "DESC",
+      },
+    },
   });
   const {
     data: downloadedInvoice,
