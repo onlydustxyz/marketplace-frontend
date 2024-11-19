@@ -102,7 +102,7 @@
       "requirement": "Informations required on your invoice for acceptance:",
       "rule_1": "Date of issuance",
       "rule_2": "Your legal information (Name, address, country, VAT Number if in UE)",
-      "rule_3": "The invoice must be issued to WAGMI , 54 rue du Faubourg Montmartre 75009 PARIS, France, VAT Number : FR 26 908233638",
+      "rule_3": "The invoice must be issued to WAGMI , 60 rue François 1er 75008 Paris, France, VAT Number : FR 26 908233638",
       "rule_4": "Reward date, Reward ID number, name of the project for each reward",
       "rule_5": "Your invoice should be issued in $ with the following mention: “[number] [type of tokens] received and accepted as payment for this invoice.”"
     },

@@ -49,8 +49,8 @@ export function MandateDetailStack() {
           <p>THIS INVOICING MANDATE AGREEMENT (the &quot;Agreement&quot;) is made between:</p>
           <p>
             1. Wagmi SAS, a French simplified joint stock company, registered with the Register of Trade and Companies
-            of Paris under number 908 233 638, with registered offices located at 54 rue du Faubourg Montmartre 75009
-            PARIS, France, represented by Gregoire Gambatto, CEO, duly authorized for the purpose hereof
+            of Paris under number 908 233 638, with registered offices located at 60 rue François 1er 75008 Paris,
+            represented by Gregoire Gambatto, CEO, duly authorized for the purpose hereof
           </p>
           <p>hereinafter referred to as the &quot;Wagmi&quot; or the &quot;Company&quot;,</p>
           <p>And :</p>
