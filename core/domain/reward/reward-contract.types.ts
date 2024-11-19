@@ -14,7 +14,7 @@ export type GetRewardsModel = Omit<GetRewardsResponse, "rewards"> & {
   rewards: RewardListItemInterface[];
 };
 
-type GetRewardsQueryParams = operations["getRewards"]["parameters"]["query"]["queryParams"];
+type GetRewardsQueryParams = operations["getRewards_1"]["parameters"]["query"]["queryParams"];
 
 export type GetRewardsPortParams = HttpClientParameters<{
   QueryParams: GetRewardsQueryParams;
