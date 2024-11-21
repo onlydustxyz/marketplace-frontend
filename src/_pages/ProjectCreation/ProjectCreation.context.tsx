@@ -53,6 +53,7 @@ type CreateProject = {
   installedRepos: number[];
   organizations: UseGithubOrganizationsResponse[];
   organizationsLoading: boolean;
+  isSubmitting: boolean;
   PoolingFeedback: React.ReactElement;
   ecosystems: TSelectAutocomplete.Item[];
   projectCategories: TSelectAutocomplete.Item[];
@@ -76,6 +77,7 @@ export const CreateProjectContext = createContext<CreateProject>({
   projectCategories: [],
   organizations: [],
   organizationsLoading: false,
+  isSubmitting: false,
   PoolingFeedback: <></>,
   helpers: {
     saveInSession: () => null,
@@ -334,6 +336,7 @@ export function CreateProjectProvider({
         organizationsLoading: isLoading && !organizationsData?.length,
         organizations: (organizationsData || []).sort((a, b) => a.login.localeCompare(b.login)),
         PoolingFeedback,
+        isSubmitting: restCreateProjectMutation.isPending || form.formState.isSubmitting,
         helpers: {
           saveInSession: onSaveInSession,
           goTo,
