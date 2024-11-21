@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { projectsCategoriesApiClient } from "api-client/resources/project-categories";
+import { bootstrap } from "core/bootstrap";
 import { uniqWith } from "lodash";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createContext, useEffect, useMemo, useRef, useState } from "react";
@@ -26,7 +27,6 @@ import { NEXT_ROUTER } from "constants/router";
 import { useIntl } from "hooks/translate/use-translate";
 
 import { useProjectDetailsLastAddedRepoStorage } from "../hooks/useProjectDetailsStorage";
-import { ConfirmationModal } from "./components/ConfirmationModal/ConfirmationModal";
 import { EditPanelProvider } from "./components/Panel/context";
 import { useEditValidationSchema } from "./hooks/useValidationSchema";
 
@@ -96,6 +96,7 @@ const SESSION_KEY = "edit-project-";
 
 export function EditProvider({ children, project }: EditContextProps) {
   const { T } = useIntl();
+  const projectStoragePort = bootstrap.getProjectStoragePortForClient();
 
   const validationSchema = useEditValidationSchema();
   const lastAddedRepoStorage = useProjectDetailsLastAddedRepoStorage(project.slug);
@@ -299,18 +300,26 @@ export function EditProvider({ children, project }: EditContextProps) {
         formStorage.removeValue();
         showToaster(T("form.toast.success"));
         clearSession();
+        form.reset();
 
         // Replace the current path on the history stack if different
 
         if (data.projectSlug !== project.slug) {
-          const newPathname = NEXT_ROUTER.projects.details.edit(data.projectSlug);
+          const newPathname = NEXT_ROUTER.projects.details.root(data.projectSlug);
 
           // Navigate before invalidating queries so the new data can use the updated params
-          router.replace(newPathname, { scroll: false });
+          router.push(newPathname);
 
           queryClient.invalidateQueries({ queryKey: MeApi.tags.all });
+          await queryClient.invalidateQueries({
+            queryKey: projectStoragePort.getProjectBySlug({ pathParams: { slug: data.projectSlug } }).tag,
+          });
+        } else {
+          await queryClient.invalidateQueries({
+            queryKey: projectStoragePort.getProjectBySlug({ pathParams: { slug: data.projectSlug } }).tag,
+          });
+          router.push(NEXT_ROUTER.projects.details.root(project.slug));
         }
-        queryClient.invalidateQueries({ queryKey: ProjectApi.tags.detail_by_slug(data.projectSlug) });
       },
     },
   });
@@ -378,7 +387,6 @@ export function EditProvider({ children, project }: EditContextProps) {
         <form onSubmit={form.handleSubmit(onSubmit)} className="h-full overflow-hidden">
           {children}
         </form>
-        <ConfirmationModal />
       </EditPanelProvider>
     </EditContext.Provider>
   );
