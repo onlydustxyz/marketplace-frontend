@@ -1,12 +1,12 @@
 "use client";
 
+import { ProjectReactQueryAdapter } from "core/application/react-query-adapter/project";
 import { useParams, useSearchParams } from "next/navigation";
 import { PropsWithChildren, useContext, useEffect, useMemo, useState } from "react";
 import { useFormState } from "react-hook-form";
 import { useMediaQuery } from "usehooks-ts";
 
 import ErrorFallback from "src/ErrorFallback";
-import ProjectApi from "src/api/Project";
 import Button, { ButtonOnBackground, ButtonSize, ButtonType } from "src/components/Button";
 import Card from "src/components/Card";
 import { FormStatus } from "src/components/FormStatus/FormStatus";
@@ -193,8 +193,8 @@ export default function ProjectEdition() {
   });
 
   const { slug = "" } = useParams<{ slug: string }>();
-  const { data, isLoading, isError, isRefetching } = ProjectApi.queries.useGetProjectBySlug({
-    params: { slug },
+  const { data, isLoading, isError, isRefetching } = ProjectReactQueryAdapter.client.useGetProjectBySlug({
+    pathParams: { slug },
     options: {
       retry: 1,
       refetchOnWindowFocus,
