@@ -12,6 +12,7 @@ import { FieldInput } from "src/components/New/Field/Input";
 import { FieldSwitch } from "src/components/New/Field/Switch";
 import { FieldTextarea } from "src/components/New/Field/Textarea";
 import { Flex } from "src/components/New/Layout/Flex";
+import { Spinner } from "src/components/Spinner/Spinner";
 import CheckLine from "src/icons/CheckLine";
 import InformationLine from "src/icons/InformationLine";
 
@@ -28,6 +29,7 @@ export const ProjectInformationsPage = () => {
     form,
     ecosystems,
     projectCategories,
+    isSubmitting,
     helpers: { prev },
   } = useContext(CreateProjectContext);
   const suggested = form?.watch("categorySuggestions") || [];
@@ -52,10 +54,11 @@ export const ProjectInformationsPage = () => {
         <Button
           htmlType="submit"
           onBackground={ButtonOnBackground.Blue}
-          disabled={!form.formState?.isValid || form.formState.isSubmitting}
+          disabled={!form.formState?.isValid || isSubmitting}
           className="w-full md:w-auto"
         >
-          <CheckLine className="-ml-1 text-2xl" /> {T("common.publish")}
+          {isSubmitting ? <Spinner /> : <CheckLine className="-ml-1 text-2xl" />}
+          {T("common.publish")}
         </Button>
       }
       prev={prev}
