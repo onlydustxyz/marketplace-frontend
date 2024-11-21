@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { projectsCategoriesApiClient } from "api-client/resources/project-categories";
+import { bootstrap } from "core/bootstrap";
 import { uniqWith } from "lodash";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createContext, useEffect, useMemo, useRef, useState } from "react";
@@ -95,6 +96,7 @@ const SESSION_KEY = "edit-project-";
 
 export function EditProvider({ children, project }: EditContextProps) {
   const { T } = useIntl();
+  const projectStoragePort = bootstrap.getProjectStoragePortForClient();
 
   const validationSchema = useEditValidationSchema();
   const lastAddedRepoStorage = useProjectDetailsLastAddedRepoStorage(project.slug);
@@ -298,6 +300,7 @@ export function EditProvider({ children, project }: EditContextProps) {
         formStorage.removeValue();
         showToaster(T("form.toast.success"));
         clearSession();
+        form.reset();
 
         // Replace the current path on the history stack if different
 
@@ -308,9 +311,13 @@ export function EditProvider({ children, project }: EditContextProps) {
           router.push(newPathname);
 
           queryClient.invalidateQueries({ queryKey: MeApi.tags.all });
-          queryClient.invalidateQueries({ queryKey: ProjectApi.tags.detail_by_slug(data.projectSlug) });
+          await queryClient.invalidateQueries({
+            queryKey: projectStoragePort.getProjectBySlug({ pathParams: { slug: data.projectSlug } }).tag,
+          });
         } else {
-          queryClient.invalidateQueries({ queryKey: ProjectApi.tags.detail_by_slug(data.projectSlug) });
+          await queryClient.invalidateQueries({
+            queryKey: projectStoragePort.getProjectBySlug({ pathParams: { slug: data.projectSlug } }).tag,
+          });
           router.push(NEXT_ROUTER.projects.details.root(project.slug));
         }
       },
