@@ -26,7 +26,6 @@ import { NEXT_ROUTER } from "constants/router";
 import { useIntl } from "hooks/translate/use-translate";
 
 import { useProjectDetailsLastAddedRepoStorage } from "../hooks/useProjectDetailsStorage";
-import { ConfirmationModal } from "./components/ConfirmationModal/ConfirmationModal";
 import { EditPanelProvider } from "./components/Panel/context";
 import { useEditValidationSchema } from "./hooks/useValidationSchema";
 
@@ -303,14 +302,17 @@ export function EditProvider({ children, project }: EditContextProps) {
         // Replace the current path on the history stack if different
 
         if (data.projectSlug !== project.slug) {
-          const newPathname = NEXT_ROUTER.projects.details.edit(data.projectSlug);
+          const newPathname = NEXT_ROUTER.projects.details.root(data.projectSlug);
 
           // Navigate before invalidating queries so the new data can use the updated params
-          router.replace(newPathname, { scroll: false });
+          router.push(newPathname);
 
           queryClient.invalidateQueries({ queryKey: MeApi.tags.all });
+          queryClient.invalidateQueries({ queryKey: ProjectApi.tags.detail_by_slug(data.projectSlug) });
+        } else {
+          queryClient.invalidateQueries({ queryKey: ProjectApi.tags.detail_by_slug(data.projectSlug) });
+          router.push(NEXT_ROUTER.projects.details.root(project.slug));
         }
-        queryClient.invalidateQueries({ queryKey: ProjectApi.tags.detail_by_slug(data.projectSlug) });
       },
     },
   });
@@ -378,7 +380,6 @@ export function EditProvider({ children, project }: EditContextProps) {
         <form onSubmit={form.handleSubmit(onSubmit)} className="h-full overflow-hidden">
           {children}
         </form>
-        <ConfirmationModal />
       </EditPanelProvider>
     </EditContext.Provider>
   );

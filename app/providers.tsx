@@ -4,7 +4,6 @@ import { NextUIProvider } from "@nextui-org/react";
 import { ClientBootstrapProvider } from "core/bootstrap/client-bootstrap-context";
 import { InitBootstrapAuth } from "core/bootstrap/init-bootstrap-auth";
 import { InitBootstrapImpersonation } from "core/bootstrap/init-bootstrap-impersonation";
-import { NavigationStateProvider } from "providers/navigation-state/navigation-state";
 import { PropsWithChildren } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
@@ -37,21 +36,19 @@ export default function Providers({ children }: PropsWithChildren) {
               <QueryProvider>
                 <NextUIProvider>
                   <OnboardingProvider>
-                    <NavigationStateProvider>
-                      <StackProvider>
-                        <SidePanelStackProvider>
-                          <ToasterProvider>
-                            <ToasterAtom />
-                            <InitBootstrapImpersonation />
-                            <InitBootstrapAuth />
-                            <Stacks />
-                            <Toaster />
-                            {/* Hide tooltips on mobile */ isSm && <Tooltip />}
-                            {children}
-                          </ToasterProvider>
-                        </SidePanelStackProvider>
-                      </StackProvider>
-                    </NavigationStateProvider>
+                    <StackProvider>
+                      <SidePanelStackProvider>
+                        <ToasterProvider>
+                          <ToasterAtom />
+                          <InitBootstrapImpersonation />
+                          <InitBootstrapAuth />
+                          <Stacks />
+                          <Toaster />
+                          {/* Hide tooltips on mobile */ isSm && <Tooltip />}
+                          {children}
+                        </ToasterProvider>
+                      </SidePanelStackProvider>
+                    </StackProvider>
                   </OnboardingProvider>
                 </NextUIProvider>
               </QueryProvider>
