@@ -1,7 +1,6 @@
 "use client";
 
 import { useIsClient } from "usehooks-ts";
-import { isInMaintenanceMode } from "utils/maintenance/maintenance";
 
 import OnlyDustLogo from "src/App/Layout/Header/OnlyDustLogo";
 import OnlyDustTitle from "src/App/Layout/Header/OnlyDustTitle";
@@ -12,7 +11,6 @@ import { useImpersonation } from "components/features/impersonation/use-imperson
 
 import { NEXT_ROUTER } from "constants/router";
 
-import { useMatchPath } from "hooks/router/useMatchPath";
 import { useIntl } from "hooks/translate/use-translate";
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
@@ -31,14 +29,6 @@ function HeaderClient() {
   const contributionsMenuItem = githubUserId ? T("v2.features.menu.contributions") : undefined;
   const applicationsMenuItem = githubUserId ? T("v2.features.menu.applications") : undefined;
   const rewardsMenuItem = githubUserId ? T("v2.features.menu.rewards") : undefined;
-
-  const isMatchMaintenance = useMatchPath(NEXT_ROUTER.maintenance, { exact: false });
-
-  const { inMaintenance } = isInMaintenanceMode();
-
-  if (isMatchMaintenance || inMaintenance) {
-    return null;
-  }
 
   return (
     <View

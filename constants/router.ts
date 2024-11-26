@@ -52,7 +52,6 @@ export const NEXT_ROUTER = {
     root: (githubLogin: string) => `/u/${githubLogin}`,
   },
   notFound: "/not-found",
-  maintenance: "/maintenance",
   hackathons: {
     root: "/hackathons",
     details: {
