@@ -144,7 +144,7 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
       filters.categories.length > 0 ? ["categorySlugs", filters.categories.map(({ value }) => value).join(",")] : null,
       filters.search ? ["search", filters.search] : null,
       filters.sorting ? ["sort", filters.sorting] : null,
-      hasGfiOrLiveHackathonIssues ? ["hasGfiOrLiveHackathonIssues", true] : null,
+      hasGfiOrLiveHackathonIssues ? ["hasGfiOrLiveHackathonIssues", hasGfiOrLiveHackathonIssues] : null,
     ].filter((param): param is string[] => Boolean(param));
 
     return params;
