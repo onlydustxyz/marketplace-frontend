@@ -1485,12 +1485,6 @@
       "refresh": "Refresh page",
       "title": "We've just crashed"
     },
-    "maintenance": {
-      "description": "We're hard at work to make OnlyDust better. Check back later!",
-      "visitButton": "Visit onlydust.com",
-      "title": "We're under maintenance",
-      "overtime": "Things are taking a little longer than expected... \uD83E\uDEE3 Thanks for your patience."
-    },
     "errorOccured": "An error just occurred, please try again. Contact us at contact@onlydust.xyz if the problem persists",
     "errorFetchingNamedItem": "An error occurred while fetching __item__",
     "loading": "Loading...",
