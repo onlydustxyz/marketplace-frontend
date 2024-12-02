@@ -333,6 +333,7 @@ export function EditProvider({ children, project }: EditContextProps) {
       moreInfos: (moreInfos || []).filter(info => info.url !== "").map(info => ({ url: info.url, value: info.value })),
       ecosystemIds: ecosystems?.map(ecosystem => `${ecosystem.id}`),
       categoryIds: projectCategories?.map(cat => `${cat.id}`),
+      contributorLabels: project.contributorLabels?.map(label => ({ name: label.name, id: label.id })) ?? [],
     }).then(() => {
       capture("project_information_changed");
     });
