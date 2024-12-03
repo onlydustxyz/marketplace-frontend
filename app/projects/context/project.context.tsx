@@ -5,6 +5,7 @@ import { createContext, useEffect, useMemo, useState } from "react";
 import { useDebounce } from "usehooks-ts";
 
 import ProjectApi from "src/api/Project";
+import { ProjectTypes } from "src/api/Project/types";
 import { useInfiniteBaseQueryProps } from "src/api/useInfiniteBaseQuery";
 
 import { NEXT_ROUTER } from "constants/router";
@@ -133,14 +134,17 @@ export function ProjectsContextProvider({ children }: TProjectContext.Props) {
   }, [searchParams]);
 
   const queryParams = useMemo(() => {
+    const filteredTags = filters.tags.filter(tag => tag !== ProjectTypes.Tags.HasGoodFirstIssues);
+    const hasGfiOrLiveHackathonIssues = filters.tags.includes(ProjectTypes.Tags.HasGoodFirstIssues);
+
     const params: useInfiniteBaseQueryProps["queryParams"] = [
-      filters.tags.length > 0 ? ["tags", filters.tags.join(",")] : null,
+      filteredTags.length > 0 ? ["tags", filteredTags.join(",")] : null,
       filters.languages.length > 0 ? ["languageSlugs", filters.languages.map(({ value }) => value).join(",")] : null,
       filters.ecosystems.length > 0 ? ["ecosystemSlugs", filters.ecosystems.map(({ value }) => value).join(",")] : null,
       filters.categories.length > 0 ? ["categorySlugs", filters.categories.map(({ value }) => value).join(",")] : null,
       filters.search ? ["search", filters.search] : null,
       filters.sorting ? ["sort", filters.sorting] : null,
-      filters.hasGoodFirstIssues ? ["hasGoodFirstIssues", filters.hasGoodFirstIssues] : null,
+      hasGfiOrLiveHackathonIssues ? ["hasGfiOrLiveHackathonIssues", hasGfiOrLiveHackathonIssues] : null,
     ].filter((param): param is string[] => Boolean(param));
 
     return params;
