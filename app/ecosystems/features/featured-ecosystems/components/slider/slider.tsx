@@ -94,7 +94,7 @@ export function Slider({ children }: TSlider.Props) {
       <div
         ref={sliderRef}
         className={cn(
-          "keen-slider !overflow-visible transition-all aspect-2.16/1 sm:!overflow-hidden sm:rounded-[32px] sm:outline sm:outline-[6px] sm:outline-card-border-medium sm:aspect-3.41/1",
+          "keen-slider transition-all aspect-2.16/1 sm:rounded-[32px] sm:outline sm:outline-[6px] sm:outline-card-border-medium sm:aspect-3.41/1",
           { "pointer-events-none opacity-0": !loaded }
         )}
       >

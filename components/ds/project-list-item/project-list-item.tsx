@@ -13,14 +13,13 @@ export function ProjectListItem({ project, className }: TProjectListItem.Props) 
     <BaseLink
       href={NEXT_ROUTER.projects.details.root(project.slug)}
       className={cn(
-        "group flex w-full max-w-full items-center gap-3 px-3 py-4 transition-all hover:bg-card-background-medium sm:gap-5 sm:px-5 sm:py-6",
+        "group flex w-full min-w-0 max-w-full items-center gap-3 px-3 py-4 transition-all hover:bg-card-background-medium sm:gap-5 sm:px-5 sm:py-6",
         className
       )}
     >
       <AvatarLabelled
         avatarProps={{ src: project.logoUrl, alt: project.name, size: "l", shape: "square" }}
         labelProps={{ title: project.name }}
-        className="col-span-3 flex-1"
       >
         <Typography variant="title-s" className={"truncate"}>
           {project.name}
