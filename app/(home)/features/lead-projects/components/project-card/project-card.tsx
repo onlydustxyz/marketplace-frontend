@@ -16,8 +16,6 @@ import tagMapping = ProjectConstants.tagMapping;
 
 export function ProjectCard({ data }: TProjectCard.Props) {
   const [open] = useStackProjectOverview();
-
-  console.log(data);
   return (
     <Card className="flex w-full flex-col gap-4 !p-4" background={"base"} onClick={() => open({ slug: data.slug })}>
       <div className="flex h-full flex-col justify-between gap-3">
