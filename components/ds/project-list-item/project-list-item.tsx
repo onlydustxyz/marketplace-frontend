@@ -20,6 +20,7 @@ export function ProjectListItem({ project, className }: TProjectListItem.Props) 
       <AvatarLabelled
         avatarProps={{ src: project.logoUrl, alt: project.name, size: "l", shape: "square" }}
         labelProps={{ title: project.name }}
+        className="flex-1"
       >
         <Typography variant="title-s" className={"truncate"}>
           {project.name}
