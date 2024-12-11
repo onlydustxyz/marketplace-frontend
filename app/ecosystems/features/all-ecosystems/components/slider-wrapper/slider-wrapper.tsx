@@ -20,7 +20,7 @@ export function SliderWrapper({ children }: TSliderWrapper.Props) {
   return (
     <div
       ref={sliderRef}
-      className={cn("keen-slider !overflow-visible transition-all sm:!overflow-hidden", {
+      className={cn("keen-slider transition-all", {
         "pointer-events-none opacity-0": !loaded,
       })}
     >

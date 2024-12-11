@@ -48,7 +48,10 @@ export function ProjectCard({ data }: TProjectCard.Props) {
           </Tag>
           <Tag>
             <Icon remixName={"ri-money-dollar-circle-line"} size={16} />
-            <Translate token={"v2.pages.home.leadProjects.budget"} params={{ count: data.remainingUsdBudget || 0 }} />
+            <Translate
+              token={"v2.pages.home.leadProjects.budget"}
+              params={{ count: data.remainingUsdBudget?.toFixed(2) || 0 }}
+            />
           </Tag>
         </div>
       </div>
