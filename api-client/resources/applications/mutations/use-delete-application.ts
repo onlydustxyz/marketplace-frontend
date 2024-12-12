@@ -6,6 +6,7 @@ import { ParametersInterfaceWithReactQuery } from "api-client/types/parameters-i
 import { bootstrap } from "core/bootstrap";
 
 import { PROJECT_TAGS } from "src/api/Project/tags";
+import { ME_TAGS } from "src/api/me/tags";
 
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
@@ -16,6 +17,8 @@ export function useDeleteApplication(
   const { mutation } = useReactQueryAdapter(deleteApplication(fetch), options);
   const queryClient = useQueryClient();
   const { githubUserId: applicantId } = useCurrentUser();
+  const projectStoragePort = bootstrap.getProjectStoragePortForClient();
+  const meStoragePort = bootstrap.getUserStoragePortForClient();
 
   return useMutation({
     ...mutation,
@@ -28,9 +31,18 @@ export function useDeleteApplication(
         queryKey: [ApplicationTags.get_all({ applicantId })],
         exact: false,
       });
-      const projectStoragePort = bootstrap.getProjectStoragePortForClient();
+
       await queryClient.invalidateQueries({
         queryKey: projectStoragePort.getProjectPublicIssues({ pathParams: { projectId } }).tag,
+        exact: false,
+      });
+
+      await queryClient.invalidateQueries({
+        queryKey: meStoragePort.getMe({}).tag,
+        exact: false,
+      });
+      await queryClient.invalidateQueries({
+        queryKey: ME_TAGS.all,
         exact: false,
       });
     },

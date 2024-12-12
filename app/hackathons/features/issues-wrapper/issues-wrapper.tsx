@@ -79,6 +79,7 @@ export function IssuesWrapper({ projectId, hackathonId, queryParams, Wrapper = F
         {flatIssues.map(issue => (
           <CardIssue
             key={issue.id}
+            issueId={issue.id}
             title={issue.title}
             githubLink={issue.htmlUrl}
             status={issue.getApplicationStatus(user?.githubUserId ?? 0)}

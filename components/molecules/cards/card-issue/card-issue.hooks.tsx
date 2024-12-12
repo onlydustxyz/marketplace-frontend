@@ -7,7 +7,9 @@ import { CardIssuePort } from "components/molecules/cards/card-issue/card-issue.
 type GetActionsProps = Pick<
   CardIssuePort<"div">,
   "applyActionProps" | "viewActionProps" | "assignedActionProps" | "status" | "assignee" | "githubUsername"
->;
+> & {
+  hasApplied: boolean;
+};
 type GetActionsReturn = ReactNode;
 
 const useAction = ({
@@ -17,7 +19,12 @@ const useAction = ({
   status = "open",
   assignee,
   githubUsername,
+  hasApplied,
 }: GetActionsProps): GetActionsReturn => {
+  if (hasApplied) {
+    return <Button {...viewActionProps} />;
+  }
+
   if (status === "open") {
     return <Button {...applyActionProps} />;
   }

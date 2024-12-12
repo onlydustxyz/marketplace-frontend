@@ -57,4 +57,5 @@ export interface CardIssuePort<C extends ElementType> {
   applicants?: Applicants[];
   applicantsCount?: number;
   githubUsername?: string;
+  issueId: number;
 }
