@@ -13,6 +13,8 @@ import { RemixIconsName } from "components/layout/icon/remix-icon-names.types";
 import { AvatarGroup } from "components/molecules/avatar-group";
 import { useCardIssue } from "components/molecules/cards/card-issue/card-issue.hooks";
 
+import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
+
 import { CardIssuePort } from "../../card-issue.types";
 import { CardIssueDefaultVariants } from "./default.variants";
 
@@ -71,9 +73,14 @@ export function CardIssueDefaultAdapter<C extends ElementType = "div">({
   applicantsCount,
   githubUsername,
   classNames,
+  issueId,
   ...htmlProps
 }: CardIssuePort<C>) {
   const slots = CardIssueDefaultVariants();
+
+  const { user } = useCurrentUser();
+
+  const hasApplied = Boolean(user?.pendingApplications?.find(application => application.issue?.id === issueId));
 
   const action = useCardIssue.useAction({
     applyActionProps,
@@ -82,6 +89,7 @@ export function CardIssueDefaultAdapter<C extends ElementType = "div">({
     status,
     assignee,
     githubUsername,
+    hasApplied,
   });
   const _createdAt = useCardIssue.useCreatedAt({ createdAt });
 

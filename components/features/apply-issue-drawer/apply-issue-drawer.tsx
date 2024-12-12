@@ -35,12 +35,13 @@ import { NEXT_ROUTER } from "constants/router";
 import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 export function ApplyIssueDrawer({ state }: TApplyIssueDrawer.Props) {
-  const [{ isOpen, issueId, applicationId }, setState] = state;
-  const hasApplied = Boolean(applicationId);
+  const [{ isOpen, issueId }, setState] = state;
+
   const [isOpenGrantPermission, setIsOpenGrantPermission] = useState(false);
   const { isAuthenticated } = useAuth0();
   const { capture } = usePosthog();
   const { user } = useCurrentUser();
+  const hasApplied = Boolean(user?.pendingApplications?.find(application => application.issue?.id === issueId));
   const router = useRouter();
   const [shouldDeleteGithubComment, setShouldDeleteGithubComment] = useState(false);
   const {

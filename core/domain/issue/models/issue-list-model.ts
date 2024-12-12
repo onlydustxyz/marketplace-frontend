@@ -1,15 +1,16 @@
 import { IssueApplicationStatus } from "core/domain/issue/models/issue.types";
+import { UserInterface } from "core/domain/user/models/user-model";
 
 import { components } from "src/__generated/api";
 
 export type GithubIssueListItemResponse = components["schemas"]["GithubIssuePageItemResponse"];
 
 export interface IssueListInterface extends GithubIssueListItemResponse {
-  getApplicationStatus(githubUserId: number): IssueApplicationStatus;
+  getApplicationStatus(pendingApplications: UserInterface["pendingApplications"]): IssueApplicationStatus;
   isAssigned(): boolean;
-  isUserApplied(githubUserId: number): boolean;
+  isUserApplied(pendingApplications: UserInterface["pendingApplications"]): boolean;
   getFirstAssignee(): GithubIssueListItemResponse["assignees"][0];
-  getCurrentUserApplicationId(githubUserId: number): string;
+  getCurrentUserApplicationId(pendingApplications: UserInterface["pendingApplications"]): string;
 }
 export class IssueList implements IssueListInterface {
   applicants!: GithubIssueListItemResponse["applicants"];
@@ -34,20 +35,20 @@ export class IssueList implements IssueListInterface {
     return this.assignees.length > 0;
   }
 
-  isUserApplied(githubUserId: number): boolean {
-    return this.applicants.some(applicant => applicant.githubUserId === githubUserId);
+  isUserApplied(pendingApplications: UserInterface["pendingApplications"]): boolean {
+    return pendingApplications?.some(application => application.issue?.id === this.id) ?? false;
   }
 
-  getCurrentUserApplicationId(githubUserId: number): string {
-    return this.applicants.find(applicant => applicant.githubUserId === githubUserId)?.applicationId ?? "";
+  getCurrentUserApplicationId(pendingApplications: UserInterface["pendingApplications"]): string {
+    return pendingApplications?.find(application => application.issue?.id === this.id)?.id ?? "";
   }
 
-  getApplicationStatus(githubUserId: number): IssueApplicationStatus {
+  getApplicationStatus(pendingApplications: UserInterface["pendingApplications"]): IssueApplicationStatus {
     if (this.isAssigned()) {
       return "assigned";
     }
 
-    if (this.isUserApplied(githubUserId)) {
+    if (this.isUserApplied(pendingApplications)) {
       return "applied";
     }
 
