@@ -2,8 +2,6 @@
 
 import { ProjectReactQueryAdapter } from "core/application/react-query-adapter/project";
 import { UserReactQueryAdapter } from "core/application/react-query-adapter/user";
-import { IssueListInterface } from "core/domain/issue/models/issue-list-model";
-import { AnyType } from "core/helpers/types";
 import { Fragment, useMemo } from "react";
 
 import { TIssuesWrapper } from "app/hackathons/features/issues-wrapper/issues-wrapper.types";
@@ -11,9 +9,7 @@ import { TIssuesWrapper } from "app/hackathons/features/issues-wrapper/issues-wr
 import { ApplyIssueDrawer } from "components/features/apply-issue-drawer/apply-issue-drawer";
 import { useApplyIssueDrawerState } from "components/features/apply-issue-drawer/apply-issue-drawer.hooks";
 import { Translate } from "components/layout/translate/translate";
-import { CardIssue, CardIssueLoading, CardIssuePort } from "components/molecules/cards/card-issue";
-
-import { NEXT_ROUTER } from "constants/router";
+import { CardIssue, CardIssueLoading } from "components/molecules/cards/card-issue";
 
 export function IssuesWrapper({ projectId, hackathonId, queryParams, Wrapper = Fragment }: TIssuesWrapper.Props) {
   const applyIssueDrawerState = useApplyIssueDrawerState();
@@ -33,20 +29,6 @@ export function IssuesWrapper({ projectId, hackathonId, queryParams, Wrapper = F
   });
 
   const flatIssues = useMemo(() => data?.pages.flatMap(({ issues }) => issues) ?? [], [data]);
-
-  function buildFirstAssignee(issue: IssueListInterface): CardIssuePort<AnyType>["assignee"] {
-    const firstAssignee = issue.getFirstAssignee();
-
-    if (firstAssignee) {
-      return {
-        avatar: { src: firstAssignee.avatarUrl },
-        name: firstAssignee.login,
-        href: NEXT_ROUTER.publicProfile.root(firstAssignee.login),
-      };
-    }
-
-    return undefined;
-  }
 
   if (isLoading) {
     return (
@@ -79,14 +61,15 @@ export function IssuesWrapper({ projectId, hackathonId, queryParams, Wrapper = F
         {flatIssues.map(issue => (
           <CardIssue
             key={issue.id}
+            issueId={issue.id}
             title={issue.title}
             githubLink={issue.htmlUrl}
-            status={issue.getApplicationStatus(user?.githubUserId ?? 0)}
+            status={issue.getApplicationStatus(user?.pendingApplications)}
             applyActionProps={{
               onClick: () =>
                 handleOpenDrawer({
                   issueId: issue.id,
-                  applicationId: issue.getCurrentUserApplicationId(user?.githubUserId ?? 0) ?? "",
+                  applicationId: issue.getCurrentUserApplicationId(user?.pendingApplications),
                   projectId,
                 }),
               children: <Translate token="v2.pages.hackathons.details.issues.card.apply" />,
@@ -95,7 +78,7 @@ export function IssuesWrapper({ projectId, hackathonId, queryParams, Wrapper = F
               onClick: () =>
                 handleOpenDrawer({
                   issueId: issue.id,
-                  applicationId: issue.getCurrentUserApplicationId(user?.githubUserId ?? 0) ?? "",
+                  applicationId: issue.getCurrentUserApplicationId(user?.pendingApplications),
                   projectId,
                 }),
               children: <Translate token="v2.pages.hackathons.details.issues.card.viewApplication" />,
@@ -128,8 +111,6 @@ export function IssuesWrapper({ projectId, hackathonId, queryParams, Wrapper = F
               name: applicant.login,
               avatarUrl: applicant.avatarUrl,
             }))}
-            assignee={buildFirstAssignee(issue)}
-            githubUsername={user?.login}
             applicantsCount={issue.applicants.length}
             tags={issue.labels.map(label => ({
               children: label.name,

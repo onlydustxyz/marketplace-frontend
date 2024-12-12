@@ -9,16 +9,12 @@ import { useForm } from "react-hook-form";
 import ProjectApi from "src/api/Project";
 import { FetchError } from "src/api/query.type";
 import { HttpStatusStrings } from "src/api/query.utils";
-import useMutationAlert from "src/api/useMutationAlert";
 
 import { ApplyIssuesPrefillLabels } from "components/features/apply-issue-drawer/apply-issue-drawer.constants";
 import { TApplyIssueDrawer } from "components/features/apply-issue-drawer/apply-issue-drawer.types";
 import { usePublicRepoScope } from "components/features/grant-permission/hooks/use-public-repo-scope";
 
-import { useIntl } from "hooks/translate/use-translate";
-
 export function useApplyIssueDrawer({ state }: Pick<TApplyIssueDrawer.Props, "state">) {
-  const { T } = useIntl();
   const [{ isOpen, issueId, applicationId = "", projectId }, setState] = state;
   const { getPermissions } = usePublicRepoScope({});
   const { slug = "" } = useParams<{ slug: string }>();
@@ -40,26 +36,11 @@ export function useApplyIssueDrawer({ state }: Pick<TApplyIssueDrawer.Props, "st
     options: { enabled: Boolean(applicationId) && isOpen },
   });
 
-  const { mutateAsync: createAsync, ...createApplication } = meApiClient.mutations.usePostMyApplication({
-    projectId: currentProjectId ?? "",
-  });
+  const { mutateAsync: createAsync, ...createApplication } = meApiClient.mutations.usePostMyApplication();
 
-  const { mutateAsync: deleteAsync, ...deleteApplication } = applicationsApiClient.mutations.useDeleteApplication(
-    {
-      pathParams: {
-        applicationId,
-      },
-    },
-    currentProjectId ?? ""
-  );
-
-  useMutationAlert({
-    mutation: createApplication,
-    success: {
-      message: T("v2.features.projects.applyIssueDrawer.toaster.createSuccess"),
-    },
-    error: {
-      default: true,
+  const { mutateAsync: deleteAsync, ...deleteApplication } = applicationsApiClient.mutations.useDeleteApplication({
+    pathParams: {
+      applicationId,
     },
   });
 
