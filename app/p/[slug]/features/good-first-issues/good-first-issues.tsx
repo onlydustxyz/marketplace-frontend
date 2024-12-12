@@ -61,8 +61,8 @@ export function GoodFirstIssues({ projectId }: TGoodFirstIssues.Props) {
                 setApplyIssueDrawerState({
                   isOpen: true,
                   issueId: issue.id,
-                  applicationId: issue.applicants.find(applicant => applicant.githubUserId === user?.githubUserId)
-                    ?.applicationId,
+                  applicationId:
+                    user?.pendingApplications?.find(application => application.issue?.id === issue.id)?.id ?? "",
                 });
               }}
             />
