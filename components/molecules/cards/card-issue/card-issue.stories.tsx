@@ -13,6 +13,7 @@ const defaultProps: CardIssuePort<"div"> = {
   title: "Fix UI Bug on Transaction History Page",
   tags: [{ children: "React" }, { children: "OD hack" }, { children: "GFI" }],
   applicantsCount: 10,
+  issueId: 123456,
   applyActionProps: {
     children: "Apply",
   },
