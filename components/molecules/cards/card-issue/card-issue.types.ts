@@ -10,13 +10,6 @@ interface ClassNames {
   base: string;
 }
 
-interface Assignee {
-  name: string;
-  avatar: AvatarPort;
-  onClick?: () => void;
-  href?: string;
-}
-
 interface Repo {
   name: string;
   href?: string;
@@ -50,12 +43,10 @@ export interface CardIssuePort<C extends ElementType> {
   viewActionProps?: ButtonPort<"button">;
   assignedActionProps?: ButtonPort<"button">;
   githubLink?: string;
-  assignee?: Assignee;
   createdAt?: Date;
   createdBy?: CreatedBy;
   repo?: Repo;
   applicants?: Applicants[];
   applicantsCount?: number;
-  githubUsername?: string;
   issueId: number;
 }

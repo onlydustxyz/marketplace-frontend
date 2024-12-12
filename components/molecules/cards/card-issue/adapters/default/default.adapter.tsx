@@ -62,7 +62,6 @@ export function CardIssueDefaultAdapter<C extends ElementType = "div">({
   viewActionProps,
   assignedActionProps,
   githubLink,
-  assignee,
   createdAt,
   repo,
   applicants,
@@ -71,7 +70,6 @@ export function CardIssueDefaultAdapter<C extends ElementType = "div">({
   status = "open",
   paperProps = {},
   applicantsCount,
-  githubUsername,
   classNames,
   issueId,
   ...htmlProps
@@ -87,8 +85,6 @@ export function CardIssueDefaultAdapter<C extends ElementType = "div">({
     viewActionProps,
     assignedActionProps,
     status,
-    assignee,
-    githubUsername,
     hasApplied,
   });
   const _createdAt = useCardIssue.useCreatedAt({ createdAt });

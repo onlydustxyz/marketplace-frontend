@@ -17,10 +17,6 @@ const defaultProps: CardIssuePort<"div"> = {
   applyActionProps: {
     children: "Apply",
   },
-  assignee: {
-    avatar: {},
-    name: "GithubLogin",
-  },
   viewActionProps: {
     children: "View application",
   },
