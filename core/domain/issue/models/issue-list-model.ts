@@ -1,4 +1,5 @@
 import { IssueApplicationStatus } from "core/domain/issue/models/issue.types";
+import { UserInterface } from "core/domain/user/models/user-model";
 
 import { components } from "src/__generated/api";
 
@@ -9,7 +10,7 @@ export interface IssueListInterface extends GithubIssueListItemResponse {
   isAssigned(): boolean;
   isUserApplied(githubUserId: number): boolean;
   getFirstAssignee(): GithubIssueListItemResponse["assignees"][0];
-  getCurrentUserApplicationId(githubUserId: number): string;
+  getCurrentUserApplicationId(pendingApplications: UserInterface["pendingApplications"]): string;
 }
 export class IssueList implements IssueListInterface {
   applicants!: GithubIssueListItemResponse["applicants"];
@@ -38,8 +39,8 @@ export class IssueList implements IssueListInterface {
     return this.applicants.some(applicant => applicant.githubUserId === githubUserId);
   }
 
-  getCurrentUserApplicationId(githubUserId: number): string {
-    return this.applicants.find(applicant => applicant.githubUserId === githubUserId)?.applicationId ?? "";
+  getCurrentUserApplicationId(pendingApplications: UserInterface["pendingApplications"]): string {
+    return pendingApplications?.find(application => application.issue?.id === this.id)?.id ?? "";
   }
 
   getApplicationStatus(githubUserId: number): IssueApplicationStatus {

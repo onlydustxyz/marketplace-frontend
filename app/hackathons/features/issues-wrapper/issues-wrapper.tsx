@@ -87,7 +87,7 @@ export function IssuesWrapper({ projectId, hackathonId, queryParams, Wrapper = F
               onClick: () =>
                 handleOpenDrawer({
                   issueId: issue.id,
-                  applicationId: issue.getCurrentUserApplicationId(user?.githubUserId ?? 0) ?? "",
+                  applicationId: issue.getCurrentUserApplicationId(user?.pendingApplications),
                   projectId,
                 }),
               children: <Translate token="v2.pages.hackathons.details.issues.card.apply" />,
@@ -96,7 +96,7 @@ export function IssuesWrapper({ projectId, hackathonId, queryParams, Wrapper = F
               onClick: () =>
                 handleOpenDrawer({
                   issueId: issue.id,
-                  applicationId: issue.getCurrentUserApplicationId(user?.githubUserId ?? 0) ?? "",
+                  applicationId: issue.getCurrentUserApplicationId(user?.pendingApplications),
                   projectId,
                 }),
               children: <Translate token="v2.pages.hackathons.details.issues.card.viewApplication" />,
