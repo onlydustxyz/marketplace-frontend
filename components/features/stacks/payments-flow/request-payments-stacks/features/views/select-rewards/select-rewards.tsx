@@ -16,6 +16,7 @@ import { ScrollView } from "components/layout/pages/scroll-view/scroll-view";
 import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
+import { Helper } from "components/molecules/helper";
 
 import { useBillingProfileById } from "hooks/billings-profiles/use-billing-profile/use-billing-profile";
 
@@ -104,6 +105,12 @@ export function SelectRewards({
             className="mb-4"
           />
           {profile?.data ? <ReadonlyBillingProfile billingProfile={profile?.data} /> : null}
+          <Helper
+            title={{ translate: { token: "v2.pages.stacks.request_payments.selectRewards.addressWarning.title" } }}
+            text={{ translate: { token: "v2.pages.stacks.request_payments.selectRewards.addressWarning.description" } }}
+            container={"danger"}
+            classNames={{ base: "mt-4" }}
+          />
           <PayoutSummary rewards={includedRewards} billingProfileId={billingProfileId} />
         </div>
         <div className="mb-3 flex w-full flex-row items-center justify-between px-3">
