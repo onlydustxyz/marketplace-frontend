@@ -26,6 +26,7 @@ export class IssueList implements IssueListInterface {
   repo!: GithubIssueListItemResponse["repo"];
   status!: GithubIssueListItemResponse["status"];
   title!: GithubIssueListItemResponse["title"];
+  commentCount!: GithubIssueListItemResponse["commentCount"];
 
   constructor(props: GithubIssueListItemResponse) {
     Object.assign(this, props);
