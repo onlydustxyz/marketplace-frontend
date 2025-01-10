@@ -61,6 +61,10 @@
       "aptos": "Aptos wallet address",
       "sepaAccount": "Account number",
       "sepaBic": "BIC / SWIFT"
+    },
+    "addressWarning": {
+      "title": "Warning",
+      "description": "Transfers to exchanges that do not support internal transactions may result in lost funds. If the recipient is not an exchange address, then you can ignore this warning"
     }
   },
   "invoiceSubmission": {
