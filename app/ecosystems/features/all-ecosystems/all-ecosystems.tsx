@@ -24,7 +24,7 @@ export async function AllEcosystems() {
             slug={ecosystem.slug}
             description={ecosystem.description}
             name={ecosystem.name}
-            projects={ecosystem.topProjects}
+            projects={ecosystem.topProjects || []}
             projectCount={ecosystem.projectCount}
             categories={[]}
           />
