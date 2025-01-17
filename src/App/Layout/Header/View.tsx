@@ -1,19 +1,15 @@
 "use client";
 
 import { useAuth0 } from "@auth0/auth0-react";
-import { useMemo } from "react";
-import { useMediaQuery } from "usehooks-ts";
-
-import MenuItem from "src/App/Layout/Header/MenuItem";
-import { viewportConfig } from "src/config";
-
 import { Link } from "components/ds/link/link";
-
 import { NEXT_ROUTER } from "constants/router";
-
 import { useBillingProfiles } from "hooks/billings-profiles/use-billing-profiles/use-billing-profiles";
 import { useMatchPath } from "hooks/router/useMatchPath";
 import { useIntl } from "hooks/translate/use-translate";
+import { useMemo } from "react";
+import MenuItem from "src/App/Layout/Header/MenuItem";
+import { viewportConfig } from "src/config";
+import { useMediaQuery } from "usehooks-ts";
 
 import { GithubStatusBanner } from "./GithubStatusBanner";
 import OnlyDustLogo from "./OnlyDustLogo";
@@ -85,7 +81,9 @@ export default function HeaderView({ menuItems, impersonating = false }: HeaderV
                   <MenuItem href={NEXT_ROUTER.ecosystems.root}>{menuItems[NEXT_ROUTER.ecosystems.root]}</MenuItem>
                 ) : null}
                 {menuItems[NEXT_ROUTER.hackathons.root] ? (
-                  <MenuItem href={NEXT_ROUTER.hackathons.root}>{menuItems[NEXT_ROUTER.hackathons.root]}</MenuItem>
+                  <MenuItem href={`${process.env.NEXT_PUBLIC_SAAS_URL}/hackathons`}>
+                    {menuItems[NEXT_ROUTER.hackathons.root]}
+                  </MenuItem>
                 ) : null}
                 {menuItems[NEXT_ROUTER.contributions.all] ? (
                   <MenuItem href={NEXT_ROUTER.contributions.all}>{menuItems[NEXT_ROUTER.contributions.all]}</MenuItem>
