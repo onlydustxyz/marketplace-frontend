@@ -85,7 +85,9 @@ export default function HeaderView({ menuItems, impersonating = false }: HeaderV
                   <MenuItem href={NEXT_ROUTER.ecosystems.root}>{menuItems[NEXT_ROUTER.ecosystems.root]}</MenuItem>
                 ) : null}
                 {menuItems[NEXT_ROUTER.hackathons.root] ? (
-                  <MenuItem href={NEXT_ROUTER.hackathons.root}>{menuItems[NEXT_ROUTER.hackathons.root]}</MenuItem>
+                  <MenuItem href={`${process.env.NEXT_PUBLIC_SAAS_URL}/hackathons`}>
+                    {menuItems[NEXT_ROUTER.hackathons.root]}
+                  </MenuItem>
                 ) : null}
                 {menuItems[NEXT_ROUTER.contributions.all] ? (
                   <MenuItem href={NEXT_ROUTER.contributions.all}>{menuItems[NEXT_ROUTER.contributions.all]}</MenuItem>

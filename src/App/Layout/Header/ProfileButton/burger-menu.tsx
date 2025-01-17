@@ -118,7 +118,7 @@ export function BurgerMenu() {
             </BaseLink>
 
             <BaseLink
-              href={NEXT_ROUTER.hackathons.root}
+              href={`${process.env.NEXT_PUBLIC_SAAS_URL}/hackathons`}
               onClick={() => setPanelOpen(false)}
               className="flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8"
             >
