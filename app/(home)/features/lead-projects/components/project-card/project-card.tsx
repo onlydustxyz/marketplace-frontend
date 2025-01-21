@@ -1,6 +1,3 @@
-import { useStackProjectOverview } from "src/App/Stacks/Stacks";
-import { ProjectConstants } from "src/api/Project/constants";
-
 import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
 import { IconTag } from "components/ds/icon-tag/icon-tag";
@@ -9,6 +6,8 @@ import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
+import { useStackProjectOverview } from "src/App/Stacks/Stacks";
+import { ProjectConstants } from "src/api/Project/constants";
 
 import { TProjectCard } from "./project-card.types";
 
@@ -32,7 +31,7 @@ export function ProjectCard({ data }: TProjectCard.Props) {
             ))}
           </Flex>
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-1 flex-col gap-2">
           <Typography variant="title-s">{data.name}</Typography>
           <Typography variant="body-s" className="text-spaceBlue-200">
             {data.shortDescription}
