@@ -1,3 +1,6 @@
+import { useStackProjectOverview } from "src/App/Stacks/Stacks";
+import { ProjectConstants } from "src/api/Project/constants";
+
 import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
 import { IconTag } from "components/ds/icon-tag/icon-tag";
@@ -6,8 +9,6 @@ import { Flex } from "components/layout/flex/flex";
 import { Icon } from "components/layout/icon/icon";
 import { Translate } from "components/layout/translate/translate";
 import { Typography } from "components/layout/typography/typography";
-import { useStackProjectOverview } from "src/App/Stacks/Stacks";
-import { ProjectConstants } from "src/api/Project/constants";
 
 import { TProjectCard } from "./project-card.types";
 
