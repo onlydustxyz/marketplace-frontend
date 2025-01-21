@@ -32,7 +32,7 @@ export function ProjectCard({ data }: TProjectCard.Props) {
             ))}
           </Flex>
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-1 flex-col gap-2">
           <Typography variant="title-s">{data.name}</Typography>
           <Typography variant="body-s" className="text-spaceBlue-200">
             {data.shortDescription}

@@ -60,6 +60,21 @@ const nextConfig = {
         destination: "/hackathons/:slug",
         permanent: true,
       },
+      {
+        source: "/h/:slug",
+        destination: `${process.env.NEXT_PUBLIC_SAAS_URL}/hackathons/:slug`,
+        permanent: true,
+      },
+      {
+        source: "/hackathons/:slug",
+        destination: `${process.env.NEXT_PUBLIC_SAAS_URL}/hackathons/:slug`,
+        permanent: true,
+      },
+      {
+        source: "/hackathons",
+        destination: `${process.env.NEXT_PUBLIC_SAAS_URL}/hackathons`,
+        permanent: true,
+      },
     ];
   },
   images: {
