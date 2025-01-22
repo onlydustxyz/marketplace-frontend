@@ -10,6 +10,8 @@ export class ProjectCategory implements ProjectCategoryInterface {
   name!: ProjectCategoriesResponse["name"];
   description!: ProjectCategoriesResponse["description"];
   iconSlug!: ProjectCategoriesResponse["iconSlug"];
+  projectCount!: ProjectCategoriesResponse["projectCount"];
+
   constructor(props: ProjectCategoriesResponse) {
     Object.assign(this, props);
   }
