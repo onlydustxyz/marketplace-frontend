@@ -27,12 +27,12 @@ export class ContributorRewindReady implements NotificationInterface {
   }
 
   getTitle() {
-    return "Your OSS Rewind is ready";
+    return "Your ODRewind is ready";
   }
 
   getDescription() {
     const { year } = this.data || {};
-    return `Your OSS Rewind for ${year} is ready!`;
+    return `Your ODRewind for ${year} is ready!`;
   }
 
   getUrl() {
