@@ -55,6 +55,10 @@
         "reward": {
           "label": "Reward",
           "content": "Receive updates on all stages of your rewards, from receipt to payment."
+        },
+        "rewind": {
+          "label": "Rewind",
+          "content": "Be alerted as soon as your rewind is available."
         }
       },
       "maintainer": {
