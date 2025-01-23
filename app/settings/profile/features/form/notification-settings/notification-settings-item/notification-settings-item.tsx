@@ -40,7 +40,7 @@ export function NotificationSettingsItem({ title, items }: TNotificationSettings
         </Flex>
         {items.map((item, key) => (
           <Flex key={key} direction="row" className="w-full items-center justify-between">
-            <Flex direction="col" className="flex-1 gap-1">
+            <Flex direction="col" className="flex-1 shrink-0 gap-1">
               <Typography variant="body-s-bold" translate={item.label} />
               <Typography variant="body-s" className="text-spaceBlue-200" translate={item.content} />
             </Flex>
