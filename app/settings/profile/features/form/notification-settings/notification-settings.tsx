@@ -25,6 +25,7 @@ export function NotificationSettings() {
       UserNotificationCategories.MAINTAINER_PROJECT_PROGRAM,
       UserNotificationCategories.SPONSOR_LEAD,
       UserNotificationCategories.PROGRAM_LEAD,
+      UserNotificationCategories.CONTRIBUTOR_REWIND,
     ];
   }
   function isChannelEnabled(channel: UserNotificationSettingsChannelType) {
@@ -163,6 +164,23 @@ export function NotificationSettings() {
                   control={control}
                   render={({ field }) => <NotificationSwitch {...field} />}
                 />,
+              ],
+            },
+            {
+              label: {
+                token: "v2.pages.settings.profile.notificationSettings.notifications.contributor.rewind.label",
+              },
+              content: {
+                token: "v2.pages.settings.profile.notificationSettings.notifications.contributor.rewind.content",
+              },
+              switch: [
+                <Controller
+                  key={"email"}
+                  name={`notifications.${UserNotificationCategories.CONTRIBUTOR_REWIND}.EMAIL`}
+                  control={control}
+                  render={({ field }) => <NotificationSwitch {...field} />}
+                />,
+                <div key={"summary"} className="w-48" />,
               ],
             },
           ]}
