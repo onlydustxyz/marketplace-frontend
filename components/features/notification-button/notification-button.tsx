@@ -116,9 +116,11 @@ function Content({ onClose }: { onClose: () => void }) {
           <>
             {notifications?.length ? (
               <div className="flex w-full flex-col gap-2">
-                {notifications.map(notification => (
-                  <NotificationItem key={notification.getId()} notification={notification} onClick={handleRead} />
-                ))}
+                {notifications.map(notification =>
+                  notification ? (
+                    <NotificationItem key={notification.getId()} notification={notification} onClick={handleRead} />
+                  ) : null
+                )}
                 {hasNextPage && (
                   <div className="pt-2">
                     <InView
