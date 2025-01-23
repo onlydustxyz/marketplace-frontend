@@ -5,6 +5,7 @@ import { ContributorProjectApplicationAccepted } from "core/domain/notification/
 import { ContributorRewardCanceled } from "core/domain/notification/models/notifications/contributor-reward-canceled";
 import { ContributorRewardPaid } from "core/domain/notification/models/notifications/contributor-reward-paid";
 import { ContributorRewardReceived } from "core/domain/notification/models/notifications/contributor-reward-received";
+import { ContributorRewindReady } from "core/domain/notification/models/notifications/contributor-rewind-ready";
 import { GlobalBillingProfileReminder } from "core/domain/notification/models/notifications/global-billing-profile-reminder";
 import { MaintainerApplicationToReview } from "core/domain/notification/models/notifications/maintainer-application-to-review";
 import { MaintainerCommitteeApplicationCreated } from "core/domain/notification/models/notifications/maintainer-commitee-application-created";
@@ -14,10 +15,10 @@ import { ContributorProjectGoodFirstIssueCreated } from "./notifications/contrib
 import { GlobalBillingProfileVerificationClosed } from "./notifications/global-billing-profile-verification-closed";
 import { GlobalBillingProfileVerificationRejected } from "./notifications/global-billing-profile-verification-rejected";
 import { ProgramLeadFundsAllocatedToProgram } from "./notifications/program-lead-funds-allocated-to-program";
+import { ProgramLeadFundsUngrantedFromProject } from "./notifications/program-lead-funds-ungranted-from-project";
 import { SponsorLeadDepositApproved } from "./notifications/sponsor-lead-deposit-approved";
 import { SponsorLeadDepositRejected } from "./notifications/sponsor-lead-deposit-rejected";
 import { SponsorLeadFundsUnallocatedFromProgram } from "./notifications/sponsor-lead-funds-unallocated-from-program";
-import { ProgramLeadFundsUngrantedFromProject } from "./notifications/program-lead-funds-ungranted-from-project";
 
 export class NotificationFactory {
   static createNotification(notificationResponse: NotificationResponse): NotificationInterface {
@@ -58,6 +59,8 @@ export class NotificationFactory {
         return new SponsorLeadDepositRejected(notification);
       case "SPONSOR_LEAD_FUNDS_UNALLOCATED_FROM_PROGRAM":
         return new SponsorLeadFundsUnallocatedFromProgram(notification);
+      case "CONTRIBUTOR_REWIND_READY":
+        return new ContributorRewindReady(notification);
     }
   }
 }
