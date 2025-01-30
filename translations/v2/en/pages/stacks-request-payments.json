@@ -58,6 +58,7 @@
       "optimism": "Optimism wallet address",
       "etherum": "Etherum wallet address",
       "starknet": "Starknet wallet address",
+      "stellar": "Stellar wallet address",
       "aptos": "Aptos wallet address",
       "sepaAccount": "Account number",
       "sepaBic": "BIC / SWIFT"
