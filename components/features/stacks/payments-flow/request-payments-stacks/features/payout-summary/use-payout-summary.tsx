@@ -62,6 +62,13 @@ export function usePayoutSummary({ billingProfileId, rewards }: TPayoutSummary.U
             labelIcon={<CurrencyIcons className="h-3 w-3" currency={Money.fromSchema({ code: "STRK" })} />}
           />
         ) : null}
+        {wallets?.STELLAR?.wallet ? (
+          <Item
+            label={<Translate token="v2.pages.stacks.request_payments.selectRewards.payouts.stellar" />}
+            value={wallets.STELLAR.wallet}
+            labelIcon={<CurrencyIcons className="h-3 w-3" currency={Money.fromSchema({ code: "XLM" })} />}
+          />
+        ) : null}
         {wallets?.SEPA?.bankAccount?.bic && wallets?.SEPA?.bankAccount?.number ? (
           <div className="flex w-full flex-row items-start justify-between gap-2">
             <Item
