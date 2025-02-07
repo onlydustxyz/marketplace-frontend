@@ -36,7 +36,7 @@ export default function ClaimSidePanel({ projectSlug }: ClaimSidePanelProps) {
   } = MeApi.queries.useGithubOrganizations({
     options: {
       retry: 1,
-      enabled: isSuccess && !project?.leaders.length && !project?.invitedLeaders.length,
+      enabled: isSuccess && !project?.leaders.length,
       refetchOnWindowFocus,
       refetchInterval,
     },
@@ -76,7 +76,7 @@ export default function ClaimSidePanel({ projectSlug }: ClaimSidePanelProps) {
   });
 
   const canDisplay = useMemo(() => {
-    return ClaimUtils.canDisplay({ project });
+    return false;
   }, [project, myOrganizations]);
 
   const canSubmit = useMemo(() => {

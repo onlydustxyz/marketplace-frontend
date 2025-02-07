@@ -2,7 +2,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef } from "react";
 
-import { ClaimUtils } from "src/App/Stacks/GithubWorkflow/ClaimSidePanel/claim.utils";
 import { useStackGithubWorkflowClaim } from "src/App/Stacks/Stacks";
 
 import { Banner } from "components/ds/banner/banner";
@@ -26,7 +25,7 @@ export function ClaimBanner({ project }: TClaimBanner.Props) {
   const [openClaimPanel] = useStackGithubWorkflowClaim();
 
   const canDisplay = useMemo(() => {
-    return ClaimUtils.canDisplay({ project });
+    return false;
   }, [project]);
 
   const onBannerClick = async () => {

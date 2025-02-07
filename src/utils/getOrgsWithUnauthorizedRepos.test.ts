@@ -76,7 +76,6 @@ const mockProject: Parameters<typeof getOrgsWithUnauthorizedRepos>[0] = {
       id: "e90bf93b-baac-48d6-9189-54de46ea0d57",
     },
   ],
-  invitedLeaders: [],
   programs: [],
   languages: [
     {

@@ -16,7 +16,6 @@ export class Project extends ShortProject implements ProjectInterface {
   hiring!: ProjectResponse["hiring"];
   indexedAt!: ProjectResponse["indexedAt"];
   indexingComplete!: ProjectResponse["indexingComplete"];
-  invitedLeaders!: ProjectResponse["invitedLeaders"];
   leaders!: ProjectResponse["leaders"];
   longDescription!: ProjectResponse["longDescription"];
   moreInfos!: ProjectResponse["moreInfos"];
