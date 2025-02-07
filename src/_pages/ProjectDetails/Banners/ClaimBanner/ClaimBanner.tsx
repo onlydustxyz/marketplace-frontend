@@ -1,7 +1,6 @@
 import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef } from "react";
 
-import { ClaimUtils } from "src/App/Stacks/GithubWorkflow/ClaimSidePanel/claim.utils";
 import { useStackGithubWorkflowClaim } from "src/App/Stacks/Stacks";
 import ProjectApi from "src/api/Project";
 import RainbowBanner from "src/components/New/Banners/RainbowBanner";
@@ -20,7 +19,7 @@ export default function ClaimBanner() {
   const [openClaimPanel] = useStackGithubWorkflowClaim();
   const isPanelOpen = useRef(false);
   const canDisplay = useMemo(() => {
-    return ClaimUtils.canDisplay({ project });
+    return false;
   }, [project]);
 
   const onBannerClick = () => {

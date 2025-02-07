@@ -11,7 +11,6 @@ import MeApi from "src/api/me";
 import { UseGithubOrganizationsResponse } from "src/api/me/queries";
 import useMutationAlert from "src/api/useMutationAlert";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
-import { AutoSaveForm } from "src/hooks/useAutoSave/AutoSaveForm";
 import { usePooling, usePoolingFeedback } from "src/hooks/usePooling/usePooling";
 import { StorageInterface } from "src/hooks/useStorage/Storage";
 
@@ -21,7 +20,7 @@ import { NEXT_ROUTER } from "constants/router";
 
 import { useIntl } from "hooks/translate/use-translate";
 
-import { STORAGE_KEY_CREATE_PROJECT_FORM, useResetStorage } from "./hooks/useProjectCreationStorage";
+import { useResetStorage } from "./hooks/useProjectCreationStorage";
 import { ProjectCreationSteps, ProjectCreationStepsNext, ProjectCreationStepsPrev } from "./types/ProjectCreationSteps";
 import { CreateFormData, CreateFormDataRepos } from "./types/ProjectCreationType";
 import { onSyncOrganizations } from "./utils/syncOrganization";
@@ -130,7 +129,6 @@ export function CreateProjectProvider({
 }: CreateContextProps) {
   const backgroundRef = useRef<HTMLFormElement | null>(null);
   const { T } = useIntl();
-  const [enableAutoSaved, setEnableAutoSaved] = useState<boolean>(true);
   const [installedRepos, setInstalledRepos] = useState<number[]>(initialInstalledRepo || []);
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState<ProjectCreationSteps>(
@@ -221,18 +219,7 @@ export function CreateProjectProvider({
   };
 
   const onSubmit = () => {
-    setEnableAutoSaved(false);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { search, projectLeads, selectedRepos, ecosystems, projectCategories, moreInfos, ...formData } =
-      form.getValues();
-    createProject({
-      ...formData,
-      isLookingForContributors: formData.isLookingForContributors || false,
-      githubRepoIds: selectedRepos.map(repo => repo.repoId),
-      ecosystemIds: ecosystems?.map(ecosystem => `${ecosystem.id}`),
-      categoryIds: projectCategories?.map(cat => `${cat.id}`),
-      moreInfos: (moreInfos || []).filter(info => info.url !== "").map(info => ({ url: info.url, value: info.value })),
-    });
+    return;
   };
 
   const isOrgsExist = (orgId: number) => {
@@ -356,9 +343,6 @@ export function CreateProjectProvider({
           onSubmit={form.handleSubmit(onSubmit)}
         >
           {children}
-          {enableAutoSaved && (
-            <AutoSaveForm<CreateFormData> delay={1000} form={form} storage_key={STORAGE_KEY_CREATE_PROJECT_FORM} />
-          )}
         </form>
       </Background>
     </CreateProjectContext.Provider>

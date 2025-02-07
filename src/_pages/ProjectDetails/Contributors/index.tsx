@@ -15,7 +15,6 @@ import { CalloutSizes } from "src/components/ProjectLeadInvitation/ProjectLeadIn
 import useQueryParamsSorting from "src/components/RewardTable/useQueryParamsSorting";
 import Skeleton from "src/components/Skeleton";
 import Flex from "src/components/Utils/Flex";
-import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import EyeOffLine from "src/icons/EyeOffLine";
 import { RewardDisabledReason } from "src/types";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
@@ -26,7 +25,6 @@ import { PosthogOnMount } from "components/features/posthog/components/posthog-o
 import { EmptyState } from "components/layout/placeholders/empty-state/empty-state";
 
 import { useIntl } from "hooks/translate/use-translate";
-import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import ClaimBanner from "../Banners/ClaimBanner/ClaimBanner";
 import { MissingGithubAppInstallBanner } from "../Banners/MissingGithubAppInstallBanner";
@@ -36,14 +34,13 @@ import { RewardProjectButton } from "../components/RewardProjectButton";
 
 export default function Contributors() {
   const { T } = useIntl();
-  const { githubUserId } = useCurrentUser();
   const { slug = "" } = useParams<{ slug: string }>();
 
   const { data: project, isLoading: isLoadingProject } = ProjectApi.queries.useGetProjectBySlug({
     params: { slug },
   });
 
-  const isProjectLeader = useProjectLeader({ id: project?.id });
+  const isProjectLeader = false;
 
   const showHiddenContributorsName = "show-hidden-contributors";
   const { control } = useForm({
@@ -78,7 +75,7 @@ export default function Contributors() {
 
   const contributors = data?.pages.flatMap(page => page.contributors) ?? [];
 
-  const isInvited = !!project?.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
+  const isInvited = false;
 
   const noBudget = !project?.hasRemainingBudget;
 

@@ -1,8 +1,7 @@
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ComponentType, FC, useEffect } from "react";
 
 import MeApi from "src/api/me";
-import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 
 import { NEXT_ROUTER } from "constants/router";
 
@@ -11,8 +10,7 @@ const withLeadRequired = <P extends object>(Component: ComponentType<P>): FC<P> 
   return (props: P): JSX.Element => {
     const router = useRouter();
     const { isLoading, isRefetching } = MeApi.queries.useGetMe({});
-    const params = useParams<{ slug: string }>();
-    const isProjectLeader = useProjectLeader({ slug: params.slug });
+    const isProjectLeader = false;
 
     useEffect(() => {
       if (isLoading || isRefetching || isProjectLeader) return;

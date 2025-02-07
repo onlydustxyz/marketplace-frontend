@@ -20,7 +20,6 @@ export class User implements UserInterface {
   login!: UserResponse["login"];
   missingPayoutPreference!: UserResponse["missingPayoutPreference"];
   pendingApplications!: UserResponse["pendingApplications"];
-  pendingProjectsLed!: UserResponse["pendingProjectsLed"];
   projectsLed!: UserResponse["projectsLed"];
   sponsors!: UserResponse["sponsors"];
   programs!: UserResponse["programs"];

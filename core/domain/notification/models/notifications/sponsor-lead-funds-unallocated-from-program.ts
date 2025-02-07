@@ -36,6 +36,6 @@ export class SponsorLeadFundsUnallocatedFromProgram implements NotificationInter
   }
 
   getUrl() {
-    return `${process.env.NEXT_PUBLIC_SAAS_URL}/sponsors/${this.data?.sponsor.id}`;
+    return "";
   }
 }
