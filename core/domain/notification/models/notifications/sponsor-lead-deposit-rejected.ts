@@ -36,6 +36,6 @@ export class SponsorLeadDepositRejected implements NotificationInterface {
   }
 
   getUrl() {
-    return `${process.env.NEXT_PUBLIC_SAAS_URL}/sponsors/${this.data?.sponsor.id}`;
+    return "";
   }
 }

@@ -36,6 +36,6 @@ export class ProgramLeadFundsUngrantedFromProject implements NotificationInterfa
   }
 
   getUrl() {
-    return `${process.env.NEXT_PUBLIC_SAAS_URL}/programs/${this.data?.program.id}`;
+    return "";
   }
 }

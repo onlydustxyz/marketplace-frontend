@@ -136,7 +136,7 @@ export function View({ avatarUrl, login, labelToken, redirection, errorColor, er
               </BaseLink>
 
               {programs.length || ecosystems.length ? (
-                <BaseLink href={`${process.env.NEXT_PUBLIC_SAAS_URL}/programs`}>
+                <BaseLink href={NEXT_ROUTER.home.all}>
                   <MenuItem>
                     <Icon remixName="ri-service-line" size={20} />
                     <div className="grow">

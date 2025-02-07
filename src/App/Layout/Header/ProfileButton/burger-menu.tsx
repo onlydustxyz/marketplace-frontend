@@ -78,7 +78,7 @@ export function BurgerMenu() {
 
               {programs.length || ecosystems.length ? (
                 <BaseLink
-                  href={`${process.env.NEXT_PUBLIC_SAAS_URL}/programs`}
+                  href={NEXT_ROUTER.home.all}
                   onClick={() => setPanelOpen(false)}
                   className="flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8"
                 >
@@ -118,7 +118,7 @@ export function BurgerMenu() {
             </BaseLink>
 
             <BaseLink
-              href={`${process.env.NEXT_PUBLIC_SAAS_URL}/hackathons`}
+              href={NEXT_ROUTER.hackathons.root}
               onClick={() => setPanelOpen(false)}
               className="flex items-center gap-3 rounded-md p-4 data-[active=true]:bg-white/8"
             >
