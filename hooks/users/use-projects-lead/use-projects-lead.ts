@@ -6,7 +6,7 @@ export const useProjectsLead = (): TUseProjectsLead.Return => {
 
   return {
     projectsLead: user?.projectsLed?.length ? user.projectsLed : [],
-    pendingProjectsLead: user?.pendingProjectsLed?.length ? user.pendingProjectsLed : [],
+    pendingProjectsLead: [],
     ...restQuery,
   };
 };

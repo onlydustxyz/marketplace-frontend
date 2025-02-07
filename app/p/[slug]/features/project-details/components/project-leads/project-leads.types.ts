@@ -4,6 +4,5 @@ export namespace TProjectLeads {
   export interface Props {
     projectId: string;
     projectLeads: UseGetProjectBySlugResponse["leaders"];
-    projectInvited: UseGetProjectBySlugResponse["invitedLeaders"];
   }
 }

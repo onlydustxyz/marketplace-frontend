@@ -4,7 +4,6 @@ import { ProjectOverviewCategories } from "src/components/Project/Overview/Overv
 import { ProjectOverviewContributor } from "src/components/Project/Overview/OverviewContributors";
 import { ProjectOverviewEcosystem } from "src/components/Project/Overview/OverviewEcosystem";
 import { ProjectOverviewLanguages } from "src/components/Project/Overview/OverviewLanguages";
-import { ProjectOverviewLead } from "src/components/Project/Overview/OverviewLead";
 import { ProjectOverviewMoreInfo } from "src/components/Project/Overview/OverviewMoreInfo";
 import { ProjectOverviewPrograms } from "src/components/Project/Overview/OverviewPrograms";
 import isDefined from "src/utils/isDefined";
@@ -18,19 +17,9 @@ export interface ProjectOverviewInformationsProps {
 }
 
 export const ProjectOverviewInformations = ({ project }: ProjectOverviewInformationsProps) => {
-  const {
-    contributorCount,
-    topContributors,
-    leaders,
-    invitedLeaders,
-    moreInfos,
-    ecosystems,
-    programs,
-    languages,
-    categories,
-  } = project;
+  const { contributorCount, topContributors, leaders, moreInfos, ecosystems, programs, languages, categories } =
+    project;
   const projectLeads = leaders?.filter(lead => isDefined(lead?.login)) || [];
-  const projectInvited = invitedLeaders?.filter(lead => isDefined(lead?.login)) || [];
 
   if (!projectLeads.length && !contributorCount && !programs?.length && !moreInfos?.length) {
     return (
@@ -44,7 +33,6 @@ export const ProjectOverviewInformations = ({ project }: ProjectOverviewInformat
   }
   return (
     <div className="flex-col divide-y divide-greyscale-50/8 rounded-2xl border border-card-border-light bg-greyscale-900 shadow-medium">
-      <ProjectOverviewLead projectId={project?.id} projectLeads={projectLeads} projectInvited={projectInvited} />
       <ProjectOverviewContributor contributorCount={contributorCount} topContributors={topContributors} />
       <ProjectOverviewEcosystem ecosystems={ecosystems} />
       <ProjectOverviewPrograms programs={programs} />

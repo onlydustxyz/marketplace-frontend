@@ -174,9 +174,7 @@ export function EditProvider({ children, project }: EditContextProps) {
           isAuthorizedInGithubApp: repo.isAuthorizedInGithubApp,
         })),
         isLookingForContributors: project.hiring,
-        inviteGithubUserIdsAsProjectLeads: project.invitedLeaders.map(leader => leader.githubUserId),
-        projectLeadsToKeep: project.leaders.map(leader => leader.id),
-        projectLeads: { invited: project.invitedLeaders, toKeep: project.leaders },
+        projectLeads: { invited: [], toKeep: project.leaders },
         ecosystems: (project?.ecosystems || []).map(({ name, id, logoUrl }) => ({
           id,
           label: name,

@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 
 import { MultiStepsForm } from "src/_pages/ProjectCreation/components/MultiStepsForm";
-import { FieldProjectLead } from "src/_pages/ProjectCreation/views/ProjectInformations/components/ProjectLead/ProjectLead";
 import { EcosystemSelect } from "src/_pages/ProjectCreation/views/ProjectInformations/components/ecosystem-select/ecosystem-select";
 import { MoreInfosField } from "src/_pages/ProjectDetails/ProjectEdition/pages/Information/components/MoreInfosField";
 import ProjectApi from "src/api/Project";
@@ -131,24 +130,6 @@ export const ProjectInformationsPage = () => {
               <MoreInfosField
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 {...{ onChange, value, form: form as UseFormReturn<CreateFormData, unknown> as any, error }}
-              />
-            )}
-          />
-          <Controller
-            name="projectLeads"
-            control={form.control}
-            render={({ field: { value, name } }) => (
-              <FieldProjectLead
-                name={name}
-                value={{ invited: value, toKeep: [] }}
-                onChange={({ invited }) => {
-                  form.setValue(
-                    "inviteGithubUserIdsAsProjectLeads",
-                    invited.map(lead => lead.githubUserId).filter(Boolean) as number[],
-                    { shouldDirty: true }
-                  );
-                  form.setValue("projectLeads", invited, { shouldDirty: true });
-                }}
               />
             )}
           />

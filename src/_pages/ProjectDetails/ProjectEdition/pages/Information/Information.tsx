@@ -1,10 +1,6 @@
 import { useContext } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 
-import {
-  FieldProjectLead,
-  SelectedLeadType,
-} from "src/_pages/ProjectCreation/views/ProjectInformations/components/ProjectLead/ProjectLead";
 import { EcosystemSelect } from "src/_pages/ProjectCreation/views/ProjectInformations/components/ecosystem-select/ecosystem-select";
 import ProjectApi from "src/api/Project";
 import { FieldImage } from "src/components/New/Field/FileImage";
@@ -41,15 +37,6 @@ export function Information() {
       },
     },
   });
-
-  function handleProjectLeadsChange({ invited, toKeep }: { invited: SelectedLeadType[]; toKeep: SelectedLeadType[] }) {
-    const invitedUsers = invited.map(lead => lead.githubUserId).filter(Boolean) as number[];
-    const usersToKeep = toKeep.map(lead => lead.id).filter(Boolean) as string[];
-
-    form?.setValue("inviteGithubUserIdsAsProjectLeads", invitedUsers, { shouldDirty: true });
-    form?.setValue("projectLeadsToKeep", usersToKeep, { shouldDirty: true });
-    form?.setValue("projectLeads", { invited, toKeep }, { shouldDirty: true });
-  }
 
   return (
     <Flex direction="col" gap={8} className="w-full">
@@ -124,17 +111,6 @@ export function Information() {
             <MoreInfosField
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               {...{ onChange, value, form: form as UseFormReturn<EditFormData, unknown> as any, error }}
-            />
-          )}
-        />
-        <Controller
-          name="projectLeads"
-          control={form?.control}
-          render={({ field: { value, name } }) => (
-            <FieldProjectLead
-              name={name}
-              value={value}
-              onChange={({ invited, toKeep }) => handleProjectLeadsChange({ invited, toKeep })}
             />
           )}
         />
