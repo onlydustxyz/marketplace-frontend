@@ -44,38 +44,7 @@ const nextConfig = {
     ];
   },
   async redirects() {
-    return [
-      {
-        source: "/settings",
-        destination: "/settings/profile",
-        permanent: true,
-      },
-      {
-        source: "/settings/billing/:id",
-        destination: "/settings/billing/:id/general-information",
-        permanent: true,
-      },
-      {
-        source: "/h/:slug",
-        destination: "/hackathons/:slug",
-        permanent: true,
-      },
-      {
-        source: "/h/:slug",
-        destination: `${process.env.NEXT_PUBLIC_SAAS_URL}/hackathons/:slug`,
-        permanent: true,
-      },
-      {
-        source: "/hackathons/:slug",
-        destination: `${process.env.NEXT_PUBLIC_SAAS_URL}/hackathons/:slug`,
-        permanent: true,
-      },
-      {
-        source: "/hackathons",
-        destination: `${process.env.NEXT_PUBLIC_SAAS_URL}/hackathons`,
-        permanent: true,
-      },
-    ];
+    return [];
   },
   images: {
     remotePatterns: [

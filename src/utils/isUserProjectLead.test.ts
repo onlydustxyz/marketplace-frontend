@@ -37,7 +37,6 @@ const project: components["schemas"]["ProjectPageItemResponse"] = {
       slug: "javascript",
     },
   ],
-  isInvitedAsProjectLead: false,
   hasMissingGithubAppInstallation: false,
 };
 

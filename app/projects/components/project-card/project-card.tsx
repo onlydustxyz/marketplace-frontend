@@ -1,13 +1,9 @@
-import { useMemo } from "react";
-
 import PrivateTag from "src/components/PrivateTag";
 import { cn } from "src/utils/cn";
 
 import { Avatar } from "components/ds/avatar/avatar";
 import { Card } from "components/ds/card/card";
 import { LanguagesTag } from "components/features/languages-tag/languages-tag";
-import { ProjectLeadInvitationBanner } from "components/features/project-lead-invitation-banner/project-lead-invitation-banner";
-import { ProjectMissingGithubBanner } from "components/features/project-missing-github-banner/project-missing-github-banner";
 import { BaseLink } from "components/layout/base-link/base-link";
 import { Flex } from "components/layout/flex/flex";
 
@@ -25,10 +21,8 @@ import { Summary } from "./summary/summary";
 export function ProjectCard({ project, isFirstHiringProject = false, isUserProjectLead }: TProjectCard.Props) {
   const { T } = useIntl();
   const {
-    isInvitedAsProjectLead,
     hasMissingGithubAppInstallation,
     visibility,
-    name,
     slug,
     logoUrl,
     tags,
@@ -42,29 +36,6 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
   const isErrorVariant = Boolean(isUserProjectLead && hasMissingGithubAppInstallation);
   const isPrivate = visibility === "PRIVATE";
 
-  const InviteBanner = useMemo(() => {
-    if (isInvitedAsProjectLead) {
-      return (
-        <ProjectLeadInvitationBanner
-          projectName={name}
-          on="cards"
-          size={"s"}
-          btnLabelToken="v2.features.banners.projectLeadInvitation.card.view"
-        />
-      );
-    }
-
-    return null;
-  }, [project]);
-
-  const MissingGithubBanner = useMemo(() => {
-    if (isUserProjectLead && hasMissingGithubAppInstallation) {
-      return <ProjectMissingGithubBanner slug={slug} />;
-    }
-
-    return null;
-  }, [project, isUserProjectLead]);
-
   return (
     <BaseLink href={NEXT_ROUTER.projects.details.root(slug)} className="w-full">
       <Card
@@ -73,7 +44,7 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
           "mt-3": isFirstHiringProject,
         })}
         clickable
-        border={isInvitedAsProjectLead ? "multiColor" : "light"}
+        border={"light"}
         dataTestId="project-card"
         background="base"
       >
@@ -125,12 +96,6 @@ export function ProjectCard({ project, isFirstHiringProject = false, isUserProje
             </div>
           </Flex>
         </Flex>
-        {isInvitedAsProjectLead || hasMissingGithubAppInstallation ? (
-          <Flex direction="col" className="mt-5 gap-5 pr-4 lg:pr-6">
-            {InviteBanner}
-            {MissingGithubBanner}
-          </Flex>
-        ) : null}
       </Card>
     </BaseLink>
   );

@@ -20,25 +20,12 @@ import { ProjectLeads } from "./components/project-leads/project-leads";
 import { TProjectDetails } from "./project-details.types";
 
 export function ProjectDetails({ project }: TProjectDetails.Props) {
-  const {
-    contributorCount,
-    topContributors,
-    leaders,
-    invitedLeaders,
-    moreInfos,
-    ecosystems,
-    categories,
-    programs,
-    languages,
-  } = project;
+  const { contributorCount, topContributors, leaders, moreInfos, ecosystems, categories, programs, languages } =
+    project;
 
   const projectLeads = useMemo(() => {
     return leaders?.filter(lead => isDefined(lead?.login)) || [];
   }, [leaders]);
-
-  const projectInvited = useMemo(() => {
-    return invitedLeaders?.filter(lead => isDefined(lead?.login)) || [];
-  }, [invitedLeaders]);
 
   const communityLinkPatterns = ["t.me", "discord.com"];
   const nonCommunityMoreInfos = useMemo(() => {
@@ -65,7 +52,7 @@ export function ProjectDetails({ project }: TProjectDetails.Props) {
           <Typography variant="body-m-bold" translate={{ token: "v2.pages.project.overview.projectDetails.title" }} />
         </Flex>
 
-        <ProjectLeads projectId={project.id} projectLeads={projectLeads} projectInvited={projectInvited} />
+        <ProjectLeads projectId={project.id} projectLeads={projectLeads} />
         <Contributors contributorCount={contributorCount} topContributors={topContributors} />
         <Ecosystems ecosystems={ecosystems} />
         <Categories categories={categories} />

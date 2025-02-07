@@ -2,7 +2,7 @@
 
 import { ProjectReactQueryAdapter } from "core/application/react-query-adapter/project";
 import { useParams } from "next/navigation";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
 import { StayTuned } from "app/p/[slug]/features/stay-tuned/stay-tuned";
@@ -12,7 +12,6 @@ import useMutationAlert from "src/api/useMutationAlert";
 import Skeleton from "src/components/Skeleton";
 import { viewportConfig } from "src/config";
 import { usePosthog } from "src/hooks/usePosthog";
-import { useProjectLeader } from "src/hooks/useProjectLeader/useProjectLeader";
 import { getOrgsWithUnauthorizedRepos } from "src/utils/getOrgsWithUnauthorizedRepos";
 
 import { ProjectLeadInvitationBanner } from "components/features/project-lead-invitation-banner/project-lead-invitation-banner";
@@ -20,7 +19,6 @@ import { withClientOnly } from "components/layout/client-only/client-only";
 import { Flex } from "components/layout/flex/flex";
 
 import { useIntl } from "hooks/translate/use-translate";
-import { useCurrentUser } from "hooks/users/use-current-user/use-current-user";
 
 import { ClaimBanner } from "./components/banner/claim-banner/claim-banner";
 import { MissingGithubAppInstallBanner } from "./components/banner/missing-github-app-install-banner/missing-github-app-install-banner";
@@ -47,13 +45,9 @@ function ProjectPage() {
       params: { projectId: project?.id || "", projectSlug: slug },
     });
 
-  const { githubUserId } = useCurrentUser();
+  const isProjectLeader = false;
 
-  const isProjectLeader = useProjectLeader({ id: project?.id });
-
-  const isInvited = useMemo(() => {
-    return !!project?.invitedLeaders.find(invite => invite.githubUserId === githubUserId);
-  }, [project?.invitedLeaders, githubUserId]);
+  const isInvited = false;
 
   const isMd = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.md}px)`);
 
